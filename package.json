@@ -14,7 +14,6 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./style.css": "./dist/style.css",
     "./registry.json": "./registry.json"
   },
   "files": [
