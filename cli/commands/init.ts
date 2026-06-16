@@ -5,19 +5,23 @@ import { logger } from "../utils/logger";
 import { detectPackageManager } from "../utils/detect-package-manager";
 import { installPackages } from "../utils/install-packages";
 
-const dependencies = [
+const baseDependencies = [
+  "@base-ui/react",
   "clsx",
   "tailwind-merge",
   "class-variance-authority",
   "lucide-react",
   "tw-animate-css",
-  "@radix-ui/react-dialog",
-  "@radix-ui/react-dropdown-menu",
-  "@radix-ui/react-popover",
-  "@radix-ui/react-select",
-  "@tanstack/react-table",
-  "cmdk",
 ];
+
+type InitResponse = {
+  installDeps: boolean;
+  alias: string;
+  componentsPath: string;
+  uiPath: string;
+  hooksPath: string;
+  utilsPath: string;
+};
 
 export async function initCommand() {
   const cwd = process.cwd();
@@ -28,18 +32,36 @@ export async function initCommand() {
     process.exit(1);
   }
 
-  const response = await prompts([
+  const response = (await prompts([
     {
       type: "confirm",
       name: "installDeps",
-      message: "Kerakli dependencylarni o‘rnataymi?",
+      message: "Asosiy dependencylarni o‘rnataymi?",
       initial: true,
     },
     {
       type: "text",
+      name: "alias",
+      message: "Path alias qanday?",
+      initial: "@",
+    },
+    {
+      type: "text",
       name: "componentsPath",
-      message: "Componentlar qayerga yozilsin?",
+      message: "Component root qayerda?",
+      initial: "src/components",
+    },
+    {
+      type: "text",
+      name: "uiPath",
+      message: "UI primitives qayerga yozilsin?",
       initial: "src/components/ui",
+    },
+    {
+      type: "text",
+      name: "hooksPath",
+      message: "Hooks qayerga yozilsin?",
+      initial: "src/hooks",
     },
     {
       type: "text",
@@ -47,7 +69,7 @@ export async function initCommand() {
       message: "utils.ts qayerga yozilsin?",
       initial: "src/lib/utils.ts",
     },
-  ]);
+  ])) as InitResponse;
 
   const packageManager = detectPackageManager(cwd);
 
@@ -57,14 +79,21 @@ export async function initCommand() {
     await installPackages({
       cwd,
       packageManager,
-      packages: dependencies,
+      packages: baseDependencies,
     });
   }
 
   const config = {
     style: "default",
-    componentsPath: response.componentsPath,
+    alias: response.alias || "@",
+    componentsPath: response.uiPath,
     utilsPath: response.utilsPath,
+    paths: {
+      components: response.componentsPath,
+      ui: response.uiPath,
+      hooks: response.hooksPath,
+      lib: path.dirname(response.utilsPath),
+    },
   };
 
   await fs.writeJson(path.join(cwd, "azamat-ui.json"), config, {
@@ -88,6 +117,8 @@ export function cn(...inputs: ClassValue[]) {
   }
 
   logger.success("Azamat UI Kit init qilindi.");
-  logger.info("Endi component qo‘shish mumkin:");
-  logger.info("npx azamat-ui-kit add button input");
+  logger.info("Componentlarni ko‘rish:");
+  logger.info("npx azamat-ui-kit list");
+  logger.info("Component qo‘shish:");
+  logger.info("npx azamat-ui-kit add button input data-table");
 }
