@@ -1,192 +1,309 @@
 export type ComponentName =
-    | "button"
-    | "input"
-    | "data-table";
+  | "utils"
+  | "button"
+  | "input"
+  | "textarea"
+  | "switch"
+  | "badge"
+  | "card"
+  | "dialog"
+  | "dropdown-menu"
+  | "popover"
+  | "select"
+  | "table"
+  | "modal-shell"
+  | "sheet-shell"
+  | "confirm-dialog"
+  | "dialog-actions"
+  | "pagination"
+  | "simple-select"
+  | "async-select"
+  | "money-input"
+  | "quantity-input"
+  | "form-field-shell"
+  | "form-input"
+  | "form-select"
+  | "form-async-select"
+  | "form-textarea"
+  | "form-switch"
+  | "empty-state"
+  | "loading-state"
+  | "status-badge"
+  | "data-table"
+  | "data-table-pagination"
+  | "data-table-toolbar"
+  | "overlay"
+  | "inputs"
+  | "form"
+  | "feedback";
+
+export type RegistryFile = {
+  source: string;
+  target: string;
+};
 
 export type ComponentRegistryItem = {
-    name: ComponentName;
-    target: string;
-    dependencies?: string[];
-    files: {
-        path: string;
-        content: string;
-    }[];
+  name: ComponentName;
+  category: "lib" | "ui" | "overlay" | "navigation" | "inputs" | "form" | "feedback" | "data-table" | "group";
+  description?: string;
+  dependencies?: string[];
+  registryDependencies?: ComponentName[];
+  files?: RegistryFile[];
 };
 
 export const registry: Record<ComponentName, ComponentRegistryItem> = {
-    button: {
-        name: "button",
-        target: "components",
-        dependencies: ["class-variance-authority"],
-        files: [
-            {
-                path: "button.tsx",
-                content: `import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
+  utils: {
+    name: "utils",
+    category: "lib",
+    dependencies: ["clsx", "tailwind-merge"],
+    files: [{ source: "src/lib/utils.ts", target: "{utils}" }],
+  },
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90"
-      },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 px-3",
-        lg: "h-11 px-8",
-        icon: "h-10 w-10"
-      }
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default"
-    }
-  }
-);
+  button: {
+    name: "button",
+    category: "ui",
+    dependencies: ["@base-ui/react", "class-variance-authority"],
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/button.tsx", target: "{ui}/button.tsx" }],
+  },
+  input: {
+    name: "input",
+    category: "ui",
+    dependencies: ["@base-ui/react"],
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/input.tsx", target: "{ui}/input.tsx" }],
+  },
+  textarea: {
+    name: "textarea",
+    category: "ui",
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/textarea.tsx", target: "{ui}/textarea.tsx" }],
+  },
+  switch: {
+    name: "switch",
+    category: "ui",
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/switch.tsx", target: "{ui}/switch.tsx" }],
+  },
+  badge: {
+    name: "badge",
+    category: "ui",
+    dependencies: ["@base-ui/react", "class-variance-authority"],
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/badge.tsx", target: "{ui}/badge.tsx" }],
+  },
+  card: {
+    name: "card",
+    category: "ui",
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/card.tsx", target: "{ui}/card.tsx" }],
+  },
+  dialog: {
+    name: "dialog",
+    category: "ui",
+    dependencies: ["@base-ui/react", "lucide-react"],
+    registryDependencies: ["button", "utils"],
+    files: [{ source: "src/components/ui/dialog.tsx", target: "{ui}/dialog.tsx" }],
+  },
+  "dropdown-menu": {
+    name: "dropdown-menu",
+    category: "ui",
+    dependencies: ["@radix-ui/react-dropdown-menu", "lucide-react"],
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/dropdown-menu.tsx", target: "{ui}/dropdown-menu.tsx" }],
+  },
+  popover: {
+    name: "popover",
+    category: "ui",
+    dependencies: ["@base-ui/react"],
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/popover.tsx", target: "{ui}/popover.tsx" }],
+  },
+  select: {
+    name: "select",
+    category: "ui",
+    dependencies: ["@base-ui/react", "lucide-react"],
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/select.tsx", target: "{ui}/select.tsx" }],
+  },
+  table: {
+    name: "table",
+    category: "ui",
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/ui/table.tsx", target: "{ui}/table.tsx" }],
+  },
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+  "dialog-actions": {
+    name: "dialog-actions",
+    category: "overlay",
+    dependencies: ["lucide-react"],
+    registryDependencies: ["button", "utils"],
+    files: [{ source: "src/components/overlay/dialog-actions.tsx", target: "{components}/overlay/dialog-actions.tsx" }],
+  },
+  "modal-shell": {
+    name: "modal-shell",
+    category: "overlay",
+    registryDependencies: ["dialog", "utils"],
+    files: [{ source: "src/components/overlay/modal-shell.tsx", target: "{components}/overlay/modal-shell.tsx" }],
+  },
+  "confirm-dialog": {
+    name: "confirm-dialog",
+    category: "overlay",
+    registryDependencies: ["modal-shell", "dialog-actions"],
+    files: [{ source: "src/components/overlay/confirm-dialog.tsx", target: "{components}/overlay/confirm-dialog.tsx" }],
+  },
+  "sheet-shell": {
+    name: "sheet-shell",
+    category: "overlay",
+    dependencies: ["@base-ui/react", "lucide-react"],
+    registryDependencies: ["button", "utils"],
+    files: [{ source: "src/components/overlay/sheet-shell.tsx", target: "{components}/overlay/sheet-shell.tsx" }],
+  },
+  overlay: {
+    name: "overlay",
+    category: "group",
+    registryDependencies: ["dialog-actions", "modal-shell", "confirm-dialog", "sheet-shell"],
+    files: [{ source: "src/components/overlay/index.ts", target: "{components}/overlay/index.ts" }],
+  },
 
-export function Button({ className, variant, size, ...props }: ButtonProps) {
-  return (
-    <button
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  );
-}
+  pagination: {
+    name: "pagination",
+    category: "navigation",
+    dependencies: ["lucide-react"],
+    registryDependencies: ["button", "utils"],
+    files: [{ source: "src/components/navigation/pagination.tsx", target: "{components}/navigation/pagination.tsx" }],
+  },
 
-export { buttonVariants };
-`,
-            },
-        ],
-    },
+  "simple-select": {
+    name: "simple-select",
+    category: "inputs",
+    registryDependencies: ["select", "utils"],
+    files: [{ source: "src/components/inputs/simple-select.tsx", target: "{components}/inputs/simple-select.tsx" }],
+  },
+  "async-select": {
+    name: "async-select",
+    category: "inputs",
+    dependencies: ["lucide-react"],
+    registryDependencies: ["button", "input", "popover", "utils"],
+    files: [{ source: "src/components/inputs/async-select.tsx", target: "{components}/inputs/async-select.tsx" }],
+  },
+  "money-input": {
+    name: "money-input",
+    category: "inputs",
+    registryDependencies: ["input", "utils"],
+    files: [{ source: "src/components/inputs/money-input.tsx", target: "{components}/inputs/money-input.tsx" }],
+  },
+  "quantity-input": {
+    name: "quantity-input",
+    category: "inputs",
+    dependencies: ["lucide-react"],
+    registryDependencies: ["button", "input", "utils"],
+    files: [{ source: "src/components/inputs/quantity-input.tsx", target: "{components}/inputs/quantity-input.tsx" }],
+  },
+  inputs: {
+    name: "inputs",
+    category: "group",
+    registryDependencies: ["simple-select", "async-select", "money-input", "quantity-input"],
+    files: [{ source: "src/components/inputs/index.ts", target: "{components}/inputs/index.ts" }],
+  },
 
-    input: {
-        name: "input",
-        target: "components",
-        files: [
-            {
-                path: "input.tsx",
-                content: `import * as React from "react";
-import { cn } from "@/lib/utils";
+  "form-field-shell": {
+    name: "form-field-shell",
+    category: "form",
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/form/form-field-shell.tsx", target: "{components}/form/form-field-shell.tsx" }],
+  },
+  "form-input": {
+    name: "form-input",
+    category: "form",
+    dependencies: ["react-hook-form"],
+    registryDependencies: ["input", "form-field-shell"],
+    files: [{ source: "src/components/form/form-input.tsx", target: "{components}/form/form-input.tsx" }],
+  },
+  "form-select": {
+    name: "form-select",
+    category: "form",
+    dependencies: ["react-hook-form"],
+    registryDependencies: ["simple-select", "form-field-shell"],
+    files: [{ source: "src/components/form/form-select.tsx", target: "{components}/form/form-select.tsx" }],
+  },
+  "form-async-select": {
+    name: "form-async-select",
+    category: "form",
+    dependencies: ["react-hook-form"],
+    registryDependencies: ["async-select", "form-field-shell"],
+    files: [{ source: "src/components/form/form-async-select.tsx", target: "{components}/form/form-async-select.tsx" }],
+  },
+  "form-textarea": {
+    name: "form-textarea",
+    category: "form",
+    dependencies: ["react-hook-form"],
+    registryDependencies: ["textarea", "form-field-shell"],
+    files: [{ source: "src/components/form/form-textarea.tsx", target: "{components}/form/form-textarea.tsx" }],
+  },
+  "form-switch": {
+    name: "form-switch",
+    category: "form",
+    dependencies: ["react-hook-form"],
+    registryDependencies: ["switch", "form-field-shell", "utils"],
+    files: [{ source: "src/components/form/form-switch.tsx", target: "{components}/form/form-switch.tsx" }],
+  },
+  form: {
+    name: "form",
+    category: "group",
+    registryDependencies: ["form-field-shell", "form-input", "form-select", "form-async-select", "form-textarea", "form-switch"],
+    files: [{ source: "src/components/form/index.ts", target: "{components}/form/index.ts" }],
+  },
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+  "empty-state": {
+    name: "empty-state",
+    category: "feedback",
+    dependencies: ["lucide-react"],
+    registryDependencies: ["button", "utils"],
+    files: [{ source: "src/components/feedback/empty-state.tsx", target: "{components}/feedback/empty-state.tsx" }],
+  },
+  "loading-state": {
+    name: "loading-state",
+    category: "feedback",
+    dependencies: ["lucide-react"],
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/feedback/loading-state.tsx", target: "{components}/feedback/loading-state.tsx" }],
+  },
+  "status-badge": {
+    name: "status-badge",
+    category: "feedback",
+    registryDependencies: ["badge", "utils"],
+    files: [{ source: "src/components/feedback/status-badge.tsx", target: "{components}/feedback/status-badge.tsx" }],
+  },
+  feedback: {
+    name: "feedback",
+    category: "group",
+    registryDependencies: ["empty-state", "loading-state", "status-badge"],
+    files: [{ source: "src/components/feedback/index.ts", target: "{components}/feedback/index.ts" }],
+  },
 
-export function Input({ className, type, ...props }: InputProps) {
-  return (
-    <input
-      type={type}
-      className={cn(
-        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
-        "placeholder:text-muted-foreground",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        "disabled:cursor-not-allowed disabled:opacity-50",
-        className
-      )}
-      {...props}
-    />
-  );
-}
-`,
-            },
-        ],
-    },
-
-    "data-table": {
-        name: "data-table",
-        target: "components",
-        dependencies: ["@tanstack/react-table"],
-        files: [
-            {
-                path: "data-table.tsx",
-                content: `"use client";
-
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type ColumnDef,
-} from "@tanstack/react-table";
-
-import { cn } from "@/lib/utils";
-
-type DataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  isLoading?: boolean;
-  className?: string;
+  "data-table-toolbar": {
+    name: "data-table-toolbar",
+    category: "data-table",
+    registryDependencies: ["utils"],
+    files: [{ source: "src/components/data-table/data-table-toolbar.tsx", target: "{components}/data-table/data-table-toolbar.tsx" }],
+  },
+  "data-table-pagination": {
+    name: "data-table-pagination",
+    category: "data-table",
+    registryDependencies: ["pagination", "simple-select", "utils"],
+    files: [{ source: "src/components/data-table/data-table-pagination.tsx", target: "{components}/data-table/data-table-pagination.tsx" }],
+  },
+  "data-table": {
+    name: "data-table",
+    category: "data-table",
+    dependencies: ["@tanstack/react-table"],
+    registryDependencies: ["table", "empty-state", "loading-state", "data-table-toolbar", "data-table-pagination", "utils"],
+    files: [
+      { source: "src/components/data-table/data-table.tsx", target: "{components}/data-table/data-table.tsx" },
+      { source: "src/components/data-table/index.ts", target: "{components}/data-table/index.ts" },
+    ],
+  },
 };
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-  isLoading,
-  className,
-}: DataTableProps<TData, TValue>) {
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  return (
-    <div className={cn("w-full overflow-hidden rounded-md border", className)}>
-      <table className="w-full caption-bottom text-sm">
-        <thead className="bg-muted/50">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="border-b">
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="h-11 px-4 text-left align-middle font-medium text-muted-foreground"
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-
-        <tbody>
-          {isLoading ? (
-            <tr>
-              <td colSpan={columns.length} className="h-24 text-center">
-                Yuklanmoqda...
-              </td>
-            </tr>
-          ) : table.getRowModel().rows.length ? (
-            table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="border-b transition-colors hover:bg-muted/50">
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="p-4 align-middle">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={columns.length} className="h-24 text-center">
-                Ma’lumot topilmadi.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-`,
-            },
-        ],
-    },
-};
+export const registryNames = Object.keys(registry) as ComponentName[];
