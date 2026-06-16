@@ -16,6 +16,7 @@ Good candidates:
 - FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch
 - FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput
 - DataTable, DataTablePagination, DataTableToolbar, DataTableColumnVisibilityMenu, DataTableSortableHeader
+- DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions
 - EmptyState, LoadingState, StatusBadge
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile, useDisclosure, useDebouncedValue
 
@@ -54,6 +55,7 @@ import {
   AsyncSelect,
   Button,
   DataTable,
+  DataTableBulkActions,
   FilterBar,
   FormDateInput,
   FormInput,
@@ -248,13 +250,14 @@ function ProductForm() {
 ```tsx
 import type { ColumnDef } from "@tanstack/react-table"
 import {
-  ActionMenu,
   DataTable,
+  DataTableBulkActions,
   DataTableColumnVisibilityMenu,
   DataTableSortableHeader,
   FilterBar,
   SearchInput,
   StatusBadge,
+  createDataTableActionsColumn,
   createDataTableSelectColumn,
 } from "azamat-ui-kit"
 
@@ -279,17 +282,12 @@ const columns: ColumnDef<Product>[] = [
       </StatusBadge>
     ),
   },
-  {
-    id: "actions",
-    cell: ({ row }) => (
-      <ActionMenu
-        actions={[
-          { key: "edit", label: "Edit", onSelect: () => edit(row.original) },
-          { key: "delete", label: "Delete", destructive: true, onSelect: () => remove(row.original) },
-        ]}
-      />
-    ),
-  },
+  createDataTableActionsColumn<Product>({
+    getActions: (_row, product) => [
+      { key: "edit", label: "Edit", onSelect: () => edit(product) },
+      { key: "delete", label: "Delete", destructive: true, onSelect: () => remove(product) },
+    ],
+  }),
 ]
 
 function ProductsTable() {
@@ -302,6 +300,20 @@ function ProductsTable() {
         title: "Products",
         search: <FilterBar search={<SearchInput placeholder="Search" />} />,
         actions: <DataTableColumnVisibilityMenu table={table} />,
+        selectionActions: (
+          <DataTableBulkActions
+            rows={table.getSelectedRowModel().rows.map((row) => row.original)}
+            actions={[
+              {
+                key: "delete",
+                label: "Delete selected",
+                destructive: true,
+                onSelect: (rows) => removeMany(rows),
+              },
+            ]}
+            onClearSelection={() => table.resetRowSelection()}
+          />
+        ),
       })}
       pagination={{
         pageIndex,
@@ -335,5 +347,7 @@ Phase 7 changed CSS strategy: package entry no longer imports global CSS; `azama
 Phase 8 added advanced inputs and form wrappers: ClearableInput, SearchInput, PasswordInput, NumberInput, DateInput, DateRangeInput, FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput.
 
 Phase 9 added playground and local preview docs.
+
+Phase 10 added DataTable action helpers: DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions.
 
 Next phase should polish registry coverage for every new component.
