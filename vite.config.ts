@@ -28,13 +28,15 @@ export default defineConfig({
       external: [
         "react",
         "react-dom",
-        "react/jsx-runtime"
+        "react/jsx-runtime",
+        "react-hook-form"
       ],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
-          "react/jsx-runtime": "jsxRuntime"
+          "react/jsx-runtime": "jsxRuntime",
+          "react-hook-form": "ReactHookForm"
         },
       },
     },
