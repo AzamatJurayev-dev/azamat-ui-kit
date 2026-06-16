@@ -177,6 +177,21 @@ Rules:
 - playground is for development preview and must not become business logic
 - every new reusable component should get a small playground example before wide usage
 
+## Phase 10 - DataTable action helpers
+
+Added table-specific action helpers:
+
+- `DataTableRowActions`
+- `createDataTableActionsColumn`
+- `DataTableBulkActions`
+
+Rules:
+
+- row actions only receive the TanStack row/original data and emit callbacks
+- actions columns are generated with `ColumnDef` and do not know API/routes
+- bulk actions receive selected rows through props
+- clear selection stays optional and controlled by the consuming app
+
 ## Next priority order
 
 1. Registry polish for all new components
