@@ -7,7 +7,7 @@ import { FormFieldShell, type FormFieldShellProps } from "@/components/form/form
 export type FormDatePickerProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<DatePickerProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+> = Omit<DatePickerProps, "value" | "onValueChange"> &
   Pick<FormFieldShellProps, "label" | "description" | "required" | "className"> & {
     control: Control<TFieldValues>
     name: TName
@@ -19,7 +19,18 @@ export type FormDatePickerProps<
 function FormDatePicker<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({ control, name, label, description, required, className, fieldClassName, emptyValue = "", onValueChange, ...props }: FormDatePickerProps<TFieldValues, TName>) {
+>({
+  control,
+  name,
+  label,
+  description,
+  required,
+  className,
+  fieldClassName,
+  emptyValue = "",
+  onValueChange,
+  ...props
+}: FormDatePickerProps<TFieldValues, TName>) {
   return (
     <Controller
       control={control}
@@ -27,13 +38,11 @@ function FormDatePicker<
       render={({ field, fieldState }) => (
         <FormFieldShell label={label} description={description} required={required} error={fieldState.error?.message} className={className}>
           <DatePicker
-            name={field.name}
             value={field.value ?? ""}
-            className={fieldClassName}
-            aria-invalid={fieldState.invalid || undefined}
-            onValueChange={(value) => {
-              field.onChange(value || emptyValue)
-              onValueChange?.(value)
+            triggerClassName={fieldClassName}
+            onValueChange={(nextValue) => {
+              field.onChange(nextValue || emptyValue)
+              onValueChange?.(nextValue)
             }}
             {...props}
           />
