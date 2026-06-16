@@ -5,6 +5,7 @@
   "description": "Reusable React + TypeScript UI kit registry",
   "commands": {
     "init": "npx azamat-ui-kit init",
+    "theme": "npx azamat-ui-kit theme src/index.css",
     "list": "npx azamat-ui-kit list",
     "add": "npx azamat-ui-kit add <components...>"
   },
@@ -13,6 +14,7 @@
       "button",
       "input",
       "textarea",
+      "checkbox",
       "switch",
       "badge",
       "card",
@@ -31,8 +33,16 @@
     "inputs": [
       "simple-select",
       "async-select",
+      "clearable-input",
+      "search-input",
+      "password-input",
+      "number-input",
+      "date-input",
+      "date-range-input",
       "money-input",
-      "quantity-input"
+      "quantity-input",
+      "masked-input",
+      "phone-input"
     ],
     "form": [
       "form-field-shell",
@@ -40,29 +50,72 @@
       "form-select",
       "form-async-select",
       "form-textarea",
-      "form-switch"
+      "form-switch",
+      "form-search-input",
+      "form-password-input",
+      "form-number-input",
+      "form-phone-input",
+      "form-date-input",
+      "form-date-range-input",
+      "form-date-picker",
+      "form-date-range-picker"
     ],
     "feedback": [
       "empty-state",
       "loading-state",
       "status-badge"
     ],
+    "dashboard": [
+      "action-menu",
+      "page-header",
+      "filter-bar",
+      "stat-card"
+    ],
+    "calendar": [
+      "calendar",
+      "date-picker",
+      "date-range-picker",
+      "form-date-picker",
+      "form-date-range-picker"
+    ],
     "data-table": [
       "data-table",
       "data-table-pagination",
-      "data-table-toolbar"
+      "data-table-toolbar",
+      "data-table-column-visibility-menu",
+      "data-table-select-column",
+      "data-table-sortable-header",
+      "data-table-row-actions",
+      "data-table-actions-column",
+      "data-table-bulk-actions"
+    ],
+    "upload": [
+      "file-upload",
+      "image-upload"
+    ],
+    "wizard": [
+      "stepper",
+      "wizard"
+    ],
+    "notifications": [
+      "toast"
+    ],
+    "command": [
+      "command-palette"
     ]
   },
   "recommended": [
     "button",
     "input",
     "textarea",
+    "checkbox",
     "switch",
     "dialog",
     "popover",
     "select",
     "pagination",
     "simple-select",
+    "search-input",
     "async-select",
     "form-input",
     "form-select",
@@ -70,6 +123,12 @@
     "empty-state",
     "loading-state",
     "status-badge",
-    "data-table"
+    "action-menu",
+    "page-header",
+    "filter-bar",
+    "data-table",
+    "date-picker",
+    "toast",
+    "command-palette"
   ]
 }
