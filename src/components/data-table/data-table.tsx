@@ -9,6 +9,7 @@ import {
   type Row,
   type RowSelectionState,
   type SortingState,
+  type Table as TanStackTable,
   type VisibilityState,
 } from "@tanstack/react-table"
 
@@ -54,8 +55,8 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   emptyState?: EmptyStateProps
   errorState?: EmptyStateProps
   loadingState?: LoadingStateProps
-  toolbar?: React.ReactNode
-  toolbarProps?: DataTableToolbarProps
+  toolbar?: React.ReactNode | ((table: TanStackTable<TData>) => React.ReactNode)
+  toolbarProps?: DataTableToolbarProps | ((table: TanStackTable<TData>) => DataTableToolbarProps)
   pagination?: DataTablePaginationConfig | false
   sorting?: SortingState
   onSortingChange?: OnChangeFn<SortingState>
@@ -137,7 +138,9 @@ function DataTable<TData, TValue = unknown>({
 
   const rows = table.getRowModel().rows
   const visibleColumnCount = Math.max(table.getVisibleLeafColumns().length, 1)
-  const hasToolbar = Boolean(toolbar || toolbarProps)
+  const resolvedToolbar = typeof toolbar === "function" ? toolbar(table) : toolbar
+  const resolvedToolbarProps = typeof toolbarProps === "function" ? toolbarProps(table) : toolbarProps
+  const hasToolbar = Boolean(resolvedToolbar || resolvedToolbarProps)
   const showPagination = Boolean(paginationConfig && !paginationConfig.hidden)
 
   const renderStateRow = (children: React.ReactNode) => (
@@ -159,11 +162,11 @@ function DataTable<TData, TValue = unknown>({
   return (
     <div data-slot="data-table" className={cn("grid gap-3", className)} {...props}>
       {hasToolbar &&
-        (toolbar ?? (
+        (resolvedToolbar ?? (
           <DataTableToolbar
             selectedCount={selectedRowCount}
             totalCount={paginationConfig ? paginationConfig.rowCount ?? data.length : data.length}
-            {...toolbarProps}
+            {...resolvedToolbarProps}
           />
         ))}
 
