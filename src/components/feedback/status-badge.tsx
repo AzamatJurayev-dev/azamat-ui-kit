@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, type badgeVariants } from "@/components/ui/badge"
+import { Badge, badgeVariants } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 type BadgeVariant = NonNullable<Parameters<typeof badgeVariants>[0]>["variant"]
