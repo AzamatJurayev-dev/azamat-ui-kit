@@ -105,13 +105,14 @@ function DataTable<TData, TValue = unknown>({
   rowClassName,
   ...props
 }: DataTableProps<TData, TValue>) {
-  const controlledPagination = pagination
+  const paginationConfig = pagination === false ? undefined : pagination
+  const controlledPagination = paginationConfig
     ? {
-        pageIndex: pagination.pageIndex,
-        pageSize: pagination.pageSize,
+        pageIndex: paginationConfig.pageIndex,
+        pageSize: paginationConfig.pageSize,
       }
     : undefined
-  const manualPagination = Boolean(pagination && pagination.manual !== false)
+  const manualPagination = Boolean(paginationConfig && paginationConfig.manual !== false)
   const selectedRowCount = rowSelection ? Object.keys(rowSelection).length : 0
 
   const table = useReactTable({
@@ -119,9 +120,9 @@ function DataTable<TData, TValue = unknown>({
     columns,
     getRowId,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: pagination && !manualPagination ? getPaginationRowModel() : undefined,
+    getPaginationRowModel: paginationConfig && !manualPagination ? getPaginationRowModel() : undefined,
     manualPagination,
-    pageCount: pagination ? pagination.pageCount : undefined,
+    pageCount: paginationConfig?.pageCount,
     state: {
       sorting,
       columnVisibility,
@@ -137,7 +138,7 @@ function DataTable<TData, TValue = unknown>({
   const rows = table.getRowModel().rows
   const visibleColumnCount = Math.max(table.getVisibleLeafColumns().length, 1)
   const hasToolbar = Boolean(toolbar || toolbarProps)
-  const showPagination = Boolean(pagination && !pagination.hidden)
+  const showPagination = Boolean(paginationConfig && !paginationConfig.hidden)
 
   const renderStateRow = (children: React.ReactNode) => (
     <TableRow>
@@ -161,7 +162,7 @@ function DataTable<TData, TValue = unknown>({
         (toolbar ?? (
           <DataTableToolbar
             selectedCount={selectedRowCount}
-            totalCount={pagination ? pagination.rowCount ?? data.length : data.length}
+            totalCount={paginationConfig ? paginationConfig.rowCount ?? data.length : data.length}
             {...toolbarProps}
           />
         ))}
@@ -214,18 +215,18 @@ function DataTable<TData, TValue = unknown>({
           </TableBody>
         </Table>
 
-        {showPagination && (
+        {showPagination && paginationConfig && (
           <DataTablePagination
-            pageIndex={pagination.pageIndex}
-            pageSize={pagination.pageSize}
-            pageCount={pagination.pageCount}
-            rowCount={pagination.rowCount}
-            pageSizeOptions={pagination.pageSizeOptions}
-            showPageSize={pagination.showPageSize}
-            labels={pagination.labels}
+            pageIndex={paginationConfig.pageIndex}
+            pageSize={paginationConfig.pageSize}
+            pageCount={paginationConfig.pageCount}
+            rowCount={paginationConfig.rowCount}
+            pageSizeOptions={paginationConfig.pageSizeOptions}
+            showPageSize={paginationConfig.showPageSize}
+            labels={paginationConfig.labels}
             disabled={isLoading}
-            onPageChange={pagination.onPageChange}
-            onPageSizeChange={pagination.onPageSizeChange}
+            onPageChange={paginationConfig.onPageChange}
+            onPageSizeChange={paginationConfig.onPageSizeChange}
           />
         )}
       </div>
