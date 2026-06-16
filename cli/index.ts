@@ -1,24 +1,25 @@
-import { Command } from "commander";
-import { initCommand } from "./commands/init";
-import { addCommand } from "./commands/add";
-import { listCommand } from "./commands/list";
+import { Command } from "commander"
+import { initCommand } from "./commands/init"
+import { addCommand } from "./commands/add"
+import { listCommand } from "./commands/list"
+import { themeCommand } from "./commands/theme"
 
-const program = new Command();
+const program = new Command()
 
 program
   .name("azamat-ui-kit")
   .description("Azamat UI Kit CLI")
-  .version("0.0.1");
+  .version("0.0.1")
 
 program
   .command("init")
   .description("Initialize Azamat UI Kit in your project")
-  .action(initCommand);
+  .action(initCommand)
 
 program
   .command("list")
   .description("List available registry components")
-  .action(listCommand);
+  .action(listCommand)
 
 program
   .command("add")
@@ -27,6 +28,12 @@ program
   .option("-o, --overwrite", "overwrite existing files")
   .option("--dry-run", "show files without writing")
   .option("--skip-install", "do not install package dependencies")
-  .action(addCommand);
+  .action(addCommand)
 
-program.parse();
+program
+  .command("theme")
+  .description("Write or update Azamat UI theme CSS in your global CSS file")
+  .argument("[cssPath]", "global CSS path, default from azamat-ui.json or src/index.css")
+  .action(themeCommand)
+
+program.parse()
