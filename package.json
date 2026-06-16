@@ -14,10 +14,14 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/style.css",
+    "./registry.json": "./registry.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "registry.json",
+    "README.md"
   ],
   "scripts": {
     "dev": "vite",
