@@ -192,10 +192,25 @@ Rules:
 - bulk actions receive selected rows through props
 - clear selection stays optional and controlled by the consuming app
 
+## Phase 11 - Notifications and command palette
+
+Added app-wide interaction helpers:
+
+- `ToastProvider`
+- `useToast`
+- `CommandPalette`
+- `useCommandPaletteShortcut`
+
+Rules:
+
+- toasts are local React state and do not require an external toast package
+- command palette does not know router, auth, permissions or API clients
+- consuming apps pass navigation/API behavior through `onSelect`
+- default shortcut is handled by the optional `useCommandPaletteShortcut` hook
+
 ## Next priority order
 
 1. Registry polish for all new components
 2. Calendar / popover date picker
-3. Command palette / global search
-4. Toast and notification helpers
-5. Docs site from playground examples
+3. Docs site from playground examples
+4. App shell advanced responsive sidebar helpers
