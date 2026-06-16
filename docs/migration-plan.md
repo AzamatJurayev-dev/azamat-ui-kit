@@ -94,25 +94,30 @@ Rules:
 
 ## Phase 5 - Registry and CLI
 
-Add shadcn-style registry metadata:
+Added registry/CLI polish:
 
-```txt
-registry/
-  components/
-  hooks/
-registry.json
-```
+- expanded `cli/registry.ts` for Phase 1-4 components
+- source-file based copying instead of old inline string templates
+- `npx azamat-ui-kit list`
+- `npx azamat-ui-kit add ... --overwrite`
+- `npx azamat-ui-kit add ... --dry-run`
+- `npx azamat-ui-kit add ... --skip-install`
+- `registry.json` manifest
+- `docs/cli.md` usage guide
+- package `files` updated to include source templates and registry manifest
 
-Then improve CLI:
+CLI examples:
 
 ```bash
 npx azamat-ui-kit init
-npx azamat-ui-kit add button pagination data-table
+npx azamat-ui-kit list
+npx azamat-ui-kit add button input data-table
+npx azamat-ui-kit add form --overwrite
 ```
 
-## Priority order
+## Next priority order
 
-1. Registry/CLI polish
-2. Layout shell components
-3. DataTable advanced helpers: select column, action menu, column visibility menu
-4. Form date picker and masked inputs
+1. Layout shell components: `AppShell`, `AppHeader`, `AppSidebar`
+2. DataTable advanced helpers: select column, action menu, column visibility menu
+3. Form date picker and masked inputs
+4. Registry docs site / demo playground
