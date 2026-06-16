@@ -1,6 +1,6 @@
 # UI Kit Migration Plan
 
-This plan is based on reusable code extracted from one existing project. The goal is to move reusable code into `azamat-ui-kit` without bringing app-specific business logic.
+This plan is based on reusable code extracted from existing projects. The goal is to move reusable code into `azamat-ui-kit` without bringing app-specific business logic.
 
 ## Phase 1 - Safe reusable foundation
 
@@ -72,18 +72,6 @@ Added data display layer:
 - `LoadingState`
 - `StatusBadge`
 
-Supported features:
-
-- TanStack Table columns and cells
-- controlled pagination
-- row selection state wiring
-- sorting state wiring
-- column visibility state wiring
-- loading/empty/error states
-- mobile card renderer
-- toolbar slot
-- selection action area
-
 Rules:
 
 - No delete/update endpoint inside table
@@ -92,29 +80,7 @@ Rules:
 - App-specific filters stay outside
 - Bulk actions must be passed through toolbar/selection action slots
 
-## Phase 5 - Registry and CLI
-
-Prepared registry/CLI polish plan:
-
-- expanded registry for Phase 1-4 components
-- source-file based copying instead of old inline string templates
-- `npx azamat-ui-kit list`
-- `npx azamat-ui-kit add ... --overwrite`
-- `npx azamat-ui-kit add ... --dry-run`
-- `npx azamat-ui-kit add ... --skip-install`
-- `registry.json` manifest
-- package `files` update to include source templates and registry manifest
-
-CLI examples:
-
-```bash
-npx azamat-ui-kit init
-npx azamat-ui-kit list
-npx azamat-ui-kit add button input data-table
-npx azamat-ui-kit add form --overwrite
-```
-
-## Phase 6 - Dashboard helpers
+## Phase 5 - Dashboard helpers
 
 Added dashboard-level reusable components:
 
@@ -132,7 +98,7 @@ Rules:
 - `StatCard` is visual only, all data comes through props
 - column visibility is controlled by the provided TanStack table instance
 
-## Phase 7 - Layout, table, input and hook helpers
+## Phase 6 - Layout, table, input and hook helpers
 
 Added reusable app-level and table helper components:
 
@@ -156,9 +122,49 @@ Rules:
 - masked inputs must expose both masked and raw values
 - hooks must be generic and app-independent
 
+## Phase 7 - Theme CSS strategy
+
+Changed package styling strategy:
+
+- package entry no longer forces global CSS import
+- CLI writes theme tokens to the consumer app global CSS file
+- dark mode uses `.dark` class on the root/html element
+- theme CSS is updated through marked blocks
+
+Rules:
+
+- apps own global CSS
+- reusable components only rely on tokens
+- no component should import project CSS directly
+
+## Phase 8 - Advanced form inputs
+
+Added frequently reused input components:
+
+- `ClearableInput`
+- `SearchInput`
+- `PasswordInput`
+- `NumberInput`
+- `DateInput`
+- `DateRangeInput`
+- `FormSearchInput`
+- `FormPasswordInput`
+- `FormNumberInput`
+- `FormPhoneInput`
+- `FormDateInput`
+- `FormDateRangeInput`
+
+Rules:
+
+- primitive inputs must work without React Hook Form
+- form wrappers must only connect primitives to `Controller`
+- phone input can store raw or masked value through `valueMode`
+- date inputs use native date fields for now; calendar picker can be a later phase
+
 ## Next priority order
 
-1. Form date picker and date range picker
-2. Combobox / command palette
-3. Tabs, tooltip, separator and skeleton primitives
-4. Registry docs site / demo playground
+1. Demo playground / docs site
+2. Registry polish for all new components
+3. Calendar / popover date picker
+4. Command palette / global search
+5. Toast and notification helpers
