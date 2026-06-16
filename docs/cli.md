@@ -78,11 +78,11 @@ npx azamat-ui-kit add dashboard
 npx azamat-ui-kit add data-table
 npx azamat-ui-kit add notifications
 npx azamat-ui-kit add command
-npx azamat-ui-kit add calendar-suite
+npx azamat-ui-kit add calendar-kit
 npx azamat-ui-kit add upload
-npx azamat-ui-kit add wizard-suite
+npx azamat-ui-kit add wizard-kit
 npx azamat-ui-kit add hooks
-npx azamat-ui-kit add recommended
+npx azamat-ui-kit add all
 ```
 
 ## Options
@@ -130,13 +130,17 @@ utils
 For a dashboard project, start with:
 
 ```bash
-npx azamat-ui-kit add recommended
+npx azamat-ui-kit add dashboard
 ```
 
-or a smaller set:
+or a broader starter set:
 
 ```bash
 npx azamat-ui-kit add dashboard form inputs notifications command
 ```
 
-The CLI copies source templates from this package and keeps app-specific business logic outside the UI kit.
+For everything available in the kit:
+
+```bash
+npx azamat-ui-kit add all
+```
