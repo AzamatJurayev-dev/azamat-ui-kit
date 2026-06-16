@@ -8,14 +8,14 @@ This package should contain UI primitives, reusable wrappers, generic hooks, for
 
 Good candidates:
 
-- Button, Input, Textarea, Switch, Select, Dialog, Popover, Table, Badge, Card
-- ActionMenu, PageHeader, FilterBar, StatCard
+- Button, Input, Textarea, Checkbox, Switch, Select, Dialog, Popover, Table, Badge, Card
+- AppShell, AppHeader, AppSidebar, ActionMenu, PageHeader, FilterBar, StatCard
 - ModalShell, SheetShell, ConfirmDialog, DialogActions
-- Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect, MoneyInput, QuantityInput
+- Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect, MoneyInput, QuantityInput, MaskedInput, PhoneInput
 - FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch
-- DataTable, DataTablePagination, DataTableToolbar, DataTableColumnVisibilityMenu
+- DataTable, DataTablePagination, DataTableToolbar, DataTableColumnVisibilityMenu, DataTableSortableHeader
 - EmptyState, LoadingState, StatusBadge
-- useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile
+- useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile, useDisclosure, useDebouncedValue
 
 Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
 
@@ -36,6 +36,9 @@ Use components:
 ```tsx
 import {
   ActionMenu,
+  AppHeader,
+  AppShell,
+  AppSidebar,
   AsyncMultiSelect,
   AsyncSelect,
   Button,
@@ -45,7 +48,7 @@ import {
   FormSwitch,
   ModalShell,
   PageHeader,
-  Pagination,
+  PhoneInput,
   StatCard,
   StatusBadge,
 } from "azamat-ui-kit"
@@ -78,27 +81,41 @@ npm run build
 ```txt
 src/components/ui/          Base primitives
 src/components/actions/     Generic action menus
-src/components/layout/      Page headers and stat cards
+src/components/layout/      App shell, sidebar, headers and stat cards
 src/components/filters/     Filter bars
 src/components/overlay/     Modal, sheet, confirm dialog wrappers
 src/components/navigation/  Pagination and navigation widgets
-src/components/inputs/      Simple and async input/select wrappers
+src/components/inputs/      Simple, async, masked, phone and numeric inputs
 src/components/form/        React Hook Form wrappers
 src/components/feedback/    Empty, loading and status states
-src/components/data-table/  Generic TanStack Table wrapper
+src/components/data-table/  Generic TanStack Table wrapper and helpers
 src/hooks/                  Generic React hooks
 src/lib/                    Utilities
 ```
 
-## Dashboard shell example
+## App shell example
 
 ```tsx
-<PageHeader
-  title="Products"
-  description="Manage products and inventory"
-  actions={<Button>Add product</Button>}
-/>
+<AppShell
+  sidebar={
+    <AppSidebar
+      header={<strong>Dashboard</strong>}
+      items={[
+        { key: "dashboard", label: "Dashboard", href: "/dashboard", active: true },
+        { key: "products", label: "Products", href: "/products" },
+      ]}
+    />
+  }
+  header={<AppHeader left="Products" right={<Button>Add</Button>} />}
+  mainClassName="p-4 lg:p-6"
+>
+  <PageHeader title="Products" description="Manage products and inventory" />
+</AppShell>
+```
 
+## Dashboard widgets
+
+```tsx
 <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
   <StatCard title="Revenue" value="$12,400" trend={{ value: "+12%", tone: "success" }} />
   <StatCard title="Orders" value="320" description="This month" />
@@ -121,7 +138,7 @@ src/lib/                    Utilities
 
 ```tsx
 import { useForm } from "react-hook-form"
-import { FormInput, FormSelect, FormSwitch } from "azamat-ui-kit"
+import { FormInput, FormSelect, FormSwitch, PhoneInput } from "azamat-ui-kit"
 
 type ProductFormValues = {
   name: string
@@ -131,11 +148,7 @@ type ProductFormValues = {
 
 function ProductForm() {
   const form = useForm<ProductFormValues>({
-    defaultValues: {
-      name: "",
-      status: "active",
-      active: true,
-    },
+    defaultValues: { name: "", status: "active", active: true },
   })
 
   return (
@@ -150,12 +163,8 @@ function ProductForm() {
           { label: "Inactive", value: "inactive" },
         ]}
       />
-      <FormSwitch
-        control={form.control}
-        name="active"
-        label="Active"
-        description="Show this item in the app."
-      />
+      <FormSwitch control={form.control} name="active" label="Active" />
+      <PhoneInput onValueChange={(masked, raw) => console.log(masked, raw)} />
     </form>
   )
 }
@@ -170,16 +179,10 @@ function ProductForm() {
   cacheOptions
   loadSelectedOption={async (id) => {
     const customer = await customersApi.getById(id)
-
-    return {
-      value: String(customer.id),
-      label: customer.name,
-      data: customer,
-    }
+    return { value: String(customer.id), label: customer.name, data: customer }
   }}
   loadOptions={async (search) => {
     const customers = await customersApi.search(search)
-
     return customers.map((customer) => ({
       value: String(customer.id),
       label: customer.name,
@@ -188,12 +191,7 @@ function ProductForm() {
   }}
   onCreateOption={async (search) => {
     const customer = await customersApi.create({ name: search })
-
-    return {
-      value: String(customer.id),
-      label: customer.name,
-      data: customer,
-    }
+    return { value: String(customer.id), label: customer.name, data: customer }
   }}
 />
 ```
@@ -237,8 +235,10 @@ import {
   ActionMenu,
   DataTable,
   DataTableColumnVisibilityMenu,
+  DataTableSortableHeader,
   FilterBar,
   StatusBadge,
+  createDataTableSelectColumn,
 } from "azamat-ui-kit"
 
 type Product = {
@@ -248,7 +248,11 @@ type Product = {
 }
 
 const columns: ColumnDef<Product>[] = [
-  { accessorKey: "name", header: "Name" },
+  createDataTableSelectColumn<Product>(),
+  {
+    accessorKey: "name",
+    header: ({ column }) => <DataTableSortableHeader column={column}>Name</DataTableSortableHeader>,
+  },
   {
     accessorKey: "status",
     header: "Status",
@@ -298,56 +302,16 @@ function ProductsTable() {
 
 ## Migration plan
 
-Phase 1 added low-risk generic wrappers:
+Phase 1 added low-risk generic wrappers: ModalShell, SheetShell, ConfirmDialog, DialogActions, Pagination, SimpleSelect, MoneyInput, QuantityInput, useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile.
 
-- ModalShell
-- SheetShell
-- ConfirmDialog
-- DialogActions
-- Pagination
-- SimpleSelect
-- MoneyInput
-- QuantityInput
-- useSessionStorageState
-- useBeforeUnloadWhenDirty
-- useIsMobile
+Phase 2 added form and async-select layer: AsyncSelect base, FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch, Textarea/Switch exports and react-hook-form peer dependency.
 
-Phase 2 added form and async-select layer:
+Phase 3 improved async select: AsyncMultiSelect, grouped options, quick create, selected option preload, local option cache, selected count labels.
 
-- AsyncSelect base
-- FormFieldShell
-- FormInput
-- FormSelect
-- FormAsyncSelect
-- FormTextarea
-- FormSwitch
-- Textarea and Switch exports
-- react-hook-form peer dependency
+Phase 4 added data display layer: DataTable, DataTablePagination, DataTableToolbar, EmptyState, LoadingState, StatusBadge.
 
-Phase 3 improved async select:
+Phase 5 added dashboard helpers: ActionMenu, PageHeader, FilterBar, StatCard, DataTableColumnVisibilityMenu.
 
-- AsyncMultiSelect
-- grouped options
-- quick create
-- selected option preload
-- local option cache
-- selected count labels
+Phase 6 added layout/table/input/hook helpers: AppShell, AppHeader, AppSidebar, Checkbox, createDataTableSelectColumn, DataTableSortableHeader, MaskedInput, PhoneInput, useDisclosure, useDebouncedValue, useDebouncedCallback.
 
-Phase 4 added data display layer:
-
-- DataTable
-- DataTablePagination
-- DataTableToolbar
-- EmptyState
-- LoadingState
-- StatusBadge
-
-Phase 5 added dashboard helpers:
-
-- ActionMenu
-- PageHeader
-- FilterBar
-- StatCard
-- DataTableColumnVisibilityMenu
-
-Phase 6 should add shadcn-style registry metadata and CLI commands.
+Phase 7 should add shadcn-style registry metadata and CLI commands.
