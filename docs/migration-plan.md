@@ -161,10 +161,26 @@ Rules:
 - phone input can store raw or masked value through `valueMode`
 - date inputs use native date fields for now; calendar picker can be a later phase
 
+## Phase 9 - Playground and local preview
+
+Added a real Vite playground for testing components inside the UI kit repository:
+
+- updated `src/App.tsx` from a button-only preview into a full component showcase
+- added app shell, dashboard cards, advanced inputs and form examples
+- added async multi select, data table, action menu, modal, confirm dialog and feedback state demos
+- added `docs/playground.md`
+
+Rules:
+
+- playground can use fake local data only
+- playground must not import real project API clients
+- playground is for development preview and must not become business logic
+- every new reusable component should get a small playground example before wide usage
+
 ## Next priority order
 
-1. Demo playground / docs site
-2. Registry polish for all new components
-3. Calendar / popover date picker
-4. Command palette / global search
-5. Toast and notification helpers
+1. Registry polish for all new components
+2. Calendar / popover date picker
+3. Command palette / global search
+4. Toast and notification helpers
+5. Docs site from playground examples
