@@ -138,11 +138,31 @@ Rules:
 - no API, route, permission or project state dependency is introduced
 - visual variants are controlled by props only
 
+## Phase 15 - AsyncSelect hardening
+
+Improved existing `AsyncSelect` and `AsyncMultiSelect` without changing basic usage:
+
+- `cacheTtl` for expiring cached remote searches
+- custom `renderLoading`, `renderEmpty`, `renderError`, `renderMinSearch` renderers
+- `minSearchLength` message through labels/render prop
+- sticky group labels inside option lists
+- multi-select `showSelectAll`
+- multi-select visible-option select all
+- multi-select clear all action in dropdown
+- `renderMaxSelected` and `labels.maxSelected`
+- max selected message support
+
+Rules:
+
+- loading/search/create behavior stays API-independent
+- cache is local component memory only
+- select all only selects currently visible options
+- all advanced render states are optional
+
 ## Next priority order
 
-1. AsyncSelect hardening
-2. Form components hardening
-3. Upload components hardening
-4. Toast / CommandPalette hardening
-5. App shell advanced responsive sidebar helpers
-6. Component tests and accessibility smoke checks
+1. Form components hardening
+2. Upload components hardening
+3. Toast / CommandPalette hardening
+4. App shell advanced responsive sidebar helpers
+5. Component tests and accessibility smoke checks
