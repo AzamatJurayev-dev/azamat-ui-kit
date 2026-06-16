@@ -237,7 +237,6 @@ import {
   ActionMenu,
   DataTable,
   DataTableColumnVisibilityMenu,
-  DataTableToolbar,
   FilterBar,
   StatusBadge,
 } from "azamat-ui-kit"
@@ -279,11 +278,11 @@ function ProductsTable() {
       data={products}
       isLoading={isLoading}
       emptyState={{ title: "No products" }}
-      toolbarProps={{
+      toolbarProps={(table) => ({
         title: "Products",
         search: <FilterBar search={<input placeholder="Search" />} />,
         actions: <DataTableColumnVisibilityMenu table={table} />,
-      }}
+      })}
       pagination={{
         pageIndex,
         pageSize,
