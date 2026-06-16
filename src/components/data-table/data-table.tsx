@@ -4,7 +4,9 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
+  type Cell,
   type ColumnDef,
+  type Header,
   type OnChangeFn,
   type Row,
   type RowSelectionState,
@@ -26,6 +28,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
+
+export type DataTableDensity = "compact" | "default" | "comfortable"
+export type DataTableLoadingVariant = "skeleton" | "state"
 
 export type DataTablePaginationConfig = Pick<
   DataTablePaginationProps,
@@ -55,6 +60,7 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   emptyState?: EmptyStateProps
   errorState?: EmptyStateProps
   loadingState?: LoadingStateProps
+  loadingVariant?: DataTableLoadingVariant
   toolbar?: React.ReactNode | ((table: TanStackTable<TData>) => React.ReactNode)
   toolbarProps?: DataTableToolbarProps | ((table: TanStackTable<TData>) => DataTableToolbarProps)
   pagination?: DataTablePaginationConfig | false
@@ -67,9 +73,32 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
   renderMobileCard?: (row: Row<TData>) => React.ReactNode
   onRowClick?: (row: Row<TData>) => void
+  onRowDoubleClick?: (row: Row<TData>) => void
+  getRowDisabled?: (row: Row<TData>) => boolean
+  density?: DataTableDensity
+  striped?: boolean
+  bordered?: boolean
+  stickyHeader?: boolean
+  skeletonRows?: number
+  skeletonCellClassName?: string
+  cellFallback?: React.ReactNode
   tableClassName?: string
   tableWrapperClassName?: string
+  headerCellClassName?: string | ((header: Header<TData, unknown>) => string)
+  cellClassName?: string | ((cell: Cell<TData, unknown>) => string)
   rowClassName?: string | ((row: Row<TData>) => string)
+}
+
+const densityHeadClassName: Record<DataTableDensity, string> = {
+  compact: "h-8 px-2 py-1.5",
+  default: "h-10 px-2 py-2",
+  comfortable: "h-12 px-3 py-3",
+}
+
+const densityCellClassName: Record<DataTableDensity, string> = {
+  compact: "px-2 py-1.5",
+  default: "p-2",
+  comfortable: "px-3 py-3",
 }
 
 function getRowClassName<TData>(
@@ -77,6 +106,26 @@ function getRowClassName<TData>(
   rowClassName?: string | ((row: Row<TData>) => string)
 ) {
   return typeof rowClassName === "function" ? rowClassName(row) : rowClassName
+}
+
+function getHeaderCellClassName<TData>(
+  header: Header<TData, unknown>,
+  headerCellClassName?: string | ((header: Header<TData, unknown>) => string)
+) {
+  return typeof headerCellClassName === "function"
+    ? headerCellClassName(header)
+    : headerCellClassName
+}
+
+function getCellClassName<TData>(
+  cell: Cell<TData, unknown>,
+  cellClassName?: string | ((cell: Cell<TData, unknown>) => string)
+) {
+  return typeof cellClassName === "function" ? cellClassName(cell) : cellClassName
+}
+
+function isEmptyCellContent(content: React.ReactNode) {
+  return content === null || content === undefined || content === ""
 }
 
 function DataTable<TData, TValue = unknown>({
@@ -89,6 +138,7 @@ function DataTable<TData, TValue = unknown>({
   emptyState,
   errorState,
   loadingState,
+  loadingVariant = "skeleton",
   toolbar,
   toolbarProps,
   pagination,
@@ -101,8 +151,19 @@ function DataTable<TData, TValue = unknown>({
   enableRowSelection,
   renderMobileCard,
   onRowClick,
+  onRowDoubleClick,
+  getRowDisabled,
+  density = "default",
+  striped = false,
+  bordered = false,
+  stickyHeader = false,
+  skeletonRows = 6,
+  skeletonCellClassName,
+  cellFallback = "-",
   tableClassName,
   tableWrapperClassName,
+  headerCellClassName,
+  cellClassName,
   rowClassName,
   ...props
 }: DataTableProps<TData, TValue>) {
@@ -137,11 +198,13 @@ function DataTable<TData, TValue = unknown>({
   })
 
   const rows = table.getRowModel().rows
-  const visibleColumnCount = Math.max(table.getVisibleLeafColumns().length, 1)
+  const visibleColumns = table.getVisibleLeafColumns()
+  const visibleColumnCount = Math.max(visibleColumns.length, 1)
   const resolvedToolbar = typeof toolbar === "function" ? toolbar(table) : toolbar
   const resolvedToolbarProps = typeof toolbarProps === "function" ? toolbarProps(table) : toolbarProps
   const hasToolbar = Boolean(resolvedToolbar || resolvedToolbarProps)
   const showPagination = Boolean(paginationConfig && !paginationConfig.hidden)
+  const shouldRenderSkeleton = isLoading && loadingVariant === "skeleton"
 
   const renderStateRow = (children: React.ReactNode) => (
     <TableRow>
@@ -151,7 +214,31 @@ function DataTable<TData, TValue = unknown>({
     </TableRow>
   )
 
-  const stateContent = isLoading ? (
+  const renderSkeletonRows = () =>
+    Array.from({ length: Math.max(skeletonRows, 1) }, (_, rowIndex) => (
+      <TableRow key={`skeleton-${rowIndex}`} aria-hidden="true">
+        {visibleColumns.map((column) => (
+          <TableCell
+            key={`${column.id}-${rowIndex}`}
+            className={cn(
+              densityCellClassName[density],
+              bordered && "border-r last:border-r-0"
+            )}
+          >
+            <div
+              className={cn(
+                "h-4 w-full max-w-40 animate-pulse rounded-md bg-muted",
+                rowIndex % 3 === 1 && "max-w-24",
+                rowIndex % 3 === 2 && "max-w-32",
+                skeletonCellClassName
+              )}
+            />
+          </TableCell>
+        ))}
+      </TableRow>
+    ))
+
+  const stateContent = shouldRenderSkeleton ? null : isLoading ? (
     <LoadingState label="Loading data..." {...loadingState} />
   ) : isError ? (
     <EmptyState title="Could not load data" description="Please try again." {...errorState} />
@@ -172,24 +259,42 @@ function DataTable<TData, TValue = unknown>({
 
       {renderMobileCard && (
         <div className="grid gap-3 md:hidden">
-          {stateContent ?? rows.map((row) => <React.Fragment key={row.id}>{renderMobileCard(row)}</React.Fragment>)}
+          {stateContent ??
+            (shouldRenderSkeleton ? (
+              <LoadingState label="Loading data..." {...loadingState} />
+            ) : (
+              rows.map((row) => <React.Fragment key={row.id}>{renderMobileCard(row)}</React.Fragment>)
+            ))}
         </div>
       )}
 
       <div
         data-slot="data-table-wrapper"
+        data-density={density}
+        data-striped={striped || undefined}
+        data-bordered={bordered || undefined}
         className={cn(
-          "overflow-hidden rounded-lg border bg-background",
+          "overflow-auto rounded-lg border bg-background",
+          !bordered && "border-border",
           renderMobileCard && "hidden md:block",
           tableWrapperClassName
         )}
       >
         <Table className={tableClassName}>
-          <TableHeader>
+          <TableHeader className={cn(stickyHeader && "sticky top-0 z-10 bg-background shadow-sm")}> 
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} style={{ width: header.getSize() }}>
+                  <TableHead
+                    key={header.id}
+                    style={{ width: header.getSize() }}
+                    className={cn(
+                      densityHeadClassName[density],
+                      stickyHeader && "bg-background",
+                      bordered && "border-r last:border-r-0",
+                      getHeaderCellClassName(header, headerCellClassName)
+                    )}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -201,20 +306,48 @@ function DataTable<TData, TValue = unknown>({
           <TableBody>
             {stateContent
               ? renderStateRow(stateContent)
-              : rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() ? "selected" : undefined}
-                    className={cn(onRowClick && "cursor-pointer", getRowClassName(row, rowClassName))}
-                    onClick={() => onRowClick?.(row)}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+              : shouldRenderSkeleton
+                ? renderSkeletonRows()
+                : rows.map((row, rowIndex) => {
+                    const rowDisabled = getRowDisabled?.(row) ?? false
+
+                    return (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() ? "selected" : undefined}
+                        data-disabled={rowDisabled || undefined}
+                        className={cn(
+                          onRowClick && !rowDisabled && "cursor-pointer",
+                          striped && rowIndex % 2 === 1 && "bg-muted/30",
+                          rowDisabled && "pointer-events-none opacity-55",
+                          getRowClassName(row, rowClassName)
+                        )}
+                        onClick={() => {
+                          if (!rowDisabled) onRowClick?.(row)
+                        }}
+                        onDoubleClick={() => {
+                          if (!rowDisabled) onRowDoubleClick?.(row)
+                        }}
+                      >
+                        {row.getVisibleCells().map((cell) => {
+                          const renderedCell = flexRender(cell.column.columnDef.cell, cell.getContext())
+
+                          return (
+                            <TableCell
+                              key={cell.id}
+                              className={cn(
+                                densityCellClassName[density],
+                                bordered && "border-r last:border-r-0",
+                                getCellClassName(cell, cellClassName)
+                              )}
+                            >
+                              {isEmptyCellContent(renderedCell) ? cellFallback : renderedCell}
+                            </TableCell>
+                          )
+                        })}
+                      </TableRow>
+                    )
+                  })}
           </TableBody>
         </Table>
 
