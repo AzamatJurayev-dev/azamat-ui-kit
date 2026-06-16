@@ -94,16 +94,16 @@ Rules:
 
 ## Phase 5 - Registry and CLI
 
-Added registry/CLI polish:
+Prepared registry/CLI polish plan:
 
-- expanded `cli/registry.ts` for Phase 1-4 components
+- expanded registry for Phase 1-4 components
 - source-file based copying instead of old inline string templates
 - `npx azamat-ui-kit list`
 - `npx azamat-ui-kit add ... --overwrite`
 - `npx azamat-ui-kit add ... --dry-run`
 - `npx azamat-ui-kit add ... --skip-install`
 - `registry.json` manifest
-- package `files` updated to include source templates and registry manifest
+- package `files` update to include source templates and registry manifest
 
 CLI examples:
 
@@ -132,9 +132,33 @@ Rules:
 - `StatCard` is visual only, all data comes through props
 - column visibility is controlled by the provided TanStack table instance
 
+## Phase 7 - Layout, table, input and hook helpers
+
+Added reusable app-level and table helper components:
+
+- `AppShell`
+- `AppHeader`
+- `AppSidebar`
+- `Checkbox`
+- `createDataTableSelectColumn`
+- `DataTableSortableHeader`
+- `MaskedInput`
+- `PhoneInput`
+- `useDisclosure`
+- `useDebouncedValue`
+- `useDebouncedCallback`
+
+Rules:
+
+- app shell components must not know router/auth/permission logic
+- table select column only wires TanStack selection state
+- sortable header only controls TanStack sorting state
+- masked inputs must expose both masked and raw values
+- hooks must be generic and app-independent
+
 ## Next priority order
 
-1. Layout shell components: `AppShell`, `AppHeader`, `AppSidebar`
-2. DataTable advanced helpers: select column, row actions, sortable header
-3. Form date picker and masked inputs
+1. Form date picker and date range picker
+2. Combobox / command palette
+3. Tabs, tooltip, separator and skeleton primitives
 4. Registry docs site / demo playground
