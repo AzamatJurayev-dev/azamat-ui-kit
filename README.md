@@ -1,75 +1,103 @@
-# React + TypeScript + Vite
+# azamat-ui-kit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal React + TypeScript UI kit for dashboard projects. The goal is to keep shadcn-style copyable components, Ant-style universal wrappers, and project-specific business logic separate.
 
-Currently, two official plugins are available:
+## What belongs here
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This package should contain UI primitives, reusable wrappers, generic hooks, formatting helpers, and component registry metadata.
 
-## React Compiler
+Good candidates:
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- Button, Input, Select, Dialog, Table, Badge, Card
+- ModalShell, SheetShell, ConfirmDialog, DialogActions
+- Pagination, SimpleSelect, MoneyInput, QuantityInput
+- DataTable, AsyncSelect, FilterBar, EmptyState, LoadingState
+- useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile
 
-Note: This will impact Vite dev & build performances.
+Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
 
-## Expanding the ESLint configuration
+## Install from GitHub
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install github:AzamatJurayev-dev/azamat-ui-kit#master
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then import styles once in the app entry:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```ts
+import "azamat-ui-kit/style.css"
 ```
+
+Use components:
+
+```tsx
+import { Button, ModalShell, Pagination } from "azamat-ui-kit"
+```
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+## Component rules
+
+1. Components must be generic and reusable.
+2. Components must not import project API clients, route paths, auth stores, or business types.
+3. Data loading must be passed through props like `loadOptions`, `data`, `onSubmit`, `onConfirm`.
+4. Business wrappers stay in the app project, not in the UI kit.
+5. Primitive UI and form wrappers should stay separate.
+6. Every reusable component should export from `src/index.ts`.
+
+## Current layers
+
+```txt
+src/components/ui/          Base primitives
+src/components/overlay/     Modal, sheet, confirm dialog wrappers
+src/components/navigation/  Pagination and navigation widgets
+src/components/inputs/      Simple input/select wrappers
+src/hooks/                  Generic React hooks
+src/lib/                    Utilities
+```
+
+## Migration plan
+
+Phase 1 adds low-risk generic wrappers:
+
+- ModalShell
+- SheetShell
+- ConfirmDialog
+- DialogActions
+- Pagination
+- SimpleSelect
+- MoneyInput
+- QuantityInput
+- useSessionStorageState
+- useBeforeUnloadWhenDirty
+- useIsMobile
+
+Phase 2 should add:
+
+- AsyncSelect
+- FormFieldShell
+- FormInput
+- FormSelect
+- FormAsyncSelect
+
+Phase 3 should add:
+
+- DataTable
+- DataTablePagination
+- DataTableToolbar
+- EmptyState
+- LoadingState
+- StatusBadge
+
+Phase 4 should add shadcn-style registry metadata and CLI commands.
