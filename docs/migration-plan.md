@@ -92,9 +92,34 @@ Rules:
 - wizard controls visual flow only; validation/submission stay in the app
 - CI runs install and build on push/pull request
 
+## Phase 13 - Registry polish
+
+Expanded CLI registry coverage for all current components and groups:
+
+- `recommended`
+- `dashboard`
+- `layout`
+- `inputs`
+- `form`
+- `feedback`
+- `data-table`
+- `notifications`
+- `command`
+- `calendar-suite`
+- `upload`
+- `wizard-suite`
+- `hooks`
+
+Rules:
+
+- CLI registry dependencies should copy required primitives automatically
+- groups should be useful entry points for real dashboards
+- registry entries must point to source files, not stale inline templates
+- component copy mode must stay API/business independent
+
 ## Next priority order
 
-1. Registry polish for all new components
-2. Docs site from playground examples
-3. App shell advanced responsive sidebar helpers
-4. Component tests and accessibility smoke checks
+1. Docs site from playground examples
+2. App shell advanced responsive sidebar helpers
+3. Component tests and accessibility smoke checks
+4. Registry validation script
