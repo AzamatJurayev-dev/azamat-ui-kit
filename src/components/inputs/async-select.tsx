@@ -88,7 +88,7 @@ function AsyncSelect<
   selectedOption,
   onValueChange,
   loadOptions,
-  defaultOptions = [],
+  defaultOptions,
   disabled = false,
   clearable = true,
   debounceMs = 250,
@@ -102,21 +102,27 @@ function AsyncSelect<
   optionClassName,
   ...props
 }: AsyncSelectProps<TValue, TData, TOption>) {
+  const resolvedDefaultOptions = React.useMemo(() => defaultOptions ?? [], [defaultOptions])
   const [open, setOpen] = React.useState(false)
   const [search, setSearch] = React.useState("")
-  const [options, setOptions] = React.useState<TOption[]>(defaultOptions)
+  const [options, setOptions] = React.useState<TOption[]>(resolvedDefaultOptions)
   const [isLoading, setIsLoading] = React.useState(false)
   const [hasError, setHasError] = React.useState(false)
   const debouncedSearch = useDebouncedValue(search, debounceMs)
 
-  const currentOption = findSelectedOption(value, selectedOption, options, defaultOptions)
+  const currentOption = findSelectedOption(
+    value,
+    selectedOption,
+    options,
+    resolvedDefaultOptions
+  )
   const canClear = clearable && Boolean(value) && !disabled
 
   React.useEffect(() => {
     if (!open) return
 
     if (debouncedSearch.length < minSearchLength) {
-      setOptions(defaultOptions)
+      setOptions(resolvedDefaultOptions)
       return
     }
 
@@ -148,7 +154,7 @@ function AsyncSelect<
     return () => {
       cancelled = true
     }
-  }, [debouncedSearch, defaultOptions, loadOptions, minSearchLength, open])
+  }, [debouncedSearch, loadOptions, minSearchLength, open, resolvedDefaultOptions])
 
   const handleSelect = (option: TOption) => {
     if (option.disabled) return
@@ -158,7 +164,7 @@ function AsyncSelect<
     setSearch("")
   }
 
-  const handleClear = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClear = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
     onValueChange?.(undefined)
     setSearch("")
@@ -185,14 +191,15 @@ function AsyncSelect<
           </span>
           <span className="ml-2 flex shrink-0 items-center gap-1">
             {canClear && (
-              <button
-                type="button"
+              <span
+                role="button"
+                tabIndex={-1}
                 className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
                 aria-label={labels?.clear ?? "Clear"}
                 onClick={handleClear}
               >
                 <XIcon className="size-3.5" />
-              </button>
+              </span>
             )}
             <ChevronsUpDownIcon className="size-4 opacity-60" />
           </span>
