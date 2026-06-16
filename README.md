@@ -10,7 +10,7 @@ Good candidates:
 
 - Button, Input, Textarea, Switch, Select, Dialog, Popover, Table, Badge, Card
 - ModalShell, SheetShell, ConfirmDialog, DialogActions
-- Pagination, SimpleSelect, AsyncSelect, MoneyInput, QuantityInput
+- Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect, MoneyInput, QuantityInput
 - FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch
 - DataTable, FilterBar, EmptyState, LoadingState, StatusBadge
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile
@@ -32,7 +32,15 @@ import "azamat-ui-kit/style.css"
 Use components:
 
 ```tsx
-import { Button, AsyncSelect, FormInput, FormSwitch, ModalShell, Pagination } from "azamat-ui-kit"
+import {
+  AsyncMultiSelect,
+  AsyncSelect,
+  Button,
+  FormInput,
+  FormSwitch,
+  ModalShell,
+  Pagination,
+} from "azamat-ui-kit"
 ```
 
 ## Local development
@@ -127,6 +135,16 @@ function ProductForm() {
 <AsyncSelect
   value={customerId}
   onValueChange={setCustomerId}
+  cacheOptions
+  loadSelectedOption={async (id) => {
+    const customer = await customersApi.getById(id)
+
+    return {
+      value: String(customer.id),
+      label: customer.name,
+      data: customer,
+    }
+  }}
   loadOptions={async (search) => {
     const customers = await customersApi.search(search)
 
@@ -135,6 +153,53 @@ function ProductForm() {
       label: customer.name,
       data: customer,
     }))
+  }}
+  onCreateOption={async (search) => {
+    const customer = await customersApi.create({ name: search })
+
+    return {
+      value: String(customer.id),
+      label: customer.name,
+      data: customer,
+    }
+  }}
+/>
+```
+
+## AsyncMultiSelect with groups
+
+```tsx
+<AsyncMultiSelect
+  value={tagIds}
+  onValueChange={setTagIds}
+  labels={{
+    placeholder: "Select tags",
+    selectedCount: (count) => `${count} selected`,
+  }}
+  loadOptions={async (search) => {
+    const [systemTags, customTags] = await Promise.all([
+      tagsApi.system(search),
+      tagsApi.custom(search),
+    ])
+
+    return [
+      {
+        label: "System",
+        options: systemTags.map((tag) => ({
+          value: String(tag.id),
+          label: tag.name,
+          data: tag,
+        })),
+      },
+      {
+        label: "Custom",
+        options: customTags.map((tag) => ({
+          value: String(tag.id),
+          label: tag.name,
+          data: tag,
+        })),
+      },
+    ]
   }}
 />
 ```
@@ -157,7 +222,7 @@ Phase 1 added low-risk generic wrappers:
 
 Phase 2 added form and async-select layer:
 
-- AsyncSelect
+- AsyncSelect base
 - FormFieldShell
 - FormInput
 - FormSelect
@@ -167,7 +232,16 @@ Phase 2 added form and async-select layer:
 - Textarea and Switch exports
 - react-hook-form peer dependency
 
-Phase 3 should add:
+Phase 3 improved async select:
+
+- AsyncMultiSelect
+- grouped options
+- quick create
+- selected option preload
+- local option cache
+- selected count labels
+
+Phase 4 should add:
 
 - DataTable
 - DataTablePagination
@@ -176,4 +250,4 @@ Phase 3 should add:
 - LoadingState
 - StatusBadge
 
-Phase 4 should add shadcn-style registry metadata and CLI commands.
+Phase 5 should add shadcn-style registry metadata and CLI commands.
