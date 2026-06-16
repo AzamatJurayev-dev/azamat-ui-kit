@@ -76,6 +76,8 @@ Added:
 - `Calendar`
 - `DatePicker`
 - `DateRangePicker`
+- `FormDatePicker`
+- `FormDateRangePicker`
 - `FileUpload`
 - `ImageUpload`
 - `Stepper`
@@ -84,7 +86,8 @@ Added:
 
 Rules:
 
-- date picker is lightweight/native-first for now
+- calendar stores values as `YYYY-MM-DD` strings
+- date pickers use popover calendar UI and remain API-independent
 - upload components only handle selected `File[]`; API/S3/R2 upload stays in the app
 - wizard controls visual flow only; validation/submission stay in the app
 - CI runs install and build on push/pull request
@@ -93,5 +96,5 @@ Rules:
 
 1. Registry polish for all new components
 2. Docs site from playground examples
-3. Advanced popover calendar UI
-4. App shell advanced responsive sidebar helpers
+3. App shell advanced responsive sidebar helpers
+4. Component tests and accessibility smoke checks
