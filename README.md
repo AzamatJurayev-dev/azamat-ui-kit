@@ -12,7 +12,7 @@ Good candidates:
 - ModalShell, SheetShell, ConfirmDialog, DialogActions
 - Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect, MoneyInput, QuantityInput
 - FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch
-- DataTable, FilterBar, EmptyState, LoadingState, StatusBadge
+- DataTable, DataTablePagination, DataTableToolbar, EmptyState, LoadingState, StatusBadge
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile
 
 Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
@@ -36,10 +36,12 @@ import {
   AsyncMultiSelect,
   AsyncSelect,
   Button,
+  DataTable,
   FormInput,
   FormSwitch,
   ModalShell,
   Pagination,
+  StatusBadge,
 } from "azamat-ui-kit"
 ```
 
@@ -73,6 +75,8 @@ src/components/overlay/     Modal, sheet, confirm dialog wrappers
 src/components/navigation/  Pagination and navigation widgets
 src/components/inputs/      Simple and async input/select wrappers
 src/components/form/        React Hook Form wrappers
+src/components/feedback/    Empty, loading and status states
+src/components/data-table/  Generic TanStack Table wrapper
 src/hooks/                  Generic React hooks
 src/lib/                    Utilities
 ```
@@ -176,32 +180,83 @@ function ProductForm() {
     placeholder: "Select tags",
     selectedCount: (count) => `${count} selected`,
   }}
-  loadOptions={async (search) => {
-    const [systemTags, customTags] = await Promise.all([
-      tagsApi.system(search),
-      tagsApi.custom(search),
-    ])
-
-    return [
-      {
-        label: "System",
-        options: systemTags.map((tag) => ({
-          value: String(tag.id),
-          label: tag.name,
-          data: tag,
-        })),
-      },
-      {
-        label: "Custom",
-        options: customTags.map((tag) => ({
-          value: String(tag.id),
-          label: tag.name,
-          data: tag,
-        })),
-      },
-    ]
-  }}
+  loadOptions={async (search) => [
+    {
+      label: "System",
+      options: (await tagsApi.system(search)).map((tag) => ({
+        value: String(tag.id),
+        label: tag.name,
+        data: tag,
+      })),
+    },
+    {
+      label: "Custom",
+      options: (await tagsApi.custom(search)).map((tag) => ({
+        value: String(tag.id),
+        label: tag.name,
+        data: tag,
+      })),
+    },
+  ]}
 />
+```
+
+## DataTable example
+
+```tsx
+import type { ColumnDef } from "@tanstack/react-table"
+import { DataTable, DataTableToolbar, StatusBadge } from "azamat-ui-kit"
+
+type Product = {
+  id: string
+  name: string
+  status: "active" | "inactive"
+}
+
+const columns: ColumnDef<Product>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <StatusBadge tone={row.original.status === "active" ? "success" : "muted"} dot>
+        {row.original.status}
+      </StatusBadge>
+    ),
+  },
+]
+
+function ProductsTable() {
+  return (
+    <DataTable
+      columns={columns}
+      data={products}
+      isLoading={isLoading}
+      emptyState={{
+        title: "No products",
+        description: "Create your first product to start selling.",
+      }}
+      toolbar={
+        <DataTableToolbar
+          title="Products"
+          description="Manage catalog items"
+          actions={<Button>Add product</Button>}
+        />
+      }
+      pagination={{
+        pageIndex,
+        pageSize,
+        pageCount,
+        rowCount,
+        onPageChange: setPageIndex,
+        onPageSizeChange: setPageSize,
+      }}
+    />
+  )
+}
 ```
 
 ## Migration plan
@@ -241,7 +296,7 @@ Phase 3 improved async select:
 - local option cache
 - selected count labels
 
-Phase 4 should add:
+Phase 4 added data display layer:
 
 - DataTable
 - DataTablePagination
