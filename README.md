@@ -17,6 +17,7 @@ Good candidates:
 - FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput
 - DataTable, DataTablePagination, DataTableToolbar, DataTableColumnVisibilityMenu, DataTableSortableHeader
 - DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions
+- ToastProvider, useToast, CommandPalette, useCommandPaletteShortcut
 - EmptyState, LoadingState, StatusBadge
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile, useDisclosure, useDebouncedValue
 
@@ -54,6 +55,7 @@ import {
   AsyncMultiSelect,
   AsyncSelect,
   Button,
+  CommandPalette,
   DataTable,
   DataTableBulkActions,
   FilterBar,
@@ -69,6 +71,9 @@ import {
   SearchInput,
   StatCard,
   StatusBadge,
+  ToastProvider,
+  useCommandPaletteShortcut,
+  useToast,
 } from "azamat-ui-kit"
 ```
 
@@ -79,8 +84,6 @@ npm install
 npm run dev
 npm run build
 ```
-
-`npm run dev` opens the playground from `src/App.tsx`. The library entry is still `src/index.ts`.
 
 ## Component rules
 
@@ -94,18 +97,20 @@ npm run build
 ## Current layers
 
 ```txt
-src/components/ui/          Base primitives
-src/components/actions/     Generic action menus
-src/components/layout/      App shell, sidebar, headers and stat cards
-src/components/filters/     Filter bars
-src/components/overlay/     Modal, sheet, confirm dialog wrappers
-src/components/navigation/  Pagination and navigation widgets
-src/components/inputs/      Simple, async, masked, phone, date and numeric inputs
-src/components/form/        React Hook Form wrappers
-src/components/feedback/    Empty, loading and status states
-src/components/data-table/  Generic TanStack Table wrapper and helpers
-src/hooks/                  Generic React hooks
-src/lib/                    Utilities
+src/components/ui/             Base primitives
+src/components/actions/        Generic action menus
+src/components/layout/         App shell, sidebar, headers and stat cards
+src/components/filters/        Filter bars
+src/components/overlay/        Modal, sheet, confirm dialog wrappers
+src/components/navigation/     Pagination and navigation widgets
+src/components/inputs/         Simple, async, masked, phone, date and numeric inputs
+src/components/form/           React Hook Form wrappers
+src/components/feedback/       Empty, loading and status states
+src/components/data-table/     Generic TanStack Table wrapper and helpers
+src/components/notifications/  Toast provider and hook
+src/components/command/        Command palette and shortcut hook
+src/hooks/                     Generic React hooks
+src/lib/                       Utilities
 ```
 
 ## Theme / dark mode
@@ -118,34 +123,57 @@ npx azamat-ui-kit theme src/index.css
 
 Dark mode works by toggling the `.dark` class on the root/html element.
 
-## Playground
-
-Run the local playground:
-
-```bash
-npm run dev
-```
-
-The playground demonstrates app shell, dashboard widgets, advanced inputs, form wrappers, async selects, data table, action menu, modal, confirm dialog and feedback states.
-
-## App shell example
+## Notifications example
 
 ```tsx
-<AppShell
-  sidebar={
-    <AppSidebar
-      header={<strong>Dashboard</strong>}
-      items={[
-        { key: "dashboard", label: "Dashboard", href: "/dashboard", active: true },
-        { key: "products", label: "Products", href: "/products" },
-      ]}
-    />
-  }
-  header={<AppHeader left="Products" right={<Button>Add</Button>} />}
-  mainClassName="p-4 lg:p-6"
->
-  <PageHeader title="Products" description="Manage products and inventory" />
-</AppShell>
+function App() {
+  return (
+    <ToastProvider position="top-right">
+      <Routes />
+    </ToastProvider>
+  )
+}
+
+function SaveButton() {
+  const { addToast } = useToast()
+
+  return (
+    <Button
+      onClick={() =>
+        addToast({
+          tone: "success",
+          title: "Saved",
+          description: "Changes were saved successfully.",
+        })
+      }
+    >
+      Save
+    </Button>
+  )
+}
+```
+
+## Command palette example
+
+```tsx
+const [open, setOpen] = React.useState(false)
+
+useCommandPaletteShortcut(setOpen)
+
+<CommandPalette
+  open={open}
+  onOpenChange={setOpen}
+  groups={[
+    {
+      id: "navigation",
+      label: "Navigation",
+      items: [
+        { id: "dashboard", label: "Dashboard", onSelect: () => navigate("/dashboard") },
+        { id: "products", label: "Products", onSelect: () => navigate("/products") },
+      ],
+    },
+  ]}
+/>
 ```
 
 ## Advanced inputs example
@@ -154,95 +182,6 @@ The playground demonstrates app shell, dashboard widgets, advanced inputs, form 
 <SearchInput value={search} onValueChange={setSearch} placeholder="Search products..." />
 <PasswordInput value={password} onValueChange={setPassword} />
 <NumberInput value={price} min={0} step={1000} onNumberChange={setPrice} />
-<PhoneInput onValueChange={(masked, raw) => console.log(masked, raw)} />
-<DateRangeInput value={{ from, to }} onValueChange={setRange} />
-```
-
-## Form example
-
-```tsx
-import { useForm } from "react-hook-form"
-import {
-  FormDateInput,
-  FormDateRangeInput,
-  FormInput,
-  FormNumberInput,
-  FormPasswordInput,
-  FormPhoneInput,
-  FormSearchInput,
-  FormSelect,
-  FormSwitch,
-} from "azamat-ui-kit"
-
-type ProductFormValues = {
-  search: string
-  name: string
-  password: string
-  phone: string
-  price: number | null
-  status: string
-  active: boolean
-  availableFrom: string
-  dateFrom: string
-  dateTo: string
-}
-
-function ProductForm() {
-  const form = useForm<ProductFormValues>({
-    defaultValues: {
-      search: "",
-      name: "",
-      password: "",
-      phone: "",
-      price: null,
-      status: "active",
-      active: true,
-      availableFrom: "",
-      dateFrom: "",
-      dateTo: "",
-    },
-  })
-
-  return (
-    <form className="grid gap-4">
-      <FormSearchInput control={form.control} name="search" label="Search" />
-      <FormInput control={form.control} name="name" label="Name" required />
-      <FormPasswordInput control={form.control} name="password" label="Password" />
-      <FormPhoneInput control={form.control} name="phone" label="Phone" valueMode="raw" />
-      <FormNumberInput control={form.control} name="price" label="Price" min={0} />
-      <FormDateInput control={form.control} name="availableFrom" label="Available from" />
-      <FormDateRangeInput control={form.control} fromName="dateFrom" toName="dateTo" label="Period" />
-      <FormSelect
-        control={form.control}
-        name="status"
-        label="Status"
-        options={[
-          { label: "Active", value: "active" },
-          { label: "Inactive", value: "inactive" },
-        ]}
-      />
-      <FormSwitch control={form.control} name="active" label="Active" />
-    </form>
-  )
-}
-```
-
-## AsyncSelect example
-
-```tsx
-<AsyncSelect
-  value={customerId}
-  onValueChange={setCustomerId}
-  cacheOptions
-  loadSelectedOption={async (id) => {
-    const customer = await customersApi.getById(id)
-    return { value: String(customer.id), label: customer.name, data: customer }
-  }}
-  loadOptions={async (search) => {
-    const customers = await customersApi.search(search)
-    return customers.map((customer) => ({ value: String(customer.id), label: customer.name, data: customer }))
-  }}
-/>
 ```
 
 ## DataTable example
@@ -250,6 +189,7 @@ function ProductForm() {
 ```tsx
 import type { ColumnDef } from "@tanstack/react-table"
 import {
+  ActionMenu,
   DataTable,
   DataTableBulkActions,
   DataTableColumnVisibilityMenu,
@@ -295,6 +235,7 @@ function ProductsTable() {
     <DataTable
       columns={columns}
       data={products}
+      isLoading={isLoading}
       emptyState={{ title: "No products" }}
       toolbarProps={(table) => ({
         title: "Products",
@@ -303,26 +244,11 @@ function ProductsTable() {
         selectionActions: (
           <DataTableBulkActions
             rows={table.getSelectedRowModel().rows.map((row) => row.original)}
-            actions={[
-              {
-                key: "delete",
-                label: "Delete selected",
-                destructive: true,
-                onSelect: (rows) => removeMany(rows),
-              },
-            ]}
-            onClearSelection={() => table.resetRowSelection()}
+            actions={[{ key: "delete", label: "Delete selected", destructive: true, onSelect: deleteMany }]}
           />
         ),
       })}
-      pagination={{
-        pageIndex,
-        pageSize,
-        pageCount,
-        rowCount,
-        onPageChange: setPageIndex,
-        onPageSizeChange: setPageSize,
-      }}
+      pagination={{ pageIndex, pageSize, pageCount, rowCount, onPageChange: setPageIndex, onPageSizeChange: setPageSize }}
     />
   )
 }
@@ -346,8 +272,8 @@ Phase 7 changed CSS strategy: package entry no longer imports global CSS; `azama
 
 Phase 8 added advanced inputs and form wrappers: ClearableInput, SearchInput, PasswordInput, NumberInput, DateInput, DateRangeInput, FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput.
 
-Phase 9 added playground and local preview docs.
+Phase 9 added data table action helpers: DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions.
 
-Phase 10 added DataTable action helpers: DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions.
+Phase 10 added notification and command helpers: ToastProvider, useToast, CommandPalette, useCommandPaletteShortcut.
 
-Next phase should polish registry coverage for every new component.
+Next phase should add calendar / popover date picker and demo playground.
