@@ -9,10 +9,12 @@ This package should contain UI primitives, reusable wrappers, generic hooks, for
 Good candidates:
 
 - Button, Input, Textarea, Switch, Select, Dialog, Popover, Table, Badge, Card
+- ActionMenu, PageHeader, FilterBar, StatCard
 - ModalShell, SheetShell, ConfirmDialog, DialogActions
 - Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect, MoneyInput, QuantityInput
 - FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch
-- DataTable, DataTablePagination, DataTableToolbar, EmptyState, LoadingState, StatusBadge
+- DataTable, DataTablePagination, DataTableToolbar, DataTableColumnVisibilityMenu
+- EmptyState, LoadingState, StatusBadge
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile
 
 Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
@@ -33,14 +35,18 @@ Use components:
 
 ```tsx
 import {
+  ActionMenu,
   AsyncMultiSelect,
   AsyncSelect,
   Button,
   DataTable,
+  FilterBar,
   FormInput,
   FormSwitch,
   ModalShell,
+  PageHeader,
   Pagination,
+  StatCard,
   StatusBadge,
 } from "azamat-ui-kit"
 ```
@@ -71,6 +77,9 @@ npm run build
 
 ```txt
 src/components/ui/          Base primitives
+src/components/actions/     Generic action menus
+src/components/layout/      Page headers and stat cards
+src/components/filters/     Filter bars
 src/components/overlay/     Modal, sheet, confirm dialog wrappers
 src/components/navigation/  Pagination and navigation widgets
 src/components/inputs/      Simple and async input/select wrappers
@@ -79,6 +88,33 @@ src/components/feedback/    Empty, loading and status states
 src/components/data-table/  Generic TanStack Table wrapper
 src/hooks/                  Generic React hooks
 src/lib/                    Utilities
+```
+
+## Dashboard shell example
+
+```tsx
+<PageHeader
+  title="Products"
+  description="Manage products and inventory"
+  actions={<Button>Add product</Button>}
+/>
+
+<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  <StatCard title="Revenue" value="$12,400" trend={{ value: "+12%", tone: "success" }} />
+  <StatCard title="Orders" value="320" description="This month" />
+</div>
+```
+
+## ActionMenu example
+
+```tsx
+<ActionMenu
+  actions={[
+    { key: "view", label: "View", onSelect: () => openDetail() },
+    { key: "edit", label: "Edit", onSelect: () => openEdit() },
+    { key: "delete", label: "Delete", destructive: true, onSelect: () => remove() },
+  ]}
+/>
 ```
 
 ## Form example
@@ -104,14 +140,7 @@ function ProductForm() {
 
   return (
     <form className="grid gap-4">
-      <FormInput
-        control={form.control}
-        name="name"
-        label="Name"
-        placeholder="Product name"
-        required
-      />
-
+      <FormInput control={form.control} name="name" label="Name" required />
       <FormSelect
         control={form.control}
         name="status"
@@ -121,7 +150,6 @@ function ProductForm() {
           { label: "Inactive", value: "inactive" },
         ]}
       />
-
       <FormSwitch
         control={form.control}
         name="active"
@@ -205,7 +233,14 @@ function ProductForm() {
 
 ```tsx
 import type { ColumnDef } from "@tanstack/react-table"
-import { DataTable, DataTableToolbar, StatusBadge } from "azamat-ui-kit"
+import {
+  ActionMenu,
+  DataTable,
+  DataTableColumnVisibilityMenu,
+  DataTableToolbar,
+  FilterBar,
+  StatusBadge,
+} from "azamat-ui-kit"
 
 type Product = {
   id: string
@@ -214,10 +249,7 @@ type Product = {
 }
 
 const columns: ColumnDef<Product>[] = [
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
+  { accessorKey: "name", header: "Name" },
   {
     accessorKey: "status",
     header: "Status",
@@ -225,6 +257,17 @@ const columns: ColumnDef<Product>[] = [
       <StatusBadge tone={row.original.status === "active" ? "success" : "muted"} dot>
         {row.original.status}
       </StatusBadge>
+    ),
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => (
+      <ActionMenu
+        actions={[
+          { key: "edit", label: "Edit", onSelect: () => edit(row.original) },
+          { key: "delete", label: "Delete", destructive: true, onSelect: () => remove(row.original) },
+        ]}
+      />
     ),
   },
 ]
@@ -235,17 +278,12 @@ function ProductsTable() {
       columns={columns}
       data={products}
       isLoading={isLoading}
-      emptyState={{
-        title: "No products",
-        description: "Create your first product to start selling.",
+      emptyState={{ title: "No products" }}
+      toolbarProps={{
+        title: "Products",
+        search: <FilterBar search={<input placeholder="Search" />} />,
+        actions: <DataTableColumnVisibilityMenu table={table} />,
       }}
-      toolbar={
-        <DataTableToolbar
-          title="Products"
-          description="Manage catalog items"
-          actions={<Button>Add product</Button>}
-        />
-      }
       pagination={{
         pageIndex,
         pageSize,
@@ -305,4 +343,12 @@ Phase 4 added data display layer:
 - LoadingState
 - StatusBadge
 
-Phase 5 should add shadcn-style registry metadata and CLI commands.
+Phase 5 added dashboard helpers:
+
+- ActionMenu
+- PageHeader
+- FilterBar
+- StatCard
+- DataTableColumnVisibilityMenu
+
+Phase 6 should add shadcn-style registry metadata and CLI commands.
