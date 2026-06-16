@@ -4,7 +4,7 @@ This plan is based on reusable code extracted from one existing project. The goa
 
 ## Phase 1 - Safe reusable foundation
 
-Add low-risk generic wrappers:
+Added low-risk generic wrappers:
 
 - `ModalShell`
 - `SheetShell`
@@ -27,7 +27,7 @@ Rules:
 
 ## Phase 2 - Form wrappers
 
-Add React Hook Form layer:
+Added React Hook Form layer:
 
 - `FormFieldShell`
 - `FormInput`
@@ -35,7 +35,6 @@ Add React Hook Form layer:
 - `FormAsyncSelect`
 - `FormTextarea`
 - `FormSwitch`
-- `FormDatePicker`
 
 Rules:
 
@@ -45,21 +44,38 @@ Rules:
 
 ## Phase 3 - Universal async select
 
-Refactor existing `AppAsyncSelect` into:
+Enhanced async select layer:
 
 - `AsyncSelect`
 - `AsyncMultiSelect`
-- optional `ApiAsyncSelect` adapter later
+- grouped options
+- quick create
+- selected option preload
+- local option cache
+- selected count labels
 
-Core API should look like:
+Core API:
 
 ```tsx
 <AsyncSelect
   value={value}
   onValueChange={setValue}
-  loadOptions={async (search) => customersApi.search(search)}
-  getOptionLabel={(item) => item.name}
-  getOptionValue={(item) => String(item.id)}
+  loadSelectedOption={async (id) => customersApi.getOptionById(id)}
+  loadOptions={async (search) => customersApi.searchOptions(search)}
+  onCreateOption={async (search) => customersApi.createOption(search)}
+/>
+```
+
+Grouped API:
+
+```tsx
+<AsyncMultiSelect
+  value={values}
+  onValueChange={setValues}
+  loadOptions={async (search) => [
+    { label: "System", options: await loadSystemOptions(search) },
+    { label: "Custom", options: await loadCustomOptions(search) },
+  ]}
 />
 ```
 
@@ -67,7 +83,8 @@ Rules:
 
 - Core component must not import `$api`
 - Core component must not know backend response shape
-- Cache and connectivity behavior should be optional
+- Cache and create behavior must be optional
+- Multi select must emit both values and selected options
 
 ## Phase 4 - DataTable
 
@@ -112,9 +129,7 @@ npx azamat-ui-kit add button pagination data-table
 
 ## Priority order
 
-1. Phase 1 wrappers
-2. Form wrappers
-3. AsyncSelect
-4. DataTable
-5. Registry/CLI polish
-6. Layout shell components
+1. DataTable
+2. EmptyState / LoadingState / StatusBadge
+3. Registry/CLI polish
+4. Layout shell components
