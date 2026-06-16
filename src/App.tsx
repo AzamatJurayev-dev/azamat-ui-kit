@@ -81,17 +81,19 @@ function getStatusTone(status: Product["status"]) {
   return "warning" as const
 }
 
+type PlaygroundCardProps = React.ComponentProps<typeof Card> & {
+  title: React.ReactNode
+  description?: React.ReactNode
+}
+
 function PlaygroundCard({
   title,
   description,
   children,
-}: {
-  title: React.ReactNode
-  description?: React.ReactNode
-  children: React.ReactNode
-}) {
+  ...props
+}: PlaygroundCardProps) {
   return (
-    <Card>
+    <Card {...props}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
