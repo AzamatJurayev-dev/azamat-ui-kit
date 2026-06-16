@@ -29,6 +29,24 @@ export type AsyncSelectOptionsResult<
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 > = TOption[] | AsyncSelectOptionGroup<TValue, TData, TOption>[]
 
+export type AsyncSelectRenderState<
+  TValue extends string = string,
+  TData = unknown,
+  TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
+> = {
+  search: string
+  minSearchLength: number
+  options: TOption[]
+  selectedCount?: number
+  maxSelected?: number
+}
+
+export type AsyncSelectStateRenderer<
+  TValue extends string = string,
+  TData = unknown,
+  TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
+> = (state: AsyncSelectRenderState<TValue, TData, TOption>) => React.ReactNode
+
 export type AsyncSelectLabels = {
   placeholder?: string
   searchPlaceholder?: string
@@ -38,6 +56,9 @@ export type AsyncSelectLabels = {
   error?: string
   clear?: string
   clearAll?: string
+  selectAll?: string
+  minSearchLength?: (minSearchLength: number) => string
+  maxSelected?: (maxSelected: number) => string
   selectedCount?: (count: number) => string
 }
 
@@ -55,11 +76,16 @@ export type AsyncSelectProps<
   disabled?: boolean
   clearable?: boolean
   cacheOptions?: boolean
+  cacheTtl?: number
   debounceMs?: number
   minSearchLength?: number
   labels?: AsyncSelectLabels
   renderOption?: (option: TOption, state: { selected: boolean }) => React.ReactNode
   renderValue?: (option: TOption) => React.ReactNode
+  renderLoading?: AsyncSelectStateRenderer<TValue, TData, TOption>
+  renderEmpty?: AsyncSelectStateRenderer<TValue, TData, TOption>
+  renderError?: AsyncSelectStateRenderer<TValue, TData, TOption>
+  renderMinSearch?: AsyncSelectStateRenderer<TValue, TData, TOption>
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
@@ -83,14 +109,21 @@ export type AsyncMultiSelectProps<
   disabled?: boolean
   clearable?: boolean
   cacheOptions?: boolean
+  cacheTtl?: number
   closeOnSelect?: boolean
   debounceMs?: number
   minSearchLength?: number
   maxSelected?: number
+  showSelectAll?: boolean
   labels?: AsyncSelectLabels
   renderOption?: (option: TOption, state: { selected: boolean }) => React.ReactNode
   renderValue?: (option: TOption) => React.ReactNode
   renderTag?: (option: TOption, state: { remove: () => void }) => React.ReactNode
+  renderLoading?: AsyncSelectStateRenderer<TValue, TData, TOption>
+  renderEmpty?: AsyncSelectStateRenderer<TValue, TData, TOption>
+  renderError?: AsyncSelectStateRenderer<TValue, TData, TOption>
+  renderMinSearch?: AsyncSelectStateRenderer<TValue, TData, TOption>
+  renderMaxSelected?: AsyncSelectStateRenderer<TValue, TData, TOption>
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
@@ -99,6 +132,15 @@ export type AsyncMultiSelectProps<
   searchClassName?: string
   optionClassName?: string
   tagClassName?: string
+}
+
+type AsyncSelectCacheEntry<
+  TValue extends string,
+  TData,
+  TOption extends AsyncSelectOption<TValue, TData>,
+> = {
+  createdAt: number
+  groups: AsyncSelectOptionGroup<TValue, TData, TOption>[]
 }
 
 function useDebouncedValue<TValue>(value: TValue, delay: number) {
@@ -218,6 +260,52 @@ function getOptionsByValue<
   return values.map((value) => map.get(value)).filter((option): option is TOption => Boolean(option))
 }
 
+function getCachedOptionGroups<
+  TValue extends string,
+  TData,
+  TOption extends AsyncSelectOption<TValue, TData>,
+>(
+  cache: Map<string, AsyncSelectCacheEntry<TValue, TData, TOption>>,
+  key: string,
+  cacheTtl: number
+) {
+  const entry = cache.get(key)
+
+  if (!entry) return undefined
+
+  if (Number.isFinite(cacheTtl) && Date.now() - entry.createdAt > cacheTtl) {
+    cache.delete(key)
+    return undefined
+  }
+
+  return entry.groups
+}
+
+function setCachedOptionGroups<
+  TValue extends string,
+  TData,
+  TOption extends AsyncSelectOption<TValue, TData>,
+>(
+  cache: Map<string, AsyncSelectCacheEntry<TValue, TData, TOption>>,
+  key: string,
+  groups: AsyncSelectOptionGroup<TValue, TData, TOption>[]
+) {
+  cache.set(key, {
+    groups,
+    createdAt: Date.now(),
+  })
+}
+
+function AsyncStateMessage({
+  className,
+  children,
+}: {
+  className?: string
+  children: React.ReactNode
+}) {
+  return <div className={cn("px-2 py-3 text-sm text-muted-foreground", className)}>{children}</div>
+}
+
 function AsyncOptionButton<
   TValue extends string,
   TData,
@@ -306,11 +394,16 @@ function AsyncSelect<
   disabled = false,
   clearable = true,
   cacheOptions = true,
+  cacheTtl = Number.POSITIVE_INFINITY,
   debounceMs = 250,
   minSearchLength = 0,
   labels,
   renderOption,
   renderValue,
+  renderLoading,
+  renderEmpty,
+  renderError,
+  renderMinSearch,
   onCreateOption,
   createOptionLabel,
   showCreateOption,
@@ -329,9 +422,14 @@ function AsyncSelect<
   const [isLoading, setIsLoading] = React.useState(false)
   const [isCreating, setIsCreating] = React.useState(false)
   const [hasError, setHasError] = React.useState(false)
-  const cacheRef = React.useRef(new Map<string, AsyncSelectOptionGroup<TValue, TData, TOption>[]>() )
+  const cacheRef = React.useRef(new Map<string, AsyncSelectCacheEntry<TValue, TData, TOption>>())
   const debouncedSearch = useDebouncedValue(search, debounceMs)
+  const searchKey = debouncedSearch.trim()
   const flatOptions = React.useMemo(() => flattenOptionGroups(optionGroups), [optionGroups])
+  const state = React.useMemo<AsyncSelectRenderState<TValue, TData, TOption>>(
+    () => ({ search, minSearchLength, options: flatOptions }),
+    [flatOptions, minSearchLength, search]
+  )
   const currentOption = findSelectedOption(
     value,
     selectedOption,
@@ -340,7 +438,11 @@ function AsyncSelect<
     preloadedOption
   )
   const canClear = clearable && Boolean(value) && !disabled
-  const canCreate = Boolean(onCreateOption) && (showCreateOption ?? defaultShowCreateOption)(search, flatOptions)
+  const searchTooShort = searchKey.length < minSearchLength
+  const canCreate =
+    !searchTooShort &&
+    Boolean(onCreateOption) &&
+    (showCreateOption ?? defaultShowCreateOption)(search, flatOptions)
 
   React.useEffect(() => {
     setOptionGroups(resolvedDefaultGroups)
@@ -368,15 +470,15 @@ function AsyncSelect<
   React.useEffect(() => {
     if (!open) return
 
-    const searchKey = debouncedSearch.trim()
-
-    if (searchKey.length < minSearchLength) {
+    if (searchTooShort) {
       setOptionGroups(resolvedDefaultGroups)
       return
     }
 
-    if (cacheOptions && cacheRef.current.has(searchKey)) {
-      setOptionGroups(cacheRef.current.get(searchKey) ?? [])
+    const cachedGroups = cacheOptions ? getCachedOptionGroups(cacheRef.current, searchKey, cacheTtl) : undefined
+
+    if (cachedGroups) {
+      setOptionGroups(cachedGroups)
       return
     }
 
@@ -390,7 +492,7 @@ function AsyncSelect<
         const nextOptions = normalizeOptionGroups(await loadOptions(searchKey))
         if (!cancelled) {
           if (cacheOptions) {
-            cacheRef.current.set(searchKey, nextOptions)
+            setCachedOptionGroups(cacheRef.current, searchKey, nextOptions)
           }
           setOptionGroups(nextOptions)
         }
@@ -411,7 +513,7 @@ function AsyncSelect<
     return () => {
       cancelled = true
     }
-  }, [cacheOptions, debouncedSearch, loadOptions, minSearchLength, open, resolvedDefaultGroups])
+  }, [cacheOptions, cacheTtl, loadOptions, open, resolvedDefaultGroups, searchKey, searchTooShort])
 
   const handleSelect = (option: TOption) => {
     if (option.disabled) return
@@ -428,7 +530,7 @@ function AsyncSelect<
   }
 
   const handleCreate = async () => {
-    if (!onCreateOption || !search.trim()) return
+    if (!onCreateOption || !search.trim() || searchTooShort) return
 
     setIsCreating(true)
 
@@ -492,24 +594,35 @@ function AsyncSelect<
           </div>
 
           <div className="max-h-64 overflow-y-auto">
-            {isLoading && (
-              <div className="flex items-center gap-2 px-2 py-3 text-sm text-muted-foreground">
-                <Loader2Icon className="size-4 animate-spin" />
-                {labels?.loading ?? "Loading..."}
-              </div>
+            {searchTooShort && flatOptions.length === 0 && (
+              renderMinSearch?.(state) ?? (
+                <AsyncStateMessage>
+                  {labels?.minSearchLength?.(minSearchLength) ?? `Type at least ${minSearchLength} characters`}
+                </AsyncStateMessage>
+              )
             )}
 
-            {!isLoading && hasError && (
-              <div className="px-2 py-3 text-sm text-destructive">
-                {labels?.error ?? "Could not load options"}
-              </div>
-            )}
+            {isLoading &&
+              (renderLoading?.(state) ?? (
+                <AsyncStateMessage>
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2Icon className="size-4 animate-spin" />
+                    {labels?.loading ?? "Loading..."}
+                  </span>
+                </AsyncStateMessage>
+              ))}
 
-            {!isLoading && !hasError && flatOptions.length === 0 && !canCreate && (
-              <div className="px-2 py-3 text-sm text-muted-foreground">
-                {labels?.empty ?? "No options found"}
-              </div>
-            )}
+            {!isLoading && hasError &&
+              (renderError?.(state) ?? (
+                <AsyncStateMessage className="text-destructive">
+                  {labels?.error ?? "Could not load options"}
+                </AsyncStateMessage>
+              ))}
+
+            {!isLoading && !hasError && !searchTooShort && flatOptions.length === 0 && !canCreate &&
+              (renderEmpty?.(state) ?? (
+                <AsyncStateMessage>{labels?.empty ?? "No options found"}</AsyncStateMessage>
+              ))}
 
             {!isLoading && !hasError && canCreate && (
               <AsyncCreateButton
@@ -525,7 +638,7 @@ function AsyncSelect<
               optionGroups.map((group, groupIndex) => (
                 <div key={groupIndex}>
                   {group.label && (
-                    <div className="px-2 py-1 text-xs font-medium text-muted-foreground">
+                    <div className="sticky top-0 z-10 bg-popover px-2 py-1 text-xs font-medium text-muted-foreground">
                       {group.label}
                     </div>
                   )}
@@ -563,14 +676,21 @@ function AsyncMultiSelect<
   disabled = false,
   clearable = true,
   cacheOptions = true,
+  cacheTtl = Number.POSITIVE_INFINITY,
   closeOnSelect = false,
   debounceMs = 250,
   minSearchLength = 0,
   maxSelected,
+  showSelectAll = false,
   labels,
   renderOption,
   renderValue,
   renderTag,
+  renderLoading,
+  renderEmpty,
+  renderError,
+  renderMinSearch,
+  renderMaxSelected,
   onCreateOption,
   createOptionLabel,
   showCreateOption,
@@ -592,8 +712,9 @@ function AsyncMultiSelect<
   const [isLoading, setIsLoading] = React.useState(false)
   const [isCreating, setIsCreating] = React.useState(false)
   const [hasError, setHasError] = React.useState(false)
-  const cacheRef = React.useRef(new Map<string, AsyncSelectOptionGroup<TValue, TData, TOption>[]>() )
+  const cacheRef = React.useRef(new Map<string, AsyncSelectCacheEntry<TValue, TData, TOption>>())
   const debouncedSearch = useDebouncedValue(search, debounceMs)
+  const searchKey = debouncedSearch.trim()
   const flatOptions = React.useMemo(() => flattenOptionGroups(optionGroups), [optionGroups])
   const selectedSet = React.useMemo(() => new Set<TValue>(values), [values])
   const allKnownOptions = React.useMemo(
@@ -604,10 +725,21 @@ function AsyncMultiSelect<
     () => getOptionsByValue(values, allKnownOptions),
     [allKnownOptions, values]
   )
+  const state = React.useMemo<AsyncSelectRenderState<TValue, TData, TOption>>(
+    () => ({ search, minSearchLength, options: flatOptions, selectedCount: values.length, maxSelected }),
+    [flatOptions, maxSelected, minSearchLength, search, values.length]
+  )
   const hasValue = values.length > 0
   const canClear = clearable && hasValue && !disabled
   const isMaxReached = typeof maxSelected === "number" && values.length >= maxSelected
-  const canCreate = Boolean(onCreateOption) && (showCreateOption ?? defaultShowCreateOption)(search, flatOptions)
+  const searchTooShort = searchKey.length < minSearchLength
+  const canCreate =
+    !searchTooShort &&
+    Boolean(onCreateOption) &&
+    (showCreateOption ?? defaultShowCreateOption)(search, flatOptions)
+  const visibleSelectableOptions = flatOptions.filter((option) => !option.disabled)
+  const unselectedVisibleOptions = visibleSelectableOptions.filter((option) => !selectedSet.has(option.value))
+  const canSelectAll = showSelectAll && unselectedVisibleOptions.length > 0 && !isMaxReached
 
   React.useEffect(() => {
     setOptionGroups(resolvedDefaultGroups)
@@ -640,15 +772,15 @@ function AsyncMultiSelect<
   React.useEffect(() => {
     if (!open) return
 
-    const searchKey = debouncedSearch.trim()
-
-    if (searchKey.length < minSearchLength) {
+    if (searchTooShort) {
       setOptionGroups(resolvedDefaultGroups)
       return
     }
 
-    if (cacheOptions && cacheRef.current.has(searchKey)) {
-      setOptionGroups(cacheRef.current.get(searchKey) ?? [])
+    const cachedGroups = cacheOptions ? getCachedOptionGroups(cacheRef.current, searchKey, cacheTtl) : undefined
+
+    if (cachedGroups) {
+      setOptionGroups(cachedGroups)
       return
     }
 
@@ -662,7 +794,7 @@ function AsyncMultiSelect<
         const nextOptions = normalizeOptionGroups(await loadOptions(searchKey))
         if (!cancelled) {
           if (cacheOptions) {
-            cacheRef.current.set(searchKey, nextOptions)
+            setCachedOptionGroups(cacheRef.current, searchKey, nextOptions)
           }
           setOptionGroups(nextOptions)
         }
@@ -683,7 +815,7 @@ function AsyncMultiSelect<
     return () => {
       cancelled = true
     }
-  }, [cacheOptions, debouncedSearch, loadOptions, minSearchLength, open, resolvedDefaultGroups])
+  }, [cacheOptions, cacheTtl, loadOptions, open, resolvedDefaultGroups, searchKey, searchTooShort])
 
   const emitChange = (nextValues: TValue[], nextKnownOptions: TOption[]) => {
     onValueChange?.(nextValues, getOptionsByValue(nextValues, nextKnownOptions))
@@ -708,6 +840,17 @@ function AsyncMultiSelect<
     }
   }
 
+  const handleSelectAllVisible = () => {
+    if (!unselectedVisibleOptions.length) return
+
+    const remainingCount = typeof maxSelected === "number" ? Math.max(maxSelected - values.length, 0) : unselectedVisibleOptions.length
+    const nextOptions = unselectedVisibleOptions.slice(0, remainingCount)
+    const nextValues = Array.from(new Set([...values, ...nextOptions.map((option) => option.value)]))
+    const nextKnownOptions = mergeUniqueOptions(allKnownOptions, nextOptions)
+
+    emitChange(nextValues, nextKnownOptions)
+  }
+
   const removeOption = (option: TOption) => {
     emitChange(values.filter((item) => item !== option.value), allKnownOptions)
   }
@@ -719,7 +862,7 @@ function AsyncMultiSelect<
   }
 
   const handleCreate = async () => {
-    if (!onCreateOption || !search.trim()) return
+    if (!onCreateOption || !search.trim() || searchTooShort) return
 
     setIsCreating(true)
 
@@ -823,31 +966,56 @@ function AsyncMultiSelect<
             />
           </div>
 
-          {hasValue && labels?.selectedCount && (
-            <div className="px-2 text-xs text-muted-foreground">
-              {labels.selectedCount(values.length)}
+          <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-muted-foreground">
+            {hasValue && labels?.selectedCount && <span>{labels.selectedCount(values.length)}</span>}
+            {isMaxReached &&
+              (renderMaxSelected?.(state) ?? (
+                <span>{labels?.maxSelected?.(maxSelected ?? values.length) ?? `Maximum ${maxSelected} selected`}</span>
+              ))}
+            <div className="ml-auto flex items-center gap-2">
+              {canSelectAll && (
+                <button type="button" className="font-medium text-foreground hover:underline" onClick={handleSelectAllVisible}>
+                  {labels?.selectAll ?? "Select all"}
+                </button>
+              )}
+              {canClear && (
+                <button type="button" className="font-medium text-foreground hover:underline" onClick={() => onValueChange?.([], [])}>
+                  {labels?.clearAll ?? labels?.clear ?? "Clear all"}
+                </button>
+              )}
             </div>
-          )}
+          </div>
 
           <div className="max-h-64 overflow-y-auto">
-            {isLoading && (
-              <div className="flex items-center gap-2 px-2 py-3 text-sm text-muted-foreground">
-                <Loader2Icon className="size-4 animate-spin" />
-                {labels?.loading ?? "Loading..."}
-              </div>
+            {searchTooShort && flatOptions.length === 0 && (
+              renderMinSearch?.(state) ?? (
+                <AsyncStateMessage>
+                  {labels?.minSearchLength?.(minSearchLength) ?? `Type at least ${minSearchLength} characters`}
+                </AsyncStateMessage>
+              )
             )}
 
-            {!isLoading && hasError && (
-              <div className="px-2 py-3 text-sm text-destructive">
-                {labels?.error ?? "Could not load options"}
-              </div>
-            )}
+            {isLoading &&
+              (renderLoading?.(state) ?? (
+                <AsyncStateMessage>
+                  <span className="inline-flex items-center gap-2">
+                    <Loader2Icon className="size-4 animate-spin" />
+                    {labels?.loading ?? "Loading..."}
+                  </span>
+                </AsyncStateMessage>
+              ))}
 
-            {!isLoading && !hasError && flatOptions.length === 0 && !canCreate && (
-              <div className="px-2 py-3 text-sm text-muted-foreground">
-                {labels?.empty ?? "No options found"}
-              </div>
-            )}
+            {!isLoading && hasError &&
+              (renderError?.(state) ?? (
+                <AsyncStateMessage className="text-destructive">
+                  {labels?.error ?? "Could not load options"}
+                </AsyncStateMessage>
+              ))}
+
+            {!isLoading && !hasError && !searchTooShort && flatOptions.length === 0 && !canCreate &&
+              (renderEmpty?.(state) ?? (
+                <AsyncStateMessage>{labels?.empty ?? "No options found"}</AsyncStateMessage>
+              ))}
 
             {!isLoading && !hasError && canCreate && (
               <AsyncCreateButton
@@ -863,7 +1031,7 @@ function AsyncMultiSelect<
               optionGroups.map((group, groupIndex) => (
                 <div key={groupIndex}>
                   {group.label && (
-                    <div className="px-2 py-1 text-xs font-medium text-muted-foreground">
+                    <div className="sticky top-0 z-10 bg-popover px-2 py-1 text-xs font-medium text-muted-foreground">
                       {group.label}
                     </div>
                   )}
