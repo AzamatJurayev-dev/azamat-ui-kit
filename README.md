@@ -8,10 +8,11 @@ This package should contain UI primitives, reusable wrappers, generic hooks, for
 
 Good candidates:
 
-- Button, Input, Select, Dialog, Table, Badge, Card
+- Button, Input, Textarea, Select, Dialog, Popover, Table, Badge, Card
 - ModalShell, SheetShell, ConfirmDialog, DialogActions
-- Pagination, SimpleSelect, MoneyInput, QuantityInput
-- DataTable, AsyncSelect, FilterBar, EmptyState, LoadingState
+- Pagination, SimpleSelect, AsyncSelect, MoneyInput, QuantityInput
+- FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea
+- DataTable, FilterBar, EmptyState, LoadingState, StatusBadge
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile
 
 Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
@@ -31,7 +32,7 @@ import "azamat-ui-kit/style.css"
 Use components:
 
 ```tsx
-import { Button, ModalShell, Pagination } from "azamat-ui-kit"
+import { Button, AsyncSelect, FormInput, ModalShell, Pagination } from "azamat-ui-kit"
 ```
 
 ## Local development
@@ -62,14 +63,33 @@ npm run build
 src/components/ui/          Base primitives
 src/components/overlay/     Modal, sheet, confirm dialog wrappers
 src/components/navigation/  Pagination and navigation widgets
-src/components/inputs/      Simple input/select wrappers
+src/components/inputs/      Simple and async input/select wrappers
+src/components/form/        React Hook Form wrappers
 src/hooks/                  Generic React hooks
 src/lib/                    Utilities
 ```
 
+## AsyncSelect example
+
+```tsx
+<AsyncSelect
+  value={customerId}
+  onValueChange={setCustomerId}
+  loadOptions={async (search) => {
+    const customers = await customersApi.search(search)
+
+    return customers.map((customer) => ({
+      value: String(customer.id),
+      label: customer.name,
+      data: customer,
+    }))
+  }}
+/>
+```
+
 ## Migration plan
 
-Phase 1 adds low-risk generic wrappers:
+Phase 1 added low-risk generic wrappers:
 
 - ModalShell
 - SheetShell
@@ -83,13 +103,16 @@ Phase 1 adds low-risk generic wrappers:
 - useBeforeUnloadWhenDirty
 - useIsMobile
 
-Phase 2 should add:
+Phase 2 added form and async-select layer:
 
 - AsyncSelect
 - FormFieldShell
 - FormInput
 - FormSelect
 - FormAsyncSelect
+- FormTextarea
+- Textarea export
+- react-hook-form peer dependency
 
 Phase 3 should add:
 
