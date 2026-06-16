@@ -78,6 +78,8 @@ npm run dev
 npm run build
 ```
 
+`npm run dev` opens the playground from `src/App.tsx`. The library entry is still `src/index.ts`.
+
 ## Component rules
 
 1. Components must be generic and reusable.
@@ -114,6 +116,16 @@ npx azamat-ui-kit theme src/index.css
 
 Dark mode works by toggling the `.dark` class on the root/html element.
 
+## Playground
+
+Run the local playground:
+
+```bash
+npm run dev
+```
+
+The playground demonstrates app shell, dashboard widgets, advanced inputs, form wrappers, async selects, data table, action menu, modal, confirm dialog and feedback states.
+
 ## App shell example
 
 ```tsx
@@ -138,31 +150,10 @@ Dark mode works by toggling the `.dark` class on the root/html element.
 
 ```tsx
 <SearchInput value={search} onValueChange={setSearch} placeholder="Search products..." />
-
 <PasswordInput value={password} onValueChange={setPassword} />
-
-<NumberInput
-  value={price}
-  min={0}
-  step={1000}
-  onNumberChange={setPrice}
-/>
-
-<PhoneInput
-  value={phone}
-  onValueChange={(masked, raw) => {
-    setPhoneRaw(raw)
-    setPhoneMasked(masked)
-  }}
-/>
-
-<DateRangeInput
-  value={{ from: dateFrom, to: dateTo }}
-  onValueChange={(range) => {
-    setDateFrom(range.from ?? "")
-    setDateTo(range.to ?? "")
-  }}
-/>
+<NumberInput value={price} min={0} step={1000} onNumberChange={setPrice} />
+<PhoneInput onValueChange={(masked, raw) => console.log(masked, raw)} />
+<DateRangeInput value={{ from, to }} onValueChange={setRange} />
 ```
 
 ## Form example
@@ -218,12 +209,7 @@ function ProductForm() {
       <FormPhoneInput control={form.control} name="phone" label="Phone" valueMode="raw" />
       <FormNumberInput control={form.control} name="price" label="Price" min={0} />
       <FormDateInput control={form.control} name="availableFrom" label="Available from" />
-      <FormDateRangeInput
-        control={form.control}
-        fromName="dateFrom"
-        toName="dateTo"
-        label="Period"
-      />
+      <FormDateRangeInput control={form.control} fromName="dateFrom" toName="dateTo" label="Period" />
       <FormSelect
         control={form.control}
         name="status"
@@ -252,11 +238,7 @@ function ProductForm() {
   }}
   loadOptions={async (search) => {
     const customers = await customersApi.search(search)
-    return customers.map((customer) => ({
-      value: String(customer.id),
-      label: customer.name,
-      data: customer,
-    }))
+    return customers.map((customer) => ({ value: String(customer.id), label: customer.name, data: customer }))
   }}
 />
 ```
@@ -271,6 +253,7 @@ import {
   DataTableColumnVisibilityMenu,
   DataTableSortableHeader,
   FilterBar,
+  SearchInput,
   StatusBadge,
   createDataTableSelectColumn,
 } from "azamat-ui-kit"
@@ -314,7 +297,6 @@ function ProductsTable() {
     <DataTable
       columns={columns}
       data={products}
-      isLoading={isLoading}
       emptyState={{ title: "No products" }}
       toolbarProps={(table) => ({
         title: "Products",
@@ -352,4 +334,6 @@ Phase 7 changed CSS strategy: package entry no longer imports global CSS; `azama
 
 Phase 8 added advanced inputs and form wrappers: ClearableInput, SearchInput, PasswordInput, NumberInput, DateInput, DateRangeInput, FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput.
 
-Next phase should add registry docs site / demo playground.
+Phase 9 added playground and local preview docs.
+
+Next phase should polish registry coverage for every new component.
