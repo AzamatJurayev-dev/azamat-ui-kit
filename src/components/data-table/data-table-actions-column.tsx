@@ -29,7 +29,7 @@ function createDataTableActionsColumn<TData>({
   getActions,
   label,
   emptyLabel,
-}: DataTableActionsColumnOptions<TData>): ColumnDef<TData> {
+}: DataTableActionsColumnOptions<TData> = {}): ColumnDef<TData> {
   return {
     id,
     size,
