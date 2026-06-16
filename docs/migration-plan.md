@@ -103,7 +103,6 @@ Added registry/CLI polish:
 - `npx azamat-ui-kit add ... --dry-run`
 - `npx azamat-ui-kit add ... --skip-install`
 - `registry.json` manifest
-- `docs/cli.md` usage guide
 - package `files` updated to include source templates and registry manifest
 
 CLI examples:
@@ -115,9 +114,27 @@ npx azamat-ui-kit add button input data-table
 npx azamat-ui-kit add form --overwrite
 ```
 
+## Phase 6 - Dashboard helpers
+
+Added dashboard-level reusable components:
+
+- `ActionMenu`
+- `PageHeader`
+- `FilterBar`
+- `StatCard`
+- `DataTableColumnVisibilityMenu`
+
+Rules:
+
+- `ActionMenu` only emits callbacks, it does not navigate by itself
+- `PageHeader` does not know route structure or breadcrumbs shape
+- `FilterBar` receives filters/search/actions through slots
+- `StatCard` is visual only, all data comes through props
+- column visibility is controlled by the provided TanStack table instance
+
 ## Next priority order
 
 1. Layout shell components: `AppShell`, `AppHeader`, `AppSidebar`
-2. DataTable advanced helpers: select column, action menu, column visibility menu
+2. DataTable advanced helpers: select column, row actions, sortable header
 3. Form date picker and masked inputs
 4. Registry docs site / demo playground
