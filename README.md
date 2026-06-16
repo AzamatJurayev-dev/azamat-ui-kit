@@ -25,10 +25,19 @@ Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission,
 npm install github:AzamatJurayev-dev/azamat-ui-kit#master
 ```
 
-Then import styles once in the app entry:
+Initialize the project once:
+
+```bash
+npx azamat-ui-kit init
+```
+
+The package entry does **not** import global CSS. During `init`, the CLI can write Azamat UI Kit theme tokens directly into your app global CSS file, for example `src/index.css`. Keep your own Tailwind imports in the app CSS file, then let the UI kit append the dark/light tokens.
+
+Do not import package CSS manually:
 
 ```ts
-import "azamat-ui-kit/style.css"
+// not needed
+// import "azamat-ui-kit/style.css"
 ```
 
 Use components:
@@ -92,6 +101,21 @@ src/components/data-table/  Generic TanStack Table wrapper and helpers
 src/hooks/                  Generic React hooks
 src/lib/                    Utilities
 ```
+
+## Theme / dark mode
+
+Consumer apps should own the global CSS. The UI kit only uses token-based classes like `bg-background`, `text-foreground`, `border-border`, `bg-card`, `bg-popover`, `text-muted-foreground`.
+
+`npx azamat-ui-kit init` writes a marked block into your global CSS:
+
+```css
+/* azamat-ui-kit theme start */
+:root { /* light tokens */ }
+.dark { /* dark tokens */ }
+/* azamat-ui-kit theme end */
+```
+
+Dark mode works by toggling the `.dark` class on the root/html element. The component package no longer forces a global CSS import from `src/index.ts`.
 
 ## App shell example
 
@@ -314,4 +338,6 @@ Phase 5 added dashboard helpers: ActionMenu, PageHeader, FilterBar, StatCard, Da
 
 Phase 6 added layout/table/input/hook helpers: AppShell, AppHeader, AppSidebar, Checkbox, createDataTableSelectColumn, DataTableSortableHeader, MaskedInput, PhoneInput, useDisclosure, useDebouncedValue, useDebouncedCallback.
 
-Phase 7 should add shadcn-style registry metadata and CLI commands.
+Phase 7 changed CSS strategy: package entry no longer imports global CSS; `azamat-ui-kit init` writes theme/dark-light tokens into the consumer app global CSS file.
+
+Phase 8 should add registry docs site / demo playground.
