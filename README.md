@@ -4,15 +4,17 @@ Personal React + TypeScript UI kit for dashboard projects. The goal is to keep s
 
 ## What belongs here
 
-This package should contain UI primitives, reusable wrappers, generic hooks, formatting helpers, and component registry metadata.
+This package contains UI primitives, reusable wrappers, generic hooks, formatting helpers, CLI/registry helpers, and dashboard-ready components.
 
 Good candidates:
 
 - Button, Input, Textarea, Checkbox, Switch, Select, Dialog, Popover, Table, Badge, Card
 - AppShell, AppHeader, AppSidebar, ActionMenu, PageHeader, FilterBar, StatCard
 - ModalShell, SheetShell, ConfirmDialog, DialogActions
-- Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect, MoneyInput, QuantityInput, MaskedInput, PhoneInput
+- Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect
+- ClearableInput, SearchInput, PasswordInput, NumberInput, MoneyInput, QuantityInput, MaskedInput, PhoneInput, DateInput, DateRangeInput
 - FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch
+- FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput
 - DataTable, DataTablePagination, DataTableToolbar, DataTableColumnVisibilityMenu, DataTableSortableHeader
 - EmptyState, LoadingState, StatusBadge
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile, useDisclosure, useDebouncedValue
@@ -31,7 +33,7 @@ Initialize the project once:
 npx azamat-ui-kit init
 ```
 
-The package entry does **not** import global CSS. During `init`, the CLI can write Azamat UI Kit theme tokens directly into your app global CSS file, for example `src/index.css`. Keep your own Tailwind imports in the app CSS file, then let the UI kit append the dark/light tokens.
+The package entry does **not** import global CSS. During `init`, the CLI can write Azamat UI Kit theme tokens directly into your app global CSS file, for example `src/index.css`.
 
 Do not import package CSS manually:
 
@@ -53,11 +55,16 @@ import {
   Button,
   DataTable,
   FilterBar,
+  FormDateInput,
   FormInput,
+  FormPhoneInput,
+  FormSearchInput,
   FormSwitch,
   ModalShell,
   PageHeader,
+  PasswordInput,
   PhoneInput,
+  SearchInput,
   StatCard,
   StatusBadge,
 } from "azamat-ui-kit"
@@ -68,11 +75,6 @@ import {
 ```bash
 npm install
 npm run dev
-```
-
-Build:
-
-```bash
 npm run build
 ```
 
@@ -94,7 +96,7 @@ src/components/layout/      App shell, sidebar, headers and stat cards
 src/components/filters/     Filter bars
 src/components/overlay/     Modal, sheet, confirm dialog wrappers
 src/components/navigation/  Pagination and navigation widgets
-src/components/inputs/      Simple, async, masked, phone and numeric inputs
+src/components/inputs/      Simple, async, masked, phone, date and numeric inputs
 src/components/form/        React Hook Form wrappers
 src/components/feedback/    Empty, loading and status states
 src/components/data-table/  Generic TanStack Table wrapper and helpers
@@ -104,18 +106,13 @@ src/lib/                    Utilities
 
 ## Theme / dark mode
 
-Consumer apps should own the global CSS. The UI kit only uses token-based classes like `bg-background`, `text-foreground`, `border-border`, `bg-card`, `bg-popover`, `text-muted-foreground`.
+Consumer apps own the global CSS. The UI kit only uses token-based classes like `bg-background`, `text-foreground`, `border-border`, `bg-card`, `bg-popover`, `text-muted-foreground`.
 
-`npx azamat-ui-kit init` writes a marked block into your global CSS:
-
-```css
-/* azamat-ui-kit theme start */
-:root { /* light tokens */ }
-.dark { /* dark tokens */ }
-/* azamat-ui-kit theme end */
+```bash
+npx azamat-ui-kit theme src/index.css
 ```
 
-Dark mode works by toggling the `.dark` class on the root/html element. The component package no longer forces a global CSS import from `src/index.ts`.
+Dark mode works by toggling the `.dark` class on the root/html element.
 
 ## App shell example
 
@@ -137,24 +134,34 @@ Dark mode works by toggling the `.dark` class on the root/html element. The comp
 </AppShell>
 ```
 
-## Dashboard widgets
+## Advanced inputs example
 
 ```tsx
-<div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-  <StatCard title="Revenue" value="$12,400" trend={{ value: "+12%", tone: "success" }} />
-  <StatCard title="Orders" value="320" description="This month" />
-</div>
-```
+<SearchInput value={search} onValueChange={setSearch} placeholder="Search products..." />
 
-## ActionMenu example
+<PasswordInput value={password} onValueChange={setPassword} />
 
-```tsx
-<ActionMenu
-  actions={[
-    { key: "view", label: "View", onSelect: () => openDetail() },
-    { key: "edit", label: "Edit", onSelect: () => openEdit() },
-    { key: "delete", label: "Delete", destructive: true, onSelect: () => remove() },
-  ]}
+<NumberInput
+  value={price}
+  min={0}
+  step={1000}
+  onNumberChange={setPrice}
+/>
+
+<PhoneInput
+  value={phone}
+  onValueChange={(masked, raw) => {
+    setPhoneRaw(raw)
+    setPhoneMasked(masked)
+  }}
+/>
+
+<DateRangeInput
+  value={{ from: dateFrom, to: dateTo }}
+  onValueChange={(range) => {
+    setDateFrom(range.from ?? "")
+    setDateTo(range.to ?? "")
+  }}
 />
 ```
 
@@ -162,22 +169,61 @@ Dark mode works by toggling the `.dark` class on the root/html element. The comp
 
 ```tsx
 import { useForm } from "react-hook-form"
-import { FormInput, FormSelect, FormSwitch, PhoneInput } from "azamat-ui-kit"
+import {
+  FormDateInput,
+  FormDateRangeInput,
+  FormInput,
+  FormNumberInput,
+  FormPasswordInput,
+  FormPhoneInput,
+  FormSearchInput,
+  FormSelect,
+  FormSwitch,
+} from "azamat-ui-kit"
 
 type ProductFormValues = {
+  search: string
   name: string
+  password: string
+  phone: string
+  price: number | null
   status: string
   active: boolean
+  availableFrom: string
+  dateFrom: string
+  dateTo: string
 }
 
 function ProductForm() {
   const form = useForm<ProductFormValues>({
-    defaultValues: { name: "", status: "active", active: true },
+    defaultValues: {
+      search: "",
+      name: "",
+      password: "",
+      phone: "",
+      price: null,
+      status: "active",
+      active: true,
+      availableFrom: "",
+      dateFrom: "",
+      dateTo: "",
+    },
   })
 
   return (
     <form className="grid gap-4">
+      <FormSearchInput control={form.control} name="search" label="Search" />
       <FormInput control={form.control} name="name" label="Name" required />
+      <FormPasswordInput control={form.control} name="password" label="Password" />
+      <FormPhoneInput control={form.control} name="phone" label="Phone" valueMode="raw" />
+      <FormNumberInput control={form.control} name="price" label="Price" min={0} />
+      <FormDateInput control={form.control} name="availableFrom" label="Available from" />
+      <FormDateRangeInput
+        control={form.control}
+        fromName="dateFrom"
+        toName="dateTo"
+        label="Period"
+      />
       <FormSelect
         control={form.control}
         name="status"
@@ -188,7 +234,6 @@ function ProductForm() {
         ]}
       />
       <FormSwitch control={form.control} name="active" label="Active" />
-      <PhoneInput onValueChange={(masked, raw) => console.log(masked, raw)} />
     </form>
   )
 }
@@ -213,41 +258,6 @@ function ProductForm() {
       data: customer,
     }))
   }}
-  onCreateOption={async (search) => {
-    const customer = await customersApi.create({ name: search })
-    return { value: String(customer.id), label: customer.name, data: customer }
-  }}
-/>
-```
-
-## AsyncMultiSelect with groups
-
-```tsx
-<AsyncMultiSelect
-  value={tagIds}
-  onValueChange={setTagIds}
-  labels={{
-    placeholder: "Select tags",
-    selectedCount: (count) => `${count} selected`,
-  }}
-  loadOptions={async (search) => [
-    {
-      label: "System",
-      options: (await tagsApi.system(search)).map((tag) => ({
-        value: String(tag.id),
-        label: tag.name,
-        data: tag,
-      })),
-    },
-    {
-      label: "Custom",
-      options: (await tagsApi.custom(search)).map((tag) => ({
-        value: String(tag.id),
-        label: tag.name,
-        data: tag,
-      })),
-    },
-  ]}
 />
 ```
 
@@ -308,7 +318,7 @@ function ProductsTable() {
       emptyState={{ title: "No products" }}
       toolbarProps={(table) => ({
         title: "Products",
-        search: <FilterBar search={<input placeholder="Search" />} />,
+        search: <FilterBar search={<SearchInput placeholder="Search" />} />,
         actions: <DataTableColumnVisibilityMenu table={table} />,
       })}
       pagination={{
@@ -340,4 +350,6 @@ Phase 6 added layout/table/input/hook helpers: AppShell, AppHeader, AppSidebar, 
 
 Phase 7 changed CSS strategy: package entry no longer imports global CSS; `azamat-ui-kit init` writes theme/dark-light tokens into the consumer app global CSS file.
 
-Phase 8 should add registry docs site / demo playground.
+Phase 8 added advanced inputs and form wrappers: ClearableInput, SearchInput, PasswordInput, NumberInput, DateInput, DateRangeInput, FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput.
+
+Next phase should add registry docs site / demo playground.
