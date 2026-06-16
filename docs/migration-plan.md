@@ -54,31 +54,6 @@ Enhanced async select layer:
 - local option cache
 - selected count labels
 
-Core API:
-
-```tsx
-<AsyncSelect
-  value={value}
-  onValueChange={setValue}
-  loadSelectedOption={async (id) => customersApi.getOptionById(id)}
-  loadOptions={async (search) => customersApi.searchOptions(search)}
-  onCreateOption={async (search) => customersApi.createOption(search)}
-/>
-```
-
-Grouped API:
-
-```tsx
-<AsyncMultiSelect
-  value={values}
-  onValueChange={setValues}
-  loadOptions={async (search) => [
-    { label: "System", options: await loadSystemOptions(search) },
-    { label: "Custom", options: await loadCustomOptions(search) },
-  ]}
-/>
-```
-
 Rules:
 
 - Core component must not import `$api`
@@ -86,21 +61,28 @@ Rules:
 - Cache and create behavior must be optional
 - Multi select must emit both values and selected options
 
-## Phase 4 - DataTable
+## Phase 4 - DataTable and feedback
 
-Refactor existing `AppTable` into generic `DataTable`.
+Added data display layer:
 
-Target features:
+- `DataTable`
+- `DataTablePagination`
+- `DataTableToolbar`
+- `EmptyState`
+- `LoadingState`
+- `StatusBadge`
 
-- TanStack Table support
+Supported features:
+
+- TanStack Table columns and cells
 - controlled pagination
-- row selection
-- expandable rows
-- column visibility
+- row selection state wiring
+- sorting state wiring
+- column visibility state wiring
 - loading/empty/error states
-- card view for mobile
+- mobile card renderer
 - toolbar slot
-- bulk action slot
+- selection action area
 
 Rules:
 
@@ -108,6 +90,7 @@ Rules:
 - No project resource state imports
 - No route or query-param dependency in core
 - App-specific filters stay outside
+- Bulk actions must be passed through toolbar/selection action slots
 
 ## Phase 5 - Registry and CLI
 
@@ -129,7 +112,7 @@ npx azamat-ui-kit add button pagination data-table
 
 ## Priority order
 
-1. DataTable
-2. EmptyState / LoadingState / StatusBadge
-3. Registry/CLI polish
-4. Layout shell components
+1. Registry/CLI polish
+2. Layout shell components
+3. DataTable advanced helpers: select column, action menu, column visibility menu
+4. Form date picker and masked inputs
