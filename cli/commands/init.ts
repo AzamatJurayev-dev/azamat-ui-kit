@@ -4,6 +4,7 @@ import prompts from "prompts";
 import { logger } from "../utils/logger";
 import { detectPackageManager } from "../utils/detect-package-manager";
 import { installPackages } from "../utils/install-packages";
+import { AZAMAT_UI_THEME_MARKER, azamatUiThemeCss } from "../templates/theme-css";
 
 const baseDependencies = [
   "@base-ui/react",
@@ -21,7 +22,27 @@ type InitResponse = {
   uiPath: string;
   hooksPath: string;
   utilsPath: string;
+  globalCssPath: string;
+  writeThemeCss: boolean;
 };
+
+async function ensureThemeCss(cssPath: string) {
+  await fs.ensureDir(path.dirname(cssPath));
+
+  const currentCss = fs.existsSync(cssPath) ? await fs.readFile(cssPath, "utf8") : "";
+
+  if (currentCss.includes(AZAMAT_UI_THEME_MARKER)) {
+    logger.warn("Azamat UI Kit theme CSS allaqachon mavjud. O‘tkazib yuborildi.");
+    return;
+  }
+
+  const nextCss = currentCss.trim().length > 0
+    ? `${currentCss.trimEnd()}\n${azamatUiThemeCss}\n`
+    : `${azamatUiThemeCss.trimStart()}\n`;
+
+  await fs.writeFile(cssPath, nextCss);
+  logger.success(`${cssPath} ichiga Azamat UI Kit theme CSS qo‘shildi.`);
+}
 
 export async function initCommand() {
   const cwd = process.cwd();
@@ -69,6 +90,18 @@ export async function initCommand() {
       message: "utils.ts qayerga yozilsin?",
       initial: "src/lib/utils.ts",
     },
+    {
+      type: "text",
+      name: "globalCssPath",
+      message: "Theme tokenlar qaysi global CSS faylga yozilsin?",
+      initial: "src/index.css",
+    },
+    {
+      type: "confirm",
+      name: "writeThemeCss",
+      message: "Dark/light theme tokenlarni global CSS faylga yozaymi?",
+      initial: true,
+    },
   ])) as InitResponse;
 
   const packageManager = detectPackageManager(cwd);
@@ -88,6 +121,7 @@ export async function initCommand() {
     alias: response.alias || "@",
     componentsPath: response.uiPath,
     utilsPath: response.utilsPath,
+    globalCssPath: response.globalCssPath,
     paths: {
       components: response.componentsPath,
       ui: response.uiPath,
@@ -114,6 +148,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 `
     );
+  }
+
+  if (response.writeThemeCss && response.globalCssPath) {
+    await ensureThemeCss(path.join(cwd, response.globalCssPath));
   }
 
   logger.success("Azamat UI Kit init qilindi.");
