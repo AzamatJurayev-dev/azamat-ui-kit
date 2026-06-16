@@ -1,0 +1,75 @@
+{
+  "$schema": "https://azamat-ui-kit.dev/registry.schema.json",
+  "name": "azamat-ui-kit",
+  "version": "0.0.1",
+  "description": "Reusable React + TypeScript UI kit registry",
+  "commands": {
+    "init": "npx azamat-ui-kit init",
+    "list": "npx azamat-ui-kit list",
+    "add": "npx azamat-ui-kit add <components...>"
+  },
+  "groups": {
+    "ui": [
+      "button",
+      "input",
+      "textarea",
+      "switch",
+      "badge",
+      "card",
+      "dialog",
+      "dropdown-menu",
+      "popover",
+      "select",
+      "table"
+    ],
+    "overlay": [
+      "dialog-actions",
+      "modal-shell",
+      "confirm-dialog",
+      "sheet-shell"
+    ],
+    "inputs": [
+      "simple-select",
+      "async-select",
+      "money-input",
+      "quantity-input"
+    ],
+    "form": [
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-async-select",
+      "form-textarea",
+      "form-switch"
+    ],
+    "feedback": [
+      "empty-state",
+      "loading-state",
+      "status-badge"
+    ],
+    "data-table": [
+      "data-table",
+      "data-table-pagination",
+      "data-table-toolbar"
+    ]
+  },
+  "recommended": [
+    "button",
+    "input",
+    "textarea",
+    "switch",
+    "dialog",
+    "popover",
+    "select",
+    "pagination",
+    "simple-select",
+    "async-select",
+    "form-input",
+    "form-select",
+    "form-switch",
+    "empty-state",
+    "loading-state",
+    "status-badge",
+    "data-table"
+  ]
+}
