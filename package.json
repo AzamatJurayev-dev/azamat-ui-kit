@@ -20,6 +20,7 @@
   "files": [
     "dist",
     "src",
+    "docs",
     "registry.json",
     "README.md"
   ],
@@ -28,6 +29,7 @@
     "build": "tsc -b && vite build && tsup",
     "build:lib": "tsc -b && vite build",
     "build:cli": "tsup",
+    "prepare": "npm run build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
