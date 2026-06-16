@@ -117,9 +117,32 @@ Rules:
 - registry entries must point to source files, not stale inline templates
 - component copy mode must stay API/business independent
 
+## Phase 14 - DataTable hardening
+
+Improved existing `DataTable` without changing its default usage:
+
+- `density`: `compact`, `default`, `comfortable`
+- `striped` rows
+- `bordered` cells
+- `stickyHeader`
+- skeleton loading rows through `loadingVariant="skeleton"`
+- `onRowDoubleClick`
+- `getRowDisabled`
+- `cellFallback`
+- `headerCellClassName` and `cellClassName` callbacks
+- improved mobile loading fallback
+
+Rules:
+
+- all new behavior is optional and backward-compatible
+- no API, route, permission or project state dependency is introduced
+- visual variants are controlled by props only
+
 ## Next priority order
 
-1. Docs site from playground examples
-2. App shell advanced responsive sidebar helpers
-3. Component tests and accessibility smoke checks
-4. Registry validation script
+1. AsyncSelect hardening
+2. Form components hardening
+3. Upload components hardening
+4. Toast / CommandPalette hardening
+5. App shell advanced responsive sidebar helpers
+6. Component tests and accessibility smoke checks
