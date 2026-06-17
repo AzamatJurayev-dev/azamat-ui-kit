@@ -1,16 +1,16 @@
 # Theme CSS strategy
 
-Azamat UI Kit supports two styling modes.
+Azamat UI Kit uses a CSS-first styling strategy. Components expose stable `data-slot` attributes and read visual decisions from CSS variables. The goal is to avoid creating many duplicate components only for styling differences.
 
 ## 1. Package mode
 
-When importing the package directly:
+When importing the package directly, app styles are bundled from the package build.
 
 ```ts
 import "azamat-ui-kit/style.css"
 ```
 
-Use this when components are consumed from `node_modules`.
+Use this only when components are consumed as a normal package from `node_modules`.
 
 ## 2. CLI / copy mode
 
@@ -62,21 +62,68 @@ function setTheme(theme: "light" | "dark") {
 }
 ```
 
-Components use CSS variables such as:
+## Token layers
+
+Components use base shadcn-style tokens:
 
 ```txt
-bg-background
-text-foreground
-bg-card
-text-muted-foreground
-border-border
-ring-ring
+--background
+--foreground
+--card
+--popover
+--primary
+--secondary
+--muted
+--accent
+--destructive
+--border
+--input
+--ring
+--sidebar
 ```
 
-That means every project can customize color tokens in its own `index.css` without changing component source code.
+Azamat UI Kit also adds component-level tokens:
+
+```txt
+--aui-control-radius
+--aui-control-shadow
+--aui-card-radius
+--aui-card-border
+--aui-card-shadow
+--aui-popover-shadow
+--aui-table-header-bg
+--aui-table-row-hover-bg
+--aui-table-row-selected-bg
+```
+
+These tokens can be overridden in the consumer app:
+
+```css
+:root {
+  --aui-control-radius: 0.75rem;
+  --aui-card-radius: 1rem;
+  --aui-card-shadow: 0 12px 32px oklch(0 0 0 / 8%);
+  --aui-table-header-bg: color-mix(in oklch, var(--primary), transparent 94%);
+}
+```
+
+## Slot-based styling
+
+Reusable components expose `data-slot`. The theme layer uses those slots to polish components globally:
+
+```css
+[data-slot="card"] {
+  border-radius: var(--aui-card-radius);
+  box-shadow: var(--aui-card-shadow);
+}
+
+[data-slot="data-table-wrapper"] thead {
+  background: var(--aui-table-header-bg);
+}
+```
+
+This keeps styling centralized in CSS and keeps component APIs clean.
 
 ## Rule
 
-Reusable components must not import project CSS directly.
-The app owns global theme CSS.
-The UI kit only provides the theme block and utilities.
+Reusable components must not import project CSS directly. The app owns global theme CSS. The UI kit provides tokens, slots and safe default styles.
