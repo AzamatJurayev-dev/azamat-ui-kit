@@ -322,10 +322,28 @@ Rules:
 - input behavior should be controlled by props and callbacks, not project-specific components
 - all examples stay local/mock and API-free
 
+## Phase 25 - CommandPalette hardening
+
+Improved existing `CommandPalette` without adding router/API coupling:
+
+- async `loadItems(search)` groups
+- debounced search loading through `debounceMs`
+- recent commands with configurable label and limit
+- custom `filterItem`, `renderEmpty`, and `renderLoading`
+- per-item `closeOnSelect`, `disabledReason`, and async `onSelect`
+- loading indicators for groups and selected items
+- documented async command and recent-command usage in `docs/notifications-command.md`
+
+Rules:
+
+- command palette remains generic and does not navigate by itself
+- API clients, permissions, auth and routing stay in the consuming app
+- async loaders are optional and passed through props
+- existing static `groups/items` usage remains backward-compatible
+
 ## Next priority order
 
 1. Templates section polish
-2. CommandPalette hardening
-3. App shell advanced responsive sidebar helpers
-4. FormBuilder / ResourcePage planning on top of existing components
-5. Component tests and accessibility smoke checks
+2. App shell advanced responsive sidebar helpers
+3. FormBuilder / ResourcePage planning on top of existing components
+4. Component tests and accessibility smoke checks
