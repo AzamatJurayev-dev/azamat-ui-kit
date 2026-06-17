@@ -1,10 +1,10 @@
 import * as React from "react"
-import { AlertCircleIcon, CheckCircle2Icon, InfoIcon, TriangleAlertIcon, XIcon } from "lucide-react"
+import { AlertCircleIcon, CheckCircle2Icon, InfoIcon, Loader2Icon, TriangleAlertIcon, XIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-export type ToastTone = "default" | "success" | "info" | "warning" | "danger"
+export type ToastTone = "default" | "success" | "info" | "warning" | "danger" | "loading"
 
 export type ToastItem = {
   id: string
@@ -20,12 +20,26 @@ export type CreateToastInput = Omit<ToastItem, "id"> & {
   id?: string
 }
 
+export type ToastShortcutInput = React.ReactNode | CreateToastInput
+
+export type ToastPromiseMessages<TData = unknown> = {
+  loading: ToastShortcutInput
+  success: ToastShortcutInput | ((data: TData) => ToastShortcutInput)
+  error: ToastShortcutInput | ((error: unknown) => ToastShortcutInput)
+}
+
 export type ToastContextValue = {
   toasts: ToastItem[]
   addToast: (toast: CreateToastInput) => string
   updateToast: (id: string, toast: Partial<Omit<ToastItem, "id">>) => void
   dismissToast: (id: string) => void
   clearToasts: () => void
+  success: (toast: ToastShortcutInput) => string
+  info: (toast: ToastShortcutInput) => string
+  warning: (toast: ToastShortcutInput) => string
+  error: (toast: ToastShortcutInput) => string
+  loading: (toast: ToastShortcutInput) => string
+  promise: <TData>(promise: Promise<TData>, messages: ToastPromiseMessages<TData>) => Promise<TData>
 }
 
 const ToastContext = React.createContext<ToastContextValue | null>(null)
@@ -36,6 +50,7 @@ const toneClassName: Record<ToastTone, string> = {
   info: "border-blue-500/20 bg-blue-500/10 text-blue-950 dark:text-blue-100",
   warning: "border-amber-500/20 bg-amber-500/10 text-amber-950 dark:text-amber-100",
   danger: "border-destructive/20 bg-destructive/10 text-destructive",
+  loading: "border-border bg-popover text-popover-foreground",
 }
 
 const toneIcon: Record<ToastTone, React.ReactNode> = {
@@ -44,15 +59,33 @@ const toneIcon: Record<ToastTone, React.ReactNode> = {
   info: <InfoIcon className="size-4" />,
   warning: <TriangleAlertIcon className="size-4" />,
   danger: <AlertCircleIcon className="size-4" />,
+  loading: <Loader2Icon className="size-4 animate-spin" />,
 }
 
 function createToastId() {
   return `toast-${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
+function isToastObject(toast: ToastShortcutInput): toast is CreateToastInput {
+  return typeof toast === "object" && toast !== null && !React.isValidElement(toast) && !Array.isArray(toast)
+}
+
+function normalizeShortcutToast(toast: ToastShortcutInput, tone: ToastTone): CreateToastInput {
+  if (isToastObject(toast)) {
+    return { ...toast, tone: toast.tone ?? tone }
+  }
+
+  return { title: toast, tone }
+}
+
+function resolveToastMessage<TData>(message: ToastShortcutInput | ((data: TData) => ToastShortcutInput), data: TData) {
+  return typeof message === "function" ? message(data) : message
+}
+
 export type ToastProviderProps = React.PropsWithChildren<{
   defaultDuration?: number
   maxToasts?: number
+  pauseOnHover?: boolean
   position?: "top-right" | "top-left" | "bottom-right" | "bottom-left" | "top-center" | "bottom-center"
 }>
 
@@ -69,6 +102,7 @@ function ToastProvider({
   children,
   defaultDuration = 4000,
   maxToasts = 5,
+  pauseOnHover = true,
   position = "top-right",
 }: ToastProviderProps) {
   const [toasts, setToasts] = React.useState<ToastItem[]>([])
@@ -103,9 +137,51 @@ function ToastProvider({
     setToasts([])
   }, [])
 
+  const success = React.useCallback((toast: ToastShortcutInput) => addToast(normalizeShortcutToast(toast, "success")), [addToast])
+  const info = React.useCallback((toast: ToastShortcutInput) => addToast(normalizeShortcutToast(toast, "info")), [addToast])
+  const warning = React.useCallback((toast: ToastShortcutInput) => addToast(normalizeShortcutToast(toast, "warning")), [addToast])
+  const error = React.useCallback((toast: ToastShortcutInput) => addToast(normalizeShortcutToast(toast, "danger")), [addToast])
+  const loading = React.useCallback((toast: ToastShortcutInput) => addToast({ duration: 0, ...normalizeShortcutToast(toast, "loading") }), [addToast])
+
+  const promise = React.useCallback(
+    async <TData,>(targetPromise: Promise<TData>, messages: ToastPromiseMessages<TData>) => {
+      const id = addToast({ duration: 0, dismissible: false, ...normalizeShortcutToast(messages.loading, "loading") })
+
+      try {
+        const data = await targetPromise
+        updateToast(id, {
+          duration: defaultDuration,
+          dismissible: true,
+          ...normalizeShortcutToast(resolveToastMessage(messages.success, data), "success"),
+        })
+        return data
+      } catch (promiseError) {
+        updateToast(id, {
+          duration: defaultDuration,
+          dismissible: true,
+          ...normalizeShortcutToast(resolveToastMessage(messages.error, promiseError), "danger"),
+        })
+        throw promiseError
+      }
+    },
+    [addToast, defaultDuration, updateToast]
+  )
+
   const value = React.useMemo<ToastContextValue>(
-    () => ({ toasts, addToast, updateToast, dismissToast, clearToasts }),
-    [addToast, clearToasts, dismissToast, toasts, updateToast]
+    () => ({
+      toasts,
+      addToast,
+      updateToast,
+      dismissToast,
+      clearToasts,
+      success,
+      info,
+      warning,
+      error,
+      loading,
+      promise,
+    }),
+    [addToast, clearToasts, dismissToast, error, info, loading, promise, success, toasts, updateToast, warning]
   )
 
   return (
@@ -116,23 +192,33 @@ function ToastProvider({
         className={cn("fixed z-[100] flex w-[min(100%-2rem,24rem)] flex-col gap-2", positionClassName[position])}
       >
         {toasts.map((toast) => (
-          <ToastCard key={toast.id} toast={toast} onDismiss={dismissToast} />
+          <ToastCard key={toast.id} toast={toast} pauseOnHover={pauseOnHover} onDismiss={dismissToast} />
         ))}
       </div>
     </ToastContext.Provider>
   )
 }
 
-function ToastCard({ toast, onDismiss }: { toast: ToastItem; onDismiss: (id: string) => void }) {
+function ToastCard({
+  toast,
+  pauseOnHover,
+  onDismiss,
+}: {
+  toast: ToastItem
+  pauseOnHover: boolean
+  onDismiss: (id: string) => void
+}) {
   const tone = toast.tone ?? "default"
+  const [hovered, setHovered] = React.useState(false)
 
   React.useEffect(() => {
     if (toast.duration === Infinity || toast.duration === 0) return
+    if (pauseOnHover && hovered) return
 
     const timer = window.setTimeout(() => onDismiss(toast.id), toast.duration ?? 4000)
 
     return () => window.clearTimeout(timer)
-  }, [onDismiss, toast.duration, toast.id])
+  }, [hovered, onDismiss, pauseOnHover, toast.duration, toast.id])
 
   return (
     <div
@@ -141,6 +227,8 @@ function ToastCard({ toast, onDismiss }: { toast: ToastItem; onDismiss: (id: str
       className={cn("flex gap-3 rounded-lg border p-3 shadow-lg backdrop-blur", toneClassName[tone])}
       role="status"
       aria-live="polite"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div className="mt-0.5 shrink-0">{toneIcon[tone]}</div>
       <div className="min-w-0 flex-1 space-y-1">
