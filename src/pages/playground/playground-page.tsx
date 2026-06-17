@@ -3,6 +3,7 @@ import {
   BellIcon,
   CalendarDaysIcon,
   CommandIcon,
+  FileTextIcon,
   Grid2X2Icon,
   LayersIcon,
   ListChecksIcon,
@@ -34,6 +35,8 @@ import {
   CardHeader,
   CardTitle,
   CommandPalette,
+  EmptyState,
+  LoadingState,
   PageContainer,
   PageHeader,
   SidebarNav,
@@ -43,6 +46,7 @@ import {
 } from "@/index"
 
 import { CalendarSection } from "./playground-calendar"
+import { DisplaySection } from "./playground-display"
 import { LandingSection } from "./playground-landing"
 import { TemplatesSection, TemplateShowcasePage, getTemplateBySlug, getTemplateRoute } from "./playground-templates"
 import { FoundationSection } from "./playground-foundation"
@@ -84,6 +88,7 @@ const componentPages: Omit<ComponentPageDefinition, "path" | "element">[] = [
   { id: "foundation", slug: "foundation", title: "Foundation", description: "Primitives, tokens, base controls", icon: <SparklesIcon className="size-4" /> },
   { id: "inputs", slug: "inputs", title: "Inputs", description: "Input, select, textarea and field behavior", icon: <SettingsIcon className="size-4" /> },
   { id: "forms", slug: "forms", title: "Forms", description: "Form patterns with validation and state", icon: <ListChecksIcon className="size-4" /> },
+  { id: "display", slug: "display", title: "Display", description: "Descriptions, timelines, progress and result states", icon: <FileTextIcon className="size-4" /> },
   { id: "table", slug: "table", title: "Data table", description: "Sorting, pagination, selection and actions", icon: <LayersIcon className="size-4" /> },
   { id: "upload", slug: "upload", title: "Upload", description: "Dropzones, file metadata, and progress patterns", icon: <UploadCloudIcon className="size-4" /> },
   { id: "calendar", slug: "calendar", title: "Calendar", description: "Calendar picker and schedule UI", icon: <CalendarDaysIcon className="size-4" /> },
@@ -92,17 +97,17 @@ const componentPages: Omit<ComponentPageDefinition, "path" | "element">[] = [
 
 function ComponentsIndexPage({ sections }: { sections: ComponentPageDefinition[] }) {
   return (
-        <section className="grid gap-4">
+    <section className="grid gap-4">
       <Card>
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
             <div>
               <CardTitle>Components dashboard</CardTitle>
               <CardDescription>
-                Barcha section'lar uchun alohida page route'lari mavjud: `Foundation`, `Inputs`, `Forms`, `Data table`, `Upload`, `Calendar`, `Overlay`.
+                Barcha section'lar uchun alohida page route'lari mavjud: Foundation, Inputs, Forms, Display, Data table, Upload, Calendar, Overlay.
               </CardDescription>
             </div>
-              <Badge>7 bo‘limdan 1</Badge>
+            <Badge>{sections.length} bo‘lim</Badge>
           </div>
         </CardHeader>
         <CardContent>
@@ -228,8 +233,9 @@ function ComponentShell({
           ...sections.map((section) => ({
             id: section.slug,
             label: section.title,
+            description: section.description,
             icon: section.icon,
-            shortcut: "",
+            keywords: [section.slug, section.title.toLowerCase(), section.description.toLowerCase()],
             onSelect: () => {
               navigate(section.path)
               onCommandOpen(false)
@@ -253,12 +259,38 @@ function ComponentShell({
         items: templateCatalog.map((template) => ({
           id: template.id,
           label: template.title,
+          description: template.description,
           icon: <BookOpenIcon className="size-4" />,
+          keywords: [template.category, template.focus, ...template.modules],
           onSelect: () => {
             navigate(getTemplateRoute(template.id))
             onCommandOpen(false)
           },
         })),
+      },
+      {
+        id: "async-demo",
+        label: "Async search demo",
+        loadingLabel: "Loading mock commands...",
+        emptyLabel: "No async command matched.",
+        loadItems: async (search: string) => {
+          await new Promise((resolve) => window.setTimeout(resolve, 220))
+          const normalized = search.trim().toLowerCase()
+          if (!normalized) return []
+
+          return sections
+            .filter((section) => [section.title, section.description, section.slug].join(" ").toLowerCase().includes(normalized))
+            .map((section) => ({
+              id: `async-${section.slug}`,
+              label: `Open ${section.title}`,
+              description: "Loaded from async command group",
+              icon: section.icon,
+              onSelect: () => {
+                navigate(section.path)
+                onCommandOpen(false)
+              },
+            }))
+        },
       },
       {
         id: "actions",
@@ -278,13 +310,14 @@ function ComponentShell({
             id: "toast",
             label: "Show success toast",
             icon: <BellIcon className="size-4" />,
-            onSelect: () => {
+            closeOnSelect: false,
+            onSelect: async () => {
+              await new Promise((resolve) => window.setTimeout(resolve, 250))
               addToast({
                 tone: "success",
                 title: "Command executed",
                 description: "Modern route navigation triggered from command palette.",
               })
-              onCommandOpen(false)
             },
           },
           {
@@ -293,7 +326,7 @@ function ComponentShell({
             icon: <CommandIcon className="size-4" />,
             onSelect: () => {
               onCommandOpen(false)
-              setTimeout(() => {
+              window.setTimeout(() => {
                 onCommandOpen(true)
               }, 0)
             },
@@ -420,7 +453,15 @@ function ComponentShell({
       }
       mainClassName="p-4 lg:p-6"
     >
-      <CommandPalette open={openCommand} onOpenChange={onCommandOpen} groups={commandGroups} />
+      <CommandPalette
+        open={openCommand}
+        onOpenChange={onCommandOpen}
+        groups={commandGroups}
+        debounceMs={220}
+        recent={{ enabled: true, label: "Recently used", limit: 5 }}
+        renderEmpty={(search) => <EmptyState title="No commands" description={search ? `No command matched ${search}.` : "Start typing to search commands."} compact />}
+        renderLoading={() => <LoadingState label="Loading commands" />}
+      />
 
       <PageContainer size="xl" className="playground-shell playground-page">
         <PageHeader
@@ -465,6 +506,8 @@ export default function PlaygroundPage() {
               <InputsSection />
             ) : section.slug === "forms" ? (
               <FormsSection />
+            ) : section.slug === "display" ? (
+              <DisplaySection />
             ) : section.slug === "table" ? (
               <TableSection />
             ) : section.slug === "upload" ? (
