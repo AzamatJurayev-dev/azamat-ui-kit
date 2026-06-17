@@ -237,8 +237,29 @@ Rules:
 - the UI kit does not perform API requests
 - existing `addToast`, `updateToast`, `dismissToast`, `clearToasts` APIs remain available
 
+## Phase 20 - Playground full showcase
+
+Expanded the dev playground into a broad manual QA surface:
+
+- app shell, sidebar, breadcrumbs and page header
+- primitive buttons, badges, cards, checkbox and switch
+- standalone inputs, selects, async select and multi-select
+- hardened form wrappers and field shell layouts
+- hardened DataTable states: density, skeleton, sticky header, actions and selection
+- upload, image preview, calendar and date pickers
+- overlays, command palette, toast, stepper and wizard
+- CSS-first token controls for theme/radius checks
+
+Rules:
+
+- playground uses local mock data only
+- playground should show important props/states before components are reused in real apps
+- visual differences should be demonstrated through props, slots and CSS tokens, not duplicate component names
+
 ## Next priority order
 
 1. CommandPalette hardening
 2. App shell advanced responsive sidebar helpers
-3. Component tests and accessibility smoke checks
+3. DataTable API consolidation
+4. FormBuilder / ResourcePage planning
+5. Component tests and accessibility smoke checks
