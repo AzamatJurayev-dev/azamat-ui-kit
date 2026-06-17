@@ -308,9 +308,23 @@ Rules:
 - examples must use mock/local state only
 - section polish should reuse shared playground wrappers instead of ad-hoc layouts
 
+## Phase 24 - Foundation and Inputs polish
+
+Finished the remaining high-traffic component sections:
+
+- polished Foundation with metrics, button matrix, status language, primitive fields, radius controls, CSS token map and preview examples
+- polished Inputs with metrics, async controls, controlled state summary, token guidance, complete input/select suite preview and state cards
+- added stronger usage guidance for one-component/many-states, parser/formatter/loader props, and CSS-first input styling
+
+Rules:
+
+- foundation primitives should be the shared language for bigger components
+- input behavior should be controlled by props and callbacks, not project-specific components
+- all examples stay local/mock and API-free
+
 ## Next priority order
 
-1. Finish any remaining section gaps in Foundation/Inputs/Templates
+1. Templates section polish
 2. CommandPalette hardening
 3. App shell advanced responsive sidebar helpers
 4. FormBuilder / ResourcePage planning on top of existing components
