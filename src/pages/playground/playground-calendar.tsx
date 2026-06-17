@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react"
-import { Button, Calendar, DatePicker, DateRangePicker } from "@/index"
-import { DemoSection, PlaygroundCard, PlaygroundUsage } from "./playground-ui"
+import { CalendarCheckIcon, CalendarRangeIcon, ClockIcon, ListTodoIcon } from "lucide-react"
+
+import { Badge, Button, Calendar, Card, CardContent, CardDescription, CardHeader, CardTitle, ComponentPreview, DatePicker, DateRangePicker, StatusBadge } from "@/index"
+import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
 
 type CalendarEvent = {
   id: string
@@ -91,151 +93,175 @@ export function CalendarSection() {
     <DemoSection
       sectionIndex={7}
       id="calendar"
+      eyebrow="Date controls"
       title="Calendar and pickers"
-      description="Single/range calendar and picker controls with mock analytics, presets and validation."
+      description="Single/range calendar and picker controls with presets, constraints, derived analytics and interaction history."
+      action={<StatusBadge tone={calendarError ? "danger" : calendarLoading ? "info" : "success"} dot>{calendarError ? "Error" : calendarLoading ? "Async" : "Ready"}</StatusBadge>}
     >
-      <div className="mb-3 flex flex-wrap gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setCalendarLoading((value) => !value)}
-        >
-          {calendarLoading ? "Stop async mode" : "Simulate async mode"}
-        </Button>
-        <Button
-          variant={calendarError ? "secondary" : "outline"}
-          size="sm"
-          onClick={() => {
-            setCalendarError((value) => !value)
-            addHistory(calendarError ? "Calendar error cleared." : "Calendar error simulated.")
-          }}
-        >
-          {calendarError ? "Clear error" : "Simulate error"}
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => setRangePreset("week")}>
-          Preset: Week
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => setRangePreset("month")}>
-          Preset: Month
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => setRangePreset("quarter")}>
-          Preset: Quarter
-        </Button>
-        <Button variant={pickerLocked ? "secondary" : "outline"} size="sm" onClick={() => setPickerLocked((value) => !value)}>
-          {pickerLocked ? "Enable pickers" : "Lock pickers"}
-        </Button>
-        <Button variant="outline" size="sm" onClick={() => setShowConstraints((value) => !value)}>
-          Constraints: {showConstraints ? "ON" : "OFF"}
-        </Button>
-        <Button variant="outline" size="sm" onClick={clearDateState}>
-          Clear selections
-        </Button>
-      </div>
+      <section className="mb-4 grid gap-4 md:grid-cols-4">
+        <Card>
+          <CardHeader>
+            <CardDescription>Selected date</CardDescription>
+            <CardTitle className="flex items-center gap-2 text-2xl"><CalendarCheckIcon className="size-5 text-primary" />{calendarDate}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">Single calendar state</CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardDescription>Range days</CardDescription>
+            <CardTitle className="flex items-center gap-2 text-3xl"><CalendarRangeIcon className="size-5 text-primary" />{totalRangeDays}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">Derived from from/to keys</CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardDescription>Events</CardDescription>
+            <CardTitle className="text-3xl">{rangeEvents.length}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">In selected range</CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardDescription>Constraints</CardDescription>
+            <CardTitle className="text-2xl">{showConstraints ? "ON" : "OFF"}</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-muted-foreground">Min/max + disabled dates</CardContent>
+        </Card>
+      </section>
 
-      <div className="grid gap-4 lg:grid-cols-4">
-        <PlaygroundCard title="Calendar single" description="Primary single date selection">
-          <Calendar
-            value={calendarDate}
-            onValueChange={(value) => {
-              setCalendarDate(value)
-              addHistory(`Single date set to ${value}.`)
-            }}
-          />
-          <p className="mt-2 text-xs text-muted-foreground">
-            Status: {calendarLoading ? "loading" : calendarError ? "error" : "ready"} • Selected: {calendarDate || "—"}
-          </p>
-        </PlaygroundCard>
-
-        <PlaygroundCard title="Calendar range" description="Range selection + event count">
-          <Calendar
-            mode="range"
-            range={calendarRange}
-            onRangeChange={(value) => {
-              setCalendarRange({ from: value.from ?? "", to: value.to ?? "" })
-              addHistory(`Range changed to ${value.from || "—"} / ${value.to || "—"}.`)
-            }}
-          />
-          <p className="mt-2 text-xs text-muted-foreground">
-            Days: {totalRangeDays} • In-window events: {rangeEvents.length}
-          </p>
-        </PlaygroundCard>
-
-        <PlaygroundCard title="DatePicker" description="Popover date input">
-          <DatePicker
-            value={pickerDate}
-            onValueChange={(value) => {
-              setPickerDate(value)
-              addHistory(`DatePicker changed to ${value}.`)
-            }}
-            disabled={pickerLocked}
-          />
-          <p className="mt-2 text-xs text-muted-foreground">ISO date: {pickerDate}</p>
-        </PlaygroundCard>
-
-        <PlaygroundCard title="DateRangePicker" description="Pair selector and validation">
-          <DateRangePicker
-            value={pickerRange}
-            onValueChange={(value) => {
-              const next = { from: value.from ?? "", to: value.to ?? "" }
-              setPickerRange(next)
-              addHistory(`Picker range changed to ${next.from || "—"} / ${next.to || "—"}.`)
-            }}
-            disabled={pickerLocked}
-          />
-          <p className="mt-2 text-xs text-muted-foreground">
-            {pickerRange.from && pickerRange.to ? `${pickerRange.from} → ${pickerRange.to}` : "Empty range"}
-          </p>
-        </PlaygroundCard>
-
-        <PlaygroundCard title="Calendar constraints" description="Min/max + disabled date handling">
-          <p className="text-xs text-muted-foreground">Min/max + disabled dates in action mode.</p>
-          <Calendar
-            value={limitedRange.from}
-            min={showConstraints ? "2026-06-01" : undefined}
-            max={showConstraints ? "2026-06-30" : undefined}
-            disabledDates={showConstraints ? ["2026-06-18", "2026-06-24"] : []}
-            range={limitedRange}
-            onRangeChange={(value) => setLimitedRange({ from: value.from ?? "", to: value.to ?? "" })}
-          />
-          <p className="mt-2 text-xs text-muted-foreground">
-            Window: {limitedRange.from || "—"} → {limitedRange.to || "—"}
-          </p>
-        </PlaygroundCard>
-
-        <PlaygroundCard title="Calendar diagnostics" description="Mock event list and timeline">
-          <div className="space-y-2 text-xs">
-            <p className="text-muted-foreground">{calendarError ? "Error mode is on" : "Live events in selected period"}</p>
-            {rangeEvents.length === 0 ? (
-              <p className="text-muted-foreground">No mock events in selected range.</p>
-            ) : (
-              rangeEvents.map((event) => (
-                <p key={event.id} className="rounded border border-border/70 bg-muted/30 px-2 py-1">
-                  {event.date}: {event.title}
-                </p>
-              ))
-            )}
+      <ShowcaseGrid className="mb-4 xl:grid-cols-3">
+        <PlaygroundCard title="Date controls" description="Preset ranges and state toggles." badge={<Badge variant="outline">interactive</Badge>}>
+          <div className="flex flex-wrap gap-2">
+            <Button variant={calendarLoading ? "default" : "outline"} size="sm" onClick={() => setCalendarLoading((value) => !value)}>
+              {calendarLoading ? "Stop async" : "Async mode"}
+            </Button>
+            <Button variant={calendarError ? "default" : "outline"} size="sm" onClick={() => { setCalendarError((value) => !value); addHistory(calendarError ? "Calendar error cleared." : "Calendar error simulated.") }}>
+              {calendarError ? "Clear error" : "Simulate error"}
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => setRangePreset("week")}>Week</Button>
+            <Button variant="outline" size="sm" onClick={() => setRangePreset("month")}>Month</Button>
+            <Button variant="outline" size="sm" onClick={() => setRangePreset("quarter")}>Quarter</Button>
+            <Button variant={pickerLocked ? "default" : "outline"} size="sm" onClick={() => setPickerLocked((value) => !value)}>
+              {pickerLocked ? "Unlock pickers" : "Lock pickers"}
+            </Button>
+            <Button variant={showConstraints ? "default" : "outline"} size="sm" onClick={() => setShowConstraints((value) => !value)}>
+              Constraints
+            </Button>
+            <Button variant="outline" size="sm" onClick={clearDateState}>Clear</Button>
           </div>
         </PlaygroundCard>
 
-        <PlaygroundCard title="Calendar change feed" description="Recent interaction history">
+        <PlaygroundCard title="Date model" description="Values stay as YYYY-MM-DD strings." badge={<Badge variant="outline">API-free</Badge>}>
+          <div className="flex flex-wrap gap-2">
+            <TokenPill>value="2026-06-17"</TokenPill>
+            <TokenPill>range=&#123;&#123; from, to &#125;&#125;</TokenPill>
+            <TokenPill>onValueChange</TokenPill>
+            <TokenPill>onRangeChange</TokenPill>
+          </div>
+          <p className="text-sm leading-6 text-muted-foreground">The component does not parse API date payloads. Apps pass normalized values and own timezone decisions.</p>
+        </PlaygroundCard>
+
+        <PlaygroundCard title="Change feed" description="Recent interactions for manual QA." badge={<Badge variant="outline">history</Badge>}>
           <div className="space-y-2 text-xs">
-            {history.slice(0, 8).map((item) => (
-              <p key={item} className="truncate rounded border border-border/70 bg-muted/20 px-2 py-1 text-muted-foreground">
+            {history.slice(0, 6).map((item) => (
+              <p key={item} className="truncate rounded border bg-muted/20 px-2 py-1 text-muted-foreground">
+                <ClockIcon className="mr-1 inline size-3" />
                 {item}
               </p>
             ))}
           </div>
         </PlaygroundCard>
-      </div>
+      </ShowcaseGrid>
+
+      <ComponentPreview
+        title="Calendar suite"
+        description="Inline single/range calendars, popover pickers, constraints and event diagnostics."
+        dependencies={["Calendar", "DatePicker", "DateRangePicker"]}
+        code={`<Calendar value={date} onValueChange={setDate} />
+<Calendar mode="range" range={range} onRangeChange={setRange} />
+<DateRangePicker value={range} onValueChange={setRange} />`}
+      >
+        <div className="grid w-full gap-4 xl:grid-cols-4">
+          <PlaygroundCard title="Calendar single" description="Primary single date selection">
+            <Calendar
+              value={calendarDate}
+              onValueChange={(value) => {
+                setCalendarDate(value)
+                addHistory(`Single date set to ${value}.`)
+              }}
+            />
+            <p className="mt-2 text-xs text-muted-foreground">Selected: {calendarDate || "—"}</p>
+          </PlaygroundCard>
+
+          <PlaygroundCard title="Calendar range" description="Range selection + event count">
+            <Calendar
+              mode="range"
+              range={calendarRange}
+              onRangeChange={(value) => {
+                setCalendarRange({ from: value.from ?? "", to: value.to ?? "" })
+                addHistory(`Range changed to ${value.from || "—"} / ${value.to || "—"}.`)
+              }}
+            />
+            <p className="mt-2 text-xs text-muted-foreground">Days: {totalRangeDays} • Events: {rangeEvents.length}</p>
+          </PlaygroundCard>
+
+          <PlaygroundCard title="Pickers" description="Popover date inputs">
+            <div className="grid gap-3">
+              <DatePicker
+                value={pickerDate}
+                onValueChange={(value) => { setPickerDate(value); addHistory(`DatePicker changed to ${value}.`) }}
+                disabled={pickerLocked}
+              />
+              <DateRangePicker
+                value={pickerRange}
+                onValueChange={(value) => {
+                  const next = { from: value.from ?? "", to: value.to ?? "" }
+                  setPickerRange(next)
+                  addHistory(`Picker range changed to ${next.from || "—"} / ${next.to || "—"}.`)
+                }}
+                disabled={pickerLocked}
+              />
+              <p className="text-xs text-muted-foreground">{pickerRange.from && pickerRange.to ? `${pickerRange.from} → ${pickerRange.to}` : "Empty range"}</p>
+            </div>
+          </PlaygroundCard>
+
+          <PlaygroundCard title="Constraints and events" description="Min/max + disabled date handling">
+            <Calendar
+              value={limitedRange.from}
+              min={showConstraints ? "2026-06-01" : undefined}
+              max={showConstraints ? "2026-06-30" : undefined}
+              disabledDates={showConstraints ? ["2026-06-18", "2026-06-24"] : []}
+              range={limitedRange}
+              onRangeChange={(value) => setLimitedRange({ from: value.from ?? "", to: value.to ?? "" })}
+            />
+            <div className="mt-3 space-y-1 text-xs">
+              <p className="text-muted-foreground">Window: {limitedRange.from || "—"} → {limitedRange.to || "—"}</p>
+              {rangeEvents.length === 0 ? (
+                <p className="text-muted-foreground">No mock events in selected range.</p>
+              ) : (
+                rangeEvents.map((event) => (
+                  <p key={event.id} className="rounded border bg-muted/20 px-2 py-1">
+                    <ListTodoIcon className="mr-1 inline size-3" />
+                    {event.date}: {event.title}
+                  </p>
+                ))
+              )}
+            </div>
+          </PlaygroundCard>
+        </div>
+      </ComponentPreview>
 
       <PlaygroundUsage
         title="Date usage"
         items={[
-          "Use `Calendar` for inline date selection and `DatePicker` for form popover selection.",
-          "Use one source of truth for `from` and `to` ranges and compute derived analytics (days/events).",
-          "Expose loading/error toggles to mimic API boundaries for production-ready date tooling.",
+          "Use `Calendar` for inline date selection and `DatePicker` for popover form selection.",
+          "Store date values as normalized strings so app-level timezone/API logic remains outside the UI kit.",
+          "Use derived analytics like selected days and events in the app layer, then display them next to the picker.",
+          "Use min/max and disabledDates for UX constraints, but still validate real date rules server-side.",
         ]}
-        code={`const [range, setRange] = useState({ from: \"\", to: \"\" })\n<Calendar mode=\"range\" range={range} onRangeChange={setRange} />`}
+        code={`const [range, setRange] = useState({ from: "", to: "" })
+
+<Calendar mode="range" range={range} onRangeChange={setRange} />`}
       />
     </DemoSection>
   )
