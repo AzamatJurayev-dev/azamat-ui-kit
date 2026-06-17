@@ -159,10 +159,29 @@ Rules:
 - select all only selects currently visible options
 - all advanced render states are optional
 
+## Phase 16 - Form components hardening
+
+Improved the shared form layer and core form wrappers:
+
+- `FormFieldShell` layout support: `vertical`, `horizontal`, `inline`
+- `descriptionPosition`: `top` or `bottom`
+- `labelAction` slot
+- custom `requiredIndicator`
+- custom `errorIcon` and `showErrorIcon`
+- `disabled` and `readOnly` visual state propagation
+- `labelRowClassName`, `contentClassName`, `descriptionClassName`, `errorClassName`
+- `FormInput`, `FormTextarea`, `FormSelect`, `FormAsyncSelect`, `FormSwitch` now expose advanced shell props
+- `FormSwitch` supports `labelPlacement="start" | "end"`
+
+Rules:
+
+- form wrappers still only connect React Hook Form field state
+- layout behavior is visual only and does not know business rules
+- existing simple usage remains backward-compatible
+
 ## Next priority order
 
-1. Form components hardening
-2. Upload components hardening
-3. Toast / CommandPalette hardening
-4. App shell advanced responsive sidebar helpers
-5. Component tests and accessibility smoke checks
+1. Upload components hardening
+2. Toast / CommandPalette hardening
+3. App shell advanced responsive sidebar helpers
+4. Component tests and accessibility smoke checks
