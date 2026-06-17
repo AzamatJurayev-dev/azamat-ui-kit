@@ -1,5 +1,6 @@
 import * as React from "react"
 import { ChevronRightIcon } from "lucide-react"
+import { Link } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
 
@@ -37,13 +38,13 @@ function Breadcrumbs({
           <React.Fragment key={item.key}>
             {index > 0 && <span className="shrink-0 opacity-60">{separator}</span>}
             {item.href && !isCurrent ? (
-              <a
-                href={item.href}
+              <Link
+                to={item.href}
                 className="truncate transition-colors hover:text-foreground"
                 onClick={() => item.onSelect?.()}
               >
                 {item.label}
-              </a>
+              </Link>
             ) : (
               <span
                 aria-current={isCurrent ? "page" : undefined}

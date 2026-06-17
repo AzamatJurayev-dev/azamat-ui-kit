@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { Link } from "react-router-dom"
 
 export type AppSidebarNavItem = {
   key: string
@@ -51,31 +52,83 @@ function AppSidebar({
             renderItem ? (
               <React.Fragment key={item.key}>{renderItem(item, { collapsed })}</React.Fragment>
             ) : (
-              <a
-                key={item.key}
-                href={item.disabled ? undefined : item.href}
-                aria-current={item.active ? "page" : undefined}
-                aria-disabled={item.disabled || undefined}
-                data-active={item.active || undefined}
-                data-disabled={item.disabled || undefined}
-                className={cn(
-                  "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-                  collapsed && "justify-center px-2"
-                )}
-                onClick={(event) => {
-                  if (item.disabled) {
-                    event.preventDefault()
-                    return
-                  }
+              item.href?.startsWith("/") ? (
+                <Link
+                  key={item.key}
+                  to={item.href}
+                  aria-current={item.active ? "page" : undefined}
+                  aria-disabled={item.disabled || undefined}
+                  data-active={item.active || undefined}
+                  data-disabled={item.disabled || undefined}
+                  className={cn(
+                    "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                    collapsed && "justify-center px-2"
+                  )}
+                  onClick={(event) => {
+                    if (item.disabled) {
+                      event.preventDefault()
+                      return
+                    }
 
-                  item.onSelect?.()
-                  onItemSelect?.(item)
-                }}
-              >
-                {item.icon && <span className="shrink-0">{item.icon}</span>}
-                {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
-                {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
-              </a>
+                    item.onSelect?.()
+                    onItemSelect?.(item)
+                  }}
+                >
+                  {item.icon && <span className="shrink-0">{item.icon}</span>}
+                  {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
+                  {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
+                </Link>
+              ) : item.href ? (
+                <a
+                  key={item.key}
+                  href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noreferrer noopener" : undefined}
+                  aria-current={item.active ? "page" : undefined}
+                  aria-disabled={item.disabled || undefined}
+                  data-active={item.active || undefined}
+                  data-disabled={item.disabled || undefined}
+                  className={cn(
+                    "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                    collapsed && "justify-center px-2"
+                  )}
+                  onClick={(event) => {
+                    if (item.disabled) {
+                      event.preventDefault()
+                      return
+                    }
+
+                    item.onSelect?.()
+                    onItemSelect?.(item)
+                  }}
+                >
+                  {item.icon && <span className="shrink-0">{item.icon}</span>}
+                  {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
+                  {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
+                </a>
+              ) : (
+                <button
+                  key={item.key}
+                  type="button"
+                  disabled={item.disabled}
+                  aria-current={item.active ? "page" : undefined}
+                  aria-disabled={item.disabled || undefined}
+                  data-active={item.active || undefined}
+                  data-disabled={item.disabled || undefined}
+                  className={cn(
+                    "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                    collapsed && "justify-center px-2"
+                  )}
+                  onClick={() => {
+                    item.onSelect?.()
+                    onItemSelect?.(item)
+                  }}
+                >
+                  {item.icon && <span className="shrink-0">{item.icon}</span>}
+                  {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
+                  {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
+                </button>
+              )
             )
           )}
       </nav>

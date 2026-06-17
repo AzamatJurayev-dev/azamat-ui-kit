@@ -274,13 +274,15 @@ function DataTable<TData, TValue = unknown>({
   const shouldShowRefresh = Boolean(features?.refresh && onRefresh)
   const shouldShowExport = Boolean(features?.export && onExport)
   const shouldShowBulkActions = Boolean(features?.bulkActions !== false && bulkActions?.length)
+  const searchProps = search as Record<string, unknown>
   const defaultSearch = shouldShowSearch ? (
     <SearchInput
-      value={search.value}
-      onValueChange={search.onValueChange}
-      placeholder={search.placeholder ?? "Search..."}
-      wrapperClassName={search.className}
-      inputClassName={search.inputClassName}
+      value={searchProps.value as string}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onValueChange={searchProps.onValueChange as any}
+      placeholder={(searchProps.placeholder as string) ?? "Search..."}
+      wrapperClassName={searchProps.className as string}
+      inputClassName={searchProps.inputClassName as string}
     />
   ) : undefined
   const defaultActions = (

@@ -29,3 +29,6 @@ export * from "./components/upload"
 export * from "./components/wizard"
 export * from "./hooks"
 export * from "./lib/utils"
+
+export * from './components/ui/tabs';
+export * from './components/ui/component-preview';

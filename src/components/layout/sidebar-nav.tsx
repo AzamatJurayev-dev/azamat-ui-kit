@@ -2,6 +2,7 @@ import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { Link } from "react-router-dom"
 
 export type SidebarNavItem = {
   key: string
@@ -61,7 +62,24 @@ function SidebarNav({
           item.active && activeItemClassName
         )
 
-        const element = item.href ? (
+        const isInternalLink = item.href && item.href.startsWith("/")
+
+        const element = item.href && isInternalLink ? (
+          <Link
+            key={item.key}
+            to={item.href}
+            data-active={item.active || undefined}
+            data-disabled={item.disabled || undefined}
+            aria-current={item.active ? "page" : undefined}
+            className={commonClassName}
+            onClick={(event) => {
+              if (item.disabled) event.preventDefault()
+              item.onSelect?.()
+            }}
+          >
+            {content}
+          </Link>
+        ) : item.href ? (
           <a
             key={item.key}
             href={item.href}
