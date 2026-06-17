@@ -292,9 +292,25 @@ Rules:
 - examples should remain mock/local and reusable
 - UI polish should come from shared wrappers, slots and CSS tokens
 
+## Phase 23 - Section showcase polish
+
+Improved individual playground sections so each looks like a modern UI library documentation page:
+
+- polished Forms section with metrics, field shell layout cards, state cards and a full `ComponentPreview`
+- polished DataTable section with table metrics, feature controls, CSS token cards and an interactive table preview
+- polished Upload section with upload metrics, policy cards, validation/progress states and a full upload workspace preview
+- polished Calendar section with selected date/range metrics, date controls, model notes and calendar suite preview
+- polished Overlay section with modal/sheet/confirm/command cards, wizard flow and controlled overlay preview
+
+Rules:
+
+- each section should show props, state and usage guidance in a structured way
+- examples must use mock/local state only
+- section polish should reuse shared playground wrappers instead of ad-hoc layouts
+
 ## Next priority order
 
-1. Expand individual component section examples where props are still missing
+1. Finish any remaining section gaps in Foundation/Inputs/Templates
 2. CommandPalette hardening
 3. App shell advanced responsive sidebar helpers
 4. FormBuilder / ResourcePage planning on top of existing components
