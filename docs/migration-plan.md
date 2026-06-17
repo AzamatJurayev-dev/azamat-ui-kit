@@ -256,10 +256,28 @@ Rules:
 - playground should show important props/states before components are reused in real apps
 - visual differences should be demonstrated through props, slots and CSS tokens, not duplicate component names
 
+## Phase 21 - DataTable API consolidation
+
+Improved existing `DataTable` as the single table component instead of adding a separate `ProTable` name:
+
+- `features` prop for search, column visibility, row actions, bulk actions, refresh and export
+- `search` prop for built-in SearchInput toolbar wiring
+- `title` and `description` props for built-in toolbar title area
+- `toolbarActions` slot or callback
+- `rowActions` callback that automatically appends an actions column
+- `bulkActions` for selected rows
+- `onRefresh` and `onExport` callbacks with table context
+- built-in column visibility menu integration
+
+Rules:
+
+- keep one `DataTable` name and control behavior through props
+- callbacks receive table/data/selected rows but no API is called inside the UI kit
+- existing `toolbar` and `toolbarProps` APIs remain available
+
 ## Next priority order
 
 1. CommandPalette hardening
 2. App shell advanced responsive sidebar helpers
-3. DataTable API consolidation
-4. FormBuilder / ResourcePage planning
-5. Component tests and accessibility smoke checks
+3. FormBuilder / ResourcePage planning on top of existing components
+4. Component tests and accessibility smoke checks
