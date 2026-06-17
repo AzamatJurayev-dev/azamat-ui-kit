@@ -16,7 +16,6 @@ import { Link } from "react-router-dom"
 
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardDescription,
@@ -115,9 +114,9 @@ function HeroPreviewCard() {
       </CardContent>
       <CardFooter className="justify-between gap-2">
         <span className="text-xs text-muted-foreground">Built for dashboards</span>
-        <Button size="sm" asChild>
-          <Link to="/components">Browse UI</Link>
-        </Button>
+        <Link to="/components" className={cn(buttonVariants({ size: "sm" }))}>
+          Browse UI
+        </Link>
       </CardFooter>
     </Card>
   )
@@ -254,12 +253,10 @@ export function LandingSection() {
           </CardContent>
           <CardFooter className="justify-between">
             <span className="text-xs text-muted-foreground">Component visuals are themeable.</span>
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/components/foundation">
-                <Code2Icon className="mr-2 size-4" />
-                Tokens
-              </Link>
-            </Button>
+            <Link to="/components/foundation" className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
+              <Code2Icon className="mr-2 size-4" />
+              Tokens
+            </Link>
           </CardFooter>
         </Card>
       </section>
@@ -277,18 +274,20 @@ export function LandingSection() {
             </p>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button variant="secondary" asChild>
-              <Link to="/components/table">
-                <Table2Icon className="mr-2 size-4" />
-                DataTable
-              </Link>
-            </Button>
-            <Button variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10" asChild>
-              <Link to="/components/forms">
-                <Layers3Icon className="mr-2 size-4" />
-                Forms
-              </Link>
-            </Button>
+            <Link to="/components/table" className={cn(buttonVariants({ variant: "secondary" }))}>
+              <Table2Icon className="mr-2 size-4" />
+              DataTable
+            </Link>
+            <Link
+              to="/components/forms"
+              className={cn(
+                buttonVariants({ variant: "outline" }),
+                "border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground/10"
+              )}
+            >
+              <Layers3Icon className="mr-2 size-4" />
+              Forms
+            </Link>
           </div>
         </div>
       </section>
