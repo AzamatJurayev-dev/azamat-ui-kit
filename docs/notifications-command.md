@@ -11,35 +11,58 @@ import { ToastProvider } from "azamat-ui-kit"
 
 export function App() {
   return (
-    <ToastProvider position="top-right">
+    <ToastProvider position="top-right" pauseOnHover>
       <Routes />
     </ToastProvider>
   )
 }
 ```
 
-Use it from any child component:
+## Basic toast API
+
+Use the low-level API when you need full control:
 
 ```tsx
-import { useToast } from "azamat-ui-kit"
+const { addToast, updateToast, dismissToast, clearToasts } = useToast()
 
-function SaveButton() {
-  const { addToast } = useToast()
+const id = addToast({
+  tone: "success",
+  title: "Saved",
+  description: "Changes were saved successfully.",
+})
 
-  return (
-    <Button
-      onClick={() => {
-        addToast({
-          tone: "success",
-          title: "Saved",
-          description: "Changes were saved successfully.",
-        })
-      }}
-    >
-      Save
-    </Button>
-  )
-}
+updateToast(id, { description: "Updated message" })
+dismissToast(id)
+clearToasts()
+```
+
+## Shortcut helpers
+
+Use shortcut helpers for common cases:
+
+```tsx
+const toast = useToast()
+
+toast.success("Saved")
+toast.info({ title: "Info", description: "Details changed." })
+toast.warning("Check required fields")
+toast.error({ title: "Failed", description: "Something went wrong." })
+toast.loading({ title: "Uploading", duration: 0 })
+```
+
+## Promise toast
+
+`toast.promise` keeps the same toast id and updates it after the async task finishes:
+
+```tsx
+await toast.promise(saveProduct(values), {
+  loading: { title: "Saving..." },
+  success: () => ({ title: "Saved", description: "Product was saved." }),
+  error: (error) => ({
+    title: "Save failed",
+    description: error instanceof Error ? error.message : "Unknown error",
+  }),
+})
 ```
 
 Supported tones:
@@ -50,6 +73,7 @@ success
 info
 warning
 danger
+loading
 ```
 
 ## CommandPalette
@@ -89,3 +113,4 @@ Cmd + K
 - Toasts do not depend on any external toast package.
 - Command palette does not depend on router, permissions, or auth.
 - Navigation, API calls, and permissions must stay in the consuming app.
+- Toast promise helpers should wrap app-owned async functions; the UI kit does not perform the request itself.
