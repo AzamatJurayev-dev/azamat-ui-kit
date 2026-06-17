@@ -6,16 +6,11 @@ import {
   BarChart2Icon,
   BanknoteIcon,
   BookOpenIcon,
-  BoxesIcon,
   BriefcaseIcon,
-  ComponentIcon,
   EyeIcon,
-  FileTextIcon,
   LayoutDashboardIcon,
-  Link2Icon,
   PackageOpenIcon,
   RouteIcon,
-  SparklesIcon,
   UsersIcon,
 } from "lucide-react"
 
