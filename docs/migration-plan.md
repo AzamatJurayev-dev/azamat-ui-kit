@@ -202,8 +202,24 @@ Rules:
 - real upload requests, R2/S3 URLs, auth and API logic stay in the app
 - validation is client-side convenience, not a security boundary
 
+## Phase 18 - CSS-first visual system
+
+Started moving visual polish into CSS tokens and stable `data-slot` selectors:
+
+- added `--aui-*` component tokens for controls, cards, popovers and tables
+- added CSS slot rules for button, input, textarea, select trigger, card, stat card, popover, dropdown, dialog, sheet and data table
+- synced the same token layer into the CLI theme template
+- documented CSS-first theming in `docs/theme-css.md`
+
+Rules:
+
+- do not create duplicate component names just for visual differences
+- component visuals should be adjustable from global CSS tokens
+- components should expose slots and props; apps control branding through CSS variables
+
 ## Next priority order
 
-1. Toast / CommandPalette hardening
-2. App shell advanced responsive sidebar helpers
-3. Component tests and accessibility smoke checks
+1. Expand playground showcase for all props and states
+2. Toast / CommandPalette hardening
+3. App shell advanced responsive sidebar helpers
+4. Component tests and accessibility smoke checks
