@@ -179,9 +179,31 @@ Rules:
 - layout behavior is visual only and does not know business rules
 - existing simple usage remains backward-compatible
 
+## Phase 17 - Upload components hardening
+
+Improved existing `FileUpload` and `ImageUpload` without adding API/S3/R2 coupling:
+
+- drag-and-drop dropzone
+- keyboard-accessible dropzone trigger
+- `maxFiles` validation
+- `maxSize` validation
+- `accept` validation for extensions and MIME patterns
+- controlled rejected files list
+- file remove and clear all actions
+- append/replace mode through `appendFiles`
+- custom `renderFile`, `renderRejectedFile`, `renderActions`
+- progress support per file or globally
+- image preview URLs with automatic revoke
+- custom image preview renderer
+
+Rules:
+
+- upload components only manage selected browser `File[]`
+- real upload requests, R2/S3 URLs, auth and API logic stay in the app
+- validation is client-side convenience, not a security boundary
+
 ## Next priority order
 
-1. Upload components hardening
-2. Toast / CommandPalette hardening
-3. App shell advanced responsive sidebar helpers
-4. Component tests and accessibility smoke checks
+1. Toast / CommandPalette hardening
+2. App shell advanced responsive sidebar helpers
+3. Component tests and accessibility smoke checks
