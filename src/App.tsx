@@ -74,6 +74,7 @@ import {
   NumberInput,
   PageContainer,
   PageHeader,
+  PasswordInput,
   PhoneInput,
   QuantityInput,
   SearchInput,
