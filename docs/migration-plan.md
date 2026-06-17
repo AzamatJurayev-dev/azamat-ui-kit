@@ -217,9 +217,28 @@ Rules:
 - component visuals should be adjustable from global CSS tokens
 - components should expose slots and props; apps control branding through CSS variables
 
+## Phase 19 - Toast API hardening
+
+Improved `ToastProvider` and `useToast` without adding an external toast library:
+
+- `toast.success(...)`
+- `toast.info(...)`
+- `toast.warning(...)`
+- `toast.error(...)`
+- `toast.loading(...)`
+- `toast.promise(...)`
+- loading tone with spinner icon
+- `pauseOnHover` provider behavior
+- promise toast keeps the same id and updates after success/error
+
+Rules:
+
+- toast helpers wrap app-owned actions only
+- the UI kit does not perform API requests
+- existing `addToast`, `updateToast`, `dismissToast`, `clearToasts` APIs remain available
+
 ## Next priority order
 
-1. Expand playground showcase for all props and states
-2. Toast / CommandPalette hardening
-3. App shell advanced responsive sidebar helpers
-4. Component tests and accessibility smoke checks
+1. CommandPalette hardening
+2. App shell advanced responsive sidebar helpers
+3. Component tests and accessibility smoke checks
