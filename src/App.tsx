@@ -1,17 +1,21 @@
 import * as React from "react"
 import { useForm } from "react-hook-form"
-import type { ColumnDef, RowSelectionState, VisibilityState } from "@tanstack/react-table"
+import type { ColumnDef, RowSelectionState, SortingState } from "@tanstack/react-table"
 import {
   BellIcon,
   CalendarDaysIcon,
-  LayoutDashboardIcon,
-  PackageIcon,
-  SearchIcon,
+  CheckCircle2Icon,
+  CommandIcon,
+  Grid2X2Icon,
+  LayersIcon,
+  ListChecksIcon,
+  MoonIcon,
+  PanelLeftIcon,
+  RocketIcon,
   SettingsIcon,
   SparklesIcon,
-  Table2Icon,
+  SunIcon,
   UploadCloudIcon,
-  ZapIcon,
 } from "lucide-react"
 import {
   ActionMenu,
@@ -30,6 +34,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Checkbox,
   ClearableInput,
   CommandPalette,
   ConfirmDialog,
@@ -61,13 +66,14 @@ import {
   FormSwitch,
   FormTextarea,
   ImageUpload,
+  Input,
   LoadingState,
+  MaskedInput,
   ModalShell,
   MoneyInput,
   NumberInput,
   PageContainer,
   PageHeader,
-  PasswordInput,
   PhoneInput,
   QuantityInput,
   SearchInput,
@@ -77,12 +83,14 @@ import {
   StatCard,
   StatusBadge,
   Stepper,
+  Switch,
+  Textarea,
   ToastProvider,
+  useCommandPaletteShortcut,
+  useToast,
   Wizard,
   createDataTableActionsColumn,
   createDataTableSelectColumn,
-  useCommandPaletteShortcut,
-  useToast,
 } from "./index"
 
 type Product = {
@@ -91,66 +99,60 @@ type Product = {
   sku: string
   status: "active" | "inactive" | "draft"
   price: number
-  stock?: number
-  disabled?: boolean
+  stock: number
+  category: string
 }
 
-type PlaygroundFormValues = {
+type ProductFormValues = {
   search: string
   name: string
-  description: string
   password: string
   phone: string
   price: number | null
   status: string
-  categoryId: string
+  customerId: string
   active: boolean
+  notes: string
   availableFrom: string
   dateFrom: string
   dateTo: string
   pickerDate: string
-  pickerFrom: string
-  pickerTo: string
+  pickerRangeFrom: string
+  pickerRangeTo: string
 }
 
-type DemoOption = {
-  value: string
-  label: string
-  description?: string
+type DemoSectionProps = React.ComponentProps<"section"> & {
+  title: React.ReactNode
+  description?: React.ReactNode
+  action?: React.ReactNode
 }
 
 const products: Product[] = [
-  { id: "1", name: "Premium Coffee", sku: "COF-001", status: "active", price: 42000, stock: 18 },
-  { id: "2", name: "Green Tea", sku: "TEA-002", status: "inactive", price: 18000, stock: 0, disabled: true },
-  { id: "3", name: "Chocolate Box", sku: "CHO-003", status: "draft", price: 73000 },
-  { id: "4", name: "Water Bottle", sku: "WAT-004", status: "active", price: 6000, stock: 220 },
-  { id: "5", name: "Organic Honey", sku: "HON-005", status: "active", price: 88000, stock: 14 },
+  { id: "1", name: "Premium Coffee", sku: "COF-001", status: "active", price: 42000, stock: 32, category: "Drinks" },
+  { id: "2", name: "Green Tea", sku: "TEA-002", status: "inactive", price: 18000, stock: 12, category: "Drinks" },
+  { id: "3", name: "Chocolate Box", sku: "CHO-003", status: "draft", price: 73000, stock: 0, category: "Snacks" },
+  { id: "4", name: "Water Bottle", sku: "WAT-004", status: "active", price: 6000, stock: 160, category: "Drinks" },
+  { id: "5", name: "Office Cookies", sku: "COO-005", status: "active", price: 29000, stock: 44, category: "Snacks" },
+  { id: "6", name: "Gift Pack", sku: "GIF-006", status: "inactive", price: 128000, stock: 7, category: "Gifts" },
 ]
 
-const tagOptions: DemoOption[] = [
+const tagOptions = [
   { value: "new", label: "New", description: "Recently added" },
-  { value: "popular", label: "Popular", description: "High demand" },
-  { value: "discount", label: "Discount", description: "Promotion" },
-  { value: "warehouse", label: "Warehouse", description: "Stock tracking" },
-  { value: "seasonal", label: "Seasonal", description: "Limited time" },
+  { value: "popular", label: "Popular", description: "Top selling" },
+  { value: "discount", label: "Discount", description: "Has active offer" },
+  { value: "warehouse", label: "Warehouse", description: "Stock controlled" },
 ]
 
-const categoryOptions: DemoOption[] = [
-  { value: "coffee", label: "Coffee", description: "Hot drinks" },
-  { value: "tea", label: "Tea", description: "Tea products" },
-  { value: "snacks", label: "Snacks", description: "Small foods" },
-]
-
-const simpleOptions = [
-  { value: "active", label: "Active", description: "Visible in app" },
-  { value: "inactive", label: "Inactive", description: "Hidden from users" },
-  { value: "draft", label: "Draft", description: "Work in progress" },
+const customerOptions = [
+  { value: "1", label: "Azamat Store", description: "Retail customer" },
+  { value: "2", label: "Bilimza Academy", description: "Education customer" },
+  { value: "3", label: "Distron Market", description: "Wholesale customer" },
 ]
 
 const wizardSteps = [
-  { id: "info", title: "Info", description: "Basic data" },
-  { id: "media", title: "Media", description: "Upload files" },
-  { id: "review", title: "Review", description: "Confirm" },
+  { id: "info", title: "Info", description: "Basic details" },
+  { id: "settings", title: "Settings", description: "Options" },
+  { id: "finish", title: "Finish", description: "Review" },
 ]
 
 function getStatusTone(status: Product["status"]) {
@@ -159,204 +161,244 @@ function getStatusTone(status: Product["status"]) {
   return "warning" as const
 }
 
+function formatMoney(value: number) {
+  return `${value.toLocaleString()} UZS`
+}
+
+function DemoSection({ title, description, action, children, className, ...props }: DemoSectionProps) {
+  return (
+    <section className={className} {...props}>
+      <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div className="min-w-0">
+          <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
+          {description && <p className="text-sm text-muted-foreground">{description}</p>}
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
+      </div>
+      {children}
+    </section>
+  )
+}
+
 function PlaygroundCard({
   title,
   description,
   children,
   footer,
-  ...props
-}: React.ComponentProps<typeof Card> & {
+  className,
+}: {
   title: React.ReactNode
   description?: React.ReactNode
+  children: React.ReactNode
   footer?: React.ReactNode
+  className?: string
 }) {
   return (
-    <Card {...props}>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent className="grid gap-3">{children}</CardContent>
       {footer && <CardFooter>{footer}</CardFooter>}
     </Card>
   )
 }
 
-function SectionTitle({ title, description }: { title: React.ReactNode; description?: React.ReactNode }) {
-  return (
-    <div className="space-y-1">
-      <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
-      {description && <p className="text-sm text-muted-foreground">{description}</p>}
-    </div>
-  )
-}
-
-function delay<TValue>(value: TValue, timeout = 300) {
-  return new Promise<TValue>((resolve) => {
-    window.setTimeout(() => resolve(value), timeout)
-  })
-}
-
-async function loadTagOptions(search: string) {
-  const normalized = search.toLowerCase()
-  const filtered = tagOptions.filter((tag) => tag.label.toLowerCase().includes(normalized))
-
-  return delay([
-    {
-      label: "Product tags",
-      options: filtered,
-    },
-  ])
-}
-
-async function loadCategoryOptions(search: string) {
-  const normalized = search.toLowerCase()
-
-  return delay(
-    categoryOptions.filter((category) => category.label.toLowerCase().includes(normalized)),
-    250
-  )
+function TokenPill({ children }: { children: React.ReactNode }) {
+  return <code className="rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground">{children}</code>
 }
 
 function PlaygroundForm() {
-  const form = useForm<PlaygroundFormValues>({
+  const form = useForm<ProductFormValues>({
     defaultValues: {
       search: "",
       name: "Premium Coffee",
-      description: "Reusable product form example.",
       password: "secret123",
       phone: "998901234567",
       price: 42000,
       status: "active",
-      categoryId: "coffee",
+      customerId: "1",
       active: true,
+      notes: "This form shows vertical, horizontal and inline field layouts.",
       availableFrom: "2026-06-17",
       dateFrom: "2026-06-01",
       dateTo: "2026-06-30",
       pickerDate: "2026-06-17",
-      pickerFrom: "2026-06-01",
-      pickerTo: "2026-06-30",
+      pickerRangeFrom: "2026-06-01",
+      pickerRangeTo: "2026-06-30",
     },
   })
 
   return (
     <div className="grid gap-5">
-      <div className="grid gap-4 md:grid-cols-2">
-        <FormSearchInput control={form.control} name="search" label="Search" description="Basic search form wrapper." />
+      <div className="grid gap-3 md:grid-cols-2">
+        <FormSearchInput
+          control={form.control}
+          name="search"
+          label="Search"
+          description="Search wrapper with clear action."
+          labelAction={<Button size="xs" variant="ghost">Help</Button>}
+        />
         <FormInput
           control={form.control}
           name="name"
           label="Name"
           required
-          labelAction={<Button size="xs" variant="ghost">Auto fill</Button>}
+          description="Required field with custom marker."
+          requiredIndicator={<span className="ml-1 text-primary">*</span>}
         />
-        <FormPasswordInput control={form.control} name="password" label="Password" description="Toggle visibility." />
+        <FormPasswordInput control={form.control} name="password" label="Password" />
         <FormPhoneInput control={form.control} name="phone" label="Phone" valueMode="raw" />
-        <FormNumberInput control={form.control} name="price" label="Price" min={0} step={1000} />
-        <FormSelect control={form.control} name="status" label="Status" options={simpleOptions} />
+        <FormNumberInput control={form.control} name="price" label="Price" min={0} />
+        <FormDateInput control={form.control} name="availableFrom" label="Native date" />
+      </div>
+
+      <FormTextarea
+        control={form.control}
+        name="notes"
+        label="Notes"
+        layout="horizontal"
+        description="Horizontal field layout with bottom description."
+        descriptionPosition="bottom"
+      />
+
+      <div className="grid gap-3 md:grid-cols-2">
+        <FormSelect
+          control={form.control}
+          name="status"
+          label="Status"
+          layout="horizontal"
+          options={[
+            { label: "Active", value: "active" },
+            { label: "Inactive", value: "inactive" },
+            { label: "Draft", value: "draft" },
+          ]}
+        />
         <FormAsyncSelect
           control={form.control}
-          name="categoryId"
-          label="Async category"
-          description="Remote-like async select."
-          loadOptions={loadCategoryOptions}
-          defaultOptions={categoryOptions}
-          cacheTtl={10_000}
+          name="customerId"
+          label="Customer"
+          minSearchLength={1}
+          defaultOptions={customerOptions}
+          loadOptions={async (value) =>
+            customerOptions.filter((item) => item.label.toLowerCase().includes(value.toLowerCase()))
+          }
+        />
+      </div>
+
+      <FormDateRangeInput
+        control={form.control}
+        fromName="dateFrom"
+        toName="dateTo"
+        label="Native period"
+        layout="horizontal"
+      />
+
+      <div className="grid gap-3 md:grid-cols-2">
+        <FormDatePicker control={form.control} name="pickerDate" label="Calendar picker" />
+        <FormDateRangePicker
+          control={form.control}
+          fromName="pickerRangeFrom"
+          toName="pickerRangeTo"
+          label="Calendar range"
+        />
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        <FormSwitch
+          control={form.control}
+          name="active"
+          label="Active product"
+          description="Default label placement."
         />
         <FormSwitch
           control={form.control}
           name="active"
-          label="Active"
-          description="Show this product in the app."
+          label="Inline switch"
+          labelPlacement="start"
+          layout="inline"
+          description="The same field with inline layout."
         />
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <FormTextarea
-          control={form.control}
-          name="description"
-          label="Description"
-          descriptionPosition="bottom"
-          description="Textarea supports the same shell props."
-          className="md:col-span-2"
-        />
-        <FormDateInput control={form.control} name="availableFrom" label="Native date input" />
-        <FormDatePicker control={form.control} name="pickerDate" label="Popover date picker" />
-        <FormDateRangeInput
-          control={form.control}
-          fromName="dateFrom"
-          toName="dateTo"
-          label="Native date range"
-        />
-        <FormDateRangePicker
-          control={form.control}
-          fromName="pickerFrom"
-          toName="pickerTo"
-          label="Popover date range"
-        />
+      <div className="grid gap-3 md:grid-cols-3">
+        <FormFieldShell label="Read only" description="Visual read-only state." readOnly>
+          <Input value="Read-only value" readOnly />
+        </FormFieldShell>
+        <FormFieldShell label="Disabled" description="Visual disabled state." disabled>
+          <Input value="Disabled value" disabled />
+        </FormFieldShell>
+        <FormFieldShell label="Error" error="This field has an error." required>
+          <Input aria-invalid />
+        </FormFieldShell>
       </div>
-
-      <PlaygroundCard title="FormFieldShell layouts" description="Vertical, horizontal and inline visual states." size="sm">
-        <div className="grid gap-4">
-          <FormFieldShell
-            label="Horizontal field"
-            description="Label and content are split into columns."
-            layout="horizontal"
-            labelAction={<Badge variant="outline">Action</Badge>}
-            required
-          >
-            <SearchInput placeholder="Horizontal layout" />
-          </FormFieldShell>
-          <FormFieldShell
-            label="Inline field"
-            description="Good for compact filters."
-            layout="inline"
-            descriptionPosition="bottom"
-            error="Inline validation message"
-          >
-            <SimpleSelect options={simpleOptions} placeholder="Inline select" />
-          </FormFieldShell>
-          <FormFieldShell label="Read only" description="Visual readonly state." readOnly>
-            <ClearableInput value="Readonly value" readOnly />
-          </FormFieldShell>
-        </div>
-      </PlaygroundCard>
     </div>
   )
 }
 
-function PlaygroundContent() {
-  const { addToast, clearToasts } = useToast()
-  const [search, setSearch] = React.useState("")
-  const [clearableValue, setClearableValue] = React.useState("Editable value")
-  const [password, setPassword] = React.useState("secret123")
-  const [phone, setPhone] = React.useState("+998 90 123 45 67")
-  const [money, setMoney] = React.useState<string | number>(42000)
-  const [quantity, setQuantity] = React.useState<number | null>(3)
-  const [numberValue, setNumberValue] = React.useState<number | null>(12)
-  const [dateValue, setDateValue] = React.useState("2026-06-17")
-  const [dateRange, setDateRange] = React.useState({ from: "2026-06-01", to: "2026-06-30" })
-  const [calendarDate, setCalendarDate] = React.useState("2026-06-17")
-  const [calendarRange, setCalendarRange] = React.useState({ from: "2026-06-10", to: "2026-06-20" })
-  const [singleTag, setSingleTag] = React.useState<string | undefined>("popular")
-  const [selectedTags, setSelectedTags] = React.useState<string[]>(["new", "warehouse"])
-  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+function PlaygroundInner() {
+  const { addToast } = useToast()
+  const [theme, setTheme] = React.useState<"light" | "dark">("light")
+  const [radius, setRadius] = React.useState("md")
+  const [commandOpen, setCommandOpen] = React.useState(false)
   const [modalOpen, setModalOpen] = React.useState(false)
   const [sheetOpen, setSheetOpen] = React.useState(false)
   const [confirmOpen, setConfirmOpen] = React.useState(false)
-  const [commandOpen, setCommandOpen] = React.useState(false)
+  const [search, setSearch] = React.useState("")
+  const [clearable, setClearable] = React.useState("Clear me")
+  const [password, setPassword] = React.useState("secret123")
+  const [phone, setPhone] = React.useState("+998 90 123 45 67")
+  const [masked, setMasked] = React.useState("AA-123")
+  const [numberValue, setNumberValue] = React.useState<number | null>(42)
+  const [moneyRaw, setMoneyRaw] = React.useState("42000")
+  const [quantity, setQuantity] = React.useState<number | null>(3)
+  const [simpleValue, setSimpleValue] = React.useState("active")
+  const [asyncValue, setAsyncValue] = React.useState<string | undefined>("1")
+  const [selectedTags, setSelectedTags] = React.useState<string[]>(["new", "popular"])
+  const [dateValue, setDateValue] = React.useState("2026-06-17")
+  const [dateRange, setDateRange] = React.useState({ from: "2026-06-01", to: "2026-06-30" })
+  const [calendarDate, setCalendarDate] = React.useState("2026-06-17")
+  const [calendarRange, setCalendarRange] = React.useState({ from: "2026-06-01", to: "2026-06-30" })
+  const [pickerDate, setPickerDate] = React.useState("2026-06-17")
+  const [pickerRange, setPickerRange] = React.useState({ from: "2026-06-01", to: "2026-06-30" })
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [tableLoading, setTableLoading] = React.useState(false)
+  const [density, setDensity] = React.useState<"compact" | "default" | "comfortable">("default")
   const [files, setFiles] = React.useState<File[]>([])
   const [images, setImages] = React.useState<File[]>([])
   const [wizardStep, setWizardStep] = React.useState("info")
-  const [tableLoading, setTableLoading] = React.useState(false)
+  const [checkbox, setCheckbox] = React.useState(true)
+  const [switchChecked, setSwitchChecked] = React.useState(true)
 
   useCommandPaletteShortcut(setCommandOpen)
 
+  React.useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark")
+  }, [theme])
+
+  React.useEffect(() => {
+    document.documentElement.dataset.radius = radius
+  }, [radius])
+
+  const rejectedFiles = React.useMemo(
+    () => [
+      {
+        file: new File(["demo"], "too-large-demo.pdf", { type: "application/pdf" }),
+        reason: "max-size" as const,
+        message: "File is larger than 2 MB.",
+      },
+    ],
+    []
+  )
+
   const filteredProducts = React.useMemo(() => {
-    const normalized = search.toLowerCase()
-    if (!normalized) return products
-    return products.filter((product) => product.name.toLowerCase().includes(normalized) || product.sku.toLowerCase().includes(normalized))
+    const value = search.trim().toLowerCase()
+    if (!value) return products
+    return products.filter((product) =>
+      [product.name, product.sku, product.category, product.status].some((field) => field.toLowerCase().includes(value))
+    )
   }, [search])
 
   const columns = React.useMemo<ColumnDef<Product>[]>(
@@ -366,10 +408,8 @@ function PlaygroundContent() {
         accessorKey: "name",
         header: ({ column }) => <DataTableSortableHeader column={column}>Name</DataTableSortableHeader>,
       },
-      {
-        accessorKey: "sku",
-        header: "SKU",
-      },
+      { accessorKey: "sku", header: "SKU" },
+      { accessorKey: "category", header: "Category" },
       {
         accessorKey: "status",
         header: "Status",
@@ -381,26 +421,17 @@ function PlaygroundContent() {
       },
       {
         accessorKey: "stock",
-        header: "Stock fallback",
-        cell: ({ row }) => row.original.stock ?? "",
+        header: ({ column }) => <DataTableSortableHeader column={column}>Stock</DataTableSortableHeader>,
       },
       {
         accessorKey: "price",
-        header: ({ column }) => <DataTableSortableHeader column={column}>Price</DataTableSortableHeader>,
-        cell: ({ row }) => `${row.original.price.toLocaleString()} UZS`,
+        header: "Price",
+        cell: ({ row }) => formatMoney(row.original.price),
       },
       createDataTableActionsColumn<Product>({
         getActions: (_row, product) => [
-          {
-            key: "view",
-            label: "View",
-            onSelect: () => { addToast({ title: product.name, description: "View action clicked." }) },
-          },
-          {
-            key: "edit",
-            label: "Edit",
-            onSelect: () => { addToast({ tone: "info", title: "Edit", description: product.sku }) },
-          },
+          { key: "view", label: "View", onSelect: () => addToast({ title: "View", description: product.name }) },
+          { key: "edit", label: "Edit", onSelect: () => addToast({ title: "Edit", description: product.name }) },
           {
             key: "delete",
             label: "Delete",
@@ -413,31 +444,45 @@ function PlaygroundContent() {
     [addToast]
   )
 
-  const selectedRows = React.useMemo(() => {
-    const selectedIds = new Set(Object.keys(rowSelection))
-    return filteredProducts.filter((product) => selectedIds.has(product.id))
-  }, [filteredProducts, rowSelection])
-
-  const currentWizardIndex = wizardSteps.findIndex((step) => step.id === wizardStep)
-  const goNextWizardStep = () => setWizardStep(wizardSteps[Math.min(currentWizardIndex + 1, wizardSteps.length - 1)].id)
-  const goPreviousWizardStep = () => setWizardStep(wizardSteps[Math.max(currentWizardIndex - 1, 0)].id)
+  const commandGroups = React.useMemo(
+    () => [
+      {
+        id: "navigation",
+        label: "Navigation",
+        items: [
+          { id: "foundation", label: "Foundation", icon: <Grid2X2Icon />, shortcut: "G F", onSelect: () => { location.hash = "foundation" } },
+          { id: "forms", label: "Forms", icon: <ListChecksIcon />, shortcut: "G R", onSelect: () => { location.hash = "forms" } },
+          { id: "table", label: "Data table", icon: <LayersIcon />, shortcut: "G T", onSelect: () => { location.hash = "table" } },
+        ],
+      },
+      {
+        id: "actions",
+        label: "Actions",
+        items: [
+          { id: "toast", label: "Show success toast", icon: <BellIcon />, onSelect: () => addToast({ tone: "success", title: "Command executed", description: "The command palette triggered this toast." }) },
+          { id: "modal", label: "Open modal", icon: <PanelLeftIcon />, onSelect: () => setModalOpen(true) },
+          { id: "sheet", label: "Open sheet", icon: <SettingsIcon />, onSelect: () => setSheetOpen(true) },
+        ],
+      },
+    ],
+    [addToast]
+  )
 
   return (
     <AppShell
       sidebar={
         <AppSidebar
-          header={<div className="font-semibold">Azamat UI</div>}
-          footer={<div className="text-xs text-muted-foreground">Playground • mock data</div>}
+          header={<div className="flex items-center gap-2 font-semibold"><SparklesIcon className="size-4" /> Azamat UI</div>}
+          footer={<div className="text-xs text-muted-foreground">CSS-first playground</div>}
         >
           <SidebarNav
             items={[
-              { key: "overview", label: "Overview", href: "#overview", active: true, icon: <LayoutDashboardIcon /> },
-              { key: "primitives", label: "Primitives", href: "#primitives", icon: <SparklesIcon /> },
-              { key: "inputs", label: "Inputs", href: "#inputs", icon: <SearchIcon /> },
-              { key: "forms", label: "Forms", href: "#forms", icon: <SettingsIcon /> },
-              { key: "table", label: "Data table", href: "#table", icon: <Table2Icon />, badge: "new" },
-              { key: "upload", label: "Upload", href: "#upload", icon: <UploadCloudIcon /> },
-              { key: "calendar", label: "Calendar", href: "#calendar", icon: <CalendarDaysIcon /> },
+              { key: "foundation", label: "Foundation", href: "#foundation", active: true, icon: <Grid2X2Icon className="size-4" /> },
+              { key: "inputs", label: "Inputs", href: "#inputs", icon: <SettingsIcon className="size-4" /> },
+              { key: "forms", label: "Forms", href: "#forms", icon: <ListChecksIcon className="size-4" /> },
+              { key: "table", label: "Data table", href: "#table", icon: <LayersIcon className="size-4" /> },
+              { key: "upload", label: "Upload", href: "#upload", icon: <UploadCloudIcon className="size-4" /> },
+              { key: "calendar", label: "Calendar", href: "#calendar", icon: <CalendarDaysIcon className="size-4" /> },
             ]}
           />
         </AppSidebar>
@@ -445,45 +490,43 @@ function PlaygroundContent() {
       header={
         <AppHeader
           left={<span className="font-semibold">UI Kit Playground</span>}
-          center={<Breadcrumbs items={[{ key: "home", label: "UI Kit", href: "#overview" }, { key: "playground", label: "Playground" }]} />}
+          center={<Breadcrumbs items={[{ key: "home", label: "UI Kit", href: "#foundation" }, { key: "playground", label: "Playground" }]} />}
           right={
             <>
-              <Button variant="outline" onClick={() => setCommandOpen(true)}>⌘K</Button>
-              <Button onClick={() => setModalOpen(true)}>Open modal</Button>
+              <Button variant="outline" size="sm" onClick={() => setCommandOpen(true)}>
+                <CommandIcon data-icon="inline-start" /> Command
+              </Button>
+              <Button variant="ghost" size="icon-sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+                {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+              </Button>
             </>
           }
         />
       }
       mainClassName="p-4 lg:p-6"
     >
+      <CommandPalette open={commandOpen} onOpenChange={setCommandOpen} groups={commandGroups} />
+
       <PageContainer size="xl">
         <PageHeader
           title="Azamat UI Kit"
-          eyebrow="Full component preview"
-          description="Mock playground for primitives, inputs, forms, overlays, data table, uploads, calendar, toast, command palette and wizard components."
-          meta={<span>Run <code className="rounded bg-muted px-1 py-0.5">npm run dev</code> to preview changes locally.</span>}
+          description="Mock playground for reusable dashboard components, CSS tokens and advanced states."
+          eyebrow="Playground"
           actions={
             <ActionMenu
-              label="Project"
+              label="Page actions"
               actions={[
-                { key: "toast", label: "Show success toast", icon: <BellIcon />, onSelect: () => { addToast({ tone: "success", title: "Saved", description: "Toast from ActionMenu." }) } },
+                { key: "modal", label: "Open modal", onSelect: () => setModalOpen(true) },
                 { key: "sheet", label: "Open sheet", onSelect: () => setSheetOpen(true) },
-                { key: "clear", label: "Clear toasts", onSelect: clearToasts },
+                { key: "toast", label: "Show toast", onSelect: () => addToast({ tone: "info", title: "Hello", description: "This is a toast from ActionMenu." }) },
               ]}
             />
           }
         />
 
-        <section id="overview" className="grid gap-4 md:grid-cols-3">
-          <StatCard title="Components" value="80+" icon={<PackageIcon />} description="Reusable building blocks" />
-          <StatCard title="Forms" value="Hardened" trend={{ value: "+ advanced props", tone: "success" }} />
-          <StatCard title="Theme" value="Dark/Light" description="CSS variable based" action={<StatusBadge tone="info">tokenized</StatusBadge>} />
-        </section>
-
-        <section id="primitives" className="grid gap-4">
-          <SectionTitle title="Primitives and feedback" description="Button, Badge, StatusBadge, Card, EmptyState and LoadingState variations." />
-          <div className="grid gap-4 lg:grid-cols-2">
-            <PlaygroundCard title="Button variants" description="Variants and sizes used across the library.">
+        <DemoSection id="foundation" title="Foundation" description="Primitive UI, badges, cards, status tones and CSS token switches.">
+          <div className="grid gap-4 lg:grid-cols-3">
+            <PlaygroundCard title="Button variants" description="All common variants and sizes." footer={<span className="text-xs text-muted-foreground">CSS token: --aui-control-radius</span>}>
               <div className="flex flex-wrap gap-2">
                 <Button>Default</Button>
                 <Button variant="secondary">Secondary</Button>
@@ -491,244 +534,267 @@ function PlaygroundContent() {
                 <Button variant="ghost">Ghost</Button>
                 <Button variant="destructive">Destructive</Button>
                 <Button variant="link">Link</Button>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
                 <Button size="xs">XS</Button>
                 <Button size="sm">SM</Button>
+                <Button>Default</Button>
                 <Button size="lg">LG</Button>
-                <Button size="icon-sm" aria-label="icon"><ZapIcon /></Button>
+                <Button size="icon-sm"><RocketIcon /></Button>
               </div>
             </PlaygroundCard>
 
-            <PlaygroundCard title="Badges and states" description="Badge and StatusBadge tone coverage.">
+            <PlaygroundCard title="Badges and status" description="Generic badge variants and status tones.">
               <div className="flex flex-wrap gap-2">
                 <Badge>Default</Badge>
                 <Badge variant="secondary">Secondary</Badge>
                 <Badge variant="outline">Outline</Badge>
                 <Badge variant="destructive">Destructive</Badge>
-                <StatusBadge tone="success" dot>success</StatusBadge>
-                <StatusBadge tone="warning" dot>warning</StatusBadge>
-                <StatusBadge tone="danger" dot>danger</StatusBadge>
-                <StatusBadge tone="info" dot>info</StatusBadge>
-                <StatusBadge tone="muted" dot>muted</StatusBadge>
+                <StatusBadge tone="success" dot>Success</StatusBadge>
+                <StatusBadge tone="warning" dot>Warning</StatusBadge>
+                <StatusBadge tone="danger" dot>Danger</StatusBadge>
+                <StatusBadge tone="info" dot>Info</StatusBadge>
+                <StatusBadge tone="muted" dot>Muted</StatusBadge>
+              </div>
+            </PlaygroundCard>
+
+            <PlaygroundCard title="CSS tokens" description="Radius and dark/light are CSS controlled.">
+              <div className="flex flex-wrap gap-2">
+                {['none', 'sm', 'md', 'lg', 'xl'].map((item) => (
+                  <Button key={item} variant={radius === item ? "default" : "outline"} size="sm" onClick={() => setRadius(item)}>
+                    {item}
+                  </Button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <TokenPill>--aui-card-radius</TokenPill>
+                <TokenPill>--aui-card-shadow</TokenPill>
+                <TokenPill>--aui-table-header-bg</TokenPill>
               </div>
             </PlaygroundCard>
           </div>
+        </DemoSection>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <EmptyState title="Empty state" description="Use this when there is no data yet." actionLabel="Create item" onAction={() => addToast({ title: "Empty action" })} />
-            <LoadingState label="Loading state" description="Use this while data is loading." />
-          </div>
+        <section className="grid gap-4 md:grid-cols-3">
+          <StatCard title="Components" value="80+" icon={<SparklesIcon />} trend={{ value: "+polished", tone: "success" }} description="Reusable UI coverage" />
+          <StatCard title="Theming" value="CSS-first" icon={<SettingsIcon />} description="data-slot + variables" />
+          <StatCard title="QA" value="Playground" icon={<CheckCircle2Icon />} description="Manual visual checks" />
         </section>
 
-        <section id="inputs" className="grid gap-4">
-          <SectionTitle title="Inputs" description="Standalone primitive wrappers and async select behavior." />
+        <DemoSection id="inputs" title="Inputs and selects" description="Standalone data-entry components with controlled mock state.">
+          <div className="grid gap-4 lg:grid-cols-3">
+            <PlaygroundCard title="Text inputs">
+              <Input placeholder="Primitive input" />
+              <Textarea placeholder="Primitive textarea" />
+              <SearchInput value={search} onValueChange={setSearch} placeholder="Search products..." />
+              <ClearableInput value={clearable} onValueChange={setClearable} placeholder="Clearable input" />
+              <MaskedInput value={masked} onValueChange={setMasked} mask={(value) => value.toUpperCase().slice(0, 6)} placeholder="Masked input" />
+            </PlaygroundCard>
+
+            <PlaygroundCard title="Numeric and phone inputs">
+              <PhoneInput value={phone} onValueChange={(value) => setPhone(value)} />
+              <NumberInput value={numberValue} min={0} max={100} onNumberChange={setNumberValue} />
+              <MoneyInput value={moneyRaw} prefix="UZS" onValueChange={(_value, raw) => setMoneyRaw(raw)} />
+              <QuantityInput value={quantity} min={0} max={10} onValueChange={setQuantity} />
+              <DateInput value={dateValue} onValueChange={setDateValue} />
+              <DateRangeInput value={dateRange} onValueChange={(value) => setDateRange({ from: value.from ?? "", to: value.to ?? "" })} />
+            </PlaygroundCard>
+
+            <PlaygroundCard title="Selects and booleans">
+              <PasswordInput value={password} onValueChange={setPassword} placeholder="Password" />
+              <SimpleSelect value={simpleValue} onValueChange={setSimpleValue} options={[
+                { label: "Active", value: "active", description: "Visible" },
+                { label: "Inactive", value: "inactive", description: "Hidden" },
+                { label: "Draft", value: "draft", disabled: true },
+              ]} />
+              <AsyncSelect
+                value={asyncValue}
+                onValueChange={setAsyncValue}
+                selectedOption={customerOptions.find((item) => item.value === asyncValue)}
+                minSearchLength={1}
+                cacheTtl={30_000}
+                defaultOptions={customerOptions}
+                loadOptions={async (value) => customerOptions.filter((item) => item.label.toLowerCase().includes(value.toLowerCase()))}
+                labels={{ placeholder: "Async customer", minSearchLength: (count) => `Type ${count}+ character` }}
+              />
+              <AsyncMultiSelect
+                value={selectedTags}
+                onValueChange={setSelectedTags}
+                defaultOptions={[{ label: "Tags", options: tagOptions }]}
+                loadOptions={async (value) => [{ label: "Tags", options: tagOptions.filter((tag) => tag.label.toLowerCase().includes(value.toLowerCase())) }]}
+                maxSelected={3}
+                showSelectAll
+                labels={{ placeholder: "Select tags", selectedCount: (count) => `${count} selected` }}
+              />
+              <div className="flex items-center gap-3 text-sm">
+                <Checkbox checked={checkbox} onCheckedChange={setCheckbox} /> Checkbox
+                <Switch checked={switchChecked} onCheckedChange={setSwitchChecked} /> Switch
+              </div>
+            </PlaygroundCard>
+          </div>
+        </DemoSection>
+
+        <DemoSection id="forms" title="Form wrappers" description="React Hook Form wrappers with hardened field shell props.">
+          <Card>
+            <CardContent>
+              <PlaygroundForm />
+            </CardContent>
+          </Card>
+        </DemoSection>
+
+        <DemoSection id="table" title="DataTable" description="Density, selection, actions, skeletons, striped/bordered mode and sticky header.">
+          <Card>
+            <CardHeader>
+              <CardTitle>Products table</CardTitle>
+              <CardDescription>Try search, density, loading skeleton, row click and column visibility.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-3 flex flex-wrap gap-2">
+                {(['compact', 'default', 'comfortable'] as const).map((item) => (
+                  <Button key={item} variant={density === item ? "default" : "outline"} size="sm" onClick={() => setDensity(item)}>
+                    {item}
+                  </Button>
+                ))}
+                <Button variant={tableLoading ? "default" : "outline"} size="sm" onClick={() => setTableLoading((value) => !value)}>
+                  Toggle skeleton
+                </Button>
+              </div>
+              <DataTable
+                columns={columns}
+                data={filteredProducts}
+                rowSelection={rowSelection}
+                onRowSelectionChange={setRowSelection}
+                sorting={sorting}
+                onSortingChange={setSorting}
+                enableRowSelection
+                density={density}
+                striped
+                bordered
+                stickyHeader
+                isLoading={tableLoading}
+                loadingVariant="skeleton"
+                getRowDisabled={(row) => row.original.status === "draft"}
+                onRowClick={(row) => addToast({ title: "Row clicked", description: row.original.name })}
+                onRowDoubleClick={(row) => addToast({ tone: "success", title: "Double click", description: row.original.sku })}
+                emptyState={{ title: "No products", description: "Try clearing the search input." }}
+                toolbarProps={(table) => ({
+                  title: "Products",
+                  search: <FilterBar search={<SearchInput value={search} onValueChange={setSearch} placeholder="Search table..." />} activeCount={search ? 1 : 0} onReset={() => setSearch("")} />,
+                  actions: <DataTableColumnVisibilityMenu table={table} />,
+                  selectionActions: (
+                    <DataTableBulkActions
+                      rows={table.getSelectedRowModel().rows.map((row) => row.original)}
+                      actions={[{ key: "delete", label: "Delete selected", destructive: true, onSelect: (rows) => addToast({ tone: "warning", title: "Bulk action", description: `${rows.length} rows selected.` }) }]}
+                      onClearSelection={() => setRowSelection({})}
+                    />
+                  ),
+                })}
+                pagination={{ pageIndex: 0, pageSize: 10, rowCount: filteredProducts.length, pageCount: 1 }}
+              />
+            </CardContent>
+          </Card>
+        </DemoSection>
+
+        <DemoSection id="upload" title="Upload" description="Drag/drop, validation, rejected files, progress and image previews.">
           <div className="grid gap-4 lg:grid-cols-2">
-            <PlaygroundCard title="Text and numeric inputs" description="Search, clearable, password, phone, number, money and quantity.">
-              <div className="grid gap-3">
-                <SearchInput value={search} onValueChange={setSearch} placeholder="Search products..." />
-                <ClearableInput value={clearableValue} onValueChange={setClearableValue} leadingIcon={<SearchIcon />} />
-                <PasswordInput value={password} onValueChange={setPassword} placeholder="Password" />
-                <PhoneInput value={phone} placeholder="Phone" onValueChange={(masked) => setPhone(masked)} />
-                <NumberInput value={numberValue} min={0} max={100} onNumberChange={setNumberValue} />
-                <MoneyInput value={money} prefix="$" suffix="USD" onValueChange={(_value, rawValue) => setMoney(rawValue)} />
-                <QuantityInput value={quantity} min={0} max={20} onValueChange={setQuantity} />
-              </div>
-            </PlaygroundCard>
-
-            <PlaygroundCard title="Selects" description="SimpleSelect, AsyncSelect and AsyncMultiSelect with hardening props.">
-              <div className="grid gap-3">
-                <SimpleSelect options={simpleOptions} placeholder="Simple status" />
-                <AsyncSelect
-                  value={singleTag}
-                  onValueChange={setSingleTag}
-                  defaultOptions={tagOptions}
-                  loadOptions={loadTagOptions}
-                  minSearchLength={2}
-                  cacheTtl={5_000}
-                  labels={{ placeholder: "Async single tag", minSearchLength: (count) => `Type ${count}+ characters` }}
-                  renderEmpty={() => <EmptyState title="No tag" description="Try another search." className="min-h-28 border-0" />}
-                />
-                <AsyncMultiSelect
-                  value={selectedTags}
-                  onValueChange={setSelectedTags}
-                  defaultOptions={tagOptions}
-                  loadOptions={loadTagOptions}
-                  showSelectAll
-                  maxSelected={4}
-                  labels={{ placeholder: "Async multi tags", selectedCount: (count) => `${count} selected`, selectAll: "Select visible", maxSelected: (count) => `Maximum ${count} tags` }}
-                />
-              </div>
-            </PlaygroundCard>
-          </div>
-        </section>
-
-        <section id="forms" className="grid gap-4">
-          <SectionTitle title="Forms" description="React Hook Form wrappers plus FormFieldShell layout props." />
-          <PlaygroundCard title="Form wrappers" description="Vertical, horizontal and inline field shell examples.">
-            <PlaygroundForm />
-          </PlaygroundCard>
-        </section>
-
-        <section id="table" className="grid gap-4">
-          <SectionTitle title="Data table" description="Selection, visibility menu, density, skeleton, striped rows and bulk actions." />
-          <PlaygroundCard title="DataTable hardening" description="Toggle loading to see skeleton rows; disabled row is dimmed.">
-            <DataTable
-              columns={columns}
-              data={filteredProducts}
-              getRowId={(row) => row.id}
-              rowSelection={rowSelection}
-              onRowSelectionChange={setRowSelection}
-              columnVisibility={columnVisibility}
-              onColumnVisibilityChange={setColumnVisibility}
-              enableRowSelection
-              isLoading={tableLoading}
-              loadingVariant="skeleton"
-              skeletonRows={4}
-              density="compact"
-              striped
-              bordered
-              stickyHeader
-              cellFallback="—"
-              getRowDisabled={(row) => Boolean(row.original.disabled)}
-              onRowClick={(row) => { addToast({ title: row.original.name, description: "Row click" }) }}
-              onRowDoubleClick={(row) => { addToast({ tone: "info", title: row.original.name, description: "Row double click" }) }}
-              emptyState={{ title: "No products", description: "Try changing filters." }}
-              toolbarProps={(table) => ({
-                title: "Products",
-                description: "Mock product list with advanced DataTable props.",
-                search: (
-                  <FilterBar
-                    search={<SearchInput value={search} onValueChange={setSearch} placeholder="Search table..." />}
-                    activeCount={search ? 1 : 0}
-                    onReset={() => setSearch("")}
-                    actions={<Button size="sm" variant="outline" onClick={() => setTableLoading((value) => !value)}>{tableLoading ? "Stop loading" : "Show skeleton"}</Button>}
-                  />
-                ),
-                actions: <DataTableColumnVisibilityMenu table={table} />,
-                selectionActions: (
-                  <DataTableBulkActions
-                    rows={selectedRows}
-                    hideWhenEmpty={false}
-                    onClearSelection={() => setRowSelection({})}
-                    actions={[
-                      { key: "export", label: "Export selected", onSelect: (rows) => { addToast({ title: "Export", description: `${rows.length} rows selected.` }) } },
-                      { key: "delete", label: "Delete selected", destructive: true, onSelect: () => setConfirmOpen(true) },
-                    ]}
-                  />
-                ),
-              })}
-              pagination={{ pageIndex: 0, pageSize: 10, rowCount: filteredProducts.length, pageCount: 1 }}
-              renderMobileCard={(row) => (
-                <Card size="sm">
-                  <CardHeader>
-                    <CardTitle>{row.original.name}</CardTitle>
-                    <CardDescription>{row.original.sku}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <StatusBadge tone={getStatusTone(row.original.status)}>{row.original.status}</StatusBadge>
-                  </CardContent>
-                </Card>
-              )}
-            />
-          </PlaygroundCard>
-        </section>
-
-        <section id="upload" className="grid gap-4">
-          <SectionTitle title="Upload" description="Drag/drop, validation, rejected files, progress and image previews." />
-          <div className="grid gap-4 lg:grid-cols-2">
-            <PlaygroundCard title="FileUpload" description="Try dropping any file. Validation is client-side only.">
+            <PlaygroundCard title="FileUpload" description="Client-side validation only; app owns real upload logic.">
               <FileUpload
                 files={files}
                 onFilesChange={setFiles}
-                accept=".pdf,.png,.jpg,image/*"
+                rejectedFiles={rejectedFiles}
+                accept=".pdf,.xlsx,image/*"
                 maxFiles={3}
-                maxSize={1024 * 1024}
-                progress={35}
-                dropzoneDescription="PDF or images, max 1 MB, max 3 files."
+                maxSize={2 * 1024 * 1024}
+                progress={55}
+                dropzoneDescription="Accepts PDF, Excel and images. Max 3 files."
               />
             </PlaygroundCard>
-            <PlaygroundCard title="ImageUpload" description="ImageUpload reuses FileUpload and adds previews.">
+            <PlaygroundCard title="ImageUpload" description="Image previews use object URLs and clean up automatically.">
               <ImageUpload files={images} onFilesChange={setImages} maxFiles={4} maxSize={2 * 1024 * 1024} />
             </PlaygroundCard>
           </div>
-        </section>
+        </DemoSection>
 
-        <section id="calendar" className="grid gap-4">
-          <SectionTitle title="Calendar and date pickers" description="Single/range calendars, native inputs and popover pickers." />
-          <div className="grid gap-4 lg:grid-cols-3">
+        <DemoSection id="calendar" title="Calendar and pickers" description="Single/range calendar plus popover pickers.">
+          <div className="grid gap-4 lg:grid-cols-4">
             <PlaygroundCard title="Calendar single">
-              <Calendar value={calendarDate} onValueChange={setCalendarDate} locale="en-US" />
+              <Calendar value={calendarDate} onValueChange={setCalendarDate} />
             </PlaygroundCard>
             <PlaygroundCard title="Calendar range">
-              <Calendar mode="range" range={calendarRange} onRangeChange={(range) => setCalendarRange({ from: range.from || "", to: range.to || "" })} locale="en-US" />
+              <Calendar mode="range" range={calendarRange} onRangeChange={(value) => setCalendarRange({ from: value.from ?? "", to: value.to ?? "" })} />
             </PlaygroundCard>
-            <PlaygroundCard title="Date controls">
-              <div className="grid gap-3">
-                <DateInput value={dateValue} onValueChange={setDateValue} />
-                <DateRangeInput value={dateRange} onValueChange={(val) => setDateRange({ from: val.from || "", to: val.to || "" })} />
-                <DatePicker value={dateValue} onValueChange={setDateValue} />
-                <DateRangePicker value={dateRange} onValueChange={(val) => setDateRange({ from: val.from || "", to: val.to || "" })} />
-              </div>
+            <PlaygroundCard title="DatePicker">
+              <DatePicker value={pickerDate} onValueChange={setPickerDate} />
+            </PlaygroundCard>
+            <PlaygroundCard title="DateRangePicker">
+              <DateRangePicker value={pickerRange} onValueChange={(value) => setPickerRange({ from: value.from ?? "", to: value.to ?? "" })} />
             </PlaygroundCard>
           </div>
-        </section>
+        </DemoSection>
 
-        <section className="grid gap-4 lg:grid-cols-2">
-          <PlaygroundCard title="Overlays" description="ModalShell, SheetShell, ConfirmDialog and DialogActions.">
-            <div className="flex flex-wrap gap-2">
-              <Button onClick={() => setModalOpen(true)}>Open modal</Button>
-              <Button variant="outline" onClick={() => setSheetOpen(true)}>Open sheet</Button>
-              <Button variant="destructive" onClick={() => setConfirmOpen(true)}>Open confirm</Button>
-            </div>
-          </PlaygroundCard>
-
-          <PlaygroundCard title="Wizard and stepper" description="Visual flow only; validation belongs to the app.">
-            <Wizard
-              steps={wizardSteps}
-              currentStep={wizardStep}
-              onStepChange={setWizardStep}
-              onNext={goNextWizardStep}
-              onPrevious={goPreviousWizardStep}
-              onFinish={() => { addToast({ tone: "success", title: "Wizard finished" }) }}
-            >
-              <div className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
-                Current step: <span className="font-medium text-foreground">{wizardStep}</span>
+        <DemoSection title="Overlay and feedback" description="Modal, sheet, confirm, empty/loading states and toasts.">
+          <div className="grid gap-4 lg:grid-cols-3">
+            <PlaygroundCard title="Overlay controls">
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => setModalOpen(true)}>Open modal</Button>
+                <Button variant="outline" onClick={() => setSheetOpen(true)}>Open sheet</Button>
+                <Button variant="destructive" onClick={() => setConfirmOpen(true)}>Confirm</Button>
               </div>
-            </Wizard>
-            <div className="mt-4">
-              <Stepper steps={wizardSteps.map((step) => ({ ...step, completed: step.id === "info" }))} currentStep={wizardStep} orientation="vertical" />
-            </div>
-          </PlaygroundCard>
-        </section>
+              <DialogActions>
+                <DialogActionButton variant="outline">Cancel</DialogActionButton>
+                <DialogActionButton isLoading loadingLabel="Saving...">Save</DialogActionButton>
+              </DialogActions>
+            </PlaygroundCard>
+            <EmptyState title="Empty state" description="Use this when there is no data yet." actionLabel="Create" onAction={() => addToast({ title: "Create clicked" })} />
+            <LoadingState label="Loading state" description="Use this while async data is loading." />
+          </div>
+        </DemoSection>
+
+        <DemoSection title="Command and wizard" description="Keyboard command palette and multi-step flow.">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <PlaygroundCard title="Command palette">
+              <Button onClick={() => setCommandOpen(true)}><CommandIcon data-icon="inline-start" /> Open command palette</Button>
+              <p className="text-sm text-muted-foreground">Shortcut: Ctrl/Cmd + K</p>
+            </PlaygroundCard>
+            <PlaygroundCard title="Stepper and wizard">
+              <Stepper steps={wizardSteps} currentStep={wizardStep} onStepChange={setWizardStep} />
+              <Wizard
+                steps={wizardSteps}
+                currentStep={wizardStep}
+                onStepChange={setWizardStep}
+                onPrevious={() => setWizardStep(wizardSteps[Math.max(wizardSteps.findIndex((step) => step.id === wizardStep) - 1, 0)].id)}
+                onNext={() => setWizardStep(wizardSteps[Math.min(wizardSteps.findIndex((step) => step.id === wizardStep) + 1, wizardSteps.length - 1)].id)}
+                onFinish={() => addToast({ tone: "success", title: "Wizard finished" })}
+              >
+                <div className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
+                  Current step: <strong className="text-foreground">{wizardStep}</strong>
+                </div>
+              </Wizard>
+            </PlaygroundCard>
+          </div>
+        </DemoSection>
       </PageContainer>
 
       <ModalShell
         open={modalOpen}
         onOpenChange={setModalOpen}
-        size="lg"
         title="Reusable modal"
         description="ModalShell wraps the dialog primitive for dashboard usage."
-        footer={
-          <DialogActions>
-            <DialogActionButton variant="outline" onClick={() => setModalOpen(false)}>Cancel</DialogActionButton>
-            <DialogActionButton isLoading={false} onClick={() => setModalOpen(false)}>Save</DialogActionButton>
-          </DialogActions>
-        }
+        footer={<Button onClick={() => setModalOpen(false)}>Close</Button>}
       >
-        <p className="text-sm text-muted-foreground">
-          This modal is controlled by props and does not contain business logic.
-        </p>
+        <p className="text-sm text-muted-foreground">This modal is controlled by props and does not contain business logic.</p>
       </ModalShell>
 
       <SheetShell
         open={sheetOpen}
         onOpenChange={setSheetOpen}
         title="Reusable sheet"
-        description="Use sheets for side panels, filters and quick forms."
+        description="SheetShell supports side, header, body and footer slots."
         footer={<Button onClick={() => setSheetOpen(false)}>Done</Button>}
       >
         <div className="grid gap-3">
-          <SearchInput placeholder="Search inside sheet" />
-          <SimpleSelect options={simpleOptions} placeholder="Sheet select" />
+          <Input placeholder="Sheet input" />
+          <Textarea placeholder="Sheet textarea" />
         </div>
       </SheetShell>
 
@@ -741,32 +807,8 @@ function PlaygroundContent() {
         confirmVariant="destructive"
         onConfirm={() => {
           setConfirmOpen(false)
-          addToast({ tone: "danger", title: "Delete clicked", description: "No real data was deleted." })
+          addToast({ tone: "danger", title: "Delete confirmed", description: "No real data was removed." })
         }}
-      />
-
-      <CommandPalette
-        open={commandOpen}
-        onOpenChange={setCommandOpen}
-        groups={[
-          {
-            id: "navigation",
-            label: "Navigation",
-            items: [
-              { id: "overview", label: "Overview", shortcut: "G O", onSelect: () => window.location.hash = "overview" },
-              { id: "forms", label: "Forms", shortcut: "G F", onSelect: () => window.location.hash = "forms" },
-              { id: "table", label: "Data table", shortcut: "G T", onSelect: () => window.location.hash = "table" },
-            ],
-          },
-          {
-            id: "actions",
-            label: "Actions",
-            items: [
-              { id: "toast", label: "Show toast", icon: <BellIcon />, onSelect: () => { addToast({ title: "Command executed" }) } },
-              { id: "sheet", label: "Open sheet", icon: <SettingsIcon />, onSelect: () => setSheetOpen(true) },
-            ],
-          },
-        ]}
       />
     </AppShell>
   )
@@ -775,7 +817,7 @@ function PlaygroundContent() {
 export default function App() {
   return (
     <ToastProvider position="top-right">
-      <PlaygroundContent />
+      <PlaygroundInner />
     </ToastProvider>
   )
 }
