@@ -4,9 +4,6 @@ import type { ColumnDef, RowSelectionState, VisibilityState } from "@tanstack/re
 import {
   BellIcon,
   CalendarDaysIcon,
-  CheckCircle2Icon,
-  FileUpIcon,
-  ImageIcon,
   LayoutDashboardIcon,
   PackageIcon,
   SearchIcon,
@@ -397,12 +394,12 @@ function PlaygroundContent() {
           {
             key: "view",
             label: "View",
-            onSelect: () => addToast({ title: product.name, description: "View action clicked." }),
+            onSelect: () => { addToast({ title: product.name, description: "View action clicked." }) },
           },
           {
             key: "edit",
             label: "Edit",
-            onSelect: () => addToast({ tone: "info", title: "Edit", description: product.sku }),
+            onSelect: () => { addToast({ tone: "info", title: "Edit", description: product.sku }) },
           },
           {
             key: "delete",
@@ -469,7 +466,7 @@ function PlaygroundContent() {
             <ActionMenu
               label="Project"
               actions={[
-                { key: "toast", label: "Show success toast", icon: <BellIcon />, onSelect: () => addToast({ tone: "success", title: "Saved", description: "Toast from ActionMenu." }) },
+                { key: "toast", label: "Show success toast", icon: <BellIcon />, onSelect: () => { addToast({ tone: "success", title: "Saved", description: "Toast from ActionMenu." }) } },
                 { key: "sheet", label: "Open sheet", onSelect: () => setSheetOpen(true) },
                 { key: "clear", label: "Clear toasts", onSelect: clearToasts },
               ]}
@@ -592,8 +589,8 @@ function PlaygroundContent() {
               stickyHeader
               cellFallback="—"
               getRowDisabled={(row) => Boolean(row.original.disabled)}
-              onRowClick={(row) => addToast({ title: row.original.name, description: "Row click" })}
-              onRowDoubleClick={(row) => addToast({ tone: "info", title: row.original.name, description: "Row double click" })}
+              onRowClick={(row) => { addToast({ title: row.original.name, description: "Row click" }) }}
+              onRowDoubleClick={(row) => { addToast({ tone: "info", title: row.original.name, description: "Row double click" }) }}
               emptyState={{ title: "No products", description: "Try changing filters." }}
               toolbarProps={(table) => ({
                 title: "Products",
@@ -613,7 +610,7 @@ function PlaygroundContent() {
                     hideWhenEmpty={false}
                     onClearSelection={() => setRowSelection({})}
                     actions={[
-                      { key: "export", label: "Export selected", onSelect: (rows) => addToast({ title: "Export", description: `${rows.length} rows selected.` }) },
+                      { key: "export", label: "Export selected", onSelect: (rows) => { addToast({ title: "Export", description: `${rows.length} rows selected.` }) } },
                       { key: "delete", label: "Delete selected", destructive: true, onSelect: () => setConfirmOpen(true) },
                     ]}
                   />
@@ -662,14 +659,14 @@ function PlaygroundContent() {
               <Calendar value={calendarDate} onValueChange={setCalendarDate} locale="en-US" />
             </PlaygroundCard>
             <PlaygroundCard title="Calendar range">
-              <Calendar mode="range" range={calendarRange} onRangeChange={setCalendarRange} locale="en-US" />
+              <Calendar mode="range" range={calendarRange} onRangeChange={(range) => setCalendarRange({ from: range.from || "", to: range.to || "" })} locale="en-US" />
             </PlaygroundCard>
             <PlaygroundCard title="Date controls">
               <div className="grid gap-3">
                 <DateInput value={dateValue} onValueChange={setDateValue} />
-                <DateRangeInput value={dateRange} onValueChange={setDateRange} />
+                <DateRangeInput value={dateRange} onValueChange={(val) => setDateRange({ from: val.from || "", to: val.to || "" })} />
                 <DatePicker value={dateValue} onValueChange={setDateValue} />
-                <DateRangePicker value={dateRange} onValueChange={setDateRange} />
+                <DateRangePicker value={dateRange} onValueChange={(val) => setDateRange({ from: val.from || "", to: val.to || "" })} />
               </div>
             </PlaygroundCard>
           </div>
@@ -691,7 +688,7 @@ function PlaygroundContent() {
               onStepChange={setWizardStep}
               onNext={goNextWizardStep}
               onPrevious={goPreviousWizardStep}
-              onFinish={() => addToast({ tone: "success", title: "Wizard finished" })}
+              onFinish={() => { addToast({ tone: "success", title: "Wizard finished" }) }}
             >
               <div className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
                 Current step: <span className="font-medium text-foreground">{wizardStep}</span>
@@ -765,7 +762,7 @@ function PlaygroundContent() {
             id: "actions",
             label: "Actions",
             items: [
-              { id: "toast", label: "Show toast", icon: <BellIcon />, onSelect: () => addToast({ title: "Command executed" }) },
+              { id: "toast", label: "Show toast", icon: <BellIcon />, onSelect: () => { addToast({ title: "Command executed" }) } },
               { id: "sheet", label: "Open sheet", icon: <SettingsIcon />, onSelect: () => setSheetOpen(true) },
             ],
           },
