@@ -272,7 +272,7 @@ function FileUpload({
   }
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDragEnter?.(event)
+    onDragEnter?.(event as any)
     if (event.defaultPrevented || isDisabled) return
     event.preventDefault()
     dragDepthRef.current += 1
@@ -280,20 +280,20 @@ function FileUpload({
   }
 
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDragLeave?.(event)
+    onDragLeave?.(event as any)
     if (event.defaultPrevented || isDisabled) return
     dragDepthRef.current = Math.max(dragDepthRef.current - 1, 0)
     if (dragDepthRef.current === 0) setIsDragging(false)
   }
 
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDragOver?.(event)
+    onDragOver?.(event as any)
     if (event.defaultPrevented || isDisabled) return
     event.preventDefault()
   }
 
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDrop?.(event)
+    onDrop?.(event as any)
     if (event.defaultPrevented || isDisabled) return
     event.preventDefault()
     dragDepthRef.current = 0

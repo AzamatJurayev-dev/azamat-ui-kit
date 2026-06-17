@@ -1,4 +1,3 @@
-import * as React from "react"
 import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
 import { DatePicker, type DatePickerProps } from "@/components/calendar/date-picker"

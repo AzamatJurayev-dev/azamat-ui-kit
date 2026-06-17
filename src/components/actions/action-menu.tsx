@@ -27,7 +27,7 @@ export type ActionMenuItem = {
 export type ActionMenuProps = {
   actions: ActionMenuItem[]
   label?: React.ReactNode
-  trigger?: React.ReactNode
+  trigger?: React.ReactElement
   align?: "start" | "center" | "end"
   side?: "top" | "right" | "bottom" | "left"
   sideOffset?: number

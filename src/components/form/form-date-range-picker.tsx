@@ -1,4 +1,3 @@
-import * as React from "react"
 import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
 import { DateRangePicker, type DateRangePickerProps } from "@/components/calendar/date-range-picker"
@@ -43,7 +42,7 @@ function FormDateRangePicker<TFieldValues extends FieldValues = FieldValues>({
                 onValueChange={(value) => {
                   fromField.onChange(value.from || emptyValue)
                   toField.onChange(value.to || emptyValue)
-                  onValueChange?.(value)
+                  onValueChange?.({ from: value.from || undefined, to: value.to || undefined })
                 }}
                 {...props}
               />

@@ -42,7 +42,7 @@ function SimpleSelect({
   ...props
 }: SimpleSelectProps) {
   return (
-    <Select value={value} onValueChange={onValueChange} {...props}>
+    <Select value={value} onValueChange={(val) => onValueChange?.(val as string)} {...props}>
       <SelectTrigger size={size} className={cn("w-full", triggerClassName)}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

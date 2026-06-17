@@ -454,7 +454,7 @@ function AsyncSelect<
     let cancelled = false
 
     async function run() {
-      const option = await loadSelectedOption?.(value)
+      const option = await loadSelectedOption?.(value as TValue)
       if (!cancelled) {
         setPreloadedOption(option ?? null)
       }
