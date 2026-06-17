@@ -15,10 +15,16 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table"
 
+import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
+import { DataTableBulkActions, type DataTableBulkAction } from "@/components/data-table/data-table-bulk-actions"
+import { DataTableColumnVisibilityMenu } from "@/components/data-table/data-table-column-visibility-menu"
 import { DataTablePagination, type DataTablePaginationProps } from "@/components/data-table/data-table-pagination"
+import { type DataTableRowAction } from "@/components/data-table/data-table-row-actions"
 import { DataTableToolbar, type DataTableToolbarProps } from "@/components/data-table/data-table-toolbar"
 import { EmptyState, type EmptyStateProps } from "@/components/feedback/empty-state"
 import { LoadingState, type LoadingStateProps } from "@/components/feedback/loading-state"
+import { SearchInput } from "@/components/inputs/search-input"
+import { Button } from "@/components/ui/button"
 import {
   Table,
   TableBody,
@@ -31,6 +37,29 @@ import { cn } from "@/lib/utils"
 
 export type DataTableDensity = "compact" | "default" | "comfortable"
 export type DataTableLoadingVariant = "skeleton" | "state"
+
+export type DataTableFeatureConfig = {
+  search?: boolean
+  columnVisibility?: boolean
+  rowActions?: boolean
+  bulkActions?: boolean
+  refresh?: boolean
+  export?: boolean
+}
+
+export type DataTableSearchConfig = {
+  value: string
+  onValueChange: (value: string) => void
+  placeholder?: string
+  className?: string
+  inputClassName?: string
+}
+
+export type DataTableActionContext<TData> = {
+  table: TanStackTable<TData>
+  data: TData[]
+  selectedRows: TData[]
+}
 
 export type DataTablePaginationConfig = Pick<
   DataTablePaginationProps,
@@ -54,6 +83,17 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
 > & {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  title?: React.ReactNode
+  description?: React.ReactNode
+  features?: DataTableFeatureConfig
+  search?: DataTableSearchConfig
+  toolbarActions?: React.ReactNode | ((context: DataTableActionContext<TData>) => React.ReactNode)
+  rowActions?: (row: Row<TData>, original: TData) => DataTableRowAction<TData>[]
+  bulkActions?: DataTableBulkAction<TData>[]
+  onRefresh?: (context: DataTableActionContext<TData>) => void
+  onExport?: (context: DataTableActionContext<TData>) => void
+  refreshLabel?: React.ReactNode
+  exportLabel?: React.ReactNode
   getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string
   isLoading?: boolean
   isError?: boolean
@@ -132,6 +172,17 @@ function DataTable<TData, TValue = unknown>({
   className,
   columns,
   data,
+  title,
+  description,
+  features,
+  search,
+  toolbarActions,
+  rowActions,
+  bulkActions,
+  onRefresh,
+  onExport,
+  refreshLabel = "Refresh",
+  exportLabel = "Export",
   getRowId,
   isLoading = false,
   isError = false,
@@ -167,6 +218,17 @@ function DataTable<TData, TValue = unknown>({
   rowClassName,
   ...props
 }: DataTableProps<TData, TValue>) {
+  const resolvedColumns = React.useMemo<ColumnDef<TData, TValue | unknown>[]>(() => {
+    if (!rowActions || features?.rowActions === false) return columns
+
+    return [
+      ...columns,
+      createDataTableActionsColumn<TData>({
+        getActions: rowActions,
+      }) as ColumnDef<TData, TValue | unknown>,
+    ]
+  }, [columns, features?.rowActions, rowActions])
+
   const paginationConfig = pagination === false ? undefined : pagination
   const controlledPagination = paginationConfig
     ? {
@@ -179,7 +241,7 @@ function DataTable<TData, TValue = unknown>({
 
   const table = useReactTable({
     data,
-    columns,
+    columns: resolvedColumns,
     getRowId,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: paginationConfig && !manualPagination ? getPaginationRowModel() : undefined,
@@ -198,11 +260,64 @@ function DataTable<TData, TValue = unknown>({
   })
 
   const rows = table.getRowModel().rows
+  const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original)
+  const actionContext = React.useMemo<DataTableActionContext<TData>>(
+    () => ({ table, data, selectedRows }),
+    [data, selectedRows, table]
+  )
   const visibleColumns = table.getVisibleLeafColumns()
   const visibleColumnCount = Math.max(visibleColumns.length, 1)
   const resolvedToolbar = typeof toolbar === "function" ? toolbar(table) : toolbar
   const resolvedToolbarProps = typeof toolbarProps === "function" ? toolbarProps(table) : toolbarProps
-  const hasToolbar = Boolean(resolvedToolbar || resolvedToolbarProps)
+  const shouldShowSearch = Boolean(search && features?.search !== false)
+  const shouldShowColumnVisibility = Boolean(features?.columnVisibility && table.getAllLeafColumns().some((column) => column.getCanHide()))
+  const shouldShowRefresh = Boolean(features?.refresh && onRefresh)
+  const shouldShowExport = Boolean(features?.export && onExport)
+  const shouldShowBulkActions = Boolean(features?.bulkActions !== false && bulkActions?.length)
+  const defaultSearch = shouldShowSearch ? (
+    <SearchInput
+      value={search.value}
+      onValueChange={search.onValueChange}
+      placeholder={search.placeholder ?? "Search..."}
+      wrapperClassName={search.className}
+      inputClassName={search.inputClassName}
+    />
+  ) : undefined
+  const defaultActions = (
+    <>
+      {typeof toolbarActions === "function" ? toolbarActions(actionContext) : toolbarActions}
+      {shouldShowColumnVisibility && <DataTableColumnVisibilityMenu table={table} />}
+      {shouldShowRefresh && (
+        <Button type="button" variant="outline" size="sm" disabled={isLoading} onClick={() => onRefresh?.(actionContext)}>
+          {refreshLabel}
+        </Button>
+      )}
+      {shouldShowExport && (
+        <Button type="button" variant="outline" size="sm" onClick={() => onExport?.(actionContext)}>
+          {exportLabel}
+        </Button>
+      )}
+    </>
+  )
+  const defaultSelectionActions = shouldShowBulkActions ? (
+    <DataTableBulkActions
+      rows={selectedRows}
+      actions={bulkActions ?? []}
+      onClearSelection={() => table.resetRowSelection()}
+      hideWhenEmpty={false}
+    />
+  ) : undefined
+  const hasDefaultToolbarContent = Boolean(
+    title ||
+      description ||
+      defaultSearch ||
+      toolbarActions ||
+      shouldShowColumnVisibility ||
+      shouldShowRefresh ||
+      shouldShowExport ||
+      defaultSelectionActions
+  )
+  const hasToolbar = Boolean(resolvedToolbar || resolvedToolbarProps || hasDefaultToolbarContent)
   const showPagination = Boolean(paginationConfig && !paginationConfig.hidden)
   const shouldRenderSkeleton = isLoading && loadingVariant === "skeleton"
 
@@ -251,6 +366,11 @@ function DataTable<TData, TValue = unknown>({
       {hasToolbar &&
         (resolvedToolbar ?? (
           <DataTableToolbar
+            title={title}
+            description={description}
+            search={defaultSearch}
+            actions={defaultActions}
+            selectionActions={defaultSelectionActions}
             selectedCount={selectedRowCount}
             totalCount={paginationConfig ? paginationConfig.rowCount ?? data.length : data.length}
             {...resolvedToolbarProps}
@@ -281,7 +401,7 @@ function DataTable<TData, TValue = unknown>({
         )}
       >
         <Table className={tableClassName}>
-          <TableHeader className={cn(stickyHeader && "sticky top-0 z-10 bg-background shadow-sm")}> 
+          <TableHeader className={cn(stickyHeader && "sticky top-0 z-10 bg-background shadow-sm")}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
