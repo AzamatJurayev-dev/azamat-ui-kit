@@ -1,7 +1,7 @@
 import * as React from "react"
 import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
-import { FormFieldShell, type FormFieldShellProps } from "@/components/form/form-field-shell"
+import { FormFieldShell, type FormFieldShellControlProps } from "@/components/form/form-field-shell"
 import {
   AsyncSelect,
   type AsyncSelectOption,
@@ -14,8 +14,8 @@ export type FormAsyncSelectProps<
   TValue extends string = string,
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
-> = Omit<AsyncSelectProps<TValue, TData, TOption>, "value" | "onValueChange"> &
-  Pick<FormFieldShellProps, "label" | "description" | "required" | "className"> & {
+> = Omit<AsyncSelectProps<TValue, TData, TOption>, "value" | "onValueChange" | "disabled"> &
+  FormFieldShellControlProps & {
     control: Control<TFieldValues>
     name: TName
     fieldClassName?: string
@@ -36,6 +36,19 @@ function FormAsyncSelect<
   description,
   required,
   className,
+  layout,
+  descriptionPosition,
+  labelAction,
+  requiredIndicator,
+  errorIcon,
+  showErrorIcon,
+  disabled,
+  readOnly,
+  labelClassName,
+  labelRowClassName,
+  descriptionClassName,
+  errorClassName,
+  contentClassName,
   fieldClassName,
   emptyValue,
   onValueChange,
@@ -52,9 +65,23 @@ function FormAsyncSelect<
           required={required}
           error={fieldState.error?.message}
           className={className}
+          layout={layout}
+          descriptionPosition={descriptionPosition}
+          labelAction={labelAction}
+          requiredIndicator={requiredIndicator}
+          errorIcon={errorIcon}
+          showErrorIcon={showErrorIcon}
+          disabled={disabled}
+          readOnly={readOnly}
+          labelClassName={labelClassName}
+          labelRowClassName={labelRowClassName}
+          descriptionClassName={descriptionClassName}
+          errorClassName={errorClassName}
+          contentClassName={contentClassName}
         >
           <AsyncSelect<TValue, TData, TOption>
             value={field.value ? (String(field.value) as TValue) : undefined}
+            disabled={disabled || readOnly}
             onValueChange={(nextValue, option) => {
               field.onChange(nextValue ?? emptyValue)
               onValueChange?.(nextValue, option)
