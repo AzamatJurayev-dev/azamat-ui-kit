@@ -275,9 +275,27 @@ Rules:
 - callbacks receive table/data/selected rows but no API is called inside the UI kit
 - existing `toolbar` and `toolbarProps` APIs remain available
 
+## Phase 22 - Landing and documentation polish
+
+Improved the playground as a public-facing UI kit website:
+
+- redesigned landing page hero with CTAs, metrics and preview card
+- added system cards for Foundation, Data Entry, Data Display and Application Blocks
+- documented architecture principles and CSS-first customization on the landing page
+- polished `PlaygroundCard`, `DemoSection`, `TokenPill` and usage cards
+- polished `ComponentPreview` with preview/code tabs, copy button, dependency badges and line numbers
+- updated `docs/playground.md` with landing-page and quality rules
+
+Rules:
+
+- showcase pages should feel like a real library website
+- examples should remain mock/local and reusable
+- UI polish should come from shared wrappers, slots and CSS tokens
+
 ## Next priority order
 
-1. CommandPalette hardening
-2. App shell advanced responsive sidebar helpers
-3. FormBuilder / ResourcePage planning on top of existing components
-4. Component tests and accessibility smoke checks
+1. Expand individual component section examples where props are still missing
+2. CommandPalette hardening
+3. App shell advanced responsive sidebar helpers
+4. FormBuilder / ResourcePage planning on top of existing components
+5. Component tests and accessibility smoke checks
