@@ -17,6 +17,7 @@ export type FileUploadRenderFileState = {
   index: number
   progress?: number
   remove: () => void
+  removeLabel?: string
 }
 
 export type FileUploadRenderRejectedFileState = {
@@ -24,14 +25,28 @@ export type FileUploadRenderRejectedFileState = {
   index: number
 }
 
-export type FileUploadProps = Omit<
+type NativeFileInputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
-  "type" | "value" | "onChange" | "className" | "children"
-> & {
+  | "type"
+  | "value"
+  | "onChange"
+  | "className"
+  | "children"
+  | "onDragEnter"
+  | "onDragLeave"
+  | "onDragOver"
+  | "onDrop"
+>
+
+export type FileUploadProps = NativeFileInputProps & {
   files?: File[]
   onFilesChange?: (files: File[]) => void
   rejectedFiles?: FileUploadRejectedFile[]
   onRejectedFilesChange?: (files: FileUploadRejectedFile[]) => void
+  onDragEnter?: React.DragEventHandler<HTMLDivElement>
+  onDragLeave?: React.DragEventHandler<HTMLDivElement>
+  onDragOver?: React.DragEventHandler<HTMLDivElement>
+  onDrop?: React.DragEventHandler<HTMLDivElement>
   buttonLabel?: React.ReactNode
   dropzoneLabel?: React.ReactNode
   dropzoneDescription?: React.ReactNode
@@ -129,11 +144,7 @@ function validateIncomingFiles({
     }
 
     if (maxSize !== undefined && file.size > maxSize) {
-      rejected.push({
-        file,
-        reason: "max-size",
-        message: `File is larger than ${formatBytes(maxSize)}.`,
-      })
+      rejected.push({ file, reason: "max-size", message: `File is larger than ${formatBytes(maxSize)}.` })
       continue
     }
 
@@ -156,7 +167,7 @@ function validateIncomingFiles({
   }
 }
 
-function defaultRenderFile({ file, progress, remove }: FileUploadRenderFileState) {
+function defaultRenderFile({ file, progress, remove, removeLabel = "Remove file" }: FileUploadRenderFileState) {
   return (
     <div className="flex min-w-0 items-center gap-2">
       <FileIcon className="size-4 shrink-0 text-muted-foreground" />
@@ -171,7 +182,7 @@ function defaultRenderFile({ file, progress, remove }: FileUploadRenderFileState
       </div>
       <Button type="button" variant="ghost" size="icon-xs" onClick={remove}>
         <XIcon />
-        <span className="sr-only">Remove file</span>
+        <span className="sr-only">{removeLabel}</span>
       </Button>
     </div>
   )
@@ -224,10 +235,7 @@ function FileUpload({
 
   const setRejectedFiles = React.useCallback(
     (nextRejectedFiles: FileUploadRejectedFile[]) => {
-      if (rejectedFiles === undefined) {
-        setInternalRejectedFiles(nextRejectedFiles)
-      }
-
+      if (rejectedFiles === undefined) setInternalRejectedFiles(nextRejectedFiles)
       onRejectedFilesChange?.(nextRejectedFiles)
     },
     [onRejectedFilesChange, rejectedFiles]
@@ -244,15 +252,7 @@ function FileUpload({
 
   const processFiles = React.useCallback(
     (incomingFiles: File[]) => {
-      const result = validateIncomingFiles({
-        currentFiles: files,
-        incomingFiles,
-        accept,
-        maxFiles,
-        maxSize,
-        appendFiles,
-      })
-
+      const result = validateIncomingFiles({ currentFiles: files, incomingFiles, accept, maxFiles, maxSize, appendFiles })
       onFilesChange?.(result.nextFiles)
       setRejectedFiles(result.rejected)
     },
@@ -272,7 +272,7 @@ function FileUpload({
   }
 
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDragEnter?.(event as any)
+    onDragEnter?.(event)
     if (event.defaultPrevented || isDisabled) return
     event.preventDefault()
     dragDepthRef.current += 1
@@ -280,20 +280,20 @@ function FileUpload({
   }
 
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDragLeave?.(event as any)
+    onDragLeave?.(event)
     if (event.defaultPrevented || isDisabled) return
     dragDepthRef.current = Math.max(dragDepthRef.current - 1, 0)
     if (dragDepthRef.current === 0) setIsDragging(false)
   }
 
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDragOver?.(event as any)
+    onDragOver?.(event)
     if (event.defaultPrevented || isDisabled) return
     event.preventDefault()
   }
 
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
-    onDrop?.(event as any)
+    onDrop?.(event)
     if (event.defaultPrevented || isDisabled) return
     event.preventDefault()
     dragDepthRef.current = 0
@@ -340,9 +340,7 @@ function FileUpload({
           <UploadCloudIcon className="size-5" />
         </div>
         <div className="grid gap-1">
-          <div className="text-sm font-medium text-foreground">
-            {isDragging ? dragActiveLabel : dropzoneLabel}
-          </div>
+          <div className="text-sm font-medium text-foreground">{isDragging ? dragActiveLabel : dropzoneLabel}</div>
           {dropzoneDescription && <div className="text-xs text-muted-foreground">{dropzoneDescription}</div>}
           {(accept || maxSize || maxFiles || helperText) && (
             <div className="text-xs text-muted-foreground">
@@ -367,16 +365,15 @@ function FileUpload({
 
       {showFileList && files.length > 0 && (
         <div data-slot="file-upload-list" className={cn("grid gap-2", fileListClassName)}>
-          {files.map((file, index) => (
-            <div
-              key={`${file.name}-${file.lastModified}-${index}`}
-              data-slot="file-upload-item"
-              className={cn("rounded-lg border bg-card p-2", fileItemClassName)}
-            >
-              {renderFile?.({ file, index, progress: getProgressForFile(progress, file), remove: () => removeFile(index) }) ??
-                defaultRenderFile({ file, index, progress: getProgressForFile(progress, file), remove: () => removeFile(index) })}
-            </div>
-          ))}
+          {files.map((file, index) => {
+            const state = { file, index, progress: getProgressForFile(progress, file), remove: () => removeFile(index), removeLabel }
+
+            return (
+              <div key={`${file.name}-${file.lastModified}-${index}`} data-slot="file-upload-item" className={cn("rounded-lg border bg-card p-2", fileItemClassName)}>
+                {renderFile?.(state) ?? defaultRenderFile(state)}
+              </div>
+            )
+          })}
         </div>
       )}
 
@@ -384,11 +381,7 @@ function FileUpload({
         <div data-slot="file-upload-rejected-list" className={cn("grid gap-1", rejectedListClassName)}>
           {resolvedRejectedFiles.map((rejectedFile, index) => (
             <div key={`${rejectedFile.file.name}-${index}`} className="rounded-md bg-destructive/10 px-2 py-1.5 text-xs text-destructive">
-              {renderRejectedFile?.({ rejectedFile, index }) ?? (
-                <span>
-                  {rejectedFile.file.name}: {rejectedFile.message}
-                </span>
-              )}
+              {renderRejectedFile?.({ rejectedFile, index }) ?? <span>{rejectedFile.file.name}: {rejectedFile.message}</span>}
             </div>
           ))}
         </div>
