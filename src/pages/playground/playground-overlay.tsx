@@ -1,7 +1,10 @@
 import { useState } from "react"
-import { CheckCircle2Icon, CommandIcon } from "lucide-react"
+import { CheckCircle2Icon, CommandIcon, Layers3Icon, MessageSquareIcon, PanelRightIcon, ShieldAlertIcon } from "lucide-react"
+
 import {
+  Badge,
   Button,
+  ComponentPreview,
   ConfirmDialog,
   DialogActionButton,
   DialogActions,
@@ -9,12 +12,13 @@ import {
   LoadingState,
   ModalShell,
   SheetShell,
+  StatusBadge,
   Stepper,
   useToast,
   Wizard,
 } from "@/index"
 
-import { DemoSection, PlaygroundCard, PlaygroundUsage } from "./playground-ui"
+import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
 import { wizardSteps } from "./playground-data"
 
 type FeedItem = {
@@ -86,172 +90,91 @@ export function OverlaySection({ onOpenCommand }: { onOpenCommand: () => void })
 
   return (
     <>
-      <DemoSection sectionIndex={8} id="overlay" title="Command and wizard" description="Keyboard command palette and multi-step flow.">
-        <div className="grid gap-4 lg:grid-cols-2">
-          <PlaygroundCard title="Command palette">
+      <DemoSection
+        sectionIndex={8}
+        id="overlay"
+        eyebrow="Interaction"
+        title="Overlay, command and wizard"
+        description="Controlled modal, sheet, confirm, command palette and multi-step flows with mock state history."
+        action={<StatusBadge tone="info" dot>{feed.length} events</StatusBadge>}
+      >
+        <section className="mb-4 grid gap-4 md:grid-cols-4">
+          <PlaygroundCard title="Modal" description="Controlled shell" badge={<Badge variant="outline">Dialog</Badge>}>
+            <Button onClick={() => setModalOpen(true)}>Open modal</Button>
+            <Button variant="outline" onClick={() => setInfoModalOpen(true)}>Open info modal</Button>
+          </PlaygroundCard>
+          <PlaygroundCard title="Sheet" description="Side-based drawer" badge={<Badge variant="outline">{sheetSide}</Badge>}>
+            <Button onClick={() => { setSheetOpen(true); addFeed("info", "Sheet opened.") }}>
+              <PanelRightIcon className="mr-2 size-4" />
+              Open sheet
+            </Button>
+            <Button variant="outline" onClick={cycleSheetSide}>Cycle side</Button>
+          </PlaygroundCard>
+          <PlaygroundCard title="Confirm" description="Async destructive flow" badge={<Badge variant={confirmErrorMode ? "destructive" : "outline"}>{confirmErrorMode ? "error" : "normal"}</Badge>}>
+            <Button variant="destructive" onClick={() => { setConfirmOpen(true); addFeed("warning", "Confirm requested by user.") }}>
+              <ShieldAlertIcon className="mr-2 size-4" />
+              Open confirm
+            </Button>
+            <Button variant="outline" onClick={() => setConfirmErrorMode((value) => !value)}>Toggle error</Button>
+          </PlaygroundCard>
+          <PlaygroundCard title="Command" description="Keyboard-first actions" badge={<Badge variant="outline">Ctrl K</Badge>}>
             <Button onClick={onOpenCommand}>
               <CommandIcon className="mr-2 size-4" />
-              Open command palette
+              Open command
             </Button>
-            <p className="text-sm text-muted-foreground">Shortcut: Ctrl/Cmd + K</p>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  onOpenCommand()
-                  addFeed("info", "Command palette launched from section action.")
-                }}
-              >
-                Open command again
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  jumpWizardTo("info")
-                  setSheetSide("right")
-                }}
-              >
-                Reset wizard path
+            <p className="text-xs text-muted-foreground">Also works with Ctrl/Cmd + K.</p>
+          </PlaygroundCard>
+        </section>
+
+        <ShowcaseGrid className="mb-4 xl:grid-cols-3">
+          <PlaygroundCard title="Overlay controls" description="Trigger modal, sheet, confirm and async footer states." badge={<Badge variant="outline">controls</Badge>}>
+            <div className="flex flex-wrap gap-2">
+              <Button onClick={() => setModalOpen(true)}>Modal</Button>
+              <Button variant="outline" onClick={() => setInfoModalOpen(true)}>Info</Button>
+              <Button variant="outline" onClick={() => setSheetOpen(true)}>Sheet</Button>
+              <Button variant="destructive" onClick={() => setConfirmOpen(true)}>Confirm</Button>
+              <Button variant={sheetLoading ? "default" : "outline"} onClick={() => { setSheetLoading((value) => !value); addFeed("info", `Sheet loading mode toggled.`) }}>
+                Sheet loading
               </Button>
             </div>
+            <DialogActions>
+              <DialogActionButton variant="outline" disabled={actionBusy} onClick={() => { setActionBusy(false); addFeed("info", "Cancel action clicked.") }}>
+                Cancel
+              </DialogActionButton>
+              <DialogActionButton isLoading={actionBusy} loadingLabel="Saving..." onClick={runActionButton}>
+                Save draft
+              </DialogActionButton>
+            </DialogActions>
           </PlaygroundCard>
 
-          <PlaygroundCard title="Stepper and wizard">
+          <PlaygroundCard title="Wizard flow" description="Stepper and wizard share the same state." badge={<Badge variant="outline">steps</Badge>}>
             <Stepper steps={wizardSteps} currentStep={wizardStep} onStepChange={setWizardStep} />
             <Wizard
               steps={wizardSteps}
               currentStep={wizardStep}
               onStepChange={setWizardStep}
-              onPrevious={() =>
-                jumpWizardTo(wizardSteps[Math.max(wizardSteps.findIndex((step) => step.id === wizardStep) - 1, 0)].id)
-              }
-              onNext={() =>
-                jumpWizardTo(wizardSteps[Math.min(wizardSteps.findIndex((step) => step.id === wizardStep) + 1, wizardSteps.length - 1)].id)
-              }
-              onFinish={() => {
-                addToast({ tone: "success", title: "Wizard finished" })
-                addFeed("success", "Wizard finish callback fired.")
-              }}
+              onPrevious={() => jumpWizardTo(wizardSteps[Math.max(wizardSteps.findIndex((step) => step.id === wizardStep) - 1, 0)].id)}
+              onNext={() => jumpWizardTo(wizardSteps[Math.min(wizardSteps.findIndex((step) => step.id === wizardStep) + 1, wizardSteps.length - 1)].id)}
+              onFinish={() => { addToast({ tone: "success", title: "Wizard finished" }); addFeed("success", "Wizard finish callback fired.") }}
             >
               <div className="rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
                 Current step: <strong className="text-foreground">{wizardStep}</strong>
               </div>
             </Wizard>
           </PlaygroundCard>
-        </div>
-      </DemoSection>
 
-      <DemoSection
-        sectionIndex={9}
-        title="Overlay and feedback"
-        description="Modal, sheet, confirm, loading and empty states with action history."
-      >
-        <div className="grid gap-4 lg:grid-cols-3">
-          <PlaygroundCard title="Overlay controls">
-            <div className="grid gap-2">
-              <div className="flex flex-wrap gap-2">
-                <Button onClick={() => setModalOpen(true)}>Open modal</Button>
-                <Button variant="outline" onClick={() => setInfoModalOpen(true)}>
-                  Open info modal
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSheetOpen(true)
-                    addFeed("info", "Sheet opened.")
-                  }}
-                >
-                  Open sheet
-                </Button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Button variant="outline" onClick={cycleSheetSide}>
-                  Sheet side: {sheetSide}
-                </Button>
-                <Button
-                  variant={sheetLoading ? "secondary" : "outline"}
-                  onClick={() => {
-                    setSheetLoading((value) => !value)
-                    addFeed("info", `Sheet loading mode: ${sheetLoading ? "off" : "on"}`)
-                  }}
-                >
-                  Sheet loading: {sheetLoading ? "ON" : "OFF"}
-                </Button>
-                <Button
-                  variant={confirmErrorMode ? "destructive" : "outline"}
-                  onClick={() => {
-                    setConfirmErrorMode((value) => !value)
-                    addFeed("warning", "Confirm error mode toggled.")
-                  }}
-                >
-                  {confirmErrorMode ? "Error OFF" : "Error ON"}
-                </Button>
-                <Button
-                  variant="destructive"
-                  onClick={() => {
-                    setConfirmOpen(true)
-                    addFeed("warning", "Confirm requested by user.")
-                  }}
-                >
-                  Open confirm
-                </Button>
-              </div>
-              <DialogActions>
-                <DialogActionButton
-                  variant="outline"
-                  disabled={actionBusy}
-                  onClick={() => {
-                    setActionBusy(false)
-                    addFeed("info", "Cancel action clicked.")
-                  }}
-                >
-                  Cancel
-                </DialogActionButton>
-                <DialogActionButton isLoading={actionBusy} loadingLabel="Saving..." onClick={runActionButton}>
-                  Save draft
-                </DialogActionButton>
-              </DialogActions>
+          <PlaygroundCard title="State and event feed" description="Manual QA for loading, empty and command actions." badge={<Badge variant="outline">QA</Badge>}>
+            <div className="flex flex-wrap gap-2">
+              <Button size="sm" variant={loadingOverlay ? "default" : "outline"} onClick={() => { setLoadingOverlay((value) => !value); addFeed("info", `Loading state toggled.`) }}>
+                Loading
+              </Button>
+              <Button size="sm" variant={emptyMode ? "default" : "outline"} onClick={() => { setEmptyMode((value) => !value); addFeed("info", `Empty state toggled.`) }}>
+                Empty
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => setFeed([])}>Clear feed</Button>
             </div>
-          </PlaygroundCard>
-
-          <PlaygroundCard title="State cards">
-            <div className="grid gap-2">
-              <Button
-                size="sm"
-                variant={loadingOverlay ? "secondary" : "outline"}
-                onClick={() => {
-                  setLoadingOverlay((value) => !value)
-                  addFeed("info", `Loading state: ${loadingOverlay ? "off" : "on"}`)
-                }}
-              >
-                Toggle loading card
-              </Button>
-              <Button
-                size="sm"
-                variant={emptyMode ? "secondary" : "outline"}
-                onClick={() => {
-                  setEmptyMode((value) => !value)
-                  addFeed("info", `Empty state: ${emptyMode ? "off" : "on"}`)
-                }}
-              >
-                Toggle empty state
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setFeed([])}
-              >
-                Clear feed
-              </Button>
-            </div>
-
             {loadingOverlay ? <LoadingState label="Loading state" description="Overlay feedback is in loading mode." /> : null}
             {emptyMode ? <EmptyState title="No overlays queued" description="No action was sent to the overlay system." /> : null}
-          </PlaygroundCard>
-
-          <PlaygroundCard title="Overlay event feed">
             <div className="grid gap-2 text-xs">
               {feed.length === 0 ? (
                 <p className="text-muted-foreground">No events yet.</p>
@@ -274,65 +197,66 @@ export function OverlaySection({ onOpenCommand }: { onOpenCommand: () => void })
               )}
             </div>
           </PlaygroundCard>
-        </div>
+        </ShowcaseGrid>
+
+        <ComponentPreview
+          title="Controlled overlay system"
+          description="Modal, sheet, confirm, wizard and toast all stay controlled from parent state."
+          dependencies={["ModalShell", "SheetShell", "ConfirmDialog", "Wizard", "ToastProvider"]}
+          code={`<ModalShell open={open} onOpenChange={setOpen} title="Reusable modal" />
+<SheetShell open={sheetOpen} side="right" onOpenChange={setSheetOpen} />
+<ConfirmDialog open={confirmOpen} isLoading={busy} onConfirm={onConfirm} />`}
+        >
+          <div className="grid w-full gap-4 md:grid-cols-2">
+            <div className="rounded-xl border bg-muted/25 p-4">
+              <div className="mb-3 flex items-center gap-2 text-sm font-medium">
+                <Layers3Icon className="size-4 text-primary" />
+                Overlay rules
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <TokenPill>controlled open</TokenPill>
+                <TokenPill>slots</TokenPill>
+                <TokenPill>no API logic</TokenPill>
+                <TokenPill>toast feedback</TokenPill>
+              </div>
+            </div>
+            <div className="rounded-xl border bg-muted/25 p-4">
+              <div className="mb-3 flex items-center gap-2 text-sm font-medium">
+                <MessageSquareIcon className="size-4 text-primary" />
+                Recent events
+              </div>
+              <div className="grid gap-1 text-xs text-muted-foreground">
+                {feed.slice(0, 5).map((item, index) => <span key={`${item.message}-${index}`}>{item.message}</span>)}
+              </div>
+            </div>
+          </div>
+        </ComponentPreview>
       </DemoSection>
 
       <PlaygroundUsage
         title="Overlay usage"
         items={[
-          "Keep overlays declarative and controlled from parent state; do not nest business logic in shell component.",
-          "Use wizard/step components for critical multi-step flows (onboarding, setup, checkout).",
-          "Pair dialog controls with global toasts and optimistic updates for responsive UX.",
-          "Track side effects with action feed for auditability and QA demonstration.",
+          "Keep overlays declarative and controlled from parent state; business logic belongs in the app.",
+          "Use wizard/step components for critical multi-step flows like onboarding, setup and checkout.",
+          "Pair confirm dialogs with loading and toast feedback for responsive destructive actions.",
+          "Use command palette for navigation and action discovery without coupling it to router internals.",
         ]}
-        code={`const [modalOpen, setModalOpen] = useState(false)\nconst [open, setOpen] = useState(false)\n<ModalShell open={open} onOpenChange={setOpen} ... />`}
+        code={`const [modalOpen, setModalOpen] = useState(false)
+
+<ModalShell open={modalOpen} onOpenChange={setModalOpen} title="Reusable modal" />`}
       />
 
-      <ModalShell
-        open={modalOpen}
-        onOpenChange={(value) => {
-          setModalOpen(value)
-          if (!value) addFeed("info", "Primary modal closed.")
-        }}
-        title="Reusable modal"
-        description="Dashboard shell with explicit parent control."
-        footer={<Button onClick={() => setModalOpen(false)}>Close</Button>}
-        size="md"
-      >
+      <ModalShell open={modalOpen} onOpenChange={(value) => { setModalOpen(value); if (!value) addFeed("info", "Primary modal closed.") }} title="Reusable modal" description="Dashboard shell with explicit parent control." footer={<Button onClick={() => setModalOpen(false)}>Close</Button>} size="md">
         <p className="text-sm text-muted-foreground">This modal is fully controlled from parent state.</p>
       </ModalShell>
 
-      <ModalShell
-        open={infoModalOpen}
-        onOpenChange={(value) => {
-          setInfoModalOpen(value)
-          if (!value) addFeed("info", "Info modal closed.")
-        }}
-        title="Info overlay"
-        description="Single-use modal with immutable content."
-        footer={<Button onClick={() => setInfoModalOpen(false)}>Done</Button>}
-        size="md"
-      >
+      <ModalShell open={infoModalOpen} onOpenChange={(value) => { setInfoModalOpen(value); if (!value) addFeed("info", "Info modal closed.") }} title="Info overlay" description="Single-use modal with immutable content." footer={<Button onClick={() => setInfoModalOpen(false)}>Done</Button>} size="md">
         <p className="text-sm text-muted-foreground">Use this for quick confirmation-style information.</p>
       </ModalShell>
 
-      <SheetShell
-        open={sheetOpen}
-        onOpenChange={(value) => {
-          setSheetOpen(value)
-          if (!value) addFeed("info", "Sheet closed.")
-        }}
-        title="Reusable sheet"
-        description="SheetShell supports side, header, body and footer slots."
-        side={sheetSide}
-        footer={<Button onClick={() => setSheetOpen(false)}>Done</Button>}
-      >
+      <SheetShell open={sheetOpen} onOpenChange={(value) => { setSheetOpen(value); if (!value) addFeed("info", "Sheet closed.") }} title="Reusable sheet" description="SheetShell supports side, header, body and footer slots." side={sheetSide} footer={<Button onClick={() => setSheetOpen(false)}>Done</Button>}>
         <p className="text-sm text-muted-foreground">Reusable shell with slot-based content.</p>
-        {sheetLoading ? (
-          <div className="mt-3">
-            <LoadingState label="Sheet sync" description="Loading internal checklist..." />
-          </div>
-        ) : null}
+        {sheetLoading ? <div className="mt-3"><LoadingState label="Sheet sync" description="Loading internal checklist..." /></div> : null}
       </SheetShell>
 
       <ConfirmDialog
@@ -342,14 +266,10 @@ export function OverlaySection({ onOpenCommand }: { onOpenCommand: () => void })
         description="This is a mock confirm flow. You can switch to error mode to test failed async close."
         confirmText="Delete"
         confirmVariant="destructive"
-        onCancel={() => {
-          setConfirmOpen(false)
-          addFeed("info", "Confirm dialog canceled.")
-        }}
+        onCancel={() => { setConfirmOpen(false); addFeed("info", "Confirm dialog canceled.") }}
         isLoading={confirmBusy}
         onConfirm={handleBusyConfirm}
       />
     </>
   )
 }
-
