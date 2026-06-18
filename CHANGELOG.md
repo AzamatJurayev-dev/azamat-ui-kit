@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.1 - 2026-06-18
+
+Library-only cleanup release.
+
+### Changed
+
+- version bumped from `0.1.0` to `0.1.1`
+- package exports narrowed to reusable runtime pieces only
+- release documentation updated for the `0.1.1` patch
+
+### Fixed
+
+- removed docs-only `ComponentPreview` from package exports
+- removed unused `prism-react-renderer` runtime dependency
+- silenced expected React Compiler lint noise around TanStack Table integration
+
 ## 0.1.0 - 2026-06-18
 
 First public npm-ready release.

@@ -49,6 +49,6 @@ Examples:
 
 After the library-only cleanup:
 
-- use `0.1.1` for small fixes and polish
+- use `0.1.2` for small fixes and polish
 - use `0.2.0` for the next meaningful component or registry expansion
 - use `1.0.0` only after API, docs, registry, and theming flows feel stable for external teams

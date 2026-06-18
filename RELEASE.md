@@ -33,5 +33,5 @@ npm view azamat-ui-kit version
 Recommended follow-up:
 
 - create a GitHub release for the same version
-- copy the `0.1.0` notes from `CHANGELOG.md`
+- copy the matching version notes from `CHANGELOG.md`
 - update the docs/showcase app to install from npm instead of local tarball
