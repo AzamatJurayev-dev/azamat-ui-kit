@@ -119,9 +119,22 @@ Rebuilt the Templates section as a modern app-level pattern gallery:
 - mock action form and modal preview for each template page
 - API-free examples that show how templates can become real app routes
 
+### Phase 26 - CommandPalette hardening
+
+Improved `CommandPalette` as the single global command/search component:
+
+- async command groups through `loadItems`
+- per-group loading and error rendering
+- debounced search
+- recent commands memory
+- disabled reason support
+- per-item loading state
+- `onItemSelect` callback
+- configurable `recent`, `renderEmpty`, `renderLoading`, `filterItem`, `inputClassName` and `listClassName`
+
 ## Next priority order
 
-1. CommandPalette hardening
-2. App shell advanced responsive sidebar helpers
-3. FormBuilder / ResourcePage planning on top of existing components
-4. Component tests and accessibility smoke checks
+1. App shell advanced responsive sidebar helpers
+2. FormBuilder / ResourcePage planning on top of existing components
+3. Component tests and accessibility smoke checks
+4. Registry validation script
