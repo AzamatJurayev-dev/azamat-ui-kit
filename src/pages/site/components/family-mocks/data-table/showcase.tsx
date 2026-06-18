@@ -115,7 +115,7 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
           <Badge variant="outline">{view === "all" ? "All invoices" : view === "finance" ? "Finance review" : "At risk"}</Badge>
           <Badge variant="outline">{state.density}</Badge>
         </div>
-        <p className="text-sm leading-6 text-zinc-500">Search, sort, row actions, bulk actions, view presets and pagination all work in one reusable `DataTable`.</p>
+        <p className="text-sm leading-6 text-zinc-500">Search, presets, row actions and pagination in one reusable `DataTable`.</p>
         <div className="flex flex-wrap gap-3">
           <DataTableViewPresets
             value={view}
@@ -262,7 +262,7 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
         <div className="rounded-[22px] border border-zinc-200 bg-zinc-50 p-4">
           <p className="text-sm text-zinc-500">Pagination</p>
           <p className="mt-2 text-lg font-semibold text-zinc-950">Working</p>
-          <p className="mt-2 text-sm text-zinc-600">{visibleRows.length} total rows, page {safePageIndex + 1} of {pageCount}, {pageSize} per page.</p>
+          <p className="mt-2 text-sm text-zinc-600">{visibleRows.length} rows, page {safePageIndex + 1}/{pageCount}, {pageSize} per page.</p>
         </div>
       </div>
     </div>

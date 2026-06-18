@@ -16,8 +16,8 @@ import {
   featuredBlock,
   installCommand,
   primaryNav,
-  templateRecords,
 } from "../site-data"
+import { templateRecords } from "../template-data"
 import { SurfaceCard, TopNav } from "../site-shell"
 import { CopyButton, normalize, PageFrame, SearchField, useCopyFeedback } from "./site-primitives"
 import { TemplateCardPreview, TemplateHeroPreview } from "./site-template-renderers"
