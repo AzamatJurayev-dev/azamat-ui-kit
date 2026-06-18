@@ -179,9 +179,20 @@ Added a lightweight quality gate without new runtime dependencies:
 - CI now runs smoke tests before build
 - `docs/testing.md` documents the testing strategy
 
+### Phase 31 - ResourceDetailPage pattern
+
+Added an API-free detail page composition pattern for dashboard resource detail screens:
+
+- `ResourceDetailPage` combines breadcrumbs, header, status, summary, meta, sections, aside and footer slots
+- sections can render `DescriptionList` items or custom children
+- optional back button callback through `onBack`
+- compact/default/comfortable density support
+- slot class names for content, aside, header and sections
+- no API, route, permission or business dependency is introduced
+
 ## Next priority order
 
 1. Registry validation script
 2. Playground examples for ResourcePage/FormBuilder/AppShell responsive states
-3. Resource detail page pattern
-4. More focused smoke tests for registry groups
+3. More focused smoke tests for registry groups
+4. More dashboard-ready display components
