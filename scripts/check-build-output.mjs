@@ -25,14 +25,20 @@ const esm = readRequired(esmPath)
 readRequired(cjsPath)
 const dts = readRequired(dtsPath)
 
-for (const forbidden of [
-  /require\(["']react["']\)/,
-  /require\(["']react-dom["']\)/,
-  /require\(["']react\/jsx-runtime["']\)/,
-  /require\(["']react-hook-form["']\)/,
-]) {
-  if (forbidden.test(esm)) {
-    failures.push(`dist/index.js contains forbidden runtime require: ${forbidden}`)
+const forbiddenEsmPatterns = [
+  { name: "direct React require", pattern: /require\(["']react["']\)/ },
+  { name: "direct React DOM require", pattern: /require\(["']react-dom["']\)/ },
+  { name: "direct JSX runtime require", pattern: /require\(["']react\/jsx-runtime["']\)/ },
+  { name: "direct React Hook Form require", pattern: /require\(["']react-hook-form["']\)/ },
+  { name: "Rolldown commonjs require helper", pattern: /(?:__require|commonjsRequire)\s*\(/ },
+  { name: "createRequire fallback", pattern: /createRequire\s*\(/ },
+  { name: "runtime require guard", pattern: /typeof\s+require\s*!==?\s*["']undefined["']/ },
+  { name: "require.resolve fallback", pattern: /require\.resolve\s*\(/ },
+]
+
+for (const { name, pattern } of forbiddenEsmPatterns) {
+  if (pattern.test(esm)) {
+    failures.push(`dist/index.js contains forbidden ESM browser fallback (${name}): ${pattern}`)
   }
 }
 
