@@ -18,6 +18,13 @@ const baseDependencies = [
   "react-hook-form",
 ]
 
+type InitTemplate = "vite" | "next"
+
+type InitCommandOptions = {
+  template?: string
+  skipInstall?: boolean
+}
+
 type InitResponse = {
   installDeps: boolean
   alias: string
@@ -29,62 +36,90 @@ type InitResponse = {
   writeThemeCss: boolean
 }
 
-export async function initCommand() {
+const templateDefaults: Record<InitTemplate, Omit<InitResponse, "installDeps" | "writeThemeCss">> = {
+  vite: {
+    alias: "@",
+    componentsPath: "src/components",
+    uiPath: "src/components/ui",
+    hooksPath: "src/hooks",
+    utilsPath: "src/lib/utils.ts",
+    globalCssPath: "src/index.css",
+  },
+  next: {
+    alias: "@",
+    componentsPath: "components",
+    uiPath: "components/ui",
+    hooksPath: "hooks",
+    utilsPath: "lib/utils.ts",
+    globalCssPath: "app/globals.css",
+  },
+}
+
+function resolveTemplate(value?: string): InitTemplate {
+  if (value === "next" || value === "vite") return value
+
+  logger.warn(`Unknown template '${value}'. Falling back to vite defaults.`)
+  return "vite"
+}
+
+export async function initCommand(options: InitCommandOptions = {}) {
   const cwd = process.cwd()
   const packageJsonPath = path.join(cwd, "package.json")
 
   if (!fs.existsSync(packageJsonPath)) {
-    logger.error("package.json topilmadi. Commandni React/Vite project ichida ishlating.")
+    logger.error("package.json topilmadi / not found. Commandni React, Vite yoki Next project ichida ishlating.")
     process.exit(1)
   }
 
+  const defaults = templateDefaults[resolveTemplate(options.template)]
+
   const response = (await prompts([
     {
-      type: "confirm",
+      type: options.skipInstall ? null : "confirm",
       name: "installDeps",
-      message: "Asosiy dependencylarni o‘rnataymi?",
+      message: "Asosiy dependencylarni o‘rnataymi? / Install base dependencies?",
       initial: true,
     },
     {
       type: "text",
       name: "alias",
-      message: "Path alias qanday?",
-      initial: "@",
+      message: "Path alias qanday? / Path alias?",
+      initial: defaults.alias,
     },
     {
       type: "text",
       name: "componentsPath",
-      message: "Component root qayerda?",
-      initial: "src/components",
+      message: "Component root qayerda? / Component root?",
+      initial: defaults.componentsPath,
     },
     {
       type: "text",
       name: "uiPath",
-      message: "UI primitives qayerga yozilsin?",
-      initial: "src/components/ui",
+      message: "UI primitives qayerga yozilsin? / UI primitives path?",
+      initial: defaults.uiPath,
     },
     {
       type: "text",
       name: "hooksPath",
-      message: "Hooks qayerga yozilsin?",
-      initial: "src/hooks",
+      message: "Hooks qayerga yozilsin? / Hooks path?",
+      initial: defaults.hooksPath,
     },
     {
       type: "text",
       name: "utilsPath",
-      message: "utils.ts qayerga yozilsin?",
-      initial: "src/lib/utils.ts",
+      message: "utils.ts qayerga yozilsin? / utils.ts path?",
+      initial: defaults.utilsPath,
     },
     {
       type: "text",
       name: "globalCssPath",
-      message: "Theme tokenlar qaysi global CSS faylga yozilsin?",
-      initial: "src/index.css",
+      message: "Theme tokenlar qaysi global CSS faylga yozilsin? / Global CSS path?",
+      initial: defaults.globalCssPath,
     },
     {
       type: "confirm",
       name: "writeThemeCss",
-      message: "Dark/light theme tokenlarni global CSS faylga yozaymi?",
+      message: "Dark/light theme tokenlarni global CSS faylga yozaymi? / Write theme tokens?",
       initial: true,
     },
   ])) as InitResponse
@@ -93,7 +128,7 @@ export async function initCommand() {
 
   logger.info(`Package manager: ${packageManager}`)
 
-  if (response.installDeps) {
+  if (!options.skipInstall && response.installDeps) {
     await installPackages({
       cwd,
       packageManager,
@@ -101,18 +136,21 @@ export async function initCommand() {
     })
   }
 
+  const utilsPath = response.utilsPath || defaults.utilsPath
+  const globalCssPath = response.globalCssPath || defaults.globalCssPath
+
   const config = {
     style: "default",
-    alias: response.alias || "@",
-    componentsPath: response.uiPath,
-    utilsPath: response.utilsPath,
-    cssPath: response.globalCssPath,
-    globalCssPath: response.globalCssPath,
+    alias: response.alias || defaults.alias,
+    componentsPath: response.uiPath || defaults.uiPath,
+    utilsPath,
+    cssPath: globalCssPath,
+    globalCssPath,
     paths: {
-      components: response.componentsPath,
-      ui: response.uiPath,
-      hooks: response.hooksPath,
-      lib: path.dirname(response.utilsPath),
+      components: response.componentsPath || defaults.componentsPath,
+      ui: response.uiPath || defaults.uiPath,
+      hooks: response.hooksPath || defaults.hooksPath,
+      lib: path.dirname(utilsPath),
     },
   }
 
@@ -120,7 +158,7 @@ export async function initCommand() {
     spaces: 2,
   })
 
-  const utilsFullPath = path.join(cwd, response.utilsPath)
+  const utilsFullPath = path.join(cwd, utilsPath)
   await fs.ensureDir(path.dirname(utilsFullPath))
 
   if (!fs.existsSync(utilsFullPath)) {
@@ -136,20 +174,20 @@ export function cn(...inputs: ClassValue[]) {
     )
   }
 
-  if (response.writeThemeCss && response.globalCssPath) {
+  if (response.writeThemeCss && globalCssPath) {
     const cssTarget = await upsertThemeCss({
       cwd,
-      cssPath: response.globalCssPath,
+      cssPath: globalCssPath,
     })
 
-    logger.success(`Theme CSS yozildi: ${cssTarget}`)
+    logger.success(`Theme CSS yozildi / written: ${cssTarget}`)
   }
 
-  logger.success("Azamat UI Kit init qilindi.")
-  logger.info("Componentlarni ko‘rish:")
+  logger.success("Azamat UI Kit init qilindi / initialized.")
+  logger.info("Componentlarni ko‘rish / list components:")
   logger.info("npx azamat-ui-kit list")
-  logger.info("Component qo‘shish:")
+  logger.info("Component qo‘shish / add components:")
   logger.info("npx azamat-ui-kit add button input data-table")
-  logger.info("Theme CSS ni yangilash:")
+  logger.info("Theme CSS ni yangilash / update theme CSS:")
   logger.info("npx azamat-ui-kit theme")
 }
