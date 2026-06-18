@@ -2,71 +2,41 @@
   "name": "azamat-ui-kit",
   "version": "0.1.1",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
-  "keywords": [
-    "react",
-    "typescript",
-    "ui",
-    "component-library",
-    "design-system",
-    "dashboard",
-    "tailwindcss",
-    "shadcn",
-    "registry",
-    "cli"
-  ],
+  "keywords": ["react", "typescript", "ui", "component-library", "design-system", "dashboard", "tailwindcss", "shadcn", "registry", "cli"],
   "homepage": "https://github.com/AzamatJurayev-dev/azamat-ui-kit#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AzamatJurayev-dev/azamat-ui-kit.git"
-  },
-  "bugs": {
-    "url": "https://github.com/AzamatJurayev-dev/azamat-ui-kit/issues"
-  },
+  "repository": { "type": "git", "url": "git+https://github.com/AzamatJurayev-dev/azamat-ui-kit.git" },
+  "bugs": { "url": "https://github.com/AzamatJurayev-dev/azamat-ui-kit/issues" },
   "license": "MIT",
   "author": "Azamat Jurayev",
   "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "bin": {
-    "azamat-ui-kit": "dist/cli/index.js"
-  },
+  "publishConfig": { "access": "public" },
+  "engines": { "node": ">=18" },
+  "bin": { "azamat-ui-kit": "dist/cli/index.js" },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js", "require": "./dist/index.cjs" },
     "./registry.json": "./registry.json",
     "./package.json": "./package.json"
   },
-  "files": [
-    "dist",
-    "registry.json",
-    "README.md",
-    "LICENSE"
-  ],
+  "files": ["dist", "registry.json", "README.md", "CHANGELOG.md", "RELEASE.md", "COMPONENT_MATURITY.md", "LICENSE"],
   "scripts": {
-    "build": "tsc -b && vite build && tsc -p tsconfig.build.json && tsup",
+    "clean": "node scripts/clean-dist.mjs",
+    "build": "npm run clean && vite build && tsc -p tsconfig.build.json && tsup && npm run test:build-output",
+    "build:lib": "vite build && tsc -p tsconfig.build.json",
     "build:cli": "tsup",
-    "prepack": "npm run build",
+    "prepack": "npm run clean && npm run build",
+    "pack:dry-run": "npm pack --dry-run",
     "lint": "eslint .",
     "test:types": "tsc -p tsconfig.test.json --noEmit",
     "test:a11y": "node scripts/a11y-smoke.mjs",
     "test:registry": "node scripts/validate-registry.mjs",
-    "test:run": "npm run test:types && npm run test:a11y && npm run test:registry"
+    "test:build-output": "node scripts/check-build-output.mjs",
+    "test:run": "npm run test:types && npm run test:a11y && npm run test:registry && npm run test:build-output",
+    "release:gate": "npm run lint && npm run test:run && npm run build && npm pack --dry-run"
   },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0",
-    "react-hook-form": "^7.0.0"
-  },
+  "peerDependencies": { "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0", "react-hook-form": "^7.0.0" },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
     "@fontsource-variable/geist": "^5.2.9",
