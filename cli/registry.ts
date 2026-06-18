@@ -50,6 +50,14 @@ export type ComponentName =
   | "loading-state"
   | "status-badge"
   | "feedback"
+  | "description-list"
+  | "progress"
+  | "result"
+  | "timeline"
+  | "metric-grid"
+  | "info-card"
+  | "activity-feed"
+  | "display"
   | "action-menu"
   | "actions"
   | "page-header"
@@ -71,6 +79,7 @@ export type ComponentName =
   | "data-table-row-actions"
   | "data-table-actions-column"
   | "data-table-bulk-actions"
+  | "data-table-view-presets"
   | "data-table"
   | "calendar"
   | "date-picker"
@@ -86,6 +95,11 @@ export type ComponentName =
   | "notifications"
   | "command-palette"
   | "command"
+  | "resource-page"
+  | "resource-detail-page"
+  | "form-builder"
+  | "form-builder-presets"
+  | "patterns"
   | "use-session-storage-state"
   | "use-before-unload-when-dirty"
   | "use-is-mobile"
@@ -105,6 +119,7 @@ export type ComponentCategory =
   | "inputs"
   | "form"
   | "feedback"
+  | "display"
   | "actions"
   | "layout"
   | "filters"
@@ -114,6 +129,7 @@ export type ComponentCategory =
   | "wizard"
   | "notifications"
   | "command"
+  | "patterns"
   | "hooks"
   | "group";
 
@@ -187,12 +203,21 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "status-badge": { name: "status-badge", category: "feedback", registryDependencies: ["badge", "utils"], files: [file("src/components/feedback/status-badge.tsx", "{components}/feedback/status-badge.tsx")] },
   feedback: { name: "feedback", category: "group", registryDependencies: ["empty-state", "loading-state", "status-badge"], files: [file("src/components/feedback/index.ts", "{components}/feedback/index.ts")] },
 
+  "description-list": { name: "description-list", category: "display", registryDependencies: ["card", "utils"], files: [file("src/components/display/description-list.tsx", "{components}/display/description-list.tsx")] },
+  progress: { name: "progress", category: "display", registryDependencies: ["utils"], files: [file("src/components/display/progress.tsx", "{components}/display/progress.tsx")] },
+  result: { name: "result", category: "display", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/display/result.tsx", "{components}/display/result.tsx")] },
+  timeline: { name: "timeline", category: "display", registryDependencies: ["utils"], files: [file("src/components/display/timeline.tsx", "{components}/display/timeline.tsx")] },
+  "metric-grid": { name: "metric-grid", category: "display", registryDependencies: ["card", "utils"], files: [file("src/components/display/metric-grid.tsx", "{components}/display/metric-grid.tsx")] },
+  "info-card": { name: "info-card", category: "display", registryDependencies: ["card", "utils"], files: [file("src/components/display/info-card.tsx", "{components}/display/info-card.tsx")] },
+  "activity-feed": { name: "activity-feed", category: "display", registryDependencies: ["card", "utils"], files: [file("src/components/display/activity-feed.tsx", "{components}/display/activity-feed.tsx")] },
+  display: { name: "display", category: "group", registryDependencies: ["description-list", "progress", "result", "timeline", "metric-grid", "info-card", "activity-feed"], files: [file("src/components/display/index.ts", "{components}/display/index.ts")] },
+
   "action-menu": { name: "action-menu", category: "actions", dependencies: ["lucide-react"], registryDependencies: ["button", "dropdown-menu", "utils"], files: [file("src/components/actions/action-menu.tsx", "{components}/actions/action-menu.tsx")] },
   actions: { name: "actions", category: "group", registryDependencies: ["action-menu"], files: [file("src/components/actions/index.ts", "{components}/actions/index.ts")] },
 
   "page-header": { name: "page-header", category: "layout", registryDependencies: ["utils"], files: [file("src/components/layout/page-header.tsx", "{components}/layout/page-header.tsx")] },
   "stat-card": { name: "stat-card", category: "layout", registryDependencies: ["card", "utils"], files: [file("src/components/layout/stat-card.tsx", "{components}/layout/stat-card.tsx")] },
-  "app-shell": { name: "app-shell", category: "layout", registryDependencies: ["utils"], files: [file("src/components/layout/app-shell.tsx", "{components}/layout/app-shell.tsx")] },
+  "app-shell": { name: "app-shell", category: "layout", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/layout/app-shell.tsx", "{components}/layout/app-shell.tsx")] },
   "app-header": { name: "app-header", category: "layout", registryDependencies: ["utils"], files: [file("src/components/layout/app-header.tsx", "{components}/layout/app-header.tsx")] },
   "app-sidebar": { name: "app-sidebar", category: "layout", registryDependencies: ["utils"], files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/app-sidebar.tsx")] },
   "sidebar-nav": { name: "sidebar-nav", category: "layout", registryDependencies: ["badge", "utils"], files: [file("src/components/layout/sidebar-nav.tsx", "{components}/layout/sidebar-nav.tsx")] },
@@ -211,7 +236,8 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "data-table-row-actions": { name: "data-table-row-actions", category: "data-table", dependencies: ["@tanstack/react-table"], registryDependencies: ["action-menu"], files: [file("src/components/data-table/data-table-row-actions.tsx", "{components}/data-table/data-table-row-actions.tsx")] },
   "data-table-actions-column": { name: "data-table-actions-column", category: "data-table", dependencies: ["@tanstack/react-table"], registryDependencies: ["data-table-row-actions", "utils"], files: [file("src/components/data-table/data-table-actions-column.tsx", "{components}/data-table/data-table-actions-column.tsx")] },
   "data-table-bulk-actions": { name: "data-table-bulk-actions", category: "data-table", dependencies: ["lucide-react"], registryDependencies: ["action-menu", "button", "utils"], files: [file("src/components/data-table/data-table-bulk-actions.tsx", "{components}/data-table/data-table-bulk-actions.tsx")] },
-  "data-table": { name: "data-table", category: "group", dependencies: ["@tanstack/react-table"], registryDependencies: ["table", "empty-state", "loading-state", "data-table-toolbar", "data-table-pagination", "data-table-column-visibility-menu", "data-table-select-column", "data-table-sortable-header", "data-table-row-actions", "data-table-actions-column", "data-table-bulk-actions", "utils"], files: [file("src/components/data-table/data-table.tsx", "{components}/data-table/data-table.tsx"), file("src/components/data-table/index.ts", "{components}/data-table/index.ts")] },
+  "data-table-view-presets": { name: "data-table-view-presets", category: "data-table", registryDependencies: ["badge", "button", "utils"], files: [file("src/components/data-table/data-table-view-presets.tsx", "{components}/data-table/data-table-view-presets.tsx")] },
+  "data-table": { name: "data-table", category: "group", dependencies: ["@tanstack/react-table"], registryDependencies: ["table", "empty-state", "loading-state", "data-table-toolbar", "data-table-pagination", "data-table-column-visibility-menu", "data-table-select-column", "data-table-sortable-header", "data-table-row-actions", "data-table-actions-column", "data-table-bulk-actions", "data-table-view-presets", "utils"], files: [file("src/components/data-table/data-table.tsx", "{components}/data-table/data-table.tsx"), file("src/components/data-table/index.ts", "{components}/data-table/index.ts")] },
 
   calendar: { name: "calendar", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/calendar/date-utils.ts", "{components}/calendar/date-utils.ts"), file("src/components/calendar/calendar.tsx", "{components}/calendar/calendar.tsx")] },
   "date-picker": { name: "date-picker", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["calendar", "button", "popover", "utils"], files: [file("src/components/calendar/date-picker.tsx", "{components}/calendar/date-picker.tsx")] },
@@ -232,6 +258,12 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "command-palette": { name: "command-palette", category: "command", dependencies: ["lucide-react"], registryDependencies: ["dialog", "input", "utils"], files: [file("src/components/command/command-palette.tsx", "{components}/command/command-palette.tsx")] },
   command: { name: "command", category: "group", registryDependencies: ["command-palette"], files: [file("src/components/command/index.ts", "{components}/command/index.ts")] },
 
+  "resource-page": { name: "resource-page", category: "patterns", registryDependencies: ["data-table", "page-header", "utils"], files: [file("src/components/patterns/resource-page.tsx", "{components}/patterns/resource-page.tsx")] },
+  "resource-detail-page": { name: "resource-detail-page", category: "patterns", registryDependencies: ["button", "description-list", "page-header", "utils"], files: [file("src/components/patterns/resource-detail-page.tsx", "{components}/patterns/resource-detail-page.tsx")] },
+  "form-builder": { name: "form-builder", category: "patterns", dependencies: ["react-hook-form"], registryDependencies: ["button", "form-input", "form-textarea", "form-select", "form-async-select", "form-switch", "form-number-input", "form-phone-input", "form-date-input", "form-date-range-input", "utils"], files: [file("src/components/patterns/form-builder.tsx", "{components}/patterns/form-builder.tsx")] },
+  "form-builder-presets": { name: "form-builder-presets", category: "patterns", dependencies: ["react-hook-form"], registryDependencies: ["form-builder"], files: [file("src/components/patterns/form-builder-presets.ts", "{components}/patterns/form-builder-presets.ts")] },
+  patterns: { name: "patterns", category: "group", registryDependencies: ["resource-page", "resource-detail-page", "form-builder", "form-builder-presets"], files: [file("src/components/patterns/index.ts", "{components}/patterns/index.ts")] },
+
   "use-session-storage-state": { name: "use-session-storage-state", category: "hooks", files: [file("src/hooks/use-session-storage-state.ts", "{hooks}/use-session-storage-state.ts")] },
   "use-before-unload-when-dirty": { name: "use-before-unload-when-dirty", category: "hooks", files: [file("src/hooks/use-before-unload-when-dirty.ts", "{hooks}/use-before-unload-when-dirty.ts")] },
   "use-is-mobile": { name: "use-is-mobile", category: "hooks", files: [file("src/hooks/use-is-mobile.ts", "{hooks}/use-is-mobile.ts")] },
@@ -239,7 +271,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "use-debounce": { name: "use-debounce", category: "hooks", files: [file("src/hooks/use-debounce.ts", "{hooks}/use-debounce.ts")] },
   hooks: { name: "hooks", category: "group", registryDependencies: ["use-session-storage-state", "use-before-unload-when-dirty", "use-is-mobile", "use-disclosure", "use-debounce"], files: [file("src/hooks/index.ts", "{hooks}/index.ts")] },
 
-  dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "actions", "filters", "feedback", "data-table", "inputs", "form", "notifications", "command"] },
+  dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "actions", "filters", "feedback", "display", "data-table", "inputs", "form", "patterns", "notifications", "command"] },
   all: { name: "all", category: "group", registryDependencies: ["dashboard", "overlay", "calendar-kit", "upload", "wizard-kit", "hooks"] },
 };
 
