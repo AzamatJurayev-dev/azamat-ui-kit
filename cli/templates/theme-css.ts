@@ -56,7 +56,8 @@ export const azamatUiThemeCss = `${AZAMAT_UI_THEME_START}
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
+:root,
+.light {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
