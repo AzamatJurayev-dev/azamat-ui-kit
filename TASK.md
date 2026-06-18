@@ -1,6 +1,6 @@
 # Azamat UI Kit Library Readiness Tasks
 
-Status: first readiness implementation pass completed on `master`.
+Status: first readiness implementation pass completed on `master`. Second pass has started with targeted P0 runtime/DataTable hardening.
 
 This file is now compressed into completed work and remaining backlog. Detailed audit guidance lives in `COMPONENT_MATURITY.md`, release flow in `RELEASE.md`, and user-facing changes in `CHANGELOG.md`.
 
@@ -77,7 +77,7 @@ These tasks still need real code-level or render-level verification before they 
 - [ ] Calendar disabled date reason and invalid date-range prevention.
 - [ ] Upload object URL cleanup, validation errors, drag/drop keyboard fallback and preview revoke verification.
 - [ ] FormBuilder custom field docs/tests and custom render type-safety work.
-- [ ] DataTable `as any` workaround removal or isolation.
+- [x] DataTable `as any` workaround removal or isolation.
 - [ ] Row selection, disabled rows, bulk actions and row actions render tests.
 - [ ] Stable primitive render, keyboard and aria tests.
 - [ ] Stable complex component render tests.
@@ -98,7 +98,7 @@ The first pass made the package safer to build and easier to release. The next p
 - [ ] Add a tiny Next.js fixture or script that imports `azamat-ui-kit` from `dist/index.js` in a browser bundle and fails on runtime console errors.
 - [ ] Add a Vite fixture or script that imports `Button`, `Dialog`, `AsyncSelect`, `DataTable`, `ToastProvider` and `FormBuilder` from built `dist`.
 - [ ] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
-- [ ] Extend `scripts/check-build-output.mjs` to catch indirect Rolldown/CJS fallback code that can call external `require` in ESM browser bundles.
+- [x] Extend `scripts/check-build-output.mjs` to catch indirect Rolldown/CJS fallback code that can call external `require` in ESM browser bundles.
 - [ ] Confirm whether `@fontsource-variable/geist` should remain a runtime dependency; if not needed by components, move it out of package dependencies.
 
 ### P0. Test infrastructure upgrade
@@ -125,8 +125,8 @@ The first pass made the package safer to build and easier to release. The next p
 
 ### P0. DataTable hardening
 
-- [ ] Remove the `search as Record<string, unknown>` workaround and type `DataTableSearchConfig` directly through `SearchInput` props.
-- [ ] Remove `onValueChange as any` from `DataTable`.
+- [x] Remove the `search as Record<string, unknown>` workaround and type `DataTableSearchConfig` directly through `SearchInput` props.
+- [x] Remove `onValueChange as any` from `DataTable`.
 - [ ] Add tests for search rendering and `onValueChange`.
 - [ ] Add tests for loading skeleton, loading state variant, empty state and error state.
 - [ ] Add tests for row click, row double click and disabled row behavior.
