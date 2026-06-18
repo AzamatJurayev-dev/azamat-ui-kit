@@ -1,16 +1,5 @@
 import { useState } from "react"
-import {
-  ActivityIcon,
-  CheckCircle2Icon,
-  ClockIcon,
-  FileTextIcon,
-  PackageIcon,
-  PlusIcon,
-  ShieldCheckIcon,
-  TruckIcon,
-  UploadCloudIcon,
-  UsersIcon,
-} from "lucide-react"
+import { ActivityIcon, CheckCircle2Icon, ClockIcon, FileTextIcon, PackageIcon, PlusIcon, ShieldCheckIcon, UploadCloudIcon, UsersIcon } from "lucide-react"
 
 import {
   ActivityFeed,
@@ -23,53 +12,31 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Combobox,
   ComponentPreview,
   CopyButton,
+  DataState,
   DescriptionList,
   FilterChips,
   InfoCard,
   MetricGrid,
   PageTabs,
   Progress,
-  ProgressCard,
   QuickActionGrid,
   Result,
-  ResultAction,
   StatusBadge,
   StatusLegend,
+  StepperTabs,
   TagInput,
   Timeline,
 } from "@/index"
 import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
 
-const detailItems = [
-  { key: "name", label: "Product", value: "Premium Coffee", icon: <PackageIcon /> },
-  { key: "sku", label: "SKU", value: "COF-001" },
-  { key: "status", label: "Status", value: <StatusBadge tone="success" dot>active</StatusBadge> },
-  { key: "price", label: "Price", value: "42,000 UZS" },
-  { key: "owner", label: "Owner", value: "Operations team" },
-  { key: "updated", label: "Updated", value: "17 Jun 2026", description: "Mock local date" },
-  { key: "notes", label: "Notes", value: "Reusable details block with column span.", span: 2 as const },
-]
-
-const metricItems = [
+const metrics = [
   { key: "revenue", label: "Revenue", value: "128.4M", description: "Monthly total", trend: "+12%", tone: "success" as const, icon: <ActivityIcon /> },
   { key: "orders", label: "Orders", value: "1,248", description: "Confirmed orders", trend: "+8%", tone: "info" as const, icon: <PackageIcon /> },
   { key: "pending", label: "Pending", value: "42", description: "Needs review", trend: "-3", tone: "warning" as const, icon: <ClockIcon /> },
   { key: "failed", label: "Failed", value: "7", description: "Import errors", trend: "Fix", tone: "danger" as const, icon: <FileTextIcon /> },
-]
-
-const quickActions = [
-  { key: "create", label: "Create product", description: "Open a product creation flow.", icon: <PlusIcon />, badge: "New" },
-  { key: "import", label: "Import file", description: "Upload Excel or CSV import data.", icon: <UploadCloudIcon />, badge: "CSV" },
-  { key: "audit", label: "Review audit", description: "Check recent product changes.", icon: <ShieldCheckIcon />, badge: "3" },
-]
-
-const statusLegendItems = [
-  { key: "active", label: "Active", description: "Visible and available", count: 18, tone: "success" as const },
-  { key: "draft", label: "Draft", description: "Needs review before publish", count: 6, tone: "warning" as const },
-  { key: "archived", label: "Archived", description: "Hidden from main lists", count: 3, tone: "muted" as const },
-  { key: "failed", label: "Failed", description: "Requires manual fix", count: 2, tone: "danger" as const },
 ]
 
 const people = [
@@ -80,21 +47,45 @@ const people = [
   { key: "malika", name: "Malika Rustamova", status: "online" as const },
 ]
 
-const timelineItems = [
-  { key: "created", title: "Created", description: "Product was added to catalog.", time: "09:30", tone: "success" as const, icon: <CheckCircle2Icon className="size-4" /> },
-  { key: "review", title: "Reviewed", description: "Price and stock rules were checked.", time: "10:15", tone: "info" as const, icon: <ShieldCheckIcon className="size-4" /> },
-  { key: "ship", title: "Queued", description: "Ready for warehouse sync.", time: "11:40", tone: "warning" as const, icon: <TruckIcon className="size-4" /> },
+const statusItems = [
+  { key: "active", label: "Active", description: "Visible and available", count: 18, tone: "success" as const },
+  { key: "draft", label: "Draft", description: "Needs review", count: 6, tone: "warning" as const },
+  { key: "archived", label: "Archived", description: "Hidden from lists", count: 3, tone: "muted" as const },
+  { key: "failed", label: "Failed", description: "Requires fix", count: 2, tone: "danger" as const },
 ]
 
-const activityItems = [
-  { id: "1", title: "Order approved", description: "Manager confirmed the order and sent it to fulfillment.", time: "2m", tone: "success" as const },
-  { id: "2", title: "Stock warning", description: "Premium Coffee reached the minimum stock threshold.", time: "14m", tone: "warning" as const },
-  { id: "3", title: "Import completed", description: "124 products were synced from the import file.", time: "1h", tone: "info" as const },
+const actions = [
+  { key: "create", label: "Create product", description: "Open product creation flow.", icon: <PlusIcon />, badge: "New" },
+  { key: "import", label: "Import file", description: "Upload Excel or CSV data.", icon: <UploadCloudIcon />, badge: "CSV" },
+  { key: "audit", label: "Review audit", description: "Check recent changes.", icon: <ShieldCheckIcon />, badge: "3" },
 ]
 
-const resultStatuses = ["success", "error", "warning", "info", "not-found", "forbidden", "server-error"] as const
+const details = [
+  { key: "name", label: "Product", value: "Premium Coffee", icon: <PackageIcon /> },
+  { key: "sku", label: "SKU", value: "COF-001" },
+  { key: "status", label: "Status", value: <StatusBadge tone="success" dot>active</StatusBadge> },
+  { key: "price", label: "Price", value: "42,000 UZS" },
+]
 
-function EverydayComponentsPreview() {
+const timeline = [
+  { key: "created", title: "Created", description: "Product was added.", time: "09:30", tone: "success" as const, icon: <CheckCircle2Icon className="size-4" /> },
+  { key: "review", title: "Reviewed", description: "Price and stock checked.", time: "10:15", tone: "info" as const, icon: <ShieldCheckIcon className="size-4" /> },
+]
+
+const activity = [
+  { id: "1", title: "Order approved", description: "Manager confirmed the order.", time: "2m", tone: "success" as const },
+  { id: "2", title: "Stock warning", description: "Minimum stock threshold reached.", time: "14m", tone: "warning" as const },
+  { id: "3", title: "Import completed", description: "124 products were synced.", time: "1h", tone: "info" as const },
+]
+
+const comboOptions = [
+  { value: "coffee", label: "Premium Coffee", description: "COF-001" },
+  { value: "tea", label: "Green Tea", description: "TEA-002" },
+  { value: "cocoa", label: "Classic Cocoa", description: "COC-003" },
+  { value: "disabled", label: "Disabled option", description: "Cannot select", disabled: true },
+]
+
+function EverydayPreview() {
   const [tab, setTab] = useState("overview")
   const [chips, setChips] = useState([
     { key: "status", label: "Status", value: "Active", tone: "success" as const },
@@ -105,7 +96,7 @@ function EverydayComponentsPreview() {
 
   return (
     <div className="grid w-full gap-4 xl:grid-cols-2">
-      <InfoCard title="Avatar and AvatarGroup" description="Sizes, statuses, shape and overflow count." icon={<UsersIcon />} compact>
+      <InfoCard title="Avatar / AvatarGroup" description="Sizes, statuses, shapes and overflow." icon={<UsersIcon />} compact>
         <div className="grid gap-4">
           <div className="flex flex-wrap items-center gap-3">
             <Avatar name="Azamat Jurayev" size="xs" status="online" />
@@ -117,39 +108,46 @@ function EverydayComponentsPreview() {
           <AvatarGroup items={people} max={4} />
         </div>
       </InfoCard>
-
-      <InfoCard title="PageTabs" description="Underline, pills and cards variants for page sections." compact>
+      <InfoCard title="PageTabs" description="Underline and pills navigation." compact>
         <div className="grid gap-4">
-          <PageTabs
-            value={tab}
-            onValueChange={setTab}
-            items={[
-              { value: "overview", label: "Overview", badge: "12" },
-              { value: "orders", label: "Orders", badge: "4" },
-              { value: "settings", label: "Settings" },
-            ]}
-          />
-          <PageTabs
-            value={tab}
-            variant="pills"
-            size="sm"
-            onValueChange={setTab}
-            items={[
-              { value: "overview", label: "Overview" },
-              { value: "orders", label: "Orders" },
-              { value: "settings", label: "Settings" },
-            ]}
-          />
+          <PageTabs value={tab} onValueChange={setTab} items={[{ value: "overview", label: "Overview", badge: "12" }, { value: "orders", label: "Orders", badge: "4" }, { value: "settings", label: "Settings" }]} />
+          <PageTabs value={tab} variant="pills" size="sm" onValueChange={setTab} items={[{ value: "overview", label: "Overview" }, { value: "orders", label: "Orders" }, { value: "settings", label: "Settings" }]} />
           <p className="text-xs text-muted-foreground">Active tab: {tab}</p>
         </div>
       </InfoCard>
-
-      <InfoCard title="FilterChips" description="Active filter chips with remove and clear actions." compact>
+      <InfoCard title="FilterChips" description="Remove chips or clear all." compact>
         <FilterChips chips={chips} onRemove={(key) => setChips((items) => items.filter((chip) => chip.key !== key))} onClear={() => setChips([])} />
       </InfoCard>
-
-      <InfoCard title="TagInput" description="Add tags with Enter or comma, remove by x or backspace." compact>
+      <InfoCard title="TagInput" description="Enter/comma adds tags, backspace removes last." compact>
         <TagInput value={tags} onValueChange={setTags} maxTags={6} placeholder="Add keyword" />
+      </InfoCard>
+    </div>
+  )
+}
+
+function FunctionalPreview() {
+  const [state, setState] = useState<"loading" | "empty" | "error" | "success">("success")
+  const [step, setStep] = useState("details")
+  const [combo, setCombo] = useState<string | undefined>("coffee")
+
+  return (
+    <div className="grid w-full gap-4 xl:grid-cols-2">
+      <InfoCard title="DataState" description="Loading, empty, error and success blocks." compact>
+        <div className="mb-3 flex flex-wrap gap-2">
+          {(["loading", "empty", "error", "success"] as const).map((item) => <Button key={item} size="xs" variant={state === item ? "default" : "outline"} onClick={() => setState(item)}>{item}</Button>)}
+        </div>
+        <DataState status={state} compact onRetry={state === "error" ? () => setState("success") : undefined} />
+      </InfoCard>
+      <InfoCard title="StepperTabs" description="Horizontal and vertical step navigation." compact>
+        <StepperTabs value={step} onValueChange={setStep} items={[{ value: "details", label: "Details", description: "Basic info", completed: true }, { value: "pricing", label: "Pricing", description: "Price rules" }, { value: "review", label: "Review", description: "Final check" }]} />
+        <div className="mt-3"><StepperTabs orientation="vertical" compact value={step} onValueChange={setStep} items={[{ value: "details", label: "Details", completed: true }, { value: "pricing", label: "Pricing" }, { value: "review", label: "Review" }]} /></div>
+      </InfoCard>
+      <InfoCard title="Combobox" description="Searchable single select with disabled option." compact>
+        <Combobox value={combo} onValueChange={setCombo} options={comboOptions} placeholder="Select product" />
+        <p className="mt-3 text-xs text-muted-foreground">Selected value: {combo ?? "none"}</p>
+      </InfoCard>
+      <InfoCard title="QuickActionGrid" description="Dashboard shortcut cards." compact>
+        <QuickActionGrid columns={1} compact items={actions} />
       </InfoCard>
     </div>
   )
@@ -162,164 +160,42 @@ export function DisplaySection() {
       id="display"
       eyebrow="Data display"
       title="Display and feedback"
-      description="Reusable metrics, avatars, tabs, tags, filters, action grids, status legends, activity feeds, detail lists, progress, timeline and result components for dashboard pages."
+      description="Reusable metrics, avatars, tabs, states, comboboxes, tags, filters, actions, legends, activity, details and result components."
       action={<StatusBadge tone="success" dot>New components</StatusBadge>}
     >
-      <MetricGrid className="mb-4" items={metricItems} />
+      <MetricGrid className="mb-4" items={metrics} />
 
-      <section className="mb-4 grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader>
-            <CardDescription>People UI</CardDescription>
-            <CardTitle className="text-3xl">Avatar</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">Avatar and grouped avatars</CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Navigation</CardDescription>
-            <CardTitle className="text-3xl">Tabs</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">PageTabs for sections</CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Filters</CardDescription>
-            <CardTitle className="text-3xl">Chips</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">FilterChips and TagInput</CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Actions</CardDescription>
-            <CardTitle className="text-3xl">Grid</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">QuickActionGrid shortcuts</CardContent>
-        </Card>
-      </section>
-
-      <ComponentPreview
-        title="Everyday dashboard components"
-        description="Avatar, AvatarGroup, PageTabs, FilterChips and TagInput with interactive playground state."
-        dependencies={["Avatar", "AvatarGroup", "PageTabs", "FilterChips", "TagInput"]}
-        code={`<Avatar name="Azamat Jurayev" status="online" />
+      <ComponentPreview title="Everyday dashboard components" description="Avatar, AvatarGroup, PageTabs, FilterChips and TagInput with state." dependencies={["Avatar", "AvatarGroup", "PageTabs", "FilterChips", "TagInput"]} code={`<Avatar name="Azamat Jurayev" status="online" />
 <AvatarGroup items={people} max={4} />
 <PageTabs value={tab} onValueChange={setTab} items={tabs} />
-<FilterChips chips={filters} onRemove={removeFilter} />
-<TagInput value={tags} onValueChange={setTags} />`}
-      >
-        <EverydayComponentsPreview />
+<FilterChips chips={filters} />
+<TagInput value={tags} onValueChange={setTags} />`}>
+        <EverydayPreview />
+      </ComponentPreview>
+
+      <ComponentPreview title="Functional state components" description="DataState, StepperTabs, Combobox and QuickActionGrid with interactive states." dependencies={["DataState", "StepperTabs", "Combobox", "QuickActionGrid"]} code={`<DataState status="loading" />
+<StepperTabs value={step} onValueChange={setStep} items={steps} />
+<Combobox value={value} onValueChange={setValue} options={options} />
+<QuickActionGrid items={actions} />`}>
+        <FunctionalPreview />
       </ComponentPreview>
 
       <ShowcaseGrid className="mt-4 mb-4 xl:grid-cols-3">
-        <PlaygroundCard title="MetricGrid" description="Use for dashboard KPIs, resource summaries and page stats." badge={<Badge variant="outline">metrics</Badge>}>
-          <MetricGrid columns={2} compact items={metricItems.slice(0, 4)} />
-        </PlaygroundCard>
-        <PlaygroundCard title="QuickActionGrid" description="Use for dashboard shortcuts, resource actions and module launchers." badge={<Badge variant="outline">actions</Badge>}>
-          <QuickActionGrid columns={1} compact items={quickActions} />
-        </PlaygroundCard>
-        <PlaygroundCard title="StatusLegend" description="Explain statuses and show counts with consistent tones." badge={<Badge variant="outline">legend</Badge>}>
-          <StatusLegend title="Product status" items={statusLegendItems} compact />
-        </PlaygroundCard>
+        <PlaygroundCard title="StatusLegend" description="Explain statuses and show counts." badge={<Badge variant="outline">legend</Badge>}><StatusLegend title="Product status" items={statusItems} compact /></PlaygroundCard>
+        <PlaygroundCard title="CopyButton" description="Clipboard action with copied state." badge={<Badge variant="outline">clipboard</Badge>}><div className="flex flex-wrap gap-2"><CopyButton value="COF-001" size="sm" /><CopyButton value="https://example.com/products/COF-001" size="sm" variant="outline" copyLabel="Copy link" /></div></PlaygroundCard>
+        <PlaygroundCard title="ActivityFeed" description="Recent events and audit history." badge={<Badge variant="outline">feed</Badge>}><ActivityFeed title="Recent activity" items={activity} compact /></PlaygroundCard>
       </ShowcaseGrid>
 
       <ShowcaseGrid className="mb-4 xl:grid-cols-3">
-        <PlaygroundCard title="InfoCard" description="Flexible informational card with media, actions and footer slots." badge={<Badge variant="outline">card</Badge>}>
-          <InfoCard
-            eyebrow="Resource summary"
-            title="Premium Coffee"
-            description="Reusable card for aside panels and detail summaries."
-            icon={<PackageIcon />}
-            actions={<CopyButton value="COF-001" size="xs" variant="outline" copyLabel="Copy SKU" copiedLabel="Copied" />}
-            footer={<span className="text-xs text-muted-foreground">Updated 17 Jun 2026</span>}
-            compact
-          >
-            <div className="text-sm text-muted-foreground">Use this instead of rebuilding small info panels in every app.</div>
-          </InfoCard>
-        </PlaygroundCard>
-        <PlaygroundCard title="CopyButton" description="Clipboard action with copied state and icon swap." badge={<Badge variant="outline">clipboard</Badge>}>
-          <div className="grid gap-3">
-            <div className="rounded-lg border bg-muted/25 p-3 text-sm">SKU: COF-001</div>
-            <div className="flex flex-wrap gap-2">
-              <CopyButton value="COF-001" size="sm" />
-              <CopyButton value="https://example.com/products/COF-001" size="sm" variant="outline" copyLabel="Copy link" />
-              <CopyButton value="42,000 UZS" size="sm" variant="ghost" showIcon={false} copyLabel="Copy price" />
-            </div>
-          </div>
-        </PlaygroundCard>
-        <PlaygroundCard title="ActivityFeed" description="Use for audit history, recent activity and timeline sidebars." badge={<Badge variant="outline">feed</Badge>}>
-          <ActivityFeed title="Recent activity" items={activityItems} compact />
-        </PlaygroundCard>
+        <PlaygroundCard title="DescriptionList" description="Read-only label/value detail blocks." badge={<Badge variant="outline">details</Badge>}><DescriptionList title="Product details" items={details} columns={2} compact /></PlaygroundCard>
+        <PlaygroundCard title="Progress" description="Uploads, onboarding and KPI completion." badge={<Badge variant="outline">status</Badge>}><div className="grid gap-3"><Progress label="Catalog sync" value={74} tone="success" showValue /><Progress label="Risk review" value={44} tone="warning" showValue /><Progress indeterminate label="Waiting" showValue={false} /></div></PlaygroundCard>
+        <PlaygroundCard title="Timeline and Result" description="Process and final states." badge={<Badge variant="outline">states</Badge>}><div className="grid gap-4"><Timeline items={timeline} compact /><Result status="success" compact title="Saved" description="Reusable success state" /></div></PlaygroundCard>
       </ShowcaseGrid>
 
-      <ShowcaseGrid className="mb-4 xl:grid-cols-3">
-        <PlaygroundCard title="DescriptionList" description="Use for detail pages, read-only views and audit summaries." badge={<Badge variant="outline">details</Badge>}>
-          <DescriptionList title="Product details" description="Responsive label/value grid" items={detailItems} columns={2} compact />
-        </PlaygroundCard>
-        <PlaygroundCard title="Progress" description="Use in uploads, onboarding, tasks and KPIs." badge={<Badge variant="outline">status</Badge>}>
-          <div className="grid gap-3">
-            <Progress label="Catalog sync" value={74} tone="success" showValue />
-            <Progress label="Risk review" value={44} tone="warning" showValue />
-            <Progress label="Failed imports" value={18} tone="danger" showValue />
-            <Progress label="Indeterminate" indeterminate showValue={false} description="Waiting for server event" />
-          </div>
-        </PlaygroundCard>
-        <PlaygroundCard title="CSS display tokens" description="Display components follow the shared card/control style." badge={<Badge variant="outline">CSS</Badge>}>
-          <div className="flex flex-wrap gap-2">
-            <TokenPill>data-slot="avatar"</TokenPill>
-            <TokenPill>data-slot="page-tabs"</TokenPill>
-            <TokenPill>data-slot="filter-chips"</TokenPill>
-            <TokenPill>data-slot="tag-input"</TokenPill>
-          </div>
-          <p className="text-sm leading-6 text-muted-foreground">These components are generic UI primitives. App pages pass data, actions and labels through props.</p>
-        </PlaygroundCard>
-      </ShowcaseGrid>
-
-      <ComponentPreview
-        title="Dashboard display and action suite"
-        description="MetricGrid, QuickActionGrid, StatusLegend, CopyButton, InfoCard, ActivityFeed, DescriptionList, Timeline, ProgressCard and Result in one reusable documentation example."
-        dependencies={["MetricGrid", "QuickActionGrid", "StatusLegend", "CopyButton", "InfoCard", "ActivityFeed", "DescriptionList", "Timeline", "Progress", "Result"]}
-        code={`<MetricGrid items={metrics} />
-<QuickActionGrid items={actions} />
-<StatusLegend items={statuses} />
-<CopyButton value="COF-001" />
-<ActivityFeed items={activity} />`}
-      >
-        <div className="grid w-full gap-4 xl:grid-cols-2">
-          <MetricGrid className="xl:col-span-2" columns={4} items={metricItems} />
-          <QuickActionGrid items={quickActions} />
-          <StatusLegend title="Status legend" items={statusLegendItems} orientation="grid" />
-          <DescriptionList title="Order detail" description="Read-only detail view with actions and spans." columns={2} items={detailItems} actions={<CopyButton value="COF-001" size="sm" variant="outline" copyLabel="Copy SKU" />} />
-          <ActivityFeed title="Activity feed" description="Recent user and system events." items={activityItems} />
-          <ProgressCard title="Profile completion" description="Reusable card wrapper around progress." value={82} tone="info" footer={<div className="flex items-center gap-2 text-xs text-muted-foreground"><ActivityIcon className="size-3.5" /> 3 steps left</div>} />
-          <Result status="success" title="Changes saved" description="Use Result for empty routes, success screens, errors and final workflow states." actions={<><ResultAction size="sm">Continue</ResultAction><ResultAction size="sm" variant="outline">View details</ResultAction></>} />
-        </div>
-      </ComponentPreview>
-
-      <section className="mt-4 grid gap-4 lg:grid-cols-2">
-        <PlaygroundCard title="Horizontal timeline" description="Compact process view for cards and dashboards." badge={<Badge variant="outline">horizontal</Badge>}>
-          <Timeline items={timelineItems} orientation="horizontal" compact />
-        </PlaygroundCard>
-        <PlaygroundCard title="Result status matrix" description="Common app-level result states." badge={<Badge variant="outline">states</Badge>}>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {resultStatuses.map((status) => <Result key={status} status={status} compact title={status} description={<span className="text-xs">Reusable status view</span>} className="rounded-xl border bg-muted/20" />)}
-          </div>
-        </PlaygroundCard>
-      </section>
-
-      <PlaygroundUsage
-        title="Display usage"
-        items={[
-          "Use `Avatar` and `AvatarGroup` for people, assignees and team previews.",
-          "Use `PageTabs` for section navigation inside resource pages.",
-          "Use `FilterChips` and `TagInput` for filter state and keyword editing.",
-          "Use `QuickActionGrid`, `StatusLegend` and `CopyButton` for common dashboard interactions.",
-        ]}
-        code={`<Avatar name="Azamat Jurayev" status="online" />
-<PageTabs value={tab} items={tabs} />
-<FilterChips chips={filters} />
-<TagInput value={tags} />`}
-      />
+      <PlaygroundUsage title="Display usage" items={["Use `DataState` for loading, empty, error and success blocks.", "Use `StepperTabs` for multi-step dashboard flows.", "Use `Combobox` for simple searchable single-select fields.", "Use `Avatar`, `PageTabs`, `FilterChips` and `TagInput` for everyday dashboard UI."]} code={`<DataState status="empty" />
+<StepperTabs value={step} items={steps} />
+<Combobox value={value} options={options} />
+<TagInput value={tags} />`} />
     </DemoSection>
   )
 }
