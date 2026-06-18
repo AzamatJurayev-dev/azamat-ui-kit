@@ -4,6 +4,7 @@ import type { Control, FieldValues } from "react-hook-form"
 
 import {
   ActionMenu,
+  ActivityFeed,
   AppHeader,
   AppShell,
   AsyncSelect,
@@ -16,8 +17,10 @@ import {
   EmptyState,
   FileUpload,
   FormBuilder,
+  InfoCard,
   Input,
   LoadingState,
+  MetricGrid,
   ModalShell,
   Pagination,
   ResourceDetailPage,
@@ -58,6 +61,9 @@ export const smokeElements = [
   <StatusBadge key="status">Active</StatusBadge>,
   <EmptyState key="empty" title="No data" />,
   <LoadingState key="loading" label="Loading" />,
+  <MetricGrid key="metrics" items={[{ key: "sales", label: "Sales", value: "$12k" }]} />,
+  <InfoCard key="info-card" title="Info">Content</InfoCard>,
+  <ActivityFeed key="activity-feed" items={[{ id: "1", title: "Created", time: "now" }]} />,
   <ActionMenu key="action-menu" actions={[{ key: "edit", label: "Edit", onSelect: noop }]} />,
   <ModalShell key="modal" open={false} onOpenChange={noop} title="Modal" />,
   <AppHeader key="header" left="Left" right="Right" />,
@@ -76,7 +82,7 @@ export const smokeElements = [
   <ResourceDetailPage
     key="resource-detail"
     title="Keyboard"
-    sections={[{ id: "main", title: "Main", items: [{ label: "Name", value: "Keyboard" }] }]}
+    sections={[{ id: "main", title: "Main", items: [{ key: "name", label: "Name", value: "Keyboard" }] }]}
   />,
   <ResourcePageSection key="resource-section" title="Section">Content</ResourcePageSection>,
   <FormBuilder key="form-builder" control={control} fields={[]} />,
