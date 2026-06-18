@@ -5,8 +5,11 @@ const owners = ["Azamat", "Malika", "Sardor", "Nodira", "Asadbek", "Kamola"] as 
 const channels = ["Direct", "Partner", "Direct", "Marketplace", "Marketplace", "Direct"] as const
 const statuses = ["Paid", "Review", "Draft", "Paid", "Overdue", "Paid"] as const
 const amounts = ["$2,400", "$1,280", "$980", "$4,120", "$860", "$3,620"] as const
+const amountValues = [2400, 1280, 980, 4120, 860, 3620] as const
 const updatedLabels = ["2h ago", "4h ago", "Today", "1d ago", "1d ago", "2d ago"] as const
 const stocks = [48, 16, 8, 63, 4, 28] as const
+const items = [12, 5, 3, 18, 2, 9] as const
+const trends = ["up", "steady", "down", "up", "down", "up"] as const
 
 export const dataTableDemoRows: DataTableDemoRow[] = customers.map((customer, index) => ({
   invoice: `INV-00${index + 1}`,
@@ -16,11 +19,14 @@ export const dataTableDemoRows: DataTableDemoRow[] = customers.map((customer, in
   channel: channels[index],
   status: statuses[index],
   stock: stocks[index],
+  items: items[index],
   amount: amounts[index],
+  amountValue: amountValues[index],
+  trend: trends[index],
   updatedAt: updatedLabels[index],
 }))
 
-export const dataTableToolbarActions: DataTableDemoToolbarAction[] = ["Columns", "Export CSV"].map((label) => ({
+export const dataTableToolbarActions: DataTableDemoToolbarAction[] = ["Export CSV", "Sync"].map((label) => ({
   label,
   variant: label === "Export CSV" ? "default" : "outline",
 }))

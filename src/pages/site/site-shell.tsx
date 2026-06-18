@@ -3,6 +3,7 @@ import { MoonIcon, SearchIcon, StarIcon, SunIcon } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 
 import { Badge, Button, buttonVariants } from "@/index"
+import { BrandLogo } from "@/components/branding/brand-logo"
 import { useTheme } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
@@ -11,12 +12,7 @@ import type { NavItem, SidebarGroup } from "./site-data"
 export function BrandMark() {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex size-10 items-center justify-center rounded-2xl bg-zinc-950 text-white shadow-lg shadow-zinc-950/10 dark:bg-white dark:text-zinc-950 dark:shadow-white/10">
-        <div className="flex -rotate-12 gap-1">
-          <span className="block h-5 w-1.5 rounded-full bg-white dark:bg-zinc-950" />
-          <span className="mt-1 block h-5 w-1.5 rounded-full bg-white/80 dark:bg-zinc-950/80" />
-        </div>
-      </div>
+      <BrandLogo className="size-10 rounded-2xl shadow-lg shadow-zinc-950/10 dark:bg-white dark:shadow-white/10" />
       <div className="flex items-center gap-3">
         <span className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">Azamat UI</span>
         <Badge variant="outline" className="rounded-full px-2.5 py-1 text-xs">

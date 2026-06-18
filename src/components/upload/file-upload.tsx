@@ -307,7 +307,7 @@ function FileUpload({
         ref={inputRef}
         type="file"
         className={cn("sr-only", inputClassName)}
-        disabled={isDisabled}
+        disabled={disabled || loading}
         accept={accept}
         multiple={inputMultiple}
         onChange={handleChange}

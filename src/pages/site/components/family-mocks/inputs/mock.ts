@@ -1,16 +1,16 @@
 import type { FamilyDemoMock } from "../types"
 
 export const inputsFamilyMock: FamilyDemoMock = {
-  code: `import { SearchInput, PasswordInput, MoneyInput, TagInput } from "@azamat/ui"\n\nexport function Example() {\n  return <SearchInput />\n}`,
-  highlights: ["Search and password inputs", "Money and number fields", "Date helpers", "Tag and combobox flows"],
+  code: `import { AsyncSelect, AsyncMultiSelect } from "@azamat/ui"\n\nexport function Example() {\n  return <AsyncSelect loadOptions={loadOptions} />\n}`,
+  highlights: ["AsyncSelect hydration", "AsyncMultiSelect limits", "Create option flow", "Grouped remote results"],
   scenarios: [
-    { title: "Filter-heavy dashboards", description: "Use search, date and select controls in tight headers." },
-    { title: "Checkout and billing", description: "Money and quantity fields help transactional forms." },
-    { title: "Entity tagging", description: "Capture labels and categories inline with tag input patterns." },
+    { title: "Workspace switching", description: "Load large remote workspace lists without blocking the form shell." },
+    { title: "Linked module setup", description: "Attach multiple modules with max selection and select-all rules." },
+    { title: "Editable resource forms", description: "Hydrate saved values back into async inputs on edit routes." },
   ],
   metrics: [
     { label: "Exports", value: "14" },
-    { label: "Modes", value: "4+" },
+    { label: "Async flows", value: "6+" },
     { label: "Status", value: "Stable" },
   ],
 }

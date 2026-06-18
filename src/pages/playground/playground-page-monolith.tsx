@@ -44,6 +44,7 @@ import {
   useCommandPaletteShortcut,
   useToast,
 } from "@/index"
+import { BrandLogo } from "@/components/branding/brand-logo"
 
 import { CalendarSection } from "./playground-calendar"
 import { DisplaySection } from "./playground-display"
@@ -479,14 +480,20 @@ function ComponentShell({
     return { title: "Azamat UI Kit", description: "Shadcn-inspired playground." }
   }, [normalizedPath, sections])
   const isLanding = normalizedPath === "/landing"
+  const headerBrand = (
+    <div className="flex items-center gap-2.5">
+      <BrandLogo className="size-8 rounded-xl" />
+      <span className="font-semibold">Azamat UI Kit</span>
+    </div>
+  )
 
   const sidebarNode = isLanding ? undefined : (
     <AppSidebar
       header={
         <div className="flex flex-col gap-2 px-1">
-          <div className="flex items-center gap-2 px-2 font-semibold">
-            <span className="size-2.5 rounded-full bg-primary/90" />
-            Azamat UI
+          <div className="flex items-center gap-2.5 px-2 font-semibold">
+            <BrandLogo className="size-8 rounded-xl" />
+            <span>Azamat UI</span>
           </div>
           <p className="px-2 text-xs text-muted-foreground">Documentation hub, component families and templates</p>
         </div>
@@ -520,9 +527,7 @@ function ComponentShell({
 
   const headerNode = isLanding ? (
     <AppHeader
-      left={
-        <span className="font-semibold">Azamat UI Kit</span>
-      }
+      left={headerBrand}
       center={
         <div className="hidden items-center gap-2 text-sm text-muted-foreground md:flex">
           <span>UI Kit</span>
@@ -544,7 +549,7 @@ function ComponentShell({
     />
   ) : (
     <AppHeader
-      left={<span className="font-semibold">Azamat UI Kit</span>}
+      left={headerBrand}
       center={<Breadcrumbs items={breadcrumbItems} />}
       right={
         <>

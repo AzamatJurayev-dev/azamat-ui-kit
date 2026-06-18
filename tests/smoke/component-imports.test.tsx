@@ -30,7 +30,7 @@ import {
   StatusBadge,
   ToastProvider,
   Wizard,
-} from "../src"
+} from "../../src"
 
 type Product = {
   id: string
@@ -57,7 +57,7 @@ export const smokeElements = [
   <Input key="input" aria-label="Name" />,
   <Checkbox key="checkbox" aria-label="Accept" />,
   <SearchInput key="search" value="" onValueChange={noop} />,
-  <Pagination key="pagination" pageIndex={0} pageCount={3} onPageChange={noop} />,
+  <Pagination key="pagination" page={1} pageCount={3} onPageChange={noop} />,
   <StatusBadge key="status">Active</StatusBadge>,
   <EmptyState key="empty" title="No data" />,
   <LoadingState key="loading" label="Loading" />,
@@ -70,7 +70,7 @@ export const smokeElements = [
   <AppShell key="shell" header={<AppHeader left="Dashboard" />} sidebar={<div>Sidebar</div>}>
     Content
   </AppShell>,
-  <DataTable key="table" columns={columns} data={products} getRowId={(row) => row.id} />,
+  <DataTable key="table" columns={columns} data={products} getRowId={(row: Product) => row.id} />,
   <AsyncSelect key="async-select" loadOptions={async () => []} />,
   <Calendar key="calendar" value="2026-01-01" onValueChange={noop} />,
   <DatePicker key="date-picker" value="2026-01-01" onValueChange={noop} />,

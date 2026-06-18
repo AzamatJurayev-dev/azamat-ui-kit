@@ -1,6 +1,7 @@
 import type { ReactElement } from "react"
 
 import { Badge, Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/index"
+import { BrandLogo } from "@/components/branding/brand-logo"
 import { componentDemoRegistry, defaultComponentDemoState } from "@/pages/site/components/component-mocks"
 
 import { previewSurfaceCatalog, type PreviewSurfaceTone } from "./preview-catalog"
@@ -34,7 +35,7 @@ function PreviewSurfaceRenderer({ tone }: { tone: PreviewSurfaceTone }) {
         <div className="grid min-h-[720px] gap-6 lg:grid-cols-[260px_1fr]">
           <aside className="rounded-[28px] border border-zinc-200 bg-white p-5 shadow-sm">
             <div className="mb-6 flex items-center gap-3">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-zinc-950 text-lg font-semibold text-white">A</div>
+              <BrandLogo className="size-11 rounded-2xl" />
               <div>
                 <p className="font-semibold">Azamat UI</p>
                 <p className="text-sm text-zinc-500">Dashboard shell</p>
@@ -192,7 +193,10 @@ function PreviewSurfaceRenderer({ tone }: { tone: PreviewSurfaceTone }) {
         <div className="mx-auto grid min-h-[720px] max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="flex flex-col justify-between rounded-[36px] border border-amber-100 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.18),transparent_35%),#111827] p-8 text-white shadow-sm">
             <div>
-              <Badge className="rounded-full bg-white/10 text-white hover:bg-white/10">Azamat UI</Badge>
+              <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/10 px-3 py-2 text-white">
+                <BrandLogo className="size-8 rounded-xl border-white/10 bg-white" />
+                <span className="text-sm font-medium">Azamat UI</span>
+              </div>
               <h1 className="mt-8 max-w-lg text-5xl font-semibold tracking-tight">Production sign in flow for modern product surfaces.</h1>
               <p className="mt-4 max-w-md text-base leading-7 text-zinc-300">Preview a reusable auth block inside the docs system without leaving the library site.</p>
             </div>

@@ -1,3 +1,4 @@
+import * as React from "react"
 import { ArrowRightIcon, ChevronDownIcon, CopyIcon, ExternalLinkIcon } from "lucide-react"
 import { Link, Navigate, useParams } from "react-router-dom"
 
@@ -7,7 +8,7 @@ import { cn } from "@/lib/utils"
 
 import { blockCards, componentCatalog, componentDocsPath, componentPlaygroundPath, moduleFamilyCatalog, moduleFamilyExportPath, moduleFamilyExportSlug, primaryNav } from "../site-data"
 import { SectionLabel, SurfaceCard, TopNav } from "../site-shell"
-import { familyDemoRegistry } from "./family-mocks"
+import { defaultFamilyDemoState, familyDemoRegistry } from "./family-mocks"
 import { PageFrame, useCopyFeedback } from "./site-primitives"
 
 function exportPreviewSrc(familySlug: string) {
@@ -23,6 +24,7 @@ export function SiteModuleExportPage() {
   const family = moduleFamilyCatalog.find((item) => item.slug === params.slug)
   const exportName = family?.exports.find((item) => moduleFamilyExportSlug(item) === params.exportSlug)
   const demo = family ? familyDemoRegistry[family.slug] : undefined
+  const [previewState, setPreviewState] = React.useState(defaultFamilyDemoState)
   const { copiedKey, onCopy } = useCopyFeedback()
 
   if (!family || !exportName) {
@@ -198,14 +200,43 @@ export function SiteModuleExportPage() {
               </div>
             </SurfaceCard>
 
-            <BlockPreview
-              title={`${exportName} live preview`}
-              description="Export-level preview connected to a real route so users can inspect the surface in isolation."
-              src={exportPreviewSrc(family.slug)}
-              command={`npx azamat-ui-kit add ${exportName}`}
-              code={importCode}
-              height={family.slug === "data-table" ? 760 : 640}
-            />
+            {family.slug === "data-table" && demo ? (
+              <SurfaceCard className="overflow-hidden p-0">
+                <div className="border-b border-zinc-200 px-6 py-5">
+                  <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+                    <div>
+                      <SectionLabel>LINKED PREVIEW</SectionLabel>
+                      <h2 className="mt-2 text-2xl font-semibold tracking-tight">{exportName} in DataTable flow</h2>
+                      <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-500">
+                        Export preview endi block iframe emas. U shu family bilan bir xil control language va real row interaction orqali ko‘rsatiladi.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Link to={family.href} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-xl")}>Open family</Link>
+                      <Button size="sm" className="rounded-xl" onClick={() => void onCopy("linked-import", importCode)}>
+                        <CopyIcon className="mr-2 size-4" />
+                        {copiedKey === "linked-import" ? "Copied" : "Copy import"}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  {demo.Showcase({
+                    state: previewState,
+                    setState: (patch) => setPreviewState((current) => ({ ...current, ...patch })),
+                  })}
+                </div>
+              </SurfaceCard>
+            ) : (
+              <BlockPreview
+                title={`${exportName} live preview`}
+                description="Export-level preview connected to a real route so users can inspect the surface in isolation."
+                src={exportPreviewSrc(family.slug)}
+                command={`npx azamat-ui-kit add ${exportName}`}
+                code={importCode}
+                height={family.slug === "data-table" ? 760 : 640}
+              />
+            )}
           </div>
 
           <aside className="space-y-6">

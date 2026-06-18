@@ -6,7 +6,10 @@ export type DataTableDemoRow = {
   channel: string
   status: "Paid" | "Review" | "Draft" | "Overdue"
   stock: number
+  items: number
   amount: string
+  amountValue: number
+  trend: "up" | "down" | "steady"
   updatedAt: string
 }
 
