@@ -79,33 +79,37 @@ function AppSidebar({
                   {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
                 </Link>
               ) : item.href ? (
-                <a
+                <button
                   key={item.key}
-                  href={item.href}
-                  target={item.href.startsWith("http") ? "_blank" : undefined}
-                  rel={item.href.startsWith("http") ? "noreferrer noopener" : undefined}
+                  type="button"
                   aria-current={item.active ? "page" : undefined}
                   aria-disabled={item.disabled || undefined}
                   data-active={item.active || undefined}
                   data-disabled={item.disabled || undefined}
                   className={cn(
-                    "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                    "flex min-h-9 w-full items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
                     collapsed && "justify-center px-2"
                   )}
-                  onClick={(event) => {
-                    if (item.disabled) {
-                      event.preventDefault()
-                      return
-                    }
+                  onClick={() => {
+                    if (item.disabled) return
+                    const href = item.href
+                    if (!href) return
 
                     item.onSelect?.()
                     onItemSelect?.(item)
+
+                    if (href.startsWith("http")) {
+                      window.open(href, "_blank", "noopener,noreferrer")
+                      return
+                    }
+
+                    window.location.assign(href)
                   }}
                 >
                   {item.icon && <span className="shrink-0">{item.icon}</span>}
                   {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
                   {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
-                </a>
+                </button>
               ) : (
                 <button
                   key={item.key}

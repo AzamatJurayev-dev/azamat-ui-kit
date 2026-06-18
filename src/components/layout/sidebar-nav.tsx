@@ -80,20 +80,27 @@ function SidebarNav({
             {content}
           </Link>
         ) : item.href ? (
-          <a
+          <button
             key={item.key}
-            href={item.href}
+            type="button"
             data-active={item.active || undefined}
             data-disabled={item.disabled || undefined}
             aria-current={item.active ? "page" : undefined}
-            className={commonClassName}
-            onClick={(event) => {
-              if (item.disabled) event.preventDefault()
+            className={cn("w-full text-left", commonClassName)}
+            onClick={() => {
+              if (item.disabled) return
+              const href = item.href
+              if (!href) return
               item.onSelect?.()
+              if (href.startsWith("http")) {
+                window.open(href, "_blank", "noopener,noreferrer")
+                return
+              }
+              window.location.assign(href)
             }}
           >
             {content}
-          </a>
+          </button>
         ) : (
           <button
             key={item.key}

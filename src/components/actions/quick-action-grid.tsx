@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Link } from "react-router-dom"
 
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
@@ -69,14 +70,14 @@ function QuickActionGrid({
           item.className
         )
 
-        if (item.href) {
+        const isInternalLink = item.href?.startsWith("/")
+
+        if (item.href && isInternalLink) {
           return (
-            <a
+            <Link
               key={item.key}
               data-slot="quick-action-grid-item"
-              href={item.href}
-              target={item.external ? "_blank" : undefined}
-              rel={item.external ? "noreferrer" : undefined}
+              to={item.href}
               aria-disabled={item.disabled || undefined}
               className={commonClassName}
               onClick={(event) => {
@@ -88,7 +89,35 @@ function QuickActionGrid({
               }}
             >
               {content}
-            </a>
+            </Link>
+          )
+        }
+
+        if (item.href) {
+          return (
+            <button
+              key={item.key}
+              data-slot="quick-action-grid-item"
+              type="button"
+              aria-disabled={item.disabled || undefined}
+              className={commonClassName}
+              onClick={() => {
+                if (item.disabled) return
+                item.onSelect?.()
+
+                const href = item.href
+                if (!href) return
+
+                if (item.external) {
+                  window.open(href, "_blank", "noopener,noreferrer")
+                  return
+                }
+
+                window.location.assign(href)
+              }}
+            >
+              {content}
+            </button>
           )
         }
 
