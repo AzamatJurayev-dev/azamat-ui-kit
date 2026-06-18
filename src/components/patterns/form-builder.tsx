@@ -25,14 +25,14 @@ export type FormBuilderFieldRenderContext<TFieldValues extends FieldValues> = {
   readOnly?: boolean
 }
 
-type BaseFormBuilderField<TFieldValues extends FieldValues> = {
+type BaseFormBuilderField = {
   id: string
   hidden?: boolean
   className?: string
   colSpan?: 1 | 2 | 3 | 4 | "full"
 }
 
-export type FormBuilderCustomField<TFieldValues extends FieldValues> = BaseFormBuilderField<TFieldValues> & {
+export type FormBuilderCustomField<TFieldValues extends FieldValues> = BaseFormBuilderField & {
   type: "custom"
   render: (context: FormBuilderFieldRenderContext<TFieldValues>) => React.ReactNode
 }
@@ -40,7 +40,7 @@ export type FormBuilderCustomField<TFieldValues extends FieldValues> = BaseFormB
 export type FormBuilderInputField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "input"
   props: Omit<FormInputProps<TFieldValues, TName>, "control">
 }
@@ -48,7 +48,7 @@ export type FormBuilderInputField<
 export type FormBuilderTextareaField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "textarea"
   props: Omit<FormTextareaProps<TFieldValues, TName>, "control">
 }
@@ -56,7 +56,7 @@ export type FormBuilderTextareaField<
 export type FormBuilderSelectField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "select"
   props: Omit<FormSelectProps<TFieldValues, TName>, "control">
 }
@@ -64,7 +64,7 @@ export type FormBuilderSelectField<
 export type FormBuilderAsyncSelectField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "async-select"
   props: Omit<FormAsyncSelectProps<TFieldValues, TName>, "control">
 }
@@ -72,7 +72,7 @@ export type FormBuilderAsyncSelectField<
 export type FormBuilderSwitchField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "switch"
   props: Omit<FormSwitchProps<TFieldValues, TName>, "control">
 }
@@ -80,7 +80,7 @@ export type FormBuilderSwitchField<
 export type FormBuilderNumberField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "number"
   props: Omit<FormNumberInputProps<TFieldValues, TName>, "control">
 }
@@ -88,7 +88,7 @@ export type FormBuilderNumberField<
 export type FormBuilderPhoneField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "phone"
   props: Omit<FormPhoneInputProps<TFieldValues, TName>, "control">
 }
@@ -96,7 +96,7 @@ export type FormBuilderPhoneField<
 export type FormBuilderDateField<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "date"
   props: Omit<FormDateInputProps<TFieldValues, TName>, "control">
 }
@@ -105,7 +105,7 @@ export type FormBuilderDateRangeField<
   TFieldValues extends FieldValues,
   TFromName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
   TToName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = BaseFormBuilderField<TFieldValues> & {
+> = BaseFormBuilderField & {
   type: "date-range"
   props: Omit<FormDateRangeInputProps<TFieldValues, TFromName, TToName>, "control">
 }
@@ -167,7 +167,7 @@ const columnsClassName: Record<1 | 2 | 3 | 4, string> = {
   4: "grid-cols-1 md:grid-cols-2 xl:grid-cols-4",
 }
 
-const colSpanClassName: Record<NonNullable<BaseFormBuilderField<FieldValues>["colSpan"]>, string> = {
+const colSpanClassName: Record<NonNullable<BaseFormBuilderField["colSpan"]>, string> = {
   1: "col-span-1",
   2: "md:col-span-2",
   3: "xl:col-span-3",
@@ -199,7 +199,14 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
     case "date":
       return <FormDateInput control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
     case "date-range":
-      return <FormDateRangeInput control={context.control} disabled={context.disabled} {...field.props} />
+      return (
+        <FormDateRangeInput
+          control={context.control}
+          fromInputProps={{ disabled: context.disabled, readOnly: context.readOnly }}
+          toInputProps={{ disabled: context.disabled, readOnly: context.readOnly }}
+          {...field.props}
+        />
+      )
     default:
       return null
   }

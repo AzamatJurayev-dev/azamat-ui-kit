@@ -71,6 +71,10 @@ type AsyncGroupState = {
   error?: unknown
 }
 
+type RuntimeCommandPaletteGroup = CommandPaletteGroup & AsyncGroupState & {
+  items: CommandPaletteItem[]
+}
+
 function itemText(item: CommandPaletteItem) {
   return [
     item.value,
@@ -189,7 +193,7 @@ function CommandPalette({
     return map
   }, [asyncGroups, groups])
 
-  const visibleGroups = React.useMemo(
+  const visibleGroups = React.useMemo<RuntimeCommandPaletteGroup[]>(
     () =>
       groups
         .filter((group) => !group.hidden)
@@ -206,7 +210,7 @@ function CommandPalette({
             items,
             loading: asyncState?.loading ?? false,
             error: asyncState?.error,
-          }
+          } as RuntimeCommandPaletteGroup
         })
         .filter((group) => group.items.length > 0 || group.loading || group.error),
     [asyncGroups, filterItem, groups, normalizedSearch],
@@ -221,7 +225,7 @@ function CommandPalette({
       items: recentItems.slice(0, recentConfig.limit),
       loading: false,
       error: undefined,
-    }
+    } as RuntimeCommandPaletteGroup
   }, [normalizedSearch, recentConfig.enabled, recentConfig.label, recentConfig.limit, recentItems])
 
   const renderedGroups = recentGroup ? [recentGroup, ...visibleGroups] : visibleGroups
@@ -235,7 +239,7 @@ function CommandPalette({
     setRecentItems((current) => [source, ...current.filter((entry) => entry.id !== item.id)].slice(0, recentConfig.limit))
   }
 
-  const handleSelect = async (item: CommandPaletteItem, group: CommandPaletteGroup) => {
+  const handleSelect = async (item: CommandPaletteItem, group: RuntimeCommandPaletteGroup) => {
     if (item.disabled || loadingKey) return
 
     try {
@@ -301,11 +305,11 @@ function CommandPalette({
                   </div>
                 )}
 
-                {group.error && (
+                {group.error ? (
                   <div className="rounded-md px-2 py-2 text-xs text-destructive">
-                    {group.emptyLabel ?? "Could not load commands."}
+                    Could not load commands.
                   </div>
-                )}
+                ) : null}
 
                 {group.loading && group.items.length === 0 && (
                   <div className="rounded-md px-2 py-2 text-xs text-muted-foreground">

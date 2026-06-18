@@ -6,7 +6,6 @@ import {
   CheckCircle2Icon,
   LayoutDashboardIcon,
   PackageIcon,
-  PanelLeftIcon,
   SettingsIcon,
 } from "lucide-react"
 
@@ -17,6 +16,11 @@ import {
   AppSidebar,
   Badge,
   Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   ComponentPreview,
   DataTableViewPresets,
   FormBuilder,
@@ -211,6 +215,72 @@ export function PatternsSection() {
       description="Composable page-level patterns for dashboards: ResourcePage, ResourceDetailPage, FormBuilder and AppShell."
       action={<StatusBadge tone="success" dot>API-free</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Patterns</Badge>
+              <Badge variant="outline">Resource pages</Badge>
+              <Badge variant="outline">AppShell</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Page-level patterns for full app screens.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Resource pages, detail pages, form builders and shell layouts give the app a stable screen architecture instead of isolated widgets.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Screen types</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Resource list</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Resource detail</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Dashboard shell</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Reusable slots</p>
+              <div className="mt-2 grid gap-2 text-sm text-muted-foreground">
+                <div className="rounded-xl border bg-background px-3 py-2">Header + stats</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Filters + table</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Summary + aside</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background/80 p-4 sm:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">State</p>
+                <Badge variant="outline" className="text-[11px]">Shell ready</Badge>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Filter-first list.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Aligned detail.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Shell frame.</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Pattern overview</CardTitle>
+            <CardDescription>What each pattern is optimized for.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="rounded-2xl border bg-background p-3">
+              <p className="text-xs text-muted-foreground">ResourcePage</p>
+              <p className="mt-1 text-sm font-medium">List screens with metrics, filters, table and activity.</p>
+            </div>
+            <div className="rounded-2xl border bg-background p-3">
+              <p className="text-xs text-muted-foreground">ResourceDetailPage</p>
+              <p className="mt-1 text-sm font-medium">Detail screens with summary, sections and audit trail.</p>
+            </div>
+            <div className="rounded-2xl border bg-background p-3">
+              <p className="text-xs text-muted-foreground">AppShell</p>
+              <p className="mt-1 text-sm font-medium">Dashboard shell with sidebar, header, main and aside.</p>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <ShowcaseGrid className="mb-4 xl:grid-cols-3">
         <PlaygroundCard title="ResourcePage" description="List page with header, stats, filters, table and persisted views." badge={<Badge variant="outline">list</Badge>}>
           <TokenPill>stats + filters + table</TokenPill>
@@ -285,3 +355,8 @@ export function PatternsSection() {
     </DemoSection>
   )
 }
+
+
+
+
+

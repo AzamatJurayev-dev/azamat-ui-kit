@@ -98,6 +98,73 @@ export function CalendarSection() {
       description="Single/range calendar and picker controls with presets, constraints, derived analytics and interaction history."
       action={<StatusBadge tone={calendarError ? "danger" : calendarLoading ? "info" : "success"} dot>{calendarError ? "Error" : calendarLoading ? "Async" : "Ready"}</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Calendar</Badge>
+              <Badge variant="outline">Range</Badge>
+              <Badge variant="outline">Pickers</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Date controls.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Single dates, ranges and picker popovers should keep timezone-neutral values while still surfacing presets and event counts.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Modes</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Single</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Range</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Picker</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Constraints</p>
+              <div className="mt-2 grid gap-2 text-sm text-muted-foreground">
+                <div className="rounded-xl border bg-background px-3 py-2">Min / max</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Disabled dates</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Derived range days</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Date summary</CardTitle>
+            <CardDescription>Quick glance of current selection.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Selected date</p>
+                <p className="mt-1 text-sm font-medium">{calendarDate}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Range days</p>
+                <p className="mt-1 text-sm font-medium">{totalRangeDays}</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background p-3 text-sm text-muted-foreground">
+              These controls are built for scheduling and event-based screens, not marketing calendars.
+            </div>
+            <div className="rounded-2xl border bg-background/80 p-4 sm:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">State</p>
+                <Badge variant="outline" className="text-[11px]">Calendar live</Badge>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Synced pickers.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Visible constraints.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Live counts.</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mb-4 grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader>
@@ -266,3 +333,9 @@ export function CalendarSection() {
     </DemoSection>
   )
 }
+
+
+
+
+
+

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react"
-import { AlertTriangleIcon, ImageIcon, UploadCloudIcon } from "lucide-react"
+import { AlertTriangleIcon, ImageIcon } from "lucide-react"
 
 import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle, ComponentPreview, FileUpload, ImageUpload, StatusBadge } from "@/index"
 import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
@@ -109,6 +109,73 @@ export function UploadSection() {
       description="Drag/drop, validation, rejected files, mock progress, previews and parent-controlled upload state."
       action={<StatusBadge tone={uploadLoading ? "info" : simulateError ? "warning" : "success"} dot>{uploadLoading ? "Uploading" : simulateError ? "Error mode" : "Ready"}</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Upload</Badge>
+              <Badge variant="outline">Validation</Badge>
+              <Badge variant="outline">Progress</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Calm upload.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              The upload layer shows staged files, rejection reasons, preview states and progress telemetry while the app owns the transport.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Acceptance rules</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">File type</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">File size</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Count limit</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">UI states</p>
+              <div className="mt-2 grid gap-2 text-sm text-muted-foreground">
+                <div className="rounded-xl border bg-background px-3 py-2">Idle / loading</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Rejected files</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Preview thumbnails</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background/80 p-4 sm:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">State</p>
+                <Badge variant="outline" className="text-[11px]">Upload live</Badge>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Staged previews.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Rule feedback.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Visible progress.</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Upload summary</CardTitle>
+            <CardDescription>Current mock transport status.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Files</p>
+                <p className="mt-1 text-sm font-medium">{files.length}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Images</p>
+                <p className="mt-1 text-sm font-medium">{images.length}</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background p-3 text-sm text-muted-foreground">
+              API transport stays outside the kit; this page only handles local staging and visual feedback.
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mb-4 grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader>
@@ -278,3 +345,9 @@ export function UploadSection() {
     </DemoSection>
   )
 }
+
+
+
+
+
+

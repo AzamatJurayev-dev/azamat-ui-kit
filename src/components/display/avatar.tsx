@@ -108,10 +108,19 @@ function AvatarGroup({
   const overflowCount = Math.max(items.length - max, 0)
 
   return (
-    <div data-slot="avatar-group" className={cn("flex items-center", stacked ? "-space-x-2" : "gap-2", className)} {...props}>
-      {visibleItems.map((item) => (
-        <Avatar key={item.key} size={item.size ?? size} shape={item.shape ?? shape} className={cn(stacked && "ring-2 ring-background", item.className)} {...item} />
-      ))}
+      <div data-slot="avatar-group" className={cn("flex items-center", stacked ? "-space-x-2" : "gap-2", className)} {...props}>
+      {visibleItems.map((item) => {
+        const { key: itemKey, ...avatarProps } = item
+        return (
+          <Avatar
+            key={itemKey}
+            size={item.size ?? size}
+            shape={item.shape ?? shape}
+            className={cn(stacked && "ring-2 ring-background", item.className)}
+            {...avatarProps}
+          />
+        )
+      })}
       {overflowCount > 0 && (
         <Avatar size={size} shape={shape} fallback={overflowLabel(overflowCount)} className={cn(stacked && "ring-2 ring-background")} />
       )}

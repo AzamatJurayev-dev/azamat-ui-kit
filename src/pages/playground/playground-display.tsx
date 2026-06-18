@@ -7,14 +7,14 @@ import {
   AvatarGroup,
   Badge,
   Button,
+  Combobox,
+  ComponentPreview,
+  CopyButton,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-  Combobox,
-  ComponentPreview,
-  CopyButton,
   DataState,
   DescriptionList,
   FilterChips,
@@ -30,7 +30,7 @@ import {
   TagInput,
   Timeline,
 } from "@/index"
-import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
+import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid } from "./playground-ui"
 
 const metrics = [
   { key: "revenue", label: "Revenue", value: "128.4M", description: "Monthly total", trend: "+12%", tone: "success" as const, icon: <ActivityIcon /> },
@@ -159,10 +159,78 @@ export function DisplaySection() {
       sectionIndex={6}
       id="display"
       eyebrow="Data display"
-      title="Display and feedback"
+      title="Display"
       description="Reusable metrics, avatars, tabs, states, comboboxes, tags, filters, actions, legends, activity, details and result components."
       action={<StatusBadge tone="success" dot>New components</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Display</Badge>
+              <Badge variant="outline">Feedback</Badge>
+              <Badge variant="outline">Status language</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Readable dashboard feedback, not decorative widgets.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Display components should help the user scan state, compare values and understand what happened next. Keep them compact,
+              legible and easy to compose into real screens.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Reading flow</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Metrics</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Status</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Activity</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Component signal</p>
+              <div className="mt-2 grid gap-2 text-sm text-muted-foreground">
+                <div className="rounded-xl border bg-background px-3 py-2">Avatar + tabs</div>
+                <div className="rounded-xl border bg-background px-3 py-2">DataState + Result</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Timeline + legend</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background/80 p-4 sm:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">State</p>
+                <Badge variant="outline" className="text-[11px]">Signal live</Badge>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Readable metrics.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">One tone system.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Fast activity.</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Display summary</CardTitle>
+            <CardDescription>Fast glance of current dashboard signal.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Metrics</p>
+                <p className="mt-1 text-sm font-medium">{metrics.length}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">States</p>
+                <p className="mt-1 text-sm font-medium">{statusItems.length}</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background p-3 text-sm text-muted-foreground">
+              Use display components to reinforce state and hierarchy on dashboards and admin screens.
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <MetricGrid className="mb-4" items={metrics} />
 
       <ComponentPreview title="Everyday dashboard components" description="Avatar, AvatarGroup, PageTabs, FilterChips and TagInput with state." dependencies={["Avatar", "AvatarGroup", "PageTabs", "FilterChips", "TagInput"]} code={`<Avatar name="Azamat Jurayev" status="online" />
@@ -199,3 +267,9 @@ export function DisplaySection() {
     </DemoSection>
   )
 }
+
+
+
+
+
+

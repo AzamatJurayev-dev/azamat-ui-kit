@@ -5,7 +5,7 @@ import { Link, Navigate, useParams } from "react-router-dom"
 import { Badge, Button, buttonVariants } from "@/index"
 import { cn } from "@/lib/utils"
 
-import { primaryNav, templateRecords } from "../site-data"
+import { primaryNav, templatePath, templateRecords } from "../site-data"
 import { SectionLabel, SurfaceCard, TopNav } from "../site-shell"
 import { CopyButton, PageFrame, useCopyFeedback } from "./site-primitives"
 
@@ -90,7 +90,7 @@ export function SiteTemplateDetailPage() {
   }
 
   const currentSection = template.sections.find((item) => item.key === activeSection) ?? template.sections[0]
-  const installSnippet = `npx azamat-ui@latest add button\n# template: ${template.slug}\n# route: /templates/${template.slug}`
+  const installSnippet = `npx azamat-ui@latest add button\n# template: ${template.slug}\n# route: ${templatePath(template.slug)}`
 
   return (
     <PageFrame>
@@ -185,8 +185,9 @@ export function SiteTemplateDetailPage() {
                 </div>
                 {notesOpen ? (
                   <div className="space-y-4 text-base leading-7 text-zinc-600">
-                    <p>This template route demonstrates how a public block can become a deeper preview page with its own sections, actions and supporting modules.</p>
-                    <p>Every primary action here is wired: section buttons switch the canvas, copy actions copy code, and linked modules navigate to real routes.</p>
+                    {template.notes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
                   </div>
                 ) : (
                   <p className="text-sm text-zinc-500">Notes are hidden.</p>

@@ -111,7 +111,7 @@ function AppShell({
   children,
   ...props
 }: AppShellProps) {
-  const [isSidebarCollapsed, setSidebarCollapsed] = useControllableState({
+  const [isSidebarCollapsed] = useControllableState({
     value: sidebarCollapsed,
     defaultValue: defaultSidebarCollapsed,
     onChange: onSidebarCollapsedChange,

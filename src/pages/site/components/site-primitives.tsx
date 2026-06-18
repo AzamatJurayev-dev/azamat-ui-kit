@@ -57,7 +57,7 @@ function deviceIcon(item: DeviceMode) {
 }
 
 export function PageFrame({ children }: { children: React.ReactNode }) {
-  return <div className="min-h-screen bg-[radial-gradient(circle_at_top,#fff_0%,#fff_50%,#fafaf9_100%)] text-zinc-950">{children}</div>
+  return <div className="min-h-screen bg-[radial-gradient(circle_at_top,#fff_0%,#fff_50%,#fafaf9_100%)] text-zinc-950 dark:bg-[radial-gradient(circle_at_top,rgba(39,39,42,0.98)_0%,rgba(9,9,11,1)_65%,rgba(3,7,18,1)_100%)] dark:text-white">{children}</div>
 }
 
 export function useCopyFeedback() {
@@ -211,7 +211,7 @@ export function VariantSelector({
             onClick={() => onSelect(item)}
             className={cn(
               "rounded-2xl border px-5 py-3 text-sm font-medium capitalize",
-              active === item ? "bg-zinc-950 text-white border-zinc-950" : "border-zinc-200 bg-white text-zinc-700",
+              active === item ? "bg-zinc-950 text-white border-zinc-950 dark:bg-white dark:text-zinc-950 dark:border-white" : "border-zinc-200 bg-white text-zinc-700 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200",
               item === "destructive" && active !== item && "border-red-200 bg-red-50 text-red-600",
               item === "warning" && active !== item && "border-amber-300 bg-white text-amber-700"
             )}
@@ -237,15 +237,15 @@ export function InspectorRow({
 }) {
   return (
     <div className="grid gap-4 lg:grid-cols-[0.18fr_1fr] lg:items-center">
-      <div className="text-base text-zinc-600">{label}</div>
+      <div className="text-base text-zinc-600 dark:text-zinc-400">{label}</div>
       <div className="flex flex-wrap gap-4">
         {items.map((item) => (
           <button
             key={item}
             onClick={() => onSelect?.(item)}
             className={cn(
-              "rounded-2xl border border-zinc-200 bg-white px-5 py-3 text-sm font-medium",
-              active === item && "bg-zinc-950 text-white border-zinc-950",
+              "rounded-2xl border border-zinc-200 bg-white px-5 py-3 text-sm font-medium dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200",
+              active === item && "bg-zinc-950 text-white border-zinc-950 dark:bg-white dark:text-zinc-950 dark:border-white",
               item === "Destructive" && active !== item && "bg-red-500 text-white border-red-500",
               item === "Warning" && active !== item && "border-amber-300 text-amber-700"
             )}
@@ -271,13 +271,13 @@ export function InspectorControl({
 }) {
   return (
     <div className="space-y-4 py-2">
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400">{title}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400 dark:text-zinc-500">{title}</p>
       <div className="flex flex-wrap gap-3">
         {options.map((item) => (
           <button
             key={item}
             onClick={() => onSelect?.(item)}
-            className={cn("rounded-2xl border border-zinc-200 px-4 py-2.5 text-sm", active === item && "bg-zinc-950 text-white border-zinc-950")}
+            className={cn("rounded-2xl border border-zinc-200 px-4 py-2.5 text-sm dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200", active === item && "bg-zinc-950 text-white border-zinc-950 dark:bg-white dark:text-zinc-950 dark:border-white")}
           >
             {item}
           </button>
@@ -302,18 +302,18 @@ export function BlockCardPreview({ title }: { title: string }) {
               : "bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.12),transparent_35%),linear-gradient(180deg,#fff,#f8fafc)]"
 
   return (
-    <div className={cn("mb-4 h-44 rounded-[22px] border border-zinc-200/70 p-4", background)}>
+    <div className={cn("mb-4 h-44 rounded-[22px] border border-zinc-200/70 p-4 dark:border-white/10", background, "dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.06),transparent_35%),linear-gradient(180deg,rgba(39,39,42,0.94),rgba(24,24,27,0.98))]")}>
       <div className="grid h-full gap-3">
         <div className="grid grid-cols-3 gap-2">
-          <div className="h-8 rounded-xl bg-white/90 shadow-sm" />
-          <div className="h-8 rounded-xl bg-white/80 shadow-sm" />
-          <div className="h-8 rounded-xl bg-white/80 shadow-sm" />
+          <div className="h-8 rounded-xl bg-white/90 shadow-sm dark:bg-white/10" />
+          <div className="h-8 rounded-xl bg-white/80 shadow-sm dark:bg-white/8" />
+          <div className="h-8 rounded-xl bg-white/80 shadow-sm dark:bg-white/8" />
         </div>
         <div className="grid flex-1 gap-3">
-          <div className="rounded-2xl bg-white/85 shadow-sm" />
+          <div className="rounded-2xl bg-white/85 shadow-sm dark:bg-white/10" />
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl bg-white/85 shadow-sm" />
-            <div className="rounded-2xl bg-white/85 shadow-sm" />
+            <div className="rounded-2xl bg-white/85 shadow-sm dark:bg-white/10" />
+            <div className="rounded-2xl bg-white/85 shadow-sm dark:bg-white/10" />
           </div>
         </div>
       </div>
@@ -348,18 +348,18 @@ export function DevicePreviewFrame({
     <div className="space-y-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-lg font-semibold text-zinc-950">{title}</p>
-          <p className="mt-1 text-sm text-zinc-500">{description}</p>
+          <p className="text-lg font-semibold text-zinc-950 dark:text-white">{title}</p>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{description}</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex rounded-2xl border border-zinc-200 bg-white p-1">
+          <div className="flex rounded-2xl border border-zinc-200 bg-white p-1 dark:border-white/10 dark:bg-zinc-900">
             {deviceModes.map((item) => (
               <button
                 key={item}
                 onClick={() => onDeviceChange(item)}
                 className={cn(
-                  "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition",
-                  device === item ? "bg-zinc-950 text-white" : "text-zinc-600"
+                  "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition dark:text-zinc-300",
+                  device === item ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950" : "text-zinc-600"
                 )}
               >
                 {deviceIcon(item)}
@@ -370,13 +370,13 @@ export function DevicePreviewFrame({
           <div className="flex gap-2">
             <button
               onClick={() => onDeviceChange(deviceModes[(activeIndex - 1 + deviceModes.length) % deviceModes.length])}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-600"
+              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-600 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-300"
             >
               Prev
             </button>
             <button
               onClick={() => onDeviceChange(deviceModes[(activeIndex + 1) % deviceModes.length])}
-              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-600"
+              className="rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-600 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-300"
             >
               Swipe
             </button>
@@ -384,8 +384,8 @@ export function DevicePreviewFrame({
         </div>
       </div>
 
-      <div className="rounded-[32px] border border-zinc-200 bg-[linear-gradient(180deg,#ffffff,#fafaf9)] p-4 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.35)]">
-        <div className="rounded-[26px] border border-zinc-200/80 bg-zinc-50 p-3">
+      <div className="rounded-[32px] border border-zinc-200 bg-[linear-gradient(180deg,#ffffff,#fafaf9)] p-4 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.35)] dark:border-white/10 dark:bg-[linear-gradient(180deg,rgba(39,39,42,0.98),rgba(24,24,27,0.98))] dark:shadow-[0_24px_70px_rgba(0,0,0,0.38)]">
+        <div className="rounded-[26px] border border-zinc-200/80 bg-zinc-50 p-3 dark:border-white/10 dark:bg-zinc-950/80">
           <div className={cn("mx-auto transition-all duration-300", viewportClassName(device), className)}>{children}</div>
         </div>
       </div>
@@ -446,13 +446,13 @@ export function SearchField({
   placeholder: string
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-zinc-200/80 bg-white px-4 py-3 text-zinc-500">
+    <div className="flex items-center gap-3 rounded-2xl border border-zinc-200/80 bg-white px-4 py-3 text-zinc-500 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-300">
       <SearchIcon className="size-4" />
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full bg-transparent outline-none placeholder:text-zinc-400"
+        className="w-full bg-transparent outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
       />
     </div>
   )
@@ -482,5 +482,5 @@ export function CopyButton({
 }
 
 export function PassBadge() {
-  return <Badge className="rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-50">Pass</Badge>
+  return <Badge className="rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-50 dark:bg-emerald-500/15 dark:text-emerald-300 dark:hover:bg-emerald-500/15">Pass</Badge>
 }

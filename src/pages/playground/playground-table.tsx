@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import type { ColumnDef, RowSelectionState, SortingState } from "@tanstack/react-table"
-import { DatabaseIcon, EyeIcon, Loader2Icon, Settings2Icon, Table2Icon } from "lucide-react"
+import { DatabaseIcon, Loader2Icon } from "lucide-react"
 
 import {
   Badge,
@@ -103,6 +103,73 @@ export function TableSection() {
       description="A single table component controlled by props: density, selection, actions, skeletons, empty/error states and toolbar slots."
       action={<StatusBadge tone="info" dot>{displayProducts.length} rows</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Data table</Badge>
+              <Badge variant="outline">Selection</Badge>
+              <Badge variant="outline">Bulk actions</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Tables should scan fast and still feel interactive.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Sortable rows, selection, density and loading states all need a clear visual hierarchy so data-heavy screens stay readable.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Table behaviors</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Sort</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Filter</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Select</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">State coverage</p>
+              <div className="mt-2 grid gap-2 text-sm text-muted-foreground">
+                <div className="rounded-xl border bg-background px-3 py-2">Loading / skeleton</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Empty / error</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Bulk actions</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Table summary</CardTitle>
+            <CardDescription>Quick glance of the current mock catalog.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Rows</p>
+                <p className="mt-1 text-sm font-medium">{displayProducts.length}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Selected</p>
+                <p className="mt-1 text-sm font-medium">{selectedCount}</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background p-3 text-sm text-muted-foreground">
+              The same DataTable can power admin tables, catalogs and dashboards.
+            </div>
+            <div className="rounded-2xl border bg-background/80 p-3 sm:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">State</p>
+                <Badge variant="outline" className="text-[11px]">DataTable live</Badge>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border bg-muted/20 p-2 text-xs text-muted-foreground">Sortable rows.</div>
+                <div className="rounded-xl border bg-muted/20 p-2 text-xs text-muted-foreground">Toggle states.</div>
+                <div className="rounded-xl border bg-muted/20 p-2 text-xs text-muted-foreground">Selection actions.</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mb-4 grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader>
@@ -278,3 +345,8 @@ export function TableSection() {
     </DemoSection>
   )
 }
+
+
+
+
+

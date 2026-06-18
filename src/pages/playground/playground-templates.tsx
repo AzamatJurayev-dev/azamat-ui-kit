@@ -69,6 +69,19 @@ const moduleRouteHints: Array<{ keywords: string[]; path: string; label: string 
   { keywords: ["modal", "dialog", "overlay", "toast", "stepper", "commands", "sidebar"], path: "/components/overlay", label: "Overlay" },
 ]
 
+const templatePageAliases = [
+  "overview",
+  "leads",
+  "reports",
+] as const
+
+const templateAliasMatchers: Record<(typeof templatePageAliases)[number], (template: TemplateShowcase) => string | undefined> = {
+  overview: (template) => template.pages.find((page) => toKebab(page) === "overview") || template.pages[0],
+  leads: (template) => template.pages.find((page) => toKebab(page).includes("lead")) || template.pages.find((page) => page === "Pipeline"),
+  reports: (template) =>
+    template.pages.find((page) => toKebab(page).includes("report")) || template.pages.find((page) => page === "Funnels") || template.pages[0],
+}
+
 const templateMetrics = [
   { title: "Templates", value: `${templateCatalog.length}`, note: "Dashboard-ready concepts" },
   { title: "Pages", value: `${templateCatalog.reduce((sum, item) => sum + item.pages.length, 0)}`, note: "Route-level mock screens" },
@@ -129,6 +142,20 @@ function getPageForModule(template: TemplateShowcase, module: string) {
   return exact ?? template.pages[0] ?? "Overview"
 }
 
+function getTemplateActivePage(template: TemplateShowcase, page?: string) {
+  const normalized = toKebab(page || "")
+  if (!normalized) {
+    return template.pages[0] ?? "Overview"
+  }
+
+  const aliasResolver = templateAliasMatchers[normalized as (typeof templatePageAliases)[number]]
+  if (aliasResolver) {
+    return aliasResolver(template) ?? template.pages[0] ?? "Overview"
+  }
+
+  return template.pages.find((item) => toKebab(item) === normalized) ?? template.pages[0] ?? "Overview"
+}
+
 function createTemplateRows(template: TemplateShowcase): TemplateModuleRow[] {
   return template.modules.map((module, index) => ({
     id: `${template.id}-${toKebab(module)}-${index}`,
@@ -157,9 +184,11 @@ function TemplateStatCard({ title, value, note, icon }: { title: string; value: 
 
 function TemplateCard({ item }: { item: TemplateShowcase }) {
   const linkedCount = getLinkedModuleCount(item)
+  const pageCount = item.pages.length
+  const firstPage = item.pages[0] ?? "overview"
 
   return (
-    <Card id={item.id} className="group relative overflow-hidden transition-all hover:-translate-y-0.5 hover:border-primary/45">
+    <Card id={item.id} className="group relative overflow-hidden transition-all hover:-translate-y-0.5 hover:border-primary/45 hover:shadow-lg hover:shadow-primary/5">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/45 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       <CardHeader>
         <div className="mb-3 flex items-start justify-between gap-3">
@@ -173,11 +202,22 @@ function TemplateCard({ item }: { item: TemplateShowcase }) {
         </div>
         <CardTitle>{item.title}</CardTitle>
         <CardDescription>{item.description}</CardDescription>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          <Badge variant="outline" className="text-[11px]">
+            {item.category}
+          </Badge>
+          <Badge variant="outline" className="text-[11px]">
+            {item.focus}
+          </Badge>
+          <Badge variant="secondary" className="text-[11px]">
+            {pageCount} pages
+          </Badge>
+        </div>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="grid gap-2 sm:grid-cols-3">
           <PreviewSurface className="p-3 text-center">
-            <div className="text-lg font-semibold">{item.pages.length}</div>
+            <div className="text-lg font-semibold">{pageCount}</div>
             <div className="text-xs text-muted-foreground">pages</div>
           </PreviewSurface>
           <PreviewSurface className="p-3 text-center">
@@ -200,7 +240,7 @@ function TemplateCard({ item }: { item: TemplateShowcase }) {
           {item.modules.slice(0, 4).map((module) => {
             const link = getModuleLink(module)
             return (
-              <div key={module} className="flex items-center justify-between gap-2 rounded-lg border bg-muted/25 px-3 py-2 text-sm">
+              <div key={module} className="flex items-center justify-between gap-2 rounded-lg border bg-muted/20 px-3 py-2 text-sm">
                 <span className="truncate">{module}</span>
                 <span className="text-xs text-muted-foreground">{link ? link.label : "module"}</span>
               </div>
@@ -208,9 +248,11 @@ function TemplateCard({ item }: { item: TemplateShowcase }) {
           })}
         </div>
       </CardContent>
-      <CardFooter className="gap-2">
-        <Link to={getTemplateRoute(item.id)} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "flex-1 justify-center")}>Open template</Link>
-        <Link to={getTemplatePageRoute(item.id, item.pages[0] ?? "overview")} className={cn(buttonVariants({ size: "sm" }))}>
+      <CardFooter className="flex flex-col gap-2 border-t bg-muted/10 pt-4 sm:flex-row">
+        <Link to={getTemplateRoute(item.id)} className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full justify-center sm:flex-1")}>
+          Open template
+        </Link>
+        <Link to={getTemplatePageRoute(item.id, firstPage)} className={cn(buttonVariants({ size: "sm" }), "w-full justify-center sm:w-auto")}>
           <ArrowRightIcon className="size-4" />
         </Link>
       </CardFooter>
@@ -234,15 +276,74 @@ export function TemplatesSection() {
       sectionIndex={1}
       id="templates"
       eyebrow="Application blocks"
-      title="Template gallery"
+      title="Templates"
       description="Dashboard templates for real apps: routed pages, reusable modules, component links and API-free preview states."
       action={<StatusBadge tone="success" dot>{templateCatalog.length} templates</StatusBadge>}
     >
-      <section className="mb-4 grid gap-4 md:grid-cols-4">
-        {templateMetrics.map((metric) => (
-          <TemplateStatCard key={metric.title} {...metric} icon={metric.title === "Templates" ? <LayoutDashboardIcon className="size-5 text-primary" /> : undefined} />
-        ))}
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Templates</Badge>
+              <Badge variant="outline">Blocks</Badge>
+              <Badge variant="outline">Routes</Badge>
+            </div>
+            <CardTitle className="max-w-3xl text-3xl tracking-tight sm:text-4xl">
+              Dash templates.
+            </CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Each template is a route-driven composition reference: dashboards, CRM, finance and content flows can all reuse the same
+              building blocks without copying business logic into the kit.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/20 p-4">
+              <p className="text-xs text-muted-foreground">Page model</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Overview</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Leads</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Reports</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/20 p-4">
+              <p className="text-xs text-muted-foreground">Reusable surface</p>
+              <div className="mt-2 grid gap-2 text-sm text-muted-foreground">
+                <div className="rounded-xl border bg-background px-3 py-2">Tables and forms</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Charts and metrics</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Dialogs and overlays</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Summary</CardTitle>
+            <CardDescription>Coverage</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Templates</p>
+                <p className="mt-1 text-sm font-medium">{templateCatalog.length}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Pages</p>
+                <p className="mt-1 text-sm font-medium">{templateCatalog.reduce((sum, item) => sum + item.pages.length, 0)}</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background p-3 text-sm text-muted-foreground">
+              Templates stay public-facing and copyable, but the business layer belongs in the app using them.
+            </div>
+          </CardContent>
+        </Card>
       </section>
+
+        <section className="mb-4 grid gap-4 md:grid-cols-4">
+          {templateMetrics.map((metric) => (
+            <TemplateStatCard key={metric.title} {...metric} icon={metric.title === "Templates" ? <LayoutDashboardIcon className="size-5 text-primary" /> : undefined} />
+          ))}
+        </section>
 
       <ShowcaseGrid className="mb-4 xl:grid-cols-3">
         <PlaygroundCard title="Template rules" description="Templates are page patterns, not product-specific business logic." badge={<Badge variant="outline">rules</Badge>}>
@@ -276,8 +377,8 @@ export function TemplatesSection() {
       </ShowcaseGrid>
 
       <ComponentPreview
-        title="Template catalogue"
-        description="Route-driven templates shown as reusable app-level patterns. Open each one to inspect page states and module tables."
+        title="Catalogue"
+        description="Page states."
         dependencies={["AppShell", "Card", "DataTable", "ModalShell", "StatusBadge"]}
         code={`const templates = templateCatalog.map((template) => ({
   route: getTemplateRoute(template.id),
@@ -352,7 +453,9 @@ function TemplateModuleTable({ template, activePage }: { template: TemplateShowc
           {
             key: "inspect",
             label: "Inspect module",
-            onSelect: () => addToast({ title: "Module selected", description: module.module }),
+            onSelect: () => {
+              void addToast({ title: "Module selected", description: module.module })
+            },
           },
           {
             key: "open-page",
@@ -408,7 +511,15 @@ function TemplateModuleTable({ template, activePage }: { template: TemplateShowc
             selectionActions: (
               <DataTableBulkActions
                 rows={table.getSelectedRowModel().rows.map((row) => row.original)}
-                actions={[{ key: "activate", label: "Mark active", onSelect: (selected) => addToast({ title: "Bulk action", description: `${selected.length} modules selected` }) }]}
+                actions={[
+                  {
+                    key: "activate",
+                    label: "Mark active",
+                    onSelect: (selected) => {
+                      void addToast({ title: "Bulk action", description: `${selected.length} modules selected` })
+                    },
+                  },
+                ]}
                 onClearSelection={() => setRowSelection({})}
               />
             ),
@@ -434,10 +545,15 @@ function TemplatePagePreview({ template, activePage }: { template: TemplateShowc
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_0.85fr]">
-      <Card>
+      <Card className="border-border/70 bg-background/95 shadow-lg shadow-primary/5">
         <CardHeader>
-          <CardTitle>{activePage} preview</CardTitle>
-          <CardDescription>Small page-level composition using the same primitives as the rest of the UI kit.</CardDescription>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <CardTitle>{activePage} preview</CardTitle>
+              <CardDescription>Small page-level composition using the same primitives as the rest of the UI kit.</CardDescription>
+            </div>
+            <StatusBadge tone="success" dot>Mock</StatusBadge>
+          </div>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -449,7 +565,7 @@ function TemplatePagePreview({ template, activePage }: { template: TemplateShowc
               </PreviewSurface>
             ))}
           </div>
-          <div className="rounded-xl border bg-muted/25 p-4">
+          <div className="rounded-2xl border bg-muted/20 p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
                 <div className="text-sm font-medium">Reusable page composition</div>
@@ -458,12 +574,27 @@ function TemplatePagePreview({ template, activePage }: { template: TemplateShowc
               <StatusBadge tone="success" dot>Mock</StatusBadge>
             </div>
             <div className="grid gap-2 sm:grid-cols-3">
-              {template.modules.slice(0, 3).map((module) => (
+              {template.modules.slice(0, 3).map((module, index) => (
                 <div key={module} className="rounded-lg border bg-background/60 p-3 text-sm">
-                  <div className="font-medium">{module}</div>
-                  <div className="text-xs text-muted-foreground">{getModuleLink(module)?.label ?? "Custom block"}</div>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="font-medium">{module}</div>
+                    <Badge variant="outline" className="text-[11px]">
+                      0{index + 1}
+                    </Badge>
+                  </div>
+                  <div className="mt-1 text-xs text-muted-foreground">{getModuleLink(module)?.label ?? "Custom block"}</div>
                 </div>
               ))}
+            </div>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <div className="rounded-xl border bg-background px-3 py-2 text-sm">
+                <p className="text-xs text-muted-foreground">Primary route</p>
+                <p className="mt-1 truncate font-medium">{route}</p>
+              </div>
+              <div className="rounded-xl border bg-background px-3 py-2 text-sm">
+                <p className="text-xs text-muted-foreground">Open page</p>
+                <p className="mt-1 font-medium">{activePage}</p>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -473,7 +604,7 @@ function TemplatePagePreview({ template, activePage }: { template: TemplateShowc
         </CardFooter>
       </Card>
 
-      <Card>
+      <Card className="border-border/70 bg-muted/15 shadow-lg shadow-primary/5">
         <CardHeader>
           <CardTitle>Mock action form</CardTitle>
           <CardDescription>Local state only; use this pattern in app pages with real API handlers.</CardDescription>
@@ -495,6 +626,20 @@ function TemplatePagePreview({ template, activePage }: { template: TemplateShowc
             <span className="text-xs font-medium text-muted-foreground">Notes</span>
             <Textarea value={form.notes} onChange={(event) => setForm((value) => ({ ...value, notes: event.target.value }))} rows={3} placeholder="Quick notes" />
           </label>
+          <div className="rounded-2xl border bg-background p-3">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-sm font-medium">Action summary</div>
+                <div className="text-xs text-muted-foreground">Everything here is mock-state driven.</div>
+              </div>
+              <Badge variant="outline">Live preview</Badge>
+            </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              <div className="rounded-xl border bg-muted/20 p-2 text-xs text-muted-foreground">Customer: {form.customer || "Empty"}</div>
+              <div className="rounded-xl border bg-muted/20 p-2 text-xs text-muted-foreground">Owner: {form.owner || "Empty"}</div>
+              <div className="rounded-xl border bg-muted/20 p-2 text-xs text-muted-foreground">Budget: {form.budget || "Empty"}</div>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -509,7 +654,77 @@ function TemplatePagePreview({ template, activePage }: { template: TemplateShowc
     </div>
   )
 }
+function TemplatePageBlocks({ template, activePage }: { template: TemplateShowcase; activePage: string }) {
+  const blocks = [
+    {
+      key: "overview",
+      title: "Overview",
+      description: "High-level status, key metrics and page summary.",
+      items: [template.category, template.focus, `${template.modules.length} modules`],
+      chips: ["KPI cards", "Quick actions", "Recent activity"],
+    },
+    {
+      key: "leads",
+      title: "Leads",
+      description: "Primary list, selection and quick actions.",
+      items: ["Pipeline rows", "Status badges", "Bulk actions"],
+      chips: ["Filter bar", "Table rows", "Bulk select"],
+    },
+    {
+      key: "reports",
+      title: "Reports",
+      description: "Charts, trends and scheduled summaries.",
+      items: ["KPI cards", "Trends", "Export"],
+      chips: ["Trend charts", "Snapshots", "Export"],
+    },
+  ] as const
 
+  return (
+    <div className="grid gap-4 md:grid-cols-3">
+      {blocks.map((block) => {
+        const isActive = toKebab(activePage) === block.key || (block.key === "overview" && toKebab(activePage) === toKebab(template.pages[0] ?? ""))
+        return (
+          <Card key={block.key} className={cn("transition-colors", isActive && "border-primary/50 shadow-sm shadow-primary/5")}>
+            <CardHeader>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <CardTitle className="text-lg">{block.title}</CardTitle>
+                  <CardDescription>{block.description}</CardDescription>
+                </div>
+                <Badge variant={isActive ? "default" : "outline"}>{isActive ? "Active" : "Block"}</Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="grid gap-2">
+              <div className="flex flex-wrap gap-1.5">
+                {block.chips.map((chip) => (
+                  <Badge key={chip} variant="outline" className="text-[11px]">
+                    {chip}
+                  </Badge>
+                ))}
+              </div>
+              {block.items.map((item) => (
+                <div key={item} className="rounded-xl border bg-muted/25 px-3 py-2 text-sm">
+                  {item}
+                </div>
+              ))}
+              <div className="rounded-xl border bg-background/80 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs text-muted-foreground">Preview route</span>
+                  <span className="text-xs font-medium text-foreground">{getTemplatePageRoute(template.id, block.key)}</span>
+                </div>
+                <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-lg border bg-muted/20 p-2 text-xs text-muted-foreground">State: {isActive ? "Visible" : "Hidden"}</div>
+                  <div className="rounded-lg border bg-muted/20 p-2 text-xs text-muted-foreground">Surface: {block.title}</div>
+                  <div className="rounded-lg border bg-muted/20 p-2 text-xs text-muted-foreground">Mode: Mock</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      })}
+    </div>
+  )
+}
 export function TemplateShowcasePage({ slug, page }: { slug: string; page?: string }) {
   const template = getTemplateBySlug(slug)
 
@@ -521,7 +736,13 @@ export function TemplateShowcasePage({ slug, page }: { slug: string; page?: stri
     )
   }
 
-  const activePage = template.pages.find((item) => toKebab(item) === toKebab(page ?? "")) ?? template.pages[0] ?? "Overview"
+  const activePage = getTemplateActivePage(template, page)
+
+  const quickPageOptions = [
+    { key: "overview" as const, label: "Overview", target: getTemplateActivePage(template, "overview") },
+    { key: "leads" as const, label: "Leads", target: getTemplateActivePage(template, "leads") },
+    { key: "reports" as const, label: "Reports", target: getTemplateActivePage(template, "reports") },
+  ].filter((option) => option.target)
 
   return (
     <DemoSection
@@ -548,6 +769,17 @@ export function TemplateShowcasePage({ slug, page }: { slug: string; page?: stri
                 </Link>
               ))}
             </div>
+            <div className="flex flex-wrap gap-2">
+              {quickPageOptions.map((option) => (
+                <Link
+                  key={option.key}
+                  to={getTemplatePageRoute(template.id, option.target!)}
+                  className={cn(buttonVariants({ variant: toKebab(activePage) === toKebab(option.target!) ? "default" : "outline", size: "sm" }))}
+                >
+                  {option.label}
+                </Link>
+              ))}
+            </div>
           </div>
           <PreviewSurface className="min-w-[220px] p-4">
             <div className="flex items-center gap-2 text-sm font-medium"><RouteIcon className="size-4 text-primary" />Current route</div>
@@ -565,6 +797,7 @@ export function TemplateShowcasePage({ slug, page }: { slug: string; page?: stri
 <ModalShell open={open} onOpenChange={setOpen} />`}
       >
         <div className="grid w-full gap-4">
+          <TemplatePageBlocks template={template} activePage={activePage} />
           <TemplateModuleTable template={template} activePage={activePage} />
           <TemplatePagePreview template={template} activePage={activePage} />
         </div>
@@ -585,3 +818,10 @@ export function TemplateShowcasePage({ slug, page }: { slug: string; page?: stri
     </DemoSection>
   )
 }
+
+
+
+
+
+
+

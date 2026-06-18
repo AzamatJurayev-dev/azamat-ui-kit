@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { CalendarIcon, HashIcon, KeyRoundIcon, SearchIcon, SlidersHorizontalIcon, TagsIcon } from "lucide-react"
+import { CalendarIcon, HashIcon, SearchIcon, TagsIcon } from "lucide-react"
 
 import {
   AsyncMultiSelect,
@@ -144,10 +144,83 @@ export function InputsSection() {
       sectionIndex={3}
       id="inputs"
       eyebrow="Data entry"
-      title="Inputs and selects"
+      title="Inputs"
       description="Standalone data-entry components with controlled state, async search, creation, validation and disabled/error patterns."
       action={<StatusBadge tone={asyncError ? "warning" : "success"} dot>{asyncError ? "Mock error" : "Ready"}</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Data entry</Badge>
+              <Badge variant="outline">Async lookup</Badge>
+              <Badge variant="outline">Controlled state</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Inputs that feel consistent across every screen.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Text, number, select and date controls share the same visual rules, state behavior and spacing logic so app pages stay
+              predictable even when the data gets dense.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Quick states</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Badge variant="secondary">Loading</Badge>
+                <Badge variant="outline">Error</Badge>
+                <Badge variant="outline">Empty</Badge>
+                <Badge variant="outline">Disabled</Badge>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Lookup speed</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Search customer</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Create new tag</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Apply date range</div>
+              </div>
+              <div className="mt-3 rounded-xl border bg-background/80 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs text-muted-foreground">State</p>
+                  <Badge variant="outline" className="text-[11px]">Async ready</Badge>
+                </div>
+                <div className="mt-2 grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-lg border bg-muted/20 p-2 text-xs text-muted-foreground">Live search.</div>
+                  <div className="rounded-lg border bg-muted/20 p-2 text-xs text-muted-foreground">Visible validation.</div>
+                  <div className="rounded-lg border bg-muted/20 p-2 text-xs text-muted-foreground">Controlled tags.</div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Control summary</CardTitle>
+            <CardDescription>Controlled values and mock API states.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Search</p>
+                <p className="mt-1 text-sm font-medium">{search || "Empty"}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Latency</p>
+                <p className="mt-1 text-sm font-medium">{mockLatency}ms</p>
+              </div>
+            </div>
+            <PreviewSurface>
+              <div className="grid gap-2 text-sm">
+                <div className="flex items-center justify-between"><span className="text-muted-foreground">Tags</span><span>{selectedTags.length}</span></div>
+                <div className="flex items-center justify-between"><span className="text-muted-foreground">Async</span><span>{asyncError ? "Error" : "Ready"}</span></div>
+                <div className="flex items-center justify-between"><span className="text-muted-foreground">Range</span><span>{dateRange.from} → {dateRange.to}</span></div>
+              </div>
+            </PreviewSurface>
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mb-4 grid gap-4 md:grid-cols-4">
         {inputMetrics.map((metric) => (
           <Card key={metric.title}>
@@ -352,3 +425,9 @@ export function InputsSection() {
     </DemoSection>
   )
 }
+
+
+
+
+
+

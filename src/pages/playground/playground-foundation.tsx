@@ -4,7 +4,6 @@ import {
   CheckCircle2Icon,
   LayoutGridIcon,
   PaletteIcon,
-  RocketIcon,
   SettingsIcon,
   ShieldCheckIcon,
   SparklesIcon,
@@ -48,6 +47,10 @@ export function FoundationSection() {
   const [radius, setRadius] = React.useState("md")
   const [checked, setChecked] = React.useState(true)
   const [switchChecked, setSwitchChecked] = React.useState(true)
+  const [buttonVariant, setButtonVariant] = React.useState<"default" | "secondary" | "outline" | "ghost" | "destructive" | "link">("default")
+  const [buttonSize, setButtonSize] = React.useState<"xs" | "sm" | "default" | "lg">("default")
+  const [buttonDisabled, setButtonDisabled] = React.useState(false)
+  const [buttonLoading, setButtonLoading] = React.useState(false)
 
   React.useEffect(() => {
     document.documentElement.dataset.radius = radius
@@ -62,6 +65,77 @@ export function FoundationSection() {
       description="Primitive UI, status tones, cards, controls and CSS-first tokens for a consistent library baseline."
       action={<StatusBadge tone="success" dot>Token controlled</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline" className="gap-2">
+                <SparklesIcon className="size-3.5" />
+                Design foundation
+              </Badge>
+              <Badge variant="outline">CSS tokens</Badge>
+              <Badge variant="outline">Reusable states</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">The baseline that every component shares.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Use the foundation layer to keep radius, tone, control states and primitives consistent across the whole library.
+              This is the visual language that every bigger pattern inherits.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Primary action</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Button>Default</Button>
+                <Button variant="outline">Outline</Button>
+                <Button variant="ghost">Ghost</Button>
+              </div>
+            </div>
+              <div className="rounded-2xl border bg-muted/25 p-4">
+                <p className="text-xs text-muted-foreground">Token snapshot</p>
+                <pre className="mt-2 overflow-x-auto text-xs leading-6 text-muted-foreground">{`--aui-control-radius
+  --aui-control-shadow
+  --aui-card-radius`}</pre>
+              </div>
+              <div className="rounded-2xl border bg-background/80 p-4 sm:col-span-2">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs text-muted-foreground">State</p>
+                  <Badge variant="outline" className="text-[11px]">Token live</Badge>
+                </div>
+                <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                  <div className="rounded-xl border bg-muted/20 p-3 text-sm">Shared radius.</div>
+                  <div className="rounded-xl border bg-muted/20 p-3 text-sm">Shared tokens.</div>
+                  <div className="rounded-xl border bg-muted/20 p-3 text-sm">Consistent depth.</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Live baseline</CardTitle>
+            <CardDescription>Radius and primitive state preview.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-3">
+              {["none", "sm", "md", "lg", "xl"].map((item) => (
+                <Button key={item} variant={radius === item ? "default" : "outline"} size="sm" onClick={() => setRadius(item)}>
+                  {item}
+                </Button>
+              ))}
+            </div>
+            <PreviewSurface>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div className="rounded-[var(--aui-card-radius)] border bg-card p-3 text-sm">Card radius</div>
+                <Button variant="outline">Control radius</Button>
+                <StatusBadge tone="success" dot>Active state</StatusBadge>
+                <StatusBadge tone="muted" dot>Muted state</StatusBadge>
+              </div>
+            </PreviewSurface>
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mb-4 grid gap-4 md:grid-cols-4">
         {foundationMetrics.map((metric) => (
           <Card key={metric.title}>
@@ -75,27 +149,51 @@ export function FoundationSection() {
       </section>
 
       <ShowcaseGrid className="mb-4 xl:grid-cols-3">
-        <PlaygroundCard title="Button system" description="All variants and sizes in one visual matrix." badge={<Badge variant="outline">controls</Badge>}>
-          <PreviewSurface>
-            <div className="grid gap-4">
-              <div className="flex flex-wrap gap-2">
-                <Button>Default</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="outline">Outline</Button>
-                <Button variant="ghost">Ghost</Button>
-                <Button variant="destructive">Destructive</Button>
-                <Button variant="link">Link</Button>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Button size="xs">XS</Button>
-                <Button size="sm">SM</Button>
-                <Button>Default</Button>
-                <Button size="lg">Large</Button>
-                <Button size="icon-sm" variant="outline"><RocketIcon /></Button>
-                <Button disabled>Disabled</Button>
-              </div>
+        <PlaygroundCard title="Button lab" description="Tune variant, size and disabled/loading states." badge={<Badge variant="outline">workbench</Badge>}>
+          <div className="grid gap-3">
+            <div className="flex flex-wrap gap-2">
+              {(["default", "secondary", "outline", "ghost", "destructive", "link"] as const).map((item) => (
+                <Button key={item} variant={buttonVariant === item ? "default" : "outline"} size="sm" onClick={() => setButtonVariant(item)}>
+                  {item}
+                </Button>
+              ))}
             </div>
-          </PreviewSurface>
+            <div className="flex flex-wrap gap-2">
+              {(["xs", "sm", "default", "lg"] as const).map((item) => (
+                <Button key={item} variant={buttonSize === item ? "default" : "outline"} size="sm" onClick={() => setButtonSize(item)}>
+                  {item}
+                </Button>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button variant={buttonDisabled ? "default" : "outline"} size="sm" onClick={() => setButtonDisabled((value) => !value)}>
+                {buttonDisabled ? "Enable" : "Disable"}
+              </Button>
+              <Button variant={buttonLoading ? "default" : "outline"} size="sm" onClick={() => setButtonLoading((value) => !value)}>
+                {buttonLoading ? "Loading on" : "Loading off"}
+              </Button>
+            </div>
+            <PreviewSurface>
+              <div className="grid gap-3">
+                <div className="flex flex-wrap gap-2">
+                  <Button variant={buttonVariant} size={buttonSize} disabled={buttonDisabled}>
+                    {buttonLoading ? "Saving..." : "Preview button"}
+                  </Button>
+                  <Button variant="outline" size={buttonSize} disabled={buttonDisabled}>
+                    Secondary
+                  </Button>
+                  <Button variant="ghost" size={buttonSize} disabled={buttonDisabled}>
+                    Ghost
+                  </Button>
+                </div>
+                <div className="rounded-xl border bg-background p-3 text-xs leading-6 text-muted-foreground">
+{`<Button variant="${buttonVariant}" size="${buttonSize}"${buttonDisabled ? " disabled" : ""}>
+  ${buttonLoading ? "Saving..." : "Preview button"}
+</Button>`}
+                </div>
+              </div>
+            </PreviewSurface>
+          </div>
         </PlaygroundCard>
 
         <PlaygroundCard title="Status language" description="Badges and status tones for readable tables and cards." badge={<Badge variant="outline">tones</Badge>}>
@@ -205,3 +303,8 @@ export function FoundationSection() {
     </DemoSection>
   )
 }
+
+
+
+
+

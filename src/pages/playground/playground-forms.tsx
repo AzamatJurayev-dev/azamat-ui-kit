@@ -21,7 +21,7 @@ import {
   switchField,
   textareaField,
 } from "@/index"
-import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
+import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid } from "./playground-ui"
 import { PlaygroundForm } from "./playground-form"
 
 type BuilderDemoValues = {
@@ -95,6 +95,74 @@ export function FormsSection() {
       description="React Hook Form connected fields with layout, validation, async lookup, state controls and config-driven FormBuilder patterns."
       action={<StatusBadge tone="success" dot>RHF-ready</StatusBadge>}
     >
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">RHF ready</Badge>
+              <Badge variant="outline">Field shells</Badge>
+              <Badge variant="outline">FormBuilder</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Structured forms.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Build predictable form layouts with reusable field shells, typed helpers and a config-driven builder so every screen keeps
+              the same rhythm.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Field layouts</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <Badge variant="secondary">Vertical</Badge>
+                <Badge variant="outline">Horizontal</Badge>
+                <Badge variant="outline">Inline</Badge>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Builder presets</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">inputField()</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">phoneField()</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">switchField()</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background/80 p-4 sm:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">State</p>
+                <Badge variant="outline" className="text-[11px]">RHF ready</Badge>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Field shell.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Reusable presets.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Visible validation.</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Form preview</CardTitle>
+            <CardDescription>Current mock form state and layout mode.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Sections</p>
+                <p className="mt-1 text-sm font-medium">1 builder group</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Fields</p>
+                <p className="mt-1 text-sm font-medium">Name, phone, notes, active</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background p-3 text-sm text-muted-foreground">
+              One form API. Multiple visual patterns. No app-specific logic inside the kit.
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <section className="mb-4 grid gap-4 md:grid-cols-3">
         {formHighlights.map((item) => (
           <Card key={item.title}>
@@ -202,3 +270,9 @@ const fields = [inputField({ id: "name", props: { name: "name", label: "Name" } 
     </DemoSection>
   )
 }
+
+
+
+
+
+

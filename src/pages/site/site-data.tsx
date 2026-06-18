@@ -50,6 +50,7 @@ export type BlockCard = {
   tags: string[]
   tone: string
   href: string
+  previewHref?: string
   layout: "Application" | "Marketing"
   theme: "Light" | "Soft"
 }
@@ -71,6 +72,7 @@ export type TemplateRecord = {
   metrics: Array<{ label: string; value: string; delta: string }>
   sections: TemplateSection[]
   modules: Array<{ label: string; href: string }>
+  notes: string[]
 }
 
 export type LandingSearchItem = {
@@ -117,6 +119,7 @@ export const componentPlaygroundPath = (slug: string) => `/playground/${slug}`
 export const moduleFamilyPath = (slug: string) => `/components/families/${slug}`
 export const moduleFamilyExportSlug = (value: string) => value.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()
 export const moduleFamilyExportPath = (familySlug: string, exportName: string) => `/components/families/${familySlug}/${moduleFamilyExportSlug(exportName)}`
+export const templatePath = (slug: string) => `/templates/${slug}`
 
 export const componentCatalog: ComponentCatalogItem[] = [
   {
@@ -565,6 +568,27 @@ export const playgroundSidebar: SidebarGroup[] = [
 ]
 
 export const blockTabs = ["Dashboard", "CRM", "Finance", "Ecommerce", "Auth", "Forms"]
+export const blockLayoutFilters = ["All layouts", "Application", "Marketing"] as const
+export const blockThemeFilters = ["All themes", "Light", "Soft"] as const
+export const blockSortOptions = ["Popular", "A-Z"] as const
+
+export const blockCoverageSections = [
+  {
+    title: "Application layouts",
+    text: "Dashboard, CRM, invoices and settings should surface structure, actions, table density and route depth clearly.",
+    items: ["Sidebar shell", "Toolbar actions", "Table states", "Deep section routes"],
+  },
+  {
+    title: "Marketing/auth sections",
+    text: "Auth, pricing and product templates should show hierarchy, trust points, forms and conversion areas without iframe dependency.",
+    items: ["Form blocks", "CTA hierarchy", "Status chips", "Responsive sections"],
+  },
+  {
+    title: "Reusable block library",
+    text: "Every block card should explain where it fits, what modules it uses and which route opens the richer template detail view.",
+    items: ["Linked modules", "Usage notes", "Preview action", "Copy install path"],
+  },
+]
 
 export const featuredBlock: BlockCard = {
   slug: "dashboard-starter",
@@ -572,20 +596,21 @@ export const featuredBlock: BlockCard = {
   description: "Clean dashboard with analytics, charts, and activity tables.",
   tags: ["Dashboard", "Analytics", "Charts", "Overview"],
   tone: "from-emerald-50 via-white to-sky-50",
-  href: "/templates/dashboard-starter",
+  href: templatePath("dashboard-starter"),
+  previewHref: "/preview/blocks/dashboard-01",
   layout: "Application",
   theme: "Soft",
 }
 
 export const blockCards: BlockCard[] = [
-  { slug: "sidebar-layout", title: "Sidebar Layout", description: "Application shell with responsive sidebar.", tags: ["Dashboard", "Layout", "Navigation", "Shell"], tone: "from-slate-50 to-white", href: "/templates/sidebar-layout", layout: "Application", theme: "Light" },
-  { slug: "crm-dashboard", title: "CRM Dashboard", description: "Sales pipeline and deals management.", tags: ["CRM", "Pipeline", "Kanban"], tone: "from-cyan-50 to-white", href: "/templates/crm-dashboard", layout: "Application", theme: "Soft" },
-  { slug: "users-table", title: "Users Table", description: "Advanced table with filters and actions.", tags: ["Dashboard", "Table", "Data", "Filters"], tone: "from-zinc-50 to-white", href: "/templates/users-table", layout: "Application", theme: "Light" },
-  { slug: "auth-sign-in", title: "Auth Sign In", description: "Minimal sign in form with social login.", tags: ["Auth", "Form", "Minimal"], tone: "from-amber-50 to-white", href: "/templates/auth-sign-in", layout: "Marketing", theme: "Light" },
-  { slug: "pricing-section", title: "Pricing Section", description: "Responsive pricing with feature lists.", tags: ["Forms", "Pricing", "Marketing", "Section"], tone: "from-orange-50 to-white", href: "/templates/pricing-section", layout: "Marketing", theme: "Soft" },
-  { slug: "settings-form", title: "Settings Form", description: "Profile and preferences settings form.", tags: ["Forms", "Settings", "Profile"], tone: "from-stone-50 to-white", href: "/templates/settings-form", layout: "Application", theme: "Light" },
-  { slug: "invoices-page", title: "Invoices Page", description: "Invoices list with status and actions.", tags: ["Finance", "Invoices", "Table"], tone: "from-blue-50 to-white", href: "/templates/invoices-page", layout: "Application", theme: "Soft" },
-  { slug: "ecommerce-product", title: "Ecommerce Product", description: "Product details with images and options.", tags: ["Ecommerce", "Product", "Detail"], tone: "from-rose-50 to-white", href: "/templates/ecommerce-product", layout: "Marketing", theme: "Soft" },
+  { slug: "sidebar-layout", title: "Sidebar Layout", description: "Application shell with responsive sidebar.", tags: ["Dashboard", "Layout", "Navigation", "Shell"], tone: "from-slate-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/dashboard-01", layout: "Application", theme: "Light" },
+  { slug: "crm-dashboard", title: "CRM Dashboard", description: "Sales pipeline and deals management.", tags: ["CRM", "Pipeline", "Kanban"], tone: "from-cyan-50 to-white", href: templatePath("crm-dashboard"), layout: "Application", theme: "Soft" },
+  { slug: "users-table", title: "Users Table", description: "Advanced table with filters and actions.", tags: ["Dashboard", "Table", "Data", "Filters"], tone: "from-zinc-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/table-01", layout: "Application", theme: "Light" },
+  { slug: "auth-sign-in", title: "Auth Sign In", description: "Minimal sign in form with social login.", tags: ["Auth", "Form", "Minimal"], tone: "from-amber-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/auth-01", layout: "Marketing", theme: "Light" },
+  { slug: "pricing-section", title: "Pricing Section", description: "Responsive pricing with feature lists.", tags: ["Forms", "Pricing", "Marketing", "Section"], tone: "from-orange-50 to-white", href: templatePath("dashboard-starter"), layout: "Marketing", theme: "Soft" },
+  { slug: "settings-form", title: "Settings Form", description: "Profile and preferences settings form.", tags: ["Forms", "Settings", "Profile"], tone: "from-stone-50 to-white", href: templatePath("dashboard-starter"), layout: "Application", theme: "Light" },
+  { slug: "invoices-page", title: "Invoices Page", description: "Invoices list with status and actions.", tags: ["Finance", "Invoices", "Table"], tone: "from-blue-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/table-01", layout: "Application", theme: "Soft" },
+  { slug: "ecommerce-product", title: "Ecommerce Product", description: "Product details with images and options.", tags: ["Ecommerce", "Product", "Detail"], tone: "from-rose-50 to-white", href: templatePath("ecommerce-product"), previewHref: "/preview/blocks/product-01", layout: "Marketing", theme: "Soft" },
 ]
 
 export const templateRecords: TemplateRecord[] = [
@@ -611,6 +636,10 @@ export const templateRecords: TemplateRecord[] = [
       { label: "Button playground", href: "/playground/button" },
       { label: "Blocks catalog", href: "/blocks" },
     ],
+    notes: [
+      "This template route demonstrates how a public block becomes a deeper preview page with its own sections, actions and supporting modules.",
+      "Every primary action here is wired: section buttons switch the canvas, copy actions copy code, and linked modules navigate to real routes.",
+    ],
   },
   {
     slug: "crm-dashboard",
@@ -634,6 +663,10 @@ export const templateRecords: TemplateRecord[] = [
       { label: "Button playground", href: "/playground/button" },
       { label: "Blocks catalog", href: "/blocks" },
     ],
+    notes: [
+      "CRM layouts should show dense actions, stage movement and owner context without collapsing into static marketing cards.",
+      "Section switching here is intentionally route-safe so the same data structure can drive deeper nested views later.",
+    ],
   },
   {
     slug: "ecommerce-product",
@@ -656,6 +689,10 @@ export const templateRecords: TemplateRecord[] = [
       { label: "Button docs", href: "/docs/components/button" },
       { label: "Button playground", href: "/playground/button" },
       { label: "Blocks catalog", href: "/blocks" },
+    ],
+    notes: [
+      "Commerce surfaces need pricing, option selection and supporting trust blocks to feel complete and production-like.",
+      "This record is also prepared for richer nested sections so blocks and templates can keep sharing one data model.",
     ],
   },
 ]

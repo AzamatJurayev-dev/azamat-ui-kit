@@ -6,22 +6,27 @@ import { Badge, buttonVariants } from "@/index"
 import { cn } from "@/lib/utils"
 import { BlockPreview } from "@/components/preview/block-preview"
 
-import { blockCards, blockTabs, featuredBlock, installCommand, primaryNav } from "../site-data"
+import {
+  blockCards,
+  blockCoverageSections,
+  blockLayoutFilters,
+  blockSortOptions,
+  blockTabs,
+  blockThemeFilters,
+  featuredBlock,
+  installCommand,
+  primaryNav,
+} from "../site-data"
 import { SurfaceCard, TopNav } from "../site-shell"
 import { BlockCardPreview, CopyButton, normalize, PageFrame, SearchField, useCopyFeedback } from "./site-primitives"
-
-function blockPreviewPath(slug: string) {
-  if (slug === "dashboard-starter" || slug === "sidebar-layout") return "/preview/blocks/dashboard-01"
-  return null
-}
 
 export function SiteBlocksPage() {
   const [activeTab, setActiveTab] = React.useState(blockTabs[0])
   const [search, setSearch] = React.useState("")
-  const [sort, setSort] = React.useState<"Popular" | "A-Z">("Popular")
+  const [sort, setSort] = React.useState<(typeof blockSortOptions)[number]>("Popular")
   const [view, setView] = React.useState<"cards" | "compact">("cards")
-  const [layoutFilter, setLayoutFilter] = React.useState<"All layouts" | "Application" | "Marketing">("All layouts")
-  const [themeFilter, setThemeFilter] = React.useState<"All themes" | "Light" | "Soft">("All themes")
+  const [layoutFilter, setLayoutFilter] = React.useState<(typeof blockLayoutFilters)[number]>("All layouts")
+  const [themeFilter, setThemeFilter] = React.useState<(typeof blockThemeFilters)[number]>("All themes")
   const deferredSearch = React.useDeferredValue(search)
   const { copiedKey, onCopy } = useCopyFeedback()
 
@@ -65,14 +70,14 @@ export function SiteBlocksPage() {
             <div className="grid gap-3 md:grid-cols-[1.2fr_0.65fr_0.65fr]">
               <SearchField value={search} onChange={setSearch} placeholder="Search blocks..." />
               <button
-                onClick={() => setLayoutFilter((current) => (current === "All layouts" ? "Application" : current === "Application" ? "Marketing" : "All layouts"))}
+                onClick={() => setLayoutFilter((current) => blockLayoutFilters[(blockLayoutFilters.indexOf(current) + 1) % blockLayoutFilters.length])}
                 className="flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-white px-4 py-3"
               >
                 {layoutFilter}
                 <ChevronDownIcon className="size-4 text-zinc-500" />
               </button>
               <button
-                onClick={() => setThemeFilter((current) => (current === "All themes" ? "Light" : current === "Light" ? "Soft" : "All themes"))}
+                onClick={() => setThemeFilter((current) => blockThemeFilters[(blockThemeFilters.indexOf(current) + 1) % blockThemeFilters.length])}
                 className="flex items-center justify-between rounded-2xl border border-zinc-200/80 bg-white px-4 py-3"
               >
                 {themeFilter}
@@ -81,7 +86,7 @@ export function SiteBlocksPage() {
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <button
-                onClick={() => setSort((current) => (current === "Popular" ? "A-Z" : "Popular"))}
+                onClick={() => setSort((current) => blockSortOptions[(blockSortOptions.indexOf(current) + 1) % blockSortOptions.length])}
                 className="flex items-center gap-2 rounded-2xl border border-zinc-200/80 bg-white px-4 py-3"
               >
                 {sort}
@@ -191,7 +196,7 @@ export function SiteBlocksPage() {
                     ))}
                   </div>
                   <div className="flex gap-3 pt-2">
-                    <Link to={blockPreviewPath(card.slug) ?? card.href} className={cn(buttonVariants({ variant: "outline" }), "flex-1 rounded-2xl")}>
+                    <Link to={card.previewHref ?? card.href} className={cn(buttonVariants({ variant: "outline" }), "flex-1 rounded-2xl")}>
                       Preview
                       <ExternalLinkIcon className="ml-2 size-4" />
                     </Link>
@@ -225,23 +230,7 @@ export function SiteBlocksPage() {
               <Badge variant="outline" className="rounded-full">Shadcn-style</Badge>
             </div>
             <div className="grid gap-4">
-              {[
-                {
-                  title: "Application layouts",
-                  text: "Dashboard, CRM, invoices and settings should surface structure, actions, table density and route depth clearly.",
-                  items: ["Sidebar shell", "Toolbar actions", "Table states", "Deep section routes"],
-                },
-                {
-                  title: "Marketing/auth sections",
-                  text: "Auth, pricing and product templates should show hierarchy, trust points, forms and conversion areas without iframe dependency.",
-                  items: ["Form blocks", "CTA hierarchy", "Status chips", "Responsive sections"],
-                },
-                {
-                  title: "Reusable block library",
-                  text: "Every block card should explain where it fits, what modules it uses and which route opens the richer template detail view.",
-                  items: ["Linked modules", "Usage notes", "Preview action", "Copy install path"],
-                },
-              ].map((section) => (
+              {blockCoverageSections.map((section) => (
                 <div key={section.title} className="rounded-[24px] border border-zinc-200 bg-zinc-50 p-5">
                   <h3 className="text-xl font-semibold text-zinc-950">{section.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-zinc-600">{section.text}</p>

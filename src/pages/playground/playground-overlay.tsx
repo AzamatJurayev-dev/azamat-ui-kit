@@ -4,6 +4,11 @@ import { CheckCircle2Icon, CommandIcon, Layers3Icon, MessageSquareIcon, PanelRig
 import {
   Badge,
   Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   ComponentPreview,
   ConfirmDialog,
   DialogActionButton,
@@ -98,8 +103,75 @@ export function OverlaySection({ onOpenCommand }: { onOpenCommand: () => void })
         description="Controlled modal, sheet, confirm, command palette and multi-step flows with mock state history."
         action={<StatusBadge tone="info" dot>{feed.length} events</StatusBadge>}
       >
-        <section className="mb-4 grid gap-4 md:grid-cols-4">
-          <PlaygroundCard title="Modal" description="Controlled shell" badge={<Badge variant="outline">Dialog</Badge>}>
+      <section className="mb-4 grid gap-4 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+        <Card className="border-primary/15 bg-background shadow-lg shadow-primary/5">
+          <CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">Overlays</Badge>
+              <Badge variant="outline">Wizard flow</Badge>
+              <Badge variant="outline">Command palette</Badge>
+            </div>
+            <CardTitle className="text-3xl tracking-tight sm:text-4xl">Overlays.</CardTitle>
+            <CardDescription className="max-w-2xl text-sm leading-6">
+              Modal, sheet, confirm and wizard flows should feel controlled, polished and easy to test without touching backend state.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Interactive surface</p>
+              <div className="mt-2 grid gap-2">
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Modal</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Sheet</div>
+                <div className="rounded-xl border bg-background px-3 py-2 text-sm">Confirm</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-muted/25 p-4">
+              <p className="text-xs text-muted-foreground">Feedback loop</p>
+              <div className="mt-2 grid gap-2 text-sm text-muted-foreground">
+                <div className="rounded-xl border bg-background px-3 py-2">Loading states</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Toast feedback</div>
+                <div className="rounded-xl border bg-background px-3 py-2">Event feed</div>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background/80 p-4 sm:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">State</p>
+                <Badge variant="outline" className="text-[11px]">Overlay live</Badge>
+              </div>
+              <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Controlled overlays.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Visible wizard.</div>
+                <div className="rounded-xl border bg-muted/20 p-3 text-sm">Action feed.</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/70 bg-muted/15">
+          <CardHeader>
+            <CardTitle className="text-lg">Overlay lab</CardTitle>
+            <CardDescription>Controlled state and mock diagnostics.</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Sheets</p>
+                <p className="mt-1 text-sm font-medium">{sheetSide}</p>
+              </div>
+              <div className="rounded-2xl border bg-background p-3">
+                <p className="text-xs text-muted-foreground">Wizard step</p>
+                <p className="mt-1 text-sm font-medium">{wizardStep}</p>
+              </div>
+            </div>
+            <div className="rounded-2xl border bg-background p-3 text-sm text-muted-foreground">
+              Parent-controlled overlays. Child content stays simple.
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="mb-4 grid gap-4 md:grid-cols-4">
+        <PlaygroundCard title="Modal" description="Controlled shell" badge={<Badge variant="outline">Dialog</Badge>}>
             <Button onClick={() => setModalOpen(true)}>Open modal</Button>
             <Button variant="outline" onClick={() => setInfoModalOpen(true)}>Open info modal</Button>
           </PlaygroundCard>
@@ -273,3 +345,9 @@ export function OverlaySection({ onOpenCommand }: { onOpenCommand: () => void })
     </>
   )
 }
+
+
+
+
+
+
