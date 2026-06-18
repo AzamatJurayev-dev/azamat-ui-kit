@@ -210,9 +210,20 @@ Added reusable display components for dashboard pages and detail pages:
 - `ActivityFeed` renders timeline-like activity lists with tone dots, icons, time and actions
 - all are API-free and designed for `ResourcePage`, `ResourceDetailPage`, dashboards and aside panels
 
+### Phase 34 - DataTable view presets
+
+Added `DataTableViewPresets` for saved table views and quick filter presets:
+
+- preset buttons for views like Active, Archived, Today, This month or My items
+- active state, counts, icons and descriptions
+- clear action for active view
+- variants for pills, buttons and tab-like controls
+- custom `renderPreset` slot
+- API-free and designed to live in `DataTableToolbar`, `FilterBar` or `ResourcePage` filters
+
 ## Next priority order
 
-1. Table filter presets / saved views
-2. FormBuilder field presets
-3. Registry entries for display/pattern components
-4. Playground examples for new display components
+1. FormBuilder field presets
+2. Registry entries for display/pattern components
+3. Playground examples for new display components
+4. More focused smoke tests for registry groups
