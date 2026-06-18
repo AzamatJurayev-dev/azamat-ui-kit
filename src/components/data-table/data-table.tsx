@@ -23,7 +23,7 @@ import { type DataTableRowAction } from "@/components/data-table/data-table-row-
 import { DataTableToolbar, type DataTableToolbarProps } from "@/components/data-table/data-table-toolbar"
 import { EmptyState, type EmptyStateProps } from "@/components/feedback/empty-state"
 import { LoadingState, type LoadingStateProps } from "@/components/feedback/loading-state"
-import { SearchInput } from "@/components/inputs/search-input"
+import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -47,12 +47,19 @@ export type DataTableFeatureConfig = {
   export?: boolean
 }
 
-export type DataTableSearchConfig = {
-  value: string
-  onValueChange: (value: string) => void
-  placeholder?: string
+export type DataTableSearchConfig = Pick<
+  SearchInputProps,
+  | "value"
+  | "onValueChange"
+  | "placeholder"
+  | "inputClassName"
+  | "disabled"
+  | "clearable"
+  | "clearLabel"
+  | "searchIcon"
+> & {
   className?: string
-  inputClassName?: string
+  wrapperClassName?: string
 }
 
 export type DataTableActionContext<TData> = {
@@ -276,15 +283,17 @@ function DataTable<TData, TValue = unknown>({
   const shouldShowRefresh = Boolean(features?.refresh && onRefresh)
   const shouldShowExport = Boolean(features?.export && onExport)
   const shouldShowBulkActions = Boolean(features?.bulkActions !== false && bulkActions?.length)
-  const searchProps = search as Record<string, unknown>
-  const defaultSearch = shouldShowSearch ? (
+  const defaultSearch = shouldShowSearch && search ? (
     <SearchInput
-      value={searchProps.value as string}
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onValueChange={searchProps.onValueChange as any}
-      placeholder={(searchProps.placeholder as string) ?? "Search..."}
-      wrapperClassName={searchProps.className as string}
-      inputClassName={searchProps.inputClassName as string}
+      value={search.value}
+      onValueChange={search.onValueChange}
+      placeholder={search.placeholder ?? "Search..."}
+      wrapperClassName={search.wrapperClassName ?? search.className}
+      inputClassName={search.inputClassName}
+      disabled={search.disabled}
+      clearable={search.clearable}
+      clearLabel={search.clearLabel}
+      searchIcon={search.searchIcon}
     />
   ) : undefined
   const defaultActions = (
