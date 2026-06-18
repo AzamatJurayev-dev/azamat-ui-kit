@@ -7,6 +7,7 @@ This UI kit uses a lightweight test layer that does not add extra runtime depend
 ```bash
 npm run test:types
 npm run test:a11y
+npm run test:registry
 npm run test:run
 ```
 
@@ -35,6 +36,20 @@ The goal is to catch missing baseline accessibility signals such as:
 - hidden skeleton rows marked with `aria-hidden`
 
 This is not a full automated accessibility audit. It is a fast guardrail that runs in CI before build.
+
+## Registry validation
+
+`scripts/validate-registry.mjs` checks the CLI registry and public `registry.json` manifest.
+
+The goal is to catch:
+
+- components listed in `registry.json` but missing from the CLI registry
+- CLI registry entries missing from the `ComponentName` union
+- broken `registryDependencies`
+- missing source files referenced by copy-mode registry entries
+- duplicate component names in the registry union
+
+This keeps `npx azamat-ui-kit add ...` safer as the library grows.
 
 ## CI
 
