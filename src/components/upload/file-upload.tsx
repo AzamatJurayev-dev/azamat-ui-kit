@@ -12,6 +12,18 @@ export type FileUploadRejectedFile = {
   message: string
 }
 
+export type FileUploadRejectionMessageContext = {
+  file: File
+  reason: FileUploadRejectReason
+  maxFiles?: number
+  maxSize?: number
+  accept?: string
+}
+
+export type FileUploadRejectionMessages = Partial<
+  Record<FileUploadRejectReason, string | ((context: FileUploadRejectionMessageContext) => string)>
+>
+
 export type FileUploadRenderFileState = {
   file: File
   index: number
@@ -54,6 +66,8 @@ export type FileUploadProps = NativeFileInputProps & {
   helperText?: React.ReactNode
   clearLabel?: React.ReactNode
   removeLabel?: string
+  dropzoneAriaLabel?: string
+  rejectionMessages?: FileUploadRejectionMessages
   maxFiles?: number
   maxSize?: number
   appendFiles?: boolean
@@ -113,6 +127,27 @@ function getProgressForFile(progress: FileUploadProps["progress"], file: File) {
   return progress?.[getFileKey(file)] ?? progress?.[file.name]
 }
 
+function resolveRejectionMessage(
+  reason: FileUploadRejectReason,
+  context: Omit<FileUploadRejectionMessageContext, "reason">,
+  messages?: FileUploadRejectionMessages
+) {
+  const customMessage = messages?.[reason]
+  const fullContext = { ...context, reason }
+
+  if (typeof customMessage === "function") return customMessage(fullContext)
+  if (typeof customMessage === "string") return customMessage
+
+  switch (reason) {
+    case "max-files":
+      return `Maximum ${context.maxFiles} file${context.maxFiles === 1 ? "" : "s"} allowed.`
+    case "max-size":
+      return `File is larger than ${formatBytes(context.maxSize ?? 0)}.`
+    case "type":
+      return context.accept ? `File type is not allowed. Expected: ${context.accept}.` : "File type is not allowed."
+  }
+}
+
 function validateIncomingFiles({
   currentFiles,
   incomingFiles,
@@ -120,6 +155,7 @@ function validateIncomingFiles({
   maxFiles,
   maxSize,
   appendFiles,
+  rejectionMessages,
 }: {
   currentFiles: File[]
   incomingFiles: File[]
@@ -127,6 +163,7 @@ function validateIncomingFiles({
   maxFiles?: number
   maxSize?: number
   appendFiles: boolean
+  rejectionMessages?: FileUploadRejectionMessages
 }) {
   const accepted: File[] = []
   const rejected: FileUploadRejectedFile[] = []
@@ -138,13 +175,17 @@ function validateIncomingFiles({
       rejected.push({
         file,
         reason: "max-files",
-        message: `Maximum ${effectiveMaxFiles} file${effectiveMaxFiles === 1 ? "" : "s"} allowed.`,
+        message: resolveRejectionMessage("max-files", { file, maxFiles: effectiveMaxFiles, maxSize, accept }, rejectionMessages),
       })
       continue
     }
 
     if (maxSize !== undefined && file.size > maxSize) {
-      rejected.push({ file, reason: "max-size", message: `File is larger than ${formatBytes(maxSize)}.` })
+      rejected.push({
+        file,
+        reason: "max-size",
+        message: resolveRejectionMessage("max-size", { file, maxFiles: effectiveMaxFiles, maxSize, accept }, rejectionMessages),
+      })
       continue
     }
 
@@ -152,7 +193,7 @@ function validateIncomingFiles({
       rejected.push({
         file,
         reason: "type",
-        message: accept ? `File type is not allowed. Expected: ${accept}.` : "File type is not allowed.",
+        message: resolveRejectionMessage("type", { file, maxFiles: effectiveMaxFiles, maxSize, accept }, rejectionMessages),
       })
       continue
     }
@@ -200,6 +241,8 @@ function FileUpload({
   helperText,
   clearLabel = "Clear all",
   removeLabel = "Remove file",
+  dropzoneAriaLabel,
+  rejectionMessages,
   maxFiles,
   maxSize,
   appendFiles = true,
@@ -233,6 +276,12 @@ function FileUpload({
   const isDisabled = disabled || loading
   const inputMultiple = multiple ?? maxFiles !== 1
 
+  React.useEffect(() => {
+    if (!isDisabled) return
+    dragDepthRef.current = 0
+    setIsDragging(false)
+  }, [isDisabled])
+
   const setRejectedFiles = React.useCallback(
     (nextRejectedFiles: FileUploadRejectedFile[]) => {
       if (rejectedFiles === undefined) setInternalRejectedFiles(nextRejectedFiles)
@@ -252,11 +301,11 @@ function FileUpload({
 
   const processFiles = React.useCallback(
     (incomingFiles: File[]) => {
-      const result = validateIncomingFiles({ currentFiles: files, incomingFiles, accept, maxFiles, maxSize, appendFiles })
+      const result = validateIncomingFiles({ currentFiles: files, incomingFiles, accept, maxFiles, maxSize, appendFiles, rejectionMessages })
       onFilesChange?.(result.nextFiles)
       setRejectedFiles(result.rejected)
     },
-    [accept, appendFiles, files, maxFiles, maxSize, onFilesChange, setRejectedFiles]
+    [accept, appendFiles, files, maxFiles, maxSize, onFilesChange, rejectionMessages, setRejectedFiles]
   )
 
   const removeFile = React.useCallback(
@@ -267,13 +316,21 @@ function FileUpload({
   )
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (isDisabled) return
     processFiles(Array.from(event.target.files ?? []))
     event.target.value = ""
   }
 
+  const preventDisabledDragDefault = (event: React.DragEvent<HTMLDivElement>) => {
+    if (!isDisabled) return false
+    event.preventDefault()
+    event.stopPropagation()
+    return true
+  }
+
   const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (event) => {
     onDragEnter?.(event)
-    if (event.defaultPrevented || isDisabled) return
+    if (event.defaultPrevented || preventDisabledDragDefault(event)) return
     event.preventDefault()
     dragDepthRef.current += 1
     setIsDragging(true)
@@ -281,20 +338,20 @@ function FileUpload({
 
   const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (event) => {
     onDragLeave?.(event)
-    if (event.defaultPrevented || isDisabled) return
+    if (event.defaultPrevented || preventDisabledDragDefault(event)) return
     dragDepthRef.current = Math.max(dragDepthRef.current - 1, 0)
     if (dragDepthRef.current === 0) setIsDragging(false)
   }
 
   const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
     onDragOver?.(event)
-    if (event.defaultPrevented || isDisabled) return
+    if (event.defaultPrevented || preventDisabledDragDefault(event)) return
     event.preventDefault()
   }
 
   const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
     onDrop?.(event)
-    if (event.defaultPrevented || isDisabled) return
+    if (event.defaultPrevented || preventDisabledDragDefault(event)) return
     event.preventDefault()
     dragDepthRef.current = 0
     setIsDragging(false)
@@ -307,7 +364,7 @@ function FileUpload({
         ref={inputRef}
         type="file"
         className={cn("sr-only", inputClassName)}
-        disabled={disabled || loading}
+        disabled={isDisabled}
         accept={accept}
         multiple={inputMultiple}
         onChange={handleChange}
@@ -319,6 +376,8 @@ function FileUpload({
         data-dragging={isDragging || undefined}
         data-disabled={isDisabled || undefined}
         role="button"
+        aria-disabled={isDisabled || undefined}
+        aria-label={dropzoneAriaLabel}
         tabIndex={isDisabled ? -1 : 0}
         className={cn(
           "grid cursor-pointer gap-3 rounded-lg border border-dashed bg-card p-4 text-center outline-none transition-colors hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring data-[dragging=true]:border-primary data-[dragging=true]:bg-primary/5 data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-60",
@@ -326,6 +385,7 @@ function FileUpload({
         )}
         onClick={openFileDialog}
         onKeyDown={(event) => {
+          if (isDisabled) return
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault()
             openFileDialog()
