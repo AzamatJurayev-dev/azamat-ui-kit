@@ -20,6 +20,7 @@ import {
   LoadingState,
   ModalShell,
   Pagination,
+  ResourceDetailPage,
   ResourcePage,
   ResourcePageSection,
   SearchInput,
@@ -72,6 +73,11 @@ export const smokeElements = [
   <CommandPalette key="command" open={false} onOpenChange={noop} groups={[]} />,
   <ToastProvider key="toast-provider"><div>App</div></ToastProvider>,
   <ResourcePage<Product> key="resource" title="Products" table={{ columns, data: products }} />,
+  <ResourceDetailPage
+    key="resource-detail"
+    title="Keyboard"
+    sections={[{ id: "main", title: "Main", items: [{ label: "Name", value: "Keyboard" }] }]}
+  />,
   <ResourcePageSection key="resource-section" title="Section">Content</ResourcePageSection>,
   <FormBuilder key="form-builder" control={control} fields={[]} />,
 ]
