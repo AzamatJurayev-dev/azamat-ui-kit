@@ -16,9 +16,11 @@ import {
   featuredBlock,
   installCommand,
   primaryNav,
+  templateRecords,
 } from "../site-data"
 import { SurfaceCard, TopNav } from "../site-shell"
-import { BlockCardPreview, CopyButton, normalize, PageFrame, SearchField, useCopyFeedback } from "./site-primitives"
+import { CopyButton, normalize, PageFrame, SearchField, useCopyFeedback } from "./site-primitives"
+import { TemplateCardPreview, TemplateHeroPreview } from "./site-template-renderers"
 
 export function SiteBlocksPage() {
   const [activeTab, setActiveTab] = React.useState(blockTabs[0])
@@ -29,6 +31,7 @@ export function SiteBlocksPage() {
   const [themeFilter, setThemeFilter] = React.useState<(typeof blockThemeFilters)[number]>("All themes")
   const deferredSearch = React.useDeferredValue(search)
   const { copiedKey, onCopy } = useCopyFeedback()
+  const featuredTemplate = templateRecords.find((item) => item.slug === featuredBlock.slug) ?? templateRecords[0]
 
   const visibleCards = blockCards
     .filter((card) => activeTab === "Dashboard" || card.tags.some((tag) => normalize(tag).includes(normalize(activeTab))))
@@ -110,49 +113,7 @@ export function SiteBlocksPage() {
 
         <section className="grid gap-6 xl:grid-cols-[1.22fr_1fr]">
           <SurfaceCard className="overflow-hidden p-5">
-            <div className={cn("rounded-[24px] border border-zinc-200/70 bg-gradient-to-br p-5", featuredBlock.tone)}>
-              <div className="mb-4 flex items-center justify-between">
-                <Badge variant="outline" className="rounded-full bg-white/80">Azamat UI</Badge>
-                <Badge className="rounded-full bg-amber-50 text-amber-700 hover:bg-amber-50">Featured</Badge>
-              </div>
-              <div className="grid gap-4 rounded-[22px] border border-white/70 bg-white/90 p-5 shadow-xl lg:grid-cols-[0.28fr_1fr]">
-                <div className="space-y-3 rounded-[18px] bg-zinc-50 p-4 text-sm text-zinc-500">
-                  {["Overview", "Analytics", "Customers", "Orders", "Products", "Reports", "Settings"].map((item, index) => (
-                    <div key={item} className={cn("rounded-xl px-3 py-2", index === 0 && "bg-white text-zinc-950 shadow-sm")}>{item}</div>
-                  ))}
-                </div>
-                <div className="space-y-4">
-                  <div className="grid gap-3 md:grid-cols-4">
-                    {["$24,780", "18,390", "1,429", "6.3%"].map((metric, index) => (
-                      <div key={metric} className="rounded-2xl border border-zinc-200/70 bg-white p-4">
-                        <p className="text-xs text-zinc-500">Metric {index + 1}</p>
-                        <p className="mt-2 text-2xl font-semibold">{metric}</p>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid gap-4 lg:grid-cols-[1fr_0.42fr]">
-                    <div className="rounded-2xl border border-zinc-200/70 bg-white p-4">
-                      <div className="mb-4 flex items-center justify-between">
-                        <p className="font-medium">Revenue overview</p>
-                        <span className="text-sm text-zinc-500">This month</span>
-                      </div>
-                      <div className="h-40 rounded-2xl bg-[linear-gradient(180deg,rgba(59,130,246,0.12),transparent),radial-gradient(circle_at_bottom_left,rgba(34,197,94,0.18),transparent_40%)]" />
-                    </div>
-                    <div className="rounded-2xl border border-zinc-200/70 bg-white p-4">
-                      <p className="mb-4 font-medium">Top products</p>
-                      <div className="space-y-3 text-sm">
-                        {["Premium Plan", "Basic Plan", "Add-ons", "Consulting"].map((item) => (
-                          <div key={item} className="flex items-center justify-between">
-                            <span>{item}</span>
-                            <span className="text-zinc-500">$2,100</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TemplateHeroPreview template={featuredTemplate} />
 
             <div className="flex items-end justify-between gap-4 px-3 pb-3 pt-6">
               <div>
@@ -182,7 +143,7 @@ export function SiteBlocksPage() {
           <div className={cn("grid gap-6", view === "cards" ? "md:grid-cols-2" : "grid-cols-1")}>
             {visibleCards.map((card) => (
               <SurfaceCard key={card.title} className="overflow-hidden p-4">
-                <BlockCardPreview title={card.title} />
+                <TemplateCardPreview tone={card.previewTone} />
                 <div className="space-y-3 px-2 pb-2">
                   <div>
                     <h3 className="text-3xl font-semibold tracking-tight">{card.title}</h3>

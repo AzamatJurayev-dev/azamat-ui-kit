@@ -287,40 +287,6 @@ export function InspectorControl({
   )
 }
 
-export function BlockCardPreview({ title }: { title: string }) {
-  const background =
-    title.includes("CRM")
-      ? "bg-[radial-gradient(circle_at_top_left,rgba(14,165,233,0.16),transparent_35%),linear-gradient(180deg,#fff,#f8fafc)]"
-      : title.includes("Auth")
-        ? "bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.16),transparent_35%),linear-gradient(180deg,#fff,#fff7ed)]"
-        : title.includes("Invoice")
-          ? "bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.12),transparent_35%),linear-gradient(180deg,#fff,#eff6ff)]"
-          : title.includes("Pricing")
-            ? "bg-[radial-gradient(circle_at_top_left,rgba(249,115,22,0.14),transparent_35%),linear-gradient(180deg,#fff,#fff7ed)]"
-            : title.includes("Product")
-              ? "bg-[radial-gradient(circle_at_top_right,rgba(244,63,94,0.14),transparent_35%),linear-gradient(180deg,#fff,#fff1f2)]"
-              : "bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.12),transparent_35%),linear-gradient(180deg,#fff,#f8fafc)]"
-
-  return (
-    <div className={cn("mb-4 h-44 rounded-[22px] border border-zinc-200/70 p-4 dark:border-white/10", background, "dark:bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.06),transparent_35%),linear-gradient(180deg,rgba(39,39,42,0.94),rgba(24,24,27,0.98))]")}>
-      <div className="grid h-full gap-3">
-        <div className="grid grid-cols-3 gap-2">
-          <div className="h-8 rounded-xl bg-white/90 shadow-sm dark:bg-white/10" />
-          <div className="h-8 rounded-xl bg-white/80 shadow-sm dark:bg-white/8" />
-          <div className="h-8 rounded-xl bg-white/80 shadow-sm dark:bg-white/8" />
-        </div>
-        <div className="grid flex-1 gap-3">
-          <div className="rounded-2xl bg-white/85 shadow-sm dark:bg-white/10" />
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl bg-white/85 shadow-sm dark:bg-white/10" />
-            <div className="rounded-2xl bg-white/85 shadow-sm dark:bg-white/10" />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function viewportClassName(device: DeviceMode) {
   if (device === "mobile") return "max-w-[390px]"
   if (device === "tablet") return "max-w-[820px]"

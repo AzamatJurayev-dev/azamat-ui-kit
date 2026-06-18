@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ArrowRightIcon, CheckCircle2Icon, ChevronDownIcon, CopyIcon, ExternalLinkIcon } from "lucide-react"
+import { ArrowRightIcon, ChevronDownIcon, CopyIcon, ExternalLinkIcon } from "lucide-react"
 import { Link, Navigate, useParams } from "react-router-dom"
 
 import { Badge, Button, buttonVariants } from "@/index"
@@ -8,71 +8,7 @@ import { cn } from "@/lib/utils"
 import { primaryNav, templatePath, templateRecords } from "../site-data"
 import { SectionLabel, SurfaceCard, TopNav } from "../site-shell"
 import { CopyButton, PageFrame, useCopyFeedback } from "./site-primitives"
-
-function TemplateCanvas({
-  title,
-  description,
-  status,
-  bullets,
-}: {
-  title: string
-  description: string
-  status: string
-  bullets: string[]
-}) {
-  return (
-    <div className="rounded-[28px] border border-zinc-200 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.12),transparent_30%),linear-gradient(180deg,#ffffff,#fafaf9)] p-5">
-      <div className="grid gap-5 xl:grid-cols-[0.26fr_1fr]">
-        <div className="space-y-3 rounded-[22px] border border-zinc-200 bg-white/85 p-4">
-          {["Overview", "Leads", "Reports", "Settings"].map((item, index) => (
-            <div key={item} className={cn("rounded-2xl px-3 py-2.5 text-sm", index === 0 ? "bg-zinc-950 text-white" : "bg-zinc-50 text-zinc-600")}>
-              {item}
-            </div>
-          ))}
-        </div>
-
-        <div className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-[1fr_0.34fr]">
-            <div className="rounded-[22px] border border-zinc-200 bg-white/90 p-5">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-xl font-semibold">{title}</p>
-                  <p className="mt-2 text-sm leading-6 text-zinc-600">{description}</p>
-                </div>
-                <Badge className={cn("rounded-full", status === "Live" ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-50" : status === "Review" ? "bg-amber-50 text-amber-700 hover:bg-amber-50" : "bg-zinc-100 text-zinc-700 hover:bg-zinc-100")}>
-                  {status}
-                </Badge>
-              </div>
-              <div className="mt-5 grid gap-3 md:grid-cols-2">
-                <div className="rounded-2xl bg-zinc-50 p-4" />
-                <div className="rounded-2xl bg-zinc-50 p-4" />
-                <div className="h-40 rounded-2xl bg-[linear-gradient(180deg,rgba(59,130,246,0.12),transparent),radial-gradient(circle_at_bottom_left,rgba(34,197,94,0.18),transparent_40%)] md:col-span-2" />
-              </div>
-            </div>
-
-            <div className="rounded-[22px] border border-zinc-200 bg-white/90 p-5">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-zinc-400">Contains</p>
-              <div className="mt-4 space-y-3">
-                {bullets.map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-sm text-zinc-600">
-                    <CheckCircle2Icon className="size-4 text-emerald-600" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="rounded-[22px] border border-zinc-200 bg-white/90 p-4" />
-            <div className="rounded-[22px] border border-zinc-200 bg-white/90 p-4" />
-            <div className="rounded-[22px] border border-zinc-200 bg-white/90 p-4" />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { TemplateCanvas } from "./site-template-renderers"
 
 export function SiteTemplateDetailPage() {
   const params = useParams<{ slug: string }>()
@@ -151,12 +87,7 @@ export function SiteTemplateDetailPage() {
               </div>
 
               <div className="mt-6">
-                <TemplateCanvas
-                  title={currentSection.title}
-                  description={currentSection.description}
-                  status={template.status}
-                  bullets={currentSection.bullets}
-                />
+                <TemplateCanvas template={template} section={currentSection} />
               </div>
             </SurfaceCard>
 
