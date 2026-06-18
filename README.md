@@ -23,7 +23,13 @@ Good candidates:
 
 Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
 
-## Install from GitHub
+## Install
+
+```bash
+npm install azamat-ui-kit
+```
+
+Alternative GitHub install:
 
 ```bash
 npm install github:AzamatJurayev-dev/azamat-ui-kit#master
@@ -77,13 +83,50 @@ import {
 } from "azamat-ui-kit"
 ```
 
+## Router integration
+
+The package is router-agnostic by default. Navigation-oriented components render regular `<a>` tags unless you provide a custom link renderer.
+
+Example with Next.js:
+
+```tsx
+import Link from "next/link"
+import { Breadcrumbs, SidebarNav } from "azamat-ui-kit"
+
+<Breadcrumbs
+  items={[
+    { key: "home", label: "Home", href: "/" },
+    { key: "components", label: "Components", href: "/components" },
+  ]}
+  renderLink={({ item, ...props }) => <Link {...props} href={item.href || "#"} />}
+/>
+
+<SidebarNav
+  items={[
+    { key: "dashboard", label: "Dashboard", href: "/dashboard" },
+    { key: "settings", label: "Settings", href: "/settings" },
+  ]}
+  renderLink={({ item, ...props }) => <Link {...props} href={item.href || "#"} />}
+/>
+```
+
 ## Local development
 
 ```bash
 npm install
-npm run dev
 npm run build
 ```
+
+## Release
+
+Useful commands before public release:
+
+```bash
+npm run test:run
+npm pack --dry-run
+```
+
+Release notes live in `CHANGELOG.md`, and the publish flow is documented in `RELEASE.md`.
 
 ## Component rules
 
@@ -254,26 +297,4 @@ function ProductsTable() {
 }
 ```
 
-## Migration plan
-
-Phase 1 added low-risk generic wrappers: ModalShell, SheetShell, ConfirmDialog, DialogActions, Pagination, SimpleSelect, MoneyInput, QuantityInput, useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile.
-
-Phase 2 added form and async-select layer: AsyncSelect base, FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch, Textarea/Switch exports and react-hook-form peer dependency.
-
-Phase 3 improved async select: AsyncMultiSelect, grouped options, quick create, selected option preload, local option cache, selected count labels.
-
-Phase 4 added data display layer: DataTable, DataTablePagination, DataTableToolbar, EmptyState, LoadingState, StatusBadge.
-
-Phase 5 added dashboard helpers: ActionMenu, PageHeader, FilterBar, StatCard, DataTableColumnVisibilityMenu.
-
-Phase 6 added layout/table/input/hook helpers: AppShell, AppHeader, AppSidebar, Checkbox, createDataTableSelectColumn, DataTableSortableHeader, MaskedInput, PhoneInput, useDisclosure, useDebouncedValue, useDebouncedCallback.
-
-Phase 7 changed CSS strategy: package entry no longer imports global CSS; `azamat-ui-kit init` writes theme/dark-light tokens into the consumer app global CSS file.
-
-Phase 8 added advanced inputs and form wrappers: ClearableInput, SearchInput, PasswordInput, NumberInput, DateInput, DateRangeInput, FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput.
-
-Phase 9 added data table action helpers: DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions.
-
-Phase 10 added notification and command helpers: ToastProvider, useToast, CommandPalette, useCommandPaletteShortcut.
-
-Next phase should add calendar / popover date picker and demo playground.
+The library repo only contains reusable package source, CLI helpers, tests, and release files. Public docs, templates, blocks, and showcase pages now live in the separate `azamat-ui` Next.js app.

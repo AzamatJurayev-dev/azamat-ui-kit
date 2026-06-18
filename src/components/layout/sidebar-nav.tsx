@@ -2,7 +2,6 @@ import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
-import { Link } from "react-router-dom"
 
 export type SidebarNavItem = {
   key: string
@@ -22,6 +21,7 @@ export type SidebarNavProps = React.ComponentProps<"nav"> & {
   itemClassName?: string
   activeItemClassName?: string
   renderItem?: (item: SidebarNavItem, element: React.ReactNode) => React.ReactNode
+  renderLink?: (props: React.ComponentProps<"a"> & { item: SidebarNavItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
 }
 
 function SidebarNav({
@@ -31,6 +31,7 @@ function SidebarNav({
   itemClassName,
   activeItemClassName,
   renderItem,
+  renderLink,
   ...props
 }: SidebarNavProps) {
   const visibleItems = items.filter((item) => !item.hidden)
@@ -65,20 +66,38 @@ function SidebarNav({
         const isInternalLink = item.href && item.href.startsWith("/")
 
         const element = item.href && isInternalLink ? (
-          <Link
-            key={item.key}
-            to={item.href}
-            data-active={item.active || undefined}
-            data-disabled={item.disabled || undefined}
-            aria-current={item.active ? "page" : undefined}
-            className={commonClassName}
-            onClick={(event) => {
-              if (item.disabled) event.preventDefault()
-              item.onSelect?.()
-            }}
-          >
-            {content}
-          </Link>
+          renderLink ? (
+            <React.Fragment key={item.key}>
+              {renderLink({
+                item,
+                href: item.href,
+                "data-active": item.active || undefined,
+                "data-disabled": item.disabled || undefined,
+                "aria-current": item.active ? "page" : undefined,
+                className: commonClassName,
+                onClick: (event) => {
+                  if (item.disabled) event.preventDefault()
+                  item.onSelect?.()
+                },
+                children: content,
+              })}
+            </React.Fragment>
+          ) : (
+            <a
+              key={item.key}
+              href={item.href}
+              data-active={item.active || undefined}
+              data-disabled={item.disabled || undefined}
+              aria-current={item.active ? "page" : undefined}
+              className={commonClassName}
+              onClick={(event) => {
+                if (item.disabled) event.preventDefault()
+                item.onSelect?.()
+              }}
+            >
+              {content}
+            </a>
+          )
         ) : item.href ? (
           <button
             key={item.key}

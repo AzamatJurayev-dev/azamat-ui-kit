@@ -1,6 +1,5 @@
 import * as React from "react"
 import { ChevronRightIcon } from "lucide-react"
-import { Link } from "react-router-dom"
 
 import { cn } from "@/lib/utils"
 
@@ -15,12 +14,14 @@ export type BreadcrumbItem = {
 export type BreadcrumbsProps = React.ComponentProps<"nav"> & {
   items: BreadcrumbItem[]
   separator?: React.ReactNode
+  renderLink?: (props: React.ComponentProps<"a"> & { item: BreadcrumbItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
 }
 
 function Breadcrumbs({
   className,
   items,
   separator = <ChevronRightIcon className="size-3.5" />,
+  renderLink,
   ...props
 }: BreadcrumbsProps) {
   return (
@@ -38,13 +39,21 @@ function Breadcrumbs({
           <React.Fragment key={item.key}>
             {index > 0 && <span className="shrink-0 opacity-60">{separator}</span>}
             {item.href && !isCurrent ? (
-              <Link
-                to={item.href}
-                className="truncate transition-colors hover:text-foreground"
-                onClick={() => item.onSelect?.()}
-              >
-                {item.label}
-              </Link>
+              renderLink ? renderLink({
+                item,
+                href: item.href,
+                className: "truncate transition-colors hover:text-foreground",
+                onClick: () => item.onSelect?.(),
+                children: item.label,
+              }) : (
+                <a
+                  href={item.href}
+                  className="truncate transition-colors hover:text-foreground"
+                  onClick={() => item.onSelect?.()}
+                >
+                  {item.label}
+                </a>
+              )
             ) : (
               <span
                 aria-current={isCurrent ? "page" : undefined}

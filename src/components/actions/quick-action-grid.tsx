@@ -1,5 +1,4 @@
 import * as React from "react"
-import { Link } from "react-router-dom"
 
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
@@ -25,6 +24,7 @@ export type QuickActionGridProps = React.ComponentProps<"div"> & {
   columns?: QuickActionGridColumn
   compact?: boolean
   itemClassName?: string
+  renderLink?: (props: React.ComponentProps<"a"> & { item: QuickActionGridItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
 }
 
 const columnsClassName: Record<QuickActionGridColumn, string> = {
@@ -39,6 +39,7 @@ function QuickActionGrid({
   columns = 3,
   compact = false,
   itemClassName,
+  renderLink,
   className,
   ...props
 }: QuickActionGridProps) {
@@ -74,22 +75,42 @@ function QuickActionGrid({
 
         if (item.href && isInternalLink) {
           return (
-            <Link
-              key={item.key}
-              data-slot="quick-action-grid-item"
-              to={item.href}
-              aria-disabled={item.disabled || undefined}
-              className={commonClassName}
-              onClick={(event) => {
-                if (item.disabled) {
-                  event.preventDefault()
-                  return
-                }
-                item.onSelect?.()
-              }}
-            >
-              {content}
-            </Link>
+            renderLink ? (
+              <React.Fragment key={item.key}>
+                {renderLink({
+                  item,
+                  href: item.href,
+                  "data-slot": "quick-action-grid-item",
+                  "aria-disabled": item.disabled || undefined,
+                  className: commonClassName,
+                  onClick: (event) => {
+                    if (item.disabled) {
+                      event.preventDefault()
+                      return
+                    }
+                    item.onSelect?.()
+                  },
+                  children: content,
+                })}
+              </React.Fragment>
+            ) : (
+              <a
+                key={item.key}
+                data-slot="quick-action-grid-item"
+                href={item.href}
+                aria-disabled={item.disabled || undefined}
+                className={commonClassName}
+                onClick={(event) => {
+                  if (item.disabled) {
+                    event.preventDefault()
+                    return
+                  }
+                  item.onSelect?.()
+                }}
+              >
+                {content}
+              </a>
+            )
           )
         }
 

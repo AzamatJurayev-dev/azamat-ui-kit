@@ -1,7 +1,6 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { Link } from "react-router-dom"
 
 export type AppSidebarNavItem = {
   key: string
@@ -22,6 +21,7 @@ export type AppSidebarProps = React.ComponentProps<"aside"> & {
   collapsed?: boolean
   onItemSelect?: (item: AppSidebarNavItem) => void
   renderItem?: (item: AppSidebarNavItem, state: { collapsed: boolean }) => React.ReactNode
+  renderLink?: (props: React.ComponentProps<"a"> & { item: AppSidebarNavItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
 }
 
 function AppSidebar({
@@ -32,6 +32,7 @@ function AppSidebar({
   collapsed = false,
   onItemSelect,
   renderItem,
+  renderLink,
   children,
   ...props
 }: AppSidebarProps) {
@@ -53,31 +54,64 @@ function AppSidebar({
               <React.Fragment key={item.key}>{renderItem(item, { collapsed })}</React.Fragment>
             ) : (
               item.href?.startsWith("/") ? (
-                <Link
-                  key={item.key}
-                  to={item.href}
-                  aria-current={item.active ? "page" : undefined}
-                  aria-disabled={item.disabled || undefined}
-                  data-active={item.active || undefined}
-                  data-disabled={item.disabled || undefined}
-                  className={cn(
-                    "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
-                    collapsed && "justify-center px-2"
-                  )}
-                  onClick={(event) => {
-                    if (item.disabled) {
-                      event.preventDefault()
-                      return
-                    }
+                renderLink ? (
+                  <React.Fragment key={item.key}>
+                    {renderLink({
+                      item,
+                      href: item.href,
+                      "aria-current": item.active ? "page" : undefined,
+                      "aria-disabled": item.disabled || undefined,
+                      "data-active": item.active || undefined,
+                      "data-disabled": item.disabled || undefined,
+                      className: cn(
+                        "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                        collapsed && "justify-center px-2"
+                      ),
+                      onClick: (event) => {
+                        if (item.disabled) {
+                          event.preventDefault()
+                          return
+                        }
 
-                    item.onSelect?.()
-                    onItemSelect?.(item)
-                  }}
-                >
-                  {item.icon && <span className="shrink-0">{item.icon}</span>}
-                  {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
-                  {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
-                </Link>
+                        item.onSelect?.()
+                        onItemSelect?.(item)
+                      },
+                      children: (
+                        <>
+                          {item.icon && <span className="shrink-0">{item.icon}</span>}
+                          {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
+                          {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
+                        </>
+                      ),
+                    })}
+                  </React.Fragment>
+                ) : (
+                  <a
+                    key={item.key}
+                    href={item.href}
+                    aria-current={item.active ? "page" : undefined}
+                    aria-disabled={item.disabled || undefined}
+                    data-active={item.active || undefined}
+                    data-disabled={item.disabled || undefined}
+                    className={cn(
+                      "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                      collapsed && "justify-center px-2"
+                    )}
+                    onClick={(event) => {
+                      if (item.disabled) {
+                        event.preventDefault()
+                        return
+                      }
+
+                      item.onSelect?.()
+                      onItemSelect?.(item)
+                    }}
+                  >
+                    {item.icon && <span className="shrink-0">{item.icon}</span>}
+                    {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
+                    {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
+                  </a>
+                )
               ) : item.href ? (
                 <button
                   key={item.key}
