@@ -297,4 +297,4 @@ function ProductsTable() {
 }
 ```
 
-The library repo only contains reusable package source, CLI helpers, tests, and release files. Public docs, templates, blocks, and showcase pages now live in the separate `azamat-ui` Next.js app.
+The library repo only contains reusable package source, CLI helpers, registry templates, tests, and release files. Public docs, blocks, templates showcase pages, and the marketing site live in the separate `azamat-ui` Next.js app.

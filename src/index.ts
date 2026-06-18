@@ -11,7 +11,6 @@ export * from "./components/ui/table"
 export * from "./components/ui/badge"
 export * from "./components/ui/card"
 export * from "./components/ui/tabs"
-export * from "./components/ui/component-preview"
 
 export * from "./components/actions"
 export * from "./components/layout"

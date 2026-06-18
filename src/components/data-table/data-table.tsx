@@ -239,6 +239,8 @@ function DataTable<TData, TValue = unknown>({
   const manualPagination = Boolean(paginationConfig && paginationConfig.manual !== false)
   const selectedRowCount = rowSelection ? Object.keys(rowSelection).length : 0
 
+  // TanStack Table returns imperative helpers that React Compiler flags by design.
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns: resolvedColumns,
