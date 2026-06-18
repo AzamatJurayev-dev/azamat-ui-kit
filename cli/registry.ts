@@ -105,6 +105,7 @@ export type ComponentName =
   | "use-is-mobile"
   | "use-disclosure"
   | "use-debounce"
+  | "use-data-table-view-state"
   | "hooks"
   | "dashboard"
   | "all";
@@ -269,7 +270,8 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "use-is-mobile": { name: "use-is-mobile", category: "hooks", files: [file("src/hooks/use-is-mobile.ts", "{hooks}/use-is-mobile.ts")] },
   "use-disclosure": { name: "use-disclosure", category: "hooks", files: [file("src/hooks/use-disclosure.ts", "{hooks}/use-disclosure.ts")] },
   "use-debounce": { name: "use-debounce", category: "hooks", files: [file("src/hooks/use-debounce.ts", "{hooks}/use-debounce.ts")] },
-  hooks: { name: "hooks", category: "group", registryDependencies: ["use-session-storage-state", "use-before-unload-when-dirty", "use-is-mobile", "use-disclosure", "use-debounce"], files: [file("src/hooks/index.ts", "{hooks}/index.ts")] },
+  "use-data-table-view-state": { name: "use-data-table-view-state", category: "hooks", files: [file("src/hooks/use-data-table-view-state.ts", "{hooks}/use-data-table-view-state.ts")] },
+  hooks: { name: "hooks", category: "group", registryDependencies: ["use-session-storage-state", "use-before-unload-when-dirty", "use-is-mobile", "use-disclosure", "use-debounce", "use-data-table-view-state"], files: [file("src/hooks/index.ts", "{hooks}/index.ts")] },
 
   dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "actions", "filters", "feedback", "display", "data-table", "inputs", "form", "patterns", "notifications", "command"] },
   all: { name: "all", category: "group", registryDependencies: ["dashboard", "overlay", "calendar-kit", "upload", "wizard-kit", "hooks"] },
