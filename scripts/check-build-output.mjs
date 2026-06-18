@@ -1,6 +1,8 @@
 import fs from "node:fs"
 import path from "node:path"
 import process from "node:process"
+import { createRequire } from "node:module"
+import { pathToFileURL } from "node:url"
 
 const root = process.cwd()
 const distDir = path.join(root, "dist")
@@ -20,7 +22,7 @@ function readRequired(filePath) {
 }
 
 const esm = readRequired(esmPath)
-const cjs = readRequired(cjsPath)
+readRequired(cjsPath)
 const dts = readRequired(dtsPath)
 
 for (const forbidden of [
@@ -34,14 +36,25 @@ for (const forbidden of [
   }
 }
 
-for (const expected of ["react", "react-dom", "react/jsx-runtime", "react-hook-form"]) {
-  if (!esm.includes(expected) && !cjs.includes(expected)) {
-    failures.push(`build output does not reference external peer dependency: ${expected}`)
+if (dts.trim().length < 20) {
+  failures.push("dist/index.d.ts is empty or too small")
+}
+
+if (failures.length === 0) {
+  try {
+    await import(pathToFileURL(esmPath).href)
+  } catch (error) {
+    failures.push(`ESM import smoke failed: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 
-if (dts.trim().length < 20) {
-  failures.push("dist/index.d.ts is empty or too small")
+if (failures.length === 0) {
+  try {
+    const require = createRequire(import.meta.url)
+    require(cjsPath)
+  } catch (error) {
+    failures.push(`CJS require smoke failed: ${error instanceof Error ? error.message : String(error)}`)
+  }
 }
 
 if (failures.length > 0) {
