@@ -31,6 +31,7 @@ import {
   inputField,
   phoneField,
   switchField,
+  useDataTableViewState,
 } from "@/index"
 import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
 
@@ -46,6 +47,10 @@ type ResourceFormValues = {
   phone: string
   active: boolean
 }
+
+type ProductView = ProductRow["status"]
+
+const productViews = ["active", "draft", "archived"] as const
 
 const rows: ProductRow[] = [
   { id: "p-1", name: "Premium Coffee", status: "active", stock: 42 },
@@ -66,6 +71,12 @@ const activity = [
 ]
 
 function ResourcePagePreview() {
+  const viewState = useDataTableViewState<ProductView>({
+    key: "playground:products:view",
+    defaultValue: "active",
+    allowedValues: productViews,
+  })
+
   const columns = useMemo<ColumnDef<ProductRow>[]>(
     () => [
       { accessorKey: "name", header: "Name" },
@@ -79,16 +90,19 @@ function ResourcePagePreview() {
     []
   )
 
+  const filteredRows = rows.filter((row) => row.status === viewState.value)
+
   return (
     <ResourcePage<ProductRow>
       title="Products"
-      description="ResourcePage combines header, stats, filters, table, content, aside and footer slots."
+      description="ResourcePage combines header, stats, filters, table, content, aside and footer slots. The selected view is persisted."
       eyebrow="Resource pattern"
       actions={<Button size="sm">Create product</Button>}
       stats={<MetricGrid columns={3} items={metrics} />}
       filters={
-        <DataTableViewPresets
-          value="active"
+        <DataTableViewPresets<ProductView>
+          value={viewState.value}
+          onValueChange={viewState.setValue}
           presets={[
             { value: "active", label: "Active", count: 18 },
             { value: "draft", label: "Draft", count: 6 },
@@ -96,12 +110,14 @@ function ResourcePagePreview() {
           ]}
         />
       }
-      table={{ columns, data: rows, getRowId: (row) => row.id }}
+      table={{ columns, data: filteredRows, getRowId: (row) => row.id }}
       aside={<ActivityFeed title="Recent activity" items={activity} compact />}
     >
       <ResourcePageSection title="Resource notes" description="Any custom page content can live above the table.">
-        <InfoCard title="Pattern rule" description="This preview contains no API, tenant, role or route logic." compact>
-          <p className="text-sm text-muted-foreground">Apps connect their own filters, API state and mutations around the UI pattern.</p>
+        <InfoCard title="Persisted view state" description="useDataTableViewState stores the selected view." compact>
+          <p className="text-sm text-muted-foreground">
+            Current view: <span className="font-medium text-foreground">{viewState.value}</span>. Refresh the page and it will stay selected.
+          </p>
         </InfoCard>
       </ResourcePageSection>
     </ResourcePage>
@@ -196,7 +212,7 @@ export function PatternsSection() {
       action={<StatusBadge tone="success" dot>API-free</StatusBadge>}
     >
       <ShowcaseGrid className="mb-4 xl:grid-cols-3">
-        <PlaygroundCard title="ResourcePage" description="List page with header, stats, filters, table and aside." badge={<Badge variant="outline">list</Badge>}>
+        <PlaygroundCard title="ResourcePage" description="List page with header, stats, filters, table and persisted views." badge={<Badge variant="outline">list</Badge>}>
           <TokenPill>stats + filters + table</TokenPill>
         </PlaygroundCard>
         <PlaygroundCard title="ResourceDetailPage" description="Detail page with status, summary, sections and activity." badge={<Badge variant="outline">detail</Badge>}>
@@ -209,14 +225,18 @@ export function PatternsSection() {
 
       <ComponentPreview
         title="ResourcePage pattern"
-        description="A complete resource list screen using table, metrics, saved views and activity aside."
-        dependencies={["ResourcePage", "MetricGrid", "DataTableViewPresets", "ActivityFeed"]}
-        code={`<ResourcePage
+        description="A complete resource list screen using table, metrics, saved views, persisted view state and activity aside."
+        dependencies={["ResourcePage", "MetricGrid", "DataTableViewPresets", "useDataTableViewState", "ActivityFeed"]}
+        code={`const viewState = useDataTableViewState({
+  key: "products:view",
+  defaultValue: "active",
+  allowedValues: ["active", "draft", "archived"],
+})
+
+<ResourcePage
   title="Products"
-  stats={<MetricGrid items={metrics} />}
-  filters={<DataTableViewPresets presets={views} />}
-  table={{ columns, data }}
-  aside={<ActivityFeed items={activity} />}
+  filters={<DataTableViewPresets value={viewState.value} onValueChange={viewState.setValue} presets={views} />}
+  table={{ columns, data: filteredRows }}
 />`}
       >
         <ResourcePagePreview />
@@ -253,8 +273,8 @@ export function PatternsSection() {
         title="Pattern usage"
         items={[
           "Use ResourcePage for list screens that need header, stats, filters, table and aside composition.",
+          "Use useDataTableViewState with DataTableViewPresets when the selected view should survive refresh.",
           "Use ResourceDetailPage for read-only detail screens with status, summary, sections and audit activity.",
-          "Use FormBuilder when repeated form sections should be described through typed config.",
           "Use AppShell as the outer dashboard shell; keep API, auth and route policy in the consuming app.",
         ]}
         code={`<ResourcePage table={{ columns, data }} />
