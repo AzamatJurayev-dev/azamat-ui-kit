@@ -65,6 +65,15 @@
       "loading-state",
       "status-badge"
     ],
+    "display": [
+      "description-list",
+      "progress",
+      "result",
+      "timeline",
+      "metric-grid",
+      "info-card",
+      "activity-feed"
+    ],
     "actions": [
       "action-menu"
     ],
@@ -90,7 +99,8 @@
       "data-table-sortable-header",
       "data-table-row-actions",
       "data-table-actions-column",
-      "data-table-bulk-actions"
+      "data-table-bulk-actions",
+      "data-table-view-presets"
     ],
     "calendar": [
       "calendar",
@@ -112,6 +122,12 @@
     ],
     "command": [
       "command-palette"
+    ],
+    "patterns": [
+      "resource-page",
+      "resource-detail-page",
+      "form-builder",
+      "form-builder-presets"
     ],
     "hooks": [
       "use-session-storage-state",
@@ -145,14 +161,23 @@
     "empty-state",
     "loading-state",
     "status-badge",
+    "description-list",
+    "metric-grid",
+    "info-card",
+    "activity-feed",
     "action-menu",
     "page-header",
     "filter-bar",
     "data-table",
+    "data-table-view-presets",
     "date-picker",
     "file-upload",
     "wizard",
     "toast",
-    "command-palette"
+    "command-palette",
+    "resource-page",
+    "resource-detail-page",
+    "form-builder",
+    "form-builder-presets"
   ]
 }
