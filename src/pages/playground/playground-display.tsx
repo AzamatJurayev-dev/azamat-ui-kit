@@ -4,8 +4,10 @@ import {
   ClockIcon,
   FileTextIcon,
   PackageIcon,
+  PlusIcon,
   ShieldCheckIcon,
   TruckIcon,
+  UploadCloudIcon,
 } from "lucide-react"
 
 import {
@@ -18,14 +20,17 @@ import {
   CardHeader,
   CardTitle,
   ComponentPreview,
+  CopyButton,
   DescriptionList,
   InfoCard,
   MetricGrid,
   Progress,
   ProgressCard,
+  QuickActionGrid,
   Result,
   ResultAction,
   StatusBadge,
+  StatusLegend,
   Timeline,
 } from "@/index"
 import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
@@ -45,6 +50,19 @@ const metricItems = [
   { key: "orders", label: "Orders", value: "1,248", description: "Confirmed orders", trend: "+8%", tone: "info" as const, icon: <PackageIcon /> },
   { key: "pending", label: "Pending", value: "42", description: "Needs review", trend: "-3", tone: "warning" as const, icon: <ClockIcon /> },
   { key: "failed", label: "Failed", value: "7", description: "Import errors", trend: "Fix", tone: "danger" as const, icon: <FileTextIcon /> },
+]
+
+const quickActions = [
+  { key: "create", label: "Create product", description: "Open a product creation flow.", icon: <PlusIcon />, badge: "New" },
+  { key: "import", label: "Import file", description: "Upload Excel or CSV import data.", icon: <UploadCloudIcon />, badge: "CSV" },
+  { key: "audit", label: "Review audit", description: "Check recent product changes.", icon: <ShieldCheckIcon />, badge: "3" },
+]
+
+const statusLegendItems = [
+  { key: "active", label: "Active", description: "Visible and available", count: 18, tone: "success" as const },
+  { key: "draft", label: "Draft", description: "Needs review before publish", count: 6, tone: "warning" as const },
+  { key: "archived", label: "Archived", description: "Hidden from main lists", count: 3, tone: "muted" as const },
+  { key: "failed", label: "Failed", description: "Requires manual fix", count: 2, tone: "danger" as const },
 ]
 
 const timelineItems = [
@@ -68,7 +86,7 @@ export function DisplaySection() {
       id="display"
       eyebrow="Data display"
       title="Display and feedback"
-      description="Reusable metrics, info cards, activity feeds, detail lists, progress, timeline and result components for dashboard pages."
+      description="Reusable metrics, info cards, action grids, status legends, activity feeds, detail lists, progress, timeline and result components for dashboard pages."
       action={<StatusBadge tone="success" dot>New components</StatusBadge>}
     >
       <MetricGrid className="mb-4" items={metricItems} />
@@ -83,17 +101,17 @@ export function DisplaySection() {
         </Card>
         <Card>
           <CardHeader>
-            <CardDescription>Details</CardDescription>
-            <CardTitle className="text-3xl">4 cols</CardTitle>
+            <CardDescription>Actions</CardDescription>
+            <CardTitle className="text-3xl">Grid</CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">Responsive description list</CardContent>
+          <CardContent className="text-sm text-muted-foreground">QuickActionGrid shortcuts</CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardDescription>Activity</CardDescription>
-            <CardTitle className="text-3xl">Feed</CardTitle>
+            <CardDescription>Status</CardDescription>
+            <CardTitle className="text-3xl">Legend</CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-muted-foreground">Timeline-like dashboard activity</CardContent>
+          <CardContent className="text-sm text-muted-foreground">Counts and tone meanings</CardContent>
         </Card>
         <Card>
           <CardHeader>
@@ -109,18 +127,39 @@ export function DisplaySection() {
           <MetricGrid columns={2} compact items={metricItems.slice(0, 4)} />
         </PlaygroundCard>
 
+        <PlaygroundCard title="QuickActionGrid" description="Use for dashboard shortcuts, resource actions and module launchers." badge={<Badge variant="outline">actions</Badge>}>
+          <QuickActionGrid columns={1} compact items={quickActions} />
+        </PlaygroundCard>
+
+        <PlaygroundCard title="StatusLegend" description="Explain statuses and show counts with consistent tones." badge={<Badge variant="outline">legend</Badge>}>
+          <StatusLegend title="Product status" items={statusLegendItems} compact />
+        </PlaygroundCard>
+      </ShowcaseGrid>
+
+      <ShowcaseGrid className="mb-4 xl:grid-cols-3">
         <PlaygroundCard title="InfoCard" description="Flexible informational card with media, actions and footer slots." badge={<Badge variant="outline">card</Badge>}>
           <InfoCard
             eyebrow="Resource summary"
             title="Premium Coffee"
             description="Reusable card for aside panels and detail summaries."
             icon={<PackageIcon />}
-            actions={<Button size="xs" variant="outline">Edit</Button>}
+            actions={<CopyButton value="COF-001" size="xs" variant="outline" copyLabel="Copy SKU" copiedLabel="Copied" />}
             footer={<span className="text-xs text-muted-foreground">Updated 17 Jun 2026</span>}
             compact
           >
             <div className="text-sm text-muted-foreground">Use this instead of rebuilding small info panels in every app.</div>
           </InfoCard>
+        </PlaygroundCard>
+
+        <PlaygroundCard title="CopyButton" description="Clipboard action with copied state and icon swap." badge={<Badge variant="outline">clipboard</Badge>}>
+          <div className="grid gap-3">
+            <div className="rounded-lg border bg-muted/25 p-3 text-sm">SKU: COF-001</div>
+            <div className="flex flex-wrap gap-2">
+              <CopyButton value="COF-001" size="sm" />
+              <CopyButton value="https://example.com/products/COF-001" size="sm" variant="outline" copyLabel="Copy link" />
+              <CopyButton value="42,000 UZS" size="sm" variant="ghost" showIcon={false} copyLabel="Copy price" />
+            </div>
+          </div>
         </PlaygroundCard>
 
         <PlaygroundCard title="ActivityFeed" description="Use for audit history, recent activity and timeline sidebars." badge={<Badge variant="outline">feed</Badge>}>
@@ -144,37 +183,38 @@ export function DisplaySection() {
 
         <PlaygroundCard title="CSS display tokens" description="Display components follow the shared card/control style." badge={<Badge variant="outline">CSS</Badge>}>
           <div className="flex flex-wrap gap-2">
-            <TokenPill>data-slot="metric-grid"</TokenPill>
-            <TokenPill>data-slot="info-card"</TokenPill>
+            <TokenPill>data-slot="copy-button"</TokenPill>
+            <TokenPill>data-slot="quick-action-grid"</TokenPill>
+            <TokenPill>data-slot="status-legend"</TokenPill>
             <TokenPill>data-slot="activity-feed"</TokenPill>
-            <TokenPill>data-slot="description-list"</TokenPill>
           </div>
           <p className="text-sm leading-6 text-muted-foreground">
-            These components are generic display primitives. App pages pass data, actions and labels through props.
+            These components are generic display/action primitives. App pages pass data, actions and labels through props.
           </p>
         </PlaygroundCard>
       </ShowcaseGrid>
 
       <ComponentPreview
-        title="Dashboard display suite"
-        description="MetricGrid, InfoCard, ActivityFeed, DescriptionList, Timeline, ProgressCard and Result in one reusable documentation example."
-        dependencies={["MetricGrid", "InfoCard", "ActivityFeed", "DescriptionList", "Timeline", "Progress", "Result"]}
+        title="Dashboard display and action suite"
+        description="MetricGrid, QuickActionGrid, StatusLegend, CopyButton, InfoCard, ActivityFeed, DescriptionList, Timeline, ProgressCard and Result in one reusable documentation example."
+        dependencies={["MetricGrid", "QuickActionGrid", "StatusLegend", "CopyButton", "InfoCard", "ActivityFeed", "DescriptionList", "Timeline", "Progress", "Result"]}
         code={`<MetricGrid items={metrics} />
-<InfoCard title="Resource">Content</InfoCard>
-<ActivityFeed items={activity} />
-<DescriptionList columns={2} items={items} />
-<Timeline items={events} pending />
-<Result status="success" title="Saved" />`}
+<QuickActionGrid items={actions} />
+<StatusLegend items={statuses} />
+<CopyButton value="COF-001" />
+<ActivityFeed items={activity} />`}
       >
         <div className="grid w-full gap-4 xl:grid-cols-2">
           <MetricGrid className="xl:col-span-2" columns={4} items={metricItems} />
+          <QuickActionGrid items={quickActions} />
+          <StatusLegend title="Status legend" items={statusLegendItems} orientation="grid" />
 
           <DescriptionList
             title="Order detail"
             description="Read-only detail view with actions and spans."
             columns={2}
             items={detailItems}
-            actions={<Button size="sm" variant="outline"><FileTextIcon className="mr-2 size-4" />Export</Button>}
+            actions={<CopyButton value="COF-001" size="sm" variant="outline" copyLabel="Copy SKU" />}
           />
 
           <ActivityFeed title="Activity feed" description="Recent user and system events." items={activityItems} />
@@ -225,14 +265,14 @@ export function DisplaySection() {
         title="Display usage"
         items={[
           "Use `MetricGrid` for dashboard KPIs and ResourcePage stats instead of hand-building stat cards.",
-          "Use `InfoCard` for aside panels, help cards and compact resource summaries.",
-          "Use `ActivityFeed` for order history, audit logs, status changes and recent activity.",
-          "Use `DescriptionList`, `Progress` and `Result` for detail screens and workflow states.",
+          "Use `QuickActionGrid` for common dashboard actions and resource shortcuts.",
+          "Use `StatusLegend` when users need to understand status colors, counts and meanings.",
+          "Use `CopyButton` for IDs, links, API keys, tracking numbers and reference values.",
         ]}
         code={`<MetricGrid items={metrics} />
-<InfoCard title="Summary">...</InfoCard>
-<ActivityFeed items={activity} />
-<DescriptionList title="Details" columns={2} items={items} />`}
+<QuickActionGrid items={actions} />
+<StatusLegend title="Statuses" items={statuses} />
+<CopyButton value="COF-001" />`}
       />
     </DemoSection>
   )
