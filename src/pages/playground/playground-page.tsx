@@ -17,6 +17,7 @@ import {
   LayoutDashboardIcon,
   ArrowRightIcon,
   Link2Icon,
+  BlocksIcon,
 } from "lucide-react"
 import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom"
 
@@ -53,6 +54,7 @@ import { FoundationSection } from "./playground-foundation"
 import { FormsSection } from "./playground-forms"
 import { InputsSection } from "./playground-inputs"
 import { OverlaySection } from "./playground-overlay"
+import { PatternsSection } from "./playground-patterns"
 import { TableSection } from "./playground-table"
 import { UploadSection } from "./playground-upload"
 import { templateCatalog } from "./playground-data"
@@ -88,7 +90,8 @@ const componentPages: Omit<ComponentPageDefinition, "path" | "element">[] = [
   { id: "foundation", slug: "foundation", title: "Foundation", description: "Primitives, tokens, base controls", icon: <SparklesIcon className="size-4" /> },
   { id: "inputs", slug: "inputs", title: "Inputs", description: "Input, select, textarea and field behavior", icon: <SettingsIcon className="size-4" /> },
   { id: "forms", slug: "forms", title: "Forms", description: "Form patterns with validation and state", icon: <ListChecksIcon className="size-4" /> },
-  { id: "display", slug: "display", title: "Display", description: "Descriptions, timelines, progress and result states", icon: <FileTextIcon className="size-4" /> },
+  { id: "display", slug: "display", title: "Display", description: "Metrics, info cards, activity and result states", icon: <FileTextIcon className="size-4" /> },
+  { id: "patterns", slug: "patterns", title: "Patterns", description: "Resource pages, detail pages, builders and shells", icon: <BlocksIcon className="size-4" /> },
   { id: "table", slug: "table", title: "Data table", description: "Sorting, pagination, selection and actions", icon: <LayersIcon className="size-4" /> },
   { id: "upload", slug: "upload", title: "Upload", description: "Dropzones, file metadata, and progress patterns", icon: <UploadCloudIcon className="size-4" /> },
   { id: "calendar", slug: "calendar", title: "Calendar", description: "Calendar picker and schedule UI", icon: <CalendarDaysIcon className="size-4" /> },
@@ -104,7 +107,7 @@ function ComponentsIndexPage({ sections }: { sections: ComponentPageDefinition[]
             <div>
               <CardTitle>Components dashboard</CardTitle>
               <CardDescription>
-                Barcha section'lar uchun alohida page route'lari mavjud: Foundation, Inputs, Forms, Display, Data table, Upload, Calendar, Overlay.
+                Barcha section'lar uchun alohida page route'lari mavjud: Foundation, Inputs, Forms, Display, Patterns, Data table, Upload, Calendar, Overlay.
               </CardDescription>
             </div>
             <Badge>{sections.length} bo‘lim</Badge>
@@ -340,13 +343,8 @@ function ComponentShell({
   const breadcrumbItems = React.useMemo(() => {
     const base = [{ key: "home", label: "UI Kit", href: "/landing" }]
 
-    if (normalizedPath === "/landing") {
-      return [...base, { key: "landing", label: "Landing" }]
-    }
-
-    if (normalizedPath === "/components") {
-      return [...base, { key: "components", label: "Components" }]
-    }
+    if (normalizedPath === "/landing") return [...base, { key: "landing", label: "Landing" }]
+    if (normalizedPath === "/components") return [...base, { key: "components", label: "Components" }]
 
     if (normalizedPath.startsWith("/components/")) {
       const slug = normalizedPath.replace("/components/", "")
@@ -354,25 +352,15 @@ function ComponentShell({
       return [...base, { key: "components", label: "Components", href: "/components" }, { key: slug, label: section?.title ?? "Component" }]
     }
 
-    if (normalizedPath === "/templates") {
-      return [...base, { key: "templates", label: "Templates" }]
-    }
+    if (normalizedPath === "/templates") return [...base, { key: "templates", label: "Templates" }]
 
     if (normalizedPath.startsWith("/templates/")) {
       const [slug, page] = normalizedPath.replace("/templates/", "").split("/")
-
       return [
         ...base,
         { key: "templates", label: "Templates", href: "/templates" },
         { key: slug, label: getTemplateTitle(slug) || "Template" },
-        ...(page
-          ? [
-              {
-                key: `template-page-${page}`,
-                label: `Page: ${page.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())}`,
-              },
-            ]
-          : []),
+        ...(page ? [{ key: `template-page-${page}`, label: `Page: ${page.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())}` }] : []),
       ]
     }
 
@@ -385,22 +373,15 @@ function ComponentShell({
     if (normalizedPath.startsWith("/components/")) {
       const slug = normalizedPath.replace("/components/", "")
       const section = sections.find((item) => item.slug === slug)
-      return {
-        title: section?.title || "Components",
-        description: section?.description || "Component section demo.",
-      }
+      return { title: section?.title || "Components", description: section?.description || "Component section demo." }
     }
     if (normalizedPath === "/templates") return { title: "Templates", description: "Template catalogue with route-driven cards." }
     if (normalizedPath.startsWith("/templates/")) {
       const [slug, page] = normalizedPath.replace("/templates/", "").split("/")
       const title = getTemplateTitle(slug) || "Template"
-      if (page) {
-        return { title: `${title} • ${page}`, description: "Template sub-page detail (route-driven)." }
-      }
-
+      if (page) return { title: `${title} • ${page}`, description: "Template sub-page detail (route-driven)." }
       return { title, description: "Template detail page (route-driven)." }
     }
-
     return { title: "Azamat UI Kit", description: "Shadcn-inspired playground." }
   }, [normalizedPath, sections])
 
@@ -464,16 +445,7 @@ function ComponentShell({
       />
 
       <PageContainer size="xl" className="playground-shell playground-page">
-        <PageHeader
-          title={currentPageMeta.title}
-          description={currentPageMeta.description}
-          eyebrow="Playground"
-          actions={
-            <Button size="sm" variant="outline" onClick={() => onThemeChange(theme === "light" ? "dark" : "light")}>
-              Toggle theme
-            </Button>
-          }
-        />
+        <PageHeader title={currentPageMeta.title} description={currentPageMeta.description} eyebrow="Playground" actions={<Button size="sm" variant="outline" onClick={() => onThemeChange(theme === "light" ? "dark" : "light")}>Toggle theme</Button>} />
         {children}
       </PageContainer>
     </AppShell>
@@ -495,28 +467,19 @@ export default function PlaygroundPage() {
     () =>
       componentPages.map((section) => {
         const path = `/components/${section.slug}`
-
         return {
           ...section,
           path,
           element:
-            section.slug === "foundation" ? (
-              <FoundationSection />
-            ) : section.slug === "inputs" ? (
-              <InputsSection />
-            ) : section.slug === "forms" ? (
-              <FormsSection />
-            ) : section.slug === "display" ? (
-              <DisplaySection />
-            ) : section.slug === "table" ? (
-              <TableSection />
-            ) : section.slug === "upload" ? (
-              <UploadSection />
-            ) : section.slug === "calendar" ? (
-              <CalendarSection />
-            ) : (
-              <OverlaySection onOpenCommand={() => setCommandOpen(true)} />
-            ),
+            section.slug === "foundation" ? <FoundationSection />
+            : section.slug === "inputs" ? <InputsSection />
+            : section.slug === "forms" ? <FormsSection />
+            : section.slug === "display" ? <DisplaySection />
+            : section.slug === "patterns" ? <PatternsSection />
+            : section.slug === "table" ? <TableSection />
+            : section.slug === "upload" ? <UploadSection />
+            : section.slug === "calendar" ? <CalendarSection />
+            : <OverlaySection onOpenCommand={() => setCommandOpen(true)} />,
         }
       }),
     []
@@ -526,14 +489,7 @@ export default function PlaygroundPage() {
 
   return (
     <ToastProvider position="top-right">
-      <ComponentShell
-        normalizedPath={normalizedPath}
-        sections={sectionDefinitions}
-        openCommand={commandOpen}
-        onCommandOpen={setCommandOpen}
-        theme={theme}
-        onThemeChange={setTheme}
-      >
+      <ComponentShell normalizedPath={normalizedPath} sections={sectionDefinitions} openCommand={commandOpen} onCommandOpen={setCommandOpen} theme={theme} onThemeChange={setTheme}>
         <Routes>
           <Route path="/" element={<Navigate to="/landing" replace />} />
           <Route path="/landing" element={<LandingSection />} />
