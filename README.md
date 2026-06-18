@@ -41,7 +41,19 @@ Initialize the project once:
 npx azamat-ui-kit init
 ```
 
-The package entry does **not** import global CSS. During `init`, the CLI can write Azamat UI Kit theme tokens directly into your app global CSS file, for example `src/index.css`.
+Use Next.js defaults:
+
+```bash
+npx azamat-ui-kit init --template next
+```
+
+Use Vite defaults:
+
+```bash
+npx azamat-ui-kit init --template vite
+```
+
+The package entry does **not** import global CSS. During `init`, the CLI can write Azamat UI Kit theme tokens directly into your app global CSS file, for example `src/index.css` or `app/globals.css`.
 
 Do not import package CSS manually:
 
@@ -83,6 +95,23 @@ import {
 } from "azamat-ui-kit"
 ```
 
+## Component status
+
+Component readiness is tracked in `COMPONENT_MATURITY.md` and mirrored for the CLI in `cli/registry-status.ts`.
+
+```bash
+npx azamat-ui-kit list
+```
+
+Statuses:
+
+- `stable`: safe public API for app usage.
+- `preview`: reusable, but API may change before a stable release.
+- `experimental`: useful internally, but not ready for stable app contracts.
+- `internal`: helper metadata or implementation detail.
+
+Stable today: primitives, Base UI wrappers, router-agnostic layout/navigation, feedback/display wrappers and generic action/overlay components. Preview today: inputs, forms, calendar, upload, data-table and resource patterns. Experimental today: `FormBuilder` and presets.
+
 ## Router integration
 
 The package is router-agnostic by default. Navigation-oriented components render regular `<a>` tags unless you provide a custom link renderer.
@@ -122,7 +151,7 @@ npm run build
 Useful commands before public release:
 
 ```bash
-npm run test:run
+npm run release:gate
 npm pack --dry-run
 ```
 
@@ -164,7 +193,9 @@ Consumer apps own the global CSS. The UI kit only uses token-based classes like 
 npx azamat-ui-kit theme src/index.css
 ```
 
-Dark mode works by toggling the `.dark` class on the root/html element.
+Dark mode works by toggling the `.dark` class on the root/html element. The theme block also provides `.light` for explicit light-mode class usage.
+
+The generated theme block imports `@fontsource-variable/geist`; keep that dependency installed when using the CLI theme output.
 
 ## Notifications example
 
@@ -227,6 +258,24 @@ useCommandPaletteShortcut(setOpen)
 <NumberInput value={price} min={0} step={1000} onNumberChange={setPrice} />
 ```
 
+## Upload example
+
+```tsx
+<ImageUpload
+  files={files}
+  onFilesChange={setFiles}
+  maxFiles={4}
+  maxSize={2 * 1024 * 1024}
+  rejectionMessages={{
+    "max-files": ({ maxFiles }) => `Upload at most ${maxFiles} images.`,
+    "max-size": ({ maxSize }) => `Each image must be under ${Math.round((maxSize ?? 0) / 1024 / 1024)} MB.`,
+    type: "Only image files are allowed.",
+  }}
+/>
+```
+
+`ImageUpload` owns object URL preview cleanup when files change, preview is disabled, or the component unmounts. `FileUpload` blocks drag/drop and file dialog interactions while disabled or loading.
+
 ## DataTable example
 
 ```tsx
@@ -280,6 +329,7 @@ function ProductsTable() {
       data={products}
       isLoading={isLoading}
       emptyState={{ title: "No products" }}
+      search={{ value: search, onValueChange: setSearch, placeholder: "Search products" }}
       toolbarProps={(table) => ({
         title: "Products",
         search: <FilterBar search={<SearchInput placeholder="Search" />} />,
@@ -296,5 +346,29 @@ function ProductsTable() {
   )
 }
 ```
+
+`DataTable` public pagination config uses a 0-based `pageIndex`, matching TanStack Table. UI copy can display page numbers as 1-based labels.
+
+## Troubleshooting
+
+### Missing theme tokens
+
+Run the theme command against the actual global CSS file used by your app. For Vite this is often `src/index.css`; for Next App Router this is often `app/globals.css`.
+
+```bash
+npx azamat-ui-kit theme app/globals.css
+```
+
+### ESM import issues
+
+Run `npm run build` in this repo before packing or installing from a local tarball. The build output check rejects ESM browser bundles that contain direct or indirect CommonJS `require` fallbacks.
+
+### Peer dependency mismatch
+
+Install React and React DOM in the consumer app. They are peer dependencies and are intentionally not bundled into the package runtime.
+
+### React Hook Form setup
+
+Form wrappers require `react-hook-form` in the consumer app. Use package imports for reusable wrappers and keep form schema/business validation in the app layer.
 
 The library repo only contains reusable package source, CLI helpers, registry templates, tests, and release files. Public docs, blocks, templates showcase pages, and the marketing site live in the separate `azamat-ui` Next.js app.
