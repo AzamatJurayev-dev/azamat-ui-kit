@@ -1,3 +1,5 @@
+import { useForm } from "react-hook-form"
+
 import {
   Badge,
   Button,
@@ -7,18 +9,81 @@ import {
   CardHeader,
   CardTitle,
   ComponentPreview,
+  FormBuilder,
   FormFieldShell,
+  InfoCard,
   Input,
+  MetricGrid,
   StatusBadge,
+  formSection,
+  inputField,
+  phoneField,
+  switchField,
+  textareaField,
 } from "@/index"
 import { DemoSection, PlaygroundCard, PlaygroundUsage, ShowcaseGrid, TokenPill } from "./playground-ui"
 import { PlaygroundForm } from "./playground-form"
+
+type BuilderDemoValues = {
+  name: string
+  phone: string
+  notes: string
+  active: boolean
+}
 
 const formHighlights = [
   { title: "Layouts", value: "3", description: "vertical, horizontal and inline field shells" },
   { title: "States", value: "5+", description: "error, disabled, read-only, dirty and submitting" },
   { title: "Fields", value: "12+", description: "input, select, async, date, switch, phone and number wrappers" },
 ]
+
+const builderMetrics = [
+  { key: "fields", label: "Preset helpers", value: "10", description: "Less boilerplate", tone: "info" as const },
+  { key: "sections", label: "Sections", value: "∞", description: "Config-driven groups", tone: "success" as const },
+  { key: "logic", label: "Business logic", value: "0", description: "UI-only pattern", tone: "muted" as const },
+]
+
+function FormBuilderPreview() {
+  const form = useForm<BuilderDemoValues>({
+    defaultValues: {
+      name: "Premium Coffee",
+      phone: "+998 90 123 45 67",
+      notes: "Reusable config-driven form example.",
+      active: true,
+    },
+  })
+
+  const sections = [
+    formSection<BuilderDemoValues>({
+      id: "main",
+      title: "Product form",
+      description: "Built with FormBuilder preset helpers and local mock state only.",
+      actions: <StatusBadge tone="success" dot>Preset helpers</StatusBadge>,
+      fields: [
+        inputField<BuilderDemoValues>({
+          id: "name",
+          props: { name: "name", label: "Name", required: true },
+        }),
+        phoneField<BuilderDemoValues>({
+          id: "phone",
+          props: { name: "phone", label: "Phone" },
+        }),
+        textareaField<BuilderDemoValues>({
+          id: "notes",
+          colSpan: "full",
+          props: { name: "notes", label: "Notes", rows: 3 },
+        }),
+        switchField<BuilderDemoValues>({
+          id: "active",
+          colSpan: "full",
+          props: { name: "active", label: "Active product", description: "Shown in public catalog." },
+        }),
+      ],
+    }),
+  ]
+
+  return <FormBuilder control={form.control} sections={sections} columns={2} submitLabel="Save" resetLabel="Reset" />
+}
 
 export function FormsSection() {
   return (
@@ -27,7 +92,7 @@ export function FormsSection() {
       id="forms"
       eyebrow="Data entry"
       title="Form wrappers"
-      description="React Hook Form connected fields with layout, validation, async lookup and state controls."
+      description="React Hook Form connected fields with layout, validation, async lookup, state controls and config-driven FormBuilder patterns."
       action={<StatusBadge tone="success" dot>RHF-ready</StatusBadge>}
     >
       <section className="mb-4 grid gap-4 md:grid-cols-3">
@@ -43,6 +108,8 @@ export function FormsSection() {
           </Card>
         ))}
       </section>
+
+      <MetricGrid className="mb-4" columns={3} items={builderMetrics} />
 
       <ShowcaseGrid className="mb-4 xl:grid-cols-3">
         <PlaygroundCard title="Field shell layouts" description="Same primitive, different layouts through props." badge={<Badge variant="outline">layout</Badge>}>
@@ -73,18 +140,36 @@ export function FormsSection() {
           </div>
         </PlaygroundCard>
 
-        <PlaygroundCard title="CSS controlled form UI" description="Form wrappers inherit the same control tokens." badge={<Badge variant="outline">tokens</Badge>}>
-          <div className="flex flex-wrap gap-2">
-            <TokenPill>--aui-control-radius</TokenPill>
-            <TokenPill>--aui-control-shadow</TokenPill>
-            <TokenPill>data-slot="form-field-shell"</TokenPill>
-            <TokenPill>data-invalid="true"</TokenPill>
-          </div>
-          <p className="text-sm leading-6 text-muted-foreground">
-            Form components should not create visual-only copies. Use layout props, shell slots and global CSS tokens instead.
-          </p>
+        <PlaygroundCard title="FormBuilder presets" description="Config-driven forms without repeating long field objects." badge={<Badge variant="outline">builder</Badge>}>
+          <InfoCard title="Field factories" description="inputField(), phoneField(), textareaField(), switchField()" compact>
+            <div className="grid gap-2 text-sm text-muted-foreground">
+              <div className="rounded-lg border bg-muted/25 p-2">Typed helpers create normal FormBuilder fields.</div>
+              <div className="rounded-lg border bg-muted/25 p-2">Validation and API stay in the consuming app.</div>
+            </div>
+          </InfoCard>
         </PlaygroundCard>
       </ShowcaseGrid>
+
+      <ComponentPreview
+        title="FormBuilder preset demo"
+        description="Build a structured form from typed field helpers and sections. This is still local mock state only."
+        dependencies={["react-hook-form", "FormBuilder", "inputField", "phoneField", "textareaField", "switchField"]}
+        code={`const sections = [
+  formSection({
+    id: "main",
+    fields: [
+      inputField({ id: "name", props: { name: "name", label: "Name" } }),
+      phoneField({ id: "phone", props: { name: "phone", label: "Phone" } }),
+    ],
+  }),
+]
+
+<FormBuilder control={form.control} sections={sections} />`}
+      >
+        <div className="w-full max-w-4xl">
+          <FormBuilderPreview />
+        </div>
+      </ComponentPreview>
 
       <ComponentPreview
         title="Complete form demo"
@@ -105,14 +190,14 @@ export function FormsSection() {
         title="Form usage"
         items={[
           "Use one form field shell API for vertical, horizontal and inline layouts instead of creating duplicate field components.",
+          "Use FormBuilder and field presets when a page has repeated form sections that should stay consistent.",
           "Pass read-only, disabled, error and description behavior through wrapper props so every field looks consistent.",
           "Keep default values explicit; all examples in the playground should be deterministic and API-free.",
-          "Use async select and calendar wrappers through props only; API clients stay in the consuming app.",
         ]}
         code={`const form = useForm<ProductFormValues>({ defaultValues, mode: "onChange" })
-const onSubmit = async (values) => save(values)
+const fields = [inputField({ id: "name", props: { name: "name", label: "Name" } })]
 
-<FormInput control={form.control} name="name" label="Name" layout="horizontal" />`}
+<FormBuilder control={form.control} fields={fields} />`}
       />
     </DemoSection>
   )
