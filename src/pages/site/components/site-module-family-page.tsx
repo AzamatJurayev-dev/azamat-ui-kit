@@ -20,9 +20,12 @@ export function SiteModuleFamilyPage() {
   if (!family) return <Navigate to="/components" replace />
   const demo = familyDemoRegistry[family.slug]
 
-  const linkedCore = componentCatalog.slice(0, 4)
+  const linkedCore =
+    family.slug === "data-table"
+      ? componentCatalog.filter((item) => ["input", "badge", "button", "card"].includes(item.slug)).slice(0, 4)
+      : componentCatalog.slice(0, 4)
   const currentExport = family.exports[0]
-  const exportCode = `import { ${currentExport} } from "@azamat/ui"\n\nexport function Example() {\n  return <${currentExport} />\n}`
+  const exportCode = demo?.mock.code ?? `import { ${currentExport} } from "@azamat/ui"\n\nexport function Example() {\n  return <${currentExport} />\n}`
 
   return (
     <PageFrame>
@@ -114,8 +117,15 @@ export function SiteModuleFamilyPage() {
                       </div>
                     </div>
                     <div className="rounded-[22px] border border-zinc-200 p-4">
-                      <SectionLabel>Actions</SectionLabel>
+                      <SectionLabel>{family.slug === "data-table" ? "DataTable depth" : "Actions"}</SectionLabel>
                       <div className="mt-4 space-y-3">
+                        {family.slug === "data-table"
+                          ? demo?.mock.highlights.map((item) => (
+                              <div key={item} className="rounded-2xl border border-zinc-200 px-4 py-3 text-sm text-zinc-700">
+                                {item}
+                              </div>
+                            ))
+                          : null}
                         <button onClick={() => void onCopy("export", demo?.mock.code ?? exportCode)} className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 px-4 py-3 text-sm text-zinc-700 transition hover:bg-zinc-50">
                           {copiedKey === "export" ? "Copied export" : "Copy current export"}
                           <CopyIcon className="size-4" />

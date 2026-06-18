@@ -1,120 +1,232 @@
 import * as React from "react"
+import type { ColumnDef, RowSelectionState, SortingState } from "@tanstack/react-table"
 
-import { Badge, Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/index"
+import {
+  Badge,
+  Button,
+  DataTable,
+  DataTableBulkActions,
+  DataTableColumnVisibilityMenu,
+  DataTableSortableHeader,
+  DataTableViewPresets,
+  FilterBar,
+  SearchInput,
+  createDataTableActionsColumn,
+  createDataTableSelectColumn,
+} from "@/index"
 
 import type { FamilyDemoProps } from "../types"
 
-import { dataTableDemoRows, dataTableToolbarActions } from "./data"
+import { dataTableDemoPresets, dataTableDemoRows, dataTableToolbarActions } from "./data"
+import type { DataTableDemoRow } from "./types"
 
 export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
-  const [selectedInvoices, setSelectedInvoices] = React.useState<string[]>([dataTableDemoRows[0]?.invoice ?? ""])
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({})
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const [activeInvoice, setActiveInvoice] = React.useState<string>(dataTableDemoRows[0]?.invoice ?? "")
-  const visibleRows = dataTableDemoRows.filter((row) => [row.invoice, row.customer, row.status, row.amount].join(" ").toLowerCase().includes(state.search.toLowerCase()))
+  const [loading, setLoading] = React.useState(false)
+  const [empty, setEmpty] = React.useState(false)
+  const [error, setError] = React.useState(false)
+  const [view, setView] = React.useState<"all" | "finance" | "at-risk">("all")
+  const [pageSize, setPageSize] = React.useState(10)
+
+  const visibleRows = React.useMemo(() => {
+    const search = state.search.trim().toLowerCase()
+    let rows = dataTableDemoRows
+
+    if (view === "finance") rows = rows.filter((row) => row.status === "Paid" || row.status === "Review")
+    if (view === "at-risk") rows = rows.filter((row) => row.status === "Draft" || row.status === "Overdue")
+
+    if (empty) return []
+    if (!search) return rows
+
+    return rows.filter((row) =>
+      [row.invoice, row.order, row.customer, row.owner, row.channel, row.status, row.amount].join(" ").toLowerCase().includes(search)
+    )
+  }, [empty, state.search, view])
+
+  const selectedRows = React.useMemo(() => visibleRows.filter((_, index) => rowSelection[index]), [rowSelection, visibleRows])
   const activeRow = visibleRows.find((row) => row.invoice === activeInvoice) ?? visibleRows[0]
 
-  function toggleInvoice(invoice: string) {
-    setSelectedInvoices((current) => (current.includes(invoice) ? current.filter((item) => item !== invoice) : [...current, invoice]))
-  }
+  const columns = React.useMemo<ColumnDef<DataTableDemoRow>[]>(
+    () => [
+      createDataTableSelectColumn<DataTableDemoRow>(),
+      {
+        accessorKey: "invoice",
+        header: ({ column }) => <DataTableSortableHeader column={column}>Invoice</DataTableSortableHeader>,
+      },
+      { accessorKey: "order", header: "Order" },
+      {
+        accessorKey: "customer",
+        header: ({ column }) => <DataTableSortableHeader column={column}>Customer</DataTableSortableHeader>,
+      },
+      { accessorKey: "owner", header: "Owner" },
+      { accessorKey: "channel", header: "Channel" },
+      {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => (
+          <Badge
+            variant={
+              row.original.status === "Paid"
+                ? "secondary"
+                : row.original.status === "Review"
+                  ? "outline"
+                  : "destructive"
+            }
+          >
+            {row.original.status}
+          </Badge>
+        ),
+      },
+      {
+        accessorKey: "stock",
+        header: ({ column }) => <DataTableSortableHeader column={column}>Stock</DataTableSortableHeader>,
+      },
+      { accessorKey: "amount", header: "Amount" },
+      { accessorKey: "updatedAt", header: "Updated" },
+      createDataTableActionsColumn<DataTableDemoRow>({
+        getActions: (_row, original) => [
+          { key: "view", label: "View row", onSelect: () => setActiveInvoice(original.invoice) },
+          { key: "follow-up", label: "Create follow-up", onSelect: () => setState({ notes: `Follow-up prepared for ${original.customer}` }) },
+          { key: "archive", label: "Archive", destructive: true, onSelect: () => setState({ notes: `${original.invoice} marked for archive review` }) },
+        ],
+      }),
+    ],
+    [setState]
+  )
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-4 rounded-[22px] border border-zinc-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
-        <Input value={state.search} onChange={(event) => setState({ search: event.target.value })} placeholder="Filter invoices..." className="w-full md:max-w-xs" />
+      <div className="grid gap-4 rounded-[22px] border border-zinc-200 bg-white p-4">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+          <FilterBar
+            search={
+              <SearchInput
+                value={state.search}
+                onValueChange={(value) => setState({ search: value })}
+                placeholder="Search invoice, owner, channel..."
+              />
+            }
+            activeCount={(state.search ? 1 : 0) + (view !== "all" ? 1 : 0)}
+            onReset={() => {
+              setState({ search: "" })
+              setView("all")
+              setRowSelection({})
+            }}
+          />
+          <div className="flex flex-wrap gap-3">
+            {dataTableToolbarActions.map((action) => (
+              <Button key={action.label} variant={action.variant}>{action.label}</Button>
+            ))}
+          </div>
+        </div>
+
         <div className="flex flex-wrap gap-3">
-          {dataTableToolbarActions.map((action) => (
-            <Button key={action.label} variant={action.variant}>{action.label}</Button>
-          ))}
+          <DataTableViewPresets
+            value={view}
+            onValueChange={(value) => setView((value as typeof view | undefined) ?? "all")}
+            presets={dataTableDemoPresets}
+            size="sm"
+          />
+          <Button variant={state.density === "compact" ? "default" : "outline"} size="sm" onClick={() => setState({ density: "compact" })}>Compact</Button>
+          <Button variant={state.density === "comfortable" ? "default" : "outline"} size="sm" onClick={() => setState({ density: "comfortable" })}>Comfortable</Button>
+          <Button variant={loading ? "default" : "outline"} size="sm" onClick={() => setLoading((current) => !current)}>Loading</Button>
+          <Button variant={error ? "default" : "outline"} size="sm" onClick={() => setError((current) => !current)}>Error</Button>
+          <Button variant={empty ? "default" : "outline"} size="sm" onClick={() => setEmpty((current) => !current)}>Empty</Button>
+          <Button variant={pageSize === 20 ? "default" : "outline"} size="sm" onClick={() => setPageSize((current) => (current === 10 ? 20 : 10))}>Page size {pageSize}</Button>
         </div>
       </div>
+
       <div className="rounded-[22px] border border-zinc-200 bg-white p-4">
         <div className="mb-4 flex flex-wrap gap-2">
-          <Badge variant="outline">{selectedInvoices.length} selected</Badge>
+          <Badge variant="outline">{selectedRows.length} selected</Badge>
           <Badge variant="outline">Row actions ready</Badge>
+          <Badge variant="outline">Bulk actions ready</Badge>
+          <Badge variant="outline">Column visibility</Badge>
           <Badge variant="outline">Mobile cards supported</Badge>
         </div>
 
-        <div className="hidden md:block">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-14">Pick</TableHead>
-                <TableHead>Invoice</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {visibleRows.map((row) => (
-                <TableRow key={row.invoice} className={activeInvoice === row.invoice ? "bg-zinc-50" : undefined} onClick={() => setActiveInvoice(row.invoice)}>
-                  <TableCell>
-                    <button
-                      type="button"
-                      onClick={(event) => {
-                        event.stopPropagation()
-                        toggleInvoice(row.invoice)
-                      }}
-                      className={selectedInvoices.includes(row.invoice) ? "rounded-lg bg-zinc-950 px-2 py-1 text-xs text-white" : "rounded-lg border border-zinc-200 px-2 py-1 text-xs text-zinc-600"}
-                    >
-                      {selectedInvoices.includes(row.invoice) ? "On" : "Off"}
-                    </button>
-                  </TableCell>
-                  <TableCell>{row.invoice}</TableCell>
-                  <TableCell>{row.customer}</TableCell>
-                  <TableCell><Badge variant={row.status === "Paid" ? "secondary" : row.status === "Review" ? "outline" : "destructive"}>{row.status}</Badge></TableCell>
-                  <TableCell className="text-right">{row.amount}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-
-        <div className="grid gap-3 md:hidden">
-          {visibleRows.map((row) => (
-            <button
-              key={row.invoice}
-              type="button"
-              onClick={() => setActiveInvoice(row.invoice)}
-              className={activeInvoice === row.invoice ? "rounded-[20px] border border-zinc-950 bg-zinc-950 p-4 text-left text-white" : "rounded-[20px] border border-zinc-200 bg-zinc-50 p-4 text-left"}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="font-medium">{row.invoice}</p>
-                  <p className={activeInvoice === row.invoice ? "mt-1 text-sm text-white/70" : "mt-1 text-sm text-zinc-500"}>{row.customer}</p>
-                </div>
-                <Badge variant={activeInvoice === row.invoice ? "secondary" : row.status === "Paid" ? "secondary" : row.status === "Review" ? "outline" : "destructive"}>{row.status}</Badge>
-              </div>
-              <div className="mt-4 flex items-center justify-between">
-                <span className={activeInvoice === row.invoice ? "text-sm text-white/70" : "text-sm text-zinc-500"}>Amount</span>
-                <span className="font-semibold">{row.amount}</span>
-              </div>
-            </button>
-          ))}
-        </div>
+        <DataTable
+          columns={columns}
+          data={visibleRows}
+          rowSelection={rowSelection}
+          onRowSelectionChange={setRowSelection}
+          sorting={sorting}
+          onSortingChange={setSorting}
+          enableRowSelection
+          density={state.density === "comfortable" ? "comfortable" : "compact"}
+          striped
+          bordered
+          stickyHeader
+          isLoading={loading}
+          isError={error}
+          loadingVariant="skeleton"
+          loadingState={{ label: "Loading invoices", description: "Reusable DataTable loading state." }}
+          errorState={{ title: "Invoice table failed", description: "Force error state to inspect resilient UI." }}
+          emptyState={{ title: "No rows found", description: "Current view or search does not match any invoice." }}
+          onRowClick={(row) => setActiveInvoice(row.original.invoice)}
+          toolbarProps={(table) => ({
+            title: "Invoices",
+            description: "Primary reusable data-table API for finance, ops and admin surfaces.",
+            search: (
+              <FilterBar
+                search={<SearchInput value={state.search} onValueChange={(value) => setState({ search: value })} placeholder="Search table..." />}
+                activeCount={(state.search ? 1 : 0) + (view !== "all" ? 1 : 0)}
+                onReset={() => {
+                  setState({ search: "" })
+                  setView("all")
+                }}
+              />
+            ),
+            actions: <DataTableColumnVisibilityMenu table={table} />,
+            selectionActions: (
+              <DataTableBulkActions
+                rows={table.getSelectedRowModel().rows.map((row) => row.original)}
+                actions={[
+                  {
+                    key: "export",
+                    label: "Export selected",
+                    onSelect: (rows) => setState({ notes: `${rows.length} rows prepared for export` }),
+                  },
+                  {
+                    key: "archive",
+                    label: "Archive selected",
+                    destructive: true,
+                    onSelect: (rows) => setState({ notes: `${rows.length} rows sent to archive flow` }),
+                  },
+                ]}
+                onClearSelection={() => setRowSelection({})}
+              />
+            ),
+          })}
+          pagination={{ pageIndex: 0, pageSize, rowCount: visibleRows.length, pageCount: 1 }}
+        />
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-[22px] border border-zinc-200 bg-zinc-50 p-4">
           <p className="text-sm text-zinc-500">Active row</p>
           <p className="mt-2 text-lg font-semibold text-zinc-950">{activeRow?.invoice ?? "No row"}</p>
-          <p className="mt-2 text-sm text-zinc-600">{activeRow?.customer}</p>
+          <p className="mt-2 text-sm text-zinc-600">{activeRow ? `${activeRow.customer} • ${activeRow.owner}` : "Select a row"}</p>
         </div>
         <div className="rounded-[22px] border border-zinc-200 bg-zinc-50 p-4">
           <p className="text-sm text-zinc-500">Selection mode</p>
           <p className="mt-2 text-lg font-semibold text-zinc-950">Bulk actions</p>
-          <p className="mt-2 text-sm text-zinc-600">{selectedInvoices.length} invoices can be exported or archived together.</p>
+          <p className="mt-2 text-sm text-zinc-600">{selectedRows.length} invoices can be exported or archived together.</p>
         </div>
         <div className="rounded-[22px] border border-zinc-200 bg-zinc-50 p-4">
-          <p className="text-sm text-zinc-500">Mobile strategy</p>
-          <p className="mt-2 text-lg font-semibold text-zinc-950">Table to cards</p>
-          <p className="mt-2 text-sm text-zinc-600">Narrow screens collapse rows into actionable stacked cards.</p>
+          <p className="text-sm text-zinc-500">Reusable strategy</p>
+          <p className="mt-2 text-lg font-semibold text-zinc-950">One API, many states</p>
+          <p className="mt-2 text-sm text-zinc-600">Search, density, row actions, selection, error, empty and pagination live in one component.</p>
         </div>
       </div>
+
       <div className="flex items-center justify-between rounded-[22px] border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-600">
         <span>{visibleRows.length} rows visible</span>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">Prev</Button>
-          <Button size="sm">Next</Button>
+          <Button variant="outline" size="sm" onClick={() => setPageSize(10)}>10</Button>
+          <Button size="sm" onClick={() => setPageSize(20)}>20</Button>
         </div>
       </div>
     </div>

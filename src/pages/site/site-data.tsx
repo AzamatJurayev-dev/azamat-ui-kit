@@ -26,6 +26,7 @@ import {
   ToggleLeftIcon,
   WorkflowIcon,
 } from "lucide-react"
+import { templateRecords } from "./template-data"
 
 export type NavItem = {
   label: string
@@ -51,8 +52,23 @@ export type BlockCard = {
   tone: string
   href: string
   previewHref?: string
+  previewTone: TemplatePreviewTone
   layout: "Application" | "Marketing"
   theme: "Light" | "Soft"
+}
+
+export type TemplatePreviewTone = "dashboard" | "crm" | "table" | "auth" | "pricing" | "settings" | "product"
+
+export type TemplateSectionCard = {
+  title: string
+  text: string
+  status: string
+}
+
+export type TemplateStatCard = {
+  label: string
+  value: string
+  meta: string
 }
 
 export type TemplateSection = {
@@ -61,6 +77,8 @@ export type TemplateSection = {
   title: string
   description: string
   bullets: string[]
+  statCards: TemplateStatCard[]
+  supportCards: TemplateSectionCard[]
 }
 
 export type TemplateRecord = {
@@ -69,6 +87,8 @@ export type TemplateRecord = {
   eyebrow: string
   summary: string
   status: "Live" | "Review" | "Draft"
+  previewTone: TemplatePreviewTone
+  navItems: string[]
   metrics: Array<{ label: string; value: string; delta: string }>
   sections: TemplateSection[]
   modules: Array<{ label: string; href: string }>
@@ -116,9 +136,9 @@ export type ModuleFamilyItem = {
 
 export const componentDocsPath = (slug: string) => `/docs/components/${slug}`
 export const componentPlaygroundPath = (slug: string) => `/playground/${slug}`
-export const moduleFamilyPath = (slug: string) => `/components/families/${slug}`
+export const moduleFamilyPath = (slug: string) => `/components/${slug}`
 export const moduleFamilyExportSlug = (value: string) => value.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()
-export const moduleFamilyExportPath = (familySlug: string, exportName: string) => `/components/families/${familySlug}/${moduleFamilyExportSlug(exportName)}`
+export const moduleFamilyExportPath = (familySlug: string, exportName: string) => `/components/${familySlug}/${moduleFamilyExportSlug(exportName)}`
 export const templatePath = (slug: string) => `/templates/${slug}`
 
 export const componentCatalog: ComponentCatalogItem[] = [
@@ -303,18 +323,18 @@ export const componentCatalog: ComponentCatalogItem[] = [
   },
   {
     slug: "table",
-    title: "Table",
-    description: "Structured row and column layout for invoices, users and reporting surfaces.",
+    title: "Table primitive",
+    description: "Low-level semantic table pieces for internal composition, not the primary public data-grid showcase.",
     icon: Table2Icon,
     category: "Data Display",
-    status: "Stable",
+    status: "Preview",
     installCommand: "npx azamat-ui@latest add table",
     propsRows: [
       ["className", "string", "-", "Additional table styling."],
       ["children", "ReactNode", "-", "Header, body and row markup."],
       ["caption", "ReactNode", "-", "Optional table caption."],
     ],
-    features: ["Header rows", "Body rows", "Hover states", "Compact reporting"],
+    features: ["Semantic rows", "Header/body slots", "Internal composition", "Primitive markup"],
   },
 ]
 
@@ -598,103 +618,20 @@ export const featuredBlock: BlockCard = {
   tone: "from-emerald-50 via-white to-sky-50",
   href: templatePath("dashboard-starter"),
   previewHref: "/preview/blocks/dashboard-01",
+  previewTone: "dashboard",
   layout: "Application",
   theme: "Soft",
 }
 
 export const blockCards: BlockCard[] = [
-  { slug: "sidebar-layout", title: "Sidebar Layout", description: "Application shell with responsive sidebar.", tags: ["Dashboard", "Layout", "Navigation", "Shell"], tone: "from-slate-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/dashboard-01", layout: "Application", theme: "Light" },
-  { slug: "crm-dashboard", title: "CRM Dashboard", description: "Sales pipeline and deals management.", tags: ["CRM", "Pipeline", "Kanban"], tone: "from-cyan-50 to-white", href: templatePath("crm-dashboard"), layout: "Application", theme: "Soft" },
-  { slug: "users-table", title: "Users Table", description: "Advanced table with filters and actions.", tags: ["Dashboard", "Table", "Data", "Filters"], tone: "from-zinc-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/table-01", layout: "Application", theme: "Light" },
-  { slug: "auth-sign-in", title: "Auth Sign In", description: "Minimal sign in form with social login.", tags: ["Auth", "Form", "Minimal"], tone: "from-amber-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/auth-01", layout: "Marketing", theme: "Light" },
-  { slug: "pricing-section", title: "Pricing Section", description: "Responsive pricing with feature lists.", tags: ["Forms", "Pricing", "Marketing", "Section"], tone: "from-orange-50 to-white", href: templatePath("dashboard-starter"), layout: "Marketing", theme: "Soft" },
-  { slug: "settings-form", title: "Settings Form", description: "Profile and preferences settings form.", tags: ["Forms", "Settings", "Profile"], tone: "from-stone-50 to-white", href: templatePath("dashboard-starter"), layout: "Application", theme: "Light" },
-  { slug: "invoices-page", title: "Invoices Page", description: "Invoices list with status and actions.", tags: ["Finance", "Invoices", "Table"], tone: "from-blue-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/table-01", layout: "Application", theme: "Soft" },
-  { slug: "ecommerce-product", title: "Ecommerce Product", description: "Product details with images and options.", tags: ["Ecommerce", "Product", "Detail"], tone: "from-rose-50 to-white", href: templatePath("ecommerce-product"), previewHref: "/preview/blocks/product-01", layout: "Marketing", theme: "Soft" },
-]
-
-export const templateRecords: TemplateRecord[] = [
-  {
-    slug: "dashboard-starter",
-    title: "Dashboard starter",
-    eyebrow: "Analytics template",
-    summary: "A production-style admin workspace with KPI cards, quick actions, dense data panels and reusable page scaffolding.",
-    status: "Live",
-    metrics: [
-      { label: "Revenue", value: "$24,780", delta: "+12.8%" },
-      { label: "Active users", value: "18,390", delta: "+7.2%" },
-      { label: "Conversion", value: "6.3%", delta: "+1.1%" },
-    ],
-    sections: [
-      { key: "overview", label: "Overview", title: "Overview workspace", description: "High-level metrics, chart zones and recent activity for fast decision making.", bullets: ["KPI cards", "Chart panel", "Recent activity", "Quick actions"] },
-      { key: "leads", label: "Leads", title: "Acquisition pipeline", description: "A lead-focused view with owner tracking, source breakdown and response status.", bullets: ["Lead sources", "Owner table", "Priority chips", "Team assignments"] },
-      { key: "reports", label: "Reports", title: "Reporting layout", description: "Dense but readable reporting surface with filters, exports and period comparisons.", bullets: ["Date filters", "Comparison rows", "Export action", "Readable totals"] },
-      { key: "settings", label: "Settings", title: "Workspace settings", description: "Preferences, connected modules and roles grouped into a calmer management view.", bullets: ["Profile controls", "Role rules", "Module toggles", "Audit actions"] },
-    ],
-    modules: [
-      { label: "Button docs", href: "/docs/components/button" },
-      { label: "Button playground", href: "/playground/button" },
-      { label: "Blocks catalog", href: "/blocks" },
-    ],
-    notes: [
-      "This template route demonstrates how a public block becomes a deeper preview page with its own sections, actions and supporting modules.",
-      "Every primary action here is wired: section buttons switch the canvas, copy actions copy code, and linked modules navigate to real routes.",
-    ],
-  },
-  {
-    slug: "crm-dashboard",
-    title: "CRM workspace",
-    eyebrow: "Pipeline template",
-    summary: "A CRM-oriented shell for deals, stages, team ownership and relationship history with heavier action density.",
-    status: "Review",
-    metrics: [
-      { label: "Open deals", value: "142", delta: "+18" },
-      { label: "Pipeline value", value: "$182k", delta: "+9.4%" },
-      { label: "Win rate", value: "24%", delta: "+2.3%" },
-    ],
-    sections: [
-      { key: "overview", label: "Overview", title: "CRM overview", description: "Track stage velocity, assigned owners and recent customer touchpoints in one place.", bullets: ["Stage lanes", "Owner snapshot", "Customer touchpoints", "Deal summary"] },
-      { key: "leads", label: "Leads", title: "Lead board", description: "Focus on capturing, qualifying and routing new leads without leaving the board.", bullets: ["Qualification cards", "Score badges", "Owner routing", "Next-action queue"] },
-      { key: "reports", label: "Reports", title: "Revenue reports", description: "Sales reporting grouped by rep, source and stage with export-ready formatting.", bullets: ["Rep summary", "Source breakdown", "Stage conversion", "Monthly totals"] },
-      { key: "settings", label: "Settings", title: "CRM settings", description: "Manage stages, scoring thresholds and automations from one compact settings area.", bullets: ["Stage config", "Scoring rules", "Automation toggles", "Permissions"] },
-    ],
-    modules: [
-      { label: "Button docs", href: "/docs/components/button" },
-      { label: "Button playground", href: "/playground/button" },
-      { label: "Blocks catalog", href: "/blocks" },
-    ],
-    notes: [
-      "CRM layouts should show dense actions, stage movement and owner context without collapsing into static marketing cards.",
-      "Section switching here is intentionally route-safe so the same data structure can drive deeper nested views later.",
-    ],
-  },
-  {
-    slug: "ecommerce-product",
-    title: "Commerce product",
-    eyebrow: "Commerce template",
-    summary: "A product-facing commerce layout with media, pricing, option selection and supporting conversion blocks.",
-    status: "Draft",
-    metrics: [
-      { label: "Orders", value: "1,429", delta: "+6.1%" },
-      { label: "Average order", value: "$83", delta: "+4.2%" },
-      { label: "Stock health", value: "92%", delta: "+3.0%" },
-    ],
-    sections: [
-      { key: "overview", label: "Overview", title: "Product overview", description: "Lead with gallery, price, trust points and purchase controls in a clean hierarchy.", bullets: ["Hero media", "Price stack", "Trust badges", "Primary CTA"] },
-      { key: "leads", label: "Leads", title: "Customer interest", description: "Surface wishlists, saved carts and subscriber intent around the product page.", bullets: ["Saved carts", "Interest list", "Segment chips", "Follow-up CTA"] },
-      { key: "reports", label: "Reports", title: "Commerce reporting", description: "Summarize revenue, inventory movement and offer performance on the same route family.", bullets: ["Revenue cards", "Inventory table", "Offer lifts", "Channel compare"] },
-      { key: "settings", label: "Settings", title: "Catalog settings", description: "Edit options, shipping rules and featured modules through a consistent settings screen.", bullets: ["Variant config", "Shipping rules", "Featured slots", "Content ordering"] },
-    ],
-    modules: [
-      { label: "Button docs", href: "/docs/components/button" },
-      { label: "Button playground", href: "/playground/button" },
-      { label: "Blocks catalog", href: "/blocks" },
-    ],
-    notes: [
-      "Commerce surfaces need pricing, option selection and supporting trust blocks to feel complete and production-like.",
-      "This record is also prepared for richer nested sections so blocks and templates can keep sharing one data model.",
-    ],
-  },
+  { slug: "sidebar-layout", title: "Sidebar Layout", description: "Application shell with responsive sidebar.", tags: ["Dashboard", "Layout", "Navigation", "Shell"], tone: "from-slate-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/dashboard-01", previewTone: "dashboard", layout: "Application", theme: "Light" },
+  { slug: "crm-dashboard", title: "CRM Dashboard", description: "Sales pipeline and deals management.", tags: ["CRM", "Pipeline", "Kanban"], tone: "from-cyan-50 to-white", href: templatePath("crm-dashboard"), previewTone: "crm", layout: "Application", theme: "Soft" },
+  { slug: "users-table", title: "Users Table", description: "Advanced table with filters and actions.", tags: ["Dashboard", "Table", "Data", "Filters"], tone: "from-zinc-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/table-01", previewTone: "table", layout: "Application", theme: "Light" },
+  { slug: "auth-sign-in", title: "Auth Sign In", description: "Minimal sign in form with social login.", tags: ["Auth", "Form", "Minimal"], tone: "from-amber-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/auth-01", previewTone: "auth", layout: "Marketing", theme: "Light" },
+  { slug: "pricing-section", title: "Pricing Section", description: "Responsive pricing with feature lists.", tags: ["Forms", "Pricing", "Marketing", "Section"], tone: "from-orange-50 to-white", href: templatePath("dashboard-starter"), previewTone: "pricing", layout: "Marketing", theme: "Soft" },
+  { slug: "settings-form", title: "Settings Form", description: "Profile and preferences settings form.", tags: ["Forms", "Settings", "Profile"], tone: "from-stone-50 to-white", href: templatePath("dashboard-starter"), previewTone: "settings", layout: "Application", theme: "Light" },
+  { slug: "invoices-page", title: "Invoices Page", description: "Invoices list with status and actions.", tags: ["Finance", "Invoices", "Table"], tone: "from-blue-50 to-white", href: templatePath("dashboard-starter"), previewHref: "/preview/blocks/table-01", previewTone: "table", layout: "Application", theme: "Soft" },
+  { slug: "ecommerce-product", title: "Ecommerce Product", description: "Product details with images and options.", tags: ["Ecommerce", "Product", "Detail"], tone: "from-rose-50 to-white", href: templatePath("ecommerce-product"), previewHref: "/preview/blocks/product-01", previewTone: "product", layout: "Marketing", theme: "Soft" },
 ]
 
 export const installCommand = "npx azamat-ui@latest add button"
