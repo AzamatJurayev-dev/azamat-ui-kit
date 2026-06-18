@@ -169,9 +169,19 @@ Added a config-driven form composition pattern on top of existing React Hook For
 - disabled/read-only state can be propagated from one place
 - no validation schema, API, route or business dependency is introduced
 
+### Phase 30 - Component tests and accessibility smoke checks
+
+Added a lightweight quality gate without new runtime dependencies:
+
+- `test:types` runs TypeScript smoke tests against the public package surface
+- `test:a11y` runs static accessibility smoke checks for key interactive components
+- `test:run` combines both checks
+- CI now runs smoke tests before build
+- `docs/testing.md` documents the testing strategy
+
 ## Next priority order
 
-1. Component tests and accessibility smoke checks
-2. Registry validation script
-3. Playground examples for ResourcePage/FormBuilder/AppShell responsive states
-4. Resource detail page pattern
+1. Registry validation script
+2. Playground examples for ResourcePage/FormBuilder/AppShell responsive states
+3. Resource detail page pattern
+4. More focused smoke tests for registry groups
