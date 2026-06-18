@@ -190,9 +190,20 @@ Added an API-free detail page composition pattern for dashboard resource detail 
 - slot class names for content, aside, header and sections
 - no API, route, permission or business dependency is introduced
 
+### Phase 32 - Registry validation
+
+Added a registry validation guardrail for the CLI and public manifest:
+
+- `test:registry` runs `scripts/validate-registry.mjs`
+- validates `registry.json` names against the CLI registry
+- validates `ComponentName` coverage
+- validates `registryDependencies`
+- validates registry source files exist
+- included in `test:run` and CI before build
+
 ## Next priority order
 
-1. Registry validation script
-2. Playground examples for ResourcePage/FormBuilder/AppShell responsive states
-3. More focused smoke tests for registry groups
-4. More dashboard-ready display components
+1. Playground examples for ResourcePage/FormBuilder/AppShell responsive states
+2. More focused smoke tests for registry groups
+3. More dashboard-ready display components
+4. Table filter presets / saved views
