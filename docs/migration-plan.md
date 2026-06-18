@@ -157,9 +157,21 @@ Added an API-free page composition pattern for dashboard resource screens:
 - slot class names for toolbar, content, aside and page header
 - no API, route, permission or business dependency
 
+### Phase 29 - FormBuilder pattern
+
+Added a config-driven form composition pattern on top of existing React Hook Form wrappers:
+
+- `FormBuilder` renders fields or sections from config
+- supports `input`, `textarea`, `select`, `async-select`, `switch`, `number`, `phone`, `date`, `date-range` and `custom`
+- supports grid or stack layout
+- supports compact/default/comfortable density
+- supports section headers, section actions, field col-span and footer actions
+- disabled/read-only state can be propagated from one place
+- no validation schema, API, route or business dependency is introduced
+
 ## Next priority order
 
-1. FormBuilder planning on top of existing form components
-2. Component tests and accessibility smoke checks
-3. Registry validation script
-4. Playground examples for ResourcePage and AppShell responsive states
+1. Component tests and accessibility smoke checks
+2. Registry validation script
+3. Playground examples for ResourcePage/FormBuilder/AppShell responsive states
+4. Resource detail page pattern
