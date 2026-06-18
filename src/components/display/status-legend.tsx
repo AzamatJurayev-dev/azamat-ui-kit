@@ -1,0 +1,108 @@
+import * as React from "react"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
+
+export type StatusLegendTone = "default" | "success" | "warning" | "danger" | "info" | "muted"
+export type StatusLegendOrientation = "vertical" | "horizontal" | "grid"
+
+export type StatusLegendItem = {
+  key: string
+  label: React.ReactNode
+  description?: React.ReactNode
+  count?: React.ReactNode
+  tone?: StatusLegendTone
+  icon?: React.ReactNode
+  hidden?: boolean
+  className?: string
+}
+
+export type StatusLegendProps = React.ComponentProps<typeof Card> & {
+  title?: React.ReactNode
+  description?: React.ReactNode
+  actions?: React.ReactNode
+  items: StatusLegendItem[]
+  orientation?: StatusLegendOrientation
+  compact?: boolean
+  showCounts?: boolean
+  contentClassName?: string
+  itemClassName?: string
+}
+
+const dotClassName: Record<StatusLegendTone, string> = {
+  default: "bg-primary",
+  success: "bg-emerald-500",
+  warning: "bg-amber-500",
+  danger: "bg-destructive",
+  info: "bg-blue-500",
+  muted: "bg-muted-foreground",
+}
+
+function StatusLegend({
+  title,
+  description,
+  actions,
+  items,
+  orientation = "vertical",
+  compact = false,
+  showCounts = true,
+  contentClassName,
+  itemClassName,
+  className,
+  ...props
+}: StatusLegendProps) {
+  const visibleItems = items.filter((item) => !item.hidden)
+  const hasHeader = Boolean(title || description || actions)
+
+  return (
+    <Card data-slot="status-legend" className={cn("min-w-0", className)} {...props}>
+      {hasHeader && (
+        <CardHeader className={cn(compact && "p-4 pb-2")}>
+          <div className="flex min-w-0 items-start justify-between gap-3">
+            <div className="min-w-0 space-y-1">
+              {title && <CardTitle>{title}</CardTitle>}
+              {description && <CardDescription>{description}</CardDescription>}
+            </div>
+            {actions && <div className="shrink-0">{actions}</div>}
+          </div>
+        </CardHeader>
+      )}
+
+      <CardContent
+        className={cn(
+          "gap-2",
+          orientation === "vertical" && "grid",
+          orientation === "horizontal" && "flex flex-wrap",
+          orientation === "grid" && "grid sm:grid-cols-2",
+          compact && "p-4 pt-2",
+          contentClassName
+        )}
+      >
+        {visibleItems.map((item) => (
+          <div
+            key={item.key}
+            data-slot="status-legend-item"
+            data-tone={item.tone ?? "default"}
+            className={cn("flex min-w-0 items-start justify-between gap-3 rounded-lg border bg-muted/20 p-3", compact && "p-2", itemClassName, item.className)}
+          >
+            <div className="flex min-w-0 items-start gap-2">
+              {item.icon ? (
+                <span className="mt-0.5 shrink-0 text-muted-foreground [&_svg]:size-4">{item.icon}</span>
+              ) : (
+                <span className={cn("mt-1.5 size-2.5 shrink-0 rounded-full", dotClassName[item.tone ?? "default"])} />
+              )}
+              <div className="min-w-0 space-y-0.5">
+                <div className="truncate text-sm font-medium text-foreground">{item.label}</div>
+                {item.description && <div className="text-xs leading-5 text-muted-foreground">{item.description}</div>}
+              </div>
+            </div>
+            {showCounts && item.count !== undefined && <Badge variant="secondary" className="shrink-0">{item.count}</Badge>}
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  )
+}
+
+export { StatusLegend }
