@@ -1,5 +1,5 @@
-import PlaygroundPage from "./pages/playground/playground-page"
+import SiteShowcase from "./pages/site/site-showcase"
 
 export default function App() {
-  return <PlaygroundPage />
+  return <SiteShowcase />
 }
