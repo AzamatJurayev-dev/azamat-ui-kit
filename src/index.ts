@@ -10,6 +10,8 @@ export * from "./components/ui/select"
 export * from "./components/ui/table"
 export * from "./components/ui/badge"
 export * from "./components/ui/card"
+export * from "./components/ui/tabs"
+export * from "./components/ui/component-preview"
 
 export * from "./components/actions"
 export * from "./components/layout"
@@ -28,8 +30,6 @@ export * from "./components/command"
 export * from "./components/calendar"
 export * from "./components/upload"
 export * from "./components/wizard"
+export * from "./components/patterns"
 export * from "./hooks"
 export * from "./lib/utils"
-
-export * from './components/ui/tabs';
-export * from './components/ui/component-preview';
