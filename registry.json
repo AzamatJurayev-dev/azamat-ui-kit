@@ -134,7 +134,8 @@
       "use-before-unload-when-dirty",
       "use-is-mobile",
       "use-disclosure",
-      "use-debounce"
+      "use-debounce",
+      "use-data-table-view-state"
     ],
     "kits": [
       "dashboard",
@@ -178,6 +179,7 @@
     "resource-page",
     "resource-detail-page",
     "form-builder",
-    "form-builder-presets"
+    "form-builder-presets",
+    "use-data-table-view-state"
   ]
 }
