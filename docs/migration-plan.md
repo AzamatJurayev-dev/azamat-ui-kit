@@ -201,9 +201,18 @@ Added a registry validation guardrail for the CLI and public manifest:
 - validates registry source files exist
 - included in `test:run` and CI before build
 
+### Phase 33 - Dashboard display components
+
+Added reusable display components for dashboard pages and detail pages:
+
+- `MetricGrid` renders metric/stat cards with tones, icons, trend and responsive columns
+- `InfoCard` renders flexible informational cards with media, icon, actions and footer slots
+- `ActivityFeed` renders timeline-like activity lists with tone dots, icons, time and actions
+- all are API-free and designed for `ResourcePage`, `ResourceDetailPage`, dashboards and aside panels
+
 ## Next priority order
 
-1. Playground examples for ResourcePage/FormBuilder/AppShell responsive states
-2. More focused smoke tests for registry groups
-3. More dashboard-ready display components
-4. Table filter presets / saved views
+1. Table filter presets / saved views
+2. FormBuilder field presets
+3. Registry entries for display/pattern components
+4. Playground examples for new display components
