@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+### Fixed
+
+- hardened library externals so React, React DOM, JSX runtime and React Hook Form stay external in package builds
+- added build-output smoke checks to catch forbidden ESM `require("react")` usage before release
+- aligned CLI version with the package version
+- aligned `registry.json` version with `package.json`
+- added `.light` theme class output next to `:root` and `.dark`
+
+### Changed
+
+- build now starts from a clean `dist` directory and runs output validation
+- release gate now includes lint, type/a11y/registry/build-output tests, build, and `npm pack --dry-run`
+- `init` supports Vite and Next.js path defaults through `--template vite|next`
+- registry validation now fails on package/registry version mismatch and duplicate registry dependencies
+- package tarball includes `COMPONENT_MATURITY.md` for public API handoff
+
+### Docs
+
+- documented component maturity rubric, public export statuses, helper policy, and audit checklist
+- expanded release handoff with npm 2FA/token, manual consumer smoke, GitHub release notes and docs-app handoff
+
 ## 0.1.1 - 2026-06-18
 
 Library-only cleanup release.
