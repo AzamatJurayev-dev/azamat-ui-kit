@@ -11,6 +11,8 @@ This file is the source of truth for public API readiness in `azamat-ui-kit`. A 
 | `experimental` | API is being explored. | Prefer registry-only or internal use until audited. |
 | `internal` | Helper used by other components. | Do not document as a primary component. |
 
+The CLI registry status metadata lives in `cli/registry-status.ts`. `azamat-ui-kit list` displays these statuses so app teams can avoid accidentally treating preview/experimental APIs as stable.
+
 ## Maturity rubric
 
 Every public component family is reviewed against these gates:
@@ -44,7 +46,7 @@ Every public component family is reviewed against these gates:
 | `Popover` | `stable` | Placement props should be passed through to the primitive wrapper. |
 | `DropdownMenu` | `stable` | Disabled, destructive and shortcut slots are generic UI concerns. |
 | `Select` | `stable` | Controlled/default value, placeholder, disabled options, group/label/separator remain generic. |
-| `CommandPalette` | `preview` | Public API is useful, but composition and shortcut behavior should stay documented. |
+| `CommandPalette` | `preview` | Only `CommandPalette` and its shortcut hook should be treated as public for now. Low-level command primitives stay internal until composition tests exist. |
 
 ### Stable complex families
 
@@ -64,22 +66,47 @@ Every public component family is reviewed against these gates:
 | --- | --- | --- |
 | `inputs` | `preview` | Prefer `value` as raw string/number and `onValueChange` or typed callbacks for parsed values. |
 | `form` | `preview` | React Hook Form wrappers should stay type-safe with `Control<FieldValues>` and field-state errors. |
-| `calendar` | `preview` | Locale, week start, timezone and date string strategy must be owned by the consumer until stabilized. |
+| `calendar` | `preview` | Values are `YYYY-MM-DD` local-date strings. Consumers own timezone conversion for API payloads. |
 | `upload` | `preview` | Consumers own validation copy; package owns disabled, accept, progress, preview and cleanup behavior. |
 
 ### Data and patterns
 
 | Component | Status | Contract |
 | --- | --- | --- |
-| `DataTable` | `preview` | Generic TanStack Table shell. Server/client sorting, filtering and pagination must be explicit in props. |
+| `DataTable` | `preview` | Generic TanStack Table shell. Server/client sorting, filtering and pagination must be explicit in props. Public pagination config uses a 0-based `pageIndex`, matching TanStack Table; visible UI labels may display 1-based page numbers. |
 | `DataTableViewPresets` | `preview` | Persistence is optional and should use caller-provided local/session storage keys. |
 | `ResourcePage` | `preview` | Generic business shell only; no project copy, routes or API assumptions. |
 | `ResourceDetailPage` | `preview` | Sections should remain type-safe and caller-owned. |
-| `FormBuilder` | `experimental` | Useful for internal speed, but custom render and field presets need additional type tests before stable. |
+| `FormBuilder` | `experimental` | Remains experimental until custom field render and `FieldPath` type tests exist. |
+
+## Public API decisions
+
+- `ThemeProvider` remains source-only/internal for now. The package-level contract is CSS token ownership in the consumer app, not a root provider export.
+- `InputGroup`/prefix/suffix composition stays internal or wrapper-level until a stable API is designed.
+- Low-level command primitives stay internal; export `CommandPalette` and shortcut helpers only.
+- Root exports stay as-is until a public API snapshot proves that subpath exports are needed for documentation or tree-shaking.
+- Every public API addition/removal must be recorded in `CHANGELOG.md` under Added/Changed/Removed before release.
 
 ## Public helper rule
 
 Variant helpers such as `buttonVariants` and `badgeVariants` may stay public when they are documented as styling helpers. If a helper is only used internally, move it out of `src/index.ts` before the next major/minor release.
+
+## Color policy
+
+Token-first classes are required for neutral UI surfaces: `background`, `foreground`, `card`, `popover`, `muted`, `accent`, `border`, `input`, `ring`, `primary`, `secondary`, `destructive`.
+
+Allowed semantic hardcoded palettes are limited to status/tone components and must represent meaning, not layout:
+
+- emerald: success/positive/online
+- amber: warning/pending
+- red: danger/destructive/error when the `destructive` token is not enough for multi-tone status UI
+- blue: info/neutral-progress
+
+Non-semantic neutral palettes such as `zinc`, `slate`, `neutral`, `stone`, `white`, and `black` should be converted to token classes in package components unless they are inside documentation examples or intentionally isolated visual assets.
+
+## Font dependency decision
+
+`@fontsource-variable/geist` stays as a package dependency for now because the CLI theme block imports it into the consumer app CSS. It is not imported by React components directly. If the theme block stops importing the font, the dependency can move out of runtime dependencies.
 
 ## Component audit checklist
 
