@@ -75,10 +75,10 @@ export async function initCommand(options: InitCommandOptions = {}) {
 
   const response = (await prompts([
     {
-      type: options.skipInstall ? null : "confirm",
+      type: "confirm",
       name: "installDeps",
       message: "Asosiy dependencylarni o‘rnataymi? / Install base dependencies?",
-      initial: true,
+      initial: !options.skipInstall,
     },
     {
       type: "text",
