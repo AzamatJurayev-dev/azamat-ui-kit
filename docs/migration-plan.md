@@ -132,9 +132,23 @@ Improved `CommandPalette` as the single global command/search component:
 - `onItemSelect` callback
 - configurable `recent`, `renderEmpty`, `renderLoading`, `filterItem`, `inputClassName` and `listClassName`
 
+### Phase 27 - AppShell responsive hardening
+
+Improved `AppShell` as the main responsive dashboard shell:
+
+- controlled/uncontrolled desktop sidebar collapse state
+- controlled/uncontrolled mobile sidebar open state
+- mobile overlay sidebar with close button
+- optional mobile sidebar override
+- fixed or static sidebar mode
+- configurable sidebar and aside widths
+- mobile menu trigger slot behavior
+- class hooks for sidebar, mobile sidebar, aside, main wrapper and content
+- no route, auth, tenant, permission or business dependency
+
 ## Next priority order
 
-1. App shell advanced responsive sidebar helpers
-2. FormBuilder / ResourcePage planning on top of existing components
-3. Component tests and accessibility smoke checks
-4. Registry validation script
+1. FormBuilder / ResourcePage planning on top of existing components
+2. Component tests and accessibility smoke checks
+3. Registry validation script
+4. Playground examples for AppShell responsive states
