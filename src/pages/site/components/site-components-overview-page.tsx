@@ -13,7 +13,9 @@ export function SiteComponentsOverviewPage() {
   const [search, setSearch] = React.useState("")
   const deferredSearch = React.useDeferredValue(search)
 
-  const visibleComponents = componentCatalog.filter((item) => normalize([item.title, item.description, ...item.features].join(" ")).includes(normalize(deferredSearch)))
+  const visibleComponents = componentCatalog
+    .filter((item) => item.slug !== "table")
+    .filter((item) => normalize([item.title, item.description, ...item.features].join(" ")).includes(normalize(deferredSearch)))
   const visibleFamilies = moduleFamilyCatalog.filter((item) => normalize([item.title, item.description, ...item.exports].join(" ")).includes(normalize(deferredSearch)))
   const featuredFamily = moduleFamilyCatalog.find((item) => item.slug === "data-table") ?? moduleFamilyCatalog[0]
   const FeaturedIcon = featuredFamily.icon
@@ -218,7 +220,7 @@ export function SiteComponentsOverviewPage() {
             <SurfaceCard className="p-6">
               <h3 className="text-2xl font-semibold tracking-tight">Core components</h3>
               <div className="mt-5 flex flex-wrap gap-2">
-                {componentCatalog.map((item) => (
+                {componentCatalog.filter((item) => item.slug !== "table").map((item) => (
                   <Link key={item.slug} to={`/playground/${item.slug}`} className="rounded-full border border-zinc-200 px-3 py-1.5 text-sm text-zinc-700 transition hover:bg-zinc-50">
                     {item.title}
                   </Link>

@@ -28,7 +28,8 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
   const [empty, setEmpty] = React.useState(false)
   const [error, setError] = React.useState(false)
   const [view, setView] = React.useState<"all" | "finance" | "at-risk">("all")
-  const [pageSize, setPageSize] = React.useState(10)
+  const [pageSize, setPageSize] = React.useState(3)
+  const [pageIndex, setPageIndex] = React.useState(0)
 
   const visibleRows = React.useMemo(() => {
     const search = state.search.trim().toLowerCase()
@@ -44,9 +45,19 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
       [row.invoice, row.order, row.customer, row.owner, row.channel, row.status, row.amount].join(" ").toLowerCase().includes(search)
     )
   }, [empty, state.search, view])
+  const pageCount = Math.max(Math.ceil(visibleRows.length / pageSize), 1)
+  const safePageIndex = Math.min(pageIndex, Math.max(pageCount - 1, 0))
+  const pagedRows = React.useMemo(
+    () => visibleRows.slice(safePageIndex * pageSize, safePageIndex * pageSize + pageSize),
+    [pageSize, safePageIndex, visibleRows]
+  )
 
-  const selectedRows = React.useMemo(() => visibleRows.filter((_, index) => rowSelection[index]), [rowSelection, visibleRows])
-  const activeRow = visibleRows.find((row) => row.invoice === activeInvoice) ?? visibleRows[0]
+  React.useEffect(() => {
+    setPageIndex((current) => Math.min(current, Math.max(pageCount - 1, 0)))
+  }, [pageCount])
+
+  const selectedRows = React.useMemo(() => dataTableDemoRows.filter((_, index) => rowSelection[index]), [rowSelection])
+  const activeRow = dataTableDemoRows.find((row) => row.invoice === activeInvoice) ?? pagedRows[0]
 
   const columns = React.useMemo<ColumnDef<DataTableDemoRow>[]>(
     () => [
@@ -98,34 +109,20 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 rounded-[22px] border border-zinc-200 bg-white p-4">
-        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-          <FilterBar
-            search={
-              <SearchInput
-                value={state.search}
-                onValueChange={(value) => setState({ search: value })}
-                placeholder="Search invoice, owner, channel..."
-              />
-            }
-            activeCount={(state.search ? 1 : 0) + (view !== "all" ? 1 : 0)}
-            onReset={() => {
-              setState({ search: "" })
-              setView("all")
-              setRowSelection({})
-            }}
-          />
-          <div className="flex flex-wrap gap-3">
-            {dataTableToolbarActions.map((action) => (
-              <Button key={action.label} variant={action.variant}>{action.label}</Button>
-            ))}
-          </div>
+      <div className="grid gap-3 rounded-[22px] border border-zinc-200 bg-white p-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="outline">{selectedRows.length} selected</Badge>
+          <Badge variant="outline">{view === "all" ? "All invoices" : view === "finance" ? "Finance review" : "At risk"}</Badge>
+          <Badge variant="outline">{state.density}</Badge>
         </div>
-
+        <p className="text-sm leading-6 text-zinc-500">Search, sort, row actions, bulk actions, view presets and pagination all work in one reusable `DataTable`.</p>
         <div className="flex flex-wrap gap-3">
           <DataTableViewPresets
             value={view}
-            onValueChange={(value) => setView((value as typeof view | undefined) ?? "all")}
+            onValueChange={(value) => {
+              setView((value as typeof view | undefined) ?? "all")
+              setPageIndex(0)
+            }}
             presets={dataTableDemoPresets}
             size="sm"
           />
@@ -134,22 +131,23 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
           <Button variant={loading ? "default" : "outline"} size="sm" onClick={() => setLoading((current) => !current)}>Loading</Button>
           <Button variant={error ? "default" : "outline"} size="sm" onClick={() => setError((current) => !current)}>Error</Button>
           <Button variant={empty ? "default" : "outline"} size="sm" onClick={() => setEmpty((current) => !current)}>Empty</Button>
-          <Button variant={pageSize === 20 ? "default" : "outline"} size="sm" onClick={() => setPageSize((current) => (current === 10 ? 20 : 10))}>Page size {pageSize}</Button>
+          <Button variant="outline" size="sm" onClick={() => {
+            setState({ search: "" })
+            setView("all")
+            setLoading(false)
+            setError(false)
+            setEmpty(false)
+            setPageIndex(0)
+            setRowSelection({})
+          }}>Reset</Button>
         </div>
       </div>
 
       <div className="rounded-[22px] border border-zinc-200 bg-white p-4">
-        <div className="mb-4 flex flex-wrap gap-2">
-          <Badge variant="outline">{selectedRows.length} selected</Badge>
-          <Badge variant="outline">Row actions ready</Badge>
-          <Badge variant="outline">Bulk actions ready</Badge>
-          <Badge variant="outline">Column visibility</Badge>
-          <Badge variant="outline">Mobile cards supported</Badge>
-        </div>
-
         <DataTable
           columns={columns}
-          data={visibleRows}
+          data={pagedRows}
+          getRowId={(row) => row.invoice}
           rowSelection={rowSelection}
           onRowSelectionChange={setRowSelection}
           sorting={sorting}
@@ -166,9 +164,35 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
           errorState={{ title: "Invoice table failed", description: "Force error state to inspect resilient UI." }}
           emptyState={{ title: "No rows found", description: "Current view or search does not match any invoice." }}
           onRowClick={(row) => setActiveInvoice(row.original.invoice)}
+          renderMobileCard={(row) => (
+            <button
+              key={row.id}
+              type="button"
+              onClick={() => setActiveInvoice(row.original.invoice)}
+              className={activeInvoice === row.original.invoice ? "rounded-[20px] border border-zinc-950 bg-zinc-950 p-4 text-left text-white" : "rounded-[20px] border border-zinc-200 bg-zinc-50 p-4 text-left"}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="font-medium">{row.original.invoice}</p>
+                  <p className={activeInvoice === row.original.invoice ? "mt-1 text-sm text-white/70" : "mt-1 text-sm text-zinc-500"}>{row.original.customer} • {row.original.owner}</p>
+                </div>
+                <Badge variant={row.original.status === "Paid" ? "secondary" : row.original.status === "Review" ? "outline" : "destructive"}>{row.original.status}</Badge>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className={activeInvoice === row.original.invoice ? "text-white/60" : "text-zinc-400"}>Amount</p>
+                  <p className="mt-1 font-semibold">{row.original.amount}</p>
+                </div>
+                <div>
+                  <p className={activeInvoice === row.original.invoice ? "text-white/60" : "text-zinc-400"}>Updated</p>
+                  <p className="mt-1 font-semibold">{row.original.updatedAt}</p>
+                </div>
+              </div>
+            </button>
+          )}
           toolbarProps={(table) => ({
             title: "Invoices",
-            description: "Primary reusable data-table API for finance, ops and admin surfaces.",
+            description: "Compact product-grade reusable table surface.",
             search: (
               <FilterBar
                 search={<SearchInput value={state.search} onValueChange={(value) => setState({ search: value })} placeholder="Search table..." />}
@@ -176,10 +200,18 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
                 onReset={() => {
                   setState({ search: "" })
                   setView("all")
+                  setPageIndex(0)
                 }}
               />
             ),
-            actions: <DataTableColumnVisibilityMenu table={table} />,
+            actions: (
+              <div className="flex items-center gap-2">
+                <DataTableColumnVisibilityMenu table={table} />
+                {dataTableToolbarActions.map((action) => (
+                  <Button key={action.label} variant={action.variant} size="sm">{action.label}</Button>
+                ))}
+              </div>
+            ),
             selectionActions: (
               <DataTableBulkActions
                 rows={table.getSelectedRowModel().rows.map((row) => row.original)}
@@ -200,7 +232,19 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
               />
             ),
           })}
-          pagination={{ pageIndex: 0, pageSize, rowCount: visibleRows.length, pageCount: 1 }}
+          pagination={{
+            manual: true,
+            pageIndex: safePageIndex,
+            pageSize,
+            rowCount: visibleRows.length,
+            pageCount,
+            pageSizeOptions: [3, 5, 10],
+            onPageChange: setPageIndex,
+            onPageSizeChange: (nextPageSize) => {
+              setPageSize(nextPageSize)
+              setPageIndex(0)
+            },
+          }}
         />
       </div>
 
@@ -216,17 +260,9 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
           <p className="mt-2 text-sm text-zinc-600">{selectedRows.length} invoices can be exported or archived together.</p>
         </div>
         <div className="rounded-[22px] border border-zinc-200 bg-zinc-50 p-4">
-          <p className="text-sm text-zinc-500">Reusable strategy</p>
-          <p className="mt-2 text-lg font-semibold text-zinc-950">One API, many states</p>
-          <p className="mt-2 text-sm text-zinc-600">Search, density, row actions, selection, error, empty and pagination live in one component.</p>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between rounded-[22px] border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-600">
-        <span>{visibleRows.length} rows visible</span>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setPageSize(10)}>10</Button>
-          <Button size="sm" onClick={() => setPageSize(20)}>20</Button>
+          <p className="text-sm text-zinc-500">Pagination</p>
+          <p className="mt-2 text-lg font-semibold text-zinc-950">Working</p>
+          <p className="mt-2 text-sm text-zinc-600">{visibleRows.length} total rows, page {safePageIndex + 1} of {pageCount}, {pageSize} per page.</p>
         </div>
       </div>
     </div>
