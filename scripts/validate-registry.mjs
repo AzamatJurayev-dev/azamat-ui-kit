@@ -3,6 +3,7 @@ import path from "node:path"
 import process from "node:process"
 
 const root = process.cwd()
+const packageJsonPath = path.join(root, "package.json")
 const registryJsonPath = path.join(root, "registry.json")
 const registryTsPath = path.join(root, "cli/registry.ts")
 
@@ -65,6 +66,7 @@ function extractRegistryFiles(registryTs) {
   }))
 }
 
+const packageJson = readJson(packageJsonPath)
 const registryJson = readJson(registryJsonPath)
 const registryTs = readText(registryTsPath)
 const unionNames = extractComponentNameUnion(registryTs)
@@ -73,6 +75,10 @@ const dependencyMap = extractRegistryDependencies(registryTs)
 const registryFiles = extractRegistryFiles(registryTs)
 const unionSet = new Set(unionNames)
 const registrySet = new Set(registryNames)
+
+if (packageJson && registryJson && packageJson.version !== registryJson.version) {
+  failures.push(`registry.json version ${registryJson.version} does not match package.json version ${packageJson.version}`)
+}
 
 if (registryJson) {
   const manifestNames = new Set([
@@ -98,10 +104,18 @@ for (const name of registryNames) {
 }
 
 for (const [name, dependencies] of dependencyMap.entries()) {
+  const seen = new Set()
+
   for (const dependency of dependencies) {
     if (!registrySet.has(dependency)) {
       failures.push(`${name}: registry dependency '${dependency}' is not defined`)
     }
+
+    if (seen.has(dependency)) {
+      failures.push(`${name}: duplicate registry dependency '${dependency}'`)
+    }
+
+    seen.add(dependency)
   }
 }
 
