@@ -429,14 +429,14 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
   },
   {
     slug: "data-table",
-    title: "Data table system",
-    description: "Toolbar, pagination, row actions, bulk actions and column visibility helpers.",
+    title: "DataTable",
+    description: "Primary reusable data-grid system with toolbar, pagination, bulk actions, presets and row interactions.",
     icon: Table2Icon,
     category: "Data",
     exports: ["DataTable", "DataTablePagination", "DataTableToolbar", "DataTableColumnVisibilityMenu", "DataTableSelectColumn", "DataTableSortableHeader", "DataTableRowActions", "DataTableActionsColumn", "DataTableBulkActions", "DataTableViewPresets"],
     href: moduleFamilyPath("data-table"),
     status: "Stable",
-    features: ["Toolbar", "Bulk actions", "Sortable header", "View presets"],
+    features: ["Toolbar", "Bulk actions", "Sortable header", "View presets", "Row click", "Mobile fallback"],
   },
   {
     slug: "notifications",

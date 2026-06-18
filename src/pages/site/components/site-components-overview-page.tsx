@@ -15,6 +15,8 @@ export function SiteComponentsOverviewPage() {
 
   const visibleComponents = componentCatalog.filter((item) => normalize([item.title, item.description, ...item.features].join(" ")).includes(normalize(deferredSearch)))
   const visibleFamilies = moduleFamilyCatalog.filter((item) => normalize([item.title, item.description, ...item.exports].join(" ")).includes(normalize(deferredSearch)))
+  const featuredFamily = moduleFamilyCatalog.find((item) => item.slug === "data-table") ?? moduleFamilyCatalog[0]
+  const FeaturedIcon = featuredFamily.icon
 
   return (
     <PageFrame>
@@ -37,6 +39,87 @@ export function SiteComponentsOverviewPage() {
         </section>
 
         <section className="py-10">
+          <div className="mb-6">
+            <SectionLabel>Primary reusable system</SectionLabel>
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight">Start with DataTable, not the primitive table.</h2>
+            <p className="mt-3 max-w-3xl text-lg leading-8 text-zinc-600">
+              This library should lead with your composed systems. `DataTable` is the main reusable data component, with selection, toolbar, presets, row actions and real product-level behavior.
+            </p>
+          </div>
+          <SurfaceCard className="mb-10 overflow-hidden p-6">
+            <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
+              <div className="space-y-5">
+                <div className="inline-flex size-16 items-center justify-center rounded-3xl bg-amber-400 text-zinc-950">
+                  <FeaturedIcon className="size-7" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-3">
+                    <h3 className="text-4xl font-semibold tracking-tight">{featuredFamily.title}</h3>
+                    <Badge className="rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-50">{featuredFamily.status}</Badge>
+                  </div>
+                  <p className="mt-3 text-lg leading-8 text-zinc-600">{featuredFamily.description}</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {featuredFamily.features.map((feature) => (
+                    <Badge key={feature} variant="outline" className="rounded-full">{feature}</Badge>
+                  ))}
+                </div>
+                <div className="flex gap-3">
+                  <Link to={featuredFamily.href} className={cn(buttonVariants({ size: "default" }), "rounded-2xl px-6")}>
+                    Open `components/data-table`
+                    <ArrowRightIcon className="ml-2 size-4" />
+                  </Link>
+                </div>
+              </div>
+              <div className="rounded-[28px] border border-zinc-200 bg-zinc-50 p-5">
+                <div className="grid gap-4">
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline">Selection</Badge>
+                    <Badge variant="outline">Bulk actions</Badge>
+                    <Badge variant="outline">View presets</Badge>
+                    <Badge variant="outline">Toolbar</Badge>
+                  </div>
+                  <div className="rounded-[24px] border border-zinc-200 bg-white p-4">
+                    <div className="grid grid-cols-[0.7fr_1fr_0.8fr_0.8fr_0.8fr] gap-3 text-xs uppercase tracking-[0.2em] text-zinc-400">
+                      <div>Pick</div>
+                      <div>Invoice</div>
+                      <div>Status</div>
+                      <div>Owner</div>
+                      <div>Amount</div>
+                    </div>
+                    <div className="mt-3 space-y-3">
+                      {[
+                        ["On", "INV-001", "Paid", "Azamat", "$2,400"],
+                        ["Off", "INV-002", "Review", "Malika", "$1,280"],
+                        ["On", "INV-005", "Overdue", "Asadbek", "$860"],
+                      ].map((row) => (
+                        <div key={row[1]} className="grid grid-cols-[0.7fr_1fr_0.8fr_0.8fr_0.8fr] items-center gap-3 rounded-2xl border border-zinc-100 px-3 py-3 text-sm text-zinc-700">
+                          <span className={row[0] === "On" ? "rounded-lg bg-zinc-950 px-2 py-1 text-center text-xs text-white" : "rounded-lg border border-zinc-200 px-2 py-1 text-center text-xs text-zinc-500"}>{row[0]}</span>
+                          <span className="font-medium text-zinc-950">{row[1]}</span>
+                          <span>{row[2]}</span>
+                          <span>{row[3]}</span>
+                          <span className="text-right">{row[4]}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    {[
+                      ["10 exports", "Reusable finance and admin flows."],
+                      ["6+ live features", "Density, row click, presets and more."],
+                      ["One API", "No clone table components needed."],
+                    ].map(([title, text]) => (
+                      <div key={title} className="rounded-2xl border border-zinc-200 bg-white p-4">
+                        <p className="font-medium text-zinc-950">{title}</p>
+                        <p className="mt-2 text-sm leading-6 text-zinc-500">{text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SurfaceCard>
+
           <div className="mb-6 flex items-center justify-between">
             <div>
               <SectionLabel>Core UI</SectionLabel>
