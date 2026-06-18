@@ -9,11 +9,13 @@ const program = new Command()
 program
   .name("azamat-ui-kit")
   .description("Azamat UI Kit CLI")
-  .version("0.0.1")
+  .version("0.1.1")
 
 program
   .command("init")
   .description("Initialize Azamat UI Kit in your project")
+  .option("--template <template>", "Project defaults: vite or next", "vite")
+  .option("--skip-install", "Do not install base dependencies")
   .action(initCommand)
 
 program
