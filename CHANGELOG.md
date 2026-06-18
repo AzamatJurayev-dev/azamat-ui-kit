@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 - aligned CLI version with the package version
 - aligned `registry.json` version with `package.json`
 - added `.light` theme class output next to `:root` and `.dark`
+- removed `DataTable` search prop type workarounds by typing search through `SearchInputProps`
+- removed the `onValueChange as any` workaround from `DataTable`
 
 ### Changed
 
@@ -19,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - `init` supports Vite and Next.js path defaults through `--template vite|next`
 - registry validation now fails on package/registry version mismatch and duplicate registry dependencies
 - package tarball includes `COMPONENT_MATURITY.md` for public API handoff
+- build-output smoke checks now reject indirect ESM browser require fallbacks such as Rolldown CommonJS helpers and `createRequire`
 
 ### Docs
 
