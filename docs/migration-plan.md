@@ -146,9 +146,20 @@ Improved `AppShell` as the main responsive dashboard shell:
 - class hooks for sidebar, mobile sidebar, aside, main wrapper and content
 - no route, auth, tenant, permission or business dependency
 
+### Phase 28 - ResourcePage pattern
+
+Added an API-free page composition pattern for dashboard resource screens:
+
+- `ResourcePage` combines header, breadcrumbs, stats, filters, tabs, content, table, aside and footer slots
+- `ResourcePageSection` gives reusable card-like page sections
+- optional `DataTable` integration through a `table` prop
+- density support for compact/default/comfortable spacing
+- slot class names for toolbar, content, aside and page header
+- no API, route, permission or business dependency
+
 ## Next priority order
 
-1. FormBuilder / ResourcePage planning on top of existing components
+1. FormBuilder planning on top of existing form components
 2. Component tests and accessibility smoke checks
 3. Registry validation script
-4. Playground examples for AppShell responsive states
+4. Playground examples for ResourcePage and AppShell responsive states
