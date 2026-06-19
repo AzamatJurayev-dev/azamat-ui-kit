@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 - reusable dependency-free chart components: `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, and `MetricTrend`
 - analytics components: `KpiCard`, `KpiGrid`, `ProgressRing`, and `HorizontalBarChart`
 - POS/ecommerce components: `QuantityStepper`, `PriceTag`, `ProductTile`, `CartItem`, and `CartPanel`
+- table utility components: `TableExportMenu` and `TableImportButton`
+- workflow/admin components: `ApprovalPanel`, `CommentsPanel`, `RoleBadge`, and `StatusSelect`
 - action utilities: `CopyField`, `ButtonGroup`, `FloatingActionButton`, and `ActionBar`
 - form helpers: `FormActions` and `FormSection`
 - settings patterns: `SettingsSection` and `SettingsRow`
