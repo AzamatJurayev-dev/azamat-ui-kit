@@ -138,16 +138,39 @@ The first pass made the package safer to build and easier to release. The next p
 
 ### P1. AsyncSelect and AsyncMultiSelect hardening
 
-- [ ] Add stale response guard so slower `loadOptions` calls cannot overwrite newer search results.
-- [ ] Add optional abort/cancellation support if `loadOptions` can accept a signal in the future.
-- [ ] Add tests for debounce behavior.
+These tasks are intentionally split into smaller chunks so separate chats can work without rewriting the same large component payload.
+
+#### AsyncSelect core behavior
+
+- [x] Add a stale response guard so slower `loadOptions` calls cannot overwrite newer search results.
+- [x] Add optional abort/cancellation support for `loadOptions` so in-flight requests can be ignored or canceled.
+- [x] Add tests for debounce behavior and stale result protection.
 - [ ] Add tests for loading, empty, error and min-search states.
-- [ ] Add tests for `cacheOptions` and `cacheTtl`.
-- [ ] Add tests for `loadSelectedOption` and `loadSelectedOptions`.
-- [ ] Add tests for disabled option behavior and `disabledReason` rendering if supported.
-- [ ] Add keyboard removal support for multi-select selected tags.
-- [ ] Add tests for max selected state.
+- [x] Add tests for `cacheOptions` and `cacheTtl`.
+- [x] Add tests for `loadSelectedOption` and selected option hydration.
+
+#### AsyncSelect option semantics
+
+- [x] Add tests for disabled option behavior.
+- [x] Decide whether `disabledReason` belongs in core API or in a renderer-only pattern.
+- [x] If `disabledReason` stays, render it consistently in option and trigger states.
+- [ ] Add tests for option grouping, labels and selected value rendering.
 - [ ] Decide if `onCreateOption` belongs in stable API or should remain preview.
+
+#### AsyncMultiSelect interaction
+
+- [x] Add keyboard removal support for selected tags.
+- [x] Add tests for tag removal by keyboard and mouse.
+- [ ] Add tests for max selected state.
+- [ ] Add tests for `closeOnSelect` and `showSelectAll`.
+- [x] Add tests for `loadSelectedOptions` hydration and tag rehydration.
+
+#### Async select documentation
+
+- [ ] Add a focused README/example block for `AsyncSelect` covering search, load, cache and selected option hydration.
+- [ ] Add a focused README/example block for `AsyncMultiSelect` covering max selected, tags and keyboard removal.
+- [ ] Add a troubleshooting note for stale request race conditions and slow network ordering.
+- [ ] Add a troubleshooting note for disabled options and create-option UX.
 
 ### P1. Calendar and date picker hardening
 
@@ -248,6 +271,16 @@ The first pass made the package safer to build and easier to release. The next p
 - [ ] Publish only after the separate `azamat-ui` docs app works without CJS alias workaround.
 - [ ] After publish, update `CHANGELOG.md` from `Unreleased` to the real version/date.
 - [ ] After publish, update docs app package version and remove local workaround.
+
+## AsyncSelect work-pack split guide
+
+Use this when assigning work to another chat:
+
+- [x] Chat A: `AsyncSelect` stale guard, abort support and debounce tests.
+- [ ] Chat B: `AsyncSelect` disabled reason, grouped options and create-option policy.
+- [x] Chat C: `AsyncMultiSelect` keyboard tag removal and max-selected behavior.
+- [ ] Chat D: `AsyncSelect` and `AsyncMultiSelect` docs/examples.
+- [x] Chat E: `AsyncSelect`/`AsyncMultiSelect` render tests and consumer fixture coverage.
 
 ## Supervisor checklist
 

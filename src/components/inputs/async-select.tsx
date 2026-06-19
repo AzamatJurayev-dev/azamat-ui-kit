@@ -10,6 +10,7 @@ export type AsyncSelectOption<TValue extends string = string, TData = unknown> =
   value: TValue
   label: React.ReactNode
   disabled?: boolean
+  disabledReason?: React.ReactNode
   description?: React.ReactNode
   data?: TData
 }
@@ -70,8 +71,8 @@ export type AsyncSelectProps<
   value?: TValue
   selectedOption?: TOption | null
   onValueChange?: (value: TValue | undefined, option?: TOption) => void
-  loadOptions: (search: string) => Promise<AsyncSelectOptionsResult<TValue, TData, TOption>>
-  loadSelectedOption?: (value: TValue) => Promise<TOption | null | undefined>
+  loadOptions: (search: string, signal?: AbortSignal) => Promise<AsyncSelectOptionsResult<TValue, TData, TOption>>
+  loadSelectedOption?: (value: TValue, signal?: AbortSignal) => Promise<TOption | null | undefined>
   defaultOptions?: AsyncSelectOptionsResult<TValue, TData, TOption>
   disabled?: boolean
   clearable?: boolean
@@ -103,8 +104,8 @@ export type AsyncMultiSelectProps<
   value?: TValue[]
   selectedOptions?: TOption[]
   onValueChange?: (value: TValue[], options: TOption[]) => void
-  loadOptions: (search: string) => Promise<AsyncSelectOptionsResult<TValue, TData, TOption>>
-  loadSelectedOptions?: (values: TValue[]) => Promise<TOption[]>
+  loadOptions: (search: string, signal?: AbortSignal) => Promise<AsyncSelectOptionsResult<TValue, TData, TOption>>
+  loadSelectedOptions?: (values: TValue[], signal?: AbortSignal) => Promise<TOption[]>
   defaultOptions?: AsyncSelectOptionsResult<TValue, TData, TOption>
   disabled?: boolean
   clearable?: boolean
@@ -306,6 +307,14 @@ function AsyncStateMessage({
   return <div className={cn("px-2 py-3 text-sm text-muted-foreground", className)}>{children}</div>
 }
 
+function getOptionLabelText<TValue extends string, TData>(option: AsyncSelectOption<TValue, TData>) {
+  if (typeof option.label === "string" || typeof option.label === "number") {
+    return String(option.label)
+  }
+
+  return option.value
+}
+
 function AsyncOptionButton<
   TValue extends string,
   TData,
@@ -343,6 +352,9 @@ function AsyncOptionButton<
             <span className="truncate">{option.label}</span>
             {option.description && (
               <span className="truncate text-xs text-muted-foreground">{option.description}</span>
+            )}
+            {option.disabled && option.disabledReason && (
+              <span className="truncate text-xs text-muted-foreground">{option.disabledReason}</span>
             )}
           </span>
         )}
@@ -423,6 +435,8 @@ function AsyncSelect<
   const [isCreating, setIsCreating] = React.useState(false)
   const [hasError, setHasError] = React.useState(false)
   const cacheRef = React.useRef(new Map<string, AsyncSelectCacheEntry<TValue, TData, TOption>>())
+  const loadOptionsRequestRef = React.useRef(0)
+  const loadSelectedOptionRequestRef = React.useRef(0)
   const debouncedSearch = useDebouncedValue(search, debounceMs)
   const searchKey = debouncedSearch.trim()
   const flatOptions = React.useMemo(() => flattenOptionGroups(optionGroups), [optionGroups])
@@ -451,11 +465,12 @@ function AsyncSelect<
   React.useEffect(() => {
     if (!value || currentOption || !loadSelectedOption) return
 
-    let cancelled = false
+    const controller = new AbortController()
+    const requestId = ++loadSelectedOptionRequestRef.current
 
     async function run() {
-      const option = await loadSelectedOption?.(value as TValue)
-      if (!cancelled) {
+      const option = await loadSelectedOption?.(value as TValue, controller.signal)
+      if (!controller.signal.aborted && requestId === loadSelectedOptionRequestRef.current) {
         setPreloadedOption(option ?? null)
       }
     }
@@ -463,7 +478,7 @@ function AsyncSelect<
     void run()
 
     return () => {
-      cancelled = true
+      controller.abort()
     }
   }, [currentOption, loadSelectedOption, value])
 
@@ -472,6 +487,8 @@ function AsyncSelect<
 
     if (searchTooShort) {
       setOptionGroups(resolvedDefaultGroups)
+      setIsLoading(false)
+      setHasError(false)
       return
     }
 
@@ -479,30 +496,33 @@ function AsyncSelect<
 
     if (cachedGroups) {
       setOptionGroups(cachedGroups)
+      setIsLoading(false)
+      setHasError(false)
       return
     }
 
-    let cancelled = false
+    const controller = new AbortController()
+    const requestId = ++loadOptionsRequestRef.current
 
     async function run() {
       setIsLoading(true)
       setHasError(false)
 
       try {
-        const nextOptions = normalizeOptionGroups(await loadOptions(searchKey))
-        if (!cancelled) {
+        const nextOptions = normalizeOptionGroups(await loadOptions(searchKey, controller.signal))
+        if (!controller.signal.aborted && requestId === loadOptionsRequestRef.current) {
           if (cacheOptions) {
             setCachedOptionGroups(cacheRef.current, searchKey, nextOptions)
           }
           setOptionGroups(nextOptions)
         }
       } catch {
-        if (!cancelled) {
+        if (!controller.signal.aborted && requestId === loadOptionsRequestRef.current) {
           setHasError(true)
           setOptionGroups([])
         }
       } finally {
-        if (!cancelled) {
+        if (!controller.signal.aborted && requestId === loadOptionsRequestRef.current) {
           setIsLoading(false)
         }
       }
@@ -511,7 +531,7 @@ function AsyncSelect<
     void run()
 
     return () => {
-      cancelled = true
+      controller.abort()
     }
   }, [cacheOptions, cacheTtl, loadOptions, open, resolvedDefaultGroups, searchKey, searchTooShort])
 
@@ -523,10 +543,14 @@ function AsyncSelect<
     setSearch("")
   }
 
-  const handleClear = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
+  const clearSelection = () => {
     onValueChange?.(undefined)
     setSearch("")
+  }
+
+  const handleClear = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
+    clearSelection()
   }
 
   const handleCreate = async () => {
@@ -559,19 +583,34 @@ function AsyncSelect<
             />
           }
         >
-          <span className="min-w-0 flex-1 truncate text-left">
-            {currentOption
-              ? renderValue?.(currentOption) ?? currentOption.label
-              : labels?.placeholder ?? "Select"}
+          <span className="min-w-0 flex-1 text-left">
+            {currentOption ? (
+              <span className="flex min-w-0 flex-col">
+                <span className="truncate">
+                  {renderValue?.(currentOption) ?? currentOption.label}
+                </span>
+                {currentOption.disabled && currentOption.disabledReason && (
+                  <span className="truncate text-xs text-muted-foreground">{currentOption.disabledReason}</span>
+                )}
+              </span>
+            ) : (
+              <span className="truncate">{labels?.placeholder ?? "Select"}</span>
+            )}
           </span>
           <span className="ml-2 flex shrink-0 items-center gap-1">
             {canClear && (
               <span
                 role="button"
-                tabIndex={-1}
+                tabIndex={0}
                 className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
                 aria-label={labels?.clear ?? "Clear"}
                 onClick={handleClear}
+                onKeyDown={(event) => {
+                  if (event.key !== "Enter" && event.key !== " ") return
+                  event.preventDefault()
+                  event.stopPropagation()
+                  clearSelection()
+                }}
               >
                 <XIcon className="size-3.5" />
               </span>
@@ -713,6 +752,8 @@ function AsyncMultiSelect<
   const [isCreating, setIsCreating] = React.useState(false)
   const [hasError, setHasError] = React.useState(false)
   const cacheRef = React.useRef(new Map<string, AsyncSelectCacheEntry<TValue, TData, TOption>>())
+  const loadOptionsRequestRef = React.useRef(0)
+  const loadSelectedOptionsRequestRef = React.useRef(0)
   const debouncedSearch = useDebouncedValue(search, debounceMs)
   const searchKey = debouncedSearch.trim()
   const flatOptions = React.useMemo(() => flattenOptionGroups(optionGroups), [optionGroups])
@@ -753,11 +794,12 @@ function AsyncMultiSelect<
 
     if (!missingValues.length) return
 
-    let cancelled = false
+    const controller = new AbortController()
+    const requestId = ++loadSelectedOptionsRequestRef.current
 
     async function run() {
-      const loadedOptions = await loadSelectedOptions?.(missingValues)
-      if (!cancelled && loadedOptions) {
+      const loadedOptions = await loadSelectedOptions?.(missingValues, controller.signal)
+      if (!controller.signal.aborted && requestId === loadSelectedOptionsRequestRef.current && loadedOptions) {
         setPreloadedOptions((previousOptions) => mergeUniqueOptions(previousOptions, loadedOptions))
       }
     }
@@ -765,7 +807,7 @@ function AsyncMultiSelect<
     void run()
 
     return () => {
-      cancelled = true
+      controller.abort()
     }
   }, [allKnownOptions, loadSelectedOptions, selectedValueKey, values])
 
@@ -774,6 +816,8 @@ function AsyncMultiSelect<
 
     if (searchTooShort) {
       setOptionGroups(resolvedDefaultGroups)
+      setIsLoading(false)
+      setHasError(false)
       return
     }
 
@@ -781,30 +825,33 @@ function AsyncMultiSelect<
 
     if (cachedGroups) {
       setOptionGroups(cachedGroups)
+      setIsLoading(false)
+      setHasError(false)
       return
     }
 
-    let cancelled = false
+    const controller = new AbortController()
+    const requestId = ++loadOptionsRequestRef.current
 
     async function run() {
       setIsLoading(true)
       setHasError(false)
 
       try {
-        const nextOptions = normalizeOptionGroups(await loadOptions(searchKey))
-        if (!cancelled) {
+        const nextOptions = normalizeOptionGroups(await loadOptions(searchKey, controller.signal))
+        if (!controller.signal.aborted && requestId === loadOptionsRequestRef.current) {
           if (cacheOptions) {
             setCachedOptionGroups(cacheRef.current, searchKey, nextOptions)
           }
           setOptionGroups(nextOptions)
         }
       } catch {
-        if (!cancelled) {
+        if (!controller.signal.aborted && requestId === loadOptionsRequestRef.current) {
           setHasError(true)
           setOptionGroups([])
         }
       } finally {
-        if (!cancelled) {
+        if (!controller.signal.aborted && requestId === loadOptionsRequestRef.current) {
           setIsLoading(false)
         }
       }
@@ -813,12 +860,16 @@ function AsyncMultiSelect<
     void run()
 
     return () => {
-      cancelled = true
+      controller.abort()
     }
   }, [cacheOptions, cacheTtl, loadOptions, open, resolvedDefaultGroups, searchKey, searchTooShort])
 
   const emitChange = (nextValues: TValue[], nextKnownOptions: TOption[]) => {
     onValueChange?.(nextValues, getOptionsByValue(nextValues, nextKnownOptions))
+  }
+
+  const removeValue = (nextValue: TValue) => {
+    emitChange(values.filter((item) => item !== nextValue), allKnownOptions)
   }
 
   const handleSelect = (option: TOption) => {
@@ -840,6 +891,23 @@ function AsyncMultiSelect<
     }
   }
 
+  const handleTagRemoveKeyDown = (event: React.KeyboardEvent<HTMLElement>, option: TOption) => {
+    if (event.key !== "Enter" && event.key !== " ") return
+
+    event.preventDefault()
+    event.stopPropagation()
+    removeValue(option.value)
+  }
+
+  const handleTriggerKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (disabled || search.length > 0 || values.length === 0) return
+
+    if (event.key === "Backspace" || event.key === "Delete") {
+      event.preventDefault()
+      removeValue(values[values.length - 1])
+    }
+  }
+
   const handleSelectAllVisible = () => {
     if (!unselectedVisibleOptions.length) return
 
@@ -852,13 +920,17 @@ function AsyncMultiSelect<
   }
 
   const removeOption = (option: TOption) => {
-    emitChange(values.filter((item) => item !== option.value), allKnownOptions)
+    removeValue(option.value)
+  }
+
+  const clearAllSelection = () => {
+    onValueChange?.([], [])
+    setSearch("")
   }
 
   const handleClear = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
-    onValueChange?.([], [])
-    setSearch("")
+    clearAllSelection()
   }
 
   const handleCreate = async () => {
@@ -898,6 +970,7 @@ function AsyncMultiSelect<
               disabled={disabled}
               aria-expanded={open}
               className={cn("min-h-8 w-full justify-between", triggerClassName)}
+              onKeyDown={handleTriggerKeyDown}
             />
           }
         >
@@ -911,20 +984,27 @@ function AsyncMultiSelect<
                     tagClassName
                   )}
                 >
-                  <span className="truncate">
-                    {renderTag?.(option, { remove: () => removeOption(option) }) ??
-                      renderValue?.(option) ??
-                      option.label}
+                  <span className="flex min-w-0 flex-col">
+                    <span className="truncate">
+                      {renderTag?.(option, { remove: () => removeOption(option) }) ??
+                        renderValue?.(option) ??
+                        option.label}
+                    </span>
+                    {option.disabled && option.disabledReason && (
+                      <span className="truncate text-[11px] text-muted-foreground">{option.disabledReason}</span>
+                    )}
                   </span>
                   {!disabled && (
                     <span
                       role="button"
-                      tabIndex={-1}
+                      tabIndex={0}
                       className="rounded-sm text-muted-foreground hover:text-foreground"
+                      aria-label={`Remove ${getOptionLabelText(option)}`}
                       onClick={(event) => {
                         event.stopPropagation()
                         removeOption(option)
                       }}
+                      onKeyDown={(event) => handleTagRemoveKeyDown(event, option)}
                     >
                       <XIcon className="size-3" />
                     </span>
@@ -941,10 +1021,16 @@ function AsyncMultiSelect<
             {canClear && (
               <span
                 role="button"
-                tabIndex={-1}
+                tabIndex={0}
                 className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
                 aria-label={labels?.clearAll ?? labels?.clear ?? "Clear all"}
                 onClick={handleClear}
+                onKeyDown={(event) => {
+                  if (event.key !== "Enter" && event.key !== " ") return
+                  event.preventDefault()
+                  event.stopPropagation()
+                  clearAllSelection()
+                }}
               >
                 <XIcon className="size-3.5" />
               </span>
