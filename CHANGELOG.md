@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- props-driven `SmartCard` with slots, `classNames`, render overrides, loading, selected, disabled, interactive, orientation, variant, size, and density controls
+- source-copy architecture notes for shadcn-style editable component installation
+- export family config for subpath/runtime import planning
 - reusable system components: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, `EntityDetails`, `ResourceSystem`, and `CrudSystem`
 - reusable layout/form systems: `WorkspaceShell`, `EntityCard`, and `SmartFormShell`
 - reusable dependency-free chart components: `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, and `MetricTrend`
@@ -20,7 +23,7 @@ All notable changes to this project will be documented in this file.
 - feedback `Alert` component with info, success, warning, destructive, and muted tones
 - `Statistic`, `StatisticCard`, and `StatisticGrid` display components
 - base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, and `Tooltip`
-- Ant-like generic data display components: `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `CodeBlock`, `FileCard`, `PropertyGrid`, `DataCard`, and `UserCard`
+- Ant-like generic data display components: `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `CodeBlock`, `FileCard`, `PropertyGrid`, and `SmartCard`
 - utility display component `KeyboardShortcut`
 - feedback state components `PageState` and `InlineState`
 - navigation utility `AnchorNav`
@@ -32,6 +35,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 - removed narrow business blocks from public exports and source: `ProductTile`, `CartPanel`, `CartItem`, `PriceTag`, `RoleBadge`, `StatusSelect`, `ApprovalPanel`, and `CommentsPanel`
+- removed `InfoCard`, `DataCard`, and `UserCard` from public display exports in favor of `SmartCard` and `EntityCard`
 
 ### Fixed
 
@@ -47,6 +51,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- build now preserves per-component modules for future subpath imports and source-copy-friendly artifacts
+- declaration build now emits declarations for all source modules instead of only the root index
 - build now starts from a clean `dist` directory and runs output validation
 - release gate now includes lint, type/a11y/registry/build-output tests, build, and `npm pack --dry-run`
 - `init` supports Vite and Next.js path defaults through `--template vite|next`
