@@ -2,7 +2,7 @@
 
 Status: component expansion and non-test hardening pass is in progress on `master`.
 
-Test files were intentionally not changed in this pass.
+Test files were intentionally not changed in this pass. AsyncSelect is intentionally left open for manual work.
 
 ## Completed first pass
 
@@ -27,9 +27,15 @@ Test files were intentionally not changed in this pass.
 - [x] Added Ant-like composed collapse: `CollapseGroup` with single/multiple modes.
 - [x] Added feedback `Alert` component with `info`, `success`, `warning`, `destructive`, and `muted` tones.
 - [x] Added reusable statistics components: `Statistic`, `StatisticCard`, `StatisticGrid`.
+- [x] Added base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, `Tooltip`.
+- [x] Added interactive `Rating` input.
+- [x] Added Ant-like data display components: `List`, `ListRow`, `Descriptions`.
+- [x] Added reusable dashboard layout components: `Section`, `Toolbar`, `SplitLayout`.
 - [x] Exported charts and collapse from package root.
 - [x] Exported `Alert` from feedback index.
-- [x] Exported statistics from display index.
+- [x] Exported statistics, list, and descriptions from display index.
+- [x] Exported rating from inputs index.
+- [x] Exported new layout components from layout index.
 
 ### Calendar and date picker hardening
 
@@ -85,16 +91,11 @@ Test files were intentionally not changed in this pass.
 - [ ] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
 - [ ] Add a tiny Next.js fixture or script that imports `azamat-ui-kit` from `dist/index.js` in a browser bundle and fails on runtime console errors.
 - [ ] Add a Vite fixture or script that imports `Button`, `Dialog`, `AsyncSelect`, `DataTable`, `ToastProvider` and `FormBuilder` from built `dist`.
-- [ ] Add stale response guard so slower `loadOptions` calls cannot overwrite newer AsyncSelect search results.
-- [ ] Add optional AsyncSelect abort/cancellation support.
-- [ ] Add disabled option reason rendering for AsyncSelect.
-- [ ] Add keyboard removal support for AsyncMultiSelect selected tags.
-- [ ] Decide if `onCreateOption` belongs in stable AsyncSelect API or should remain preview.
+- [ ] AsyncSelect stale guard / abort / disabled reason / multi-tag keyboard remove: intentionally left for manual implementation.
 - [ ] Convert non-semantic `zinc`, `slate`, `neutral`, `stone`, `white`, `black` component classes to token-based classes where they appear in package components.
 - [ ] Add a lint-like script that reports hardcoded neutral palette usage in `src/components`.
 - [ ] Validate `registry.json` recommended list does not include preview or experimental components unless intentionally marked.
 - [ ] Add `exports` subpaths only if root exports become too large for docs/tree-shaking.
-- [ ] Update AsyncSelect example after stale request handling is implemented.
 - [ ] Add FormBuilder example after custom field and `FieldPath` type tests pass.
 - [ ] Decide next version number after this pass: likely `0.1.2`.
 - [ ] Run `npm run release:gate` from a clean working tree.
