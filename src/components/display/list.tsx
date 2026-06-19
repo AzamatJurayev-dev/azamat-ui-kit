@@ -71,11 +71,27 @@ function ListRow({ item, split = true, size = "md", className, ...props }: ListR
   )
 
   if (item.href) {
-    return <a data-slot="list-row" href={item.href} className={rowClassName} {...props}>{content}</a>
+    return (
+      <a
+        data-slot="list-row"
+        href={item.href}
+        className={rowClassName}
+        {...(props as React.ComponentProps<"a">)}
+      >
+        {content}
+      </a>
+    )
   }
 
   return (
-    <div data-slot="list-row" role={clickable ? "button" : undefined} tabIndex={clickable && !item.disabled ? 0 : undefined} className={rowClassName} onClick={item.onClick} {...props}>
+    <div
+      data-slot="list-row"
+      role={clickable ? "button" : undefined}
+      tabIndex={clickable && !item.disabled ? 0 : undefined}
+      className={rowClassName}
+      onClick={item.onClick}
+      {...(props as React.ComponentProps<"div">)}
+    >
       {content}
     </div>
   )

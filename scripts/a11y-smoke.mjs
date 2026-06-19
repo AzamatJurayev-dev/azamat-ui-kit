@@ -23,7 +23,7 @@ const checks = [
   },
   {
     file: "src/components/upload/file-upload.tsx",
-    required: ["type=\"file\"", "onFilesChange", "disabled={disabled"],
+    required: ["type=\"file\"", "onFilesChange", "disabled={isDisabled"],
   },
   {
     file: "src/components/patterns/resource-page.tsx",

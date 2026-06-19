@@ -138,7 +138,7 @@ function BarChart({ data, size = "md", max, showLabels = true, showValues = true
   )
 }
 
-export type LineChartProps = React.ComponentProps<"svg"> & {
+export type LineChartProps = Omit<React.ComponentProps<"svg">, "values"> & {
   values: number[]
   size?: ChartSize
   width?: number
@@ -166,6 +166,7 @@ function LineChart({ values, size = "md", width = 560, showArea = false, stroke 
 }
 
 export type SparklineProps = Omit<LineChartProps, "size" | "showArea"> & {
+  values: number[]
   positive?: boolean
 }
 
@@ -194,16 +195,18 @@ export type DonutChartProps = React.ComponentProps<"svg"> & {
 function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerValue, className, ...props }: DonutChartProps) {
   const total = data.reduce((sum, item) => sum + Math.max(item.value, 0), 0)
   const radius = size / 2 - strokeWidth
-  let cursor = 0
+  const segments = data.map((item, index) => {
+    const value = Math.max(item.value, 0)
+    const start = data.slice(0, index).reduce((sum, previous) => sum + Math.max(previous.value, 0), 0)
+    const end = total > 0 ? start + (value / total) * 360 : start
+
+    return { item, start, end }
+  })
 
   return (
     <svg data-slot="donut-chart" viewBox={`0 0 ${size} ${size}`} className={cn("h-auto w-full max-w-48", className)} role="img" {...props}>
       <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--muted)" strokeWidth={strokeWidth} />
-      {data.map((item, index) => {
-        const value = Math.max(item.value, 0)
-        const start = cursor
-        const end = total > 0 ? cursor + (value / total) * 360 : cursor
-        cursor = end
+      {segments.map(({ item, start, end }, index) => {
         return (
           <path
             key={index}

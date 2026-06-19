@@ -41,7 +41,7 @@ function OtpInput({
   }
 
   const setCharAt = (index: number, nextChar: string) => {
-    const chars = currentValue.padEnd(length, " ").split("")
+    const chars = String(Array.isArray(currentValue) ? currentValue.join("") : currentValue).padEnd(length, " ").split("")
     chars[index] = nextChar.slice(-1)
     updateValue(chars.join("").replace(/\s+$/g, ""))
   }

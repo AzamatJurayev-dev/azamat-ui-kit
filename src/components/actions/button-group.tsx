@@ -1,7 +1,9 @@
 import * as React from "react"
 
-import { Button, type ButtonProps } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+
+type ButtonProps = React.ComponentProps<typeof Button>
 
 export type ButtonGroupItem = Omit<ButtonProps, "children"> & {
   key: string

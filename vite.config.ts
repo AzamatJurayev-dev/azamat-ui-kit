@@ -9,6 +9,9 @@ const peerExternal = new Set([
   "react-dom/client",
   "react/jsx-runtime",
   "react-hook-form",
+  "use-sync-external-store",
+  "use-sync-external-store/shim",
+  "use-sync-external-store/shim/with-selector",
 ]);
 
 const isPeerExternal = (id: string) => peerExternal.has(id);

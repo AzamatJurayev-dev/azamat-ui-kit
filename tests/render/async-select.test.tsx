@@ -7,7 +7,6 @@ import { AsyncMultiSelectFixture, AsyncSelectFixture, createLoadOptionsSpy } fro
 
 describe("AsyncSelect", () => {
   it("renders hydrated selected option and disabled reason", async () => {
-    const user = userEvent.setup()
     const loadSelectedOption = vi.fn(async (value: string) => {
       if (value === "beta") {
         return { value: "beta", label: "Beta", disabled: true, disabledReason: "Beta is locked" }

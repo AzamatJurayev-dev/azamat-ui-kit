@@ -46,7 +46,7 @@ After `npm pack --dry-run`, test one clean consumer app before publishing:
 ```bash
 npm create vite@latest aui-smoke -- --template react-ts
 cd aui-smoke
-npm install ../azamat-ui-kit-0.1.1.tgz
+npm install ../azamat-ui-kit-0.2.0.tgz
 npx azamat-ui-kit init --template vite
 npx azamat-ui-kit add button input data-table --dry-run
 ```
@@ -56,7 +56,7 @@ For Next.js:
 ```bash
 npx create-next-app@latest aui-next-smoke --ts --app
 cd aui-next-smoke
-npm install ../azamat-ui-kit-0.1.1.tgz
+npm install ../azamat-ui-kit-0.2.0.tgz
 npx azamat-ui-kit init --template next
 ```
 
