@@ -11,8 +11,11 @@ All notable changes to this project will be documented in this file.
 - feedback `Alert` component with info, success, warning, destructive, and muted tones
 - `Statistic`, `StatisticCard`, and `StatisticGrid` display components
 - base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, and `Tooltip`
-- Ant-like data display components: `List`, `ListRow`, `Descriptions`, and `KanbanBoard`
-- interactive `Rating`, `Slider`, `RangeSlider`, and `OtpInput` input components
+- Ant-like data display components: `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `CodeBlock`, and `FileCard`
+- utility display component `KeyboardShortcut`
+- feedback state components `PageState` and `InlineState`
+- action utility `CopyField`
+- interactive `Rating`, `Slider`, `RangeSlider`, `OtpInput`, and `ColorInput` input components
 - reusable dashboard layout helpers: `Section`, `Toolbar`, and `SplitLayout`
 - registry status metadata and CLI status output for stable/preview/experimental/internal components
 - README component status, upload example, DataTable pagination note, and troubleshooting sections
@@ -37,7 +40,7 @@ All notable changes to this project will be documented in this file.
 - registry validation now fails on package/registry version mismatch and duplicate registry dependencies
 - package tarball includes `COMPONENT_MATURITY.md` for public API handoff
 - build-output smoke checks now reject indirect ESM browser require fallbacks such as Rolldown CommonJS helpers and `createRequire`
-- package root exports now include charts, collapse, skeleton, divider, segmented control, spinner, tooltip, rating, sliders, OTP input, list, descriptions, kanban and statistic components
+- package root exports now include charts, collapse, skeleton, divider, segmented control, spinner, tooltip, rating, sliders, OTP input, color input, list, descriptions, kanban, tree view, code block, file card and statistic components
 - component maturity docs now define public API decisions, color policy, and font dependency rationale
 
 ### Docs
