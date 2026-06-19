@@ -8,12 +8,11 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- reusable system components: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, and `EntityDetails`
+- reusable system components: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, `EntityDetails`, `ResourceSystem`, and `CrudSystem`
+- reusable layout/form systems: `WorkspaceShell`, `EntityCard`, and `SmartFormShell`
 - reusable dependency-free chart components: `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, and `MetricTrend`
 - analytics components: `KpiCard`, `KpiGrid`, `ProgressRing`, and `HorizontalBarChart`
-- POS/ecommerce components: `QuantityStepper`, `PriceTag`, `ProductTile`, `CartItem`, and `CartPanel`
 - table utility components: `TableExportMenu` and `TableImportButton`
-- workflow/admin components: `ApprovalPanel`, `CommentsPanel`, `RoleBadge`, and `StatusSelect`
 - action utilities: `CopyField`, `ButtonGroup`, `FloatingActionButton`, and `ActionBar`
 - form helpers: `FormActions` and `FormSection`
 - settings patterns: `SettingsSection` and `SettingsRow`
@@ -21,7 +20,7 @@ All notable changes to this project will be documented in this file.
 - feedback `Alert` component with info, success, warning, destructive, and muted tones
 - `Statistic`, `StatisticCard`, and `StatisticGrid` display components
 - base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, and `Tooltip`
-- Ant-like data display components: `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `CodeBlock`, `FileCard`, `PropertyGrid`, `DataCard`, and `UserCard`
+- Ant-like generic data display components: `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `CodeBlock`, `FileCard`, `PropertyGrid`, `DataCard`, and `UserCard`
 - utility display component `KeyboardShortcut`
 - feedback state components `PageState` and `InlineState`
 - navigation utility `AnchorNav`
@@ -29,6 +28,10 @@ All notable changes to this project will be documented in this file.
 - reusable dashboard layout helpers: `Section`, `Toolbar`, `SplitLayout`, and `StickyFooterBar`
 - registry status metadata and CLI status output for stable/preview/experimental/internal components
 - README component status, upload example, DataTable pagination note, and troubleshooting sections
+
+### Removed
+
+- removed narrow business blocks from public exports and source: `ProductTile`, `CartPanel`, `CartItem`, `PriceTag`, `RoleBadge`, `StatusSelect`, `ApprovalPanel`, and `CommentsPanel`
 
 ### Fixed
 
