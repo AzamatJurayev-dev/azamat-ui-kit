@@ -3,18 +3,28 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-const peerExternal = new Set([
+const externalPackages = [
   "react",
   "react-dom",
   "react-dom/client",
   "react/jsx-runtime",
   "react-hook-form",
-  "use-sync-external-store",
-  "use-sync-external-store/shim",
-  "use-sync-external-store/shim/with-selector",
-]);
+  "@base-ui/react",
+  "@base-ui/react/button",
+  "@base-ui/react/menu",
+  "@base-ui/react/use-render",
+  "@base-ui/react/merge-props",
+  "@tanstack/react-table",
+  "class-variance-authority",
+  "clsx",
+  "cmdk",
+  "lucide-react",
+  "tailwind-merge",
+  "tw-animate-css",
+  "@fontsource-variable/geist",
+];
 
-const isPeerExternal = (id: string) => peerExternal.has(id);
+const isExternal = (id: string) => externalPackages.some((dependency) => id === dependency || id.startsWith(`${dependency}/`));
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -30,11 +40,14 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "AzamatUiKit",
       formats: ["es", "cjs"],
-      fileName: (format) => `index.${format === "es" ? "js" : "cjs"}`,
+      fileName: (format, entryName) => `${entryName}.${format === "es" ? "js" : "cjs"}`,
     },
     rollupOptions: {
-      external: isPeerExternal,
+      external: isExternal,
       output: {
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        exports: "named",
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
