@@ -1,14 +1,13 @@
 import * as React from "react"
 import { XIcon } from "lucide-react"
 
-import { Badge, type BadgeProps } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
 export type TagListItem = {
   key: string
   label: React.ReactNode
-  tone?: BadgeProps["tone"]
-  variant?: BadgeProps["variant"]
+  variant?: React.ComponentProps<typeof Badge>["variant"]
   disabled?: boolean
 }
 
@@ -29,7 +28,6 @@ function TagList({ items, max, removable = false, onRemove, overflowLabel = (cou
       {visibleItems.map((item) => (
         <Badge
           key={item.key}
-          tone={item.tone}
           variant={item.variant}
           className={cn("gap-1", item.disabled && "opacity-55")}
         >
