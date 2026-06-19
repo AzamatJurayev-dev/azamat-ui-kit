@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
 - base collapse primitive and composed `CollapseGroup`
 - feedback `Alert` component with info, success, warning, destructive, and muted tones
 - `Statistic`, `StatisticCard`, and `StatisticGrid` display components
+- base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, and `Tooltip`
+- Ant-like data display components: `List`, `ListRow`, and `Descriptions`
+- interactive `Rating` input component
 - registry status metadata and CLI status output for stable/preview/experimental/internal components
 - README component status, upload example, DataTable pagination note, and troubleshooting sections
 
@@ -33,7 +36,7 @@ All notable changes to this project will be documented in this file.
 - registry validation now fails on package/registry version mismatch and duplicate registry dependencies
 - package tarball includes `COMPONENT_MATURITY.md` for public API handoff
 - build-output smoke checks now reject indirect ESM browser require fallbacks such as Rolldown CommonJS helpers and `createRequire`
-- package root exports now include charts and collapse components
+- package root exports now include charts, collapse, skeleton, divider, segmented control, spinner, tooltip, rating, list, descriptions and statistic components
 - component maturity docs now define public API decisions, color policy, and font dependency rationale
 
 ### Docs
