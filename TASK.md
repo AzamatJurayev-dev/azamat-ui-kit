@@ -1,103 +1,96 @@
 # Azamat UI Kit Library Readiness Tasks
 
-Status: first readiness implementation pass completed on `master`.
+Status: component expansion and non-test hardening pass is in progress on `master`.
 
-This file is now compressed into completed work and remaining backlog. Detailed audit guidance lives in `COMPONENT_MATURITY.md`, release flow in `RELEASE.md`, and user-facing changes in `CHANGELOG.md`.
+Test files were intentionally not changed in this pass. AsyncSelect is intentionally left open for manual work.
 
-## Completed in this pass
+## Completed first pass
 
-### Package build and runtime
+- [x] Build/runtime externals and ESM `require("react")` smoke guard.
+- [x] Clean `dist` before build/prepack.
+- [x] Explicit package exports for ESM, CJS, TypeScript and package metadata.
+- [x] `registry.json` version aligned with `package.json`.
+- [x] CLI version aligned with package version.
+- [x] `init --template vite|next` and `--skip-install` support.
+- [x] Theme output includes `:root`, `.light`, and `.dark` token blocks.
+- [x] Component maturity rubric and release handoff docs.
+- [x] DataTable `search as Record<string, unknown>` workaround removed.
+- [x] DataTable `onValueChange as any` workaround removed.
+- [x] Build-output smoke check now catches indirect ESM `require` fallbacks.
 
-- [x] React peer runtime issue guarded with `scripts/check-build-output.mjs`.
-- [x] `react`, `react-dom`, `react/jsx-runtime`, and `react-hook-form` are configured as external package build inputs.
-- [x] Vite library build config is runtime-safe for ESM and CJS outputs.
-- [x] ESM build smoke check rejects forbidden `require("react")` usage.
-- [x] Package export map remains explicit for ESM, CJS, TypeScript and package metadata.
-- [x] Declaration output remains tied to `dist/index.d.ts`.
-- [x] `prepack` starts from a clean `dist` through `scripts/clean-dist.mjs`.
-- [x] Release gate includes `npm pack --dry-run`.
+## Completed component expansion pass
 
-### Theme and tokens
+### New reusable components
 
-- [x] Styling ownership decision documented: consumer apps own global CSS tokens.
-- [x] Theme output now includes `:root`, `.light`, and `.dark` token blocks.
-- [x] Required token groups are present: background, foreground, card, popover, border, ring, muted, accent, destructive.
-- [x] Theme command keeps an idempotent marked block through `upsertThemeCss`.
-- [x] Minimal consumer setup is covered in README and release docs.
+- [x] Added dependency-free reusable chart pack: `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, `MetricTrend`.
+- [x] Added base collapse primitive: `Collapse`, `CollapseTrigger`, `CollapseContent`.
+- [x] Added Ant-like composed collapse: `CollapseGroup` with single/multiple modes.
+- [x] Added feedback `Alert` component with `info`, `success`, `warning`, `destructive`, and `muted` tones.
+- [x] Added reusable statistics components: `Statistic`, `StatisticCard`, `StatisticGrid`.
+- [x] Added base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, `Tooltip`.
+- [x] Added interactive `Rating` input.
+- [x] Added Ant-like data display components: `List`, `ListRow`, `Descriptions`.
+- [x] Added reusable dashboard layout components: `Section`, `Toolbar`, `SplitLayout`.
+- [x] Exported charts and collapse from package root.
+- [x] Exported `Alert` from feedback index.
+- [x] Exported statistics, list, and descriptions from display index.
+- [x] Exported rating from inputs index.
+- [x] Exported new layout components from layout index.
 
-### Registry and CLI
+### Calendar and date picker hardening
 
-- [x] `registry.json` version is aligned with `package.json`.
-- [x] Registry manifest now includes the missing `navigation` group for `pagination`.
-- [x] CLI version is aligned with package version.
-- [x] `init` supports Vite and Next defaults with `--template vite|next`.
-- [x] `init` supports `--skip-install`.
-- [x] CLI messages were moved toward Uzbek/English paired text for init errors/prompts.
-- [x] Registry validation checks package/registry version mismatch and duplicate registry dependencies.
-- [x] Add command already resolves transitive registry dependencies before writing files.
+- [x] Add keyboard navigation for date grid: arrow keys, Home/End and PageUp/PageDown.
+- [x] Add roving tab index or equivalent focus management for date buttons.
+- [x] Add disabled date reason API.
+- [x] Prevent invalid range selection when min/max/disabled dates conflict with a range.
+- [x] Document date value format as `YYYY-MM-DD` and state timezone limitations clearly.
 
-### Component API audit documentation
+### Upload hardening
 
-- [x] Public maturity rubric created in `COMPONENT_MATURITY.md`.
-- [x] Public export status model defined: `stable`, `preview`, `experimental`, `internal`.
-- [x] Stable primitive status documented for Button, Input, Textarea, Checkbox, Switch, Badge, Card and Tabs.
-- [x] Base UI wrapper status documented for Dialog, Popover, DropdownMenu, Select and CommandPalette.
-- [x] Complex family boundaries documented for actions, layout, filters, feedback, display, overlay and navigation.
-- [x] Forms, inputs, calendar, upload, data-table and pattern family contracts documented.
-- [x] Variant helper policy documented for helpers like `buttonVariants` and `badgeVariants`.
-- [x] Component audit checklist documented: displayName, data-slot, className merge, ref, controlled state, aria, dark mode, SSR and tree-shaking.
+- [x] Add keyboard accessible fallback for opening the file dialog from the dropzone.
+- [x] Ensure disabled/loading prevents drag/drop and file dialog interactions.
+- [x] Verify `ImageUpload` revokes object URLs when files change, preview is disabled and component unmounts.
+- [x] Allow custom rejection messages or labels for localization.
 
-### Tests and quality
+### Registry, API and docs
 
-- [x] Added clean dist helper.
-- [x] Added build output smoke check.
-- [x] Added registry version/dependency validation.
-- [x] `test:run` includes types, a11y, registry and build-output checks.
-- [x] `release:gate` includes lint, tests, build and pack dry-run.
+- [x] Add registry status metadata so CLI/docs can show `stable`, `preview`, `experimental`, `internal`.
+- [x] Update CLI `list` command to show component status.
+- [x] Compare public export strategy with `COMPONENT_MATURITY.md` and document current decisions.
+- [x] Decide `ThemeProvider` remains internal/source-only for now.
+- [x] Decide `input-group` and low-level command primitives remain internal/preview until stable API is designed.
+- [x] Document changelog rule for every public API addition/removal.
+- [x] Add component status section to README.
+- [x] Add troubleshooting for missing theme tokens, ESM import issues, peer dependency mismatch and React Hook Form setup.
+- [x] Add Upload example showing accepted/rejected files and image preview cleanup behavior.
+- [x] Document DataTable pagination behavior: public `pageIndex` is 0-based.
+- [x] Confirm `@fontsource-variable/geist` remains runtime dependency while CLI theme imports it.
+- [x] Produce explicit allowed semantic hardcoded color policy: emerald, amber, red, blue.
 
-### Documentation and release
+## Still open because user said not to touch tests
 
-- [x] `CHANGELOG.md` has an Unreleased section with Fixes, Changed and Docs sections.
-- [x] `RELEASE.md` documents release gate, npm 2FA/token handling, manual consumer smoke, GitHub release notes and docs-app handoff.
-- [x] Package files list includes README, changelog, release docs, maturity docs, registry and license.
-- [x] Docs app handoff is documented for the separate `azamat-ui` repo.
+- [ ] Replace string-based `scripts/a11y-smoke.mjs` with render-based tests.
+- [ ] Add Vitest + Testing Library or other render-test infrastructure.
+- [ ] Add `test:render` script.
+- [ ] Add `test:cli` script.
+- [ ] Add `test:fixtures` script.
+- [ ] Add stable primitive render, keyboard and aria tests.
+- [ ] Add DataTable search/loading/empty/error/row/pagination/visibility tests.
+- [ ] Add AsyncSelect debounce/cache/loading/error/min-search tests.
+- [ ] Add Calendar selection/min/max/locale tests.
+- [ ] Add Upload rejection/drag/drop tests.
+- [ ] Add FormBuilder render/type tests.
+- [ ] Add Overlay/Command/Navigation tests.
+- [ ] Add Browser/Next/Vite built-package fixture tests.
+- [ ] Add public API snapshot test.
 
-## Remaining backlog
+## Still open non-test backlog
 
-These tasks still need real code-level or render-level verification before they should be checked off.
-
-- [ ] Full hardcoded color audit across every component file.
-- [ ] Full visual dark-mode audit for primitives and complex components.
-- [ ] Button `asChild` or render-prop behavior verification.
-- [ ] DropdownMenu submenu behavior verification.
-- [ ] Async input request race cancellation or stale response guard.
-- [ ] Disabled-reason support for async options.
-- [ ] Multi-select selected chip keyboard remove support.
-- [ ] Calendar arrow/home/end/page keyboard navigation audit.
-- [ ] Calendar disabled date reason and invalid date-range prevention.
-- [ ] Upload object URL cleanup, validation errors, drag/drop keyboard fallback and preview revoke verification.
-- [ ] FormBuilder custom field docs/tests and custom render type-safety work.
-- [ ] DataTable `as any` workaround removal or isolation.
-- [ ] Row selection, disabled rows, bulk actions and row actions render tests.
-- [ ] Stable primitive render, keyboard and aria tests.
-- [ ] Stable complex component render tests.
-- [ ] Hook behavior tests.
-- [ ] CLI temp-project tests for `init`, `theme`, `add` and `list`.
-- [ ] Browser/Next consumer fixture for package ESM runtime import.
-- [ ] Render-based accessibility smoke checks.
-- [ ] Bundle or pack-size snapshot.
-- [ ] Fresh install manual smoke before final release.
-
-## Second pass backlog: real component hardening
-
-The first pass made the package safer to build and easier to release. The next pass must move beyond documentation and smoke checks into actual component behavior, render tests and consumer app confidence.
-
-### P0. Package/runtime confidence
-
-- [ ] Publish a patch release candidate after the build-output fix and install it into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
+- [ ] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
+- [ ] Publish a patch release candidate after local release gate passes.
+- [ ] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
 - [ ] Add a tiny Next.js fixture or script that imports `azamat-ui-kit` from `dist/index.js` in a browser bundle and fails on runtime console errors.
 - [ ] Add a Vite fixture or script that imports `Button`, `Dialog`, `AsyncSelect`, `DataTable`, `ToastProvider` and `FormBuilder` from built `dist`.
-- [ ] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
 - [ ] Extend `scripts/check-build-output.mjs` to catch indirect Rolldown/CJS fallback code that can call external `require` in ESM browser bundles.
 - [ ] Confirm whether `@fontsource-variable/geist` should remain a runtime dependency; if not needed by components, move it out of package dependencies.
 
@@ -227,50 +220,17 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 ### P2. Theme and hardcoded color audit
 
 - [ ] Produce an explicit list of allowed semantic hardcoded colors for status/tone components: emerald, amber, red, blue.
-- [ ] Convert non-semantic `zinc`, `slate`, `white`, `black` component classes to token-based classes where they appear in package components.
+- [ ] AsyncSelect stale guard / abort / disabled reason / multi-tag keyboard remove: intentionally left for manual implementation.
+- [ ] Convert non-semantic `zinc`, `slate`, `neutral`, `stone`, `white`, `black` component classes to token-based classes where they appear in package components.
 - [ ] Add a lint-like script that reports hardcoded neutral palette usage in `src/components`.
-- [ ] Verify all stable primitives render correctly with only package theme tokens installed.
-- [ ] Verify dark mode for primitives, overlays, inputs, data table, upload and notifications in a real rendered fixture.
-
-### P2. Registry and CLI behavior tests
-
-- [ ] Add temp-project test for `npx azamat-ui-kit init --template vite --skip-install`.
-- [ ] Add temp-project test for `npx azamat-ui-kit init --template next --skip-install`.
-- [ ] Add temp-project test for `theme` idempotency by running it twice and comparing output.
-- [ ] Add temp-project test for `add button input --dry-run`.
-- [ ] Add temp-project test for `add data-table --skip-install` and verify transitive registry files are listed/written.
-- [ ] Add temp-project test for invalid component name output and exit behavior.
-- [ ] Validate `registry.json` recommended list does not include `preview` or `experimental` components unless intentionally marked.
-- [ ] Add registry metadata for component status so docs/CLI can show `stable`, `preview`, `experimental`.
-
-### P2. Public API and export cleanup
-
-- [ ] Compare `src/index.ts` exports with `COMPONENT_MATURITY.md` and mark mismatches.
-- [ ] Decide whether `ThemeProvider` should be exported from package root; it currently exists in source but is not exported.
-- [ ] Decide whether `input-group` and low-level command primitives should be public or internal.
+- [ ] Validate `registry.json` recommended list does not include preview or experimental components unless intentionally marked.
 - [ ] Add `exports` subpaths only if root exports become too large for docs/tree-shaking.
-- [ ] Add a public API snapshot test for exported names.
-- [ ] Add a changelog rule for every public API addition/removal.
-
-### P2. Documentation after behavior tests
-
-- [ ] Update README examples after render tests confirm real APIs.
-- [ ] Add a “Component status” section linking stable/preview/experimental exports.
-- [ ] Add troubleshooting for missing theme tokens, ESM import issues, peer dependency mismatch and React Hook Form setup.
-- [ ] Add DataTable server-side example only after manual pagination/sorting behavior is tested.
-- [ ] Add AsyncSelect example only after stale request handling is implemented.
-- [ ] Add FormBuilder example only after custom field and `FieldPath` type tests pass.
-- [ ] Add Upload example showing accepted/rejected files and image preview cleanup behavior.
-
-### P3. Release readiness
-
-- [ ] Decide next version number after second pass: likely `0.1.2` for runtime/test hardening without breaking API.
-- [ ] Run `npm run release:gate` from clean working tree.
+- [ ] Add FormBuilder example after custom field and `FieldPath` type tests pass.
+- [ ] Decide next version number after this pass: likely `0.1.2`.
+- [ ] Run `npm run release:gate` from a clean working tree.
 - [ ] Run manual Vite tarball smoke from `RELEASE.md`.
 - [ ] Run manual Next tarball smoke from `RELEASE.md`.
 - [ ] Publish only after the separate `azamat-ui` docs app works without CJS alias workaround.
-- [ ] After publish, update `CHANGELOG.md` from `Unreleased` to the real version/date.
-- [ ] After publish, update docs app package version and remove local workaround.
 
 ## AsyncSelect work-pack split guide
 
@@ -287,5 +247,5 @@ Use this when assigning work to another chat:
 - [x] Build/runtime tasks handled first.
 - [x] Registry, CLI, theme, documentation and release handoff updated after build work.
 - [x] Package version and changelog impact recorded.
+- [x] Non-test component hardening and expansion started.
 - [ ] Final release smoke still requires a real local or CI environment with dependencies installed.
-- [ ] Second pass should start with test infrastructure and DataTable/AsyncSelect hardening before broad component polish.

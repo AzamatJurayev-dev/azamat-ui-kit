@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Added
+
+- reusable dependency-free chart components: `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, and `MetricTrend`
+- base collapse primitive and composed `CollapseGroup`
+- feedback `Alert` component with info, success, warning, destructive, and muted tones
+- `Statistic`, `StatisticCard`, and `StatisticGrid` display components
+- base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, and `Tooltip`
+- Ant-like data display components: `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `CodeBlock`, `FileCard`, `PropertyGrid`, `DataCard`, and `UserCard`
+- utility display component `KeyboardShortcut`
+- feedback state components `PageState` and `InlineState`
+- action utilities `CopyField` and `ButtonGroup`
+- navigation utility `AnchorNav`
+- interactive `Rating`, `Slider`, `RangeSlider`, `OtpInput`, and `ColorInput` input components
+- reusable dashboard layout helpers: `Section`, `Toolbar`, `SplitLayout`, and `StickyFooterBar`
+- registry status metadata and CLI status output for stable/preview/experimental/internal components
+- README component status, upload example, DataTable pagination note, and troubleshooting sections
+
 ### Fixed
 
 - hardened library externals so React, React DOM, JSX runtime and React Hook Form stay external in package builds
@@ -13,6 +30,8 @@ All notable changes to this project will be documented in this file.
 - added `.light` theme class output next to `:root` and `.dark`
 - removed `DataTable` search prop type workarounds by typing search through `SearchInputProps`
 - removed the `onValueChange as any` workaround from `DataTable`
+- hardened Calendar keyboard navigation, disabled date reasons, roving tab index, and invalid range handling
+- hardened FileUpload disabled/loading drag-drop behavior and localized rejection messages
 
 ### Changed
 
@@ -22,6 +41,8 @@ All notable changes to this project will be documented in this file.
 - registry validation now fails on package/registry version mismatch and duplicate registry dependencies
 - package tarball includes `COMPONENT_MATURITY.md` for public API handoff
 - build-output smoke checks now reject indirect ESM browser require fallbacks such as Rolldown CommonJS helpers and `createRequire`
+- package root exports now include charts, collapse, skeleton, divider, segmented control, spinner, tooltip, rating, sliders, OTP input, color input, list, descriptions, kanban, tree view, code block, file card, property grid, data card, user card and statistic components
+- component maturity docs now define public API decisions, color policy, and font dependency rationale
 
 ### Docs
 
