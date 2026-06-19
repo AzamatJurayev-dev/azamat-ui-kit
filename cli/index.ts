@@ -3,13 +3,14 @@ import { initCommand } from "./commands/init"
 import { addCommand } from "./commands/add"
 import { listCommand } from "./commands/list"
 import { themeCommand } from "./commands/theme"
+import { presetCommand } from "./commands/preset"
 
 const program = new Command()
 
 program
   .name("azamat-ui-kit")
   .description("Azamat UI Kit CLI")
-  .version("0.1.1")
+  .version("0.2.0")
 
 program
   .command("init")
@@ -17,6 +18,15 @@ program
   .option("--template <template>", "Project defaults: vite or next", "vite")
   .option("--skip-install", "Do not install base dependencies")
   .action(initCommand)
+
+program
+  .command("preset")
+  .description("Add a source-copy preset to your project")
+  .argument("<name>", "preset name: minimal or dashboard")
+  .option("-o, --overwrite", "overwrite existing files")
+  .option("--dry-run", "show files without writing")
+  .option("--skip-install", "do not install package dependencies")
+  .action(presetCommand)
 
 program
   .command("list")
