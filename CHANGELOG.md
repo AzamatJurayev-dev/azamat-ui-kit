@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- reusable system components: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, and `EntityDetails`
 - reusable dependency-free chart components: `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, and `MetricTrend`
 - analytics components: `KpiCard`, `KpiGrid`, `ProgressRing`, and `HorizontalBarChart`
 - POS/ecommerce components: `QuantityStepper`, `PriceTag`, `ProductTile`, `CartItem`, and `CartPanel`
