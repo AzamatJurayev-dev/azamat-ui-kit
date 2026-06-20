@@ -100,6 +100,7 @@ See also:
 - [x] Sync README public component list with `PUBLIC_API_INVENTORY.md`.
 - [x] Consolidate text-like RHF wrappers behind a universal `FormInput kind=...` entry while keeping old wrapper names as compatibility aliases.
 - [x] Consolidate RHF select wrappers behind a universal `FormSelect` with simple/async modes while keeping `FormAsyncSelect` as a compatibility alias.
+- [x] Reframe family docs metadata so universal RHF wrappers are the main docs path and older wrapper names appear as compatibility aliases.
 - [x] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
 - [x] Publish a patch release candidate after local release gate passes.
 - [x] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.

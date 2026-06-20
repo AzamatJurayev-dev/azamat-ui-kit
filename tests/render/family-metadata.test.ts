@@ -327,14 +327,28 @@ describe("family metadata", () => {
     const searchAdoption = getComponentDocsAdoption("SearchInput")
     const advancedAdoption = getComponentDocsAdoption("TagInput")
     const migrationAdoption = getComponentDocsAdoption("SmartCard")
+    const formInputAdoption = getComponentDocsAdoption("FormInput")
+    const formSearchAliasAdoption = getComponentDocsAdoption("FormSearchInput")
+    const formSelectAdoption = getComponentDocsAdoption("FormSelect")
+    const formAsyncAliasAdoption = getComponentDocsAdoption("FormAsyncSelect")
 
     expect(inputAdoption?.badge.label).toBe("Start here")
     expect(inputAdoption?.badge.tone).toBe("stable")
     expect(searchAdoption?.badge.label).toBe("Expand")
     expect(advancedAdoption?.badge.tone).toBe("advanced")
     expect(migrationAdoption?.badge.tone).toBe("migration")
+    expect(formInputAdoption?.badge.tone).toBe("preview")
+    expect(formSearchAliasAdoption?.badge.tone).toBe("migration")
+    expect(formSelectAdoption?.badge.tone).toBe("preview")
+    expect(formAsyncAliasAdoption?.badge.tone).toBe("migration")
     expect((inputAdoption?.recommendedOrder ?? 9999)).toBeLessThan(
       searchAdoption?.recommendedOrder ?? 9999
+    )
+    expect((formInputAdoption?.recommendedOrder ?? 9999)).toBeLessThan(
+      formSearchAliasAdoption?.recommendedOrder ?? 9999
+    )
+    expect((formSelectAdoption?.recommendedOrder ?? 9999)).toBeLessThan(
+      formAsyncAliasAdoption?.recommendedOrder ?? 9999
     )
   })
 

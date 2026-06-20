@@ -175,7 +175,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "FormInput",
     title: "Form field wrapper",
-    description: "Use RHF wrappers when field framing and validation should stay consistent.",
+    description: "Use the universal RHF wrapper when field framing and validation should stay consistent.",
     language: "tsx",
     variant: "form",
     code: `import { FormInput } from "azamat-ui-kit"
@@ -183,54 +183,89 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <FormInput control={control} name="email" label="Email" placeholder="Email address" />`,
   },
   {
-    component: "FormSearchInput",
-    title: "Form search field",
-    description: "Keep search fields inside submitted form state when filtering is part of the workflow.",
+    component: "FormInput",
+    title: "Universal search wrapper",
+    description: "Use kind switching instead of separate wrapper names for common field variants.",
     language: "tsx",
     variant: "form",
+    code: `import { FormInput } from "azamat-ui-kit"
+
+<FormInput control={control} name="query" kind="search" label="Search" placeholder="Search products..." />`,
+  },
+  {
+    component: "FormInput",
+    title: "Universal number wrapper",
+    description: "Parsed numeric form state can stay behind the same wrapper contract.",
+    language: "tsx",
+    variant: "form",
+    code: `import { FormInput } from "azamat-ui-kit"
+
+<FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
+  },
+  {
+    component: "FormSearchInput",
+    title: "Search alias migration",
+    description: "Keep this only while migrating old forms to the universal FormInput entry.",
+    language: "tsx",
+    variant: "migration",
     code: `import { FormSearchInput } from "azamat-ui-kit"
 
-<FormSearchInput control={control} name="query" label="Search" />`,
+<FormSearchInput control={control} name="query" label="Search" />
+
+// New work:
+// <FormInput control={control} name="query" kind="search" label="Search" />`,
   },
   {
     component: "FormPasswordInput",
-    title: "Form password field",
-    description: "Password forms should still use the shared field shell and validation copy.",
+    title: "Password alias migration",
+    description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
-    variant: "form",
+    variant: "migration",
     code: `import { FormPasswordInput } from "azamat-ui-kit"
 
-<FormPasswordInput control={control} name="password" label="Password" />`,
+<FormPasswordInput control={control} name="password" label="Password" />
+
+// New work:
+// <FormInput control={control} name="password" kind="password" label="Password" />`,
   },
   {
     component: "FormNumberInput",
-    title: "Form number field",
-    description: "Use RHF number wrappers when parsed numeric data belongs to form submission.",
+    title: "Number alias migration",
+    description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
-    variant: "form",
+    variant: "migration",
     code: `import { FormNumberInput } from "azamat-ui-kit"
 
-<FormNumberInput control={control} name="quantity" label="Quantity" min={0} />`,
+<FormNumberInput control={control} name="quantity" label="Quantity" min={0} />
+
+// New work:
+// <FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
   },
   {
     component: "FormPhoneInput",
-    title: "Form phone field",
-    description: "Phone forms should use the masked preset plus shared validation framing.",
+    title: "Phone alias migration",
+    description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
-    variant: "form",
+    variant: "migration",
     code: `import { FormPhoneInput } from "azamat-ui-kit"
 
-<FormPhoneInput control={control} name="phone" label="Phone" />`,
+<FormPhoneInput control={control} name="phone" label="Phone" />
+
+// New work:
+// <FormInput control={control} name="phone" kind="phone" label="Phone" />`,
   },
   {
     component: "FormDateInput",
-    title: "Form date field",
-    description: "Use the native date wrapper in forms when a calendar popover is unnecessary.",
+    title: "Date alias migration",
+    description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
-    variant: "form",
+    variant: "migration",
     code: `import { FormDateInput } from "azamat-ui-kit"
 
-<FormDateInput control={control} name="startDate" label="Start date" />`,
+<FormDateInput control={control} name="startDate" label="Start date" />
+
+// New work:
+// <FormInput control={control} name="startDate" kind="date" label="Start date" />`,
   },
   {
     component: "FormDateRangeInput",
@@ -322,7 +357,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "FormSelect",
     title: "Form select wrapper",
-    description: "Use RHF wrappers when select state belongs to submitted form data.",
+    description: "Use the universal RHF wrapper when select state belongs to submitted form data.",
     language: "tsx",
     variant: "form",
     code: `import { FormSelect } from "azamat-ui-kit"
@@ -330,14 +365,27 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <FormSelect control={control} name="role" label="Role" options={roleOptions} />`,
   },
   {
-    component: "FormAsyncSelect",
-    title: "Async form selection",
-    description: "Use async select wrappers when remote choice belongs to submitted form state.",
+    component: "FormSelect",
+    title: "Universal async wrapper",
+    description: "Remote option loading can stay behind the same select wrapper contract.",
     language: "tsx",
     variant: "form",
+    code: `import { FormSelect } from "azamat-ui-kit"
+
+<FormSelect control={control} name="ownerId" kind="async" label="Owner" loadOptions={loadUsers} />`,
+  },
+  {
+    component: "FormAsyncSelect",
+    title: "Async alias migration",
+    description: "Keep this only while migrating old forms to the universal FormSelect entry.",
+    language: "tsx",
+    variant: "migration",
     code: `import { FormAsyncSelect } from "azamat-ui-kit"
 
-<FormAsyncSelect control={control} name="ownerId" label="Owner" loadOptions={loadUsers} />`,
+<FormAsyncSelect control={control} name="ownerId" label="Owner" loadOptions={loadUsers} />
+
+// New work:
+// <FormSelect control={control} name="ownerId" kind="async" label="Owner" loadOptions={loadUsers} />`,
   },
 
   {

@@ -61,16 +61,14 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
       {
         id: "form-wrappers",
         label: "Form wrappers",
-        description: "React Hook Form wrappers that keep labels, descriptions, and validation aligned.",
-        components: [
-          "FormInput",
-          "FormSearchInput",
-          "FormPasswordInput",
-          "FormNumberInput",
-          "FormPhoneInput",
-          "FormDateInput",
-          "FormDateRangeInput",
-        ],
+        description: "Start from the universal RHF wrapper and add unique range behavior only when the field actually needs it.",
+        components: ["FormInput", "FormDateRangeInput"],
+      },
+      {
+        id: "transitional",
+        label: "Compatibility aliases",
+        description: "Older wrapper names that still work, but new docs and new product work should prefer FormInput with a matching kind.",
+        components: ["FormSearchInput", "FormPasswordInput", "FormNumberInput", "FormPhoneInput", "FormDateInput"],
       },
       {
         id: "advanced",
@@ -103,8 +101,14 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
       {
         id: "form-wrappers",
         label: "Form wrappers",
-        description: "React Hook Form wrappers for stable field-shell integration.",
-        components: ["FormSelect", "FormAsyncSelect"],
+        description: "Use the universal RHF select wrapper first, then switch modes only when remote loading is required.",
+        components: ["FormSelect"],
+      },
+      {
+        id: "transitional",
+        label: "Compatibility aliases",
+        description: "Older wrapper names that still work, but new docs should point teams to FormSelect as the primary entry.",
+        components: ["FormAsyncSelect"],
       },
     ],
   },
