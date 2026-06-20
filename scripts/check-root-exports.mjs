@@ -19,6 +19,12 @@ function isNestedUnder(parentSource, childSource) {
 const rootIndex = readText("src/index.ts")
 const displayIndex = readText("src/components/display/index.ts")
 const rootSources = extractExportSources(rootIndex)
+const forbiddenRootBarrels = [
+  "./components/actions",
+  "./components/layout",
+  "./components/form",
+  "./components/data-table",
+]
 
 for (const source of new Set(rootSources)) {
   const nestedSources = rootSources.filter((candidate) => candidate !== source && isNestedUnder(source, candidate))
@@ -34,6 +40,12 @@ if (/export\s+\*\s+from\s+["']\.\/smart-card["']/.test(displayIndex)) {
 
 if (!/SmartCard\s+as\s+InfoCard/.test(displayIndex)) {
   failures.push("src/components/display/index.ts must expose InfoCard as the canonical smart-card export")
+}
+
+for (const source of forbiddenRootBarrels) {
+  if (rootSources.includes(source)) {
+    failures.push(`src/index.ts should export '${source}/public' instead of the full '${source}' barrel`)
+  }
 }
 
 if (failures.length > 0) {

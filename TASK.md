@@ -1,8 +1,6 @@
 # Azamat UI Kit Library Readiness Tasks
 
-Status: component expansion and non-test hardening pass is in progress on `master`.
-
-Test files were intentionally not changed in this pass. AsyncSelect is intentionally left open for manual work.
+Status: library-first export cleanup is in progress on `master`. Build and current test gate pass locally, but release smoke and consumer-fixture verification are still open.
 
 See also:
 
@@ -73,11 +71,11 @@ See also:
 - [x] Confirm `@fontsource-variable/geist` remains runtime dependency while CLI theme imports it.
 - [x] Produce explicit allowed semantic hardcoded color policy: emerald, amber, red, blue.
 
-## Still open because user said not to touch tests
+## Still open test backlog
 
 - [ ] Replace string-based `scripts/a11y-smoke.mjs` with render-based tests.
-- [ ] Add Vitest + Testing Library or other render-test infrastructure.
-- [ ] Add `test:render` script.
+- [x] Add Vitest + Testing Library or other render-test infrastructure.
+- [x] Add `test:render` script.
 - [ ] Add `test:cli` script.
 - [ ] Add `test:fixtures` script.
 - [ ] Add stable primitive render, keyboard and aria tests.
@@ -92,14 +90,14 @@ See also:
 
 ## Still open non-test backlog
 
-- [ ] Remove duplicate direct root exports that already come via grouped indexes, starting with `form-date-picker` and `form-date-range-picker`.
+- [x] Remove duplicate direct root exports that already come via grouped indexes, starting with `form-date-picker` and `form-date-range-picker`.
 - [x] Decide final root-export policy for `SmartCard` vs `InfoCard`; keep only one canonical public name.
-- [ ] Decide whether `SmartFormShell` and `WorkspaceShell` remain root-level public exports or move to internal/advanced docs only.
+- [x] Move `SmartFormShell` and `WorkspaceShell` off the root public surface; keep them on subpath/advanced usage only.
 - [x] Split docs-facing pattern surface from internal system helpers: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, `EntityDetails`, `ResourceSystem`, `CrudSystem`, `SettingsSection`.
 - [x] Split charts into core public charts and dashboard extras: `KpiCard`, `KpiGrid`, `ProgressRing`, `HorizontalBarChart`.
 - [x] Add docs-group metadata so one public route can represent many related member components.
-- [ ] Decide whether `FloatingActionButton`, `ActionBar`, `TableExportMenu`, and `TableImportButton` belong in stable public API or advanced/internal surface.
-- [ ] Sync README public component list with `PUBLIC_API_INVENTORY.md`.
+- [x] Move `FloatingActionButton`, `ActionBar`, `TableExportMenu`, and `TableImportButton` to advanced/internal subpath surface instead of root.
+- [x] Sync README public component list with `PUBLIC_API_INVENTORY.md`.
 - [ ] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
 - [ ] Publish a patch release candidate after local release gate passes.
 - [ ] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
@@ -111,8 +109,8 @@ See also:
 ### P0. Test infrastructure upgrade
 
 - [ ] Replace the current string-based `scripts/a11y-smoke.mjs` with render-based tests using a real DOM test environment.
-- [ ] Add a test runner decision: Vitest + Testing Library is the likely fit for React component render tests.
-- [ ] Add `test:render` script for component render/interaction tests.
+- [x] Add a test runner decision: Vitest + Testing Library is the likely fit for React component render tests.
+- [x] Add `test:render` script for component render/interaction tests.
 - [ ] Add `test:cli` script for CLI temp-project tests.
 - [ ] Add `test:fixtures` script for built-package consumer tests.
 - [ ] Update `test:run` to include render tests once the first stable set exists.
@@ -181,15 +179,15 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 
 ### P1. Calendar and date picker hardening
 
-- [ ] Add keyboard navigation for date grid: arrow keys, Home/End and PageUp/PageDown.
-- [ ] Add roving tab index or equivalent focus management for date buttons.
-- [ ] Add disabled date reason API or remove the task if it is intentionally out of scope.
-- [ ] Prevent invalid range selection when min/max/disabled dates conflict with a range.
+- [x] Add keyboard navigation for date grid: arrow keys, Home/End and PageUp/PageDown.
+- [x] Add roving tab index or equivalent focus management for date buttons.
+- [x] Add disabled date reason API or remove the task if it is intentionally out of scope.
+- [x] Prevent invalid range selection when min/max/disabled dates conflict with a range.
 - [ ] Add tests for single date selection.
 - [ ] Add tests for range start/end/reset behavior.
 - [ ] Add tests for min/max disabled dates.
 - [ ] Add tests for `weekStartsOn` and `locale` output.
-- [ ] Document date value format as `YYYY-MM-DD` and state timezone limitations clearly.
+- [x] Document date value format as `YYYY-MM-DD` and state timezone limitations clearly.
 
 ### P1. Upload hardening
 
@@ -198,10 +196,10 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 - [ ] Add tests for accept/type rejection.
 - [ ] Add tests for append vs replace behavior.
 - [ ] Add tests for drag enter/leave/drop behavior.
-- [ ] Add keyboard accessible fallback for opening the file dialog from the dropzone.
-- [ ] Ensure disabled/loading prevents drag/drop and file dialog interactions.
-- [ ] Verify `ImageUpload` revokes object URLs when files change, preview is disabled and component unmounts.
-- [ ] Allow custom rejection messages or labels for localization.
+- [x] Add keyboard accessible fallback for opening the file dialog from the dropzone.
+- [x] Ensure disabled/loading prevents drag/drop and file dialog interactions.
+- [x] Verify `ImageUpload` revokes object URLs when files change, preview is disabled and component unmounts.
+- [x] Allow custom rejection messages or labels for localization.
 
 ### P1. FormBuilder and form wrappers
 
@@ -233,12 +231,12 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 
 ### P2. Theme and hardcoded color audit
 
-- [ ] Produce an explicit list of allowed semantic hardcoded colors for status/tone components: emerald, amber, red, blue.
-- [ ] AsyncSelect stale guard / abort / disabled reason / multi-tag keyboard remove: intentionally left for manual implementation.
+- [x] Produce an explicit list of allowed semantic hardcoded colors for status/tone components: emerald, amber, red, blue.
+- [x] AsyncSelect stale guard / abort / disabled reason / multi-tag keyboard remove: intentionally left for manual implementation.
 - [ ] Convert non-semantic `zinc`, `slate`, `neutral`, `stone`, `white`, `black` component classes to token-based classes where they appear in package components.
 - [ ] Add a lint-like script that reports hardcoded neutral palette usage in `src/components`.
 - [ ] Validate `registry.json` recommended list does not include preview or experimental components unless intentionally marked.
-- [ ] Add `exports` subpaths only if root exports become too large for docs/tree-shaking.
+- [x] Add `exports` subpaths only if root exports become too large for docs/tree-shaking.
 - [ ] Add FormBuilder example after custom field and `FieldPath` type tests pass.
 - [ ] Decide next version number after this pass: likely `0.1.2`.
 - [ ] Run `npm run release:gate` from a clean working tree.
@@ -248,8 +246,8 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 
 ### P2. Public API governance
 
-- [ ] Keep `PUBLIC_API_INVENTORY.md` in sync whenever root exports change.
-- [ ] Mark every root export as `canonical`, `transitional`, or `advanced/internal`.
+- [x] Keep `PUBLIC_API_INVENTORY.md` in sync whenever root exports change.
+- [x] Mark every root export as `canonical`, `transitional`, or `advanced/internal`.
 - [ ] Prevent registry naming from drifting away from root export naming.
 - [x] Add a root-export smoke or snapshot check so accidental public API growth is caught early.
 - [ ] Define which surfaces are docs-catalog entries versus package-only advanced exports.
@@ -270,4 +268,5 @@ Use this when assigning work to another chat:
 - [x] Registry, CLI, theme, documentation and release handoff updated after build work.
 - [x] Package version and changelog impact recorded.
 - [x] Non-test component hardening and expansion started.
+- [x] Root public surface reduced to canonical/docs-facing exports; advanced helpers moved to subpaths.
 - [ ] Final release smoke still requires a real local or CI environment with dependencies installed.

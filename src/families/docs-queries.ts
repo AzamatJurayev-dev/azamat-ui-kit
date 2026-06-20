@@ -9,6 +9,7 @@ import {
   getComponentSnippets,
   getComponentSnippetsByVariant,
 } from "@/families/member-snippet-queries"
+import { getComponentDocsAdoption } from "@/families/docs-adoption"
 import { resolveDocsRouteByComponent } from "@/families/docs-routing"
 
 const docsGroupByName = new Map<ComponentDocsGroupName, ComponentDocsGroupEntry>(
@@ -64,6 +65,7 @@ function getDocsGroupDetail(group: ComponentDocsGroupName) {
       ...section,
       items: section.components.map((component) => ({
         component,
+        adoption: getComponentDocsAdoption(component),
         metadata: getComponentMemberMetadata(component),
         snippets: getComponentSnippets(component),
         snippetVariants: getComponentSnippetsByVariant(component),

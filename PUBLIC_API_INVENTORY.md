@@ -230,22 +230,15 @@ Quyidagilar canonical public surface bo'lib turishi kerak.
 
 ## 3. Surface Problems Found
 
-### Duplicate export paths
+### Root contract cleanup
 
-Quyidagi surface'lar bir necha joydan chiqyapti:
-
-- `FormDatePicker`
-- `FormDateRangePicker`
-
-Sabab:
-
-- `src/index.ts` ichida ham direct export bor
-- `./components/form` orqali ham chiqadi
+Root barrel endi docs-facing `public.ts` barrel'lar orqali yig'iladi.
 
 Natija:
 
-- docs generator yoki API inventory uchun chalkashlik
-- root contract keragidan ortiq shovqinli bo'ladi
+- duplicate nested root exportlar olib tashlandi
+- advanced helperlar root contractdan chiqib ketdi
+- root import endi adoption uchun kichikroq va tushunarliroq
 
 ### Canonical name vs implementation name drift
 
@@ -259,9 +252,9 @@ Natija:
 
 - consumer `InfoCard` ishlatadimi yoki `SmartCard`mi aniq emas
 
-### Internal-looking surfaces leaking to root
+### Advanced surfaces intentionally kept off root
 
-Quyidagilar hozir export chain orqali chiqyapti, lekin public layer sifatida hali aniq pishmagan:
+Quyidagilar endi root importga kirmaydi yoki umuman root uchun tavsiya qilinmaydi:
 
 - `SmartCard`
 - `SmartFormShell`
@@ -314,7 +307,7 @@ Quyidagi qarorlar tavsiya qilinadi.
 - calendar/upload/wizard/public hooks
 - canonical pattern entry components
 
-### Group export ichida qoladi, lekin docs catalog'da alohida ko'rsatilmaydi
+### Subpath export ichida qoladi, lekin docs catalog'da alohida ko'rsatilmaydi
 
 - `ActionSystem`
 - `StatusSystem`
@@ -333,6 +326,8 @@ Quyidagi qarorlar tavsiya qilinadi.
 - `HorizontalBarChart`
 - `TableExportMenu`
 - `TableImportButton`
+- `ActionBar`
+- `FloatingActionButton`
 
 ### Alias orqali transitional support, lekin canonical nom bitta bo'ladi
 
@@ -341,12 +336,10 @@ Quyidagi qarorlar tavsiya qilinadi.
 
 ## 5. Immediate Cleanup Order
 
-1. `src/index.ts` duplicate direct exportlarni kamaytirish
-2. `InfoCard` / `SmartCard` bo'yicha canonical contractni yakunlash
-3. `patterns` exportini docs-facing va internal-facing surface'ga ajratish
-4. `data-table` extension componentlarini `advanced` yoki `internal` sifatida belgilash
-5. `charts` ichida `core charts` va `dashboard extras`ni ajratish
-6. `README` va keyingi docs app component inventory shu fayldagi canonical list bilan sync qilinishi
+1. `README` va keyingi docs app component inventory shu fayldagi canonical list bilan sync qilinishi
+2. tarball smoke test orqali root + subpath contractni real consumer app ichida tekshirish
+3. `SmartFormShell`, `WorkspaceShell`, `ActionBar`, `FloatingActionButton`, `TableExportMenu`, `TableImportButton` uchun yakuniy public-policy yozish
+4. registry naming va docs naming driftini release gate ichida tekshirish
 
 ## 6. Docs Catalog Rule
 
@@ -361,9 +354,9 @@ Library package esa alohida exportlarni saqlab qoladi, lekin docs/catalog foydal
 
 ## 7. Next Supervisor Tasks
 
-- [ ] `src/index.ts` duplicate direct exports audit va cleanup
-- [ ] `InfoCard` canonical, `SmartCard` transitional/internal sifatida qaror yozish
-- [ ] `patterns` ichidan docs-facing minimal public setni ajratish
-- [ ] `charts` core vs extras boundary taskini ochish
+- [x] `src/index.ts` duplicate direct exports audit va cleanup
+- [x] `InfoCard` canonical, `SmartCard` transitional/internal sifatida qaror yozish
+- [x] `patterns` ichidan docs-facing minimal public setni ajratish
+- [x] `charts` core vs extras boundary taskini ochish
 - [ ] `data-table` advanced helpers uchun public status qarorini yozish
 - [ ] `README` public component listini shu inventory bilan sync qilish

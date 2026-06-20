@@ -14,6 +14,10 @@ import {
   listDocsGroups,
 } from "@/families/docs-queries"
 import {
+  getComponentDocsAdoption,
+  listDocsAdoption,
+} from "@/families/docs-adoption"
+import {
   listDocsRouteAliases,
   resolveDocsRoute,
   resolveDocsRouteByComponent,
@@ -238,6 +242,7 @@ describe("family metadata", () => {
 
     inputDetail?.sections.forEach((section) => {
       section.items.forEach((item) => {
+        expect(item.adoption?.component).toBe(item.component)
         expect(item.metadata?.component).toBe(item.component)
         expect(item.metadata?.summary.length ?? 0).toBeGreaterThan(0)
       })
@@ -315,5 +320,32 @@ describe("family metadata", () => {
       expect(group.aliases.length).toBeGreaterThan(0)
       expect(new Set(group.aliases).size).toBe(group.aliases.length)
     })
+  })
+
+  it("builds adoption badges and recommended order for docs detail screens", () => {
+    const inputAdoption = getComponentDocsAdoption("Input")
+    const searchAdoption = getComponentDocsAdoption("SearchInput")
+    const advancedAdoption = getComponentDocsAdoption("TagInput")
+    const migrationAdoption = getComponentDocsAdoption("SmartCard")
+
+    expect(inputAdoption?.badge.label).toBe("Start here")
+    expect(inputAdoption?.badge.tone).toBe("stable")
+    expect(searchAdoption?.badge.label).toBe("Expand")
+    expect(advancedAdoption?.badge.tone).toBe("advanced")
+    expect(migrationAdoption?.badge.tone).toBe("migration")
+    expect((inputAdoption?.recommendedOrder ?? 9999)).toBeLessThan(
+      searchAdoption?.recommendedOrder ?? 9999
+    )
+  })
+
+  it("lists docs adoption in recommended order inside a group", () => {
+    const inputAdoption = listDocsAdoption("Input")
+    expect(inputAdoption.length).toBeGreaterThan(0)
+
+    for (let index = 1; index < inputAdoption.length; index += 1) {
+      expect(inputAdoption[index - 1].recommendedOrder).toBeLessThanOrEqual(
+        inputAdoption[index].recommendedOrder
+      )
+    }
   })
 })

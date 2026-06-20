@@ -40,7 +40,7 @@ function CrudSystem<TItem = unknown>({ labels, canCreate = true, createAction, e
     </div>
   )
 
-  const renderItem = list.renderItem ?? (resolvedItemActions.length ? (item: TItem, index: number) => (
+  const renderItem = list.renderItem ?? (resolvedItemActions.length ? (item: TItem) => (
     <div className="flex items-center justify-between gap-3 rounded-lg border bg-card p-3">
       <pre className="min-w-0 flex-1 overflow-hidden text-xs">{JSON.stringify(item, null, 2)}</pre>
       <ActionSystem item={item} actions={resolvedItemActions} />

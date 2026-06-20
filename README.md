@@ -103,11 +103,14 @@ import {
 } from "azamat-ui-kit"
 ```
 
-Root import intentionally exposes the docs-facing public surface. Advanced helpers and experimental building blocks should be imported from subpaths when needed, for example:
+Root import intentionally exposes the smaller docs-facing public surface. Advanced helpers and implementation-oriented building blocks should be imported from subpaths when needed, for example:
 
 ```tsx
+import { ActionBar } from "azamat-ui-kit/actions/action-bar"
 import { ActionSystem } from "azamat-ui-kit/patterns/action-system"
 import { ProgressRing } from "azamat-ui-kit/charts/progress-ring"
+import { SmartFormShell } from "azamat-ui-kit/form/smart-form-shell"
+import { TableExportMenu } from "azamat-ui-kit/data-table/table-export-menu"
 ```
 
 Family entry exports are also available for docs-first or design-system-first usage:
@@ -147,10 +150,10 @@ Stable today: primitives, Base UI wrappers, router-agnostic layout/navigation, f
 Root package exports now stay intentionally smaller for high-level adoption:
 
 - root import: canonical primitives, reusable wrappers, core charts, public hooks, and docs-facing patterns
-- subpath import: advanced pattern helpers and chart extras that are still being audited as a long-term public contract
+- subpath import: advanced action, form, layout, pattern, chart, and data-table helpers that are still being audited as a long-term public contract
 - family import: grouped entry objects such as `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, `DataTableFamily`
 
-The package also exports `componentFamilyCatalog`, `componentFamilyMigrationMap`, `componentDocsGroups`, `componentMemberMetadata`, `componentSnippetExamples`, and query helpers like `getFamilyCatalogEntry`, `getComponentFamilyEntry`, `getDocsGroupByComponent`, `getDocsNavigation`, `getComponentMemberMetadata`, `getComponentSnippets`, `getComponentSnippetsByVariant`, and `resolveDocsRoute` so a docs app or internal tooling can render family navigation, canonical component routes, route aliases, example snippet tabs, and migration guidance from a single source of truth.
+The package also exports `componentFamilyCatalog`, `componentFamilyMigrationMap`, `componentDocsGroups`, `componentMemberMetadata`, `componentSnippetExamples`, and query helpers like `getFamilyCatalogEntry`, `getComponentFamilyEntry`, `getDocsGroupByComponent`, `getDocsNavigation`, `getComponentMemberMetadata`, `getComponentSnippets`, `getComponentSnippetsByVariant`, `getComponentDocsAdoption`, and `resolveDocsRoute` so a docs app or internal tooling can render family navigation, canonical component routes, route aliases, status badges, recommended adoption order, example snippet tabs, and migration guidance from a single source of truth.
 
 ## Router integration
 
@@ -204,7 +207,7 @@ Release notes live in `CHANGELOG.md`, and the publish flow is documented in `REL
 3. Data loading must be passed through props like `loadOptions`, `data`, `onSubmit`, `onConfirm`.
 4. Business wrappers stay in the app project, not in the UI kit.
 5. Primitive UI and form wrappers should stay separate.
-6. Every reusable component should export from `src/index.ts`.
+6. Stable adoption-ready components export from `src/index.ts`; advanced or transitional helpers can stay on subpath exports until their contract is clear.
 
 Advanced or internal-facing components may stay on subpath exports instead of the root package entry until their contract is stable.
 
