@@ -183,7 +183,12 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
     case "custom":
       return field.render(context)
     case "input":
-      return <FormInput control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
+      return React.createElement(FormInput as React.ComponentType<any>, {
+        control: context.control,
+        disabled: context.disabled,
+        readOnly: context.readOnly,
+        ...(field.props as Omit<FormInputProps<TFieldValues, FieldPath<TFieldValues>>, "control">),
+      })
     case "textarea":
       return <FormTextarea control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
     case "select":

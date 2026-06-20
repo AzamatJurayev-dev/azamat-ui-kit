@@ -147,6 +147,8 @@ This package exports shared metadata for docs apps and internal tooling:
 - `componentMemberMetadata`
 - `componentSnippetExamples`
 
+`FormInput` is now the universal RHF text-field entry. Use `kind="search" | "password" | "number" | "phone" | "date"` when you want one primary mental model, and keep `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` only as compatibility aliases.
+
 ## Component status
 
 Component readiness is tracked in `COMPONENT_MATURITY.md` and mirrored for the CLI in `cli/registry-status.ts`.
@@ -323,6 +325,12 @@ useCommandPaletteShortcut(setOpen)
 <SearchInput value={search} onValueChange={setSearch} placeholder="Search products..." />
 <PasswordInput value={password} onValueChange={setPassword} />
 <NumberInput value={price} min={0} step={1000} onNumberChange={setPrice} />
+```
+
+```tsx
+<FormInput control={control} name="query" kind="search" label="Search" />
+<FormInput control={control} name="password" kind="password" label="Password" />
+<FormInput control={control} name="price" kind="number" label="Price" min={0} />
 ```
 
 ## Upload example
