@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.2.1 - 2026-06-20
+
+### Fixed
+
+- exported the newer family metadata helpers used by the docs app, including docs-group detail, route resolution, and adoption queries
+- restored working JS/CJS output for advanced subpath exports such as `actions/*`, `form/*`, `layout/*`, `patterns/*`, `charts/*`, and `data-table/*`
+- added automated tarball consumer smoke coverage so Vite-like and Next-like installs validate real npm import paths before publish
+
+### Changed
+
+- narrowed the root package surface to docs-facing canonical exports while keeping advanced helpers on explicit subpaths
+- expanded the release gate to include fixture-based consumer smoke checks
+
 ## 0.2.0 - 2026-06-19
 
 ### Added
