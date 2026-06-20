@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import { getInputValue } from "@/components/inputs/input-value"
+import { clampNumericValue, parseDecimalInput } from "@/components/inputs/numeric-value"
 import { Input } from "@/components/ui/input"
 
 export type NumberInputProps = Omit<
@@ -17,19 +19,11 @@ export type NumberInputProps = Omit<
 }
 
 function parseNumberInput(value: string) {
-  if (!value.trim()) return null
-
-  const parsed = Number(value.replace(/,/g, "."))
-  return Number.isFinite(parsed) ? parsed : null
+  return parseDecimalInput(value)
 }
 
 function clampNumber(value: number, min?: number, max?: number) {
-  let nextValue = value
-
-  if (typeof min === "number") nextValue = Math.max(nextValue, min)
-  if (typeof max === "number") nextValue = Math.min(nextValue, max)
-
-  return nextValue
+  return clampNumericValue(value, min, max)
 }
 
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
@@ -49,7 +43,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
     },
     ref
   ) => {
-    const stringValue = value == null ? "" : String(value)
+    const stringValue = getInputValue(value)
 
     const emitValue = (rawValue: string) => {
       const parsed = parseNumberInput(rawValue)

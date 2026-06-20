@@ -84,7 +84,9 @@ Every public component family is reviewed against these gates:
 - `ThemeProvider` remains source-only/internal for now. The package-level contract is CSS token ownership in the consumer app, not a root provider export.
 - `InputGroup`/prefix/suffix composition stays internal or wrapper-level until a stable API is designed.
 - Low-level command primitives stay internal; export `CommandPalette` and shortcut helpers only.
-- Root exports stay as-is until a public API snapshot proves that subpath exports are needed for documentation or tree-shaking.
+- Root exports should stay limited to canonical adoption surfaces. Advanced helpers may remain on subpath exports until a public API snapshot and docs audit confirm they belong at the root.
+- `InfoCard` is the canonical public display-card export. `SmartCard` is implementation naming and should not be the primary docs-facing root name.
+- `patterns` and `charts` may use dedicated public barrels so root imports stay smaller than the full internal implementation tree.
 - Every public API addition/removal must be recorded in `CHANGELOG.md` under Added/Changed/Removed before release.
 
 ## Public helper rule

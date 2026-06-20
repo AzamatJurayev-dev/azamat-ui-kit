@@ -17,5 +17,14 @@ export * from "./keyboard-shortcut"
 export * from "./code-block"
 export * from "./file-card"
 export * from "./property-grid"
-export * from "./smart-card"
 export * from "./entity-card"
+export {
+  SmartCard as InfoCard,
+  type SmartCardClassNames as InfoCardClassNames,
+  type SmartCardDensity as InfoCardDensity,
+  type SmartCardOrientation as InfoCardOrientation,
+  type SmartCardProps as InfoCardProps,
+  type SmartCardRenderContext as InfoCardRenderContext,
+  type SmartCardSize as InfoCardSize,
+  type SmartCardVariant as InfoCardVariant,
+} from "./smart-card"

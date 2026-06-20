@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 export type PageStateTone = "empty" | "loading" | "error" | "success" | "info"
 
-export type PageStateProps = React.ComponentProps<"div"> & {
+export type PageStateProps = Omit<React.ComponentProps<"div">, "title"> & {
   tone?: PageStateTone
   title?: React.ReactNode
   description?: React.ReactNode

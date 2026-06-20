@@ -1,5 +1,5 @@
 import * as React from "react"
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
@@ -86,7 +86,9 @@ describe("AsyncSelect", () => {
 
     expect(loadOptions).toHaveBeenCalledTimes(1)
 
-    await new Promise((resolve) => setTimeout(resolve, 35))
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 35))
+    })
 
     await waitFor(() => {
       expect(loadOptions).toHaveBeenCalledWith("g", expect.any(Object))
@@ -103,7 +105,7 @@ describe("AsyncSelect", () => {
       return []
     })
 
-    render(<AsyncSelectFixture loadOptions={loadOptions} cacheTtl={25} debounceMs={0} />)
+    render(<AsyncSelectFixture loadOptions={loadOptions} cacheTtl={250} debounceMs={0} />)
     fireEvent.click(screen.getByRole("button", { name: /select an item/i }))
 
     const search = screen.getByPlaceholderText("Search items")
@@ -123,11 +125,24 @@ describe("AsyncSelect", () => {
     const afterMissCallCount = loadOptions.mock.calls.length
     fireEvent.change(search, { target: { value: "g" } })
 
-    await new Promise((resolve) => setTimeout(resolve, 5))
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 5))
+    })
     expect(loadOptions.mock.calls.length).toBe(afterMissCallCount)
 
-    await new Promise((resolve) => setTimeout(resolve, 30))
-    fireEvent.change(search, { target: { value: "g" } })
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 260))
+    })
+
+    await act(async () => {
+      fireEvent.change(search, { target: { value: "" } })
+      await new Promise((resolve) => setTimeout(resolve, 10))
+    })
+
+    await act(async () => {
+      fireEvent.change(search, { target: { value: "g" } })
+      await new Promise((resolve) => setTimeout(resolve, 20))
+    })
 
     await waitFor(() => {
       expect(loadOptions.mock.calls.length).toBeGreaterThan(afterMissCallCount)

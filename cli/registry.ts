@@ -61,6 +61,7 @@ export type ComponentName =
   | "result"
   | "timeline"
   | "metric-grid"
+  | "info-card"
   | "activity-feed"
   | "property-grid"
   | "smart-card"
@@ -231,11 +232,12 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   result: { name: "result", category: "display", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/display/result.tsx", "{components}/display/result.tsx")] },
   timeline: { name: "timeline", category: "display", registryDependencies: ["utils"], files: [file("src/components/display/timeline.tsx", "{components}/display/timeline.tsx")] },
   "metric-grid": { name: "metric-grid", category: "display", registryDependencies: ["card", "utils"], files: [file("src/components/display/metric-grid.tsx", "{components}/display/metric-grid.tsx")] },
+  "info-card": { name: "info-card", category: "display", registryDependencies: ["card", "skeleton", "utils"], files: [file("src/components/display/smart-card.tsx", "{components}/display/info-card.tsx")] },
   "activity-feed": { name: "activity-feed", category: "display", registryDependencies: ["card", "utils"], files: [file("src/components/display/activity-feed.tsx", "{components}/display/activity-feed.tsx")] },
   "property-grid": { name: "property-grid", category: "display", registryDependencies: ["utils"], files: [file("src/components/display/property-grid.tsx", "{components}/display/property-grid.tsx")] },
   "smart-card": { name: "smart-card", category: "display", registryDependencies: ["card", "skeleton", "utils"], files: [file("src/components/display/smart-card.tsx", "{components}/display/smart-card.tsx")] },
   "entity-card": { name: "entity-card", category: "display", registryDependencies: ["card", "utils"], files: [file("src/components/display/entity-card.tsx", "{components}/display/entity-card.tsx")] },
-  display: { name: "display", category: "group", registryDependencies: ["description-list", "progress", "result", "timeline", "metric-grid", "activity-feed", "property-grid", "smart-card", "entity-card"], files: [file("src/components/display/index.ts", "{components}/display/index.ts")] },
+  display: { name: "display", category: "group", registryDependencies: ["description-list", "progress", "result", "timeline", "metric-grid", "info-card", "activity-feed", "property-grid", "smart-card", "entity-card"], files: [file("src/components/display/index.ts", "{components}/display/index.ts")] },
 
   "action-menu": { name: "action-menu", category: "actions", dependencies: ["lucide-react"], registryDependencies: ["button", "dropdown-menu", "utils"], files: [file("src/components/actions/action-menu.tsx", "{components}/actions/action-menu.tsx")] },
   "action-system": { name: "action-system", category: "actions", dependencies: ["lucide-react"], registryDependencies: ["button", "dropdown-menu", "utils"], files: [file("src/components/patterns/action-system.tsx", "{components}/patterns/action-system.tsx")] },

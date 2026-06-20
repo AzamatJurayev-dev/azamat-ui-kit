@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { getInputValue, setInputElementValue } from "@/components/inputs/input-value"
 import { Input } from "@/components/ui/input"
 
 export type MaskedInputProps = Omit<
@@ -37,12 +38,12 @@ const MaskedInput = React.forwardRef<HTMLInputElement, MaskedInputProps>(
       const rawValue = unmask(event.target.value)
       const maskedValue = mask(rawValue)
 
-      event.target.value = maskedValue
+      setInputElementValue(event, maskedValue)
       onChange?.(event)
       onValueChange?.(maskedValue, rawValue)
     }
 
-    return <Input ref={ref} value={value ?? ""} onChange={handleChange} {...props} />
+    return <Input ref={ref} value={getInputValue(value)} onChange={handleChange} {...props} />
   }
 )
 MaskedInput.displayName = "MaskedInput"

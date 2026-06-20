@@ -1,5 +1,8 @@
 import * as React from "react"
 
+import { InputChrome } from "@/components/inputs/input-chrome"
+import { getInputValue } from "@/components/inputs/input-value"
+import { parseMoneyLikeInput } from "@/components/inputs/numeric-value"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
@@ -17,17 +20,7 @@ export type MoneyInputProps = Omit<
 }
 
 function parseMoneyInput(value: string) {
-  const normalized = value
-    .replace(/\s/g, "")
-    .replace(/,/g, ".")
-    .replace(/[^0-9.-]/g, "")
-
-  if (!normalized || normalized === "-" || normalized === "." || normalized === "-.") {
-    return null
-  }
-
-  const parsed = Number(normalized)
-  return Number.isFinite(parsed) ? parsed : null
+  return parseMoneyLikeInput(value)
 }
 
 function MoneyInput({
@@ -48,20 +41,22 @@ function MoneyInput({
   }
 
   return (
-    <div
+    <InputChrome
       data-slot="money-input"
-      className={cn(
-        "flex h-8 w-full min-w-0 items-center rounded-lg border border-input bg-transparent text-sm transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50",
-        wrapperClassName
-      )}
+      className={cn("text-sm", wrapperClassName)}
+      start={
+        prefix ? (
+          <span className="pl-2.5 text-xs font-medium text-muted-foreground">{prefix}</span>
+        ) : null
+      }
+      end={
+        suffix ? (
+          <span className="pr-2.5 text-xs font-medium text-muted-foreground">{suffix}</span>
+        ) : null
+      }
     >
-      {prefix && (
-        <span className="shrink-0 pl-2.5 text-xs font-medium text-muted-foreground">
-          {prefix}
-        </span>
-      )}
       <Input
-        value={value ?? ""}
+        value={getInputValue(value)}
         onChange={handleChange}
         inputMode={inputMode}
         className={cn(
@@ -71,12 +66,7 @@ function MoneyInput({
         )}
         {...props}
       />
-      {suffix && (
-        <span className="shrink-0 pr-2.5 text-xs font-medium text-muted-foreground">
-          {suffix}
-        </span>
-      )}
-    </div>
+    </InputChrome>
   )
 }
 

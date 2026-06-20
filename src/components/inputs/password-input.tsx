@@ -1,11 +1,10 @@
 import * as React from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { InputDecorator } from "@/components/inputs/input-decorator"
 
 export type PasswordInputProps = Omit<
-  React.ComponentProps<typeof Input>,
+  React.ComponentProps<typeof InputDecorator>,
   "type" | "value" | "onChange"
 > & {
   value?: string | null
@@ -32,8 +31,6 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
       defaultVisible = false,
       onVisibleChange,
       showToggle = true,
-      wrapperClassName,
-      inputClassName,
       showLabel = "Show password",
       hideLabel = "Hide password",
       disabled,
@@ -59,32 +56,28 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
     }
 
     return (
-      <div
+      <InputDecorator
         data-slot="password-input"
-        className={cn("relative flex w-full items-center", wrapperClassName)}
-      >
-        <Input
-          ref={ref}
-          type={currentVisible ? "text" : "password"}
-          value={value ?? ""}
-          disabled={disabled}
-          onChange={handleChange}
-          className={cn(showToggle && "pr-9", inputClassName, className)}
-          {...props}
-        />
-
-        {showToggle && (
-          <button
-            type="button"
-            disabled={disabled}
-            aria-label={currentVisible ? hideLabel : showLabel}
-            className="absolute right-2 rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-            onClick={() => setVisibleState(!currentVisible)}
-          >
-            {currentVisible ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
-          </button>
-        )}
-      </div>
+        ref={ref}
+        type={currentVisible ? "text" : "password"}
+        value={value ?? ""}
+        disabled={disabled}
+        onChange={handleChange}
+        trailing={
+          showToggle ? (
+            <button
+              type="button"
+              disabled={disabled}
+              aria-label={currentVisible ? hideLabel : showLabel}
+              className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+              onClick={() => setVisibleState(!currentVisible)}
+            >
+              {currentVisible ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
+            </button>
+          ) : null
+        }
+        {...props}
+      />
     )
   }
 )

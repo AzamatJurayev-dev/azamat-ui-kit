@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-export type FormSectionProps = React.ComponentProps<"section"> & {
+export type FormSectionProps = Omit<React.ComponentProps<"section">, "title"> & {
   title?: React.ReactNode
   description?: React.ReactNode
   actions?: React.ReactNode

@@ -4,6 +4,7 @@ import { FormActions } from "@/components/form/form-actions"
 import { FormSection } from "@/components/form/form-section"
 import { cn } from "@/lib/utils"
 
+/** @deprecated Prefer `FormFamily.Section`/`FormFamily.Actions` composition or `FormFamily.Builder` for new public usage. */
 export type SmartFormSection = {
   key: string
   title?: React.ReactNode
@@ -14,6 +15,7 @@ export type SmartFormSection = {
   hidden?: boolean
 }
 
+/** @deprecated Prefer `FormFamily` entry members for new public usage. */
 export type SmartFormShellProps = React.ComponentProps<"form"> & {
   title?: React.ReactNode
   description?: React.ReactNode
@@ -29,6 +31,7 @@ export type SmartFormShellProps = React.ComponentProps<"form"> & {
   contentClassName?: string
 }
 
+/** @deprecated Prefer `FormFamily.Shell` access and migrate new docs usage toward family-first form composition. */
 function SmartFormShell({ title, description, sections, actions, loading = false, disabled = false, submitLabel, cancelLabel, onCancel, renderHeader, renderSection, contentClassName, className, children, ...props }: SmartFormShellProps) {
   const visibleSections = sections?.filter((section) => !section.hidden)
 

@@ -1,6 +1,9 @@
 import * as React from "react"
 import { MinusIcon, PlusIcon } from "lucide-react"
 
+import { InputChrome } from "@/components/inputs/input-chrome"
+import { getInputValue } from "@/components/inputs/input-value"
+import { clampNumericValue, parseDecimalInput } from "@/components/inputs/numeric-value"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -21,12 +24,7 @@ export type QuantityInputProps = Omit<
 }
 
 function clampQuantity(value: number, min?: number, max?: number) {
-  let nextValue = value
-
-  if (typeof min === "number") nextValue = Math.max(nextValue, min)
-  if (typeof max === "number") nextValue = Math.min(nextValue, max)
-
-  return nextValue
+  return clampNumericValue(value, min, max)
 }
 
 function QuantityInput({
@@ -50,18 +48,17 @@ function QuantityInput({
     onValueChange?.(nextValue)
   }
 
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    onChange?.(event)
+    const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+      onChange?.(event)
 
-    const rawValue = event.target.value
-    if (!rawValue) {
-      setNextValue(null)
-      return
+      const parsed = parseDecimalInput(event.target.value)
+      if (parsed == null) {
+        setNextValue(null)
+        return
+      }
+
+      setNextValue(clampQuantity(parsed, min, max))
     }
-
-    const parsed = Number(rawValue)
-    setNextValue(Number.isFinite(parsed) ? clampQuantity(parsed, min, max) : null)
-  }
 
   const handleStep = (direction: 1 | -1) => {
     const baseValue = typeof value === "number" ? value : min ?? 0
@@ -69,27 +66,40 @@ function QuantityInput({
   }
 
   return (
-    <div
+    <InputChrome
       data-slot="quantity-input"
-      className={cn(
-        "flex h-8 w-full min-w-0 items-center overflow-hidden rounded-lg border border-input bg-transparent focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50",
-        wrapperClassName
-      )}
+      className={cn("overflow-hidden", wrapperClassName)}
+      start={
+        showControls ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="h-full rounded-none"
+            disabled={!canDecrease || props.disabled}
+            onClick={() => handleStep(-1)}
+          >
+            <MinusIcon />
+          </Button>
+        ) : null
+      }
+      end={
+        showControls ? (
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="h-full rounded-none"
+            disabled={!canIncrease || props.disabled}
+            onClick={() => handleStep(1)}
+          >
+            <PlusIcon />
+          </Button>
+        ) : null
+      }
     >
-      {showControls && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          className="h-full rounded-none"
-          disabled={!canDecrease || props.disabled}
-          onClick={() => handleStep(-1)}
-        >
-          <MinusIcon />
-        </Button>
-      )}
       <Input
-        value={value ?? ""}
+        value={getInputValue(value)}
         onChange={handleInputChange}
         inputMode={inputMode}
         className={cn(
@@ -99,19 +109,7 @@ function QuantityInput({
         )}
         {...props}
       />
-      {showControls && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          className="h-full rounded-none"
-          disabled={!canIncrease || props.disabled}
-          onClick={() => handleStep(1)}
-        >
-          <PlusIcon />
-        </Button>
-      )}
-    </div>
+    </InputChrome>
   )
 }
 

@@ -19,6 +19,9 @@ Good candidates:
 - DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions
 - ToastProvider, useToast, CommandPalette, useCommandPaletteShortcut
 - EmptyState, LoadingState, StatusBadge
+- ChartFrame, BarChart, LineChart, Sparkline, DonutChart, ChartLegend, MetricTrend
+- ResourcePage, ResourceDetailPage, FormBuilder, FormBuilderPresets
+- InputFamily, SelectFamily, CardFamily, FormFamily, DataTableFamily
 - useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile, useDisclosure, useDebouncedValue
 
 Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
@@ -73,26 +76,55 @@ import {
   AsyncMultiSelect,
   AsyncSelect,
   Button,
+  CardFamily,
   CommandPalette,
   DataTable,
+  DataTableFamily,
   DataTableBulkActions,
   FilterBar,
   FormDateInput,
+  FormFamily,
   FormInput,
   FormPhoneInput,
   FormSearchInput,
   FormSwitch,
+  InputFamily,
   ModalShell,
   PageHeader,
   PasswordInput,
   PhoneInput,
   SearchInput,
+  SelectFamily,
   StatCard,
   StatusBadge,
   ToastProvider,
   useCommandPaletteShortcut,
   useToast,
 } from "azamat-ui-kit"
+```
+
+Root import intentionally exposes the docs-facing public surface. Advanced helpers and experimental building blocks should be imported from subpaths when needed, for example:
+
+```tsx
+import { ActionSystem } from "azamat-ui-kit/patterns/action-system"
+import { ProgressRing } from "azamat-ui-kit/charts/progress-ring"
+```
+
+Family entry exports are also available for docs-first or design-system-first usage:
+
+```tsx
+import { CardFamily, InputFamily, SelectFamily } from "azamat-ui-kit"
+
+<InputFamily.Search placeholder="Search products..." />
+<SelectFamily.Async loadOptions={loadUsers} />
+<CardFamily.Info title="Revenue" description="Current period" />
+```
+
+```tsx
+import { DataTableFamily, FormFamily } from "azamat-ui-kit"
+
+<FormFamily.Input name="firstName" control={control} label="First name" />
+<DataTableFamily.Root columns={columns} data={rows} />
 ```
 
 ## Component status
@@ -111,6 +143,14 @@ Statuses:
 - `internal`: helper metadata or implementation detail.
 
 Stable today: primitives, Base UI wrappers, router-agnostic layout/navigation, feedback/display wrappers and generic action/overlay components. Preview today: inputs, forms, calendar, upload, data-table and resource patterns. Experimental today: `FormBuilder` and presets.
+
+Root package exports now stay intentionally smaller for high-level adoption:
+
+- root import: canonical primitives, reusable wrappers, core charts, public hooks, and docs-facing patterns
+- subpath import: advanced pattern helpers and chart extras that are still being audited as a long-term public contract
+- family import: grouped entry objects such as `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, `DataTableFamily`
+
+The package also exports `componentFamilyCatalog`, `componentFamilyMigrationMap`, `componentDocsGroups`, `componentMemberMetadata`, `componentSnippetExamples`, and query helpers like `getFamilyCatalogEntry`, `getComponentFamilyEntry`, `getDocsGroupByComponent`, `getDocsNavigation`, `getComponentMemberMetadata`, `getComponentSnippets`, `getComponentSnippetsByVariant`, and `resolveDocsRoute` so a docs app or internal tooling can render family navigation, canonical component routes, route aliases, example snippet tabs, and migration guidance from a single source of truth.
 
 ## Router integration
 
@@ -166,6 +206,8 @@ Release notes live in `CHANGELOG.md`, and the publish flow is documented in `REL
 5. Primitive UI and form wrappers should stay separate.
 6. Every reusable component should export from `src/index.ts`.
 
+Advanced or internal-facing components may stay on subpath exports instead of the root package entry until their contract is stable.
+
 ## Current layers
 
 ```txt
@@ -181,6 +223,11 @@ src/components/feedback/       Empty, loading and status states
 src/components/data-table/     Generic TanStack Table wrapper and helpers
 src/components/notifications/  Toast provider and hook
 src/components/command/        Command palette and shortcut hook
+src/components/calendar/       Generic calendar and date pickers
+src/components/upload/         File and image upload
+src/components/wizard/         Stepper and wizard flows
+src/components/patterns/       Public page/form patterns plus advanced system helpers
+src/components/charts/         Core charts plus advanced dashboard extras
 src/hooks/                     Generic React hooks
 src/lib/                       Utilities
 ```

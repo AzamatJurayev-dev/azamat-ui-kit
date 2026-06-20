@@ -4,6 +4,12 @@ Status: component expansion and non-test hardening pass is in progress on `maste
 
 Test files were intentionally not changed in this pass. AsyncSelect is intentionally left open for manual work.
 
+See also:
+
+- `COMPONENT_MATURITY.md` for current public maturity rubric
+- `SURFACE_AUDIT_AND_FIX_ORDER.md` for the expanded surface audit and next fix order
+- `PUBLIC_API_INVENTORY.md` for the current canonical-vs-internal export map
+
 ## Completed first pass
 
 - [x] Build/runtime externals and ESM `require("react")` smoke guard.
@@ -86,6 +92,14 @@ Test files were intentionally not changed in this pass. AsyncSelect is intention
 
 ## Still open non-test backlog
 
+- [ ] Remove duplicate direct root exports that already come via grouped indexes, starting with `form-date-picker` and `form-date-range-picker`.
+- [x] Decide final root-export policy for `SmartCard` vs `InfoCard`; keep only one canonical public name.
+- [ ] Decide whether `SmartFormShell` and `WorkspaceShell` remain root-level public exports or move to internal/advanced docs only.
+- [x] Split docs-facing pattern surface from internal system helpers: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, `EntityDetails`, `ResourceSystem`, `CrudSystem`, `SettingsSection`.
+- [x] Split charts into core public charts and dashboard extras: `KpiCard`, `KpiGrid`, `ProgressRing`, `HorizontalBarChart`.
+- [x] Add docs-group metadata so one public route can represent many related member components.
+- [ ] Decide whether `FloatingActionButton`, `ActionBar`, `TableExportMenu`, and `TableImportButton` belong in stable public API or advanced/internal surface.
+- [ ] Sync README public component list with `PUBLIC_API_INVENTORY.md`.
 - [ ] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
 - [ ] Publish a patch release candidate after local release gate passes.
 - [ ] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
@@ -231,6 +245,14 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 - [ ] Run manual Vite tarball smoke from `RELEASE.md`.
 - [ ] Run manual Next tarball smoke from `RELEASE.md`.
 - [ ] Publish only after the separate `azamat-ui` docs app works without CJS alias workaround.
+
+### P2. Public API governance
+
+- [ ] Keep `PUBLIC_API_INVENTORY.md` in sync whenever root exports change.
+- [ ] Mark every root export as `canonical`, `transitional`, or `advanced/internal`.
+- [ ] Prevent registry naming from drifting away from root export naming.
+- [x] Add a root-export smoke or snapshot check so accidental public API growth is caught early.
+- [ ] Define which surfaces are docs-catalog entries versus package-only advanced exports.
 
 ## AsyncSelect work-pack split guide
 

@@ -4,11 +4,16 @@ import { Card } from "@/components/ui/card"
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 
+/** @deprecated Prefer `InfoCardVariant` via `InfoCard` or `CardFamily.Info` for new public usage. */
 export type SmartCardVariant = "default" | "outline" | "elevated" | "ghost"
+/** @deprecated Prefer `InfoCardSize` via `InfoCard` or `CardFamily.Info` for new public usage. */
 export type SmartCardSize = "sm" | "md" | "lg"
+/** @deprecated Prefer `InfoCardDensity` via `InfoCard` or `CardFamily.Info` for new public usage. */
 export type SmartCardDensity = "compact" | "default" | "comfortable"
+/** @deprecated Prefer `InfoCardOrientation` via `InfoCard` or `CardFamily.Info` for new public usage. */
 export type SmartCardOrientation = "vertical" | "horizontal"
 
+/** @deprecated Prefer `InfoCardClassNames` via `InfoCard` or `CardFamily.Info` for new public usage. */
 export type SmartCardClassNames = {
   root?: string
   media?: string
@@ -25,6 +30,7 @@ export type SmartCardClassNames = {
   status?: string
 }
 
+/** @deprecated Prefer `InfoCardRenderContext` via `InfoCard` or `CardFamily.Info` for new public usage. */
 export type SmartCardRenderContext = {
   title?: React.ReactNode
   description?: React.ReactNode
@@ -38,7 +44,8 @@ export type SmartCardRenderContext = {
   footer?: React.ReactNode
 }
 
-export type SmartCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "content"> & SmartCardRenderContext & {
+/** @deprecated Prefer `InfoCardProps` via `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "content" | "size"> & SmartCardRenderContext & {
   orientation?: SmartCardOrientation
   variant?: SmartCardVariant
   size?: SmartCardSize
@@ -73,6 +80,7 @@ const titleClassName: Record<SmartCardSize, string> = {
   lg: "text-lg",
 }
 
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
 function SmartCard({
   eyebrow,
   title,

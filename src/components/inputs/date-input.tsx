@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { createInputChangeHandler, getInputValue } from "@/components/inputs/input-value"
 import { Input } from "@/components/ui/input"
 
 export type DateInputProps = Omit<
@@ -13,16 +14,13 @@ export type DateInputProps = Omit<
 
 const DateInput = React.forwardRef<HTMLInputElement, DateInputProps>(
   ({ value, onChange, onValueChange, ...props }, ref) => {
-    const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-      onChange?.(event)
-      onValueChange?.(event.target.value)
-    }
+    const handleChange = createInputChangeHandler({ onChange, onValueChange })
 
     return (
       <Input
         ref={ref}
         type="date"
-        value={value ?? ""}
+        value={getInputValue(value)}
         onChange={handleChange}
         {...props}
       />
