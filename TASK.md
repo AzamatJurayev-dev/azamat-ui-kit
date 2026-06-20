@@ -99,6 +99,7 @@ See also:
 - [x] Move `FloatingActionButton`, `ActionBar`, `TableExportMenu`, and `TableImportButton` to advanced/internal subpath surface instead of root.
 - [x] Sync README public component list with `PUBLIC_API_INVENTORY.md`.
 - [x] Consolidate text-like RHF wrappers behind a universal `FormInput kind=...` entry while keeping old wrapper names as compatibility aliases.
+- [x] Consolidate RHF select wrappers behind a universal `FormSelect` with simple/async modes while keeping `FormAsyncSelect` as a compatibility alias.
 - [x] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
 - [x] Publish a patch release candidate after local release gate passes.
 - [x] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.

@@ -192,7 +192,11 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
     case "textarea":
       return <FormTextarea control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
     case "select":
-      return <FormSelect control={context.control} disabled={context.disabled} {...field.props} />
+      return React.createElement(FormSelect as React.ComponentType<any>, {
+        control: context.control,
+        disabled: context.disabled,
+        ...(field.props as Omit<FormSelectProps<TFieldValues, FieldPath<TFieldValues>>, "control">),
+      })
     case "async-select":
       return <FormAsyncSelect control={context.control} disabled={context.disabled} {...field.props} />
     case "switch":

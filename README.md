@@ -149,6 +149,8 @@ This package exports shared metadata for docs apps and internal tooling:
 
 `FormInput` is now the universal RHF text-field entry. Use `kind="search" | "password" | "number" | "phone" | "date"` when you want one primary mental model, and keep `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` only as compatibility aliases.
 
+`FormSelect` is now the universal RHF select entry. Use default simple mode for local options and `kind="async"` for remote loading, while `FormAsyncSelect` remains a compatibility alias.
+
 ## Component status
 
 Component readiness is tracked in `COMPONENT_MATURITY.md` and mirrored for the CLI in `cli/registry-status.ts`.
@@ -331,6 +333,8 @@ useCommandPaletteShortcut(setOpen)
 <FormInput control={control} name="query" kind="search" label="Search" />
 <FormInput control={control} name="password" kind="password" label="Password" />
 <FormInput control={control} name="price" kind="number" label="Price" min={0} />
+<FormSelect control={control} name="role" label="Role" options={roleOptions} />
+<FormSelect control={control} name="ownerId" kind="async" label="Owner" loadOptions={loadUsers} />
 ```
 
 ## Upload example
