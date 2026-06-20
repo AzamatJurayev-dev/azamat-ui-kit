@@ -77,7 +77,7 @@ See also:
 - [x] Add Vitest + Testing Library or other render-test infrastructure.
 - [x] Add `test:render` script.
 - [ ] Add `test:cli` script.
-- [ ] Add `test:fixtures` script.
+- [x] Add `test:fixtures` script.
 - [ ] Add stable primitive render, keyboard and aria tests.
 - [ ] Add DataTable search/loading/empty/error/row/pagination/visibility tests.
 - [ ] Add AsyncSelect debounce/cache/loading/error/min-search tests.
@@ -98,11 +98,11 @@ See also:
 - [x] Add docs-group metadata so one public route can represent many related member components.
 - [x] Move `FloatingActionButton`, `ActionBar`, `TableExportMenu`, and `TableImportButton` to advanced/internal subpath surface instead of root.
 - [x] Sync README public component list with `PUBLIC_API_INVENTORY.md`.
-- [ ] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
+- [x] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
 - [ ] Publish a patch release candidate after local release gate passes.
 - [ ] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
-- [ ] Add a tiny Next.js fixture or script that imports `azamat-ui-kit` from `dist/index.js` in a browser bundle and fails on runtime console errors.
-- [ ] Add a Vite fixture or script that imports `Button`, `Dialog`, `AsyncSelect`, `DataTable`, `ToastProvider` and `FormBuilder` from built `dist`.
+- [x] Add a tiny Next.js fixture or script that imports `azamat-ui-kit` from `dist/index.js` in a browser bundle and fails on runtime console errors.
+- [x] Add a Vite fixture or script that imports `Button`, `Dialog`, `AsyncSelect`, `DataTable`, `ToastProvider` and `FormBuilder` from built `dist`.
 - [ ] Extend `scripts/check-build-output.mjs` to catch indirect Rolldown/CJS fallback code that can call external `require` in ESM browser bundles.
 - [ ] Confirm whether `@fontsource-variable/geist` should remain a runtime dependency; if not needed by components, move it out of package dependencies.
 
@@ -112,7 +112,7 @@ See also:
 - [x] Add a test runner decision: Vitest + Testing Library is the likely fit for React component render tests.
 - [x] Add `test:render` script for component render/interaction tests.
 - [ ] Add `test:cli` script for CLI temp-project tests.
-- [ ] Add `test:fixtures` script for built-package consumer tests.
+- [x] Add `test:fixtures` script for built-package consumer tests.
 - [ ] Update `test:run` to include render tests once the first stable set exists.
 - [ ] Keep the old string smoke temporarily under a different name only if it still catches useful regressions.
 - [ ] Add CI-friendly temp directory cleanup for CLI and fixture tests.
@@ -240,8 +240,8 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 - [ ] Add FormBuilder example after custom field and `FieldPath` type tests pass.
 - [ ] Decide next version number after this pass: likely `0.1.2`.
 - [ ] Run `npm run release:gate` from a clean working tree.
-- [ ] Run manual Vite tarball smoke from `RELEASE.md`.
-- [ ] Run manual Next tarball smoke from `RELEASE.md`.
+- [x] Run Vite tarball smoke via automated `test:fixtures`.
+- [x] Run Next tarball smoke via automated `test:fixtures`.
 - [ ] Publish only after the separate `azamat-ui` docs app works without CJS alias workaround.
 
 ### P2. Public API governance

@@ -10,11 +10,20 @@ export type PresetCommandOptions = {
   skipInstall?: boolean
 }
 
+type PresetInitConfig = {
+  alias?: string
+  utilsPath?: string
+  paths?: {
+    components?: string
+    ui?: string
+  }
+}
+
 function applyAlias(content: string, alias = "@") {
   return alias === "@" ? content : content.replaceAll("@/", `${alias}/`)
 }
 
-function resolveTarget(target: string, config: any) {
+function resolveTarget(target: string, config: PresetInitConfig) {
   const components = config.paths?.components ?? "src/components"
   const ui = config.paths?.ui ?? "src/components/ui"
   const utils = config.utilsPath ?? "src/lib/utils.ts"
@@ -35,7 +44,7 @@ export async function presetCommand(name: string, options: PresetCommandOptions 
     process.exit(1)
   }
 
-  const config = await fs.readJson(configPath)
+  const config = (await fs.readJson(configPath)) as PresetInitConfig
   const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 
   for (const item of files) {

@@ -14,6 +14,7 @@ The gate expands to:
 npm run lint
 npm run test:run
 npm run build
+npm run test:fixtures
 npm pack --dry-run
 ```
 
@@ -39,9 +40,17 @@ npm publish --access public
 
 When publishing from CI later, store the npm token in GitHub Actions secrets and keep package provenance/2FA policy documented in the workflow handoff.
 
-## Manual consumer smoke
+## Consumer smoke
 
-After `npm pack --dry-run`, test one clean consumer app before publishing:
+Automated smoke now exists:
+
+```bash
+npm run test:fixtures
+```
+
+It packs the current library, installs it into temporary Vite-like and Next-like consumer fixtures, verifies root and subpath imports, runs TypeScript, and performs a tiny runtime import check.
+
+After `npm pack --dry-run`, you can still test one clean consumer app manually before publishing:
 
 ```bash
 npm create vite@latest aui-smoke -- --template react-ts

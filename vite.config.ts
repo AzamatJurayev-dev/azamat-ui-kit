@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
@@ -26,6 +27,34 @@ const externalPackages = [
 
 const isExternal = (id: string) => externalPackages.some((dependency) => id === dependency || id.startsWith(`${dependency}/`));
 
+function collectBuildEntries(directory: string): string[] {
+  const entries: string[] = [];
+
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const fullPath = path.join(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      entries.push(...collectBuildEntries(fullPath));
+      continue;
+    }
+
+    const isSourceFile = fullPath.endsWith(".ts") || fullPath.endsWith(".tsx");
+    const isIgnoredFile =
+      fullPath.endsWith(".test.ts") ||
+      fullPath.endsWith(".test.tsx") ||
+      fullPath.endsWith(".stories.tsx") ||
+      fullPath.endsWith(".d.ts");
+
+    if (isSourceFile && !isIgnoredFile) {
+      entries.push(fullPath);
+    }
+  }
+
+  return entries;
+}
+
+const sourceEntries = collectBuildEntries(path.resolve(__dirname, "src"));
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   publicDir: false,
@@ -43,6 +72,7 @@ export default defineConfig({
       fileName: (format, entryName) => `${entryName}.${format === "es" ? "js" : "cjs"}`,
     },
     rollupOptions: {
+      input: sourceEntries,
       external: isExternal,
       output: {
         preserveModules: true,

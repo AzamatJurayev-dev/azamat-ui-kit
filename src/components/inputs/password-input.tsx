@@ -23,7 +23,6 @@ export type PasswordInputProps = Omit<
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   (
     {
-      className,
       value,
       onChange,
       onValueChange,

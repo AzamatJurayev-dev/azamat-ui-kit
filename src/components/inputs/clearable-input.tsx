@@ -23,7 +23,6 @@ export type ClearableInputProps = Omit<
 const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
   (
     {
-      className,
       value,
       onChange,
       onValueChange,
