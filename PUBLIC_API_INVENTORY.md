@@ -329,6 +329,19 @@ Quyidagi qarorlar tavsiya qilinadi.
 - `ActionBar`
 - `FloatingActionButton`
 
+### Data-table advanced helper policy
+
+`TableExportMenu` va `TableImportButton` reusable helper bo'lsa ham, ular `DataTable` adoptionning birinchi bosqichi emas.
+
+Qoidalar:
+
+- docs catalog'da `Data Table` detail ichidagi advanced section'da turadi
+- root importga qaytmaydi
+- subpath import orqali olinadi:
+  - `azamat-ui-kit/data-table/table-export-menu`
+  - `azamat-ui-kit/data-table/table-import-button`
+- registry recommended list ichiga kirmaydi
+
 ### Alias orqali transitional support, lekin canonical nom bitta bo'ladi
 
 - `InfoCard` is canonical
@@ -358,5 +371,5 @@ Library package esa alohida exportlarni saqlab qoladi, lekin docs/catalog foydal
 - [x] `InfoCard` canonical, `SmartCard` transitional/internal sifatida qaror yozish
 - [x] `patterns` ichidan docs-facing minimal public setni ajratish
 - [x] `charts` core vs extras boundary taskini ochish
-- [ ] `data-table` advanced helpers uchun public status qarorini yozish
-- [ ] `README` public component listini shu inventory bilan sync qilish
+- [x] `data-table` advanced helpers uchun public status qarorini yozish
+- [x] `README` public component listini shu inventory bilan sync qilish

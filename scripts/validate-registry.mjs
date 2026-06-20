@@ -6,6 +6,7 @@ const root = process.cwd()
 const packageJsonPath = path.join(root, "package.json")
 const registryJsonPath = path.join(root, "registry.json")
 const registryTsPath = path.join(root, "cli/registry.ts")
+const registryStatusTsPath = path.join(root, "cli/registry-status.ts")
 
 const failures = []
 
@@ -66,13 +67,24 @@ function extractRegistryFiles(registryTs) {
   }))
 }
 
+function extractRegistryStatuses(registryStatusTs) {
+  return new Map(
+    Array.from(registryStatusTs.matchAll(/["']([a-z0-9-]+)["']\s*:\s*["'](stable|preview|experimental|internal)["']/g)).map((match) => [
+      match[1],
+      match[2],
+    ]),
+  )
+}
+
 const packageJson = readJson(packageJsonPath)
 const registryJson = readJson(registryJsonPath)
 const registryTs = readText(registryTsPath)
+const registryStatusTs = readText(registryStatusTsPath)
 const unionNames = extractComponentNameUnion(registryTs)
 const registryNames = extractRegistryObjectNames(registryTs)
 const dependencyMap = extractRegistryDependencies(registryTs)
 const registryFiles = extractRegistryFiles(registryTs)
+const registryStatuses = extractRegistryStatuses(registryStatusTs)
 const unionSet = new Set(unionNames)
 const registrySet = new Set(registryNames)
 
@@ -93,6 +105,14 @@ if (registryJson) {
 
     if (!registrySet.has(name)) {
       failures.push(`registry.json references '${name}', but cli registry object does not define it`)
+    }
+  }
+
+  for (const name of registryJson.recommended ?? []) {
+    const status = registryStatuses.get(name)
+
+    if (status === "experimental" || status === "internal") {
+      failures.push(`registry.json recommended includes '${name}', but cli registry status marks it as '${status}'`)
     }
   }
 }

@@ -130,6 +130,23 @@ import { DataTableFamily, FormFamily } from "azamat-ui-kit"
 <DataTableFamily.Root columns={columns} data={rows} />
 ```
 
+## Naming policy
+
+Public docs should stay family-first even when the package keeps separate exports for implementation convenience.
+
+- docs-first name: `Input`, `Select`, `Card`, `Form Field`, `Data Table`
+- grouped public helpers: `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, `DataTableFamily`
+- canonical card naming: prefer `InfoCard`; `SmartCard` is transitional
+- advanced data-table helpers: `TableExportMenu` and `TableImportButton` are subpath-only helpers, not first-step adoption components
+
+This package exports shared metadata for docs apps and internal tooling:
+
+- `componentFamilyCatalog`
+- `componentDocsGroups`
+- `componentFamilyMigrationMap`
+- `componentMemberMetadata`
+- `componentSnippetExamples`
+
 ## Component status
 
 Component readiness is tracked in `COMPONENT_MATURITY.md` and mirrored for the CLI in `cli/registry-status.ts`.

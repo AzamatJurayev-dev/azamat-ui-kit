@@ -99,11 +99,11 @@ See also:
 - [x] Move `FloatingActionButton`, `ActionBar`, `TableExportMenu`, and `TableImportButton` to advanced/internal subpath surface instead of root.
 - [x] Sync README public component list with `PUBLIC_API_INVENTORY.md`.
 - [x] Add a package tarball smoke script that runs `npm pack`, installs the tarball into a temp app, imports at least one primitive and one complex component, and runs TypeScript.
-- [ ] Publish a patch release candidate after local release gate passes.
-- [ ] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
+- [x] Publish a patch release candidate after local release gate passes.
+- [x] Install the patch candidate into the separate `azamat-ui` docs app without the `next.config.ts` CJS alias workaround.
 - [x] Add a tiny Next.js fixture or script that imports `azamat-ui-kit` from `dist/index.js` in a browser bundle and fails on runtime console errors.
 - [x] Add a Vite fixture or script that imports `Button`, `Dialog`, `AsyncSelect`, `DataTable`, `ToastProvider` and `FormBuilder` from built `dist`.
-- [ ] Extend `scripts/check-build-output.mjs` to catch indirect Rolldown/CJS fallback code that can call external `require` in ESM browser bundles.
+- [x] Extend `scripts/check-build-output.mjs` to catch indirect Rolldown/CJS fallback code that can call external `require` in ESM browser bundles.
 - [ ] Confirm whether `@fontsource-variable/geist` should remain a runtime dependency; if not needed by components, move it out of package dependencies.
 
 ### P0. Test infrastructure upgrade
@@ -235,7 +235,7 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 - [x] AsyncSelect stale guard / abort / disabled reason / multi-tag keyboard remove: intentionally left for manual implementation.
 - [ ] Convert non-semantic `zinc`, `slate`, `neutral`, `stone`, `white`, `black` component classes to token-based classes where they appear in package components.
 - [ ] Add a lint-like script that reports hardcoded neutral palette usage in `src/components`.
-- [ ] Validate `registry.json` recommended list does not include preview or experimental components unless intentionally marked.
+- [x] Validate `registry.json` recommended list does not include preview or experimental components unless intentionally marked.
 - [x] Add `exports` subpaths only if root exports become too large for docs/tree-shaking.
 - [ ] Add FormBuilder example after custom field and `FieldPath` type tests pass.
 - [ ] Decide next version number after this pass: likely `0.1.2`.
@@ -248,9 +248,9 @@ These tasks are intentionally split into smaller chunks so separate chats can wo
 
 - [x] Keep `PUBLIC_API_INVENTORY.md` in sync whenever root exports change.
 - [x] Mark every root export as `canonical`, `transitional`, or `advanced/internal`.
-- [ ] Prevent registry naming from drifting away from root export naming.
+- [x] Prevent registry naming from drifting away from root export naming.
 - [x] Add a root-export smoke or snapshot check so accidental public API growth is caught early.
-- [ ] Define which surfaces are docs-catalog entries versus package-only advanced exports.
+- [x] Define which surfaces are docs-catalog entries versus package-only advanced exports.
 
 ## AsyncSelect work-pack split guide
 
