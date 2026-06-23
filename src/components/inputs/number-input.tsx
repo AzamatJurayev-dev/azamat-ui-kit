@@ -1,11 +1,11 @@
 import * as React from "react"
 
+import { InputDecorator } from "@/components/inputs/input-decorator"
 import { getInputValue } from "@/components/inputs/input-value"
 import { clampNumericValue, parseDecimalInput } from "@/components/inputs/numeric-value"
-import { Input } from "@/components/ui/input"
 
 export type NumberInputProps = Omit<
-  React.ComponentProps<typeof Input>,
+  React.ComponentProps<typeof InputDecorator>,
   "type" | "value" | "onChange" | "min" | "max" | "step"
 > & {
   value?: number | string | null
@@ -16,6 +16,8 @@ export type NumberInputProps = Omit<
   max?: number
   step?: number
   allowEmpty?: boolean
+  prefix?: React.ReactNode
+  suffix?: React.ReactNode
 }
 
 function parseNumberInput(value: string) {
@@ -37,6 +39,10 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       max,
       step,
       allowEmpty = true,
+      prefix,
+      suffix,
+      leading,
+      trailing,
       inputMode = "decimal",
       onBlur,
       ...props
@@ -60,14 +66,16 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 
     const handleBlur: React.FocusEventHandler<HTMLInputElement> = (event) => {
       if (!allowEmpty && !event.target.value.trim()) {
-        emitValue(String(min ?? 0))
+        const fallbackValue = String(min ?? 0)
+        event.currentTarget.value = fallbackValue
+        emitValue(fallbackValue)
       }
 
       onBlur?.(event)
     }
 
     return (
-      <Input
+      <InputDecorator
         ref={ref}
         type="text"
         value={stringValue}
@@ -75,6 +83,8 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
         min={min}
         max={max}
         step={step}
+        leading={prefix ?? leading}
+        trailing={suffix ?? trailing}
         onChange={handleChange}
         onBlur={handleBlur}
         {...props}
