@@ -47,39 +47,38 @@ export type AppInputProps =
   | AppPhoneInputProps
   | AppDateInputProps
 
+function omitKind<TProps extends { kind?: AppInputKind }>(props: TProps): Omit<TProps, "kind"> {
+  const { kind, ...inputProps } = props
+  void kind
+  return inputProps
+}
+
 const AppInput = React.forwardRef<HTMLInputElement, AppInputProps>((props, ref) => {
   if (props.kind === "search") {
-    const { kind: _kind, ...inputProps } = props
-    return <SearchInput ref={ref} {...inputProps} />
+    return <SearchInput ref={ref} {...omitKind(props)} />
   }
 
   if (props.kind === "password") {
-    const { kind: _kind, ...inputProps } = props
-    return <PasswordInput ref={ref} {...inputProps} />
+    return <PasswordInput ref={ref} {...omitKind(props)} />
   }
 
   if (props.kind === "number") {
-    const { kind: _kind, ...inputProps } = props
-    return <NumberInput ref={ref} {...inputProps} />
+    return <NumberInput ref={ref} {...omitKind(props)} />
   }
 
   if (props.kind === "phone") {
-    const { kind: _kind, ...inputProps } = props
-    return <PhoneInput ref={ref} {...inputProps} />
+    return <PhoneInput ref={ref} {...omitKind(props)} />
   }
 
   if (props.kind === "date") {
-    const { kind: _kind, ...inputProps } = props
-    return <DateInput ref={ref} {...inputProps} />
+    return <DateInput ref={ref} {...omitKind(props)} />
   }
 
   if (props.kind === "clearable") {
-    const { kind: _kind, ...inputProps } = props
-    return <ClearableInput ref={ref} {...inputProps} />
+    return <ClearableInput ref={ref} {...omitKind(props)} />
   }
 
-  const { kind: _kind, ...inputProps } = props
-  return <InputDecorator ref={ref} {...inputProps} />
+  return <InputDecorator ref={ref} {...omitKind(props)} />
 })
 AppInput.displayName = "AppInput"
 
