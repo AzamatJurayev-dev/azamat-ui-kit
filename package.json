@@ -110,6 +110,7 @@
     "CHANGELOG.md",
     "RELEASE.md",
     "COMPONENT_MATURITY.md",
+    "UNIVERSAL_INPUT.md",
     "LICENSE"
   ],
   "scripts": {
