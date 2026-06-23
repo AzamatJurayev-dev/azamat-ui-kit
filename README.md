@@ -1,6 +1,6 @@
 # azamat-ui-kit
 
-Personal React + TypeScript UI kit for dashboard projects. The goal is to keep shadcn-style copyable components, Ant-style universal wrappers, and project-specific business logic separate.
+Personal React + TypeScript UI kit for dashboard projects. The goal is to keep source-copyable components, universal wrappers, and project-specific business logic separate.
 
 Preferred adoption model: use the CLI to copy source into your app. Treat the package itself as `foundation + registry`, not as the long-term runtime home for every large component.
 

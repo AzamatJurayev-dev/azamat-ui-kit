@@ -37,7 +37,7 @@ Primary rule:
 - user component ichini qulay edit qila olmaydi
 - docs/catalog bilan runtime API bir-biriga qattiq bog'lanib qoladi
 - katta pattern va templates primitive bilan aralashib ketadi
-- shadcn kabi "own your source" tajribasi bo'lmaydi
+- to'liq "own your source" tajribasi bo'lmaydi
 
 Source-copy model foydasi:
 

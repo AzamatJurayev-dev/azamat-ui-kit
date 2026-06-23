@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file.
 - source-copy preset command and preset file map for `minimal` and `dashboard` installs
 - registry entries for `SmartCard`, `EntityCard`, `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, `EntityDetails`, `ResourceSystem`, `CrudSystem`, `SmartFormShell`, and `WorkspaceShell`
 - props-driven `SmartCard` with slots, `classNames`, render overrides, loading, selected, disabled, interactive, orientation, variant, size, and density controls
-- source-copy architecture notes for shadcn-style editable component installation
+- source-copy architecture notes for editable component installation
 - export family config for subpath/runtime import planning
 - reusable system components: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, `EntityDetails`, `ResourceSystem`, and `CrudSystem`
 - reusable layout/form systems: `WorkspaceShell`, `EntityCard`, and `SmartFormShell`

@@ -20,7 +20,7 @@ function Skeleton({ rounded = "md", animated = true, className, ...props }: Skel
       data-slot="skeleton"
       aria-hidden="true"
       className={cn(
-        "bg-[linear-gradient(135deg,color-mix(in_oklch,var(--muted),white_38%)_0%,color-mix(in_oklch,var(--muted),transparent_6%)_48%,color-mix(in_oklch,var(--muted),white_28%)_100%)]",
+        "bg-[linear-gradient(135deg,color-mix(in_oklch,var(--muted),white_38%)_0%,color-mix(in_oklch,var(--muted),transparent_6%)_48%,color-mix(in_oklch,var(--muted),white_28%)_100%)] ring-1 ring-foreground/4",
         animated && "animate-pulse",
         roundedClassName[rounded],
         className
@@ -58,7 +58,7 @@ function SkeletonCard({ avatar = false, rows = 3, className, ...props }: Skeleto
   return (
     <div
       data-slot="skeleton-card"
-      className={cn("rounded-[var(--radius-2xl)] border border-border/75 bg-card/96 p-5 shadow-sm", className)}
+      className={cn("rounded-[var(--radius-2xl)] border border-border/80 bg-card/96 p-5 shadow-sm ring-1 ring-foreground/5", className)}
       {...props}
     >
       <div className="flex gap-3">
