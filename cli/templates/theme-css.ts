@@ -5,7 +5,6 @@ export const AZAMAT_UI_THEME_MARKER = "azamat-ui-kit"
 export function getAzamatUiThemeCss(packageSourcePath: string) {
   return `${AZAMAT_UI_THEME_START}
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 @source "${packageSourcePath}";
 
