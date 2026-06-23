@@ -142,6 +142,15 @@ Use Vite defaults:
 npx azamat-ui-kit-cli init --template vite
 ```
 
+For most teams the safe install order is:
+
+```bash
+npm install -D azamat-ui-kit-cli
+npm install azamat-ui-kit
+npx azamat-ui-kit-cli init --template vite --defaults
+npx azamat-ui-kit-cli add button form-input
+```
+
 The package entry does **not** import global CSS. During `init`, the CLI can write Azamat UI Kit theme tokens directly into your app global CSS file, for example `src/index.css` or `app/globals.css`.
 
 `init` also writes an `@source` directive that points Tailwind at `node_modules/azamat-ui-kit/dist/**/*.js`, so runtime package imports can render correctly in consumer apps.
@@ -201,6 +210,199 @@ import { DataTableFamily, FormFamily } from "azamat-ui-kit"
 <FormFamily.Input name="firstName" control={control} label="First name" />
 <DataTableFamily.Root columns={columns} data={rows} />
 ```
+
+## Vite setup
+
+Use this when the consumer app is a React + TypeScript Vite project and you want the recommended source-copy workflow.
+
+### 1. Install both packages
+
+```bash
+npm install -D azamat-ui-kit-cli
+npm install azamat-ui-kit
+```
+
+Why both:
+
+- `azamat-ui-kit-cli`: owns `init`, `add`, `theme`, and local source-copy setup
+- `azamat-ui-kit`: runtime package, Tailwind `@source` target, and small direct-import primitives
+
+### 2. Run template-aware init
+
+```bash
+npx azamat-ui-kit-cli init --template vite --defaults
+```
+
+This should create or update:
+
+- `azamat-ui.json`
+- `src/lib/utils.ts`
+- `src/index.css`
+- `tsconfig.app.json` alias mapping for `@/*`
+- `vite.config.ts` alias support for `@`
+
+If the project is missing Tailwind Vite packages, `init` can install:
+
+```txt
+tailwindcss
+@tailwindcss/vite
+```
+
+### 3. Verify `vite.config.ts`
+
+Your Vite config should include the Tailwind Vite plugin and an `@` alias to `src`.
+
+```ts
+import path from "node:path"
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
+import tailwindcss from "@tailwindcss/vite"
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": path.resolve(process.cwd(), "src"),
+    },
+  },
+})
+```
+
+### 4. Verify `tsconfig.app.json`
+
+The consumer app should resolve `@/*` to `src/*`.
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+### 5. Verify `src/index.css`
+
+`init` writes the theme layer into the real global CSS file used by the app. That file should contain the Azamat UI Kit theme block, including:
+
+- `@import "tw-animate-css";`
+- `@import "@fontsource-variable/geist";`
+- `@source "../node_modules/azamat-ui-kit/dist/**/*.js";` or an equivalent `node_modules/azamat-ui-kit/dist/**/*.js` path
+- light and dark token definitions
+
+Do not create a separate package stylesheet import. The global app CSS is the source of truth.
+
+### 6. Verify the app entry imports global CSS
+
+For standard Vite React apps, `src/main.tsx` should already include:
+
+```ts
+import "./index.css"
+```
+
+If this import is missing, the library will render without the expected styles even if the components themselves are correct.
+
+### 7. Add first components
+
+```bash
+npx azamat-ui-kit-cli add button form-input
+```
+
+Expected copied files usually land under:
+
+```txt
+src/components/ui/button.tsx
+src/components/form/form-input.tsx
+```
+
+### 8. Import from local app source
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { FormInput } from "@/components/form/form-input"
+```
+
+This is the preferred production usage. It keeps your app editable and avoids forcing large reusable systems through one package-root import.
+
+### 9. Smoke test one component
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+export function Demo() {
+  return <Button>Save changes</Button>
+}
+```
+
+If the button renders without theme styles, check these first:
+
+1. `src/main.tsx` imports `./index.css`
+2. `src/index.css` contains the Azamat UI Kit theme block
+3. `vite.config.ts` uses `@tailwindcss/vite`
+4. `tsconfig.app.json` and `vite.config.ts` both resolve `@`
+5. the project restarted after `init`
+
+## Next.js setup
+
+Use this when the consumer app is a Next.js App Router project and you want the same source-copy workflow.
+
+### 1. Install both packages
+
+```bash
+npm install -D azamat-ui-kit-cli
+npm install azamat-ui-kit
+```
+
+### 2. Run template-aware init
+
+```bash
+npx azamat-ui-kit-cli init --template next --defaults
+```
+
+This should create or update:
+
+- `azamat-ui.json`
+- `lib/utils.ts`
+- `app/globals.css`
+- `tsconfig.json` alias mapping for `@/*`
+
+If missing, `init` can also install:
+
+```txt
+tailwindcss
+@tailwindcss/postcss
+```
+
+### 3. Verify `app/globals.css`
+
+The theme block should be written into `app/globals.css`, not into a package stylesheet import.
+
+### 4. Add first components
+
+```bash
+npx azamat-ui-kit-cli add button form-input
+```
+
+### 5. Import from local app source
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { FormInput } from "@/components/form/form-input"
+```
+
+### 6. Smoke test in a page
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+export default function Page() {
+  return <Button>Continue</Button>
+}
+```
+
+If the component is unstyled, confirm `app/layout.tsx` imports `./globals.css` and restart the dev server after `init`.
 
 ## Adoption model
 

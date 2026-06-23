@@ -104,6 +104,52 @@ import { FormInput } from "@/components/form/form-input"
 - Vite alias `@` ishlashi kerak
 - copied source importlari package-root importdan ustun bo'lishi kerak
 
+### Manual config to verify
+
+`vite.config.ts` ichida quyidagilar bo'lishi kerak:
+
+```ts
+import path from "node:path"
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
+import tailwindcss from "@tailwindcss/vite"
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": path.resolve(process.cwd(), "src"),
+    },
+  },
+})
+```
+
+`tsconfig.app.json` ichida:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+`src/main.tsx` ichida:
+
+```ts
+import "./index.css"
+```
+
+`src/index.css` ichida Azamat UI theme block bo'lishi kerak:
+
+- `@import "tw-animate-css";`
+- `@import "@fontsource-variable/geist";`
+- `@source "../node_modules/azamat-ui-kit/dist/**/*.js";`
+- light/dark tokenlar
+
 ## 4. Docs route recommendation
 
 `azamat-ui` docs ichida quyidagi route'lar bo'lishi kerak:
