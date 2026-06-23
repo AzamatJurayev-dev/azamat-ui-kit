@@ -407,14 +407,16 @@ function DataTable<TData, TValue = unknown>({
         data-striped={striped || undefined}
         data-bordered={bordered || undefined}
         className={cn(
-          "overflow-auto rounded-[var(--radius-2xl)] border bg-card/96 shadow-sm backdrop-blur",
+          "overflow-auto rounded-[var(--radius-2xl)] border bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_10%),var(--card))] shadow-sm ring-1 ring-foreground/5 backdrop-blur",
           !bordered && "border-border",
           renderMobileCard && "hidden md:block",
           tableWrapperClassName
         )}
       >
         <Table className={cn("text-[0.95rem]", tableClassName)}>
-          <TableHeader className={cn(stickyHeader && "sticky top-0 z-10 bg-background shadow-sm")}>
+          <TableHeader
+            className={cn(stickyHeader && "sticky top-0 z-10 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_10%),var(--background))] shadow-sm backdrop-blur")}
+          >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -423,7 +425,8 @@ function DataTable<TData, TValue = unknown>({
                     style={{ width: header.getSize() }}
                     className={cn(
                       densityHeadClassName[density],
-                      stickyHeader && "bg-background",
+                      "text-muted-foreground",
+                      stickyHeader && "bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_10%),var(--background))] backdrop-blur",
                       bordered && "border-r last:border-r-0",
                       getHeaderCellClassName(header, headerCellClassName)
                     )}
@@ -452,6 +455,7 @@ function DataTable<TData, TValue = unknown>({
                         data-disabled={rowDisabled || undefined}
                         className={cn(
                           onRowClick && !rowDisabled && "cursor-pointer",
+                          !rowDisabled && "transition-colors",
                           striped && rowIndex % 2 === 1 && "bg-muted/20",
                           rowDisabled && "pointer-events-none opacity-55",
                           getRowClassName(row, rowClassName)

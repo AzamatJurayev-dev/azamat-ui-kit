@@ -304,7 +304,16 @@ function AsyncStateMessage({
   className?: string
   children: React.ReactNode
 }) {
-  return <div className={cn("px-2 py-3 text-sm text-muted-foreground", className)}>{children}</div>
+  return (
+    <div
+      className={cn(
+        "rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-3 py-3 text-sm text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
+        className
+      )}
+    >
+      {children}
+    </div>
+  )
 }
 
 function getOptionLabelText<TValue extends string, TData>(option: AsyncSelectOption<TValue, TData>) {
@@ -337,8 +346,8 @@ function AsyncOptionButton<
       type="button"
       disabled={option.disabled}
       className={cn(
-        "flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm outline-none hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50",
-        selected && "bg-accent text-accent-foreground",
+        "flex w-full items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-border/70 hover:bg-accent/60 hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50",
+        selected && "border-primary/18 bg-primary/8 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]",
         optionClassName
       )}
       onClick={() => onSelect(option)}
@@ -378,7 +387,7 @@ function AsyncCreateButton({
     <button
       type="button"
       disabled={isCreating}
-      className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm outline-none hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+      className="flex w-full items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/80 px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-primary/25 hover:bg-primary/6 hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
       onClick={onCreate}
     >
       <span className="flex size-4 shrink-0 items-center justify-center">
@@ -579,7 +588,10 @@ function AsyncSelect<
               variant="outline"
               disabled={disabled}
               aria-expanded={open}
-              className={cn("w-full justify-between", triggerClassName)}
+              className={cn(
+                "min-h-11 w-full justify-between border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_0_rgba(255,255,255,0.06)]",
+                triggerClassName
+              )}
             />
           }
         >
@@ -602,7 +614,7 @@ function AsyncSelect<
               <span
                 role="button"
                 tabIndex={0}
-                className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                className="rounded-full border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground"
                 aria-label={labels?.clear ?? "Clear"}
                 onClick={handleClear}
                 onKeyDown={(event) => {
@@ -620,7 +632,10 @@ function AsyncSelect<
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className={cn("w-(--anchor-width) gap-2 p-2", contentClassName)}
+          className={cn(
+            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-3.5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            contentClassName
+          )}
         >
           <div className="relative">
             <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -628,11 +643,11 @@ function AsyncSelect<
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={labels?.searchPlaceholder ?? "Search..."}
-              className={cn("pl-8", searchClassName)}
+              className={cn("border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] pl-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
             />
           </div>
 
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-64 space-y-1 overflow-y-auto pr-1">
             {searchTooShort && flatOptions.length === 0 && (
               renderMinSearch?.(state) ?? (
                 <AsyncStateMessage>
@@ -969,7 +984,10 @@ function AsyncMultiSelect<
               variant="outline"
               disabled={disabled}
               aria-expanded={open}
-              className={cn("min-h-8 w-full justify-between", triggerClassName)}
+              className={cn(
+                "min-h-11 w-full justify-between border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_0_rgba(255,255,255,0.06)]",
+                triggerClassName
+              )}
               onKeyDown={handleTriggerKeyDown}
             />
           }
@@ -980,7 +998,7 @@ function AsyncMultiSelect<
                 <span
                   key={option.value}
                   className={cn(
-                    "inline-flex max-w-full items-center gap-1 rounded-md bg-muted px-1.5 py-0.5 text-xs text-foreground",
+                    "inline-flex max-w-full items-center gap-1 rounded-full border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-2 py-1 text-xs text-foreground shadow-[0_1px_0_rgba(255,255,255,0.04)]",
                     tagClassName
                   )}
                 >
@@ -998,7 +1016,7 @@ function AsyncMultiSelect<
                     <span
                       role="button"
                       tabIndex={0}
-                      className="rounded-sm text-muted-foreground hover:text-foreground"
+                      className="rounded-full text-muted-foreground transition-colors hover:text-foreground"
                       aria-label={`Remove ${getOptionLabelText(option)}`}
                       onClick={(event) => {
                         event.stopPropagation()
@@ -1022,7 +1040,7 @@ function AsyncMultiSelect<
               <span
                 role="button"
                 tabIndex={0}
-                className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+                className="rounded-full border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground"
                 aria-label={labels?.clearAll ?? labels?.clear ?? "Clear all"}
                 onClick={handleClear}
                 onKeyDown={(event) => {
@@ -1040,7 +1058,10 @@ function AsyncMultiSelect<
         </PopoverTrigger>
         <PopoverContent
           align="start"
-          className={cn("w-(--anchor-width) gap-2 p-2", contentClassName)}
+          className={cn(
+            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-3.5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            contentClassName
+          )}
         >
           <div className="relative">
             <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -1048,11 +1069,11 @@ function AsyncMultiSelect<
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={labels?.searchPlaceholder ?? "Search..."}
-              className={cn("pl-8", searchClassName)}
+              className={cn("border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] pl-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 px-1 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-3 py-2 text-xs text-muted-foreground">
             {hasValue && labels?.selectedCount && <span>{labels.selectedCount(values.length)}</span>}
             {isMaxReached &&
               (renderMaxSelected?.(state) ?? (
@@ -1060,19 +1081,27 @@ function AsyncMultiSelect<
               ))}
             <div className="ml-auto flex items-center gap-2">
               {canSelectAll && (
-                <button type="button" className="font-medium text-foreground hover:underline" onClick={handleSelectAllVisible}>
+                <button
+                  type="button"
+                  className="rounded-full border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
+                  onClick={handleSelectAllVisible}
+                >
                   {labels?.selectAll ?? "Select all"}
                 </button>
               )}
               {canClear && (
-                <button type="button" className="font-medium text-foreground hover:underline" onClick={() => onValueChange?.([], [])}>
+                <button
+                  type="button"
+                  className="rounded-full border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
+                  onClick={() => onValueChange?.([], [])}
+                >
                   {labels?.clearAll ?? labels?.clear ?? "Clear all"}
                 </button>
               )}
             </div>
           </div>
 
-          <div className="max-h-64 overflow-y-auto">
+          <div className="max-h-64 space-y-1 overflow-y-auto pr-1">
             {searchTooShort && flatOptions.length === 0 && (
               renderMinSearch?.(state) ?? (
                 <AsyncStateMessage>

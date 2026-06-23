@@ -385,7 +385,7 @@ function FileUpload({
         aria-label={dropzoneAriaLabel}
         tabIndex={isDisabled ? -1 : 0}
         className={cn(
-          "grid cursor-pointer gap-4 rounded-[var(--radius-2xl)] border border-dashed border-border/75 bg-card/96 p-5 text-center shadow-sm outline-none transition-[background-color,border-color,box-shadow,transform] hover:border-primary/35 hover:bg-muted/25 focus-visible:ring-2 focus-visible:ring-ring data-[dragging=true]:border-primary data-[dragging=true]:bg-primary/6 data-[dragging=true]:shadow-[0_18px_50px_color-mix(in_oklch,var(--primary),transparent_84%)] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-60",
+          "grid cursor-pointer gap-4 rounded-[var(--radius-2xl)] border border-dashed border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_12%),var(--card))] p-6 text-center shadow-sm ring-1 ring-foreground/5 outline-none transition-[background-color,border-color,box-shadow,transform] hover:-translate-y-px hover:border-primary/35 hover:bg-muted/25 hover:shadow-[0_14px_36px_rgba(15,23,42,0.08)] focus-visible:ring-2 focus-visible:ring-ring data-[dragging=true]:border-primary data-[dragging=true]:bg-primary/6 data-[dragging=true]:shadow-[0_18px_50px_color-mix(in_oklch,var(--primary),transparent_84%)] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-60",
           dropzoneClassName
         )}
         onClick={openFileDialog}
@@ -401,7 +401,7 @@ function FileUpload({
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        <div className="mx-auto flex size-12 items-center justify-center rounded-full border border-border/70 bg-background/92 text-muted-foreground shadow-sm">
+        <div className="mx-auto flex size-13 items-center justify-center rounded-full border border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_14%),var(--background))] text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.12),0_10px_24px_rgba(15,23,42,0.06)]">
           <UploadCloudIcon className="size-5" />
         </div>
         <div className="grid gap-1">
@@ -455,7 +455,7 @@ function FileUpload({
               <div
                 key={`${file.name}-${file.lastModified}-${index}`}
                 data-slot="file-upload-item"
-                className={cn("rounded-[min(var(--radius-xl),18px)] border border-border/75 bg-card/96 p-3 shadow-sm", fileItemClassName)}
+                className={cn("rounded-[min(var(--radius-xl),18px)] border border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_10%),var(--card))] p-3.5 shadow-sm ring-1 ring-foreground/5", fileItemClassName)}
               >
                 {renderFile?.(state) ?? defaultRenderFile(state)}
               </div>
@@ -469,7 +469,7 @@ function FileUpload({
           {resolvedRejectedFiles.map((rejectedFile, index) => (
             <div
               key={`${rejectedFile.file.name}-${index}`}
-              className="rounded-[min(var(--radius-lg),12px)] border border-destructive/20 bg-destructive/8 px-3 py-2 text-xs leading-5 text-destructive"
+              className="rounded-[min(var(--radius-lg),12px)] border border-destructive/22 bg-destructive/8 px-3 py-2.5 text-xs leading-5 text-destructive shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
             >
               {renderRejectedFile?.({ rejectedFile, index }) ?? <span>{rejectedFile.file.name}: {rejectedFile.message}</span>}
             </div>

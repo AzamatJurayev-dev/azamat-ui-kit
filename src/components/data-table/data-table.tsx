@@ -407,7 +407,7 @@ function DataTable<TData, TValue = unknown>({
         data-striped={striped || undefined}
         data-bordered={bordered || undefined}
         className={cn(
-          "overflow-auto rounded-[var(--radius-2xl)] border bg-card/96 shadow-sm ring-1 ring-foreground/5 backdrop-blur",
+          "overflow-auto rounded-[var(--radius-2xl)] border bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_10%),var(--card))] shadow-sm ring-1 ring-foreground/5 backdrop-blur",
           !bordered && "border-border",
           renderMobileCard && "hidden md:block",
           tableWrapperClassName
@@ -415,7 +415,7 @@ function DataTable<TData, TValue = unknown>({
       >
         <Table className={cn("text-[0.95rem]", tableClassName)}>
           <TableHeader
-            className={cn(stickyHeader && "sticky top-0 z-10 bg-background/96 shadow-sm backdrop-blur")}
+            className={cn(stickyHeader && "sticky top-0 z-10 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_10%),var(--background))] shadow-sm backdrop-blur")}
           >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -426,7 +426,7 @@ function DataTable<TData, TValue = unknown>({
                     className={cn(
                       densityHeadClassName[density],
                       "text-muted-foreground",
-                      stickyHeader && "bg-background/96 backdrop-blur",
+                      stickyHeader && "bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_10%),var(--background))] backdrop-blur",
                       bordered && "border-r last:border-r-0",
                       getHeaderCellClassName(header, headerCellClassName)
                     )}

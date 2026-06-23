@@ -307,7 +307,7 @@ function AsyncStateMessage({
   return (
     <div
       className={cn(
-        "rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/35 px-3 py-3 text-sm text-muted-foreground",
+        "rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-3 py-3 text-sm text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
         className
       )}
     >
@@ -346,8 +346,8 @@ function AsyncOptionButton<
       type="button"
       disabled={option.disabled}
       className={cn(
-        "flex w-full items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-2.5 py-2.5 text-left text-sm outline-none transition-colors hover:border-border/70 hover:bg-accent/60 hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50",
-        selected && "border-primary/18 bg-primary/8 text-foreground",
+        "flex w-full items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-border/70 hover:bg-accent/60 hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50",
+        selected && "border-primary/18 bg-primary/8 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]",
         optionClassName
       )}
       onClick={() => onSelect(option)}
@@ -387,7 +387,7 @@ function AsyncCreateButton({
     <button
       type="button"
       disabled={isCreating}
-      className="flex w-full items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/80 px-2.5 py-2.5 text-left text-sm outline-none transition-colors hover:border-primary/25 hover:bg-primary/6 hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+      className="flex w-full items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/80 px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-primary/25 hover:bg-primary/6 hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
       onClick={onCreate}
     >
       <span className="flex size-4 shrink-0 items-center justify-center">
@@ -589,7 +589,7 @@ function AsyncSelect<
               disabled={disabled}
               aria-expanded={open}
               className={cn(
-                "min-h-11 w-full justify-between border-border/80 bg-background/96 shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+                "min-h-11 w-full justify-between border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_0_rgba(255,255,255,0.06)]",
                 triggerClassName
               )}
             />
@@ -633,7 +633,7 @@ function AsyncSelect<
         <PopoverContent
           align="start"
           className={cn(
-            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-popover/98 p-3 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-3.5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
             contentClassName
           )}
         >
@@ -643,7 +643,7 @@ function AsyncSelect<
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={labels?.searchPlaceholder ?? "Search..."}
-              className={cn("border-border/75 bg-background/96 pl-8 shadow-[0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
+              className={cn("border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] pl-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
             />
           </div>
 
@@ -985,7 +985,7 @@ function AsyncMultiSelect<
               disabled={disabled}
               aria-expanded={open}
               className={cn(
-                "min-h-11 w-full justify-between border-border/80 bg-background/96 shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+                "min-h-11 w-full justify-between border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_0_rgba(255,255,255,0.06)]",
                 triggerClassName
               )}
               onKeyDown={handleTriggerKeyDown}
@@ -998,7 +998,7 @@ function AsyncMultiSelect<
                 <span
                   key={option.value}
                   className={cn(
-                    "inline-flex max-w-full items-center gap-1 rounded-full border border-border/70 bg-muted/55 px-2 py-1 text-xs text-foreground shadow-[0_1px_0_rgba(255,255,255,0.04)]",
+                    "inline-flex max-w-full items-center gap-1 rounded-full border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-2 py-1 text-xs text-foreground shadow-[0_1px_0_rgba(255,255,255,0.04)]",
                     tagClassName
                   )}
                 >
@@ -1059,7 +1059,7 @@ function AsyncMultiSelect<
         <PopoverContent
           align="start"
           className={cn(
-            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-popover/98 p-3 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-3.5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
             contentClassName
           )}
         >
@@ -1069,11 +1069,11 @@ function AsyncMultiSelect<
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={labels?.searchPlaceholder ?? "Search..."}
-              className={cn("border-border/75 bg-background/96 pl-8 shadow-[0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
+              className={cn("border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] pl-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/30 px-3 py-2 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-3 py-2 text-xs text-muted-foreground">
             {hasValue && labels?.selectedCount && <span>{labels.selectedCount(values.length)}</span>}
             {isMaxReached &&
               (renderMaxSelected?.(state) ?? (

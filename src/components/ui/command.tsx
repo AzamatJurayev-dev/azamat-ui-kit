@@ -23,7 +23,7 @@ function Command({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "flex size-full flex-col overflow-hidden rounded-[var(--radius-3xl)]! border border-border/75 bg-popover/98 p-2 text-popover-foreground shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+        "flex size-full flex-col overflow-hidden rounded-[var(--radius-3xl)]! border border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-2 text-popover-foreground shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
         className
       )}
       {...props}
@@ -53,7 +53,7 @@ function CommandDialog({
       </DialogHeader>
       <DialogContent
         className={cn(
-          "top-1/3 translate-y-0 overflow-hidden rounded-[var(--radius-3xl)]! border-border/80 bg-popover/98 p-0 shadow-[0_28px_90px_rgba(15,23,42,0.24)] backdrop-blur",
+          "top-1/3 translate-y-0 overflow-hidden rounded-[var(--radius-3xl)]! border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-0 shadow-[0_28px_90px_rgba(15,23,42,0.24)] backdrop-blur",
           className
         )}
         showCloseButton={showCloseButton}
@@ -70,7 +70,7 @@ function CommandInput({
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
     <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup className="h-11! rounded-full! border-border/75 bg-background/96 shadow-[0_1px_0_rgba(255,255,255,0.05)]! *:data-[slot=input-group-addon]:pl-3!">
+      <InputGroup className="h-11! rounded-full! border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_0_rgba(255,255,255,0.05)]! *:data-[slot=input-group-addon]:pl-3!">
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(
@@ -154,7 +154,7 @@ function CommandItem({
     <CommandPrimitive.Item
       data-slot="command-item"
       className={cn(
-        "group/command-item relative flex cursor-default items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-[min(var(--radius-xl),16px)]! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:border-border/70 data-selected:bg-muted/55 data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
+        "group/command-item relative flex cursor-default items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-[min(var(--radius-xl),16px)]! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:border-border/70 data-selected:bg-muted/55 data-selected:text-foreground data-selected:shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
         className
       )}
       {...props}
