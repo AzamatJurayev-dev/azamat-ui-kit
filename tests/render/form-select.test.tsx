@@ -1,7 +1,7 @@
 import * as React from "react"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { describe, expect, it } from "vitest"
 
 import {
@@ -22,18 +22,20 @@ const ownerOptions: AsyncSelectOption[] = [
 ]
 
 function SimpleHarness() {
-  const { control, watch } = useForm({ defaultValues: { role: "" } })
+  const { control } = useForm({ defaultValues: { role: "" } })
+  const role = useWatch({ control, name: "role" })
 
   return (
     <>
       <FormSelect control={control} name="role" label="Role" options={roleOptions} />
-      <output data-testid="role-value">{watch("role")}</output>
+      <output data-testid="role-value">{role}</output>
     </>
   )
 }
 
 function AsyncHarness() {
-  const { control, watch } = useForm({ defaultValues: { ownerId: "" } })
+  const { control } = useForm({ defaultValues: { ownerId: "" } })
+  const ownerId = useWatch({ control, name: "ownerId" })
 
   return (
     <>
@@ -48,13 +50,14 @@ function AsyncHarness() {
           )
         }
       />
-      <output data-testid="owner-value">{watch("ownerId")}</output>
+      <output data-testid="owner-value">{ownerId}</output>
     </>
   )
 }
 
 function AsyncAliasHarness() {
-  const { control, watch } = useForm({ defaultValues: { reviewerId: "" } })
+  const { control } = useForm({ defaultValues: { reviewerId: "" } })
+  const reviewerId = useWatch({ control, name: "reviewerId" })
 
   return (
     <>
@@ -64,7 +67,7 @@ function AsyncAliasHarness() {
         label="Reviewer"
         loadOptions={async () => ownerOptions}
       />
-      <output data-testid="reviewer-value">{watch("reviewerId")}</output>
+      <output data-testid="reviewer-value">{reviewerId}</output>
     </>
   )
 }

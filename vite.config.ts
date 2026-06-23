@@ -21,8 +21,6 @@ const externalPackages = [
   "cmdk",
   "lucide-react",
   "tailwind-merge",
-  "tw-animate-css",
-  "@fontsource-variable/geist",
 ];
 
 const isExternal = (id: string) => externalPackages.some((dependency) => id === dependency || id.startsWith(`${dependency}/`));

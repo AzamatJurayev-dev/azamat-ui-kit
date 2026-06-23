@@ -1,10 +1,11 @@
 import path from "path";
-import { fileURLToPath } from "url";
 import fs from "fs-extra";
 import { logger } from "../utils/logger";
 import { registry, registryNames, type ComponentName, type ComponentRegistryItem } from "../registry";
 import { detectPackageManager } from "../utils/detect-package-manager";
 import { installPackages } from "../utils/install-packages";
+import { getCliNpxCommand } from "../utils/cli-metadata";
+import { getPackageRootFromImportMeta } from "../utils/package-root";
 
 type AzamatUiConfig = {
   style?: string;
@@ -27,30 +28,6 @@ type AddCommandOptions = {
 
 function isComponentName(value: string): value is ComponentName {
   return value in registry;
-}
-
-function getPackageRoot() {
-  const currentDir = path.dirname(fileURLToPath(import.meta.url));
-  const candidates = [
-    path.resolve(currentDir, "../.."),
-    path.resolve(currentDir, ".."),
-    process.cwd(),
-  ];
-
-  for (const candidate of candidates) {
-    const packageJsonPath = path.join(candidate, "package.json");
-
-    if (!fs.existsSync(packageJsonPath)) continue;
-
-    try {
-      const packageJson = fs.readJsonSync(packageJsonPath) as { name?: string };
-      if (packageJson.name === "azamat-ui-kit") return candidate;
-    } catch {
-      // Continue checking other candidates.
-    }
-  }
-
-  return path.resolve(currentDir, "../..");
 }
 
 function getComponentsRoot(config: AzamatUiConfig) {
@@ -113,13 +90,13 @@ export async function addCommand(components: string[], options: AddCommandOption
 
   if (!fs.existsSync(configPath)) {
     logger.error("azamat-ui.json topilmadi. Avval init qiling:");
-    logger.info("npx azamat-ui-kit init");
+    logger.info(getCliNpxCommand("init"));
     process.exit(1);
   }
 
   if (!components.length) {
     logger.error("Component nomini kiriting:");
-    logger.info("npx azamat-ui-kit add data-table async-select form-input");
+    logger.info(getCliNpxCommand("add data-table async-select form-input"));
     logger.info(`Mavjud componentlar: ${formatAvailableComponents()}`);
     process.exit(1);
   }
@@ -141,7 +118,7 @@ export async function addCommand(components: string[], options: AddCommandOption
   }
 
   const config = (await fs.readJson(configPath)) as AzamatUiConfig;
-  const packageRoot = getPackageRoot();
+  const packageRoot = getPackageRootFromImportMeta(import.meta.url);
   const packageManager = detectPackageManager(cwd);
   const items = collectRegistryItems(validComponents);
   const dependenciesToInstall = new Set<string>();

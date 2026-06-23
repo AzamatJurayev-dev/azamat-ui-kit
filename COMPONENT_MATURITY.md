@@ -11,7 +11,7 @@ This file is the source of truth for public API readiness in `azamat-ui-kit`. A 
 | `experimental` | API is being explored. | Prefer registry-only or internal use until audited. |
 | `internal` | Helper used by other components. | Do not document as a primary component. |
 
-The CLI registry status metadata lives in `cli/registry-status.ts`. `azamat-ui-kit list` displays these statuses so app teams can avoid accidentally treating preview/experimental APIs as stable.
+The CLI registry status metadata lives in `cli/registry-status.ts`. `npx azamat-ui-kit-cli list` displays these statuses so app teams can avoid accidentally treating preview/experimental APIs as stable.
 
 ## Maturity rubric
 
@@ -106,9 +106,9 @@ Allowed semantic hardcoded palettes are limited to status/tone components and mu
 
 Non-semantic neutral palettes such as `zinc`, `slate`, `neutral`, `stone`, `white`, and `black` should be converted to token classes in package components unless they are inside documentation examples or intentionally isolated visual assets.
 
-## Font dependency decision
+## Theme asset dependency decision
 
-`@fontsource-variable/geist` stays as a package dependency for now because the CLI theme block imports it into the consumer app CSS. It is not imported by React components directly. If the theme block stops importing the font, the dependency can move out of runtime dependencies.
+`@fontsource-variable/geist` and `tw-animate-css` are CLI-installed consumer dependencies, not runtime dependencies of `azamat-ui-kit`. The package components do not import either asset directly; they only appear inside the generated theme CSS that `init` writes into the consumer app.
 
 ## Component audit checklist
 

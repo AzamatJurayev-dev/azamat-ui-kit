@@ -3,7 +3,7 @@ import fs from "fs-extra"
 import {
   AZAMAT_UI_THEME_END,
   AZAMAT_UI_THEME_START,
-  azamatUiThemeCss,
+  getAzamatUiThemeCss,
 } from "../templates/theme-css"
 
 type UpsertThemeCssOptions = {
@@ -37,8 +37,14 @@ function replaceMarkedBlock(content: string, block: string) {
   return `${content.trimEnd()}\n\n${block}\n`
 }
 
+function normalizeImportPath(filePath: string) {
+  return filePath.replaceAll("\\", "/")
+}
+
 export async function upsertThemeCss({ cwd, cssPath }: UpsertThemeCssOptions) {
   const targetPath = path.resolve(cwd, cssPath)
+  const cssDir = path.dirname(targetPath)
+  const packageSourceGlob = normalizeImportPath(path.relative(cssDir, path.join(cwd, "node_modules", "azamat-ui-kit", "dist", "**", "*.js")))
 
   await fs.ensureDir(path.dirname(targetPath))
 
@@ -47,7 +53,7 @@ export async function upsertThemeCss({ cwd, cssPath }: UpsertThemeCssOptions) {
     : ""
 
   const withTailwind = ensureTailwindImport(currentContent)
-  const nextContent = replaceMarkedBlock(withTailwind, azamatUiThemeCss)
+  const nextContent = replaceMarkedBlock(withTailwind, getAzamatUiThemeCss(packageSourceGlob))
 
   await fs.writeFile(targetPath, nextContent)
 

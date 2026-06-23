@@ -1,8 +1,8 @@
 import path from "path"
-import { fileURLToPath } from "url"
 import fs from "fs-extra"
 import { presetFiles } from "../preset-files"
 import { logger } from "../utils/logger"
+import { getPackageRootFromImportMeta } from "../utils/package-root"
 
 export type PresetCommandOptions = {
   overwrite?: boolean
@@ -45,7 +45,7 @@ export async function presetCommand(name: string, options: PresetCommandOptions 
   }
 
   const config = (await fs.readJson(configPath)) as PresetInitConfig
-  const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
+  const packageRoot = getPackageRootFromImportMeta(import.meta.url)
 
   for (const item of files) {
     const source = path.join(packageRoot, item.source)

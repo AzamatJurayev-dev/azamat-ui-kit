@@ -1,0 +1,19 @@
+import {
+  FormInput,
+  type FormInputPasswordVariantProps as BaseFormPasswordInputProps,
+} from "@/components/form/form-input"
+import type { FieldPath, FieldValues } from "react-hook-form"
+
+export type FormPasswordInputProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<BaseFormPasswordInputProps<TFieldValues, TName>, "kind">
+
+function FormPasswordInput<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(props: FormPasswordInputProps<TFieldValues, TName>) {
+  return <FormInput {...props} kind="password" />
+}
+
+export { FormPasswordInput }

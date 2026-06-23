@@ -16,21 +16,23 @@ import {
   DatePicker,
   EmptyState,
   FileUpload,
-  FormBuilder,
   InfoCard,
   Input,
   LoadingState,
   MetricGrid,
   ModalShell,
   Pagination,
-  ResourceDetailPage,
-  ResourcePage,
-  ResourcePageSection,
   SearchInput,
   StatusBadge,
   ToastProvider,
   Wizard,
 } from "../../src"
+import {
+  FormBuilder,
+  ResourceDetailPage,
+  ResourcePage,
+  ResourcePageSection,
+} from "../../src/components/patterns/public"
 
 type Product = {
   id: string

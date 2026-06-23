@@ -1,7 +1,7 @@
 import * as React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { describe, expect, it } from "vitest"
 
 import {
@@ -13,67 +13,73 @@ import {
 } from "@/index"
 
 function TextHarness() {
-  const { control, watch } = useForm({ defaultValues: { title: "" } })
+  const { control } = useForm({ defaultValues: { title: "" } })
+  const title = useWatch({ control, name: "title" })
 
   return (
     <>
       <FormInput control={control} name="title" label="Title" placeholder="Write title" />
-      <output data-testid="title-value">{watch("title")}</output>
+      <output data-testid="title-value">{title}</output>
     </>
   )
 }
 
 function SearchHarness() {
-  const { control, watch } = useForm({ defaultValues: { query: "" } })
+  const { control } = useForm({ defaultValues: { query: "" } })
+  const query = useWatch({ control, name: "query" })
 
   return (
     <>
       <FormInput control={control} name="query" kind="search" label="Query" placeholder="Search items" />
-      <output data-testid="query-value">{watch("query")}</output>
+      <output data-testid="query-value">{query}</output>
     </>
   )
 }
 
 function NumberHarness() {
-  const { control, watch } = useForm({ defaultValues: { count: 0 } })
+  const { control } = useForm({ defaultValues: { count: 0 } })
+  const count = useWatch({ control, name: "count" })
 
   return (
     <>
       <FormNumberInput control={control} name="count" label="Count" />
-      <output data-testid="count-value">{String(watch("count"))}</output>
+      <output data-testid="count-value">{String(count)}</output>
     </>
   )
 }
 
 function PhoneHarness() {
-  const { control, watch } = useForm({ defaultValues: { phone: "" } })
+  const { control } = useForm({ defaultValues: { phone: "" } })
+  const phone = useWatch({ control, name: "phone" })
 
   return (
     <>
       <FormPhoneInput control={control} name="phone" label="Phone" valueMode="raw" />
-      <output data-testid="phone-value">{watch("phone")}</output>
+      <output data-testid="phone-value">{phone}</output>
     </>
   )
 }
 
 function DateHarness() {
-  const { control, watch } = useForm({ defaultValues: { dueDate: "" } })
+  const { control } = useForm({ defaultValues: { dueDate: "" } })
+  const dueDate = useWatch({ control, name: "dueDate" })
 
   return (
     <>
       <FormDateInput control={control} name="dueDate" label="Due date" />
-      <output data-testid="date-value">{watch("dueDate")}</output>
+      <output data-testid="date-value">{dueDate}</output>
     </>
   )
 }
 
 function SearchAliasHarness() {
-  const { control, watch } = useForm({ defaultValues: { search: "" } })
+  const { control } = useForm({ defaultValues: { search: "" } })
+  const search = useWatch({ control, name: "search" })
 
   return (
     <>
       <FormSearchInput control={control} name="search" label="Search" />
-      <output data-testid="search-value">{watch("search")}</output>
+      <output data-testid="search-value">{search}</output>
     </>
   )
 }

@@ -93,9 +93,11 @@ if (packageJson && registryJson && packageJson.version !== registryJson.version)
 }
 
 if (registryJson) {
+  const recommendedByMode = registryJson.recommendedByMode ?? {}
   const manifestNames = new Set([
     ...Object.values(registryJson.groups ?? {}).flat(),
     ...(registryJson.recommended ?? []),
+    ...Object.values(recommendedByMode).flat(),
   ])
 
   for (const name of manifestNames) {
@@ -113,6 +115,16 @@ if (registryJson) {
 
     if (status === "experimental" || status === "internal") {
       failures.push(`registry.json recommended includes '${name}', but cli registry status marks it as '${status}'`)
+    }
+  }
+
+  for (const [mode, names] of Object.entries(recommendedByMode)) {
+    for (const name of names) {
+      const status = registryStatuses.get(name)
+
+      if (status === "experimental" || status === "internal") {
+        failures.push(`registry.json recommendedByMode.${mode} includes '${name}', but cli registry status marks it as '${status}'`)
+      }
     }
   }
 }

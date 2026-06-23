@@ -108,8 +108,9 @@ async function main() {
         include: ["src"],
       },
       sourceFiles: {
-        "src/main.tsx": `import { Button, DataTable, ToastProvider, FormBuilder } from "azamat-ui-kit"
+        "src/main.tsx": `import { Button, DataTable, ToastProvider } from "azamat-ui-kit"
 import { ActionBar } from "azamat-ui-kit/actions/action-bar"
+import { FormBuilder } from "azamat-ui-kit/patterns/form-builder"
 import { SmartFormShell } from "azamat-ui-kit/form/smart-form-shell"
 import { TableExportMenu } from "azamat-ui-kit/data-table/table-export-menu"
 
@@ -117,8 +118,9 @@ const value = [Button, DataTable, ToastProvider, FormBuilder, ActionBar, SmartFo
 
 export default value
 `,
-        "src/runtime-check.mjs": `import { Button, DataTable, ToastProvider, FormBuilder } from "azamat-ui-kit"
+        "src/runtime-check.mjs": `import { Button, DataTable, ToastProvider } from "azamat-ui-kit"
 import { ActionBar } from "azamat-ui-kit/actions/action-bar"
+import { FormBuilder } from "azamat-ui-kit/patterns/form-builder"
 import { SmartFormShell } from "azamat-ui-kit/form/smart-form-shell"
 import { TableExportMenu } from "azamat-ui-kit/data-table/table-export-menu"
 
@@ -157,7 +159,8 @@ if (required.some((entry) => typeof entry !== "function" && typeof entry !== "ob
         include: ["app", "src"],
       },
       sourceFiles: {
-        "app/page.tsx": `import { Button, CommandPalette, InputFamily } from "azamat-ui-kit"
+        "app/page.tsx": `import { Button, CommandPalette } from "azamat-ui-kit"
+import { InputFamily } from "azamat-ui-kit/families"
 import { WorkspaceShell } from "azamat-ui-kit/layout/workspace-shell"
 import { ProgressRing } from "azamat-ui-kit/charts/progress-ring"
 import { ActionSystem } from "azamat-ui-kit/patterns/action-system"
@@ -175,7 +178,8 @@ export default function Page() {
   )
 }
 `,
-        "src/runtime-check.mjs": `import { Button, CommandPalette, InputFamily } from "azamat-ui-kit"
+        "src/runtime-check.mjs": `import { Button, CommandPalette } from "azamat-ui-kit"
+import { InputFamily } from "azamat-ui-kit/families"
 import { WorkspaceShell } from "azamat-ui-kit/layout/workspace-shell"
 import { ProgressRing } from "azamat-ui-kit/charts/progress-ring"
 import { ActionSystem } from "azamat-ui-kit/patterns/action-system"

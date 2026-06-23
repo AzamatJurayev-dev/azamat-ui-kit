@@ -68,7 +68,7 @@ See also:
 - [x] Add troubleshooting for missing theme tokens, ESM import issues, peer dependency mismatch and React Hook Form setup.
 - [x] Add Upload example showing accepted/rejected files and image preview cleanup behavior.
 - [x] Document DataTable pagination behavior: public `pageIndex` is 0-based.
-- [x] Confirm `@fontsource-variable/geist` remains runtime dependency while CLI theme imports it.
+- [x] Reclassify `@fontsource-variable/geist` and `tw-animate-css` as CLI-installed consumer dependencies instead of package runtime dependencies.
 - [x] Produce explicit allowed semantic hardcoded color policy: emerald, amber, red, blue.
 
 ## Still open test backlog
@@ -90,6 +90,17 @@ See also:
 
 ## Still open non-test backlog
 
+- [x] Reclassify registry surfaces under `foundation`, `source-copy`, or `system` for CLI/docs guidance.
+- [x] Split `registry.json` recommended lists by adoption mode instead of one mixed list.
+- [x] Change README and install guidance so CLI source-copy is the primary adoption path, not root package import.
+- [x] Audit root exports and move large `patterns` surfaces off root into registry/subpath usage.
+- [ ] Add CLI `doctor` command plan for stale copied files, missing deps, and config issues.
+- [ ] Add CLI `diff` command plan to compare local copied source against package source.
+- [ ] Add CLI `upgrade` command plan for safe re-apply of copied components.
+- [ ] Define a hard rule for which surfaces may stay runtime-importable from root.
+- [ ] Mark migration aliases separately from canonical surfaces in registry metadata.
+- [ ] Align `PUBLIC_API_INVENTORY.md` with the new `foundation vs source-copy vs system` model.
+
 - [x] Remove duplicate direct root exports that already come via grouped indexes, starting with `form-date-picker` and `form-date-range-picker`.
 - [x] Decide final root-export policy for `SmartCard` vs `InfoCard`; keep only one canonical public name.
 - [x] Move `SmartFormShell` and `WorkspaceShell` off the root public surface; keep them on subpath/advanced usage only.
@@ -107,7 +118,10 @@ See also:
 - [x] Add a tiny Next.js fixture or script that imports `azamat-ui-kit` from `dist/index.js` in a browser bundle and fails on runtime console errors.
 - [x] Add a Vite fixture or script that imports `Button`, `Dialog`, `AsyncSelect`, `DataTable`, `ToastProvider` and `FormBuilder` from built `dist`.
 - [x] Extend `scripts/check-build-output.mjs` to catch indirect Rolldown/CJS fallback code that can call external `require` in ESM browser bundles.
-- [ ] Confirm whether `@fontsource-variable/geist` should remain a runtime dependency; if not needed by components, move it out of package dependencies.
+- [x] Confirm whether `@fontsource-variable/geist` should remain a runtime dependency; if not needed by components, move it out of package dependencies.
+- [x] Reduce `npm i azamat-ui-kit` install weight by bundling CLI-only dependencies into the published CLI artifact instead of shipping them as separate runtime installs.
+- [x] Split CLI into a separate publishable package, `azamat-ui-kit-cli`, so the runtime library stays focused on component delivery.
+- [ ] Add CLI publish/version sync checks so `azamat-ui-kit` and `azamat-ui-kit-cli` cannot drift accidentally.
 
 ### P0. Test infrastructure upgrade
 

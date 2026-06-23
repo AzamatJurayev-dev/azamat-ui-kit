@@ -2,9 +2,11 @@
 
 Personal React + TypeScript UI kit for dashboard projects. The goal is to keep shadcn-style copyable components, Ant-style universal wrappers, and project-specific business logic separate.
 
+Preferred adoption model: use the CLI to copy source into your app. Treat the package itself as `foundation + registry`, not as the long-term runtime home for every large component.
+
 ## What belongs here
 
-This package contains UI primitives, reusable wrappers, generic hooks, formatting helpers, CLI/registry helpers, and dashboard-ready components.
+This package contains UI primitives, reusable wrappers, generic hooks, formatting helpers, registry helpers, and dashboard-ready components.
 
 Good candidates:
 
@@ -28,6 +30,23 @@ Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission,
 
 ## Install
 
+Recommended setup:
+
+```bash
+npx azamat-ui-kit-cli init --template next --defaults
+npx azamat-ui-kit-cli add button form-input data-table
+```
+
+Primary usage after that should be local source imports:
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { FormInput } from "@/components/form/form-input"
+import { DataTable } from "@/components/data-table/data-table"
+```
+
+If you want runtime imports without source-copy, install the library directly:
+
 ```bash
 npm install azamat-ui-kit
 ```
@@ -41,22 +60,24 @@ npm install github:AzamatJurayev-dev/azamat-ui-kit#master
 Initialize the project once:
 
 ```bash
-npx azamat-ui-kit init
+npx azamat-ui-kit-cli init
 ```
 
 Use Next.js defaults:
 
 ```bash
-npx azamat-ui-kit init --template next
+npx azamat-ui-kit-cli init --template next
 ```
 
 Use Vite defaults:
 
 ```bash
-npx azamat-ui-kit init --template vite
+npx azamat-ui-kit-cli init --template vite
 ```
 
 The package entry does **not** import global CSS. During `init`, the CLI can write Azamat UI Kit theme tokens directly into your app global CSS file, for example `src/index.css` or `app/globals.css`.
+
+`init` also writes an `@source` directive that points Tailwind at `node_modules/azamat-ui-kit/dist/**/*.js`, so runtime package imports can render correctly in consumer apps.
 
 Do not import package CSS manually:
 
@@ -65,45 +86,29 @@ Do not import package CSS manually:
 // import "azamat-ui-kit/style.css"
 ```
 
-Use components:
+Runtime package imports are best for small stable foundation pieces:
 
 ```tsx
 import {
-  ActionMenu,
-  AppHeader,
-  AppShell,
-  AppSidebar,
-  AsyncMultiSelect,
-  AsyncSelect,
   Button,
-  CardFamily,
-  CommandPalette,
-  DataTable,
-  DataTableFamily,
-  DataTableBulkActions,
-  FilterBar,
-  FormDateInput,
-  FormFamily,
+  Dialog,
   FormInput,
-  FormPhoneInput,
-  FormSearchInput,
-  FormSwitch,
-  InputFamily,
-  ModalShell,
-  PageHeader,
-  PasswordInput,
-  PhoneInput,
-  SearchInput,
-  SelectFamily,
-  StatCard,
-  StatusBadge,
-  ToastProvider,
-  useCommandPaletteShortcut,
-  useToast,
+  FormSelect,
+  Input,
+  Popover,
+  useDisclosure,
 } from "azamat-ui-kit"
 ```
 
-Root import intentionally exposes the smaller docs-facing public surface. Advanced helpers and implementation-oriented building blocks should be imported from subpaths when needed, for example:
+For larger reusable surfaces and systems, prefer copied-source imports from your app instead of package-root imports.
+
+Copied-source install writes files into your local app, typically under `src/components`, `src/hooks`, and `src/lib`:
+
+```bash
+npx azamat-ui-kit-cli add button input data-table
+```
+
+Root import intentionally exposes the smaller foundation-facing public surface. Advanced helpers and implementation-oriented building blocks should be imported from subpaths when needed, or copied through the CLI, for example:
 
 ```tsx
 import { ActionBar } from "azamat-ui-kit/actions/action-bar"
@@ -129,6 +134,16 @@ import { DataTableFamily, FormFamily } from "azamat-ui-kit"
 <FormFamily.Input name="firstName" control={control} label="First name" />
 <DataTableFamily.Root columns={columns} data={rows} />
 ```
+
+## Adoption model
+
+- `foundation package`: small stable primitives, tiny hooks, metadata helpers
+- `source-copy reusable`: inputs, forms, feedback, layout, display, calendar, upload
+- `source-copy systems`: data-table, resource pages, builders, dashboard shells, templates
+
+For the longer-term architecture, see `SOURCE_COPY.md`, `LIBRARY_DISTRIBUTION_ARCHITECTURE.md`, and `INSTALLATION_TEMPLATES.md`.
+
+Large systems such as `DataTable`, `ResourcePage`, `ResourceDetailPage`, and `FormBuilder` should now be treated as source-copy or subpath surfaces, not first-step root imports.
 
 ## Naming policy
 
@@ -156,7 +171,7 @@ This package exports shared metadata for docs apps and internal tooling:
 Component readiness is tracked in `COMPONENT_MATURITY.md` and mirrored for the CLI in `cli/registry-status.ts`.
 
 ```bash
-npx azamat-ui-kit list
+npx azamat-ui-kit-cli list
 ```
 
 Statuses:
@@ -170,7 +185,7 @@ Stable today: primitives, Base UI wrappers, router-agnostic layout/navigation, f
 
 Root package exports now stay intentionally smaller for high-level adoption:
 
-- root import: canonical primitives, reusable wrappers, core charts, public hooks, and docs-facing patterns
+- root import: canonical primitives, reusable wrappers, core charts, public hooks, and small adoption-ready surfaces
 - subpath import: advanced action, form, layout, pattern, chart, and data-table helpers that are still being audited as a long-term public contract
 - family import: grouped entry objects such as `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, `DataTableFamily`
 
@@ -261,12 +276,14 @@ src/lib/                       Utilities
 Consumer apps own the global CSS. The UI kit only uses token-based classes like `bg-background`, `text-foreground`, `border-border`, `bg-card`, `bg-popover`, `text-muted-foreground`.
 
 ```bash
-npx azamat-ui-kit theme src/index.css
+npx azamat-ui-kit-cli theme src/index.css
 ```
 
 Dark mode works by toggling the `.dark` class on the root/html element. The theme block also provides `.light` for explicit light-mode class usage.
 
-The generated theme block imports `@fontsource-variable/geist`; keep that dependency installed when using the CLI theme output.
+The generated theme block imports `@fontsource-variable/geist` and `tw-animate-css` into the consumer app CSS, so the CLI installs them into the app during `init`. They are no longer shipped as runtime dependencies of `azamat-ui-kit`.
+
+The CLI now ships as a separate package, `azamat-ui-kit-cli`, so `npm i azamat-ui-kit` stays focused on runtime library dependencies only.
 
 ## Notifications example
 
@@ -435,7 +452,7 @@ function ProductsTable() {
 Run the theme command against the actual global CSS file used by your app. For Vite this is often `src/index.css`; for Next App Router this is often `app/globals.css`.
 
 ```bash
-npx azamat-ui-kit theme app/globals.css
+npx azamat-ui-kit-cli theme app/globals.css
 ```
 
 ### ESM import issues

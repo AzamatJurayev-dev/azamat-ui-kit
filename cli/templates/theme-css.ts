@@ -2,10 +2,12 @@ export const AZAMAT_UI_THEME_START = "/* azamat-ui-kit:start */"
 export const AZAMAT_UI_THEME_END = "/* azamat-ui-kit:end */"
 export const AZAMAT_UI_THEME_MARKER = "azamat-ui-kit"
 
-export const azamatUiThemeCss = `${AZAMAT_UI_THEME_START}
+export function getAzamatUiThemeCss(packageSourcePath: string) {
+  return `${AZAMAT_UI_THEME_START}
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+@source "${packageSourcePath}";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -58,89 +60,105 @@ export const azamatUiThemeCss = `${AZAMAT_UI_THEME_START}
 
 :root,
 .light {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --background: oklch(0.988 0.004 95);
+  --foreground: oklch(0.238 0.02 255);
+  --card: oklch(0.998 0.002 95);
+  --card-foreground: oklch(0.238 0.02 255);
+  --popover: oklch(0.998 0.002 95);
+  --popover-foreground: oklch(0.238 0.02 255);
+  --primary: oklch(0.312 0.05 255);
+  --primary-foreground: oklch(0.985 0.002 95);
+  --secondary: oklch(0.958 0.008 250);
+  --secondary-foreground: oklch(0.282 0.028 255);
+  --muted: oklch(0.964 0.006 250);
+  --muted-foreground: oklch(0.52 0.016 255);
+  --accent: oklch(0.948 0.014 220);
+  --accent-foreground: oklch(0.27 0.03 255);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: oklch(0.892 0.01 250);
+  --input: oklch(0.91 0.012 250);
+  --ring: oklch(0.66 0.035 245);
+  --chart-1: oklch(0.68 0.13 245);
+  --chart-2: oklch(0.74 0.1 205);
+  --chart-3: oklch(0.78 0.11 165);
+  --chart-4: oklch(0.72 0.15 45);
+  --chart-5: oklch(0.66 0.15 15);
+  --radius: 0.875rem;
+  --sidebar: oklch(0.982 0.006 250);
+  --sidebar-foreground: oklch(0.238 0.02 255);
+  --sidebar-primary: oklch(0.312 0.05 255);
+  --sidebar-primary-foreground: oklch(0.985 0.002 95);
+  --sidebar-accent: oklch(0.95 0.012 240);
+  --sidebar-accent-foreground: oklch(0.27 0.03 255);
+  --sidebar-border: oklch(0.89 0.012 250);
+  --sidebar-ring: oklch(0.66 0.035 245);
 
-  --aui-control-radius: var(--radius-lg);
-  --aui-control-shadow: 0 1px 2px oklch(0 0 0 / 5%);
-  --aui-card-radius: var(--radius-xl);
-  --aui-card-border: color-mix(in oklch, var(--border), transparent 5%);
-  --aui-card-shadow: 0 1px 2px oklch(0 0 0 / 4%), 0 10px 28px oklch(0 0 0 / 4%);
-  --aui-popover-shadow: 0 18px 60px oklch(0 0 0 / 16%);
-  --aui-table-header-bg: color-mix(in oklch, var(--muted), transparent 42%);
-  --aui-table-row-hover-bg: color-mix(in oklch, var(--muted), transparent 55%);
-  --aui-table-row-selected-bg: color-mix(in oklch, var(--primary), transparent 91%);
+  --aui-control-radius: var(--radius-xl);
+  --aui-control-shadow: 0 1px 0 oklch(1 0 0 / 60%), 0 8px 22px oklch(0.24 0.02 255 / 6%);
+  --aui-control-border-strong: color-mix(in oklch, var(--border), var(--foreground) 7%);
+  --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 68%);
+  --aui-control-panel-bg: color-mix(in oklch, var(--background), white 12%);
+  --aui-control-panel-shadow: 0 1px 0 oklch(1 0 0 / 75%), 0 14px 32px oklch(0.24 0.02 255 / 8%);
+  --aui-card-radius: var(--radius-2xl);
+  --aui-card-border: color-mix(in oklch, var(--border), white 12%);
+  --aui-card-shadow: 0 1px 0 oklch(1 0 0 / 75%), 0 18px 45px oklch(0.24 0.02 255 / 7%);
+  --aui-popover-shadow: 0 24px 70px oklch(0.24 0.02 255 / 18%);
+  --aui-table-header-bg: linear-gradient(180deg, oklch(0.972 0.008 250), oklch(0.954 0.01 250));
+  --aui-table-toolbar-bg: linear-gradient(180deg, oklch(0.996 0.002 95), oklch(0.978 0.006 250));
+  --aui-table-toolbar-border: color-mix(in oklch, var(--border), white 16%);
+  --aui-table-row-hover-bg: color-mix(in oklch, var(--accent), white 55%);
+  --aui-table-row-selected-bg: color-mix(in oklch, var(--primary), white 90%);
+  --aui-table-stripe-bg: oklch(0.978 0.004 250 / 55%);
+  --aui-table-footer-bg: linear-gradient(180deg, oklch(0.994 0.002 95), oklch(0.974 0.006 250));
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.19 0.01 255);
+  --foreground: oklch(0.965 0.004 95);
+  --card: oklch(0.235 0.012 255);
+  --card-foreground: oklch(0.965 0.004 95);
+  --popover: oklch(0.235 0.012 255);
+  --popover-foreground: oklch(0.965 0.004 95);
+  --primary: oklch(0.82 0.04 235);
+  --primary-foreground: oklch(0.205 0.014 255);
+  --secondary: oklch(0.29 0.012 255);
+  --secondary-foreground: oklch(0.965 0.004 95);
+  --muted: oklch(0.29 0.012 255);
+  --muted-foreground: oklch(0.78 0.012 250);
+  --accent: oklch(0.31 0.018 235);
+  --accent-foreground: oklch(0.97 0.004 95);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.68 0.03 235);
+  --chart-1: oklch(0.78 0.11 235);
+  --chart-2: oklch(0.74 0.1 205);
+  --chart-3: oklch(0.72 0.1 165);
+  --chart-4: oklch(0.76 0.11 45);
+  --chart-5: oklch(0.74 0.12 15);
+  --sidebar: oklch(0.215 0.012 255);
+  --sidebar-foreground: oklch(0.965 0.004 95);
+  --sidebar-primary: oklch(0.82 0.04 235);
+  --sidebar-primary-foreground: oklch(0.205 0.014 255);
+  --sidebar-accent: oklch(0.29 0.012 255);
+  --sidebar-accent-foreground: oklch(0.965 0.004 95);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.68 0.03 235);
 
-  --aui-card-border: oklch(1 0 0 / 10%);
-  --aui-card-shadow: 0 1px 0 oklch(1 0 0 / 5%), 0 18px 70px oklch(0 0 0 / 24%);
-  --aui-popover-shadow: 0 18px 70px oklch(0 0 0 / 45%);
-  --aui-table-header-bg: oklch(1 0 0 / 5%);
+  --aui-card-border: oklch(1 0 0 / 9%);
+  --aui-card-shadow: 0 1px 0 oklch(1 0 0 / 5%), 0 24px 80px oklch(0 0 0 / 30%);
+  --aui-popover-shadow: 0 24px 80px oklch(0 0 0 / 48%);
+  --aui-control-border-strong: oklch(1 0 0 / 16%);
+  --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 72%);
+  --aui-control-panel-bg: oklch(1 0 0 / 6%);
+  --aui-control-panel-shadow: 0 1px 0 oklch(1 0 0 / 6%), 0 20px 48px oklch(0 0 0 / 28%);
+  --aui-table-header-bg: linear-gradient(180deg, oklch(0.255 0.012 255), oklch(0.225 0.012 255));
+  --aui-table-toolbar-bg: linear-gradient(180deg, oklch(0.24 0.012 255), oklch(0.215 0.012 255));
+  --aui-table-toolbar-border: oklch(1 0 0 / 9%);
   --aui-table-row-hover-bg: oklch(1 0 0 / 5%);
-  --aui-table-row-selected-bg: color-mix(in oklch, var(--primary), transparent 88%);
+  --aui-table-row-selected-bg: color-mix(in oklch, var(--primary), transparent 84%);
+  --aui-table-stripe-bg: oklch(1 0 0 / 3%);
+  --aui-table-footer-bg: linear-gradient(180deg, oklch(0.245 0.012 255), oklch(0.215 0.012 255));
 }
 
 :root[data-radius="none"] { --radius: 0rem; }
@@ -172,8 +190,21 @@ export const azamatUiThemeCss = `${AZAMAT_UI_THEME_START}
   [data-slot="input"][data-slot="input"],
   [data-slot="textarea"][data-slot="textarea"],
   [data-slot="select-trigger"][data-slot="select-trigger"] {
+    border-color: var(--aui-control-border-strong);
     border-radius: var(--aui-control-radius);
     box-shadow: var(--aui-control-shadow);
+  }
+
+  [data-slot="input"][data-slot="input"]:hover,
+  [data-slot="textarea"][data-slot="textarea"]:hover,
+  [data-slot="select-trigger"][data-slot="select-trigger"]:hover {
+    border-color: var(--aui-control-hover-border);
+  }
+
+  [data-slot="tabs-list"][data-slot="tabs-list"],
+  [data-slot="calendar"][data-slot="calendar"] {
+    background: var(--aui-control-panel-bg);
+    box-shadow: var(--aui-control-panel-shadow);
   }
 
   [data-slot="card"][data-slot="card"],
@@ -194,6 +225,13 @@ export const azamatUiThemeCss = `${AZAMAT_UI_THEME_START}
     box-shadow: var(--aui-card-shadow);
   }
 
+  [data-slot="data-table-toolbar"][data-slot="data-table-toolbar"] {
+    border: 1px solid var(--aui-table-toolbar-border);
+    border-radius: var(--aui-card-radius);
+    background: var(--aui-table-toolbar-bg);
+    box-shadow: var(--aui-card-shadow);
+  }
+
   [data-slot="data-table-wrapper"] thead {
     background: var(--aui-table-header-bg);
   }
@@ -206,6 +244,14 @@ export const azamatUiThemeCss = `${AZAMAT_UI_THEME_START}
     background: var(--aui-table-row-selected-bg);
   }
 
+  [data-slot="data-table-wrapper"] tbody tr[data-striped="true"] {
+    background: var(--aui-table-stripe-bg);
+  }
+
+  [data-slot="data-table-pagination"][data-slot="data-table-pagination"] {
+    background: var(--aui-table-footer-bg);
+  }
+
   [data-slot="file-upload-dropzone"][data-dragging="true"] {
     border-color: var(--primary);
     background: color-mix(in oklch, var(--primary), transparent 93%);
@@ -213,3 +259,4 @@ export const azamatUiThemeCss = `${AZAMAT_UI_THEME_START}
 }
 ${AZAMAT_UI_THEME_END}
 `
+}

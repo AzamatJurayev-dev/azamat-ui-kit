@@ -1,0 +1,91 @@
+import * as React from "react"
+import { CheckIcon, CopyIcon } from "lucide-react"
+
+import { Button } from "@/components/ui/button"
+
+export type CopyButtonProps = Omit<React.ComponentProps<typeof Button>, "onClick"> & {
+  value: string
+  copiedLabel?: React.ReactNode
+  copyLabel?: React.ReactNode
+  copiedTimeout?: number
+  onCopied?: (value: string) => void
+  onCopyError?: (error: unknown) => void
+  showIcon?: boolean
+}
+
+async function copyToClipboard(value: string) {
+  if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value)
+    return
+  }
+
+  if (typeof document === "undefined") {
+    throw new Error("Clipboard is not available")
+  }
+
+  const textarea = document.createElement("textarea")
+  textarea.value = value
+  textarea.setAttribute("readonly", "")
+  textarea.style.position = "fixed"
+  textarea.style.left = "-9999px"
+  document.body.appendChild(textarea)
+  textarea.select()
+
+  try {
+    document.execCommand("copy")
+  } finally {
+    document.body.removeChild(textarea)
+  }
+}
+
+function CopyButton({
+  value,
+  copiedLabel = "Copied",
+  copyLabel = "Copy",
+  copiedTimeout = 1600,
+  onCopied,
+  onCopyError,
+  showIcon = true,
+  disabled,
+  children,
+  type = "button",
+  ...props
+}: CopyButtonProps) {
+  const [copied, setCopied] = React.useState(false)
+  const timeoutRef = React.useRef<number | undefined>(undefined)
+
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current)
+    }
+  }, [])
+
+  const handleCopy = React.useCallback(async () => {
+    try {
+      await copyToClipboard(value)
+      setCopied(true)
+      onCopied?.(value)
+
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current)
+      timeoutRef.current = window.setTimeout(() => setCopied(false), copiedTimeout)
+    } catch (error) {
+      onCopyError?.(error)
+    }
+  }, [copiedTimeout, onCopied, onCopyError, value])
+
+  return (
+    <Button
+      data-slot="copy-button"
+      data-copied={copied || undefined}
+      type={type}
+      disabled={disabled || !value}
+      onClick={handleCopy}
+      {...props}
+    >
+      {showIcon && (copied ? <CheckIcon data-icon="inline-start" /> : <CopyIcon data-icon="inline-start" />)}
+      {children ?? (copied ? copiedLabel : copyLabel)}
+    </Button>
+  )
+}
+
+export { CopyButton }
