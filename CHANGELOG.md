@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - added `Button` loading, loading label, left icon, right icon, and `md`/`xl` size API coverage
+- added `Card` variants, tones, density, interactive, selected, and disabled state APIs
+- added `Badge` tone, size, dot, left icon, and right icon APIs for status-heavy dashboard UI
+- added `ClearableInput` Escape-to-clear and focus-after-clear behavior
+- added `SearchInput` loading, result count, shortcut, and debounced value callback support
 
 ### Docs
 
