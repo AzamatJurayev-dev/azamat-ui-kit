@@ -14,7 +14,7 @@ export type StatusBadgeTone =
   | "muted"
   | "outline"
 
-export type StatusBadgeProps = React.ComponentProps<typeof Badge> & {
+export type StatusBadgeProps = Omit<React.ComponentProps<typeof Badge>, "tone" | "dot"> & {
   tone?: StatusBadgeTone
   dot?: boolean
 }

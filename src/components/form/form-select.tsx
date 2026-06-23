@@ -181,7 +181,7 @@ function FormSelect<
               disabled={disabled || readOnly}
               onValueChange={(nextValue) => {
                 field.onChange(nextValue || emptyValue)
-                onValueChange?.(nextValue)
+                onValueChange?.(nextValue as string)
               }}
               triggerClassName={fieldClassName ?? resolvedFieldClassName}
             />
