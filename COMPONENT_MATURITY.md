@@ -29,7 +29,7 @@ Every public component family is reviewed against these gates:
 
 | Component | Status | Notes |
 | --- | --- | --- |
-| `Button` | `stable` | Semantic variants: `default`, `secondary`, `outline`, `ghost`, `destructive`, `link`. Loading is handled with disabled state or app-level composition until a dedicated API is added. |
+| `Button` | `stable` | Semantic variants: `default`, `secondary`, `outline`, `ghost`, `destructive`, `link`. Public API includes `loading`, `loadingLabel`, `leftIcon`, `rightIcon`, and sizes `xs`, `sm`, `default`, `md`, `lg`, `xl`, `icon`, `icon-xs`, `icon-sm`, `icon-lg`. |
 | `Input` | `stable` | Supports invalid/disabled/read-only styling through native attributes and token classes. Prefix/suffix stays in input wrappers. |
 | `Textarea` | `stable` | Uses token-based border/ring and native resize behavior. |
 | `Checkbox` | `stable` | Indeterminate usage should stay controlled by the consumer. |
