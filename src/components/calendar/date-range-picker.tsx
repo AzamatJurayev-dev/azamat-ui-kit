@@ -43,6 +43,8 @@ function DateRangePicker({
   formatValue = defaultFormatValue,
   triggerClassName,
   contentClassName,
+  numberOfMonths = 2,
+  pagedNavigation = true,
   ...calendarProps
 }: DateRangePickerProps) {
   const [open, setOpen] = React.useState(false)
@@ -95,6 +97,8 @@ function DateRangePicker({
             range={value}
             onRangeChange={handleRangeChange}
             labels={labels}
+            numberOfMonths={numberOfMonths}
+            pagedNavigation={pagedNavigation}
             {...calendarProps}
           />
         </PopoverContent>

@@ -42,6 +42,18 @@ Range pickers can also render two months side-by-side when needed:
 <DateRangePicker value={range} onValueChange={setRange} numberOfMonths={2} />
 ```
 
+`DateRangePicker` now defaults to `numberOfMonths={2}` and `pagedNavigation={true}`. You can still override both:
+
+```tsx
+<DateRangePicker
+  value={range}
+  onValueChange={setRange}
+  numberOfMonths={1}
+  pagedNavigation={false}
+  showMonthHeaders={false}
+/>
+```
+
 ## What belongs here
 
 This package contains UI primitives, reusable wrappers, generic hooks, formatting helpers, registry helpers, and dashboard-ready components.

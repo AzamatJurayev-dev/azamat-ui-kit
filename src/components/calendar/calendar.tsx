@@ -46,6 +46,8 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   locale?: string
   weekStartsOn?: 0 | 1
   numberOfMonths?: number
+  showMonthHeaders?: boolean
+  pagedNavigation?: boolean
   labels?: CalendarLabels
 }
 
@@ -108,12 +110,16 @@ function Calendar({
   locale = "en-US",
   weekStartsOn = 1,
   numberOfMonths = 1,
+  showMonthHeaders,
+  pagedNavigation = false,
   labels,
   ...props
 }: CalendarProps) {
   const [internalMonth, setInternalMonth] = React.useState(() => getInitialMonth(defaultMonth, value, range))
   const currentMonth = month ?? internalMonth
   const resolvedNumberOfMonths = Math.max(numberOfMonths, 1)
+  const shouldShowMonthHeaders = showMonthHeaders ?? resolvedNumberOfMonths > 1
+  const navigationStep = pagedNavigation ? resolvedNumberOfMonths : 1
   const todayKey = toDateKey(new Date())
   const disabledSet = React.useMemo(() => new Set(disabledDates ?? []), [disabledDates])
   const weekdayLabels = React.useMemo(() => getWeekdayLabels(locale, weekStartsOn), [locale, weekStartsOn])
@@ -275,7 +281,7 @@ function Calendar({
           size="icon-sm"
           className="rounded-full border-border/90 bg-background/88 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:border-ring/30 hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.previousMonth ?? "Previous month"}
-          onClick={() => setMonth(addMonths(currentMonth, -1))}
+          onClick={() => setMonth(addMonths(currentMonth, -navigationStep))}
         >
           <ChevronLeftIcon />
         </Button>
@@ -286,7 +292,7 @@ function Calendar({
           size="icon-sm"
           className="rounded-full border-border/90 bg-background/88 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:border-ring/30 hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.nextMonth ?? "Next month"}
-          onClick={() => setMonth(addMonths(currentMonth, 1))}
+          onClick={() => setMonth(addMonths(currentMonth, navigationStep))}
         >
           <ChevronRightIcon />
         </Button>
@@ -302,7 +308,7 @@ function Calendar({
       >
         {monthDaysByMonth.map(({ month: visibleMonth, days }) => (
           <div key={toDateKey(visibleMonth)} className="min-w-[17rem]">
-            {resolvedNumberOfMonths > 1 && (
+            {shouldShowMonthHeaders && (
               <div className="mb-2 text-center text-sm font-semibold capitalize tracking-tight text-foreground">
                 {getMonthLabel(visibleMonth, locale)}
               </div>
