@@ -14,6 +14,8 @@ export type ClearableInputProps = Omit<
   onClear?: () => void
   clearable?: boolean
   clearLabel?: string
+  clearOnEscape?: boolean
+  focusAfterClear?: boolean
   leadingIcon?: React.ReactNode
   trailing?: React.ReactNode
   wrapperClassName?: string
@@ -29,29 +31,47 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
       onClear,
       clearable = true,
       clearLabel = "Clear",
+      clearOnEscape = true,
+      focusAfterClear = true,
       leadingIcon,
       trailing,
       disabled,
+      onKeyDown,
       ...props
     },
     ref
   ) => {
+    const inputRef = React.useRef<HTMLInputElement | null>(null)
     const stringValue = getInputValue(value)
     const canClear = clearable && stringValue.length > 0 && !disabled
     const handleChange = createInputChangeHandler({ onChange, onValueChange })
 
-    const handleClear = () => {
+    React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
+
+    const clearValue = () => {
+      if (!canClear) return
       onValueChange?.("")
       onClear?.()
+      if (focusAfterClear) inputRef.current?.focus()
+    }
+
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+      onKeyDown?.(event)
+      if (event.defaultPrevented) return
+      if (clearOnEscape && event.key === "Escape" && canClear) {
+        event.preventDefault()
+        clearValue()
+      }
     }
 
     return (
       <InputDecorator
         data-slot="clearable-input"
-        ref={ref}
+        ref={inputRef}
         value={stringValue}
         disabled={disabled}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         leading={leadingIcon}
         trailing={
           <>
@@ -61,7 +81,7 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
                 type="button"
                 aria-label={clearLabel}
                 className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                onClick={handleClear}
+                onClick={clearValue}
               >
                 <XIcon className="size-4" />
               </button>
