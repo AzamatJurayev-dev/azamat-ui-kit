@@ -240,28 +240,31 @@ function Calendar({
     <div
       data-slot="calendar"
       className={cn(
-        "w-72 rounded-[calc(var(--radius-2xl)+2px)] border border-border/75 bg-popover/98 p-3 text-popover-foreground shadow-[0_24px_70px_rgba(15,23,42,0.14)] backdrop-blur",
+        "w-72 rounded-[calc(var(--radius-2xl)+4px)] border border-border/80 bg-popover/98 p-3.5 text-popover-foreground shadow-[0_24px_70px_rgba(15,23,42,0.16)] ring-1 ring-foreground/6 backdrop-blur",
         className
       )}
       {...props}
     >
-      <div className="mb-3 flex items-center justify-between gap-2">
+      <div className="mb-4 flex items-center justify-between gap-3">
         <Button
           type="button"
           variant="outline"
           size="icon-sm"
-          className="rounded-full border-border/80 bg-background/70 text-foreground shadow-none hover:bg-accent hover:text-accent-foreground"
+          className="rounded-full border-border/90 bg-background/88 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:border-ring/30 hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.previousMonth ?? "Previous month"}
           onClick={() => setMonth(addMonths(currentMonth, -1))}
         >
           <ChevronLeftIcon />
         </Button>
-        <div className="text-base font-semibold capitalize tracking-tight text-foreground">{getMonthLabel(currentMonth, locale)}</div>
+        <div className="flex flex-1 flex-col items-center text-center">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Calendar</span>
+          <div className="text-base font-semibold capitalize tracking-tight text-foreground">{getMonthLabel(currentMonth, locale)}</div>
+        </div>
         <Button
           type="button"
           variant="outline"
           size="icon-sm"
-          className="rounded-full border-border/80 bg-background/70 text-foreground shadow-none hover:bg-accent hover:text-accent-foreground"
+          className="rounded-full border-border/90 bg-background/88 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:border-ring/30 hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.nextMonth ?? "Next month"}
           onClick={() => setMonth(addMonths(currentMonth, 1))}
         >
@@ -269,7 +272,7 @@ function Calendar({
         </Button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+      <div className="grid grid-cols-7 gap-1 text-center text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
         {weekdayLabels.map((weekday) => (
           <div key={weekday} className="py-1.5">
             {weekday}
@@ -306,11 +309,11 @@ function Calendar({
               data-in-range={inRange || undefined}
               data-disabled-reason={disabledReason}
               className={cn(
-                "flex h-9 items-center justify-center rounded-xl border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow] hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-35",
-                outside && "text-muted-foreground/45",
-                dateKey === todayKey && "border-primary/30 bg-accent/25 text-foreground",
-                inRange && "border-accent/60 bg-accent/75 text-accent-foreground",
-                selected && "border-primary/80 bg-primary text-primary-foreground shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-primary/92 hover:text-primary-foreground"
+                "flex h-10 items-center justify-center rounded-[min(var(--radius-xl),16px)] border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:border-border/70 hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-35",
+                outside && "text-muted-foreground/42",
+                dateKey === todayKey && "border-primary/25 bg-accent/42 text-foreground",
+                inRange && "border-primary/12 bg-primary/10 text-foreground",
+                selected && "border-primary/85 bg-primary text-primary-foreground shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-primary/92 hover:text-primary-foreground"
               )}
               onFocus={() => setFocusedDateKey(dateKey)}
               onKeyDown={(event) => handleDateKeyDown(event, date)}

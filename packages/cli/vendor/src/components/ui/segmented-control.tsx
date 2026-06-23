@@ -19,9 +19,9 @@ export type SegmentedControlProps<TValue extends string = string> = Omit<React.C
 }
 
 const sizeClassName = {
-  sm: "h-8 px-2 text-xs",
-  md: "h-9 px-3 text-sm",
-  lg: "h-10 px-4 text-sm",
+  sm: "min-h-8 px-2.5 text-xs",
+  md: "min-h-9 px-3.5 text-sm",
+  lg: "min-h-10 px-4 text-sm",
 }
 
 function SegmentedControl<TValue extends string = string>({
@@ -46,7 +46,11 @@ function SegmentedControl<TValue extends string = string>({
     <div
       data-slot="segmented-control"
       role="radiogroup"
-      className={cn("inline-flex rounded-lg border bg-muted p-1", fullWidth && "flex w-full", className)}
+      className={cn(
+        "inline-flex gap-1 rounded-[var(--radius-2xl)] border border-border/80 bg-muted/72 p-1 text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_26px_rgba(15,23,42,0.05)] backdrop-blur",
+        fullWidth && "flex w-full",
+        className
+      )}
       {...props}
     >
       {options.map((option) => {
@@ -60,7 +64,7 @@ function SegmentedControl<TValue extends string = string>({
             disabled={option.disabled}
             data-selected={selected || undefined}
             className={cn(
-              "inline-flex items-center justify-center gap-1.5 rounded-md font-medium text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[selected=true]:bg-background data-[selected=true]:text-foreground data-[selected=true]:shadow-sm",
+              "inline-flex items-center justify-center gap-1.5 rounded-[calc(var(--radius-xl)-2px)] border border-transparent font-medium text-muted-foreground outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:bg-background/58 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[selected=true]:-translate-y-px data-[selected=true]:border-border/85 data-[selected=true]:bg-background data-[selected=true]:text-foreground data-[selected=true]:shadow-[0_1px_0_rgba(255,255,255,0.24),0_12px_24px_rgba(15,23,42,0.12)]",
               sizeClassName[size],
               fullWidth && "flex-1"
             )}

@@ -269,12 +269,12 @@ function Calendar({
       data-slot="calendar"
       data-months={resolvedNumberOfMonths}
       className={cn(
-        "w-fit rounded-[calc(var(--radius-2xl)+2px)] border border-border/80 bg-popover/98 p-3 text-popover-foreground shadow-[0_24px_70px_rgba(15,23,42,0.16)] ring-1 ring-foreground/6 backdrop-blur",
+        "w-fit rounded-[calc(var(--radius-2xl)+4px)] border border-border/80 bg-popover/98 p-3.5 text-popover-foreground shadow-[0_24px_70px_rgba(15,23,42,0.16)] ring-1 ring-foreground/6 backdrop-blur",
         className
       )}
       {...props}
     >
-      <div className="mb-3 flex items-center justify-between gap-2">
+      <div className="mb-4 flex items-center justify-between gap-3">
         <Button
           type="button"
           variant="outline"
@@ -285,7 +285,10 @@ function Calendar({
         >
           <ChevronLeftIcon />
         </Button>
-        <div className="text-base font-semibold capitalize tracking-tight text-foreground">{getMonthLabel(currentMonth, locale)}</div>
+        <div className="flex flex-1 flex-col items-center text-center">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">Calendar</span>
+          <div className="text-base font-semibold capitalize tracking-tight text-foreground">{getMonthLabel(currentMonth, locale)}</div>
+        </div>
         <Button
           type="button"
           variant="outline"
@@ -299,7 +302,7 @@ function Calendar({
       </div>
 
       <div
-        className={cn("grid gap-3", resolvedNumberOfMonths > 1 && "sm:grid-cols-2")}
+        className={cn("grid gap-3.5", resolvedNumberOfMonths > 1 && "sm:grid-cols-2")}
         style={
           resolvedNumberOfMonths > 2
             ? { gridTemplateColumns: `repeat(${resolvedNumberOfMonths}, minmax(0, 1fr))` }
@@ -307,14 +310,14 @@ function Calendar({
         }
       >
         {monthDaysByMonth.map(({ month: visibleMonth, days }) => (
-          <div key={toDateKey(visibleMonth)} className="min-w-[17rem]">
+          <div key={toDateKey(visibleMonth)} className="min-w-[17rem] rounded-[var(--radius-2xl)] border border-border/60 bg-background/58 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
             {shouldShowMonthHeaders && (
-              <div className="mb-2 text-center text-sm font-semibold capitalize tracking-tight text-foreground">
+              <div className="mb-3 text-center text-sm font-semibold capitalize tracking-tight text-foreground">
                 {getMonthLabel(visibleMonth, locale)}
               </div>
             )}
 
-            <div className="grid grid-cols-7 gap-1 text-center text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+            <div className="grid grid-cols-7 gap-1 text-center text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               {weekdayLabels.map((weekday) => (
                 <div key={`${toDateKey(visibleMonth)}-${weekday}`} className="py-1.5">
                   {weekday}
@@ -351,10 +354,10 @@ function Calendar({
                     data-in-range={inRange || undefined}
                     data-disabled-reason={disabledReason}
                     className={cn(
-                      "flex h-9 items-center justify-center rounded-xl border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow] hover:border-border/70 hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-35",
-                      outside && "text-muted-foreground/45",
-                      dateKey === todayKey && "border-primary/35 bg-accent/30 text-foreground",
-                      inRange && "border-accent/70 bg-accent/85 text-accent-foreground",
+                      "flex h-10 items-center justify-center rounded-[min(var(--radius-xl),16px)] border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:border-border/70 hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-35",
+                      outside && "text-muted-foreground/42",
+                      dateKey === todayKey && "border-primary/25 bg-accent/42 text-foreground",
+                      inRange && "border-primary/12 bg-primary/10 text-foreground",
                       selected && "border-primary/85 bg-primary text-primary-foreground shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-primary/92 hover:text-primary-foreground"
                     )}
                     onFocus={() => setFocusedDateKey(dateKey)}
