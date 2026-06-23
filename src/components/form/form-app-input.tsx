@@ -1,12 +1,28 @@
 import * as React from "react"
 import { Controller, type FieldPath, type FieldValues } from "react-hook-form"
 
-import { AppInput, type AppInputKind, type AppInputProps } from "@/components/inputs/app-input"
+import {
+  AppInput,
+  type AppClearableInputProps,
+  type AppDateInputProps,
+  type AppInputKind,
+  type AppInputProps,
+  type AppNumberInputProps,
+  type AppPasswordInputProps,
+  type AppPhoneInputProps,
+  type AppSearchInputProps,
+  type AppTextInputProps,
+} from "@/components/inputs/app-input"
 import { FormFieldShell } from "@/components/form/form-field-shell"
 import {
   pickFormFieldShellProps,
+  splitFormControlledProps,
   type FormControlledFieldProps,
 } from "@/components/form/form-field-utils"
+
+type DistributiveOmit<TValue, TKeys extends keyof never | string | number | symbol> = TValue extends unknown
+  ? Omit<TValue, TKeys>
+  : never
 
 export type FormAppInputPhoneValueMode = "raw" | "masked"
 
@@ -14,7 +30,7 @@ export type FormAppInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = FormControlledFieldProps<TFieldValues, TName> &
-  Omit<AppInputProps, "name" | "value" | "defaultValue" | "onChange" | "onValueChange" | "onNumberChange"> & {
+  DistributiveOmit<AppInputProps, "name" | "value" | "defaultValue" | "onChange" | "onValueChange" | "onNumberChange"> & {
     kind?: AppInputKind
     emptyValue?: unknown
     phoneValueMode?: FormAppInputPhoneValueMode
@@ -22,6 +38,19 @@ export type FormAppInputProps<
     onValueChange?: (...values: string[]) => void
     onNumberChange?: (value: number | null) => void
   }
+
+function stripFormOnlyProps<
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues>,
+>(props: FormAppInputProps<TFieldValues, TName>) {
+  const { inputProps } = splitFormControlledProps(props as FormControlledFieldProps<FieldValues, FieldPath<FieldValues>>)
+  delete inputProps.emptyValue
+  delete inputProps.phoneValueMode
+  delete inputProps.onNumberChange
+  delete inputProps.onValueChange
+  delete inputProps.onChange
+  return inputProps
+}
 
 function FormAppInput<
   TFieldValues extends FieldValues = FieldValues,
@@ -39,10 +68,10 @@ function FormAppInput<
     onValueChange,
     onNumberChange,
     onBlur,
-    ...restProps
   } = props
   const inputId = id ?? name
   const shellProps = pickFormFieldShellProps(props)
+  const externalInputProps = stripFormOnlyProps(props)
 
   return (
     <Controller
@@ -51,11 +80,11 @@ function FormAppInput<
       render={({ field, fieldState }) => {
         const error = fieldState.error?.message
         const inputProps = {
-          ...(restProps as Omit<AppInputProps, "kind">),
+          ...externalInputProps,
           id: inputId,
           name: field.name,
           ref: field.ref,
-          className: fieldClassName ?? (restProps as { className?: string }).className,
+          className: fieldClassName ?? (externalInputProps as { className?: string }).className,
           value: field.value ?? "",
           disabled: shellProps.disabled,
           readOnly: shellProps.readOnly,
@@ -70,7 +99,7 @@ function FormAppInput<
           <FormFieldShell {...shellProps} error={error} htmlFor={inputId}>
             {kind === "number" ? (
               <AppInput
-                {...inputProps}
+                {...(inputProps as Omit<AppNumberInputProps, "kind">)}
                 kind="number"
                 onNumberChange={(value) => {
                   field.onChange(value ?? emptyValue ?? null)
@@ -79,7 +108,7 @@ function FormAppInput<
               />
             ) : kind === "phone" ? (
               <AppInput
-                {...inputProps}
+                {...(inputProps as Omit<AppPhoneInputProps, "kind">)}
                 kind="phone"
                 onValueChange={(maskedValue, rawValue) => {
                   const nextValue = phoneValueMode === "raw" ? rawValue : maskedValue
@@ -89,7 +118,7 @@ function FormAppInput<
               />
             ) : kind === "date" ? (
               <AppInput
-                {...inputProps}
+                {...(inputProps as Omit<AppDateInputProps, "kind">)}
                 kind="date"
                 onValueChange={(value) => {
                   field.onChange(value || emptyValue || "")
@@ -98,7 +127,7 @@ function FormAppInput<
               />
             ) : kind === "search" ? (
               <AppInput
-                {...inputProps}
+                {...(inputProps as Omit<AppSearchInputProps, "kind">)}
                 kind="search"
                 onValueChange={(value) => {
                   field.onChange(value)
@@ -107,7 +136,7 @@ function FormAppInput<
               />
             ) : kind === "password" ? (
               <AppInput
-                {...inputProps}
+                {...(inputProps as Omit<AppPasswordInputProps, "kind">)}
                 kind="password"
                 onValueChange={(value) => {
                   field.onChange(value)
@@ -116,7 +145,7 @@ function FormAppInput<
               />
             ) : kind === "clearable" ? (
               <AppInput
-                {...inputProps}
+                {...(inputProps as Omit<AppClearableInputProps, "kind">)}
                 kind="clearable"
                 onValueChange={(value) => {
                   field.onChange(value)
@@ -125,10 +154,10 @@ function FormAppInput<
               />
             ) : (
               <AppInput
-                {...inputProps}
+                {...(inputProps as Omit<AppTextInputProps, "kind">)}
                 kind="text"
                 onChange={(event) => {
-                  field.onChange(event)
+                  field.onChange(event.target.value)
                   onChange?.(event)
                 }}
               />
