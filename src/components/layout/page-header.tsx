@@ -29,8 +29,8 @@ function PageHeader({
       data-slot="page-header"
       data-sticky={sticky || undefined}
       className={cn(
-        "flex flex-col gap-4 border-b border-border/70 pb-5",
-        sticky && "sticky top-0 z-30 bg-background/92 pt-4 backdrop-blur supports-[backdrop-filter]:bg-background/78",
+        "flex flex-col gap-4 rounded-[var(--radius-3xl)] border border-border/75 bg-card/96 p-5 shadow-sm ring-1 ring-foreground/5",
+        sticky && "sticky top-0 z-30 bg-background/92 backdrop-blur supports-[backdrop-filter]:bg-background/78",
         className
       )}
       {...props}

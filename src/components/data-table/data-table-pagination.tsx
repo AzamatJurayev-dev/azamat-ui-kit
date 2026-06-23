@@ -71,7 +71,7 @@ function DataTablePagination({
                 value: String(option),
               }))}
               disabled={disabled}
-              triggerClassName="h-9 w-20 rounded-full border-border/80 bg-background/90"
+              triggerClassName="h-9 w-20 rounded-full border-border/85 bg-background/94"
             />
           </div>
         )}

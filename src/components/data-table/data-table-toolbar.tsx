@@ -60,7 +60,7 @@ function DataTableToolbar({
           </div>
 
           {hasSelection && (
-            <div className="flex shrink-0 items-center gap-2 rounded-full border border-border/70 bg-background/88 px-2.5 py-1.5 text-sm shadow-sm backdrop-blur">
+            <div className="flex shrink-0 items-center gap-2 rounded-full border border-border/75 bg-background/92 px-2.5 py-1.5 text-sm shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur">
               <span className="text-muted-foreground">
                 {selectedLabel(selectedCount, totalCount)}
               </span>

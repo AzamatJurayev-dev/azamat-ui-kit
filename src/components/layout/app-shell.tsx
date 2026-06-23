@@ -137,7 +137,7 @@ function AppShell({
         <div
           data-slot="app-shell-sidebar"
           className={cn(
-            "fixed inset-y-0 left-0 z-40 hidden border-r border-sidebar-border/70 bg-sidebar/96 backdrop-blur transition-[width] duration-200 md:block",
+            "fixed inset-y-0 left-0 z-40 hidden border-r border-sidebar-border/70 bg-sidebar/96 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur transition-[width] duration-200 md:block",
             isSidebarCollapsed ? "w-16" : sidebarWidthClassName[sidebarWidth],
             sidebarClassName
           )}
@@ -224,7 +224,7 @@ function AppShell({
             <aside
               data-slot="app-shell-aside"
               className={cn(
-                "hidden shrink-0 border-l border-border/70 bg-card/45 xl:block",
+                "hidden shrink-0 border-l border-border/70 bg-card/55 backdrop-blur xl:block",
                 asideWidthClassName[asideWidth],
                 asideClassName
               )}

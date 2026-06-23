@@ -96,7 +96,7 @@ function FormFieldShell({
           data-slot="form-field-label"
           htmlFor={htmlFor}
           className={cn(
-            "min-w-0 text-sm font-semibold leading-none text-foreground",
+            "min-w-0 text-sm font-semibold leading-none tracking-tight text-foreground",
             disabled && "cursor-not-allowed opacity-60",
             readOnly && "opacity-80",
             labelClassName
@@ -135,7 +135,10 @@ function FormFieldShell({
   const errorNode = error ? (
     <p
       data-slot="form-field-error"
-      className={cn("flex items-start gap-2 text-sm font-medium leading-6 text-destructive", errorClassName)}
+      className={cn(
+        "flex items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-destructive/18 bg-destructive/8 px-3 py-2 text-sm font-medium leading-6 text-destructive",
+        errorClassName
+      )}
     >
       {showErrorIcon && <span className="mt-1 shrink-0">{resolvedErrorIcon}</span>}
       <span className="min-w-0">{error}</span>
@@ -150,7 +153,7 @@ function FormFieldShell({
       data-disabled={disabled || undefined}
       data-readonly={readOnly || undefined}
       aria-disabled={disabled || undefined}
-      className={cn(layoutClassName[layout], className)}
+      className={cn(layoutClassName[layout], "rounded-[var(--radius-2xl)]", className)}
       {...props}
     >
       {layout === "horizontal" ? (
