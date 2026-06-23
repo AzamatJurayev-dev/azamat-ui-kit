@@ -72,14 +72,24 @@ function DateRangePicker({
               type="button"
               variant="outline"
               disabled={disabled}
-              className={cn("w-full justify-start text-left font-normal", !hasValue && "text-muted-foreground", triggerClassName)}
+              className={cn(
+                "min-h-11 w-full justify-start rounded-[min(var(--radius-xl),16px)] border-border/80 bg-background/96 text-left font-normal shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+                !hasValue && "text-muted-foreground",
+                triggerClassName
+              )}
             />
           }
         >
           <CalendarIcon data-icon="inline-start" />
           <span className="min-w-0 flex-1 truncate">{label}</span>
         </PopoverTrigger>
-        <PopoverContent align="start" className={cn("w-auto p-0", contentClassName)}>
+        <PopoverContent
+          align="start"
+          className={cn(
+            "w-auto rounded-[var(--radius-2xl)] border-border/80 bg-popover/98 p-0 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            contentClassName
+          )}
+        >
           <Calendar
             mode="range"
             range={value}

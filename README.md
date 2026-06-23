@@ -4,6 +4,38 @@ Personal React + TypeScript UI kit for dashboard projects. The goal is to keep s
 
 Preferred adoption model: use the CLI to copy source into your app. Treat the package itself as `foundation + registry`, not as the long-term runtime home for every large component.
 
+## Quick start
+
+There are two valid ways to adopt the library:
+
+1. `source-copy` for real product work.
+2. `runtime import` for small stable foundation pieces.
+
+Recommended first step:
+
+```bash
+npx azamat-ui-kit-cli init --template next --defaults
+npx azamat-ui-kit-cli add button form-input data-table
+```
+
+After that, import from your local app source:
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { FormInput } from "@/components/form/form-input"
+import { DataTable } from "@/components/data-table/data-table"
+```
+
+Use direct package imports only when you want small shared primitives without copying source:
+
+```bash
+npm install azamat-ui-kit
+```
+
+```tsx
+import { Button, Dialog, Input, Popover, useDisclosure } from "azamat-ui-kit"
+```
+
 ## What belongs here
 
 This package contains UI primitives, reusable wrappers, generic hooks, formatting helpers, registry helpers, and dashboard-ready components.
@@ -30,7 +62,7 @@ Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission,
 
 ## Install
 
-Recommended setup:
+Recommended CLI setup:
 
 ```bash
 npx azamat-ui-kit-cli init --template next --defaults
@@ -140,6 +172,12 @@ import { DataTableFamily, FormFamily } from "azamat-ui-kit"
 - `foundation package`: small stable primitives, tiny hooks, metadata helpers
 - `source-copy reusable`: inputs, forms, feedback, layout, display, calendar, upload
 - `source-copy systems`: data-table, resource pages, builders, dashboard shells, templates
+
+Decision rule:
+
+- choose `runtime import` for `Button`, `Input`, `Dialog`, `Popover`, tiny hooks, and other stable primitives
+- choose `source-copy` for forms, inputs, calendar, upload, data-table, builders, and any component you expect to edit in your app
+- choose `subpath import` only when you intentionally want an advanced helper without copying the whole surface
 
 For the longer-term architecture, see `SOURCE_COPY.md`, `LIBRARY_DISTRIBUTION_ARCHITECTURE.md`, and `INSTALLATION_TEMPLATES.md`.
 

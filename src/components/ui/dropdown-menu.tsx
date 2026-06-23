@@ -157,7 +157,7 @@ function DropdownMenuCheckboxItem({
       data-slot="dropdown-menu-checkbox-item"
       data-inset={inset}
       className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-xl border border-transparent py-2 pr-9 pl-2.5 text-sm outline-hidden select-none transition-[background-color,border-color,color] focus:border-border/80 focus:bg-accent/80 focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative flex cursor-default items-center gap-2 rounded-xl border border-transparent py-2 pr-9 pl-2.5 text-sm outline-hidden select-none transition-[background-color,border-color,color] focus:border-border/80 focus:bg-accent/80 focus:text-accent-foreground focus:**:text-accent-foreground data-[highlighted]:border-border/65 data-[highlighted]:bg-accent/70 data-[highlighted]:text-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       checked={checked}
@@ -199,7 +199,7 @@ function DropdownMenuRadioItem({
       data-slot="dropdown-menu-radio-item"
       data-inset={inset}
       className={cn(
-        "relative flex cursor-default items-center gap-2 rounded-xl border border-transparent py-2 pr-9 pl-2.5 text-sm outline-hidden select-none transition-[background-color,border-color,color] focus:border-border/80 focus:bg-accent/80 focus:text-accent-foreground focus:**:text-accent-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "relative flex cursor-default items-center gap-2 rounded-xl border border-transparent py-2 pr-9 pl-2.5 text-sm outline-hidden select-none transition-[background-color,border-color,color] focus:border-border/80 focus:bg-accent/80 focus:text-accent-foreground focus:**:text-accent-foreground data-[highlighted]:border-border/65 data-[highlighted]:bg-accent/70 data-[highlighted]:text-foreground data-inset:pl-8 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
