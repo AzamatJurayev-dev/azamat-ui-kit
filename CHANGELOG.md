@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.2.3 - 2026-06-23
+
+### Added
+
+- new `Stack`, `Inline`, and `Grid` layout helpers for common vertical, horizontal, and grid composition
+
+### Changed
+
+- aligned package, CLI, and registry versions for the next public release
+
 ## 0.2.1 - 2026-06-20
 
 ### Fixed
