@@ -16,10 +16,16 @@ All notable changes to this project will be documented in this file.
 - added `DateInput` optional leading calendar icon support
 - added `PhoneInput` icon and country-code display options
 - added `PasswordInput` Caps Lock warning and autocomplete defaults
+- added `SimpleSelect` clearable, searchable, loading, empty-state, keyword, and custom option rendering APIs
+- added reusable form field splitting utilities for future direct form wrapper refactors
+- added `PageHeader` variants, tones, sizes, leading content, footer, and class hooks
+- added `StatCard` loading skeleton, helper text, value prefix/suffix, trend label, and badge-backed trend rendering
+- added `DataTableToolbar` variants, density, and heading/action class hooks
 
 ### Changed
 
 - moved `NumberInput`, `DateInput`, `MaskedInput`, and `PhoneInput` onto the shared `InputDecorator` surface for more consistent visual behavior
+- improved the route-level dashboard foundation by aligning `PageHeader`, `StatCard`, and `DataTableToolbar` with the newer surface/tone APIs
 
 ### Docs
 
@@ -77,38 +83,3 @@ All notable changes to this project will be documented in this file.
 - reusable dashboard layout helpers: `Section`, `Toolbar`, `SplitLayout`, and `StickyFooterBar`
 - registry status metadata and CLI status output for stable/preview/experimental/internal components
 - README component status, upload example, DataTable pagination note, and troubleshooting sections
-
-### Removed
-
-- removed narrow business blocks from public exports and source: `ProductTile`, `CartPanel`, `CartItem`, `PriceTag`, `RoleBadge`, `StatusSelect`, `ApprovalPanel`, and `CommentsPanel`
-- removed `InfoCard`, `DataCard`, and `UserCard` from public display exports and source in favor of `SmartCard` and `EntityCard`
-- removed stale `info-card` registry entry after deleting the source file
-
-### Fixed
-
-- hardened library externals so React, React DOM, JSX runtime and React Hook Form stay external in package builds
-- added build-output smoke checks to catch forbidden ESM `require("react")` usage before release
-- aligned CLI version with the package version
-- aligned `registry.json` version with `package.json`
-- added `.light` theme class output next to `:root` and `.dark`
-- removed `DataTable` search prop type workarounds by typing search through `SearchInputProps`
-- removed the `onValueChange as any` workaround from `DataTable`
-- hardened Calendar keyboard navigation, disabled date reasons, roving tab index, and invalid range handling
-- hardened FileUpload disabled/loading drag-drop behavior and localized rejection messages
-
-### Changed
-
-- build now preserves per-component modules for future subpath imports and source-copy-friendly artifacts
-- declaration build now emits declarations for all source modules instead of only the root index
-- registry now favors source-copy system components over narrow business/card blocks
-- build now starts from a clean `dist` directory and runs output validation
-- release gate now includes lint, type/a11y/registry/build-output tests, build, and `npm pack --dry-run`
-- `init` supports Vite and Next.js path defaults through `--template vite|next`
-- registry validation now fails on package/registry version mismatch and duplicate registry dependencies
-- package tarball includes `COMPONENT_MATURITY.md` for public API handoff
-- build-output smoke checks now reject indirect ESM browser require fallbacks such as Rolldown CommonJS helpers and `createRequire`
-
-### Docs
-
-- documented component maturity rubric, public export statuses, helper policy, and audit checklist
-- expanded release handoff with npm 2FA/token, manual consumer smoke, GitHub release notes and docs-app handoff
