@@ -30,7 +30,7 @@ All notable changes to this project will be documented in this file.
 - improved the route-level dashboard foundation by aligning `PageHeader`, `StatCard`, and `DataTableToolbar` with the newer surface/tone APIs
 - registered `app-input` and `form-app-input` so CLI/source-copy discovery can prefer the universal input wrappers
 - hardened `AppInput` and `FormAppInput` typing so specialized props are routed more safely by kind
-- routed `FormSearchInput` through `FormAppInput` as the first compatibility wrapper migration
+- routed `FormSearchInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` through `FormAppInput` as compatibility wrapper migrations
 
 ### Docs
 
