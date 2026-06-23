@@ -12,7 +12,7 @@ function Card({
       data-slot="card"
       data-size={size}
       className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-[var(--radius-2xl)] border border-border/75 bg-card/98 py-(--card-spacing) text-sm text-card-foreground shadow-sm [--card-spacing:--spacing(5)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[var(--radius-2xl)] *:[img:last-child]:rounded-b-[var(--radius-2xl)]",
+        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-[var(--radius-2xl)] border border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_14%),var(--card))] py-(--card-spacing) text-sm text-card-foreground shadow-sm ring-1 ring-foreground/5 [--card-spacing:--spacing(5)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[var(--radius-2xl)] *:[img:last-child]:rounded-b-[var(--radius-2xl)]",
         className
       )}
       {...props}
@@ -84,7 +84,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center rounded-b-[var(--radius-2xl)] border-t border-border/70 bg-muted/45 p-(--card-spacing)",
+        "flex items-center rounded-b-[var(--radius-2xl)] border-t border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),transparent_24%),color-mix(in_oklch,var(--muted),transparent_8%))] p-(--card-spacing)",
         className
       )}
       {...props}
