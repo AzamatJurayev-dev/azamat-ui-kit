@@ -43,10 +43,22 @@ function DataState({
   const content = defaultContent[status]
 
   return (
-    <Card data-slot="data-state" data-status={status} className={cn("min-w-0", className)} {...props}>
+    <Card
+      data-slot="data-state"
+      data-status={status}
+      className={cn("min-w-0 border-border/75 bg-card/96 shadow-sm ring-1 ring-foreground/4", className)}
+      {...props}
+    >
       <CardContent className={cn("flex flex-col items-center justify-center text-center", compact ? "p-4" : "min-h-52 p-8")}>
-        <div className={cn("mb-3 flex items-center justify-center rounded-full bg-muted text-muted-foreground [&_svg]:size-5", compact ? "size-9" : "size-12")}>{icon ?? content.icon}</div>
-        <div className={cn("font-semibold", compact ? "text-sm" : "text-base")}>{title ?? content.title}</div>
+        <div
+          className={cn(
+            "mb-3 flex items-center justify-center rounded-full border border-border/70 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)] [&_svg]:size-5",
+            compact ? "size-9" : "size-12"
+          )}
+        >
+          {icon ?? content.icon}
+        </div>
+        <div className={cn("font-semibold tracking-tight text-foreground", compact ? "text-sm" : "text-base")}>{title ?? content.title}</div>
         <p className="mt-1 max-w-md text-sm text-muted-foreground">{description ?? content.description}</p>
         {children && <div className="mt-4 w-full">{children}</div>}
         {(actions || onRetry) && (

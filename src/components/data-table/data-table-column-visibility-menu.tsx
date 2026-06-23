@@ -49,7 +49,15 @@ function DataTableColumnVisibilityMenu<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button type="button" variant="outline" size="sm" className={triggerClassName} />
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className={cn(
+              "border-border/80 bg-background/94 shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+              triggerClassName
+            )}
+          />
         }
       >
         <Columns3Icon data-icon="inline-start" />
@@ -58,7 +66,10 @@ function DataTableColumnVisibilityMenu<TData>({
       <DropdownMenuContent
         align={align}
         side={side}
-        className={cn("min-w-48", contentClassName)}
+        className={cn(
+          "min-w-48 rounded-[var(--radius-2xl)] border-border/80 bg-popover/98 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+          contentClassName
+        )}
       >
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />

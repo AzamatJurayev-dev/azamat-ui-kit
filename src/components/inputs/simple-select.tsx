@@ -43,16 +43,27 @@ function SimpleSelect({
 }: SimpleSelectProps) {
   return (
     <Select value={value} onValueChange={(val) => onValueChange?.(val as string)} {...props}>
-      <SelectTrigger size={size} className={cn("w-full", triggerClassName)}>
+      <SelectTrigger
+        size={size}
+        className={cn(
+          "w-full border-border/80 bg-background/96 shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+          triggerClassName
+        )}
+      >
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent className={contentClassName}>
+      <SelectContent
+        className={cn(
+          "border-border/80 bg-popover/98 shadow-[0_20px_60px_rgba(15,23,42,0.18)] backdrop-blur",
+          contentClassName
+        )}
+      >
         {options.map((option) => (
           <SelectItem
             key={option.value}
             value={option.value}
             disabled={option.disabled}
-            className={itemClassName}
+            className={cn("rounded-[min(var(--radius-lg),14px)]", itemClassName)}
           >
             <span className="flex min-w-0 flex-col">
               <span className="truncate">{option.label}</span>

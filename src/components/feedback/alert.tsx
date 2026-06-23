@@ -47,10 +47,20 @@ function Alert({ tone = "info", title, description, icon, action, className, chi
     <div
       data-slot="alert"
       role={tone === "destructive" || tone === "warning" ? "alert" : "status"}
-      className={cn("flex gap-3 rounded-lg border p-4 text-sm", alertToneClassName[tone], className)}
+      className={cn(
+        "flex gap-3 rounded-[var(--radius-2xl)] border p-4 text-sm shadow-[0_1px_0_rgba(255,255,255,0.05)]",
+        alertToneClassName[tone],
+        className
+      )}
       {...props}
     >
-      <div data-slot="alert-icon" className={cn("mt-0.5 shrink-0", alertIconClassName[tone])}>
+      <div
+        data-slot="alert-icon"
+        className={cn(
+          "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full border border-current/10 bg-background/55",
+          alertIconClassName[tone]
+        )}
+      >
         {icon ?? defaultIcon(tone)}
       </div>
       <div className="min-w-0 flex-1 space-y-1">
