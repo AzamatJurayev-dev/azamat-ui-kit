@@ -54,6 +54,23 @@ Range pickers can also render two months side-by-side when needed:
 />
 ```
 
+If you want a review-style footer before the value is committed:
+
+```tsx
+<DateRangePicker
+  value={range}
+  onValueChange={setRange}
+  showFooter
+  labels={{ apply: "Apply", clear: "Reset" }}
+/>
+```
+
+Single-date pickers can also opt into a wider desktop calendar:
+
+```tsx
+<DatePicker value={date} onValueChange={setDate} numberOfMonths={2} />
+```
+
 ## What belongs here
 
 This package contains UI primitives, reusable wrappers, generic hooks, formatting helpers, registry helpers, and dashboard-ready components.
