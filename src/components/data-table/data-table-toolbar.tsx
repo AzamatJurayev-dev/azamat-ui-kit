@@ -1,21 +1,47 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-export type DataTableToolbarProps = React.ComponentProps<"div"> & {
-  title?: React.ReactNode
-  description?: React.ReactNode
-  search?: React.ReactNode
-  filters?: React.ReactNode
-  actions?: React.ReactNode
-  selectionActions?: React.ReactNode
-  selectedCount?: number
-  totalCount?: number
-  selectedLabel?: (selectedCount: number, totalCount?: number) => React.ReactNode
-}
+const dataTableToolbarVariants = cva("flex flex-col", {
+  variants: {
+    variant: {
+      default: "rounded-[var(--radius-2xl)] border border-border/70 bg-card/80 shadow-sm ring-1 ring-foreground/5",
+      plain: "border-transparent bg-transparent shadow-none",
+      soft: "rounded-[var(--radius-2xl)] border border-transparent bg-muted/45 shadow-none",
+    },
+    density: {
+      compact: "gap-3 p-3",
+      default: "gap-4 p-4 md:p-5",
+      comfortable: "gap-5 p-5 md:p-6",
+    },
+  },
+  defaultVariants: {
+    variant: "plain",
+    density: "default",
+  },
+})
+
+export type DataTableToolbarProps = React.ComponentProps<"div"> &
+  VariantProps<typeof dataTableToolbarVariants> & {
+    title?: React.ReactNode
+    description?: React.ReactNode
+    search?: React.ReactNode
+    filters?: React.ReactNode
+    actions?: React.ReactNode
+    selectionActions?: React.ReactNode
+    selectedCount?: number
+    totalCount?: number
+    selectedLabel?: (selectedCount: number, totalCount?: number) => React.ReactNode
+    titleClassName?: string
+    descriptionClassName?: string
+    actionsClassName?: string
+  }
 
 function DataTableToolbar({
   className,
+  variant,
+  density,
   title,
   description,
   search,
@@ -26,6 +52,9 @@ function DataTableToolbar({
   totalCount,
   selectedLabel = (selected, total) =>
     total === undefined ? `${selected} selected` : `${selected} of ${total} selected`,
+  titleClassName,
+  descriptionClassName,
+  actionsClassName,
   children,
   ...props
 }: DataTableToolbarProps) {
@@ -35,19 +64,20 @@ function DataTableToolbar({
   return (
     <div
       data-slot="data-table-toolbar"
-      className={cn("flex flex-col gap-4 rounded-[var(--radius-2xl)] p-4 md:p-5", className)}
+      data-density={density ?? "default"}
+      className={cn(dataTableToolbarVariants({ variant, density }), className)}
       {...props}
     >
       {(hasHeading || actions) && (
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           {hasHeading && (
             <div className="grid gap-1">
-              {title && <h2 className="text-lg font-semibold tracking-tight text-foreground">{title}</h2>}
-              {description && <p className="text-sm leading-6 text-muted-foreground">{description}</p>}
+              {title && <h2 className={cn("text-lg font-semibold tracking-tight text-foreground", titleClassName)}>{title}</h2>}
+              {description && <p className={cn("text-sm leading-6 text-muted-foreground", descriptionClassName)}>{description}</p>}
             </div>
           )}
 
-          {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
+          {actions && <div className={cn("flex shrink-0 flex-wrap items-center gap-2", actionsClassName)}>{actions}</div>}
         </div>
       )}
 
@@ -61,9 +91,7 @@ function DataTableToolbar({
 
           {hasSelection && (
             <div className="flex shrink-0 items-center gap-2 rounded-full border border-border/75 bg-background/92 px-2.5 py-1.5 text-sm shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur">
-              <span className="text-muted-foreground">
-                {selectedLabel(selectedCount, totalCount)}
-              </span>
+              <span className="text-muted-foreground">{selectedLabel(selectedCount, totalCount)}</span>
               {selectionActions}
             </div>
           )}
@@ -73,4 +101,4 @@ function DataTableToolbar({
   )
 }
 
-export { DataTableToolbar }
+export { DataTableToolbar, dataTableToolbarVariants }
