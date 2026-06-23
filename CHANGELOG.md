@@ -11,6 +11,15 @@ All notable changes to this project will be documented in this file.
 - added `Badge` tone, size, dot, left icon, and right icon APIs for status-heavy dashboard UI
 - added `ClearableInput` Escape-to-clear and focus-after-clear behavior
 - added `SearchInput` loading, result count, shortcut, and debounced value callback support
+- added `InputDecorator` density, tone, leading/trailing class hooks, and pointer-event control
+- added `NumberInput` prefix/suffix support through the shared input decorator
+- added `DateInput` optional leading calendar icon support
+- added `PhoneInput` icon and country-code display options
+- added `PasswordInput` Caps Lock warning and autocomplete defaults
+
+### Changed
+
+- moved `NumberInput`, `DateInput`, `MaskedInput`, and `PhoneInput` onto the shared `InputDecorator` surface for more consistent visual behavior
 
 ### Docs
 
