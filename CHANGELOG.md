@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Added
+
+- added `Button` loading, loading label, left icon, right icon, and `md`/`xl` size API coverage
+
+### Docs
+
+- aligned the component maturity matrix with the current `Button` public API
+
 ## 0.2.3 - 2026-06-23
 
 ### Added
