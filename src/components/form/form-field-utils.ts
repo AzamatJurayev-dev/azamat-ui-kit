@@ -12,6 +12,28 @@ export type FormControlledFieldProps<
   id?: string
 }
 
+const formShellPropKeys = [
+  "label",
+  "description",
+  "required",
+  "className",
+  "layout",
+  "descriptionPosition",
+  "labelAction",
+  "requiredIndicator",
+  "errorIcon",
+  "showErrorIcon",
+  "disabled",
+  "readOnly",
+  "labelClassName",
+  "labelRowClassName",
+  "descriptionClassName",
+  "errorClassName",
+  "contentClassName",
+] as const
+
+const controlledFieldPropKeys = ["control", "name", "fieldClassName", "id", ...formShellPropKeys] as const
+
 export function pickFormFieldShellProps(props: FormFieldShellControlProps): FormFieldShellControlProps {
   return {
     label: props.label,
@@ -31,5 +53,24 @@ export function pickFormFieldShellProps(props: FormFieldShellControlProps): Form
     descriptionClassName: props.descriptionClassName,
     errorClassName: props.errorClassName,
     contentClassName: props.contentClassName,
+  }
+}
+
+export function splitFormControlledProps<
+  TProps extends FormControlledFieldProps<FieldValues, FieldPath<FieldValues>>,
+>(props: TProps) {
+  const inputProps = { ...props } as Record<string, unknown>
+
+  controlledFieldPropKeys.forEach((key) => {
+    delete inputProps[key]
+  })
+
+  return {
+    control: props.control,
+    name: props.name,
+    id: props.id ?? props.name,
+    fieldClassName: props.fieldClassName,
+    shellProps: pickFormFieldShellProps(props),
+    inputProps,
   }
 }
