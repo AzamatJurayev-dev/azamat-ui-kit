@@ -36,6 +36,12 @@ npm install azamat-ui-kit
 import { Button, Dialog, Input, Popover, useDisclosure } from "azamat-ui-kit"
 ```
 
+Range pickers can also render two months side-by-side when needed:
+
+```tsx
+<DateRangePicker value={range} onValueChange={setRange} numberOfMonths={2} />
+```
+
 ## What belongs here
 
 This package contains UI primitives, reusable wrappers, generic hooks, formatting helpers, registry helpers, and dashboard-ready components.
