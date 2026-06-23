@@ -257,7 +257,12 @@ function CommandPalette({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn("overflow-hidden p-0 sm:max-w-xl", contentClassName)}>
+      <DialogContent
+        className={cn(
+          "overflow-hidden rounded-[var(--radius-3xl)] border-border/80 bg-popover/98 p-0 shadow-[0_28px_90px_rgba(15,23,42,0.24)] backdrop-blur sm:max-w-xl",
+          contentClassName
+        )}
+      >
         <DialogHeader className="sr-only">
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
@@ -265,22 +270,28 @@ function CommandPalette({
 
         <div
           data-slot="command-palette"
-          className={cn("flex max-h-[32rem] flex-col overflow-hidden rounded-lg bg-popover text-popover-foreground", className)}
+          className={cn(
+            "flex max-h-[32rem] flex-col overflow-hidden rounded-[var(--radius-3xl)] bg-popover/98 text-popover-foreground",
+            className
+          )}
         >
-          <div className="relative border-b p-2">
+          <div className="relative border-b border-border/70 bg-muted/20 p-3">
             <SearchIcon className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={placeholder}
-              className={cn("border-0 pl-8 shadow-none focus-visible:ring-0", inputClassName)}
+              className={cn(
+                "h-11 rounded-full border-border/75 bg-background/96 pl-10 shadow-[0_1px_0_rgba(255,255,255,0.05)] focus-visible:ring-2",
+                inputClassName
+              )}
               autoFocus
             />
           </div>
 
-          <div className={cn("overflow-y-auto p-2", listClassName)}>
+          <div className={cn("overflow-y-auto p-3", listClassName)}>
             {!hasResults && hasLoading && (
-              <div className="flex items-center justify-center gap-2 py-8 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/30 py-8 text-sm text-muted-foreground">
                 {renderLoading?.(search) ?? (
                   <>
                     <Loader2Icon className="size-4 animate-spin" />
@@ -291,7 +302,7 @@ function CommandPalette({
             )}
 
             {!hasResults && !hasLoading && (
-              <div className="py-8 text-center text-sm text-muted-foreground">
+              <div className="rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/30 py-8 text-center text-sm text-muted-foreground">
                 {renderEmpty?.(search) ?? emptyLabel}
               </div>
             )}
@@ -299,26 +310,26 @@ function CommandPalette({
             {renderedGroups.map((group) => (
               <div key={group.id} className="py-1">
                 {group.label && (
-                  <div className="flex items-center justify-between px-2 py-1.5 text-xs font-medium text-muted-foreground">
+                  <div className="flex items-center justify-between px-2 py-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
                     <span>{group.label}</span>
                     {group.loading && <Loader2Icon className="size-3.5 animate-spin" />}
                   </div>
                 )}
 
                 {group.error ? (
-                  <div className="rounded-md px-2 py-2 text-xs text-destructive">
+                  <div className="rounded-[min(var(--radius-xl),16px)] border border-destructive/20 bg-destructive/8 px-3 py-2 text-xs text-destructive">
                     Could not load commands.
                   </div>
                 ) : null}
 
                 {group.loading && group.items.length === 0 && (
-                  <div className="rounded-md px-2 py-2 text-xs text-muted-foreground">
+                  <div className="rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/25 px-3 py-2 text-xs text-muted-foreground">
                     {group.loadingLabel ?? loadingLabel}
                   </div>
                 )}
 
                 {group.items.length === 0 && !group.loading && !group.error && group.emptyLabel && (
-                  <div className="rounded-md px-2 py-2 text-xs text-muted-foreground">{group.emptyLabel}</div>
+                  <div className="rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/25 px-3 py-2 text-xs text-muted-foreground">{group.emptyLabel}</div>
                 )}
 
                 {group.items.map((item) => {
@@ -330,7 +341,7 @@ function CommandPalette({
                       type="button"
                       disabled={item.disabled || isLoading}
                       data-disabled={item.disabled || undefined}
-                      className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm outline-none hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
+                      className="flex w-full items-start gap-3 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-colors hover:border-border/70 hover:bg-accent/60 hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50"
                       onClick={() => void handleSelect(item, group)}
                     >
                       {item.icon && <span className="shrink-0 text-muted-foreground [&_svg]:size-4">{item.icon}</span>}

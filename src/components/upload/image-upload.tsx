@@ -58,7 +58,7 @@ function defaultRenderImageFile({
     <div className="flex min-w-0 items-center gap-3">
       <div
         className={cn(
-          "flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-md border bg-muted text-muted-foreground",
+          "flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-[min(var(--radius-xl),16px)] border border-border/75 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)]",
           previewClassName
         )}
       >
@@ -72,12 +72,15 @@ function defaultRenderImageFile({
         <div className="truncate text-sm font-medium text-foreground">{file.name}</div>
         <div className="text-xs text-muted-foreground">{formatBytes(file.size)}</div>
         {typeof progress === "number" && (
-          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-muted">
-            <div className="h-full rounded-full bg-primary" style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }} />
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted/80">
+            <div
+              className="h-full rounded-full bg-primary shadow-[0_8px_18px_color-mix(in_oklch,var(--primary),transparent_82%)]"
+              style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }}
+            />
           </div>
         )}
       </div>
-      <Button type="button" variant="ghost" size="icon-xs" onClick={remove}>
+      <Button type="button" variant="ghost" size="icon-xs" className="rounded-full" onClick={remove}>
         <XIcon />
         <span className="sr-only">Remove image</span>
       </Button>

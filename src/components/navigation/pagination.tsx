@@ -92,7 +92,10 @@ function Pagination({
     <nav
       data-slot="pagination"
       aria-label="Pagination"
-      className={cn("flex items-center justify-center gap-1.5 rounded-full border border-border/70 bg-background/88 p-1 shadow-sm backdrop-blur", className)}
+      className={cn(
+        "flex items-center justify-center gap-1.5 rounded-full border border-border/75 bg-background/92 p-1 shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur",
+        className
+      )}
       {...props}
     >
       {showEdges && (
@@ -143,6 +146,7 @@ function Pagination({
             aria-current={item === currentPage ? "page" : undefined}
             aria-label={labels?.page?.(item) ?? `Page ${item}`}
             onClick={() => goToPage(item)}
+            className={cn(item !== currentPage && "border-border/80 bg-background/94")}
           >
             {item}
           </Button>
