@@ -21,11 +21,14 @@ All notable changes to this project will be documented in this file.
 - added `PageHeader` variants, tones, sizes, leading content, footer, and class hooks
 - added `StatCard` loading skeleton, helper text, value prefix/suffix, trend label, and badge-backed trend rendering
 - added `DataTableToolbar` variants, density, and heading/action class hooks
+- added `AppInput` / `UniversalInput` as the single public input wrapper for text, clearable, search, password, number, phone, and date input kinds
+- added `FormAppInput` as the single React Hook Form wrapper for the same input kinds
 
 ### Changed
 
 - moved `NumberInput`, `DateInput`, `MaskedInput`, and `PhoneInput` onto the shared `InputDecorator` surface for more consistent visual behavior
 - improved the route-level dashboard foundation by aligning `PageHeader`, `StatCard`, and `DataTableToolbar` with the newer surface/tone APIs
+- registered `app-input` and `form-app-input` so CLI/source-copy discovery can prefer the universal input wrappers
 
 ### Docs
 
@@ -66,20 +69,3 @@ All notable changes to this project will be documented in this file.
 - reusable system components: `ActionSystem`, `StatusSystem`, `FilterBuilder`, `DataView`, `EntityDetails`, `ResourceSystem`, and `CrudSystem`
 - reusable layout/form systems: `WorkspaceShell`, `EntityCard`, and `SmartFormShell`
 - reusable dependency-free chart components: `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, and `MetricTrend`
-- analytics components: `KpiCard`, `KpiGrid`, `ProgressRing`, and `HorizontalBarChart`
-- table utility components: `TableExportMenu` and `TableImportButton`
-- action utilities: `CopyField`, `ButtonGroup`, `FloatingActionButton`, and `ActionBar`
-- form helpers: `FormActions` and `FormSection`
-- settings patterns: `SettingsSection` and `SettingsRow`
-- base collapse primitive and composed `CollapseGroup`
-- feedback `Alert` component with info, success, warning, destructive, and muted tones
-- `Statistic`, `StatisticCard`, and `StatisticGrid` display components
-- base UI primitives: `Skeleton`, `SkeletonText`, `SkeletonCard`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, and `Tooltip`
-- generic data display components: `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `CodeBlock`, `FileCard`, `PropertyGrid`, and `SmartCard`
-- utility display component `KeyboardShortcut`
-- feedback state components `PageState` and `InlineState`
-- navigation utility `AnchorNav`
-- interactive `Rating`, `Slider`, `RangeSlider`, `OtpInput`, and `ColorInput` input components
-- reusable dashboard layout helpers: `Section`, `Toolbar`, `SplitLayout`, and `StickyFooterBar`
-- registry status metadata and CLI status output for stable/preview/experimental/internal components
-- README component status, upload example, DataTable pagination note, and troubleshooting sections
