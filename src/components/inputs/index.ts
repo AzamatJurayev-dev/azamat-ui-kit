@@ -1,3 +1,4 @@
+export * from './app-input'
 export * from './simple-select'
 export * from './async-select'
 export * from './clearable-input'
