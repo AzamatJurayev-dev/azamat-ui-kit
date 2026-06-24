@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - added `DataTableToolbar` variants, density, and heading/action class hooks
 - added `AppInput` / `UniversalInput` as the single public input wrapper for text, clearable, search, number, phone, and date input kinds
 - added `FormAppInput` as the single React Hook Form wrapper for the same input kinds
+- added real component primitives: `RadioGroup`, `Kbd`, `HoverCard`, `StatusDot`, `SectionHeader`, `AlertDialog`, and `Drawer`
 
 ### Changed
 
@@ -31,6 +32,7 @@ All notable changes to this project will be documented in this file.
 - registered `app-input` and `form-app-input` so CLI/source-copy discovery can prefer the universal input wrappers
 - hardened `AppInput` and `FormAppInput` typing so specialized props are routed more safely by kind
 - routed `FormSearchInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` through `FormAppInput` as compatibility wrapper migrations
+- exported `StatusDot` from display and `SectionHeader` from layout public surfaces
 
 ### Docs
 
