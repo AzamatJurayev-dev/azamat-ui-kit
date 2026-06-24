@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - added `FormAppInput` as the single React Hook Form wrapper for the same input kinds
 - added real component primitives: `RadioGroup`, `Kbd`, `HoverCard`, `StatusDot`, `SectionHeader`, `AlertDialog`, and `Drawer`
 - added `UserCard`, `NavTabs`, and `FileDropzone` for dashboard identity, navigation, and upload flows
+- added `ScrollBox`, `RightClickMenu`, `ProgressCircle`, and `MetricCard` as additional real reusable UI components
 
 ### Changed
 
@@ -33,7 +34,7 @@ All notable changes to this project will be documented in this file.
 - registered `app-input` and `form-app-input` so CLI/source-copy discovery can prefer the universal input wrappers
 - hardened `AppInput` and `FormAppInput` typing so specialized props are routed more safely by kind
 - routed `FormSearchInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` through `FormAppInput` as compatibility wrapper migrations
-- exported `StatusDot`, `UserCard`, `SectionHeader`, `NavTabs`, and `FileDropzone` from their family public surfaces
+- exported `StatusDot`, `UserCard`, `ProgressCircle`, `SectionHeader`, `NavTabs`, `FileDropzone`, `ScrollBox`, and `RightClickMenu` from their public surfaces
 
 ### Docs
 
