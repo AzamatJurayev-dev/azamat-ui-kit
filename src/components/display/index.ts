@@ -1,5 +1,6 @@
 export * from "./description-list"
 export * from "./progress"
+export * from "./progress-circle"
 export * from "./result"
 export * from "./timeline"
 export * from "./metric-grid"
