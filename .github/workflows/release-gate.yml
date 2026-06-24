@@ -1,0 +1,45 @@
+name: Release Gate
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+jobs:
+  release-gate:
+    name: Lint, build, and validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run test:types
+
+      - name: Registry validation
+        run: npm run test:registry
+
+      - name: Build package
+        run: npm run build
+
+      - name: Release gate
+        run: npm run release:gate
