@@ -54,6 +54,11 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   select: { name: "select", category: "ui", dependencies: ["@base-ui/react", "lucide-react"], registryDependencies: ["utils"], files: [file("src/components/ui/select.tsx", "{ui}/select.tsx")] },
   table: { name: "table", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/table.tsx", "{ui}/table.tsx")] },
   "segmented-control": { name: "segmented-control", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/segmented-control.tsx", "{ui}/segmented-control.tsx")] },
+  "radio-group": { name: "radio-group", category: "ui", registryDependencies: ["button", "utils"], files: [file("src/components/ui/radio-group.tsx", "{ui}/radio-group.tsx")] },
+  kbd: { name: "kbd", category: "ui", files: [file("src/components/ui/kbd.tsx", "{ui}/kbd.tsx")] },
+  "hover-card": { name: "hover-card", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/hover-card.tsx", "{ui}/hover-card.tsx")] },
+  "scroll-box": { name: "scroll-box", category: "ui", files: [file("src/components/ui/scroll-box.tsx", "{ui}/scroll-box.tsx")] },
+  "right-click-menu": { name: "right-click-menu", category: "ui", dependencies: ["react"], files: [file("src/components/ui/right-click-menu.tsx", "{ui}/right-click-menu.tsx")] },
 
   "input-decorator": { name: "input-decorator", category: "inputs", dependencies: ["class-variance-authority"], registryDependencies: ["input", "utils"], files: [file("src/components/inputs/input-decorator.tsx", "{components}/inputs/input-decorator.tsx")] },
   "input-value": { name: "input-value", category: "inputs", files: [file("src/components/inputs/input-value.ts", "{components}/inputs/input-value.ts")] },
@@ -94,6 +99,13 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "smart-form-shell": { name: "smart-form-shell", category: "form", registryDependencies: ["form-actions", "form-section", "utils"], files: [file("src/components/form/smart-form-shell.tsx", "{components}/form/smart-form-shell.tsx")] },
   form: { name: "form", category: "group", registryDependencies: ["form-field-shell", "form-field-utils", "form-app-input", "form-input", "form-select", "form-async-select", "form-textarea", "form-switch", "form-search-input", "form-password-input", "form-number-input", "form-phone-input", "form-date-input", "form-date-range-input", "form-date-picker", "form-date-range-picker", "form-actions", "form-section", "smart-form-shell"], files: [file("src/components/form/index.ts", "{components}/form/index.ts")] },
 
+  "dialog-actions": { name: "dialog-actions", category: "overlay", dependencies: ["lucide-react"], registryDependencies: ["button", "dialog"], files: [file("src/components/overlay/dialog-actions.tsx", "{components}/overlay/dialog-actions.tsx")] },
+  "modal-shell": { name: "modal-shell", category: "overlay", dependencies: ["@base-ui/react"], registryDependencies: ["button", "dialog"], files: [file("src/components/overlay/modal-shell.tsx", "{components}/overlay/modal-shell.tsx")] },
+  "confirm-dialog": { name: "confirm-dialog", category: "overlay", dependencies: ["lucide-react"], registryDependencies: ["dialog-actions"], files: [file("src/components/overlay/confirm-dialog.tsx", "{components}/overlay/confirm-dialog.tsx")] },
+  "sheet-shell": { name: "sheet-shell", category: "overlay", registryDependencies: ["dialog"], files: [file("src/components/overlay/sheet-shell.tsx", "{components}/overlay/sheet-shell.tsx")] },
+  "alert-dialog": { name: "alert-dialog", category: "overlay", dependencies: ["lucide-react"], registryDependencies: ["dialog", "button"], files: [file("src/components/overlay/alert-dialog.tsx", "{components}/overlay/alert-dialog.tsx")] },
+  drawer: { name: "drawer", category: "overlay", dependencies: ["@base-ui/react"], registryDependencies: ["dialog"], files: [file("src/components/overlay/drawer.tsx", "{components}/overlay/drawer.tsx")] },
+
   "empty-state": { name: "empty-state", category: "feedback", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/feedback/empty-state.tsx", "{components}/feedback/empty-state.tsx")] },
   "loading-state": { name: "loading-state", category: "feedback", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/feedback/loading-state.tsx", "{components}/feedback/loading-state.tsx")] },
   "status-badge": { name: "status-badge", category: "feedback", registryDependencies: ["badge", "utils"], files: [file("src/components/feedback/status-badge.tsx", "{components}/feedback/status-badge.tsx")] },
@@ -103,6 +115,11 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "page-header": { name: "page-header", category: "layout", dependencies: ["class-variance-authority"], registryDependencies: ["utils"], files: [file("src/components/layout/page-header.tsx", "{components}/layout/page-header.tsx")] },
   "stat-card": { name: "stat-card", category: "layout", registryDependencies: ["card", "badge", "utils"], files: [file("src/components/layout/stat-card.tsx", "{components}/layout/stat-card.tsx")] },
   layout: { name: "layout", category: "group", registryDependencies: ["page-header", "stat-card"], files: [file("src/components/layout/index.ts", "{components}/layout/index.ts")] },
+
+  "metric-card": { name: "metric-card", category: "display", registryDependencies: ["card"], files: [file("src/components/display/metric-card.tsx", "{components}/display/metric-card.tsx")] },
+  calendar: { name: "calendar", category: "calendar", files: [file("src/components/calendar/calendar.tsx", "{components}/calendar/calendar.tsx"), file("src/components/calendar/date-utils.ts", "{components}/calendar/date-utils.ts")] },
+  "date-picker": { name: "date-picker", category: "calendar", registryDependencies: ["calendar"], files: [file("src/components/calendar/date-picker.tsx", "{components}/calendar/date-picker.tsx")] },
+  "date-range-picker": { name: "date-range-picker", category: "calendar", registryDependencies: ["calendar"], files: [file("src/components/calendar/date-range-picker.tsx", "{components}/calendar/date-range-picker.tsx")] },
 
   dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "feedback", "inputs", "form"] },
   all: { name: "all", category: "group", registryDependencies: ["dashboard"] },

@@ -1,4 +1,5 @@
 export * from "./dialog-actions"
+export * from "./alert-dialog"
 export * from "./modal-shell"
 export * from "./confirm-dialog"
 export * from "./sheet-shell"

@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 export type FormInputKind = "text" | "search" | "password" | "number" | "phone" | "date"
-export type FormPhoneInputValueMode = "raw" | "masked"
+export type FormInputPhoneInputValueMode = "raw" | "masked"
 
 type FormControlledFieldProps<
   TFieldValues extends FieldValues,
@@ -74,7 +74,7 @@ export type FormInputPhoneVariantProps<
 > = Omit<PhoneInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind: "phone"
-    valueMode?: FormPhoneInputValueMode
+    valueMode?: FormInputPhoneInputValueMode
     onValueChange?: (value: string, rawValue: string, maskedValue: string) => void
   }
 

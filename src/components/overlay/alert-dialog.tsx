@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-export type AlertDialogProps = React.ComponentProps<typeof Dialog> & {
+export type AlertDialogProps = Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   title?: React.ReactNode
   description?: React.ReactNode
   icon?: React.ReactNode
@@ -21,6 +21,7 @@ export type AlertDialogProps = React.ComponentProps<typeof Dialog> & {
   actionTone?: "default" | "destructive"
   loading?: boolean
   onAction?: () => void | Promise<void>
+  children?: React.ReactNode
 }
 
 function AlertDialog({
@@ -47,7 +48,11 @@ function AlertDialog({
           {description ? <DialogDescription>{description}</DialogDescription> : null}
         </DialogHeader>
         <DialogFooter>
-          <DialogClose render={<Button type="button" variant="outline" disabled={loading}>{cancelLabel}</Button>} />
+          <DialogClose render={() => (
+            <Button type="button" variant="outline" disabled={loading}>
+              {cancelLabel}
+            </Button>
+          )} />
           <Button type="button" variant={actionTone === "destructive" ? "destructive" : "default"} loading={loading} onClick={() => void onAction?.()}>
             {actionLabel}
           </Button>

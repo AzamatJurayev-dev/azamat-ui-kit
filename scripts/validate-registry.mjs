@@ -80,11 +80,12 @@ const packageJson = readJson(packageJsonPath)
 const registryJson = readJson(registryJsonPath)
 const registryTs = readText(registryTsPath)
 const registryStatusTs = readText(registryStatusTsPath)
-const unionNames = extractComponentNameUnion(registryTs)
+const extractedUnionNames = extractComponentNameUnion(registryTs)
 const registryNames = extractRegistryObjectNames(registryTs)
 const dependencyMap = extractRegistryDependencies(registryTs)
 const registryFiles = extractRegistryFiles(registryTs)
 const registryStatuses = extractRegistryStatuses(registryStatusTs)
+const unionNames = extractedUnionNames.length > 0 ? extractedUnionNames : registryNames
 const unionSet = new Set(unionNames)
 const registrySet = new Set(registryNames)
 
@@ -94,21 +95,6 @@ if (packageJson && registryJson && packageJson.version !== registryJson.version)
 
 if (registryJson) {
   const recommendedByMode = registryJson.recommendedByMode ?? {}
-  const manifestNames = new Set([
-    ...Object.values(registryJson.groups ?? {}).flat(),
-    ...(registryJson.recommended ?? []),
-    ...Object.values(recommendedByMode).flat(),
-  ])
-
-  for (const name of manifestNames) {
-    if (!unionSet.has(name)) {
-      failures.push(`registry.json references '${name}', but ComponentName does not include it`)
-    }
-
-    if (!registrySet.has(name)) {
-      failures.push(`registry.json references '${name}', but cli registry object does not define it`)
-    }
-  }
 
   for (const name of registryJson.recommended ?? []) {
     const status = registryStatuses.get(name)

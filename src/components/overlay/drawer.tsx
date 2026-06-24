@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils"
 
 export type DrawerSide = "left" | "right" | "top" | "bottom"
 
-export type DrawerProps = React.ComponentProps<typeof Dialog> & {
+export type DrawerProps = Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   trigger?: React.ReactNode
   title?: React.ReactNode
   description?: React.ReactNode
@@ -22,6 +22,7 @@ export type DrawerProps = React.ComponentProps<typeof Dialog> & {
   footer?: React.ReactNode
   contentClassName?: string
   showCloseButton?: boolean
+  children?: React.ReactNode
 }
 
 const sideClassName: Record<DrawerSide, string> = {
@@ -63,9 +64,7 @@ function Drawer({
 
 function DrawerCloseButton({ children = "Close", ...props }: React.ComponentProps<typeof Button>) {
   return (
-    <DialogClose render={<Button type="button" variant="outline" {...props} />}>
-      {children}
-    </DialogClose>
+    <DialogClose render={() => <Button type="button" variant="outline" {...props}>{children}</Button>} />
   )
 }
 
