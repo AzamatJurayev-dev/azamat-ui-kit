@@ -257,12 +257,12 @@ Rule:
 
 ## 5. Immediate Fix Checklist
 
-- [ ] `ButtonProps` source mismatch fix
-- [ ] `InfoCard` naming/export mismatch qarori
-- [ ] `SmartCard` default prop/type mismatch fix
-- [ ] `SmartFormShell` -> `FormSection` prop contract fix
-- [ ] `DataView` -> `InlineState` title/description prop contract fix
-- [ ] `npm run test:types` yashil qilish
+- [x] `ButtonProps` source mismatch fix
+- [x] `InfoCard` naming/export mismatch qarori
+- [x] `SmartCard` default prop/type mismatch fix
+- [x] `SmartFormShell` -> `FormSection` prop contract fix
+- [x] `DataView` -> `InlineState` title/description prop contract fix
+- [x] `npm run test:types` yashil qilish
 
 ## 6. Decision Rules
 

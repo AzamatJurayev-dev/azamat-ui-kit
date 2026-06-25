@@ -9,8 +9,9 @@ export type SmartFormSection = {
   key: string
   title?: React.ReactNode
   description?: React.ReactNode
-  fields?: React.ReactNode
   content?: React.ReactNode
+  fields?: React.ReactNode
+  children?: React.ReactNode
   columns?: 1 | 2 | 3
   hidden?: boolean
 }
@@ -46,7 +47,7 @@ function SmartFormShell({ title, description, sections, actions, loading = false
       <div className={cn("grid gap-4", contentClassName)}>
         {visibleSections?.map((section) => renderSection?.(section) ?? (
           <FormSection key={section.key} title={section.title} description={section.description} columns={section.columns}>
-            {section.content ?? section.fields}
+            {section.children ?? section.content ?? section.fields}
           </FormSection>
         ))}
         {children}

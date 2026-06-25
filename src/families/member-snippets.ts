@@ -226,7 +226,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <UniversalInput placeholder="Email" kind="search" value={value} onValueChange={setValue} />
 
 // New work:
-// <Input kind=\"search\" placeholder=\"Search\" value={value} onValueChange={setValue} />`,
+// <Input kind="search" placeholder="Search" value={value} onValueChange={setValue} />`,
   },
   {
     component: "FormSearchInput",
@@ -450,7 +450,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     variant: "basic",
     code: `import { InfoCard } from "azamat-ui-kit"
 
-<InfoCard title="Revenue" description="Current month" value="$48,000" />`,
+<InfoCard title="Revenue" description="Current month" content="$48,000" />`,
   },
   {
     component: "StatCard",

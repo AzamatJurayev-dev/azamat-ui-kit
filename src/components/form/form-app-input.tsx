@@ -4,6 +4,11 @@ import { AppInputKind } from "@/components/inputs/app-input"
 import {
   FormInput,
   type FormInputDateVariantProps,
+  type FormInputDateRangeVariantProps,
+  type FormInputClearableVariantProps,
+  type FormInputMaskedVariantProps,
+  type FormInputMoneyVariantProps,
+  type FormInputQuantityVariantProps,
   type FormInputNumberVariantProps,
   type FormInputPasswordVariantProps,
   type FormInputPhoneVariantProps,
@@ -22,6 +27,11 @@ type FormAppInputVariantProps<
   | Omit<FormInputNumberVariantProps<TFieldValues, TName>, "kind">
   | Omit<FormInputPhoneVariantProps<TFieldValues, TName>, "kind">
   | Omit<FormInputDateVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputDateRangeVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputClearableVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputMaskedVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputMoneyVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputQuantityVariantProps<TFieldValues, TName>, "kind">
 
 export type FormAppInputProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -91,8 +101,44 @@ function FormAppInput<TFieldValues extends FieldValues = FieldValues, TName exte
     )
   }
 
-  if (kind === "date-range" || kind === "masked" || kind === "clearable" || kind === "money" || kind === "quantity") {
-    return <FormInput {...(safeRest as Omit<FormTextInputProps<TFieldValues, TName>, "kind">)} kind="text" />
+  if (kind === "date-range") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputDateRangeVariantProps<TFieldValues, TName>, "kind">)}
+        kind="date-range"
+      />
+    )
+  }
+
+  if (kind === "clearable") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputClearableVariantProps<TFieldValues, TName>, "kind">)}
+        kind="clearable"
+      />
+    )
+  }
+
+  if (kind === "masked") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputMaskedVariantProps<TFieldValues, TName>, "kind">)}
+        kind="masked"
+      />
+    )
+  }
+
+  if (kind === "money") {
+    return <FormInput {...(safeRest as Omit<FormInputMoneyVariantProps<TFieldValues, TName>, "kind">)} kind="money" />
+  }
+
+  if (kind === "quantity") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputQuantityVariantProps<TFieldValues, TName>, "kind">)}
+        kind="quantity"
+      />
+    )
   }
 
   return <FormInput {...(safeRest as Omit<FormTextInputProps<TFieldValues, TName>, "kind">)} kind="text" />
