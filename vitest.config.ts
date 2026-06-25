@@ -11,7 +11,12 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./vitest.setup.ts"],
-    include: ["tests/render/**/*.test.ts", "tests/render/**/*.test.tsx"],
+    include: [
+      "tests/render/**/*.test.ts",
+      "tests/render/**/*.test.tsx",
+      "tests/a11y/**/*.test.ts",
+      "tests/a11y/**/*.test.tsx",
+    ],
     restoreMocks: true,
     clearMocks: true,
     mockReset: true,

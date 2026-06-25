@@ -20,7 +20,7 @@ Current status:
 
 ## P0 - Test Coverage
 
-- [ ] Replace string-based `scripts/a11y-smoke.mjs` with render-based a11y tests.
+- [x] Replace string-based `scripts/a11y-smoke.mjs` with render-based a11y tests.
 - [x] Add primitive render tests for `Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Badge`, `Card`, `Tabs`.
 - [ ] Add DataTable tests for search, loading, empty, error, row actions, pagination and column visibility.
 - [ ] Add AsyncSelect tests for loading, empty, error, min-search, grouped options and selected labels.

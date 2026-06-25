@@ -126,7 +126,7 @@
     "test:cli": "node scripts/test-cli.mjs",
     "lint": "eslint .",
     "test:types": "tsc -p tsconfig.test.json --noEmit",
-    "test:a11y": "node scripts/a11y-smoke.mjs",
+    "test:a11y": "vitest run tests/a11y/render-accessibility.test.tsx --config vitest.config.ts",
     "test:registry": "node scripts/validate-registry.mjs",
     "test:family-governance": "node scripts/check-family-governance.mjs",
     "test:build-output": "node scripts/check-build-output.mjs",
