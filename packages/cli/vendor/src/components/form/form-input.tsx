@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 
 export type FormInputKind = "text" | "search" | "password" | "number" | "phone" | "date"
-export type FormPhoneInputValueMode = "raw" | "masked"
+export type FormInputPhoneInputValueMode = "raw" | "masked"
 
 type FormControlledFieldProps<
   TFieldValues extends FieldValues,
@@ -74,7 +74,7 @@ export type FormInputPhoneVariantProps<
 > = Omit<PhoneInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind: "phone"
-    valueMode?: FormPhoneInputValueMode
+    valueMode?: FormInputPhoneInputValueMode
     onValueChange?: (value: string, rawValue: string, maskedValue: string) => void
   }
 
@@ -131,6 +131,7 @@ function FormInput<
   const inputId = props.id ?? props.name
   const shellProps = buildShellProps(props)
   const kind = props.kind ?? "text"
+  const resolvedFieldClassName = props.fieldClassName ?? "w-full"
 
   return (
     <Controller
@@ -177,7 +178,7 @@ function FormInput<
                 ref={field.ref}
                 value={field.value ?? ""}
                 disabled={disabled}
-                inputClassName={fieldClassName}
+                inputClassName={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
                 onBlur={(event) => {
                   field.onBlur()
@@ -230,7 +231,7 @@ function FormInput<
                 ref={field.ref}
                 value={field.value ?? ""}
                 disabled={disabled}
-                inputClassName={fieldClassName}
+                inputClassName={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
                 onBlur={(event) => {
                   field.onBlur()
@@ -285,7 +286,7 @@ function FormInput<
                 value={field.value ?? ""}
                 disabled={disabled}
                 readOnly={props.readOnly}
-                className={fieldClassName}
+                className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
                 onBlur={(event) => {
                   field.onBlur()
@@ -348,7 +349,7 @@ function FormInput<
                 readOnly={props.readOnly}
                 countryCode={countryCode}
                 maxDigits={maxDigits}
-                className={fieldClassName}
+                className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
                 onBlur={(event) => {
                   field.onBlur()
@@ -404,7 +405,7 @@ function FormInput<
                 value={field.value ?? ""}
                 disabled={disabled}
                 readOnly={props.readOnly}
-                className={fieldClassName}
+                className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
                 onBlur={(event) => {
                   field.onBlur()
@@ -468,7 +469,7 @@ function FormInput<
                 onChange?.(event)
               }}
               aria-invalid={fieldState.invalid || undefined}
-              className={fieldClassName}
+              className={fieldClassName ?? resolvedFieldClassName}
             />
           </FormFieldShell>
         )

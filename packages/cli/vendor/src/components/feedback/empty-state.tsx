@@ -27,12 +27,12 @@ function EmptyState({
     <div
       data-slot="empty-state"
       className={cn(
-        "flex min-h-52 flex-col items-center justify-center gap-4 rounded-[var(--radius-3xl)] border border-dashed border-border/80 bg-muted/25 p-10 text-center shadow-sm",
+        "flex min-h-52 flex-col items-center justify-center gap-4 rounded-[var(--radius-3xl)] border border-dashed border-border/80 bg-muted/25 p-10 text-center shadow-sm ring-1 ring-foreground/4",
         className
       )}
       {...props}
     >
-      <div className="flex size-12 items-center justify-center rounded-full border border-border/70 bg-background/90 text-muted-foreground shadow-sm">
+      <div className="flex size-12 items-center justify-center rounded-full border border-border/70 bg-background/92 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)]">
         {icon ?? <InboxIcon className="size-5" />}
       </div>
 

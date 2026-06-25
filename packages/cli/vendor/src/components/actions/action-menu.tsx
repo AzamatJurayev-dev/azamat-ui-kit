@@ -73,7 +73,10 @@ function ActionMenu({
               variant="ghost"
               size="icon-sm"
               disabled={disabled}
-              className={triggerClassName}
+              className={cn(
+                "rounded-full border border-transparent text-muted-foreground hover:border-border/70 hover:bg-muted/50 hover:text-foreground",
+                triggerClassName
+              )}
             />
           )
         }
@@ -107,7 +110,7 @@ function ActionMenu({
               {isLoading ? <Loader2Icon className="animate-spin" /> : action.icon}
               <span className="min-w-0 flex-1 truncate">{action.label}</span>
               {action.shortcut && (
-                <span className="ml-auto text-xs text-muted-foreground">{action.shortcut}</span>
+                <span className="ml-auto text-[11px] tracking-[0.14em] text-muted-foreground">{action.shortcut}</span>
               )}
             </DropdownMenuItem>
           )

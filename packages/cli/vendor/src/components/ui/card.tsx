@@ -1,20 +1,87 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+const cardVariants = cva(
+  "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-[var(--radius-2xl)] border py-(--card-spacing) text-sm text-card-foreground transition-[background-color,border-color,box-shadow,transform,opacity] [--card-spacing:--spacing(5)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 *:[img:first-child]:rounded-t-[var(--radius-2xl)] *:[img:last-child]:rounded-b-[var(--radius-2xl)]",
+  {
+    variants: {
+      variant: {
+        default:
+          "border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_14%),var(--card))] shadow-sm ring-1 ring-foreground/5",
+        elevated:
+          "border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_18%),var(--card))] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_18px_45px_rgba(15,23,42,0.08)] ring-1 ring-foreground/5",
+        outline: "border-border bg-card shadow-none",
+        soft: "border-transparent bg-muted/45 shadow-none",
+        ghost: "border-transparent bg-transparent shadow-none",
+      },
+      size: {
+        sm: "[--card-spacing:--spacing(4)] data-[has-footer=true]:pb-0",
+        default: "[--card-spacing:--spacing(5)]",
+        lg: "[--card-spacing:--spacing(6)]",
+      },
+      density: {
+        compact: "text-xs",
+        default: "text-sm",
+        comfortable: "text-base",
+      },
+      tone: {
+        neutral: "",
+        info: "border-blue-500/20 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),oklch(0.94_0.03_235)_32%),var(--card))]",
+        success: "border-emerald-500/20 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),oklch(0.94_0.04_155)_34%),var(--card))]",
+        warning: "border-amber-500/24 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),oklch(0.94_0.05_85)_34%),var(--card))]",
+        danger: "border-destructive/24 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),var(--destructive)_10%),var(--card))]",
+      },
+      interactive: {
+        true: "cursor-pointer hover:-translate-y-0.5 hover:border-ring/35 hover:shadow-[0_14px_34px_rgba(15,23,42,0.10)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/35",
+        false: "",
+      },
+      selected: {
+        true: "border-primary/40 ring-2 ring-primary/18",
+        false: "",
+      },
+      disabled: {
+        true: "pointer-events-none opacity-55",
+        false: "",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+      density: "default",
+      tone: "neutral",
+      interactive: false,
+      selected: false,
+      disabled: false,
+    },
+  }
+)
+
+export type CardProps = React.ComponentProps<"div"> & VariantProps<typeof cardVariants>
+
 function Card({
   className,
-  size = "default",
+  variant,
+  size,
+  density,
+  tone,
+  interactive,
+  selected,
+  disabled,
+  tabIndex,
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+}: CardProps) {
   return (
     <div
       data-slot="card"
-      data-size={size}
-      className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-[var(--radius-2xl)] border border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_14%),var(--card))] py-(--card-spacing) text-sm text-card-foreground shadow-sm ring-1 ring-foreground/5 [--card-spacing:--spacing(5)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-[var(--radius-2xl)] *:[img:last-child]:rounded-b-[var(--radius-2xl)]",
-        className
-      )}
+      data-size={size ?? "default"}
+      data-interactive={interactive || undefined}
+      data-selected={selected || undefined}
+      data-disabled={disabled || undefined}
+      aria-disabled={disabled || undefined}
+      tabIndex={interactive && !disabled ? tabIndex ?? 0 : tabIndex}
+      className={cn(cardVariants({ variant, size, density, tone, interactive, selected, disabled }), className)}
       {...props}
     />
   )
@@ -38,7 +105,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-title"
       className={cn(
-        "font-heading text-[1.05rem] leading-snug font-semibold tracking-tight group-data-[size=sm]/card:text-sm",
+        "font-heading text-[1.05rem] leading-snug font-semibold tracking-tight group-data-[size=sm]/card:text-sm group-data-[size=lg]/card:text-xl",
         className
       )}
       {...props}
@@ -60,23 +127,14 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className
-      )}
+      className={cn("col-start-2 row-span-2 row-start-1 self-start justify-self-end", className)}
       {...props}
     />
   )
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-content"
-      className={cn("px-(--card-spacing)", className)}
-      {...props}
-    />
-  )
+  return <div data-slot="card-content" className={cn("px-(--card-spacing)", className)} {...props} />
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
@@ -100,4 +158,5 @@ export {
   CardAction,
   CardDescription,
   CardContent,
+  cardVariants,
 }

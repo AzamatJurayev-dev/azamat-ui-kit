@@ -35,15 +35,19 @@ function PageState({ tone = "empty", title, description, icon, action, compact =
     <div
       data-slot="page-state"
       role={tone === "error" ? "alert" : "status"}
-      className={cn("flex flex-col items-center justify-center rounded-lg border bg-card text-center", compact ? "gap-2 p-6" : "min-h-72 gap-4 p-10", className)}
+      className={cn(
+        "flex flex-col items-center justify-center rounded-[var(--radius-3xl)] border border-border/75 bg-card/96 text-center shadow-sm ring-1 ring-foreground/4",
+        compact ? "gap-2 p-6" : "min-h-72 gap-4 p-10",
+        className
+      )}
       {...props}
     >
-      <div className="flex size-14 items-center justify-center rounded-full bg-muted text-muted-foreground">
+      <div className="flex size-14 items-center justify-center rounded-full border border-border/70 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)]">
         {icon ?? defaultPageStateIcon(tone)}
       </div>
       <div className="grid gap-1">
-        {title && <div className="text-base font-semibold text-foreground">{title}</div>}
-        {description && <div className="max-w-md text-sm text-muted-foreground">{description}</div>}
+        {title && <div className="text-base font-semibold tracking-tight text-foreground">{title}</div>}
+        {description && <div className="max-w-md text-sm leading-6 text-muted-foreground">{description}</div>}
       </div>
       {action && <div>{action}</div>}
     </div>

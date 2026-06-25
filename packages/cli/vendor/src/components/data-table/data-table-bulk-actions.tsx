@@ -63,7 +63,10 @@ function DataTableBulkActions<TData>({
             variant="outline"
             size="sm"
             disabled={disabled || count === 0}
-            className={cn("gap-1.5", triggerClassName)}
+            className={cn(
+              "gap-1.5 border-border/80 bg-background/94 shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+              triggerClassName
+            )}
           >
             {selectedLabel(count)}
             <ChevronDownIcon className="size-3.5" />
@@ -73,7 +76,7 @@ function DataTableBulkActions<TData>({
       />
 
       {onClearSelection && count > 0 && (
-        <Button type="button" variant="ghost" size="sm" onClick={onClearSelection}>
+        <Button type="button" variant="ghost" size="sm" className="rounded-full" onClick={onClearSelection}>
           {clearLabel}
         </Button>
       )}

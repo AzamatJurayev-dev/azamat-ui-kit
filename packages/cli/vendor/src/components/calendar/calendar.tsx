@@ -45,6 +45,9 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   disabledDates?: string[]
   locale?: string
   weekStartsOn?: 0 | 1
+  numberOfMonths?: number
+  showMonthHeaders?: boolean
+  pagedNavigation?: boolean
   labels?: CalendarLabels
 }
 
@@ -106,17 +109,38 @@ function Calendar({
   disabledDates,
   locale = "en-US",
   weekStartsOn = 1,
+  numberOfMonths = 1,
+  showMonthHeaders,
+  pagedNavigation = false,
   labels,
   ...props
 }: CalendarProps) {
   const [internalMonth, setInternalMonth] = React.useState(() => getInitialMonth(defaultMonth, value, range))
   const currentMonth = month ?? internalMonth
+  const resolvedNumberOfMonths = Math.max(numberOfMonths, 1)
+  const shouldShowMonthHeaders = showMonthHeaders ?? resolvedNumberOfMonths > 1
+  const navigationStep = pagedNavigation ? resolvedNumberOfMonths : 1
   const todayKey = toDateKey(new Date())
   const disabledSet = React.useMemo(() => new Set(disabledDates ?? []), [disabledDates])
-  const monthDays = React.useMemo(() => getMonthDays(currentMonth, weekStartsOn), [currentMonth, weekStartsOn])
   const weekdayLabels = React.useMemo(() => getWeekdayLabels(locale, weekStartsOn), [locale, weekStartsOn])
   const buttonRefs = React.useRef(new Map<string, HTMLButtonElement>())
   const [focusedDateKey, setFocusedDateKey] = React.useState(() => value ?? range?.from ?? todayKey)
+  const visibleMonths = React.useMemo(
+    () => Array.from({ length: resolvedNumberOfMonths }, (_, index) => addMonths(currentMonth, index)),
+    [currentMonth, resolvedNumberOfMonths]
+  )
+  const monthDaysByMonth = React.useMemo(
+    () =>
+      visibleMonths.map((visibleMonth) => ({
+        month: visibleMonth,
+        days: getMonthDays(visibleMonth, weekStartsOn),
+      })),
+    [visibleMonths, weekStartsOn]
+  )
+  const allMonthDays = React.useMemo(
+    () => monthDaysByMonth.flatMap((entry) => entry.days),
+    [monthDaysByMonth]
+  )
 
   const getDisabledReason = React.useCallback(
     (dateKey: string): CalendarDisabledReason | undefined => {
@@ -131,8 +155,8 @@ function Calendar({
   const isDateDisabled = React.useCallback((dateKey: string) => Boolean(getDisabledReason(dateKey)), [getDisabledReason])
 
   const visibleEnabledKeys = React.useMemo(
-    () => monthDays.map(toDateKey).filter((dateKey) => !isDateDisabled(dateKey)),
-    [isDateDisabled, monthDays]
+    () => allMonthDays.map(toDateKey).filter((dateKey) => !isDateDisabled(dateKey)),
+    [allMonthDays, isDateDisabled]
   )
 
   const tabbableDateKey = React.useMemo(() => {
@@ -166,7 +190,9 @@ function Calendar({
 
     setFocusedDateKey(nextKey)
 
-    if (!isSameMonth(nextDate, currentMonth)) {
+    const isVisibleInCurrentViewport = visibleMonths.some((visibleMonth) => isSameMonth(nextDate, visibleMonth))
+
+    if (!isVisibleInCurrentViewport) {
       setMonth(startOfMonth(nextDate))
     }
   }
@@ -198,7 +224,9 @@ function Calendar({
   }
 
   const handleDateKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, date: Date) => {
-    const columnIndex = monthDays.findIndex((item) => toDateKey(item) === toDateKey(date)) % 7
+    const visibleMonthEntry = monthDaysByMonth.find((entry) => isSameMonth(date, entry.month))
+    const columnIndex =
+      ((visibleMonthEntry?.days.findIndex((item) => toDateKey(item) === toDateKey(date)) ?? 0) + 7) % 7
 
     switch (event.key) {
       case "ArrowRight":
@@ -239,8 +267,9 @@ function Calendar({
   return (
     <div
       data-slot="calendar"
+      data-months={resolvedNumberOfMonths}
       className={cn(
-        "w-72 rounded-[calc(var(--radius-2xl)+4px)] border border-border/80 bg-popover/98 p-3.5 text-popover-foreground shadow-[0_24px_70px_rgba(15,23,42,0.16)] ring-1 ring-foreground/6 backdrop-blur",
+        "w-fit rounded-[calc(var(--radius-2xl)+4px)] border border-border/80 bg-popover/98 p-3.5 text-popover-foreground shadow-[0_24px_70px_rgba(15,23,42,0.16)] ring-1 ring-foreground/6 backdrop-blur",
         className
       )}
       {...props}
@@ -252,7 +281,7 @@ function Calendar({
           size="icon-sm"
           className="rounded-full border-border/90 bg-background/88 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:border-ring/30 hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.previousMonth ?? "Previous month"}
-          onClick={() => setMonth(addMonths(currentMonth, -1))}
+          onClick={() => setMonth(addMonths(currentMonth, -navigationStep))}
         >
           <ChevronLeftIcon />
         </Button>
@@ -266,63 +295,82 @@ function Calendar({
           size="icon-sm"
           className="rounded-full border-border/90 bg-background/88 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:border-ring/30 hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.nextMonth ?? "Next month"}
-          onClick={() => setMonth(addMonths(currentMonth, 1))}
+          onClick={() => setMonth(addMonths(currentMonth, navigationStep))}
         >
           <ChevronRightIcon />
         </Button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-        {weekdayLabels.map((weekday) => (
-          <div key={weekday} className="py-1.5">
-            {weekday}
+      <div
+        className={cn("grid gap-3.5", resolvedNumberOfMonths > 1 && "sm:grid-cols-2")}
+        style={
+          resolvedNumberOfMonths > 2
+            ? { gridTemplateColumns: `repeat(${resolvedNumberOfMonths}, minmax(0, 1fr))` }
+            : undefined
+        }
+      >
+        {monthDaysByMonth.map(({ month: visibleMonth, days }) => (
+          <div key={toDateKey(visibleMonth)} className="min-w-[17rem] rounded-[var(--radius-2xl)] border border-border/60 bg-background/58 p-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+            {shouldShowMonthHeaders && (
+              <div className="mb-3 text-center text-sm font-semibold capitalize tracking-tight text-foreground">
+                {getMonthLabel(visibleMonth, locale)}
+              </div>
+            )}
+
+            <div className="grid grid-cols-7 gap-1 text-center text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              {weekdayLabels.map((weekday) => (
+                <div key={`${toDateKey(visibleMonth)}-${weekday}`} className="py-1.5">
+                  {weekday}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-2 grid grid-cols-7 gap-1.5">
+              {days.map((date) => {
+                const dateKey = toDateKey(date)
+                const outside = !isSameMonth(date, visibleMonth)
+                const selected = mode === "single" ? value === dateKey : dateKey === range?.from || dateKey === range?.to
+                const inRange = mode === "range" && isWithinRange(dateKey, range?.from, range?.to)
+                const disabledReason = getDisabledReason(dateKey)
+                const disabled = Boolean(disabledReason)
+                const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined
+
+                return (
+                  <button
+                    key={dateKey}
+                    ref={(node) => {
+                      if (node) buttonRefs.current.set(dateKey, node)
+                      else buttonRefs.current.delete(dateKey)
+                    }}
+                    type="button"
+                    disabled={disabled}
+                    aria-label={disabledLabel ?? labels?.selectDate?.(dateKey) ?? dateKey}
+                    aria-current={dateKey === todayKey ? "date" : undefined}
+                    tabIndex={dateKey === tabbableDateKey ? 0 : -1}
+                    title={disabledLabel}
+                    data-selected={selected || undefined}
+                    data-today={dateKey === todayKey || undefined}
+                    data-outside={outside || undefined}
+                    data-in-range={inRange || undefined}
+                    data-disabled-reason={disabledReason}
+                    className={cn(
+                      "flex h-10 items-center justify-center rounded-[min(var(--radius-xl),16px)] border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:border-border/70 hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-35",
+                      outside && "text-muted-foreground/42",
+                      dateKey === todayKey && "border-primary/25 bg-accent/42 text-foreground",
+                      inRange && "border-primary/12 bg-primary/10 text-foreground",
+                      selected && "border-primary/85 bg-primary text-primary-foreground shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-primary/92 hover:text-primary-foreground"
+                    )}
+                    onFocus={() => setFocusedDateKey(dateKey)}
+                    onKeyDown={(event) => handleDateKeyDown(event, date)}
+                    onClick={() => handleDateSelect(dateKey)}
+                  >
+                    {date.getDate()}
+                  </button>
+                )
+              })}
+            </div>
           </div>
         ))}
-      </div>
-
-      <div className="mt-2 grid grid-cols-7 gap-1.5">
-        {monthDays.map((date) => {
-          const dateKey = toDateKey(date)
-          const outside = !isSameMonth(date, currentMonth)
-          const selected = mode === "single" ? value === dateKey : dateKey === range?.from || dateKey === range?.to
-          const inRange = mode === "range" && isWithinRange(dateKey, range?.from, range?.to)
-          const disabledReason = getDisabledReason(dateKey)
-          const disabled = Boolean(disabledReason)
-          const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined
-
-          return (
-            <button
-              key={dateKey}
-              ref={(node) => {
-                if (node) buttonRefs.current.set(dateKey, node)
-                else buttonRefs.current.delete(dateKey)
-              }}
-              type="button"
-              disabled={disabled}
-              aria-label={disabledLabel ?? labels?.selectDate?.(dateKey) ?? dateKey}
-              aria-current={dateKey === todayKey ? "date" : undefined}
-              tabIndex={dateKey === tabbableDateKey ? 0 : -1}
-              title={disabledLabel}
-              data-selected={selected || undefined}
-              data-today={dateKey === todayKey || undefined}
-              data-outside={outside || undefined}
-              data-in-range={inRange || undefined}
-              data-disabled-reason={disabledReason}
-              className={cn(
-                "flex h-10 items-center justify-center rounded-[min(var(--radius-xl),16px)] border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:border-border/70 hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-35",
-                outside && "text-muted-foreground/42",
-                dateKey === todayKey && "border-primary/25 bg-accent/42 text-foreground",
-                inRange && "border-primary/12 bg-primary/10 text-foreground",
-                selected && "border-primary/85 bg-primary text-primary-foreground shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-primary/92 hover:text-primary-foreground"
-              )}
-              onFocus={() => setFocusedDateKey(dateKey)}
-              onKeyDown={(event) => handleDateKeyDown(event, date)}
-              onClick={() => handleDateSelect(dateKey)}
-            >
-              {date.getDate()}
-            </button>
-          )
-        })}
       </div>
     </div>
   )

@@ -92,6 +92,13 @@ Quyidagilar canonical public surface bo'lib turishi kerak.
 
 ### Inputs
 
+Canonical adoption surface:
+
+- `Input`
+- `FormInput`
+
+Preset and helper surfaces:
+
 - `SimpleSelect`
 - `AsyncSelect`
 - `AsyncMultiSelect`
@@ -114,10 +121,8 @@ Quyidagilar canonical public surface bo'lib turishi kerak.
 - `ColorInput`
 - `QuantityStepper`
 
-### Form Wrappers
+Compatibility wrappers that should stay migratory, not primary:
 
-- `FormFieldShell`
-- `FormInput`
 - `FormSelect`
 - `FormAsyncSelect`
 - `FormTextarea`
@@ -239,6 +244,7 @@ Natija:
 - duplicate nested root exportlar olib tashlandi
 - advanced helperlar root contractdan chiqib ketdi
 - root import endi adoption uchun kichikroq va tushunarliroq
+- canonical public path endi `Input` / `FormInput` va boshqa primary surfacesga tayanadi, aliaslar esa migration layer sifatida qoladi
 
 ### Canonical name vs implementation name drift
 
@@ -358,9 +364,9 @@ Qoidalar:
 
 Docs/catalog tizimida bitta nom bilan ko'rsatish kerak:
 
-- `Input` family ichida `Input`, `SearchInput`, `PasswordInput`, `PhoneInput`, `MoneyInput`, `QuantityInput`, `MaskedInput`
-- `Select` family ichida `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox`, `FormSelect`, `FormAsyncSelect`
-- `Date` family ichida `DateInput`, `DateRangeInput`, `DatePicker`, `DateRangePicker`, `FormDateInput`, `FormDateRangeInput`, `FormDatePicker`, `FormDateRangePicker`
+- `Input` family ichida canonical entry `Input` / `FormInput`, preset helperlar `SearchInput`, `PasswordInput`, `PhoneInput`, `MoneyInput`, `QuantityInput`, `MaskedInput`, `DateInput`, `DateRangeInput`
+- `Select` family ichida canonical entry `Select` / `FormSelect`, helperlar `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox`, `FormAsyncSelect`
+- `Date` family ichida canonical entry `DatePicker` / `DateRangePicker`, helperlar `DateInput`, `DateRangeInput`, `FormDateInput`, `FormDateRangeInput`, `FormDatePicker`, `FormDateRangePicker`
 - `Card` family ichida `Card`, `InfoCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`
 
 Library package esa alohida exportlarni saqlab qoladi, lekin docs/catalog foydalanuvchini family-first tushuntiradi.

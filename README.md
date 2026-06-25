@@ -77,21 +77,19 @@ This package contains UI primitives, reusable wrappers, generic hooks, formattin
 
 Good candidates:
 
-- Button, Input, Textarea, Checkbox, Switch, Select, Dialog, Popover, Table, Badge, Card
-- AppShell, AppHeader, AppSidebar, ActionMenu, PageHeader, FilterBar, StatCard
-- ModalShell, SheetShell, ConfirmDialog, DialogActions
-- Pagination, SimpleSelect, AsyncSelect, AsyncMultiSelect
-- ClearableInput, SearchInput, PasswordInput, NumberInput, MoneyInput, QuantityInput, MaskedInput, PhoneInput, DateInput, DateRangeInput
-- FormFieldShell, FormInput, FormSelect, FormAsyncSelect, FormTextarea, FormSwitch
-- FormSearchInput, FormPasswordInput, FormNumberInput, FormPhoneInput, FormDateInput, FormDateRangeInput
-- DataTable, DataTablePagination, DataTableToolbar, DataTableColumnVisibilityMenu, DataTableSortableHeader
-- DataTableRowActions, createDataTableActionsColumn, DataTableBulkActions
-- ToastProvider, useToast, CommandPalette, useCommandPaletteShortcut
-- EmptyState, LoadingState, StatusBadge
-- ChartFrame, BarChart, LineChart, Sparkline, DonutChart, ChartLegend, MetricTrend
-- ResourcePage, ResourceDetailPage, FormBuilder, FormBuilderPresets
-- InputFamily, SelectFamily, CardFamily, FormFamily, DataTableFamily
-- useSessionStorageState, useBeforeUnloadWhenDirty, useIsMobile, useDisclosure, useDebouncedValue
+- Canonical public entry points: `Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Select`, `Dialog`, `Popover`, `Table`, `Badge`, `Card`
+- Canonical form entry points: `FormInput`, `FormSelect`, `FormTextarea`, `FormSwitch`, `FormFieldShell`
+- Layout and shell surfaces: `AppShell`, `AppHeader`, `AppSidebar`, `ActionMenu`, `PageHeader`, `FilterBar`, `StatCard`
+- Overlay surfaces: `ModalShell`, `SheetShell`, `ConfirmDialog`, `DialogActions`
+- Core navigation and data utilities: `Pagination`, `NavTabs`, `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`
+- Input presets and compatibility aliases: `ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `MoneyInput`, `QuantityInput`, `MaskedInput`, `PhoneInput`, `DateInput`, `DateRangeInput`, `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, `FormDateInput`, `FormDateRangeInput`
+- Data table surface: `DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `DataTableSortableHeader`, `DataTableRowActions`, `createDataTableActionsColumn`, `DataTableBulkActions`
+- Notifications and command: `ToastProvider`, `useToast`, `CommandPalette`, `useCommandPaletteShortcut`
+- Feedback and display: `EmptyState`, `LoadingState`, `StatusBadge`, `ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, `MetricTrend`
+- Pattern/system surfaces: `ResourcePage`, `ResourceDetailPage`, `FormBuilder`, `FormBuilderPresets`, `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, `DataTableFamily`
+- Hooks: `useSessionStorageState`, `useBeforeUnloadWhenDirty`, `useIsMobile`, `useDisclosure`, `useDebouncedValue`
+
+Prefer the canonical entry points above for new work. Keep the preset and compatibility alias names only when you are migrating older code or need the lower-level building blocks directly.
 
 Do not put project-specific Kassa, LMS, Restaurant, tenant, billing, permission, branch, or API logic into the core UI kit.
 

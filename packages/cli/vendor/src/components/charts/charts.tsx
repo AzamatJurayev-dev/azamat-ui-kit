@@ -87,7 +87,11 @@ export type ChartFrameProps = React.ComponentProps<typeof Card> & {
 
 function ChartFrame({ title, description, action, className, children, ...props }: ChartFrameProps) {
   return (
-    <Card data-slot="chart-frame" className={className} {...props}>
+    <Card
+      data-slot="chart-frame"
+      className={cn("border-border/75 bg-card/96 shadow-sm ring-1 ring-foreground/4", className)}
+      {...props}
+    >
       {(title || description || action) && (
         <CardHeader className="flex flex-row items-start justify-between gap-3">
           <div className="grid gap-1">
@@ -123,9 +127,9 @@ function BarChart({ data, size = "md", max, showLabels = true, showValues = true
           return (
             <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-2">
               {showValues && <div className="text-xs text-muted-foreground">{item.value}</div>}
-              <div className="flex w-full flex-1 items-end rounded-md bg-muted/50">
+              <div className="flex w-full flex-1 items-end rounded-[min(var(--radius-xl),16px)] border border-border/60 bg-muted/38 p-1">
                 <div
-                  className={cn("w-full rounded-md bg-primary transition-all", barClassName)}
+                  className={cn("w-full rounded-[min(var(--radius-lg),12px)] bg-primary transition-all", barClassName)}
                   style={{ height: `${Math.max(ratio * 100, item.value > 0 ? 3 : 0)}%`, background: item.color }}
                 />
               </div>
@@ -255,7 +259,14 @@ export type MetricTrendProps = React.ComponentProps<"div"> & {
 
 function MetricTrend({ label, value, change, positive = true, values, className, ...props }: MetricTrendProps) {
   return (
-    <div data-slot="metric-trend" className={cn("grid gap-3 rounded-lg border bg-card p-4", className)} {...props}>
+    <div
+      data-slot="metric-trend"
+      className={cn(
+        "grid gap-3 rounded-[var(--radius-2xl)] border border-border/75 bg-card/96 p-4 shadow-sm ring-1 ring-foreground/4",
+        className
+      )}
+      {...props}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="grid gap-1">
           <div className="text-sm text-muted-foreground">{label}</div>

@@ -1,19 +1,20 @@
-import {
-  FormInput,
-  type FormInputNumberVariantProps as BaseFormNumberInputProps,
-} from "@/components/form/form-input"
+import { FormAppInput, type FormAppInputProps } from "@/components/form/form-app-input"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
 export type FormNumberInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<BaseFormNumberInputProps<TFieldValues, TName>, "kind">
+> = Omit<FormAppInputProps<TFieldValues, TName>, "kind" | "step" | "max" | "min"> & {
+  step?: number
+  min?: number
+  max?: number
+}
 
 function FormNumberInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: FormNumberInputProps<TFieldValues, TName>) {
-  return <FormInput {...props} kind="number" />
+  return <FormAppInput {...props} kind="number" />
 }
 
 export { FormNumberInput }

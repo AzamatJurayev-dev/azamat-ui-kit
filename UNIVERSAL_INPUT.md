@@ -1,6 +1,6 @@
 # Universal Input API
 
-`AppInput` is the public wrapper for application inputs. It gives app code one input API while keeping specialized input behavior in separate components.
+`AppInput` is the lower-level application input wrapper. It gives app code one input API while keeping specialized input behavior in separate components. For package-root docs and new adoption guides, prefer the canonical `Input` / `FormInput` mental model and treat `AppInput` / `FormAppInput` as source-level aliases.
 
 ## Recommended usage
 
@@ -52,7 +52,7 @@ The shared input surface supports the common decorator props:
 
 ## Form usage
 
-`FormAppInput` is the React Hook Form wrapper for the same input kinds:
+`FormAppInput` is the React Hook Form wrapper for the same input kinds. In package-root docs, this is the same canonical path as `FormInput`:
 
 ```tsx
 import { FormAppInput } from "azamat-ui-kit"
@@ -67,7 +67,7 @@ import { FormAppInput } from "azamat-ui-kit"
 
 ## Migration direction
 
-Use `AppInput` and `FormAppInput` for new application work. Existing specialized components remain available when direct low-level control is better.
+Use `Input` and `FormInput` for new application work. Existing specialized components remain available when direct low-level control is better.
 
 Long term:
 

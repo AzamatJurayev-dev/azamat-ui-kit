@@ -14,6 +14,8 @@ export type PasswordInputProps = Omit<
   defaultVisible?: boolean
   onVisibleChange?: (visible: boolean) => void
   showToggle?: boolean
+  showCapsLockWarning?: boolean
+  capsLockLabel?: string
   wrapperClassName?: string
   inputClassName?: string
   showLabel?: string
@@ -30,15 +32,22 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
       defaultVisible = false,
       onVisibleChange,
       showToggle = true,
+      showCapsLockWarning = true,
+      capsLockLabel = "Caps Lock is on",
       showLabel = "Show password",
       hideLabel = "Hide password",
       disabled,
+      autoComplete = "current-password",
+      trailing,
+      onKeyDown,
+      onKeyUp,
       ...props
     },
     ref
   ) => {
     const isControlled = visible !== undefined
     const [internalVisible, setInternalVisible] = React.useState(defaultVisible)
+    const [capsLockOn, setCapsLockOn] = React.useState(false)
     const currentVisible = isControlled ? visible : internalVisible
 
     const setVisibleState = (nextVisible: boolean) => {
@@ -54,6 +63,43 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
       onValueChange?.(event.target.value)
     }
 
+    const updateCapsLock = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (!showCapsLockWarning) return
+      setCapsLockOn(event.getModifierState("CapsLock"))
+    }
+
+    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+      updateCapsLock(event)
+      onKeyDown?.(event)
+    }
+
+    const handleKeyUp: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+      updateCapsLock(event)
+      onKeyUp?.(event)
+    }
+
+    const trailingContent = (
+      <>
+        {trailing}
+        {showCapsLockWarning && capsLockOn ? (
+          <span data-slot="password-caps-lock" className="hidden text-xs text-amber-600 sm:inline" aria-live="polite">
+            {capsLockLabel}
+          </span>
+        ) : null}
+        {showToggle ? (
+          <button
+            type="button"
+            disabled={disabled}
+            aria-label={currentVisible ? hideLabel : showLabel}
+            className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+            onClick={() => setVisibleState(!currentVisible)}
+          >
+            {currentVisible ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
+          </button>
+        ) : null}
+      </>
+    )
+
     return (
       <InputDecorator
         data-slot="password-input"
@@ -61,20 +107,11 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         type={currentVisible ? "text" : "password"}
         value={value ?? ""}
         disabled={disabled}
+        autoComplete={autoComplete}
         onChange={handleChange}
-        trailing={
-          showToggle ? (
-            <button
-              type="button"
-              disabled={disabled}
-              aria-label={currentVisible ? hideLabel : showLabel}
-              className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-              onClick={() => setVisibleState(!currentVisible)}
-            >
-              {currentVisible ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
-            </button>
-          ) : null
-        }
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
+        trailing={trailingContent}
         {...props}
       />
     )

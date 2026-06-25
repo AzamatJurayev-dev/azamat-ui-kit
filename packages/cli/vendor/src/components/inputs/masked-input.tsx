@@ -1,10 +1,10 @@
 import * as React from "react"
 
+import { InputDecorator } from "@/components/inputs/input-decorator"
 import { getInputValue, setInputElementValue } from "@/components/inputs/input-value"
-import { Input } from "@/components/ui/input"
 
 export type MaskedInputProps = Omit<
-  React.ComponentProps<typeof Input>,
+  React.ComponentProps<typeof InputDecorator>,
   "value" | "onChange"
 > & {
   value?: string
@@ -43,7 +43,7 @@ const MaskedInput = React.forwardRef<HTMLInputElement, MaskedInputProps>(
       onValueChange?.(maskedValue, rawValue)
     }
 
-    return <Input ref={ref} value={getInputValue(value)} onChange={handleChange} {...props} />
+    return <InputDecorator ref={ref} value={getInputValue(value)} onChange={handleChange} {...props} />
   }
 )
 MaskedInput.displayName = "MaskedInput"

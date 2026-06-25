@@ -62,9 +62,9 @@ export type SmartCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "
 }
 
 const variantClassName: Record<SmartCardVariant, string> = {
-  default: "bg-card",
-  outline: "border bg-card",
-  elevated: "border bg-card shadow-md",
+  default: "border border-border/70 bg-card/96 shadow-sm ring-1 ring-foreground/4",
+  outline: "border border-border/75 bg-card/96 shadow-sm ring-1 ring-foreground/4",
+  elevated: "border border-border/75 bg-card/98 shadow-[0_24px_80px_rgba(15,23,42,0.12)] ring-1 ring-foreground/4",
   ghost: "border-transparent bg-transparent shadow-none",
 }
 
@@ -137,16 +137,38 @@ function SmartCard({
         </div>
       ) : (
         <>
-          {media && (renderMedia?.(ctx) ?? <div data-slot="smart-card-media" className={cn("bg-muted", orientation === "horizontal" ? "w-40 shrink-0" : "aspect-video", classNames?.media)}>{media}</div>)}
+          {media &&
+            (renderMedia?.(ctx) ?? (
+              <div
+                data-slot="smart-card-media"
+                className={cn(
+                  "bg-muted/50",
+                  orientation === "horizontal" ? "w-40 shrink-0 border-r border-border/70" : "aspect-video border-b border-border/70",
+                  classNames?.media
+                )}
+              >
+                {media}
+              </div>
+            ))}
           <div data-slot="smart-card-body" className={cn("grid min-w-0 flex-1 gap-3", densityClassName[density], classNames?.body)}>
             {renderHeader?.(ctx) ?? (
               <div data-slot="smart-card-header" className={cn("flex items-start justify-between gap-3", classNames?.header)}>
                 <div className="flex min-w-0 items-start gap-3">
-                  {icon && <div data-slot="smart-card-icon" className={cn("flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground", classNames?.icon)}>{icon}</div>}
+                  {icon && (
+                    <div
+                      data-slot="smart-card-icon"
+                      className={cn(
+                        "flex size-9 shrink-0 items-center justify-center rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)]",
+                        classNames?.icon
+                      )}
+                    >
+                      {icon}
+                    </div>
+                  )}
                   <div className="grid min-w-0 gap-1">
-                    {eyebrow && <div data-slot="smart-card-eyebrow" className={cn("text-xs font-medium uppercase tracking-wide text-muted-foreground", classNames?.eyebrow)}>{eyebrow}</div>}
+                    {eyebrow && <div data-slot="smart-card-eyebrow" className={cn("text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground", classNames?.eyebrow)}>{eyebrow}</div>}
                     <div className="flex flex-wrap items-center gap-2">
-                      {title && <div data-slot="smart-card-title" className={cn("truncate font-semibold text-foreground", titleClassName[size], classNames?.title)}>{title}</div>}
+                      {title && <div data-slot="smart-card-title" className={cn("truncate font-semibold tracking-tight text-foreground", titleClassName[size], classNames?.title)}>{title}</div>}
                       {status && <div data-slot="smart-card-status" className={classNames?.status}>{status}</div>}
                     </div>
                     {description && <div data-slot="smart-card-description" className={cn("line-clamp-2 text-sm text-muted-foreground", classNames?.description)}>{description}</div>}

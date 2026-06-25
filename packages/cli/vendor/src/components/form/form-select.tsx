@@ -93,6 +93,7 @@ function FormSelect<
 >(props: FormSelectProps<TFieldValues, TName, TValue, TData, TOption>) {
   const shellProps = buildShellProps(props)
   const kind = props.kind ?? "simple"
+  const resolvedFieldClassName = props.fieldClassName ?? "w-full"
 
   return (
     <Controller
@@ -139,7 +140,7 @@ function FormSelect<
                   field.onChange(nextValue ?? emptyValue)
                   onValueChange?.(nextValue, option)
                 }}
-                triggerClassName={fieldClassName}
+                triggerClassName={fieldClassName ?? resolvedFieldClassName}
               />
             </FormFieldShell>
           )
@@ -180,9 +181,9 @@ function FormSelect<
               disabled={disabled || readOnly}
               onValueChange={(nextValue) => {
                 field.onChange(nextValue || emptyValue)
-                onValueChange?.(nextValue)
+                onValueChange?.(nextValue as string)
               }}
-              triggerClassName={fieldClassName}
+              triggerClassName={fieldClassName ?? resolvedFieldClassName}
             />
           </FormFieldShell>
         )
