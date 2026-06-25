@@ -1,266 +1,62 @@
-# Azamat UI Kit Public API Inventory
+# Public API Inventory
 
-Bu fayl `src/index.ts` va uning ichidan chiqayotgan group exportlar asosida tuzildi. Maqsad: package root'dan chiqayotgan surface'ni aniq ko'rish, canonical nomlarni belgilash va keyingi docs/catalog ishlarini tartibli qilish.
+This file defines what should feel public, canonical and documented. It is not a full component manual.
 
-## 1. Current Root Export Shape
+## Contract
 
-Hozir package root quyidagi qatlamlarni chiqaradi:
+- Root exports should be understandable as the main product API.
+- Large systems and implementation helpers may stay available through subpaths or source-copy CLI, but they should not be shown as first-level docs components.
+- Compatibility aliases may remain for migration, but docs should teach one canonical name.
+- Any root export change must update this file and `CHANGELOG.md`.
 
-- base UI primitives
-- actions
-- layout
-- filters
-- overlay
-- navigation
-- inputs
-- form wrappers
-- feedback
-- display
-- data-table system
-- notifications
-- command
-- calendar
-- upload
-- wizard
-- patterns
-- charts
-- hooks
-- utils
-
-Bu kuchli surface, lekin `public API` va `internal implementation` orasidagi chegara hali aniq emas.
-
-## 2. Strong Canonical Surface
-
-Quyidagilar canonical public surface bo'lib turishi kerak.
+## Canonical Root Surface
 
 ### Base UI
 
-- `Button`
-- `Input`
-- `Textarea`
-- `Checkbox`
-- `Switch`
-- `Badge`
-- `Card`
-- `Tabs`
-- `Dialog`
-- `DropdownMenu`
-- `Popover`
-- `Select`
-- `Table`
-- `Collapse`
-- `CollapseTrigger`
-- `CollapseContent`
-- `Skeleton`
-- `SkeletonText`
-- `SkeletonCard`
-- `Divider`
-- `SegmentedControl`
-- `Spinner`
-- `LoadingOverlay`
-- `Tooltip`
+`Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Badge`, `Card`, `Tabs`, `Dialog`, `DropdownMenu`, `Popover`, `Select`, `Table`, `Collapse`, `Skeleton`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, `Tooltip`, `RadioGroup`, `Kbd`, `HoverCard`, `ScrollBox`, `RightClickMenu`
 
 ### Actions
 
-- `ActionMenu`
-- `CopyButton`
-- `CopyField`
-- `ButtonGroup`
-- `QuickActionGrid`
+`ActionMenu`, `CopyButton`, `CopyField`, `ButtonGroup`, `QuickActionGrid`
 
-### Layout
+### Layout And Navigation
 
-- `AppShell`
-- `AppHeader`
-- `AppSidebar`
-- `PageHeader`
-- `StatCard`
-- `SidebarNav`
-- `Breadcrumbs`
-- `PageContainer`
-- `Section`
-- `Toolbar`
-- `SplitLayout`
-- `StickyFooterBar`
+`AppShell`, `AppHeader`, `AppSidebar`, `PageHeader`, `StatCard`, `SidebarNav`, `Breadcrumbs`, `PageContainer`, `Section`, `Toolbar`, `SplitLayout`, `StickyFooterBar`, `Pagination`, `PageTabs`, `StepperTabs`, `AnchorNav`
 
-### Navigation
+### Inputs And Forms
 
-- `Pagination`
-- `PageTabs`
-- `StepperTabs`
-- `AnchorNav`
-
-### Inputs
-
-Canonical adoption surface:
+Canonical docs entries:
 
 - `Input`
 - `FormInput`
-
-Preset and helper surfaces:
-
-- `SimpleSelect`
-- `AsyncSelect`
-- `AsyncMultiSelect`
-- `ClearableInput`
-- `SearchInput`
-- `PasswordInput`
-- `NumberInput`
-- `DateInput`
-- `DateRangeInput`
-- `MoneyInput`
-- `QuantityInput`
-- `MaskedInput`
-- `PhoneInput`
-- `TagInput`
-- `Combobox`
-- `Rating`
-- `Slider`
-- `RangeSlider`
-- `OtpInput`
-- `ColorInput`
-- `QuantityStepper`
-
-Compatibility wrappers that should stay migratory, not primary:
-
+- `Select`
 - `FormSelect`
-- `FormAsyncSelect`
-- `FormTextarea`
-- `FormSwitch`
-- `FormSearchInput`
-- `FormPasswordInput`
-- `FormNumberInput`
-- `FormPhoneInput`
-- `FormDateInput`
-- `FormDateRangeInput`
-- `FormDatePicker`
-- `FormDateRangePicker`
-
-### Feedback
-
-- `EmptyState`
-- `LoadingState`
-- `StatusBadge`
-- `Alert`
-- `PageState`
-- `InlineState`
-
-### Display
-
-- `DescriptionList`
-- `Progress`
-- `ProgressCard`
-- `Result`
-- `Timeline`
-- `MetricGrid`
-- `InfoCard`
-- `ActivityFeed`
-- `StatusLegend`
-- `Avatar`
-- `AvatarGroup`
-- `DataState`
-- `Statistic`
-- `StatisticCard`
-- `StatisticGrid`
-- `List`
-- `ListRow`
-- `Descriptions`
-- `KanbanBoard`
-- `TagList`
-- `TreeView`
-- `KeyboardShortcut`
-- `CodeBlock`
-- `FileCard`
-- `PropertyGrid`
-- `EntityCard`
-
-### Data Table
-
-- `DataTable`
-- `DataTablePagination`
-- `DataTableToolbar`
-- `DataTableColumnVisibilityMenu`
-- `DataTableSelectColumn`
-- `DataTableSortableHeader`
-- `DataTableRowActions`
-- `DataTableActionsColumn`
-- `DataTableBulkActions`
-- `DataTableViewPresets`
-- `createDataTableSelectColumn`
-- `createDataTableActionsColumn`
-
-### Overlay / Notifications / Command / Calendar / Upload / Wizard
-
-- `DialogActions`
-- `ModalShell`
-- `ConfirmDialog`
-- `SheetShell`
-- `ToastProvider`
-- `useToast`
-- `CommandPalette`
-- `Calendar`
 - `DatePicker`
 - `DateRangePicker`
-- `FileUpload`
-- `ImageUpload`
-- `Stepper`
-- `Wizard`
 
-### Patterns
+Related helpers and modes:
 
-- `ResourcePage`
-- `ResourceDetailPage`
-- `FormBuilder`
-- `FormBuilderPresets`
+- `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox`
+- `ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `DateInput`, `DateRangeInput`
+- `MoneyInput`, `QuantityInput`, `QuantityStepper`, `MaskedInput`, `PhoneInput`
+- `TagInput`, `Rating`, `Slider`, `RangeSlider`, `OtpInput`, `ColorInput`
+- `FormAsyncSelect`, `FormTextarea`, `FormSwitch`, `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, `FormDateInput`, `FormDateRangeInput`, `FormDatePicker`, `FormDateRangePicker`
 
-### Charts
+### Feedback And Display
 
-- `ChartFrame`
-- `BarChart`
-- `LineChart`
-- `Sparkline`
-- `DonutChart`
-- `ChartLegend`
-- `MetricTrend`
+`EmptyState`, `LoadingState`, `StatusBadge`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `MetricGrid`, `InfoCard`, `ActivityFeed`, `StatusLegend`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `FileCard`, `PropertyGrid`, `EntityCard`
 
-### Hooks
+### Data, Overlay And Systems
 
-- `useSessionStorageState`
-- `useBeforeUnloadWhenDirty`
-- `useIsMobile`
-- `useDisclosure`
-- `useDebouncedCallback`
-- `useDebouncedValue`
-- `useDataTableViewState`
+`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `DataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `DataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`, `ResourcePage`, `ResourceDetailPage`, `FormBuilder`, `FormBuilderPresets`
 
-## 3. Surface Problems Found
+### Charts And Hooks
 
-### Root contract cleanup
+`ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, `MetricTrend`, `useSessionStorageState`, `useBeforeUnloadWhenDirty`, `useIsMobile`, `useDisclosure`, `useDebouncedCallback`, `useDebouncedValue`, `useDataTableViewState`
 
-Root barrel endi docs-facing `public.ts` barrel'lar orqali yig'iladi.
+## Hidden From First-Level Docs
 
-Natija:
-
-- duplicate nested root exportlar olib tashlandi
-- advanced helperlar root contractdan chiqib ketdi
-- root import endi adoption uchun kichikroq va tushunarliroq
-- canonical public path endi `Input` / `FormInput` va boshqa primary surfacesga tayanadi, aliaslar esa migration layer sifatida qoladi
-
-### Canonical name vs implementation name drift
-
-Hozir:
-
-- public nom sifatida `InfoCard` kerak
-- implementation file esa `smart-card.tsx`
-- root export ichida ikkalasi ham chiqib ketgan
-
-Natija:
-
-- consumer `InfoCard` ishlatadimi yoki `SmartCard`mi aniq emas
-
-### Advanced surfaces intentionally kept off root
-
-Quyidagilar endi root importga kirmaydi yoki umuman root uchun tavsiya qilinmaydi:
+These can exist as subpath exports, source-copy files, or advanced detail sections, but should not be primary docs cards:
 
 - `SmartCard`
 - `SmartFormShell`
@@ -283,99 +79,18 @@ Quyidagilar endi root importga kirmaydi yoki umuman root uchun tavsiya qilinmayd
 - `TableExportMenu`
 - `TableImportButton`
 
-Bu surface'lar yomon degani emas. Muammo:
+## Family Display Rule
 
-- docs/catalog'ga to'g'ridan-to'g'ri chiqarilsa foydalanuvchi chalg'iydi
-- canonical adoption surface bilan experimentation surface aralashib ketadi
+The public site should show one clean component name first, then related variants inside the detail page:
 
-### Registry drift risk
+- `Input`: input presets, numeric inputs, phone, money, quantity, masked, date input and form input wrappers.
+- `Select`: native select wrapper, simple select, async select, async multi select, combobox and form select wrappers.
+- `DatePicker`: calendar, date picker, date range picker and related form wrappers.
+- `Card`: card, info card, stat card, statistic card, entity card and file card.
+- `DataTable`: core table plus pagination, toolbar, visibility, row actions, bulk actions and presets.
 
-Registry allaqachon `info-card` kabi canonical nomga o'tyapti, source esa ba'zi joylarda hali implementation naming bilan yashayapti.
+## Required Maintenance
 
-Bu yana shunday joylarda paydo bo'lishi mumkin:
-
-- display cards
-- chart helperlari
-- pattern system componentlari
-- data-table extension surface'lari
-
-## 4. Recommended Public Boundary
-
-Quyidagi qarorlar tavsiya qilinadi.
-
-### Root exportda qoladi
-
-- primitives
-- adoptionga tayyor composed components
-- RHF wrappers
-- stable feedback/display pieces
-- core data-table surface
-- calendar/upload/wizard/public hooks
-- canonical pattern entry components
-
-### Subpath export ichida qoladi, lekin docs catalog'da alohida ko'rsatilmaydi
-
-- `ActionSystem`
-- `StatusSystem`
-- `FilterBuilder`
-- `DataView`
-- `EntityDetails`
-- `ResourceSystem`
-- `CrudSystem`
-- `SmartFormShell`
-- `WorkspaceShell`
-- `SettingsSection`
-- `SettingsRow`
-- `KpiCard`
-- `KpiGrid`
-- `ProgressRing`
-- `HorizontalBarChart`
-- `TableExportMenu`
-- `TableImportButton`
-- `ActionBar`
-- `FloatingActionButton`
-
-### Data-table advanced helper policy
-
-`TableExportMenu` va `TableImportButton` reusable helper bo'lsa ham, ular `DataTable` adoptionning birinchi bosqichi emas.
-
-Qoidalar:
-
-- docs catalog'da `Data Table` detail ichidagi advanced section'da turadi
-- root importga qaytmaydi
-- subpath import orqali olinadi:
-  - `azamat-ui-kit/data-table/table-export-menu`
-  - `azamat-ui-kit/data-table/table-import-button`
-- registry recommended list ichiga kirmaydi
-
-### Alias orqali transitional support, lekin canonical nom bitta bo'ladi
-
-- `InfoCard` is canonical
-- `SmartCard` transitional/internal bo'lishi kerak
-
-## 5. Immediate Cleanup Order
-
-1. `README` va keyingi docs app component inventory shu fayldagi canonical list bilan sync qilinishi
-2. tarball smoke test orqali root + subpath contractni real consumer app ichida tekshirish
-3. `SmartFormShell`, `WorkspaceShell`, `ActionBar`, `FloatingActionButton`, `TableExportMenu`, `TableImportButton` uchun yakuniy public-policy yozish
-4. registry naming va docs naming driftini release gate ichida tekshirish
-
-## 6. Docs Catalog Rule
-
-Docs/catalog tizimida bitta nom bilan ko'rsatish kerak:
-
-- `Input` family ichida canonical entry `Input` / `FormInput`, preset helperlar `SearchInput`, `PasswordInput`, `PhoneInput`, `MoneyInput`, `QuantityInput`, `MaskedInput`, `DateInput`, `DateRangeInput`
-- `Select` family ichida canonical entry `Select` / `FormSelect`, helperlar `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox`, `FormAsyncSelect`
-- `Date` family ichida canonical entry `DatePicker` / `DateRangePicker`, helperlar `DateInput`, `DateRangeInput`, `FormDateInput`, `FormDateRangeInput`, `FormDatePicker`, `FormDateRangePicker`
-- `Card` family ichida `Card`, `InfoCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`
-
-Library package esa alohida exportlarni saqlab qoladi, lekin docs/catalog foydalanuvchini family-first tushuntiradi.
-
-## 7. Next Supervisor Tasks
-
-- [x] `src/index.ts` duplicate direct exports audit va cleanup
-- [x] `InfoCard` canonical, `SmartCard` transitional/internal sifatida qaror yozish
-- [x] `patterns` ichidan docs-facing minimal public setni ajratish
-- [x] `charts` core vs extras boundary taskini ochish
-- [x] `data-table` advanced helpers uchun public status qarorini yozish
-- [x] `README` public component listini shu inventory bilan sync qilish
+- Update this file when `src/index.ts`, registry names or docs catalog names change.
+- Keep migration aliases visible in metadata, but avoid teaching them as the main API.
+- Use `npm run test:root-exports` and `npm run test:registry` after export changes.
