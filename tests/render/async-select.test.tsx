@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
+import { AsyncSelect } from "@/components/inputs/async-select"
 import { AsyncMultiSelectFixture, AsyncSelectFixture, createLoadOptionsSpy } from "../fixtures/async-select-consumer"
 
 describe("AsyncSelect", () => {
@@ -191,6 +192,105 @@ describe("AsyncSelect", () => {
       expect(loadOptions).toHaveBeenCalledWith("ga", expect.any(Object))
     })
     expect(screen.getByText("Gamma")).toBeTruthy()
+  })
+
+  it("shows loading and empty states for remote searches", async () => {
+    const user = userEvent.setup()
+    let resolveOptions: ((value: { value: string; label: string }[]) => void) | undefined
+    const loadOptions = vi.fn(
+      () =>
+        new Promise<{ value: string; label: string }[]>((resolve) => {
+          resolveOptions = resolve
+        })
+    )
+
+    render(
+      <AsyncSelect
+        loadOptions={loadOptions}
+        debounceMs={0}
+        labels={{
+          placeholder: "Select an item",
+          searchPlaceholder: "Search items",
+          loading: "Loading remote options",
+          empty: "Nothing matched",
+        }}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /select an item/i }))
+    expect(screen.getByText("Loading remote options")).toBeTruthy()
+
+    resolveOptions?.([])
+
+    await waitFor(() => {
+      expect(screen.getByText("Nothing matched")).toBeTruthy()
+    })
+  })
+
+  it("shows error state when loading fails", async () => {
+    const user = userEvent.setup()
+    const loadOptions = vi.fn(async () => {
+      throw new Error("network")
+    })
+
+    render(
+      <AsyncSelect
+        loadOptions={loadOptions}
+        debounceMs={0}
+        labels={{
+          placeholder: "Select an item",
+          searchPlaceholder: "Search items",
+          error: "Could not reach the server",
+        }}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /select an item/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText("Could not reach the server")).toBeTruthy()
+    })
+  })
+
+  it("renders grouped options and custom selected labels", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <AsyncSelect<string>
+        value="alpha"
+        selectedOption={{ value: "alpha", label: "Alpha" }}
+        renderValue={(option) => `Chosen ${String(option.label)}`}
+        loadOptions={async () => [
+          {
+            label: "Core team",
+            options: [
+              { value: "alpha", label: "Alpha" },
+              { value: "beta", label: "Beta" },
+            ],
+          },
+          {
+            label: "Extended team",
+            options: [{ value: "gamma", label: "Gamma" }],
+          },
+        ]}
+        debounceMs={0}
+        labels={{
+          placeholder: "Select an item",
+          searchPlaceholder: "Search items",
+        }}
+      />
+    )
+
+    expect(screen.getByText("Chosen Alpha")).toBeTruthy()
+
+    await user.click(screen.getByRole("button", { name: /chosen alpha/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText("Core team")).toBeTruthy()
+    })
+
+    expect(screen.getByText("Extended team")).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Gamma" })).toBeTruthy()
   })
 })
 

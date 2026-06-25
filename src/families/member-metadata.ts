@@ -127,8 +127,8 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     component: "FormInput",
     family: "InputFamily",
     section: "form-wrappers",
-    maturity: "member",
-    summary: "Universal React Hook Form wrapper for text-like inputs.",
+    maturity: "canonical",
+    summary: "Canonical React Hook Form wrapper for text-like inputs.",
     useWhen: "Use as the primary RHF entry for text, search, password, number, phone, and date flows by switching the kind prop instead of learning many wrapper names.",
   },
   {
@@ -264,8 +264,8 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     component: "FormSelect",
     family: "SelectFamily",
     section: "form-wrappers",
-    maturity: "member",
-    summary: "Universal RHF wrapper for simple and async select flows.",
+    maturity: "canonical",
+    summary: "Canonical RHF wrapper for simple and async select flows.",
     useWhen: "Use as the main select entry for submitted form state, keeping simple and async modes behind one consistent wrapper contract.",
   },
   {

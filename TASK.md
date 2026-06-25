@@ -23,22 +23,22 @@ Current status:
 - [x] Replace string-based `scripts/a11y-smoke.mjs` with render-based a11y tests.
 - [x] Add primitive render tests for `Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Badge`, `Card`, `Tabs`.
 - [x] Add DataTable tests for search, loading, empty, error, row actions, pagination and column visibility.
-- [ ] Add AsyncSelect tests for loading, empty, error, min-search, grouped options and selected labels.
+- [x] Add AsyncSelect tests for loading, empty, error, min-search, grouped options and selected labels.
 - [x] Add AsyncMultiSelect tests for max selected, close-on-select and select-all behavior.
 - [x] Add Calendar and DatePicker tests for single selection, range selection, min/max and locale.
 - [x] Add Upload tests for max files, max size, accept/type rejection and drag/drop.
-- [ ] Add FormBuilder type/render tests before promoting it from experimental.
-- [ ] Add Overlay, Command and Navigation interaction tests.
+- [x] Add FormBuilder type/render tests before promoting it from experimental.
+- [x] Add Overlay, Command and Navigation interaction tests.
 - [x] Add public API snapshot test.
 
 ## P1 - API Cleanup
 
-- [ ] Keep `Input` as the canonical input entry; treat preset inputs as variants/helpers in docs.
-- [ ] Keep `FormInput` as the canonical React Hook Form input wrapper.
-- [ ] Keep `Select` / `FormSelect` as the canonical select entries; show async/multi/combobox as related modes.
+- [x] Keep `Input` as the canonical input entry; treat preset inputs as variants/helpers in docs.
+- [x] Keep `FormInput` as the canonical React Hook Form input wrapper.
+- [x] Keep `Select` / `FormSelect` as the canonical select entries; show async/multi/combobox as related modes.
 - [ ] Keep `InfoCard` as the public display-card name; avoid promoting implementation names.
 - [ ] Keep large system helpers on subpath/source-copy surfaces unless they pass API review.
-- [ ] Mark migration aliases separately in registry metadata.
+- [x] Mark migration aliases separately in registry metadata.
 - [ ] Align `PUBLIC_API_INVENTORY.md` whenever root exports change.
 
 ## P1 - CLI And Source Copy

@@ -244,7 +244,8 @@ function DataTable<TData, TValue = unknown>({
       }
     : undefined
   const manualPagination = Boolean(paginationConfig && paginationConfig.manual !== false)
-  const selectedRowCount = rowSelection ? Object.keys(rowSelection).length : 0
+  const resolvedRowSelection = rowSelection ?? {}
+  const selectedRowCount = Object.keys(resolvedRowSelection).length
 
   // TanStack Table returns imperative helpers that React Compiler flags by design.
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -259,7 +260,7 @@ function DataTable<TData, TValue = unknown>({
     state: {
       sorting,
       columnVisibility,
-      rowSelection,
+      rowSelection: resolvedRowSelection,
       pagination: controlledPagination,
     },
     onSortingChange,

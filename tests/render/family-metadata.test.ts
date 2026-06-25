@@ -337,9 +337,9 @@ describe("family metadata", () => {
     expect(searchAdoption?.badge.label).toBe("Expand")
     expect(advancedAdoption?.badge.tone).toBe("advanced")
     expect(migrationAdoption?.badge.tone).toBe("migration")
-    expect(formInputAdoption?.badge.tone).toBe("preview")
+    expect(formInputAdoption?.badge.tone).toBe("stable")
     expect(formSearchAliasAdoption?.badge.tone).toBe("migration")
-    expect(formSelectAdoption?.badge.tone).toBe("preview")
+    expect(formSelectAdoption?.badge.tone).toBe("stable")
     expect(formAsyncAliasAdoption?.badge.tone).toBe("migration")
     expect((inputAdoption?.recommendedOrder ?? 9999)).toBeLessThan(
       searchAdoption?.recommendedOrder ?? 9999

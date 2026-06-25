@@ -97,4 +97,5 @@ The public site should show one clean component name first, then related variant
 
 - Update this file when `src/index.ts`, registry names or docs catalog names change.
 - Keep migration aliases visible in metadata, but avoid teaching them as the main API.
+- Keep registry alias metadata aligned with `registry.json` and `cli/registry.ts`.
 - Use `npm run test:root-exports` and `npm run test:registry` after export changes.
