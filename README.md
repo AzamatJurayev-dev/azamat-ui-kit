@@ -2,7 +2,7 @@
 
 Reusable React components for Tailwind-based apps, with an optional source-copy CLI.
 
-Use the runtime package when you want normal npm imports. Use the CLI only when you want shadcn-style editable source copied into your app.
+Use the runtime package when you want normal npm imports. Use the CLI only when you want editable component source copied into your app.
 
 ## Install
 

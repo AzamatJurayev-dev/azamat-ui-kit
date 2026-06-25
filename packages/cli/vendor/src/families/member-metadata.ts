@@ -144,8 +144,8 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     family: "InputFamily",
     section: "transitional",
     maturity: "transitional",
-    summary: "Legacy alias for AppInput.",
-    useWhen: "Use only for migration; prefer Input with `kind`.",
+    summary: "Legacy alias for Input through AppInput compatibility.",
+    useWhen: "Use only for migration; prefer Input with `kind` in all maintained code.",
   },
   {
     component: "FormAppInput",

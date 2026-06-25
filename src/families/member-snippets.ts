@@ -218,7 +218,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "UniversalInput",
     title: "Universal alias migration",
-    description: "UniversalInput exists for backward compatibility while consolidating variants.",
+    description: "UniversalInput exists only for backward compatibility with older codebases.",
     language: "tsx",
     variant: "migration",
     code: `import { UniversalInput } from "azamat-ui-kit"
@@ -296,7 +296,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "FormAppInput",
     title: "Form alias migration",
-    description: "Use this only for legacy form code; prefer FormInput with kind.",
+    description: "Use this only for legacy form code; prefer FormInput with kind in all new work.",
     language: "tsx",
     variant: "migration",
     code: `import { FormAppInput } from "azamat-ui-kit"
