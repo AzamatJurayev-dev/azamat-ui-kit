@@ -36,6 +36,7 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
       "ColorInput",
     ],
     advanced: ["TagInput", "QuantityStepper"],
+    transitional: ["AppInput", "UniversalInput", "FormAppInput"],
   },
   {
     family: "SelectFamily",

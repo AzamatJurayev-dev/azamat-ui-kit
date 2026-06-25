@@ -1,20 +1,189 @@
 import * as React from "react"
-import { Input as InputPrimitive } from "@base-ui/react/input"
 
-import { cn } from "@/lib/utils"
+import { InputPrimitive, type InputPrimitiveProps } from "@/components/ui/input-primitive"
+import { ClearableInput, type ClearableInputProps } from "@/components/inputs/clearable-input"
+import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
+import { DateRangeInput, type DateRangeInputProps } from "@/components/inputs/date-range-input"
+import { MoneyInput, type MoneyInputProps } from "@/components/inputs/money-input"
+import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
+import { NumberInput, type NumberInputProps } from "@/components/inputs/number-input"
+import { PasswordInput, type PasswordInputProps } from "@/components/inputs/password-input"
+import { PhoneInput, type PhoneInputProps } from "@/components/inputs/phone-input"
+import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
+import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+export type InputKind =
+  | "text"
+  | "clearable"
+  | "search"
+  | "password"
+  | "number"
+  | "phone"
+  | "money"
+  | "quantity"
+  | "masked"
+  | "date"
+  | "date-range"
+
+export type InputTextProps = Omit<InputPrimitiveProps, "value"> & {
+  kind?: "text"
+  value?: string | number | readonly string[] | null
+}
+
+export type InputClearableProps = Omit<ClearableInputProps, "kind"> & {
+  kind: "clearable"
+}
+
+export type InputSearchProps = Omit<SearchInputProps, "kind"> & {
+  kind: "search"
+}
+
+export type InputPasswordProps = Omit<PasswordInputProps, "kind"> & {
+  kind: "password"
+}
+
+export type InputNumberProps = Omit<NumberInputProps, "kind"> & {
+  kind: "number"
+}
+
+export type InputPhoneProps = Omit<PhoneInputProps, "kind"> & {
+  kind: "phone"
+}
+
+export type InputMoneyProps = Omit<MoneyInputProps, "kind"> & {
+  kind: "money"
+}
+
+export type InputQuantityProps = Omit<QuantityInputProps, "kind"> & {
+  kind: "quantity"
+}
+
+export type InputMaskedProps = Omit<MaskedInputProps, "kind"> & {
+  kind: "masked"
+}
+
+export type InputDateProps = Omit<DateInputProps, "kind"> & {
+  kind: "date"
+}
+
+export type InputDateRangeProps = Omit<DateRangeInputProps, "onChange" | "onValueChange" | "value"> & {
+  kind: "date-range"
+  onValueChange?: (value: { from?: string; to?: string }) => void
+  value?: DateRangeInputProps["value"]
+}
+
+export type InputProps =
+  | InputTextProps
+  | InputClearableProps
+  | InputSearchProps
+  | InputPasswordProps
+  | InputNumberProps
+  | InputPhoneProps
+  | InputMoneyProps
+  | InputQuantityProps
+  | InputMaskedProps
+  | InputDateProps
+  | InputDateRangeProps
+
+const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((props, ref) => {
+  const kind = props.kind ?? "text"
+
+  if (kind === "search") {
+    return (
+      <SearchInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<SearchInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "password") {
+    return (
+      <PasswordInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<PasswordInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "number") {
+    return (
+      <NumberInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<NumberInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "phone") {
+    return (
+      <PhoneInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<PhoneInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "money") {
+    return (
+      <MoneyInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<MoneyInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "quantity") {
+    return (
+      <QuantityInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<QuantityInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "masked") {
+    return (
+      <MaskedInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<MaskedInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "date") {
+    return (
+      <DateInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<DateInputProps, "kind">)}
+      />
+    )
+  }
+
+  if (kind === "date-range") {
+    return <DateRangeInput {...(props as Omit<InputDateRangeProps, "kind">)} />
+  }
+
+  if (kind === "clearable") {
+    return (
+      <ClearableInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        {...(props as Omit<ClearableInputProps, "kind">)}
+      />
+    )
+  }
+
+  const inputProps = props as Omit<InputTextProps, "kind">
+
   return (
     <InputPrimitive
-      type={type}
-      data-slot="input"
-      className={cn(
-        "h-10 w-full min-w-0 rounded-[min(var(--radius-xl),16px)] border border-input/90 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_14%),var(--background))] px-3.5 py-2 text-base text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_1px_0_rgba(255,255,255,0.06)] transition-[background-color,border-color,box-shadow,color] outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground/92 hover:border-ring/30 hover:bg-background focus-visible:border-ring focus-visible:bg-background focus-visible:shadow-[0_0_0_1px_color-mix(in_oklch,var(--ring),transparent_45%),0_10px_24px_rgba(15,23,42,0.08)] focus-visible:ring-3 focus-visible:ring-ring/45 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/55 disabled:text-muted-foreground disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:border-white/12 dark:bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.05))] dark:hover:bg-white/8 dark:focus-visible:bg-white/8 dark:disabled:bg-white/8 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
-        className
-      )}
-      {...props}
+      ref={ref as React.ForwardedRef<HTMLInputElement>}
+      value={inputProps.value ?? ""}
+      type={inputProps.type ?? "text"}
+      {...(inputProps as React.ComponentProps<typeof InputPrimitive>)}
     />
   )
-}
+})
+Input.displayName = "Input"
 
 export { Input }

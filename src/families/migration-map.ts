@@ -16,6 +16,9 @@ export type FamilyMigrationEntry = {
 
 export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "Input", family: "InputFamily", member: "Root", status: "canonical" },
+  { component: "AppInput", family: "InputFamily", member: "AppInput", status: "transitional" },
+  { component: "UniversalInput", family: "InputFamily", member: "UniversalInput", status: "transitional" },
+  { component: "FormAppInput", family: "InputFamily", member: "FormAppInput", status: "transitional" },
   { component: "ClearableInput", family: "InputFamily", member: "Clearable", status: "family-member" },
   { component: "SearchInput", family: "InputFamily", member: "Search", status: "family-member" },
   { component: "PasswordInput", family: "InputFamily", member: "Password", status: "family-member" },

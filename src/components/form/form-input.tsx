@@ -15,10 +15,19 @@ import {
   FormFieldShell,
   type FormFieldShellControlProps,
 } from "@/components/form/form-field-shell"
-import { Input } from "@/components/ui/input"
+import { Input, type InputTextProps } from "@/components/ui/input"
 
 export type FormInputKind = "text" | "search" | "password" | "number" | "phone" | "date"
 export type FormInputPhoneInputValueMode = "raw" | "masked"
+
+type TextInputElementChangeEvent = React.ChangeEvent<HTMLInputElement>
+
+type FormTextInputControlProps = Omit<
+  React.ComponentProps<"input">,
+  "name" | "value" | "defaultValue"
+> & {
+  onChange?: (event: TextInputElementChangeEvent) => void
+}
 
 type FormControlledFieldProps<
   TFieldValues extends FieldValues,
@@ -33,11 +42,11 @@ type FormControlledFieldProps<
 export type FormTextInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<React.ComponentProps<typeof Input>, "name" | "value" | "defaultValue"> &
+> = Omit<FormTextInputControlProps, "inputMode" | "autoComplete" | "autoCorrect" | "autoCapitalize" | "className" | "size"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind?: "text"
     transformIn?: (value: unknown) => string | number | readonly string[] | undefined
-    transformOut?: (event: React.ChangeEvent<HTMLInputElement>) => unknown
+    transformOut?: (event: TextInputElementChangeEvent) => unknown
   }
 
 export type FormInputSearchVariantProps<
@@ -98,6 +107,8 @@ export type FormInputProps<
   | FormInputNumberVariantProps<TFieldValues, TName>
   | FormInputPhoneVariantProps<TFieldValues, TName>
   | FormInputDateVariantProps<TFieldValues, TName>
+
+type InputTextInputProps = Omit<InputTextProps, "kind">
 
 function buildShellProps<
   TFieldValues extends FieldValues,
@@ -180,11 +191,11 @@ function FormInput<
                 disabled={disabled}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   field.onChange(value)
                   onValueChange?.(value)
                 }}
@@ -233,11 +244,11 @@ function FormInput<
                 disabled={disabled}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   field.onChange(value)
                   onValueChange?.(value)
                 }}
@@ -288,11 +299,11 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onNumberChange={(value) => {
+                onNumberChange={(value: number | null) => {
                   field.onChange(value ?? emptyValue)
                   onNumberChange?.(value)
                 }}
@@ -351,11 +362,11 @@ function FormInput<
                 maxDigits={maxDigits}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(maskedValue, rawValue) => {
+                onValueChange={(maskedValue: string, rawValue: string) => {
                   const nextValue = valueMode === "raw" ? rawValue : maskedValue
                   field.onChange(nextValue)
                   onValueChange?.(nextValue, rawValue, maskedValue)
@@ -407,11 +418,11 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   field.onChange(value || emptyValue)
                   onValueChange?.(value)
                 }}
@@ -453,18 +464,21 @@ function FormInput<
         return (
           <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
             <Input
-              {...inputProps}
+              {...(inputProps as Omit<InputTextInputProps, "kind">)}
               id={id ?? inputId}
               ref={field.ref}
               name={field.name}
-              value={transformIn ? transformIn(field.value) : field.value ?? ""}
+              value={
+                (transformIn ? transformIn(field.value) : field.value ?? "") as unknown as
+                  InputTextInputProps["value"]
+              }
               disabled={disabled}
               readOnly={readOnly}
-              onBlur={(event) => {
+              onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                 field.onBlur()
                 onBlur?.(event)
               }}
-              onChange={(event) => {
+              onChange={(event: TextInputElementChangeEvent) => {
                 field.onChange(transformOut ? transformOut(event) : event)
                 onChange?.(event)
               }}

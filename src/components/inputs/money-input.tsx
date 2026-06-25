@@ -3,7 +3,7 @@ import * as React from "react"
 import { InputChrome } from "@/components/inputs/input-chrome"
 import { getInputValue } from "@/components/inputs/input-value"
 import { parseMoneyLikeInput } from "@/components/inputs/numeric-value"
-import { Input } from "@/components/ui/input"
+import { InputPrimitive } from "@/components/ui/input-primitive"
 import { cn } from "@/lib/utils"
 
 export type MoneyInputProps = Omit<
@@ -55,7 +55,7 @@ function MoneyInput({
         ) : null
       }
     >
-      <Input
+      <InputPrimitive
         value={getInputValue(value)}
         onChange={handleChange}
         inputMode={inputMode}
