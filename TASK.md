@@ -25,8 +25,8 @@ Current status:
 - [x] Add DataTable tests for search, loading, empty, error, row actions, pagination and column visibility.
 - [ ] Add AsyncSelect tests for loading, empty, error, min-search, grouped options and selected labels.
 - [x] Add AsyncMultiSelect tests for max selected, close-on-select and select-all behavior.
-- [ ] Add Calendar and DatePicker tests for single selection, range selection, min/max and locale.
-- [ ] Add Upload tests for max files, max size, accept/type rejection and drag/drop.
+- [x] Add Calendar and DatePicker tests for single selection, range selection, min/max and locale.
+- [x] Add Upload tests for max files, max size, accept/type rejection and drag/drop.
 - [ ] Add FormBuilder type/render tests before promoting it from experimental.
 - [ ] Add Overlay, Command and Navigation interaction tests.
 - [x] Add public API snapshot test.
