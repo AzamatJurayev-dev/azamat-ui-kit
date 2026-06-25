@@ -89,7 +89,7 @@ The public site should show one clean component name first, then related variant
 
 - `Input`: input presets, numeric inputs, phone, money, quantity, masked, date input and form input wrappers.
 - `Select`: native select wrapper, simple select, async select, async multi select, combobox and form select wrappers.
-- `DatePicker`: calendar, date picker, date range picker and related form wrappers.
+- `FormFieldShell`: field shell, textarea/switch wrappers, date-picker wrappers and related form helpers.
 - `Card`: card, info card, stat card, statistic card, entity card and file card.
 - `DataTable`: core table plus pagination, toolbar, visibility, row actions, bulk actions and presets.
 

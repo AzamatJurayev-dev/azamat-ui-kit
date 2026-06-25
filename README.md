@@ -380,5 +380,6 @@ If npm requires 2FA bypass, create a granular access token with write access and
 
 - `README.md`: install and usage
 - `CHANGELOG.md`: user-facing changes
+- `PUBLIC_COMPONENT_API.md`: generated canonical public docs entries and prop highlights
 - `componentFamilyCatalog`, `componentDocsGroups`, `componentFamilyMigrationMap`: family governance source-of-truth
 - `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, `DataTableFamily`: stable family labels in docs

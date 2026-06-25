@@ -51,10 +51,10 @@ Current status:
 ## P1 - Documentation
 
 - [x] Keep README short and focused on install, CLI, Tailwind setup and common imports.
-- [ ] Add generated props/API docs for public components.
+- [x] Add generated props/API docs for public components.
 - [x] Add focused examples for `AsyncSelect` and `AsyncMultiSelect`.
 - [x] Add troubleshooting notes for async request ordering and disabled-option UX.
-- [ ] Keep public docs catalog component names aligned with registry canonical names.
+- [x] Keep public docs catalog component names aligned with registry canonical names.
 
 ## P2 - Styling
 
