@@ -70,6 +70,9 @@ export function AsyncMultiSelectFixture({
   minSearchLength,
   cacheTtl,
   cacheOptions,
+  closeOnSelect,
+  maxSelected,
+  showSelectAll,
 }: {
   value?: string[]
   onValueChange?: (nextValue: string[], options: Option[]) => void
@@ -79,6 +82,9 @@ export function AsyncMultiSelectFixture({
   minSearchLength?: number
   cacheTtl?: number
   cacheOptions?: boolean
+  closeOnSelect?: boolean
+  maxSelected?: number
+  showSelectAll?: boolean
 }) {
   const selectedValues: string[] = value
 
@@ -92,10 +98,16 @@ export function AsyncMultiSelectFixture({
       minSearchLength={minSearchLength}
       cacheTtl={cacheTtl}
       cacheOptions={cacheOptions}
+      closeOnSelect={closeOnSelect}
+      maxSelected={maxSelected}
+      showSelectAll={showSelectAll}
       labels={{
         placeholder: "Select many",
         searchPlaceholder: "Search items",
         clearAll: "Clear all",
+        selectAll: "Select all",
+        selectedCount: (count) => `${count} selected`,
+        maxSelected: (count) => `Maximum ${count} selected`,
       }}
     />
   )

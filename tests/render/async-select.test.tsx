@@ -249,4 +249,84 @@ describe("AsyncMultiSelect", () => {
       expect(screen.getByText("Alpha is locked")).toBeTruthy()
     })
   })
+
+  it("closes after selection when closeOnSelect is enabled", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <AsyncMultiSelectFixture
+        value={[]}
+        closeOnSelect
+        loadOptions={async () => [
+          { value: "alpha", label: "Alpha" },
+          { value: "gamma", label: "Gamma" },
+        ]}
+        onValueChange={onValueChange}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /select many/i }))
+    await user.click(await screen.findByRole("button", { name: /alpha/i }))
+
+    expect(onValueChange).toHaveBeenCalledWith(["alpha"], expect.any(Array))
+    await waitFor(() => {
+      expect(screen.queryByPlaceholderText("Search items")).toBeNull()
+    })
+  })
+
+  it("shows max-selected guidance and blocks adding more values", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <AsyncMultiSelectFixture
+        maxSelected={2}
+        loadOptions={async () => [
+          { value: "alpha", label: "Alpha" },
+          { value: "gamma", label: "Gamma" },
+          { value: "delta", label: "Delta" },
+        ]}
+        onValueChange={onValueChange}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /select many/i }))
+
+    expect(screen.getByText("2 selected")).toBeTruthy()
+    expect(screen.getByText("Maximum 2 selected")).toBeTruthy()
+    expect(screen.queryByRole("button", { name: "Select all" })).toBeNull()
+
+    await user.click(await screen.findByRole("button", { name: /delta/i }))
+    expect(onValueChange).not.toHaveBeenCalledWith(expect.arrayContaining(["delta"]), expect.any(Array))
+  })
+
+  it("selects all visible non-disabled options when requested", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <AsyncMultiSelectFixture
+        value={[]}
+        showSelectAll
+        loadOptions={async () => [
+          { value: "alpha", label: "Alpha" },
+          { value: "beta", label: "Beta", disabled: true },
+          { value: "gamma", label: "Gamma" },
+        ]}
+        onValueChange={onValueChange}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /select many/i }))
+    await user.click(await screen.findByRole("button", { name: "Select all" }))
+
+    expect(onValueChange).toHaveBeenCalledWith(
+      ["alpha", "gamma"],
+      expect.arrayContaining([
+        expect.objectContaining({ value: "alpha" }),
+        expect.objectContaining({ value: "gamma" }),
+      ])
+    )
+  })
 })
