@@ -31,6 +31,12 @@ npx azamat-ui-kit-cli init --template vite --defaults
 npx azamat-ui-kit-cli add button input form-input --skip-install
 ```
 
+Choose one path first:
+
+- `Package mode`: import directly from `azamat-ui-kit`
+- `Source mode`: use `azamat-ui-kit-cli` and import from your local `src/components`
+- `Hybrid mode`: package for primitives, source-copy for larger product surfaces
+
 ## Quick Start
 
 ### Runtime imports
@@ -114,6 +120,90 @@ import "./index.css"
 ```
 
 For Next.js, import `app/globals.css` from the root layout as usual.
+
+### Next.js package mode
+
+`app/layout.tsx`
+
+```tsx
+import "./globals.css"
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+`app/page.tsx`
+
+```tsx
+import { Button, Input } from "azamat-ui-kit"
+
+export default function Page() {
+  return (
+    <div className="space-y-4 p-6">
+      <Input placeholder="Workspace name" />
+      <Button>Create workspace</Button>
+    </div>
+  )
+}
+```
+
+### Vite package mode
+
+`src/main.tsx`
+
+```tsx
+import { StrictMode } from "react"
+import { createRoot } from "react-dom/client"
+import "./index.css"
+import App from "./App"
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+)
+```
+
+`src/App.tsx`
+
+```tsx
+import { Button, Input } from "azamat-ui-kit"
+
+export default function App() {
+  return (
+    <div className="space-y-4 p-6">
+      <Input placeholder="Workspace name" />
+      <Button>Create workspace</Button>
+    </div>
+  )
+}
+```
+
+### Source mode imports
+
+After running CLI `init` + `add`, prefer local imports:
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+```
+
+Use this mode for larger surfaces like `DataTable`, `AppShell`, `ResourcePage`, and long-lived product-specific flows.
+
+## Verify Setup
+
+After installation, confirm these before building more screens:
+
+- Global CSS is imported exactly once.
+- Azamat UI theme tokens exist in the app CSS entry.
+- One `Button` and one `Input` render with correct spacing and colors.
+- Tailwind scans the app source and copied component files.
+- Dark mode strategy is consistent across the app.
 
 ## Adoption Model
 
