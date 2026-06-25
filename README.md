@@ -1,14 +1,15 @@
 # azamat-ui-kit
 
-Reusable React components plus a source-copy CLI for building Tailwind-based apps.
+Reusable React components for Tailwind-based apps, with an optional source-copy CLI.
 
-The recommended workflow is similar to source-copy UI libraries: install the packages, initialize theme/config, then copy the components you want into your app so you can edit them.
+Use the runtime package when you want normal npm imports. Use the CLI only when you want shadcn-style editable source copied into your app.
 
 ## Install
 
+Runtime package:
+
 ```bash
 npm install azamat-ui-kit
-npm install -D azamat-ui-kit-cli
 ```
 
 Peer dependencies:
@@ -23,9 +24,33 @@ For Tailwind 4 apps:
 npm install -D tailwindcss @tailwindcss/vite
 ```
 
+Optional source-copy CLI:
+
+```bash
+npx azamat-ui-kit-cli init --template vite --defaults
+npx azamat-ui-kit-cli add button input form-input --skip-install
+```
+
 ## Quick Start
 
-### Vite
+### Runtime imports
+
+No CLI is required for this path:
+
+```tsx
+import { Button, Input } from "azamat-ui-kit"
+
+export function Example() {
+  return (
+    <div className="space-y-4">
+      <Input placeholder="Project name" />
+      <Button>Create</Button>
+    </div>
+  )
+}
+```
+
+### Source-copy workflow
 
 ```bash
 npx azamat-ui-kit-cli init --template vite --defaults
@@ -48,23 +73,6 @@ export function Example() {
 }
 ```
 
-### Next.js
-
-```bash
-npx azamat-ui-kit-cli init --template next --defaults
-npx azamat-ui-kit-cli add button input form-input --skip-install
-```
-
-Use copied source:
-
-```tsx
-import { Button } from "@/components/ui/button"
-
-export default function Page() {
-  return <Button>Get started</Button>
-}
-```
-
 ## CLI
 
 ```bash
@@ -83,7 +91,7 @@ npx azamat-ui-kit-cli theme src/index.css
 - theme tokens into the global CSS file
 - alias/config defaults for the selected template
 
-`add` copies source files into the consumer app. This is the preferred path for large components because the app can edit the component source.
+`add` copies source files into the consumer app. This path is optional and useful for large components because the app can edit the component source.
 
 ## Tailwind Setup
 
