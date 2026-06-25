@@ -35,11 +35,14 @@ All notable changes to this project will be documented in this file.
 - hardened `AppInput` and `FormAppInput` typing so specialized props are routed more safely by kind
 - routed `FormSearchInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` through `FormAppInput` as compatibility wrapper migrations
 - exported `StatusDot`, `UserCard`, `ProgressCircle`, `SectionHeader`, `NavTabs`, `FileDropzone`, `ScrollBox`, and `RightClickMenu` from their public surfaces
+- re-routed compatibility wrappers back onto the canonical `FormInput` surface so docs and implementation stay aligned
+- clarified README and universal-input docs to teach `Input` / `FormInput` first while keeping aliases for migration
 
 ### Docs
 
 - aligned the component maturity matrix with the current `Button` public API
 - documented the universal input API in `UNIVERSAL_INPUT.md`
+- added a render-time public API snapshot test for documented root exports
 
 ## 0.2.3 - 2026-06-23
 

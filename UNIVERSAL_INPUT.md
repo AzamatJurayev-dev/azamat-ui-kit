@@ -1,6 +1,6 @@
 # Universal Input API
 
-`AppInput` is the lower-level application input wrapper. It gives app code one input API while keeping specialized input behavior in separate components. For package-root docs and new adoption guides, prefer the canonical `Input` / `FormInput` mental model and treat `AppInput` / `FormAppInput` as source-level aliases.
+`AppInput` is a compatibility wrapper around the canonical `Input` API. It keeps older app code working while the package teaches `Input` and `FormInput` as the main public mental model.
 
 ## Recommended usage
 
@@ -52,17 +52,17 @@ The shared input surface supports the common decorator props:
 
 ## Form usage
 
-`FormAppInput` is the React Hook Form wrapper for the same input kinds. In package-root docs, this is the same canonical path as `FormInput`:
+`FormAppInput` is the compatibility React Hook Form wrapper for the same input kinds. New docs should teach `FormInput` first:
 
 ```tsx
-import { FormAppInput } from "azamat-ui-kit"
+import { FormInput } from "azamat-ui-kit"
 
-<FormAppInput control={control} name="firstName" kind="text" label="Name" />
-<FormAppInput control={control} name="search" kind="search" label="Search" />
-<FormAppInput control={control} name="password" kind="password" label="Password" />
-<FormAppInput control={control} name="amount" kind="number" label="Amount" />
-<FormAppInput control={control} name="phone" kind="phone" label="Phone" phoneValueMode="raw" />
-<FormAppInput control={control} name="birthDate" kind="date" label="Birth date" />
+<FormInput control={control} name="firstName" kind="text" label="Name" />
+<FormInput control={control} name="search" kind="search" label="Search" />
+<FormInput control={control} name="password" kind="password" label="Password" />
+<FormInput control={control} name="amount" kind="number" label="Amount" />
+<FormInput control={control} name="phone" kind="phone" label="Phone" valueMode="raw" />
+<FormInput control={control} name="birthDate" kind="date" label="Birth date" />
 ```
 
 ## Migration direction
@@ -72,5 +72,5 @@ Use `Input` and `FormInput` for new application work. Existing specialized compo
 Long term:
 
 - `FormInput` should become a compatibility wrapper.
-- `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` should delegate to `FormAppInput`.
-- Public docs should prefer `AppInput` / `FormAppInput` as the first path.
+- `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, and `FormDateInput` stay available as migration wrappers.
+- Public docs should prefer `Input` / `FormInput` as the first path.

@@ -46,9 +46,9 @@ Related helpers and modes:
 
 `EmptyState`, `LoadingState`, `StatusBadge`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `MetricGrid`, `InfoCard`, `ActivityFeed`, `StatusLegend`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `FileCard`, `PropertyGrid`, `EntityCard`
 
-### Data, Overlay And Systems
+### Data And Overlay
 
-`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `DataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `DataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`, `ResourcePage`, `ResourceDetailPage`, `FormBuilder`, `FormBuilderPresets`
+`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `DataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `DataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`
 
 ### Charts And Hooks
 
@@ -70,6 +70,10 @@ These can exist as subpath exports, source-copy files, or advanced detail sectio
 - `CrudSystem`
 - `SettingsSection`
 - `SettingsRow`
+- `ResourcePage`
+- `ResourceDetailPage`
+- `FormBuilder`
+- form-builder preset helpers from `form-builder-presets`
 - `KpiCard`
 - `KpiGrid`
 - `ProgressRing`

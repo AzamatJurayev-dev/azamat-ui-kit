@@ -245,6 +245,16 @@ export function TagField() {
 }
 ```
 
+## Troubleshooting
+
+### AsyncSelect request ordering
+
+`AsyncSelect` and `AsyncMultiSelect` already ignore stale responses internally. Still, your app should keep `loadOptions` stable and keyed by the current query so older requests do not overwrite fresh server state outside the component.
+
+### Disabled option behavior
+
+Disabled options stay visible in the result list but cannot be selected. Use that state to explain why an item is unavailable instead of silently removing it from search results.
+
 ## Development
 
 ```bash

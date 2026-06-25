@@ -1,16 +1,22 @@
-import { FormAppInput, type FormAppInputProps } from "@/components/form/form-app-input"
+import {
+  FormInput,
+  type FormInputSearchVariantProps,
+} from "@/components/form/form-input"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
 export type FormSearchInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<FormAppInputProps<TFieldValues, TName>, "kind">
+> = Omit<FormInputSearchVariantProps<TFieldValues, TName>, "kind">
 
+/**
+ * @deprecated Use {@link FormInput} with `kind="search"` instead.
+ */
 function FormSearchInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: FormSearchInputProps<TFieldValues, TName>) {
-  return <FormAppInput {...props} kind="search" />
+  return <FormInput {...props} kind="search" />
 }
 
 export { FormSearchInput }

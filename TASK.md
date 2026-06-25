@@ -4,10 +4,10 @@ This file is the active work queue. Older audits were removed to keep one clear 
 
 Current status:
 
-- Package version: `0.3.2`
-- CLI package version: `0.3.2`
+- Package version: `0.3.4`
+- CLI package version: `0.3.4`
 - Main adoption model: install package, copy source through `azamat-ui-kit-cli`
-- Last verified gate: `npm run release:gate`
+- Last verified gate: `npm run release:gate` on `2026-06-25`
 
 ## P0 - Release Safety
 
@@ -29,7 +29,7 @@ Current status:
 - [ ] Add Upload tests for max files, max size, accept/type rejection and drag/drop.
 - [ ] Add FormBuilder type/render tests before promoting it from experimental.
 - [ ] Add Overlay, Command and Navigation interaction tests.
-- [ ] Add public API snapshot test.
+- [x] Add public API snapshot test.
 
 ## P1 - API Cleanup
 
@@ -53,7 +53,7 @@ Current status:
 - [x] Keep README short and focused on install, CLI, Tailwind setup and common imports.
 - [ ] Add generated props/API docs for public components.
 - [x] Add focused examples for `AsyncSelect` and `AsyncMultiSelect`.
-- [ ] Add troubleshooting notes for async request ordering and disabled-option UX.
+- [x] Add troubleshooting notes for async request ordering and disabled-option UX.
 - [ ] Keep public docs catalog component names aligned with registry canonical names.
 
 ## P2 - Styling

@@ -1,28 +1,29 @@
 import {
-  FormAppInput,
-  type FormAppInputPhoneValueMode,
-  type FormAppInputProps,
-} from "@/components/form/form-app-input"
+  FormInput,
+  type FormInputPhoneInputValueMode,
+  type FormInputPhoneVariantProps,
+} from "@/components/form/form-input"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
-import type { FormInputPhoneInputValueMode } from "@/components/form/form-input"
-
-export type FormPhoneInputValueMode = FormAppInputPhoneValueMode
-export type { FormInputPhoneInputValueMode, FormAppInputPhoneValueMode }
+export type FormPhoneInputValueMode = FormInputPhoneInputValueMode
+export type { FormInputPhoneInputValueMode }
 
 export type FormPhoneInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<FormAppInputProps<TFieldValues, TName>, "kind" | "phoneValueMode"> & {
+> = Omit<FormInputPhoneVariantProps<TFieldValues, TName>, "kind" | "valueMode"> & {
   valueMode?: FormInputPhoneInputValueMode
 }
 
+/**
+ * @deprecated Use {@link FormInput} with `kind="phone"` instead.
+ */
 function FormPhoneInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: FormPhoneInputProps<TFieldValues, TName>) {
   const { valueMode, ...rest } = props
-  return <FormAppInput {...rest} phoneValueMode={valueMode} kind="phone" />
+  return <FormInput {...rest} valueMode={valueMode} kind="phone" />
 }
 
 export { FormPhoneInput }
