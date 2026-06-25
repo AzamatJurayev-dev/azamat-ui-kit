@@ -3,7 +3,7 @@ import { UploadIcon } from "lucide-react"
 
 import { Button, type ButtonProps } from "@/components/ui/button"
 
-export type TableImportButtonProps = Omit<ButtonProps, "onChange"> & {
+export type TableImportButtonProps = Omit<ButtonProps, "onChange" | "onClick"> & {
   accept?: string
   multiple?: boolean
   label?: React.ReactNode

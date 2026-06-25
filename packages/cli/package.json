@@ -1,11 +1,11 @@
 {
   "name": "azamat-ui-kit-cli",
-  "version": "0.2.3",
+  "version": "0.3.2",
   "description": "CLI for Azamat UI Kit source-copy, presets, and theme setup.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "azamat-ui-kit": "dist/index.js"
+    "azamat-ui-kit": "dist/index.cjs"
   },
   "files": [
     "dist",

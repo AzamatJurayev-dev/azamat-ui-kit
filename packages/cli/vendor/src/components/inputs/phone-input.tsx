@@ -57,7 +57,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         trailing={trailingContent}
         mask={(rawValue) => formatPhoneDigits(rawValue, countryCode, maxDigits)}
         unmask={onlyDigits}
-        onValueChange={(maskedValue, rawValue) => onValueChange?.(maskedValue, rawValue)}
+        onValueChange={(maskedValue: string, rawValue: string) => onValueChange?.(maskedValue, rawValue)}
         {...props}
       />
     )

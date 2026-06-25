@@ -9,6 +9,7 @@ export type DataViewLabels = {
   loadingTitle?: React.ReactNode
   loadingDescription?: React.ReactNode
   errorTitle?: React.ReactNode
+  errorDescription?: React.ReactNode
   emptyTitle?: React.ReactNode
   emptyDescription?: React.ReactNode
 }
@@ -72,7 +73,11 @@ function DataView<TItem = unknown>({
       {selectionBar}
       <div data-slot="data-view-content" className={contentClassName}>
         {state === "loading" ? loadingState ?? <InlineState tone="loading" title={labels?.loadingTitle ?? "Loading"} description={labels?.loadingDescription} /> : null}
-        {state === "error" ? errorState ?? <InlineState tone="error" title={labels?.errorTitle ?? "Something went wrong"} /> : null}
+        {state === "error"
+          ? errorState ?? (
+              <InlineState tone="error" title={labels?.errorTitle ?? "Something went wrong"} description={labels?.errorDescription} />
+            )
+          : null}
         {state === "empty" ? empty ?? <InlineState tone="empty" title={labels?.emptyTitle ?? "No data"} description={labels?.emptyDescription} /> : null}
         {state === "idle" ? renderContent?.(data, { view, state }) ?? <div className="grid gap-3">{data.map((item, index) => renderItem?.(item, index) ?? <pre key={index} className="rounded-lg border bg-card p-3 text-xs">{JSON.stringify(item, null, 2)}</pre>)}</div> : null}
       </div>

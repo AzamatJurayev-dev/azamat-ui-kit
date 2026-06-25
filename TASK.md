@@ -76,7 +76,7 @@ See also:
 - [ ] Replace string-based `scripts/a11y-smoke.mjs` with render-based tests.
 - [x] Add Vitest + Testing Library or other render-test infrastructure.
 - [x] Add `test:render` script.
-- [ ] Add `test:cli` script.
+- [x] Add `test:cli` script.
 - [x] Add `test:fixtures` script.
 - [ ] Add stable primitive render, keyboard and aria tests.
 - [ ] Add DataTable search/loading/empty/error/row/pagination/visibility tests.
@@ -121,14 +121,14 @@ See also:
 - [x] Confirm whether `@fontsource-variable/geist` should remain a runtime dependency; if not needed by components, move it out of package dependencies.
 - [x] Reduce `npm i azamat-ui-kit` install weight by bundling CLI-only dependencies into the published CLI artifact instead of shipping them as separate runtime installs.
 - [x] Split CLI into a separate publishable package, `azamat-ui-kit-cli`, so the runtime library stays focused on component delivery.
-- [ ] Add CLI publish/version sync checks so `azamat-ui-kit` and `azamat-ui-kit-cli` cannot drift accidentally.
+- [x] Add CLI publish/version sync checks so `azamat-ui-kit` and `azamat-ui-kit-cli` cannot drift accidentally.
 
 ### P0. Test infrastructure upgrade
 
 - [ ] Replace the current string-based `scripts/a11y-smoke.mjs` with render-based tests using a real DOM test environment.
 - [x] Add a test runner decision: Vitest + Testing Library is the likely fit for React component render tests.
 - [x] Add `test:render` script for component render/interaction tests.
-- [ ] Add `test:cli` script for CLI temp-project tests.
+- [x] Add `test:cli` script for CLI temp-project tests.
 - [x] Add `test:fixtures` script for built-package consumer tests.
 - [ ] Update `test:run` to include render tests once the first stable set exists.
 - [ ] Keep the old string smoke temporarily under a different name only if it still catches useful regressions.

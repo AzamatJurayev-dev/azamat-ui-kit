@@ -49,7 +49,7 @@ function DateRangeInput({
         value={value?.from ?? ""}
         placeholder={fromPlaceholder}
         className={inputClassName}
-        onValueChange={(from) => nextValue({ from })}
+        onValueChange={(from: string) => nextValue({ from })}
         {...fromInputProps}
       />
       <span className="hidden text-sm text-muted-foreground sm:inline-flex">{separator}</span>
@@ -57,7 +57,7 @@ function DateRangeInput({
         value={value?.to ?? ""}
         placeholder={toPlaceholder}
         className={inputClassName}
-        onValueChange={(to) => nextValue({ to })}
+        onValueChange={(to: string) => nextValue({ to })}
         {...toInputProps}
       />
     </div>

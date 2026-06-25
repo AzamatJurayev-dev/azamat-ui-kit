@@ -68,7 +68,16 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "transitional",
         label: "Compatibility aliases",
         description: "Older wrapper names that still work, but new docs and new product work should prefer FormInput with a matching kind.",
-        components: ["FormSearchInput", "FormPasswordInput", "FormNumberInput", "FormPhoneInput", "FormDateInput"],
+        components: [
+          "AppInput",
+          "UniversalInput",
+          "FormAppInput",
+          "FormSearchInput",
+          "FormPasswordInput",
+          "FormNumberInput",
+          "FormPhoneInput",
+          "FormDateInput",
+        ],
       },
       {
         id: "advanced",

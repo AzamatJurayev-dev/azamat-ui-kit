@@ -12,7 +12,7 @@ export type TableExportOption = {
   disabled?: boolean
 }
 
-export type TableExportMenuProps = Omit<ButtonProps, "onSelect"> & {
+export type TableExportMenuProps = Omit<ButtonProps, "onSelect" | "onClick"> & {
   options?: TableExportOption[]
   label?: React.ReactNode
   menuLabel?: React.ReactNode

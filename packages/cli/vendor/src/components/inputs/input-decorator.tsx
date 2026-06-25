@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { Input } from "@/components/ui/input"
+import { InputPrimitive } from "@/components/ui/input-primitive"
 import { cn } from "@/lib/utils"
 
 const inputDecoratorVariants = cva("relative flex w-full items-center", {
@@ -25,7 +25,7 @@ const inputDecoratorVariants = cva("relative flex w-full items-center", {
   },
 })
 
-export type InputDecoratorProps = Omit<React.ComponentProps<typeof Input>, "value"> &
+export type InputDecoratorProps = Omit<React.ComponentProps<typeof InputPrimitive>, "value"> &
   VariantProps<typeof inputDecoratorVariants> & {
     value?: string | number | null
     leading?: React.ReactNode
@@ -80,7 +80,7 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
           </span>
         )}
 
-        <Input
+        <InputPrimitive
           ref={ref}
           value={value == null ? "" : String(value)}
           className={cn(hasLeading && "pl-8", hasTrailing && "pr-9", inputClassName, className)}

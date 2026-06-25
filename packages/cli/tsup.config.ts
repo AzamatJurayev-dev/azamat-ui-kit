@@ -2,7 +2,7 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: ["../../cli/index.ts"],
-  format: ["esm"],
+  format: ["cjs"],
   target: "node18",
   clean: true,
   dts: false,
@@ -12,6 +12,11 @@ export default defineConfig({
   treeshake: true,
   noExternal: ["commander", "prompts", "fs-extra", "execa", "kolorist"],
   outDir: "dist",
+  outExtension() {
+    return {
+      js: ".cjs",
+    }
+  },
   banner: {
     js: "#!/usr/bin/env node"
   }

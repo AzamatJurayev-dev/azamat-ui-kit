@@ -2,23 +2,54 @@
 import * as React from "react"
 import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
+import {
+  DateRangeInput,
+  type DateRangeInputProps,
+  type DateRangeValue,
+} from "@/components/inputs/date-range-input"
 import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
+import { Input, type InputTextProps } from "@/components/ui/input"
+import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
+import { MoneyInput, type MoneyInputProps } from "@/components/inputs/money-input"
 import { NumberInput, type NumberInputProps } from "@/components/inputs/number-input"
 import {
   PhoneInput,
   formatPhoneDigits,
   type PhoneInputProps,
 } from "@/components/inputs/phone-input"
-import { PasswordInput, type PasswordInputProps } from "@/components/inputs/password-input"
+import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
 import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
+import {
+  ClearableInput,
+  type ClearableInputProps,
+} from "@/components/inputs/clearable-input"
 import {
   FormFieldShell,
   type FormFieldShellControlProps,
 } from "@/components/form/form-field-shell"
-import { Input } from "@/components/ui/input"
 
-export type FormInputKind = "text" | "search" | "password" | "number" | "phone" | "date"
+export type FormInputKind =
+  | "text"
+  | "search"
+  | "password"
+  | "number"
+  | "phone"
+  | "date"
+  | "date-range"
+  | "clearable"
+  | "masked"
+  | "money"
+  | "quantity"
+
 export type FormInputPhoneInputValueMode = "raw" | "masked"
+type TextInputElementChangeEvent = React.ChangeEvent<HTMLInputElement>
+
+type FormTextInputControlProps = Omit<
+  React.ComponentProps<"input">,
+  "name" | "value" | "defaultValue"
+> & {
+  onChange?: (event: TextInputElementChangeEvent) => void
+}
 
 type FormControlledFieldProps<
   TFieldValues extends FieldValues,
@@ -33,11 +64,11 @@ type FormControlledFieldProps<
 export type FormTextInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<React.ComponentProps<typeof Input>, "name" | "value" | "defaultValue"> &
+> = Omit<FormTextInputControlProps, "inputMode" | "autoComplete" | "autoCorrect" | "autoCapitalize" | "className" | "size"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind?: "text"
     transformIn?: (value: unknown) => string | number | readonly string[] | undefined
-    transformOut?: (event: React.ChangeEvent<HTMLInputElement>) => unknown
+    transformOut?: (event: TextInputElementChangeEvent) => unknown
   }
 
 export type FormInputSearchVariantProps<
@@ -52,11 +83,12 @@ export type FormInputSearchVariantProps<
 export type FormInputPasswordVariantProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<PasswordInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
-  FormControlledFieldProps<TFieldValues, TName> & {
-    kind: "password"
-    onValueChange?: (value: string) => void
-  }
+> = Omit<React.ComponentProps<"input">, "name" | "value" | "defaultValue"> & {
+  kind: "password"
+  onValueChange?: (value: string) => void
+  min?: never
+  max?: never
+} & FormControlledFieldProps<TFieldValues, TName>
 
 export type FormInputNumberVariantProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -88,6 +120,55 @@ export type FormInputDateVariantProps<
     onValueChange?: (value: string) => void
   }
 
+export type FormInputDateRangeVariantProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<DateRangeInputProps, "name" | "value" | "onValueChange"> &
+  FormControlledFieldProps<TFieldValues, TName> & {
+    kind: "date-range"
+    onValueChange?: (value: DateRangeValue) => void
+  }
+
+export type FormInputClearableVariantProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<ClearableInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+  FormControlledFieldProps<TFieldValues, TName> & {
+    kind: "clearable"
+    emptyValue?: unknown
+    onValueChange?: (value: string) => void
+  }
+
+export type FormInputMaskedVariantProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<MaskedInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+  FormControlledFieldProps<TFieldValues, TName> & {
+    kind: "masked"
+    valueMode?: "masked" | "raw"
+    onValueChange?: (maskedValue: string, rawValue: string) => void
+  }
+
+export type FormInputMoneyVariantProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<MoneyInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+  FormControlledFieldProps<TFieldValues, TName> & {
+    kind: "money"
+    emptyValue?: unknown
+    onValueChange?: (value: number | null, rawValue: string) => void
+  }
+
+export type FormInputQuantityVariantProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> = Omit<QuantityInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+  FormControlledFieldProps<TFieldValues, TName> & {
+    kind: "quantity"
+    emptyValue?: unknown
+    onValueChange?: (value: number | null) => void
+  }
+
 export type FormInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -98,7 +179,15 @@ export type FormInputProps<
   | FormInputNumberVariantProps<TFieldValues, TName>
   | FormInputPhoneVariantProps<TFieldValues, TName>
   | FormInputDateVariantProps<TFieldValues, TName>
+  | FormInputDateRangeVariantProps<TFieldValues, TName>
+  | FormInputClearableVariantProps<TFieldValues, TName>
+  | FormInputMaskedVariantProps<TFieldValues, TName>
+  | FormInputMoneyVariantProps<TFieldValues, TName>
+  | FormInputQuantityVariantProps<TFieldValues, TName>
 
+type FormPasswordInputElement = React.ChangeEvent<HTMLInputElement>
+
+type InputTextInputProps = Omit<InputTextProps, "kind">
 function buildShellProps<
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
@@ -180,11 +269,11 @@ function FormInput<
                 disabled={disabled}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   field.onChange(value)
                   onValueChange?.(value)
                 }}
@@ -216,31 +305,33 @@ function FormInput<
             contentClassName: _contentClassName,
             fieldClassName,
             id,
-            kind: _kind,
-            onValueChange,
-            onBlur,
-            ...passwordProps
-          } = props as FormInputPasswordVariantProps<TFieldValues, TName>
+                kind: _kind,
+                onValueChange,
+                onBlur,
+                ...passwordProps
+              } = props as FormInputPasswordVariantProps<TFieldValues, TName>
 
           return (
             <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
-              <PasswordInput
-                {...passwordProps}
+              <Input
+                {...(passwordProps as Omit<InputTextInputProps, "kind">)}
+                type="password"
                 id={id ?? inputId}
-                name={field.name}
                 ref={field.ref}
+                name={field.name}
                 value={field.value ?? ""}
                 disabled={disabled}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
-                aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(value) => {
-                  field.onChange(value)
-                  onValueChange?.(value)
+                onChange={(event: FormPasswordInputElement) => {
+                  const nextValue = event.currentTarget.value
+                  field.onChange(nextValue)
+                  onValueChange?.(nextValue)
                 }}
+                aria-invalid={fieldState.invalid || undefined}
               />
             </FormFieldShell>
           )
@@ -288,11 +379,11 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onNumberChange={(value) => {
+                onNumberChange={(value: number | null) => {
                   field.onChange(value ?? emptyValue)
                   onNumberChange?.(value)
                 }}
@@ -351,11 +442,11 @@ function FormInput<
                 maxDigits={maxDigits}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(maskedValue, rawValue) => {
+                onValueChange={(maskedValue: string, rawValue: string) => {
                   const nextValue = valueMode === "raw" ? rawValue : maskedValue
                   field.onChange(nextValue)
                   onValueChange?.(nextValue, rawValue, maskedValue)
@@ -407,13 +498,297 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
-                onBlur={(event) => {
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onValueChange={(value) => {
+                onValueChange={(value: string) => {
                   field.onChange(value || emptyValue)
                   onValueChange?.(value)
+                }}
+              />
+            </FormFieldShell>
+          )
+        }
+
+        if (kind === "clearable") {
+          const {
+            control: _control,
+            name: _name,
+            label: _label,
+            description: _description,
+            required: _required,
+            className: _className,
+            layout: _layout,
+            descriptionPosition: _descriptionPosition,
+            labelAction: _labelAction,
+            requiredIndicator: _requiredIndicator,
+            errorIcon: _errorIcon,
+            showErrorIcon: _showErrorIcon,
+            disabled,
+            readOnly: _readOnly,
+            labelClassName: _labelClassName,
+            labelRowClassName: _labelRowClassName,
+            descriptionClassName: _descriptionClassName,
+            errorClassName: _errorClassName,
+            contentClassName: _contentClassName,
+            fieldClassName,
+            id,
+            kind: _kind,
+            emptyValue = "",
+            onValueChange,
+            onBlur,
+            ...clearableProps
+          } = props as FormInputClearableVariantProps<TFieldValues, TName>
+
+          return (
+            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+              <ClearableInput
+                {...clearableProps}
+                id={id ?? inputId}
+                name={field.name}
+                ref={field.ref}
+                value={field.value ?? ""}
+                disabled={disabled}
+                className={fieldClassName ?? resolvedFieldClassName}
+                aria-invalid={fieldState.invalid || undefined}
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
+                  field.onBlur()
+                  onBlur?.(event)
+                }}
+                onValueChange={(nextValue: string) => {
+                  field.onChange(nextValue || emptyValue)
+                  onValueChange?.(nextValue)
+                }}
+              />
+            </FormFieldShell>
+          )
+        }
+
+        if (kind === "masked") {
+          const {
+            control: _control,
+            name: _name,
+            label: _label,
+            description: _description,
+            required: _required,
+            className: _className,
+            layout: _layout,
+            descriptionPosition: _descriptionPosition,
+            labelAction: _labelAction,
+            requiredIndicator: _requiredIndicator,
+            errorIcon: _errorIcon,
+            showErrorIcon: _showErrorIcon,
+            disabled,
+            readOnly: _readOnly,
+            labelClassName: _labelClassName,
+            labelRowClassName: _labelRowClassName,
+            descriptionClassName: _descriptionClassName,
+            errorClassName: _errorClassName,
+            contentClassName: _contentClassName,
+            fieldClassName,
+            id,
+            kind: _kind,
+            valueMode = "raw",
+            onValueChange,
+            onBlur,
+            ...maskedProps
+          } = props as FormInputMaskedVariantProps<TFieldValues, TName>
+
+          return (
+            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+              <MaskedInput
+                {...maskedProps}
+                id={id ?? inputId}
+                name={field.name}
+                ref={field.ref}
+                value={String(field.value ?? "")}
+                disabled={disabled}
+                readOnly={props.readOnly}
+                className={fieldClassName ?? resolvedFieldClassName}
+                aria-invalid={fieldState.invalid || undefined}
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
+                  field.onBlur()
+                  onBlur?.(event)
+                }}
+                onValueChange={(maskedValue: string, rawValue: string) => {
+                  const nextValue = valueMode === "raw" ? rawValue : maskedValue
+                  field.onChange(nextValue)
+                  onValueChange?.(maskedValue, rawValue)
+                }}
+              />
+            </FormFieldShell>
+          )
+        }
+
+        if (kind === "money") {
+          const {
+            control: _control,
+            name: _name,
+            label: _label,
+            description: _description,
+            required: _required,
+            className: _className,
+            layout: _layout,
+            descriptionPosition: _descriptionPosition,
+            labelAction: _labelAction,
+            requiredIndicator: _requiredIndicator,
+            errorIcon: _errorIcon,
+            showErrorIcon: _showErrorIcon,
+            disabled,
+            readOnly: _readOnly,
+            labelClassName: _labelClassName,
+            labelRowClassName: _labelRowClassName,
+            descriptionClassName: _descriptionClassName,
+            errorClassName: _errorClassName,
+            contentClassName: _contentClassName,
+            fieldClassName,
+            id,
+            kind: _kind,
+            emptyValue = null,
+            onValueChange,
+            onBlur,
+            ...moneyProps
+          } = props as FormInputMoneyVariantProps<TFieldValues, TName>
+
+          return (
+            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+              <MoneyInput
+                {...moneyProps}
+                id={id ?? inputId}
+                name={field.name}
+                ref={field.ref}
+                value={field.value ?? null}
+                disabled={disabled}
+                readOnly={props.readOnly}
+                className={fieldClassName ?? resolvedFieldClassName}
+                aria-invalid={fieldState.invalid || undefined}
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
+                  field.onBlur()
+                  onBlur?.(event)
+                }}
+                onValueChange={(nextValue: number | null, rawValue: string) => {
+                  field.onChange(nextValue ?? emptyValue)
+                  onValueChange?.(nextValue, rawValue)
+                }}
+              />
+            </FormFieldShell>
+          )
+        }
+
+        if (kind === "quantity") {
+          const {
+            control: _control,
+            name: _name,
+            label: _label,
+            description: _description,
+            required: _required,
+            className: _className,
+            layout: _layout,
+            descriptionPosition: _descriptionPosition,
+            labelAction: _labelAction,
+            requiredIndicator: _requiredIndicator,
+            errorIcon: _errorIcon,
+            showErrorIcon: _showErrorIcon,
+            disabled,
+            readOnly: _readOnly,
+            labelClassName: _labelClassName,
+            labelRowClassName: _labelRowClassName,
+            descriptionClassName: _descriptionClassName,
+            errorClassName: _errorClassName,
+            contentClassName: _contentClassName,
+            fieldClassName,
+            id,
+            kind: _kind,
+            emptyValue = null,
+            onValueChange,
+            onBlur,
+            ...quantityProps
+          } = props as FormInputQuantityVariantProps<TFieldValues, TName>
+
+          return (
+            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+              <QuantityInput
+                {...quantityProps}
+                id={id ?? inputId}
+                name={field.name}
+                ref={field.ref}
+                value={field.value}
+                disabled={disabled}
+                readOnly={props.readOnly}
+                className={fieldClassName ?? resolvedFieldClassName}
+                aria-invalid={fieldState.invalid || undefined}
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
+                  field.onBlur()
+                  onBlur?.(event)
+                }}
+                onValueChange={(nextValue: number | null) => {
+                  field.onChange(nextValue ?? emptyValue)
+                  onValueChange?.(nextValue)
+                }}
+              />
+            </FormFieldShell>
+          )
+        }
+
+        if (kind === "date-range") {
+          const {
+            control: _control,
+            name: _name,
+            label: _label,
+            description: _description,
+            required: _required,
+            className: _className,
+            layout: _layout,
+            descriptionPosition: _descriptionPosition,
+            labelAction: _labelAction,
+            requiredIndicator: _requiredIndicator,
+            errorIcon: _errorIcon,
+            showErrorIcon: _showErrorIcon,
+            disabled,
+            labelClassName: _labelClassName,
+            labelRowClassName: _labelRowClassName,
+            descriptionClassName: _descriptionClassName,
+            errorClassName: _errorClassName,
+            contentClassName: _contentClassName,
+            fieldClassName,
+            id,
+            kind: _kind,
+            onValueChange,
+            onBlur,
+            ...rangeProps
+          } = props as FormInputDateRangeVariantProps<TFieldValues, TName>
+
+          const currentValue = field.value as DateRangeValue | undefined
+
+          return (
+            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+              <DateRangeInput
+                {...rangeProps}
+                id={id ?? inputId}
+                value={
+                  currentValue && typeof currentValue === "object"
+                    ? { from: currentValue.from, to: currentValue.to }
+                    : { from: "", to: "" }
+                }
+                fromInputProps={{
+                  ...(rangeProps.fromInputProps ?? {}),
+                  disabled,
+                  readOnly: props.readOnly,
+                }}
+                toInputProps={{
+                  ...(rangeProps.toInputProps ?? {}),
+                  disabled,
+                  readOnly: props.readOnly,
+                }}
+                onValueChange={(value) => {
+                  field.onChange(value)
+                  onValueChange?.(value)
+                }}
+                aria-invalid={fieldState.invalid || undefined}
+                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
+                  field.onBlur()
+                  onBlur?.(event)
                 }}
               />
             </FormFieldShell>
@@ -453,19 +828,22 @@ function FormInput<
         return (
           <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
             <Input
-              {...inputProps}
+              {...(inputProps as Omit<InputTextInputProps, "kind">)}
               id={id ?? inputId}
               ref={field.ref}
               name={field.name}
-              value={transformIn ? transformIn(field.value) : field.value ?? ""}
+              value={
+                (transformIn ? transformIn(field.value) : field.value ?? "") as unknown as
+                  InputTextInputProps["value"]
+              }
               disabled={disabled}
               readOnly={readOnly}
-              onBlur={(event) => {
+              onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                 field.onBlur()
                 onBlur?.(event)
               }}
-              onChange={(event) => {
-                field.onChange(transformOut ? transformOut(event) : event)
+              onChange={(event: TextInputElementChangeEvent) => {
+                field.onChange(transformOut ? transformOut(event) : event.target.value)
                 onChange?.(event)
               }}
               aria-invalid={fieldState.invalid || undefined}

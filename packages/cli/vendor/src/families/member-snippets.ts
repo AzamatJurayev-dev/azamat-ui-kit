@@ -200,7 +200,33 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     variant: "form",
     code: `import { FormInput } from "azamat-ui-kit"
 
-<FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
+    <FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
+  },
+  {
+    component: "AppInput",
+    title: "Deprecated alias migration",
+    description: "Use this alias only for legacy callers; migrate to Input with kind.",
+    language: "tsx",
+    variant: "migration",
+    code: `import { AppInput } from "azamat-ui-kit"
+
+<AppInput placeholder="Email" value={value} onValueChange={setValue} />
+
+// New work:
+// <Input placeholder="Email" value={value} onValueChange={setValue} />`,
+  },
+  {
+    component: "UniversalInput",
+    title: "Universal alias migration",
+    description: "UniversalInput exists for backward compatibility while consolidating variants.",
+    language: "tsx",
+    variant: "migration",
+    code: `import { UniversalInput } from "azamat-ui-kit"
+
+<UniversalInput placeholder="Email" kind="search" value={value} onValueChange={setValue} />
+
+// New work:
+// <Input kind="search" placeholder="Search" value={value} onValueChange={setValue} />`,
   },
   {
     component: "FormSearchInput",
@@ -266,6 +292,19 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 
 // New work:
 // <FormInput control={control} name="startDate" kind="date" label="Start date" />`,
+  },
+  {
+    component: "FormAppInput",
+    title: "Form alias migration",
+    description: "Use this only for legacy form code; prefer FormInput with kind.",
+    language: "tsx",
+    variant: "migration",
+    code: `import { FormAppInput } from "azamat-ui-kit"
+
+<FormAppInput control={control} name="quantity" kind="number" label="Quantity" min={0} />
+
+// New work:
+// <FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
   },
   {
     component: "FormDateRangeInput",
@@ -411,7 +450,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     variant: "basic",
     code: `import { InfoCard } from "azamat-ui-kit"
 
-<InfoCard title="Revenue" description="Current month" value="$48,000" />`,
+<InfoCard title="Revenue" description="Current month" content="$48,000" />`,
   },
   {
     component: "StatCard",

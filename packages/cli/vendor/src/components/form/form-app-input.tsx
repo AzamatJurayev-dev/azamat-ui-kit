@@ -1,183 +1,147 @@
-import * as React from "react"
-import { Controller, type FieldPath, type FieldValues } from "react-hook-form"
+import { type FieldPath, type FieldValues } from "react-hook-form"
 
+import { AppInputKind } from "@/components/inputs/app-input"
 import {
-  AppInput,
-  type AppClearableInputProps,
-  type AppDateInputProps,
-  type AppInputKind,
-  type AppInputProps,
-  type AppNumberInputProps,
-  type AppPasswordInputProps,
-  type AppPhoneInputProps,
-  type AppSearchInputProps,
-  type AppTextInputProps,
-} from "@/components/inputs/app-input"
-import { formatPhoneDigits } from "@/components/inputs/phone-input"
-import { FormFieldShell } from "@/components/form/form-field-shell"
-import {
-  pickFormFieldShellProps,
-  splitFormControlledProps,
-  type FormControlledFieldProps,
-} from "@/components/form/form-field-utils"
-
-type DistributiveOmit<TValue, TKeys extends keyof never | string | number | symbol> = TValue extends unknown
-  ? Omit<TValue, TKeys>
-  : never
+  FormInput,
+  type FormInputDateVariantProps,
+  type FormInputDateRangeVariantProps,
+  type FormInputClearableVariantProps,
+  type FormInputMaskedVariantProps,
+  type FormInputMoneyVariantProps,
+  type FormInputQuantityVariantProps,
+  type FormInputNumberVariantProps,
+  type FormInputPasswordVariantProps,
+  type FormInputPhoneVariantProps,
+  type FormInputSearchVariantProps,
+  type FormTextInputProps,
+} from "@/components/form/form-input"
 
 export type FormAppInputPhoneValueMode = "raw" | "masked"
+type FormAppInputVariantProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> =
+  | Omit<FormTextInputProps<TFieldValues, TName>, "kind" | "onValueChange">
+  | Omit<FormInputSearchVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputPasswordVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputNumberVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputPhoneVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputDateVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputDateRangeVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputClearableVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputMaskedVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputMoneyVariantProps<TFieldValues, TName>, "kind">
+  | Omit<FormInputQuantityVariantProps<TFieldValues, TName>, "kind">
 
 export type FormAppInputProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = FormControlledFieldProps<TFieldValues, TName> &
-  DistributiveOmit<AppInputProps, "name" | "value" | "defaultValue" | "onChange" | "onValueChange" | "onNumberChange"> & {
-    kind?: AppInputKind
-    emptyValue?: unknown
-    phoneValueMode?: FormAppInputPhoneValueMode
-    onChange?: React.ChangeEventHandler<HTMLInputElement>
-    onValueChange?: (...values: string[]) => void
-    onNumberChange?: (value: number | null) => void
-  }
-
-function stripFormOnlyProps<
-  TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>,
->(props: FormAppInputProps<TFieldValues, TName>) {
-  const { inputProps } = splitFormControlledProps(props as FormControlledFieldProps<FieldValues, FieldPath<FieldValues>>)
-  delete inputProps.emptyValue
-  delete inputProps.phoneValueMode
-  delete inputProps.onNumberChange
-  delete inputProps.onValueChange
-  delete inputProps.onChange
-  return inputProps
+> = FormAppInputVariantProps<TFieldValues, TName> & {
+  kind?: AppInputKind
+  phoneValueMode?: FormAppInputPhoneValueMode
 }
 
-function FormAppInput<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->(props: FormAppInputProps<TFieldValues, TName>) {
-  const {
-    control,
-    name,
-    fieldClassName,
-    id,
-    emptyValue,
-    phoneValueMode = "raw",
-    kind = "text",
-    onChange,
-    onValueChange,
-    onNumberChange,
-    onBlur,
-  } = props
-  const inputId = id ?? name
-  const shellProps = pickFormFieldShellProps(props)
-  const externalInputProps = stripFormOnlyProps(props)
+/**
+ * @deprecated Use {@link FormInput} directly.
+ */
+function FormAppInput<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>>(
+  props: FormAppInputProps<TFieldValues, TName>
+) {
+  const { phoneValueMode = "raw", kind = "text", ...rest } = props
 
-  return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field, fieldState }) => {
-        const error = fieldState.error?.message
-        const inputProps = {
-          ...externalInputProps,
-          id: inputId,
-          name: field.name,
-          ref: field.ref,
-          className: fieldClassName ?? (externalInputProps as { className?: string }).className,
-          value: field.value ?? "",
-          disabled: shellProps.disabled,
-          readOnly: shellProps.readOnly,
-          "aria-invalid": fieldState.invalid || undefined,
-          onBlur: (event: React.FocusEvent<HTMLInputElement>) => {
-            field.onBlur()
-            onBlur?.(event)
-          },
-        }
-        const phoneInputProps = inputProps as Omit<AppPhoneInputProps, "kind">
-        const phoneDisplayValue =
-          phoneValueMode === "raw" && field.value != null
-            ? formatPhoneDigits(
-                String(field.value),
-                phoneInputProps.countryCode,
-                phoneInputProps.maxDigits
-              )
-            : field.value ?? ""
+  const safeRest = rest as unknown as Record<string, unknown>
 
-        return (
-          <FormFieldShell {...shellProps} error={error} htmlFor={inputId}>
-            {kind === "number" ? (
-              <AppInput
-                {...(inputProps as Omit<AppNumberInputProps, "kind">)}
-                kind="number"
-                onNumberChange={(value) => {
-                  field.onChange(value ?? emptyValue ?? null)
-                  onNumberChange?.(value)
-                }}
-              />
-            ) : kind === "phone" ? (
-              <AppInput
-                {...(inputProps as Omit<AppPhoneInputProps, "kind">)}
-                kind="phone"
-                value={phoneDisplayValue}
-                onValueChange={(maskedValue, rawValue) => {
-                  const nextValue = phoneValueMode === "raw" ? rawValue : maskedValue
-                  field.onChange(nextValue)
-                  onValueChange?.(nextValue, rawValue, maskedValue)
-                }}
-              />
-            ) : kind === "date" ? (
-              <AppInput
-                {...(inputProps as Omit<AppDateInputProps, "kind">)}
-                kind="date"
-                onValueChange={(value) => {
-                  field.onChange(value || emptyValue || "")
-                  onValueChange?.(value)
-                }}
-              />
-            ) : kind === "search" ? (
-              <AppInput
-                {...(inputProps as Omit<AppSearchInputProps, "kind">)}
-                kind="search"
-                onValueChange={(value) => {
-                  field.onChange(value)
-                  onValueChange?.(value)
-                }}
-              />
-            ) : kind === "password" ? (
-              <AppInput
-                {...(inputProps as Omit<AppPasswordInputProps, "kind">)}
-                kind="password"
-                onValueChange={(value) => {
-                  field.onChange(value)
-                  onValueChange?.(value)
-                }}
-              />
-            ) : kind === "clearable" ? (
-              <AppInput
-                {...(inputProps as Omit<AppClearableInputProps, "kind">)}
-                kind="clearable"
-                onValueChange={(value) => {
-                  field.onChange(value)
-                  onValueChange?.(value)
-                }}
-              />
-            ) : (
-              <AppInput
-                {...(inputProps as Omit<AppTextInputProps, "kind">)}
-                kind="text"
-                onChange={(event) => {
-                  field.onChange(event.target.value)
-                  onChange?.(event)
-                }}
-              />
-            )}
-          </FormFieldShell>
-        )
-      }}
-    />
-  )
+  if (kind === "text") {
+    return <FormInput {...(safeRest as Omit<FormTextInputProps<TFieldValues, TName>, "kind">)} kind="text" />
+  }
+
+  if (kind === "search") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputSearchVariantProps<TFieldValues, TName>, "kind">)}
+        kind="search"
+      />
+    )
+  }
+
+  if (kind === "password") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputPasswordVariantProps<TFieldValues, TName>, "kind">)}
+        kind="password"
+      />
+    )
+  }
+
+  if (kind === "number") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputNumberVariantProps<TFieldValues, TName>, "kind">)}
+        kind="number"
+      />
+    )
+  }
+
+  if (kind === "phone") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputPhoneVariantProps<TFieldValues, TName>, "kind">)}
+        kind="phone"
+        valueMode={phoneValueMode}
+      />
+    )
+  }
+
+  if (kind === "date") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputDateVariantProps<TFieldValues, TName>, "kind">)}
+        kind="date"
+      />
+    )
+  }
+
+  if (kind === "date-range") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputDateRangeVariantProps<TFieldValues, TName>, "kind">)}
+        kind="date-range"
+      />
+    )
+  }
+
+  if (kind === "clearable") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputClearableVariantProps<TFieldValues, TName>, "kind">)}
+        kind="clearable"
+      />
+    )
+  }
+
+  if (kind === "masked") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputMaskedVariantProps<TFieldValues, TName>, "kind">)}
+        kind="masked"
+      />
+    )
+  }
+
+  if (kind === "money") {
+    return <FormInput {...(safeRest as Omit<FormInputMoneyVariantProps<TFieldValues, TName>, "kind">)} kind="money" />
+  }
+
+  if (kind === "quantity") {
+    return (
+      <FormInput
+        {...(safeRest as Omit<FormInputQuantityVariantProps<TFieldValues, TName>, "kind">)}
+        kind="quantity"
+      />
+    )
+  }
+
+  return <FormInput {...(safeRest as Omit<FormTextInputProps<TFieldValues, TName>, "kind">)} kind="text" />
 }
 
 export { FormAppInput }
