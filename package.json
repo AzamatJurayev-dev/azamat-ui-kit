@@ -108,9 +108,6 @@
     "registry.json",
     "README.md",
     "CHANGELOG.md",
-    "RELEASE.md",
-    "COMPONENT_MATURITY.md",
-    "UNIVERSAL_INPUT.md",
     "LICENSE"
   ],
   "scripts": {
@@ -123,6 +120,7 @@
     "pack:dry-run": "npm pack --dry-run",
     "pack:dry-run:cli": "npm pack --dry-run --workspace azamat-ui-kit-cli",
     "check-version-sync": "node scripts/check-version-sync.mjs",
+    "check-neutral-palette": "node scripts/check-neutral-palette.mjs",
     "test:cli": "node scripts/test-cli.mjs",
     "lint": "eslint .",
     "test:types": "tsc -p tsconfig.test.json --noEmit",

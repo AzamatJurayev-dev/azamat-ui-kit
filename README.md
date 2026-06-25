@@ -136,8 +136,6 @@ Primary families:
 - `Card`: `Card`, `InfoCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`
 - `DataTable`: table, toolbar, pagination, visibility, actions, bulk actions, presets
 
-See `PUBLIC_API_INVENTORY.md` for the current public boundary.
-
 ## Useful Imports
 
 ```tsx
@@ -156,6 +154,88 @@ import {
 ```
 
 Prefer local copied imports after using the CLI.
+
+## Advanced Inputs
+
+### AsyncSelect
+
+```tsx
+import * as React from "react"
+import { AsyncSelect, type AsyncSelectOption } from "azamat-ui-kit"
+
+const loadUsers = async (search: string): Promise<AsyncSelectOption[]> => {
+  const response = await fetch(`/api/users?q=${encodeURIComponent(search)}`)
+  const users = await response.json()
+
+  return users.map((user: { id: string; name: string }) => ({
+    value: user.id,
+    label: user.name,
+  }))
+}
+
+export function OwnerField() {
+  const [value, setValue] = React.useState<string>()
+
+  return (
+    <AsyncSelect
+      value={value}
+      onValueChange={setValue}
+      loadOptions={loadUsers}
+      loadSelectedOption={async (selectedId) => {
+        const response = await fetch(`/api/users/${selectedId}`)
+        const user = await response.json()
+        return { value: user.id, label: user.name }
+      }}
+      labels={{
+        placeholder: "Select owner",
+        searchPlaceholder: "Search owners...",
+        empty: "No owners found",
+      }}
+    />
+  )
+}
+```
+
+### AsyncMultiSelect
+
+```tsx
+import * as React from "react"
+import { AsyncMultiSelect, type AsyncSelectOption } from "azamat-ui-kit"
+
+const loadTags = async (search: string): Promise<AsyncSelectOption[]> => {
+  const response = await fetch(`/api/tags?q=${encodeURIComponent(search)}`)
+  const tags = await response.json()
+
+  return tags.map((tag: { id: string; label: string }) => ({
+    value: tag.id,
+    label: tag.label,
+  }))
+}
+
+export function TagField() {
+  const [value, setValue] = React.useState<string[]>([])
+
+  return (
+    <AsyncMultiSelect
+      value={value}
+      onValueChange={(nextValue) => setValue(nextValue)}
+      loadOptions={loadTags}
+      loadSelectedOptions={async (selectedIds) =>
+        selectedIds.map((id) => ({ value: id, label: id.toUpperCase() }))
+      }
+      maxSelected={5}
+      closeOnSelect={false}
+      showSelectAll
+      labels={{
+        placeholder: "Select tags",
+        searchPlaceholder: "Search tags...",
+        empty: "No tags found",
+        maxSelected: (max) => `You can select up to ${max} tags`,
+      }}
+    />
+  )
+}
+```
 
 ## Development
 
@@ -190,9 +270,7 @@ If npm requires 2FA bypass, create a granular access token with write access and
 
 ## Project Docs
 
-- `TASK.md`: active remaining work
-- `PUBLIC_API_INVENTORY.md`: canonical public surface
-- `COMPONENT_MATURITY.md`: readiness rules and status model
-- `UNIVERSAL_INPUT.md`: input/form input direction
-- `RELEASE.md`: release checklist
+- `README.md`: install and usage
 - `CHANGELOG.md`: user-facing changes
+- `componentFamilyCatalog`, `componentDocsGroups`, `componentFamilyMigrationMap`: family governance source-of-truth
+- `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, `DataTableFamily`: stable family labels in docs

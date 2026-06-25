@@ -174,13 +174,15 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
   }
 
   const inputProps = props as Omit<InputTextProps, "kind">
+  const { value, defaultValue, ...restInputProps } = inputProps
 
   return (
     <InputPrimitive
       ref={ref as React.ForwardedRef<HTMLInputElement>}
-      value={inputProps.value ?? ""}
-      type={inputProps.type ?? "text"}
-      {...(inputProps as React.ComponentProps<typeof InputPrimitive>)}
+      value={value ?? undefined}
+      defaultValue={value === undefined ? defaultValue : undefined}
+      type={restInputProps.type ?? "text"}
+      {...(restInputProps as React.ComponentProps<typeof InputPrimitive>)}
     />
   )
 })
