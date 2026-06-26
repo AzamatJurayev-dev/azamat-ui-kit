@@ -38,8 +38,6 @@ npm whoami
 npm publish --access public
 ```
 
-When publishing from CI later, store the npm token in GitHub Actions secrets and keep package provenance/2FA policy documented in the workflow handoff.
-
 ## Consumer smoke
 
 Automated smoke now exists:
@@ -77,26 +75,5 @@ npm view azamat-ui-kit version
 
 Recommended follow-up:
 
-- create a GitHub release for the same version
-- copy the matching version notes from `CHANGELOG.md`
 - update the separate docs/showcase app `azamat-ui` to install the published npm version
 - remove any local tarball or workspace workaround from the docs app
-
-## GitHub release notes template
-
-```md
-## Fixes
-- ...
-
-## Changed
-- ...
-
-## Docs
-- ...
-
-## Tests
-- ...
-
-## Known limitations
-- ...
-```
