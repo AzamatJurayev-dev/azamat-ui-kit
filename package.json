@@ -1,6 +1,6 @@
 {
   "name": "azamat-ui-kit",
-  "version": "0.3.5",
+  "version": "0.3.8",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",

@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.8 - 2026-06-26
+
+### Changed
+
+- polished the published input field chrome, decorator spacing, and clear action treatment
+- reduced nested-card noise in the docs input showcase and cleaned up the live field composition
+- moved detail-page side rails to wider breakpoints so preview content no longer collides with related panels
+
+## 0.3.7 - 2026-06-26
+
+### Fixed
+
+- restored the full root export contract so published package consumers receive patterns, families, and complete public component barrels from `azamat-ui-kit`
+
+## 0.3.6 - 2026-06-26
+
+### Changed
+
+- refined the base input, decorator, and clear action visuals for a cleaner published default field surface
+- softened tabs, cards, dialogs, popovers, and dropdown menus so overlay-heavy docs routes match the newer surface system
+
 ### Added
 
 - added `Button` loading, loading label, left icon, right icon, and `md`/`xl` size API coverage

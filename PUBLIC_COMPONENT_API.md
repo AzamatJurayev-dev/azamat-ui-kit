@@ -1,6 +1,6 @@
 # Public Component API
 
-Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.5`.
+Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.8`.
 
 This file tracks the canonical public docs entries that should lead the product mental model.
 Related helpers can stay public, but they should be introduced from the canonical surface detail page instead of being taught as separate first-level names.
@@ -134,4 +134,3 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `sorting` | `SortingState` | Controlled sort state. |
 | `rowSelection` | `RowSelectionState` | Controlled selection state. |
 | `pagination` | `PaginationStateProps` | Current page, size, total count, and handlers. |
-
