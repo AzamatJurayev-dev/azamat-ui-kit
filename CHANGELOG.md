@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.9 - 2026-06-26
+
+### Changed
+
+- refined `Badge` defaults so status labels look calmer, flatter, and more product-ready out of the box
+- simplified the Badge docs surface to remove heavy card-in-card composition around a small primitive
+
 ## 0.3.8 - 2026-06-26
 
 ### Changed
