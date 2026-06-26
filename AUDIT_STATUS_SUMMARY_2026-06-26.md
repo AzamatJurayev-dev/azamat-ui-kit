@@ -24,12 +24,21 @@ This file is the active audit status. A task is checked only when the current co
 - [x] Search results and command palette hide unfinished Blocks/Templates detail entries.
 - [x] `components/[slug]` route now shows API props for the component surface instead of requiring users to switch to docs route.
 - [x] Component detail code area no longer exposes a `CLI` tab for every component.
+- [x] Global shadows, panel radius, preview stage backgrounds and bento surfaces were softened to reduce card-inside-card visual noise.
+- [x] Dense hero typography on home, docs, installation, registry, search, blocks, templates and component detail routes was reduced.
+- [x] Core component showcases now use shared panel radius/background tokens instead of repeated radial-gradient cards.
+- [x] Button, Input, Tabs and Badge showcases were simplified so the component surface is primary and explanatory card noise is reduced.
+- [x] Repeated component playground `Preview note` blocks were removed from select, async-select, checkbox, dialog, popover, sheet, switch, textarea and data-table showcases.
+- [x] Undefined `--aui-text` / `--aui-text-muted` usages in public-site component demos were replaced with supported text tokens/classes.
+- [x] Mobile horizontal overflow was fixed on `/` and `/docs/installation`.
 - [x] `azamat-ui` passed `npm run typecheck`.
 - [x] `azamat-ui` passed `npm run lint`.
 - [x] `azamat-ui` passed `npm run smoke:routes`.
 - [x] `azamat-ui` passed `npm run check:links`.
 - [x] `azamat-ui` passed `npm run build`.
 - [x] Browser QA verified `/blocks`, `/templates`, `/components/button`, `/docs/components/button` and mobile `/templates` without console errors.
+- [x] Browser QA verified `/`, `/components`, `/components/button`, `/components/input`, `/components/data-table`, `/docs`, `/docs/installation` and `/search` without console errors.
+- [x] Browser QA verified mobile `/`, `/components`, `/components/button`, `/components/input`, `/docs/installation` and `/search`; no horizontal overflow remains on the previously failing `/` and `/docs/installation` routes.
 
 ## Product And Docs Remaining
 
@@ -46,14 +55,14 @@ This file is the active audit status. A task is checked only when the current co
 
 ## Visual Quality Remaining
 
-- [ ] Reduce oversized hero typography on dense docs and catalog pages where it still feels like marketing instead of documentation.
-- [ ] Remove remaining nested card patterns in docs pages: `SurfaceCard` inside framed panels, `.aui-panel` inside `.aui-panel`, and preview wrappers inside preview wrappers.
-- [ ] Review all `aui-bento`, `SurfaceCard`, `.aui-panel`, `.aui-preview-stage` usage and keep cards only for repeated items, modals or genuinely framed tools.
+- [x] Reduce oversized hero typography on dense docs and catalog pages where it still feels like marketing instead of documentation.
+- [x] Remove remaining nested card patterns in docs pages: `SurfaceCard` inside framed panels, `.aui-panel` inside `.aui-panel`, and preview wrappers inside preview wrappers.
+- [x] Review all `aui-bento`, `SurfaceCard`, `.aui-panel`, `.aui-preview-stage` usage and keep cards only for repeated items, modals or genuinely framed tools.
 - [ ] Rebalance dark theme contrast for buttons, pills, badges, tabs and preview surfaces.
-- [ ] Rebalance light theme contrast for header, search, navigation pills, controls and code blocks.
+- [x] Rebalance light theme contrast for header, search, navigation pills, controls and code blocks.
 - [ ] Verify no component preview falls back to browser-default button/input styling.
 - [ ] Verify component demos use package components from `azamat-ui-kit`, not local substitute HTML controls where a package component exists.
-- [ ] Tighten spacing rhythm across docs, components, component detail and installation pages.
+- [x] Tighten spacing rhythm across docs, components, component detail and installation pages.
 - [ ] Check mobile layout for text clipping, horizontal overflow, overlapping buttons and scroll traps on every public route.
 
 ## Blocks And Templates Remaining
