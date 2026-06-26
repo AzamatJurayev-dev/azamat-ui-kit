@@ -13,11 +13,11 @@ const badgeVariants = cva(
         default:
           "border-primary/20 bg-primary text-primary-foreground shadow-[0_8px_18px_color-mix(in_oklch,var(--primary),transparent_82%)] [a]:hover:bg-primary/88",
         secondary:
-          "border-border/70 bg-secondary text-secondary-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] [a]:hover:bg-secondary/84",
+          "border-border/65 bg-secondary/88 text-secondary-foreground shadow-[0_1px_0_rgba(255,255,255,0.06)] [a]:hover:bg-secondary",
         destructive:
           "border-destructive/18 bg-destructive/12 text-destructive focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/18",
         outline:
-          "border-border/85 bg-background/88 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] [a]:hover:bg-muted [a]:hover:text-foreground",
+          "border-border/68 bg-background/80 text-foreground shadow-none [a]:hover:bg-muted/72 [a]:hover:text-foreground",
         ghost:
           "bg-transparent text-muted-foreground hover:bg-muted/70 hover:text-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
@@ -30,9 +30,9 @@ const badgeVariants = cva(
         danger: "border-destructive/20 bg-destructive/12 text-destructive dark:bg-destructive/20",
       },
       size: {
-        sm: "min-h-5 px-2 py-0.5 text-[0.65rem]",
-        default: "min-h-6 px-2.5 py-1 text-[0.7rem]",
-        lg: "min-h-7 px-3 py-1 text-xs",
+        sm: "min-h-5 px-2.5 py-0.5 text-[0.65rem]",
+        default: "min-h-6 px-3 py-1 text-[0.7rem]",
+        lg: "min-h-7 px-3.5 py-1 text-xs",
       },
       dot: {
         true: "pl-2",
