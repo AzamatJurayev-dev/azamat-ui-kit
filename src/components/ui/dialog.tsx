@@ -51,7 +51,7 @@ function DialogContent({
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[var(--radius-3xl)] border border-border/85 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-6 text-sm text-popover-foreground shadow-[0_34px_110px_color-mix(in_oklch,var(--foreground),transparent_82%)] ring-1 ring-foreground/8 backdrop-blur duration-100 outline-none sm:max-w-lg data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[var(--radius-3xl)] border border-border/72 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_8%),var(--popover))] p-6 text-sm text-popover-foreground shadow-[0_28px_88px_color-mix(in_oklch,var(--foreground),transparent_86%)] ring-1 ring-foreground/6 backdrop-blur duration-100 outline-none sm:max-w-lg data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -61,11 +61,11 @@ function DialogContent({
           <DialogPrimitive.Close
             data-slot="dialog-close"
             render={
-              <Button
-                variant="ghost"
-                className="absolute top-3 right-3 rounded-full border border-transparent hover:border-border/60"
-                size="icon-sm"
-              />
+        <Button
+          variant="ghost"
+          className="absolute top-3 right-3 rounded-full border border-transparent hover:border-border/50 hover:bg-muted/50"
+          size="icon-sm"
+        />
             }
           >
             <XIcon />
@@ -99,7 +99,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "-mx-6 -mb-6 flex flex-col-reverse gap-2 rounded-b-[var(--radius-3xl)] border-t border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),transparent_30%),color-mix(in_oklch,var(--muted),transparent_12%))] p-5 sm:flex-row sm:justify-end",
+        "-mx-6 -mb-6 flex flex-col-reverse gap-2 rounded-b-[var(--radius-3xl)] border-t border-border/58 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),transparent_38%),color-mix(in_oklch,var(--muted),transparent_18%))] p-5 sm:flex-row sm:justify-end",
         className
       )}
       {...props}
