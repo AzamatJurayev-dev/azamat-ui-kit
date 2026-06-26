@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils"
 const dataTableToolbarVariants = cva("flex flex-col", {
   variants: {
     variant: {
-      default: "rounded-[var(--radius-2xl)] border border-border/70 bg-card/80 shadow-sm ring-1 ring-foreground/5",
+      default: "rounded-[var(--radius-2xl)] border border-border/70 bg-card/72 shadow-sm ring-1 ring-foreground/5",
       plain: "border-transparent bg-transparent shadow-none",
-      soft: "rounded-[var(--radius-2xl)] border border-transparent bg-muted/45 shadow-none",
+      soft: "rounded-[var(--radius-2xl)] border border-transparent bg-muted/32 shadow-none",
     },
     density: {
       compact: "gap-3 p-3",
