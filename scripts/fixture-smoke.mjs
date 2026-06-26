@@ -46,6 +46,9 @@ async function installConsumerFixture({
   for (const [relativePath, contents] of Object.entries(sourceFiles)) {
     const fullPath = path.join(cwd, relativePath)
     await fsExtra.ensureDir(path.dirname(fullPath))
+    if (/from\s+["']azamat-ui-kit\/[^"']+["']/.test(contents)) {
+      throw new Error("Fixture source must not use package subpath imports. Use package root only.")
+    }
     await fs.writeFile(fullPath, contents, "utf8")
   }
 
@@ -108,23 +111,63 @@ async function main() {
         include: ["src"],
       },
       sourceFiles: {
-        "src/main.tsx": `import { Button, DataTable, ToastProvider } from "azamat-ui-kit"
-import { ActionBar } from "azamat-ui-kit/actions/action-bar"
-import { FormBuilder } from "azamat-ui-kit/patterns/form-builder"
-import { SmartFormShell } from "azamat-ui-kit/form/smart-form-shell"
-import { TableExportMenu } from "azamat-ui-kit/data-table/table-export-menu"
+        "src/main.tsx": `import {
+  Button,
+  DataTable,
+  ToastProvider,
+  Input,
+  Select,
+  AsyncSelect,
+  FormInput,
+  InfoCard,
+  CommandPalette,
+  ProgressCard,
+  RightClickMenu,
+} from "azamat-ui-kit"
 
-const value = [Button, DataTable, ToastProvider, FormBuilder, ActionBar, SmartFormShell, TableExportMenu]
+const value = [
+  Button,
+  DataTable,
+  ToastProvider,
+  Input,
+  Select,
+  AsyncSelect,
+  FormInput,
+  InfoCard,
+  CommandPalette,
+  ProgressCard,
+  RightClickMenu,
+]
 
 export default value
 `,
-        "src/runtime-check.mjs": `import { Button, DataTable, ToastProvider } from "azamat-ui-kit"
-import { ActionBar } from "azamat-ui-kit/actions/action-bar"
-import { FormBuilder } from "azamat-ui-kit/patterns/form-builder"
-import { SmartFormShell } from "azamat-ui-kit/form/smart-form-shell"
-import { TableExportMenu } from "azamat-ui-kit/data-table/table-export-menu"
+        "src/runtime-check.mjs": `import {
+  Button,
+  DataTable,
+  ToastProvider,
+  Input,
+  Select,
+  AsyncSelect,
+  FormInput,
+  InfoCard,
+  CommandPalette,
+  ProgressCard,
+  RightClickMenu,
+} from "azamat-ui-kit"
 
-const required = [Button, DataTable, ToastProvider, FormBuilder, ActionBar, SmartFormShell, TableExportMenu]
+const required = [
+  Button,
+  DataTable,
+  ToastProvider,
+  Input,
+  Select,
+  AsyncSelect,
+  FormInput,
+  InfoCard,
+  CommandPalette,
+  ProgressCard,
+  RightClickMenu,
+]
 
 if (required.some((entry) => typeof entry !== "function" && typeof entry !== "object")) {
   throw new Error("Vite fixture import contract failed")
@@ -159,32 +202,93 @@ if (required.some((entry) => typeof entry !== "function" && typeof entry !== "ob
         include: ["app", "src"],
       },
       sourceFiles: {
-        "app/page.tsx": `import { Button, CommandPalette } from "azamat-ui-kit"
-import { InputFamily } from "azamat-ui-kit/families"
-import { WorkspaceShell } from "azamat-ui-kit/layout/workspace-shell"
-import { ProgressRing } from "azamat-ui-kit/charts/progress-ring"
-import { ActionSystem } from "azamat-ui-kit/patterns/action-system"
+        "app/page.tsx": `"use client"
+
+import {
+  Button,
+  CommandPalette,
+  Input,
+  InfoCard,
+  ProgressCard,
+  Calendar,
+  DatePicker,
+  DateRangePicker,
+  DataTablePagination,
+  useSessionStorageState,
+  useToast,
+} from "azamat-ui-kit"
+
+function DemoToastButton() {
+  const { addToast } = useToast()
+
+  return (
+    <button
+      type="button"
+      onClick={() => addToast({ title: "demo", description: "ready" })}
+    >
+      Show toast
+    </button>
+  )
+}
 
 export default function Page() {
+  const [value, setValue] = useSessionStorageState("fixture", "off")
+
   return (
     <div>
       <Button>Open</Button>
       <CommandPalette open={false} onOpenChange={() => {}} groups={[]} />
-      <InputFamily.Search placeholder="Search" />
-      <WorkspaceShell />
-      <ProgressRing value={40} />
-      <ActionSystem item={{ id: "1" }} actions={[]} />
+      <Input placeholder="Search" value={value} onChange={() => setValue("changed")} />
+      <InfoCard title="Demo card" description="Root exports from package only." />
+      <ProgressCard title="Load" value={70} />
+      <Calendar />
+      <DatePicker value="2026-01-01" onValueChange={() => {}} />
+      <DateRangePicker value={{ from: new Date(), to: new Date() }} onValueChange={() => {}} />
+      <DataTablePagination
+        pageIndex={1}
+        pageSize={10}
+        rowCount={30}
+        onPageChange={() => {}}
+        onPageSizeChange={() => {}}
+      />
+      <DemoToastButton />
     </div>
   )
 }
 `,
-        "src/runtime-check.mjs": `import { Button, CommandPalette } from "azamat-ui-kit"
-import { InputFamily } from "azamat-ui-kit/families"
-import { WorkspaceShell } from "azamat-ui-kit/layout/workspace-shell"
-import { ProgressRing } from "azamat-ui-kit/charts/progress-ring"
-import { ActionSystem } from "azamat-ui-kit/patterns/action-system"
+        "src/runtime-check.mjs": `import {
+  Button,
+  CommandPalette,
+  Input,
+  InfoCard,
+  ProgressCard,
+  Calendar,
+  DatePicker,
+  DateRangePicker,
+  DataTablePagination,
+  useSessionStorageState,
+  useToast,
+} from "azamat-ui-kit"
 
-const required = [Button, CommandPalette, InputFamily, WorkspaceShell, ProgressRing, ActionSystem]
+const required = [
+  Button,
+  CommandPalette,
+  Input,
+  InfoCard,
+  ProgressCard,
+  Calendar,
+  DatePicker,
+  DateRangePicker,
+  DataTablePagination,
+  useSessionStorageState,
+  useToast,
+]
+
+const hasHooks = useSessionStorageState && useToast
+
+if (!hasHooks) {
+  throw new Error("Root export contract for hooks failed")
+}
 
 if (required.some((entry) => typeof entry !== "function" && typeof entry !== "object")) {
   throw new Error("Next fixture import contract failed")

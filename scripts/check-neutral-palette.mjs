@@ -4,30 +4,16 @@ import process from "node:process"
 
 const root = process.cwd()
 const sourceRoot = path.join(root, "src", "components")
-const forbidden = [
-  "zinc",
-  "slate",
-  "neutral",
-  "stone",
-  "white",
-  "black",
-]
+
+const hardcodedClassRegex =
+  /\b(?:bg|text|border|ring|outline|placeholder|decoration|fill|stroke|from|via|to)-[a-z0-9-]*(?:white|black|neutral|slate|zinc|stone)(?:\/[0-9.]+%?)?\b/gi
 
 const allowedContexts = [
-  /dark:disabled:bg-white\/8/,
-  /dark:border-white\/12/,
-  /dark:bg-white\/6/,
-  /dark:bg-white\/8/,
-  /dark:text-white\//,
-  /text-white/,
-  /bg-white/,
-  /border-white/,
-  /bg-black\/30/,
-  /rgba\(255,255,255/,
-  /color-mix\(in_oklch,var\(--background\),white_/,
-  /color-mix\(in_oklch,var\(--primary\),white_/,
-  /color-mix\(in_oklch,var\(--secondary\),white_/,
-  /color-mix\(in_oklch,var\(--destructive\),white_/,
+  /rgba\(255,255,255,/,
+  /rgba\(0,0,0,/,
+  /color-mix\(in_oklch,var\(--(background|primary|secondary|destructive|muted|card|popover|foreground|border|input|ring|accent|chart-[1-5]),/,
+  /color-mix\(in_oklch,var\(--chart-/,
+  /bg-(?:blue|amber|emerald|red|yellow|green|orange|purple|sky|teal|rose|cyan|indigo|violet|pink)-\d{3,4}[^"]*text-white/,
 ]
 
 async function walk(dir) {
@@ -61,15 +47,15 @@ for (const file of files) {
   const lines = content.split(/\r?\n/)
 
   lines.forEach((line, index) => {
-    if (line.includes("white") || line.includes("black") || line.includes("zinc") || line.includes("slate") || line.includes("neutral") || line.includes("stone")) {
-      if (isAllowed(line)) return
+    if (!line.includes("white") && !line.includes("black") && !line.includes("zinc") && !line.includes("slate") && !line.includes("neutral") && !line.includes("stone")) {
+      return
+    }
 
-      for (const token of forbidden) {
-        if (line.includes(token)) {
-          findings.push(`${path.relative(root, file)}:${index + 1} -> ${token}`)
-          break
-        }
-      }
+    if (isAllowed(line)) return
+
+    const matches = line.match(hardcodedClassRegex)
+    if (matches?.length) {
+      findings.push(`${path.relative(root, file)}:${index + 1} -> ${line.trim()}`)
     }
   })
 }

@@ -123,6 +123,7 @@
     "docs:public-api": "node scripts/generate-public-component-api.mjs",
     "check-version-sync": "node scripts/check-version-sync.mjs",
     "check-neutral-palette": "node scripts/check-neutral-palette.mjs",
+    "check:public-api-inventory": "node scripts/check-public-api-inventory.mjs",
     "check:public-api-docs": "node scripts/check-public-api-docs.mjs",
     "test:cli": "node scripts/test-cli.mjs",
     "lint": "eslint .",
@@ -134,7 +135,7 @@
     "test:root-exports": "node scripts/check-root-exports.mjs",
     "test:render": "vitest run --config vitest.config.ts",
     "test:fixtures": "node scripts/fixture-smoke.mjs",
-    "test:run": "npm run test:types && npm run test:render && npm run test:a11y && npm run test:registry && npm run test:family-governance && npm run test:root-exports && npm run test:build-output && npm run check:public-api-docs",
+    "test:run": "npm run test:types && npm run test:render && npm run test:a11y && npm run test:registry && npm run test:family-governance && npm run test:root-exports && npm run test:build-output && npm run check:public-api-docs && npm run check:public-api-inventory",
     "release:gate": "npm run lint && npm run build:all && npm run check-version-sync && npm run test:run && npm run test:cli && npm run test:fixtures && npm pack --dry-run && npm run pack:dry-run:cli"
   },
   "peerDependencies": {

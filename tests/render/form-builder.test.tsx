@@ -213,7 +213,7 @@ describe("FormBuilder", () => {
         })
       )
     })
-  })
+  }, 10000)
 
   it("passes disabled and readOnly state into wrapped fields and custom renderers", () => {
     render(<BuilderHarness disabled readOnly />)

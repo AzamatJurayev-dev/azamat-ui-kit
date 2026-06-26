@@ -16,7 +16,7 @@ Current status:
 - [x] Add built-package consumer fixture smoke tests.
 - [x] Add build-output guard for accidental browser ESM `require(...)` fallbacks.
 - [x] Run `npm run release:gate` from a clean tree before every publish.
-- [ ] Publish only after the docs app consumes the package without local aliases.
+- [x] Publish only after the docs app consumes the package without local aliases.
 
 ## P0 - Test Coverage
 
@@ -39,7 +39,7 @@ Current status:
 - [ ] Keep `InfoCard` as the public display-card name; avoid promoting implementation names.
 - [ ] Keep large system helpers on subpath/source-copy surfaces unless they pass API review.
 - [x] Mark migration aliases separately in registry metadata.
-- [ ] Align `PUBLIC_API_INVENTORY.md` whenever root exports change.
+- [x] Align `PUBLIC_API_INVENTORY.md` whenever root exports change.
 
 ## P1 - CLI And Source Copy
 

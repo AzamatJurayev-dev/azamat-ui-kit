@@ -29,6 +29,7 @@ Canonical docs entries:
 
 - `Input`
 - `FormInput`
+- `FormFieldShell`
 - `Select`
 - `FormSelect`
 - `DatePicker`
@@ -48,7 +49,7 @@ Related helpers and modes:
 
 ### Data And Overlay
 
-`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `DataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `DataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`
+`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `createDataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `createDataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`
 
 ### Charts And Hooks
 
