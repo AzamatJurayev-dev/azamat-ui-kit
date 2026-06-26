@@ -10,23 +10,23 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "border-primary/78 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--primary),white_12%),var(--primary))] text-primary-foreground shadow-[0_1px_0_rgba(255,255,255,0.18),0_14px_34px_color-mix(in_oklch,var(--primary),transparent_72%)] hover:-translate-y-px hover:bg-[linear-gradient(180deg,color-mix(in_oklch,var(--primary),white_18%),color-mix(in_oklch,var(--primary),white_4%))] hover:shadow-[0_1px_0_rgba(255,255,255,0.22),0_18px_38px_color-mix(in_oklch,var(--primary),transparent_66%)]",
+          "border-primary/28 bg-primary text-primary-foreground shadow-[0_10px_28px_color-mix(in_oklch,var(--primary),transparent_80%)] hover:-translate-y-px hover:bg-[color-mix(in_oklch,var(--primary),white_8%)] hover:shadow-[0_14px_32px_color-mix(in_oklch,var(--primary),transparent_74%)]",
         outline:
-          "border-border/90 bg-background/96 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:-translate-y-px hover:border-ring/35 hover:bg-accent hover:text-foreground hover:shadow-[0_10px_20px_rgba(15,23,42,0.08)] aria-expanded:border-ring/35 aria-expanded:bg-accent aria-expanded:text-foreground dark:border-muted/16 dark:bg-muted/12 dark:hover:bg-muted/16 dark:hover:text-foreground",
+          "border-border/78 bg-background text-foreground shadow-none hover:-translate-y-px hover:border-ring/34 hover:bg-accent/72 hover:text-foreground hover:shadow-[0_10px_20px_rgba(15,23,42,0.05)] aria-expanded:border-ring/34 aria-expanded:bg-accent/72 aria-expanded:text-foreground dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.07] dark:hover:text-foreground",
         secondary:
-          "border-border/60 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--secondary),white_24%),var(--secondary))] text-secondary-foreground shadow-[0_1px_0_rgba(255,255,255,0.1)] hover:-translate-y-px hover:bg-[linear-gradient(180deg,color-mix(in_oklch,var(--secondary),white_18%),color-mix(in_oklch,var(--secondary),var(--foreground)_6%))] hover:text-secondary-foreground aria-expanded:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_6%)] aria-expanded:text-secondary-foreground",
+          "border-border/70 bg-secondary text-secondary-foreground shadow-none hover:-translate-y-px hover:border-border/82 hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_4%)] hover:text-secondary-foreground aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
-          "border-transparent bg-transparent text-foreground/86 shadow-none hover:border-border/60 hover:bg-accent/88 hover:text-foreground aria-expanded:border-border/60 aria-expanded:bg-accent/88 aria-expanded:text-foreground dark:text-foreground/84 dark:hover:bg-accent/12",
+          "border-transparent bg-transparent text-foreground/86 shadow-none hover:border-border/45 hover:bg-accent/72 hover:text-foreground aria-expanded:border-border/45 aria-expanded:bg-accent/72 aria-expanded:text-foreground dark:text-foreground/84 dark:hover:bg-white/[0.07]",
         destructive:
-          "border-destructive/34 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--destructive),white_8%),var(--destructive))] text-destructive-foreground shadow-[0_1px_0_rgba(255,255,255,0.16),0_14px_34px_color-mix(in_oklch,var(--destructive),transparent_74%)] hover:-translate-y-px hover:bg-[linear-gradient(180deg,color-mix(in_oklch,var(--destructive),white_6%),color-mix(in_oklch,var(--destructive),black_6%))] hover:shadow-[0_1px_0_rgba(255,255,255,0.2),0_18px_38px_color-mix(in_oklch,var(--destructive),transparent_68%)] focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          "border-destructive/26 bg-destructive text-destructive-foreground shadow-[0_10px_28px_color-mix(in_oklch,var(--destructive),transparent_82%)] hover:-translate-y-px hover:bg-[color-mix(in_oklch,var(--destructive),white_8%)] hover:shadow-[0_14px_32px_color-mix(in_oklch,var(--destructive),transparent_76%)] focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default:
-          "h-9 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
+          "h-9 gap-1.5 px-3.5 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
         xs: "h-7 gap-1 rounded-[min(var(--radius-lg),12px)] px-2.5 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-8 gap-1 rounded-[min(var(--radius-lg),14px)] px-3 text-[0.82rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2 [&_svg:not([class*='size-'])]:size-3.5",
-        md: "h-9 gap-1.5 px-3 has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5",
+        sm: "h-8 gap-1 rounded-[min(var(--radius-lg),14px)] px-3.5 text-[0.82rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-2.5 has-data-[icon=inline-start]:pl-2.5 [&_svg:not([class*='size-'])]:size-3.5",
+        md: "h-9 gap-1.5 px-3.5 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
         lg: "h-10 gap-1.5 px-4 has-data-[icon=inline-end]:pr-3 has-data-[icon=inline-start]:pl-3",
         xl: "h-11 gap-2 px-5 text-base has-data-[icon=inline-end]:pr-4 has-data-[icon=inline-start]:pl-4",
         icon: "size-9",

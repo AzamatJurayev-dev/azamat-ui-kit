@@ -10,15 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "border-primary/78 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--primary),white_12%),var(--primary))] text-primary-foreground shadow-[0_1px_0_rgba(255,255,255,0.18),0_14px_34px_color-mix(in_oklch,var(--primary),transparent_72%)] hover:-translate-y-px hover:bg-[linear-gradient(180deg,color-mix(in_oklch,var(--primary),white_18%),color-mix(in_oklch,var(--primary),white_4%))] hover:shadow-[0_1px_0_rgba(255,255,255,0.22),0_18px_38px_color-mix(in_oklch,var(--primary),transparent_66%)]",
+          "border-primary/28 bg-primary text-primary-foreground shadow-[0_10px_28px_color-mix(in_oklch,var(--primary),transparent_80%)] hover:-translate-y-px hover:bg-[color-mix(in_oklch,var(--primary),white_8%)] hover:shadow-[0_14px_32px_color-mix(in_oklch,var(--primary),transparent_74%)]",
         outline:
-          "border-border/70 bg-background/82 text-foreground shadow-[0_1px_0_rgba(255,255,255,0.06)] hover:-translate-y-px hover:border-ring/34 hover:bg-accent/88 hover:text-foreground hover:shadow-[0_10px_20px_rgba(15,23,42,0.06)] aria-expanded:border-ring/34 aria-expanded:bg-accent/88 aria-expanded:text-foreground dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] dark:hover:text-foreground",
+          "border-border/78 bg-background text-foreground shadow-none hover:-translate-y-px hover:border-ring/34 hover:bg-accent/72 hover:text-foreground hover:shadow-[0_10px_20px_rgba(15,23,42,0.05)] aria-expanded:border-ring/34 aria-expanded:bg-accent/72 aria-expanded:text-foreground dark:border-white/10 dark:bg-white/[0.03] dark:hover:bg-white/[0.07] dark:hover:text-foreground",
         secondary:
-          "border-border/65 bg-secondary/86 text-secondary-foreground shadow-[0_1px_0_rgba(255,255,255,0.08)] hover:-translate-y-px hover:border-border/78 hover:bg-secondary hover:text-secondary-foreground aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "border-border/70 bg-secondary text-secondary-foreground shadow-none hover:-translate-y-px hover:border-border/82 hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_4%)] hover:text-secondary-foreground aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
         ghost:
-          "border-transparent bg-transparent text-foreground/86 shadow-none hover:border-border/50 hover:bg-accent/76 hover:text-foreground aria-expanded:border-border/50 aria-expanded:bg-accent/76 aria-expanded:text-foreground dark:text-foreground/84 dark:hover:bg-white/[0.07]",
+          "border-transparent bg-transparent text-foreground/86 shadow-none hover:border-border/45 hover:bg-accent/72 hover:text-foreground aria-expanded:border-border/45 aria-expanded:bg-accent/72 aria-expanded:text-foreground dark:text-foreground/84 dark:hover:bg-white/[0.07]",
         destructive:
-          "border-destructive/34 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--destructive),white_8%),var(--destructive))] text-destructive-foreground shadow-[0_1px_0_rgba(255,255,255,0.16),0_14px_34px_color-mix(in_oklch,var(--destructive),transparent_74%)] hover:-translate-y-px hover:bg-[linear-gradient(180deg,color-mix(in_oklch,var(--destructive),white_6%),color-mix(in_oklch,var(--destructive),black_6%))] hover:shadow-[0_1px_0_rgba(255,255,255,0.2),0_18px_38px_color-mix(in_oklch,var(--destructive),transparent_68%)] focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
+          "border-destructive/26 bg-destructive text-destructive-foreground shadow-[0_10px_28px_color-mix(in_oklch,var(--destructive),transparent_82%)] hover:-translate-y-px hover:bg-[color-mix(in_oklch,var(--destructive),white_8%)] hover:shadow-[0_14px_32px_color-mix(in_oklch,var(--destructive),transparent_76%)] focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {

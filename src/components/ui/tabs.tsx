@@ -13,7 +13,7 @@ const TabsList = React.forwardRef<
       ref={ref}
       data-slot="tabs-list"
       className={cn(
-        "inline-flex min-h-11 items-center justify-center gap-1 rounded-[var(--radius-2xl)] border border-border/72 bg-muted/44 p-1 text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_24px_rgba(15,23,42,0.05)] backdrop-blur",
+        "inline-flex min-h-11 items-center justify-center gap-1 rounded-[var(--radius-2xl)] border border-border/72 bg-muted/34 p-1 text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_24px_rgba(15,23,42,0.04)] backdrop-blur",
         className
       )}
     {...props}
@@ -29,7 +29,7 @@ const TabsTrigger = React.forwardRef<
       ref={ref}
       data-slot="tabs-trigger"
       className={cn(
-        "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-[calc(var(--radius-xl)-2px)] border border-transparent px-3.5 py-1.5 text-sm font-medium text-muted-foreground ring-offset-background transition-[background-color,color,box-shadow,border-color] hover:bg-background/56 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:border-border/72 data-[selected]:bg-background/95 data-[selected]:text-foreground data-[selected]:shadow-[0_1px_0_rgba(255,255,255,0.22),0_10px_24px_rgba(15,23,42,0.08)] dark:data-[selected]:border-white/10 dark:data-[selected]:bg-white/8 dark:data-[selected]:shadow-[0_1px_0_rgba(255,255,255,0.06),0_12px_30px_rgba(0,0,0,0.18)]",
+        "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-[calc(var(--radius-xl)-2px)] border border-transparent px-3.5 py-1.5 text-sm font-medium text-muted-foreground ring-offset-background transition-[background-color,color,box-shadow,border-color] hover:bg-background/52 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[selected]:border-border/72 data-[selected]:bg-background data-[selected]:text-foreground data-[selected]:shadow-[0_1px_0_rgba(255,255,255,0.18),0_8px_20px_rgba(15,23,42,0.06)] dark:data-[selected]:border-white/10 dark:data-[selected]:bg-white/7 dark:data-[selected]:shadow-[0_1px_0_rgba(255,255,255,0.06),0_10px_24px_rgba(0,0,0,0.18)]",
         className
       )}
     {...props}

@@ -71,7 +71,7 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
           <span
             data-slot="input-leading"
             className={cn(
-              "absolute left-2.5 z-10 flex items-center text-muted-foreground [&_svg]:size-4",
+              "absolute left-4 z-10 flex items-center text-muted-foreground/74 [&_svg]:size-4",
               !leadingPointerEvents && "pointer-events-none",
               leadingClassName
             )}
@@ -83,7 +83,7 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
         <InputPrimitive
           ref={ref}
           value={value == null ? "" : String(value)}
-          className={cn(hasLeading && "pl-8", hasTrailing && "pr-9", inputClassName, className)}
+          className={cn(hasLeading && "pl-11", hasTrailing && "pr-12", inputClassName, className)}
           {...props}
         />
 
@@ -91,7 +91,7 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
           <span
             data-slot="input-trailing"
             className={cn(
-              "absolute right-2 z-10 flex items-center gap-1 text-muted-foreground",
+              "absolute right-3 z-10 flex items-center gap-1.5 text-muted-foreground/74",
               !trailingPointerEvents && "pointer-events-none",
               trailingClassName
             )}

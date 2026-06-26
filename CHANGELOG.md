@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.10 - 2026-06-26
+
+### Changed
+
+- refined the published primitive layer for `Button`, `Input`, `Select`, `Checkbox`, `Switch`, `Tabs`, and `Card` so default surfaces feel flatter, calmer, and more product-ready
+- cleaned up shared input chrome, decorator spacing, and clear action affordances so installed field components ship with a stronger default UI
+
 ## 0.3.9 - 2026-06-26
 
 ### Changed

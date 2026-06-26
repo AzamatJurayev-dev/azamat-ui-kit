@@ -49,7 +49,7 @@ function DataTablePagination({
     <div
       data-slot="data-table-pagination"
       className={cn(
-        "flex flex-col gap-3 border-t border-border/80 px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
+        "flex flex-col gap-3 border-t border-border/70 bg-muted/[0.18] px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
         className
       )}
       {...props}
@@ -71,7 +71,7 @@ function DataTablePagination({
                 value: String(option),
               }))}
               disabled={disabled}
-              triggerClassName="h-9 w-20 rounded-full border-border/85 bg-background/94"
+              triggerClassName="h-9 w-20 rounded-full border-border/70 bg-background/80 shadow-none"
             />
           </div>
         )}

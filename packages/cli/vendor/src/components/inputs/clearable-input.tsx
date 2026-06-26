@@ -80,7 +80,7 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
               <button
                 type="button"
                 aria-label={clearLabel}
-                className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="inline-flex size-7 items-center justify-center rounded-full border border-transparent bg-transparent text-muted-foreground/74 transition hover:border-border/60 hover:bg-muted/58 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
                 onClick={clearValue}
               >
                 <XIcon className="size-4" />

@@ -9,11 +9,11 @@ const cardVariants = cva(
     variants: {
       variant: {
         default:
-          "border-border/72 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_10%),var(--card))] shadow-[0_8px_24px_rgba(15,23,42,0.05)] ring-1 ring-foreground/4",
+          "border-border/72 bg-card shadow-[0_10px_30px_rgba(15,23,42,0.05)] ring-1 ring-foreground/3",
         elevated:
-          "border-border/68 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_14%),var(--card))] shadow-[0_1px_2px_rgba(15,23,42,0.04),0_18px_40px_rgba(15,23,42,0.07)] ring-1 ring-foreground/4",
+          "border-border/68 bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_20px_46px_rgba(15,23,42,0.08)] ring-1 ring-foreground/4",
         outline: "border-border/72 bg-card shadow-none",
-        soft: "border-border/40 bg-muted/34 shadow-none",
+        soft: "border-border/40 bg-muted/28 shadow-none",
         ghost: "border-transparent bg-transparent shadow-none",
       },
       size: {
@@ -142,7 +142,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center rounded-b-[var(--radius-2xl)] border-t border-border/60 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),transparent_38%),color-mix(in_oklch,var(--muted),transparent_16%))] p-(--card-spacing)",
+        "flex items-center rounded-b-[var(--radius-2xl)] border-t border-border/60 bg-muted/22 p-(--card-spacing)",
         className
       )}
       {...props}
