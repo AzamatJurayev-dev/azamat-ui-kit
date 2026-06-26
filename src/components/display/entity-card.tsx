@@ -3,7 +3,7 @@ import * as React from "react"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
-export type EntityCardProps = React.ComponentProps<typeof Card> & {
+export type EntityCardProps = Omit<React.ComponentProps<typeof Card>, "title"> & {
   title: React.ReactNode
   description?: React.ReactNode
   media?: React.ReactNode

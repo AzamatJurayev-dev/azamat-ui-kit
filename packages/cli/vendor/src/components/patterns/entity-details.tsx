@@ -17,7 +17,7 @@ export type EntityDetailsSection = {
   content: React.ReactNode
 }
 
-export type EntityDetailsProps = React.ComponentProps<"div"> & {
+export type EntityDetailsProps = Omit<React.ComponentProps<"div">, "title"> & {
   title: React.ReactNode
   subtitle?: React.ReactNode
   avatar?: React.ReactNode

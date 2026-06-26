@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
-export type MetricCardProps = React.ComponentProps<typeof Card> & {
+export type MetricCardProps = Omit<React.ComponentProps<typeof Card>, "title"> & {
   title: React.ReactNode
   value: React.ReactNode
   description?: React.ReactNode

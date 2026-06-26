@@ -1,5 +1,5 @@
 import * as React from "react"
-import { render, screen, waitFor } from "@testing-library/react"
+import { render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { useForm, useWatch } from "react-hook-form"
 import { describe, expect, it } from "vitest"
@@ -79,7 +79,10 @@ describe("FormSelect consolidation", () => {
     render(<SimpleHarness />)
 
     await user.click(screen.getByRole("combobox"))
-    await user.click(screen.getByRole("option", { name: "Manager" }))
+    const listbox = await screen.findByRole("listbox")
+    const managerOption = within(listbox).getByText("Manager").closest('[role="option"]')
+    expect(managerOption).toBeTruthy()
+    await user.click(managerOption!)
 
     expect(screen.getByTestId("role-value").textContent).toBe("manager")
   })

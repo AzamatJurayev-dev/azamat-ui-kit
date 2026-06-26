@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-export type HoverCardProps = React.ComponentProps<"div"> & {
+export type HoverCardProps = Omit<React.ComponentProps<"div">, "content"> & {
   trigger: React.ReactNode
   content: React.ReactNode
   side?: "top" | "right" | "bottom" | "left"
