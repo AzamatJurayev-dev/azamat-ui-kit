@@ -111,6 +111,7 @@
     "LICENSE"
   ],
   "scripts": {
+    "prepublishOnly": "npm run release:gate",
     "clean": "node scripts/clean-dist.mjs",
     "build": "npm run clean && vite build && tsc -p tsconfig.build.json && npm run test:build-output",
     "build:lib": "vite build && tsc -p tsconfig.build.json",

@@ -15,7 +15,7 @@ Current status:
 - [x] Add CLI temp-project smoke tests for Vite and Next-style apps.
 - [x] Add built-package consumer fixture smoke tests.
 - [x] Add build-output guard for accidental browser ESM `require(...)` fallbacks.
-- [ ] Run `npm run release:gate` from a clean tree before every publish.
+- [x] Run `npm run release:gate` from a clean tree before every publish.
 - [ ] Publish only after the docs app consumes the package without local aliases.
 
 ## P0 - Test Coverage
