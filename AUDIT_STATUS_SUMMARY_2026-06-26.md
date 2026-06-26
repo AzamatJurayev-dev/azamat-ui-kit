@@ -19,6 +19,11 @@ This file is the active audit status. A task is checked only when the current co
 - [x] Component preview frame no longer uses the extra `.aui-preview-shell` wrapper layer.
 - [x] Component preview examples remove one inner card wrapper around the actual package showcase.
 - [x] Next.js dev indicator is disabled in local `azamat-ui` QA so it does not cover mobile content while reviewing.
+- [x] Global command palette is more compact and no longer pins unfinished Templates as a primary action.
+- [x] Search route copy now focuses on docs and production-ready components instead of blocks/templates.
+- [x] Search results and command palette hide unfinished Blocks/Templates detail entries.
+- [x] `components/[slug]` route now shows API props for the component surface instead of requiring users to switch to docs route.
+- [x] Component detail code area no longer exposes a `CLI` tab for every component.
 - [x] `azamat-ui` passed `npm run typecheck`.
 - [x] `azamat-ui` passed `npm run lint`.
 - [x] `azamat-ui` passed `npm run smoke:routes`.
