@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.11 - 2026-06-29
+
+### Changed
+
+- refined `Button` defaults so installed package buttons have calmer radius, clearer focus rings, and better dark-mode contrast
+- improved disabled and loading button states so they stay readable without looking like broken outline controls
+- reduced heavy hover shadows on primary and destructive actions for cleaner dashboard usage
+
 ## 0.3.10 - 2026-06-26
 
 ### Changed

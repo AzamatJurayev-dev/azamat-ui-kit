@@ -213,6 +213,7 @@ describe("public API", () => {
     expect(migrationAliases.sort()).toMatchInlineSnapshot(`
       [
         "AppInput",
+        "FormAppInput",
         "FormDateInput",
         "FormNumberInput",
         "FormPasswordInput",
