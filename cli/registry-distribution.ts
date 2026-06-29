@@ -49,7 +49,6 @@ const explicitDistribution: Partial<Record<ComponentName, RegistryDistribution>>
   hooks: "foundation",
   "data-table": "system",
   "form-builder": "system",
-  "form-builder-presets": "system",
   "resource-page": "system",
   "resource-detail-page": "system",
   "action-system": "system",

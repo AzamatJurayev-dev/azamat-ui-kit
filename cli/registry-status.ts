@@ -117,7 +117,6 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "resource-page": "preview",
   "resource-detail-page": "preview",
   "form-builder": "experimental",
-  "form-builder-presets": "experimental",
   patterns: "preview",
 
   "use-session-storage-state": "stable",

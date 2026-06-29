@@ -18,7 +18,6 @@ import {
   SmartFormShell,
 } from "@/components/form"
 import { FormBuilder } from "@/components/patterns/form-builder"
-import * as FormBuilderPresets from "@/components/patterns/form-builder-presets"
 
 const FormFamily = {
   Field: FormFieldShell,
@@ -39,7 +38,6 @@ const FormFamily = {
   DatePicker: FormDatePicker,
   DateRangePicker: FormDateRangePicker,
   Builder: FormBuilder,
-  Presets: FormBuilderPresets,
 } as const
 
 export { FormFamily }

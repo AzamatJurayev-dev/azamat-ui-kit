@@ -703,10 +703,10 @@ const actionsColumn = createDataTableActionsColumn({
   },
   {
     component: "Input",
-    title: "CLI install",
-    description: "Install the package before consuming family-first docs routes.",
+    title: "CLI add",
+    description: "Copy the input source into your app.",
     language: "cli",
     variant: "cli",
-    code: `npm install azamat-ui-kit`,
+    code: `npx azamat-ui-kit-cli add input`,
   },
 ] as const

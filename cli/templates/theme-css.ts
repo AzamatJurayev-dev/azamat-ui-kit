@@ -112,7 +112,7 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-control-surface-muted: color-mix(in oklch, var(--muted), white 24%);
   --aui-control-surface-disabled: color-mix(in oklch, var(--muted), var(--background) 62%);
   --aui-control-surface-readonly: color-mix(in oklch, var(--muted), var(--background) 78%);
-  --aui-control-shadow: 0 1px 0 oklch(1 0 0 / 72%), 0 10px 28px oklch(0.24 0.02 255 / 7%);
+  --aui-control-shadow: 0 8px 22px oklch(0.24 0.02 255 / 6%);
   --aui-control-border-strong: color-mix(in oklch, var(--border), var(--foreground) 7%);
   --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 68%);
   --aui-control-panel-bg: color-mix(in oklch, var(--background), white 18%);
@@ -142,8 +142,8 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-table-container-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 12%), var(--card));
   --aui-table-border: color-mix(in oklch, var(--border), white 5%);
   --aui-table-selection-surface: color-mix(in oklch, var(--background), white 28%);
-  --aui-button-primary-shadow: 0 1px 0 color-mix(in oklch, white, transparent 18%), 0 16px 34px color-mix(in oklch, var(--primary), transparent 78%);
-  --aui-button-danger-shadow: 0 1px 0 color-mix(in oklch, white, transparent 28%), 0 16px 34px color-mix(in oklch, var(--destructive), transparent 80%);
+  --aui-button-primary-shadow: 0 10px 24px color-mix(in oklch, var(--primary), transparent 84%);
+  --aui-button-danger-shadow: 0 10px 24px color-mix(in oklch, var(--destructive), transparent 86%);
   --aui-table-header-bg: linear-gradient(180deg, oklch(0.972 0.008 250), oklch(0.954 0.01 250));
   --aui-table-toolbar-bg: linear-gradient(180deg, oklch(0.996 0.002 95), oklch(0.978 0.006 250));
   --aui-table-toolbar-border: color-mix(in oklch, var(--border), white 16%);
@@ -233,8 +233,8 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 72%);
   --aui-control-panel-bg: oklch(1 0 0 / 5%);
   --aui-control-panel-shadow: 0 1px 0 oklch(1 0 0 / 6%), 0 20px 48px oklch(0 0 0 / 28%);
-  --aui-button-primary-shadow: 0 1px 0 color-mix(in oklch, white, transparent 82%), 0 18px 40px color-mix(in oklch, var(--primary), transparent 82%);
-  --aui-button-danger-shadow: 0 1px 0 color-mix(in oklch, white, transparent 84%), 0 18px 40px color-mix(in oklch, var(--destructive), transparent 84%);
+  --aui-button-primary-shadow: 0 10px 26px color-mix(in oklch, var(--primary), transparent 88%);
+  --aui-button-danger-shadow: 0 10px 26px color-mix(in oklch, var(--destructive), transparent 88%);
   --aui-table-header-bg: linear-gradient(180deg, oklch(0.255 0.012 255), oklch(0.225 0.012 255));
   --aui-table-toolbar-bg: linear-gradient(180deg, oklch(0.24 0.012 255), oklch(0.215 0.012 255));
   --aui-table-toolbar-border: oklch(1 0 0 / 9%);
@@ -291,7 +291,7 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
 
   [data-slot="button"][data-variant="default"]:not(:disabled):not([aria-disabled="true"]):hover {
     background: color-mix(in oklch, var(--primary), white 10%);
-    box-shadow: 0 1px 0 color-mix(in oklch, white, transparent 18%), 0 20px 42px color-mix(in oklch, var(--primary), transparent 74%);
+    box-shadow: 0 12px 28px color-mix(in oklch, var(--primary), transparent 84%);
   }
 
   [data-slot="button"][data-variant="secondary"] {
@@ -337,12 +337,12 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     border-color: color-mix(in oklch, var(--aui-warning), transparent 64%);
     background: color-mix(in oklch, var(--aui-warning), transparent 82%);
     color: color-mix(in oklch, var(--aui-warning-foreground), black 12%);
-    box-shadow: 0 1px 0 color-mix(in oklch, white, transparent 82%), 0 16px 34px color-mix(in oklch, var(--aui-warning), transparent 82%);
+    box-shadow: 0 10px 24px color-mix(in oklch, var(--aui-warning), transparent 86%);
   }
 
   [data-slot="button"][data-variant="warning"]:not(:disabled):not([aria-disabled="true"]) {
     background: color-mix(in oklch, var(--aui-warning), transparent 74%);
-    box-shadow: 0 1px 0 color-mix(in oklch, white, transparent 84%), 0 18px 38px color-mix(in oklch, var(--aui-warning), transparent 76%);
+    box-shadow: 0 12px 28px color-mix(in oklch, var(--aui-warning), transparent 84%);
   }
 
   [data-slot="button"][data-variant="link"] {

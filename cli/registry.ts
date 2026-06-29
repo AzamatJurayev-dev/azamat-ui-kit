@@ -176,7 +176,6 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "filter-chips", category: "filters", files: [file("src/components/filters/filter-chips.tsx", "{components}/filters/filter-chips.tsx")] },
   { name: "floating-action-button", category: "actions", files: [file("src/components/actions/floating-action-button.tsx", "{components}/actions/floating-action-button.tsx")] },
   { name: "form-builder", category: "patterns", files: [file("src/components/patterns/form-builder.tsx", "{components}/patterns/form-builder.tsx")] },
-  { name: "form-builder-presets", category: "patterns", files: [file("src/components/patterns/form-builder-presets.ts", "{components}/patterns/form-builder-presets.ts")] },
   { name: "horizontal-bar-chart", category: "charts", files: [file("src/components/charts/horizontal-bar-chart.tsx", "{components}/charts/horizontal-bar-chart.tsx")] },
   { name: "image-upload", category: "upload", files: [file("src/components/upload/image-upload.tsx", "{components}/upload/image-upload.tsx")] },
   { name: "input-group", category: "ui", files: [file("src/components/ui/input-group.tsx", "{ui}/input-group.tsx")] },

@@ -1,7 +1,6 @@
 export * from './resource-page'
 export * from './resource-detail-page'
 export * from './form-builder'
-export * from './form-builder-presets'
 export * from './settings-section'
 export * from './action-system'
 export * from './status-system'

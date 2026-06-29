@@ -2,7 +2,7 @@
 
 Source-copy CLI for Azamat UI Kit.
 
-Use this package to copy editable component source into a Next.js or Vite project. Normal app usage does not require `npm install azamat-ui-kit`.
+Use this package to copy editable component source into a Next.js or Vite project. New apps should use copied local source, not a runtime UI package.
 
 ## Next.js
 
