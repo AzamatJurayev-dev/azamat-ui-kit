@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { InputPrimitive, type InputPrimitiveProps } from "@/components/ui/input-primitive"
+import { InputDecorator } from "@/components/inputs/input-decorator"
 import { ClearableInput, type ClearableInputProps } from "@/components/inputs/clearable-input"
 import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
 import { DateRangeInput, type DateRangeInputProps } from "@/components/inputs/date-range-input"
@@ -11,6 +12,7 @@ import { PasswordInput, type PasswordInputProps } from "@/components/inputs/pass
 import { PhoneInput, type PhoneInputProps } from "@/components/inputs/phone-input"
 import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
 import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
+import { cn } from "@/lib/utils"
 
 export type InputKind =
   | "text"
@@ -28,6 +30,17 @@ export type InputKind =
 export type InputTextProps = Omit<InputPrimitiveProps, "value"> & {
   kind?: "text"
   value?: string | number | readonly string[] | null
+  leading?: React.ReactNode
+  trailing?: React.ReactNode
+  helperText?: React.ReactNode
+  errorText?: React.ReactNode
+  showCharacterCount?: boolean
+  countFormatter?: (currentLength: number, maxLength?: number) => React.ReactNode
+  wrapperClassName?: string
+  inputClassName?: string
+  helperClassName?: string
+  leadingPointerEvents?: boolean
+  trailingPointerEvents?: boolean
 }
 
 export type InputClearableProps = Omit<ClearableInputProps, "kind"> & {
@@ -84,6 +97,13 @@ export type InputProps =
   | InputMaskedProps
   | InputDateProps
   | InputDateRangeProps
+
+function getInputTextLength(value: InputTextProps["value"] | InputTextProps["defaultValue"]) {
+  if (typeof value === "string") return value.length
+  if (typeof value === "number") return String(value).length
+  if (Array.isArray(value)) return value.join("").length
+  return 0
+}
 
 const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((props, ref) => {
   const kind = props.kind ?? "text"
@@ -174,16 +194,99 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
   }
 
   const inputProps = props as Omit<InputTextProps, "kind">
-  const { value, defaultValue, ...restInputProps } = inputProps
+  const {
+    value,
+    defaultValue,
+    leading,
+    trailing,
+    helperText,
+    errorText,
+    showCharacterCount = false,
+    countFormatter,
+    wrapperClassName,
+    inputClassName,
+    helperClassName,
+    leadingPointerEvents = false,
+    trailingPointerEvents = true,
+    onChange,
+    maxLength,
+    className,
+    ...restInputProps
+  } = inputProps
+  const isControlled = value !== undefined
+  const [uncontrolledLength, setUncontrolledLength] = React.useState(() => getInputTextLength(defaultValue))
+  const currentLength = isControlled ? getInputTextLength(value) : uncontrolledLength
+  const helperMessage = errorText ?? helperText
+  const helperTone = errorText ? "text-destructive" : "text-muted-foreground"
 
-  return (
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (!isControlled) {
+      setUncontrolledLength(event.target.value.length)
+    }
+    onChange?.(event)
+  }
+
+  const textInput = leading || trailing ? (
+    <InputDecorator
+      ref={ref as React.ForwardedRef<HTMLInputElement>}
+      value={value ?? undefined}
+      defaultValue={value === undefined ? defaultValue : undefined}
+      type={restInputProps.type ?? "text"}
+      leading={leading}
+      trailing={trailing}
+      leadingPointerEvents={leadingPointerEvents}
+      trailingPointerEvents={trailingPointerEvents}
+      wrapperClassName={wrapperClassName}
+      inputClassName={inputClassName}
+      className={className}
+      onChange={handleChange}
+      maxLength={maxLength}
+      {...(restInputProps as React.ComponentProps<typeof InputDecorator>)}
+    />
+  ) : (
     <InputPrimitive
       ref={ref as React.ForwardedRef<HTMLInputElement>}
       value={value ?? undefined}
       defaultValue={value === undefined ? defaultValue : undefined}
       type={restInputProps.type ?? "text"}
+      className={cn(inputClassName, className)}
+      onChange={handleChange}
+      maxLength={maxLength}
       {...(restInputProps as React.ComponentProps<typeof InputPrimitive>)}
     />
+  )
+
+  if (!helperMessage && !showCharacterCount) {
+    return textInput
+  }
+
+  return (
+    <div data-slot="input-field" className="grid gap-1.5">
+      {textInput}
+      <div
+        data-slot="input-meta"
+        className="flex items-start justify-between gap-3 px-1"
+      >
+        <div
+          data-slot="input-helper"
+          className={cn("min-w-0 text-xs leading-5", helperTone, helperClassName)}
+        >
+          {helperMessage}
+        </div>
+        {showCharacterCount ? (
+          <div
+            data-slot="input-count"
+            className={cn(
+              "shrink-0 text-[11px] font-medium tabular-nums",
+              errorText ? "text-destructive" : "text-muted-foreground"
+            )}
+          >
+            {countFormatter?.(currentLength, maxLength) ??
+              (typeof maxLength === "number" ? `${currentLength}/${maxLength}` : currentLength)}
+          </div>
+        ) : null}
+      </div>
+    </div>
   )
 })
 Input.displayName = "Input"

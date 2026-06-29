@@ -45,6 +45,7 @@ describe("base primitives", () => {
     expect(loadingButton.getAttribute("aria-busy")).toBe("true")
     expect(loadingButton.getAttribute("disabled")).toBe("")
     expect(within(loadingButton).getByText("Saving")).toBeTruthy()
+    expect(loadingButton.querySelector("[data-slot='button-spinner']")).toBeTruthy()
   })
 
   it("forwards refs and keeps native input behavior", async () => {
@@ -62,6 +63,31 @@ describe("base primitives", () => {
 
     render(<Input type="file" aria-label="Attachment" />)
     expect(screen.getByLabelText("Attachment").className).toContain("file:inline-flex")
+  })
+
+  it("renders helper, decorators and character count from the canonical input", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <Input
+        aria-label="Workspace"
+        defaultValue="Acme"
+        leading={<span aria-hidden="true">@</span>}
+        trailing={<span aria-hidden="true">.dev</span>}
+        helperText="Use the public workspace slug."
+        showCharacterCount
+        maxLength={20}
+      />
+    )
+
+    const input = screen.getByLabelText("Workspace")
+    expect(screen.getByText("Use the public workspace slug.")).toBeTruthy()
+    expect(screen.getByText("4/20")).toBeTruthy()
+    expect(screen.getByText("@")).toBeTruthy()
+    expect(screen.getByText(".dev")).toBeTruthy()
+
+    await user.type(input, "team")
+    expect(screen.getByText("8/20")).toBeTruthy()
   })
 
   it("renders textarea variants and merges className", async () => {
@@ -110,7 +136,7 @@ describe("base primitives", () => {
 
     const badge = screen.getByText("Active").closest("[data-slot='badge']")
     expect(badge).toBeTruthy()
-    expect((badge as HTMLElement).className).toContain("text-emerald-700")
+    expect((badge as HTMLElement).getAttribute("data-tone")).toBe("success")
     expect((badge as HTMLElement).querySelectorAll("[data-slot='badge-icon']")).toHaveLength(2)
   })
 
@@ -136,6 +162,21 @@ describe("base primitives", () => {
     expect(screen.getByText("Build status").textContent).toBe("Build status")
     expect(screen.getByText("Content").textContent).toBe("Content")
     expect(screen.getByText("Footer").textContent).toBe("Footer")
+  })
+
+  it("keeps nested cards visually downgraded without breaking content structure", () => {
+    render(
+      <Card>
+        <CardContent>
+          <Card>
+            <CardContent>Nested content</CardContent>
+          </Card>
+        </CardContent>
+      </Card>
+    )
+
+    expect(screen.getByText("Nested content")).toBeTruthy()
+    expect(screen.getAllByText("Nested content")).toHaveLength(1)
   })
 
   it("switches tabs and keeps selected state accessible", async () => {

@@ -29,6 +29,9 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `onChange` | `ChangeEventHandler<HTMLInputElement>` | Native change handler. |
 | `type` | `HTMLInputTypeAttribute` | Prefer text/search/email/password before moving to presets. |
 | `placeholder` | `string` | Short empty-state hint. |
+| `leading` / `trailing` | `ReactNode` | Decorators for contextual chrome before adding a specialized preset. |
+| `helperText` / `errorText` | `ReactNode` | Secondary guidance and validation copy under the field. |
+| `showCharacterCount` | `boolean` | Shows inline count metadata for bounded text entry. |
 | `disabled` | `boolean` | Locks editing and interaction. |
 
 ## Select

@@ -44,13 +44,13 @@ Current status:
 
 ### Input
 
-- [ ] Keep `Input` as the one canonical text-entry surface.
-- [ ] Refine prefix/suffix/decorator contract.
-- [ ] Refine clear button behavior and spacing.
-- [ ] Add character count / helper / validation message strategy.
+- [x] Keep `Input` as the one canonical text-entry surface.
+- [x] Refine prefix/suffix/decorator contract.
+- [x] Refine clear button behavior and spacing.
+- [x] Add character count / helper / validation message strategy.
 - [x] Improve read-only and disabled defaults.
 - [ ] Review formatter boundaries between `Input` and specialized fields.
-- [ ] Keep search, money, phone, masked and quantity variants subordinate to `Input`.
+- [x] Keep search, money, phone, masked and quantity variants subordinate to `Input`.
 
 ### Select
 
@@ -131,7 +131,7 @@ Current status:
 - [ ] Keep `FormFieldShell` as the canonical field wrapper surface.
 - [ ] Refine label / description / error / required marker contract.
 - [ ] Refine validation summary and error-state consistency.
-- [ ] Keep `FormInput` as canonical RHF input wrapper.
+- [x] Keep `FormInput` as canonical RHF input wrapper.
 - [ ] Keep `FormSelect` as canonical RHF select wrapper.
 - [ ] Review wrapper duplication and continue collapsing alias-heavy surfaces where practical.
 - [ ] Review `FormBuilder` scope:
@@ -185,8 +185,8 @@ Current status:
 - [ ] Add stronger visual-behavior tests for newly promoted core surfaces:
   - [x] `AppSidebar`
   - [x] `Breadcrumbs`
-  - [ ] strengthened `Button`
-  - [ ] strengthened `Input`
+  - [x] strengthened `Button`
+  - [x] strengthened `Input`
   - [ ] strengthened `Select`
 - [ ] Add flaky-test audit and stabilization pass.
 
