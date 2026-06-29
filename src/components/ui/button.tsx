@@ -5,21 +5,16 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[transform,background-color,border-color,color,box-shadow,opacity] outline-none select-none focus-visible:border-ring/60 focus-visible:ring-2 focus-visible:ring-ring/35 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:cursor-not-allowed disabled:translate-y-0 disabled:shadow-none disabled:opacity-100 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:translate-y-0 aria-disabled:shadow-none aria-disabled:opacity-100 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/35 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[transform,background-color,border-color,color,box-shadow,opacity] outline-none select-none focus-visible:ring-0 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-100 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:translate-y-0 aria-disabled:opacity-100 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default:
-          "border-primary/20 bg-primary text-primary-foreground shadow-sm hover:-translate-y-px hover:bg-[color-mix(in_oklch,var(--primary),white_7%)] hover:shadow-md disabled:border-primary/10 disabled:bg-primary/45 disabled:text-primary-foreground/70 dark:disabled:bg-primary/34",
-        outline:
-          "border-border/80 bg-background text-foreground shadow-none hover:-translate-y-px hover:border-ring/38 hover:bg-accent/72 hover:text-foreground hover:shadow-sm aria-expanded:border-ring/38 aria-expanded:bg-accent/72 aria-expanded:text-foreground disabled:border-border/48 disabled:bg-muted/24 disabled:text-muted-foreground/70 dark:border-white/14 dark:bg-white/[0.045] dark:hover:bg-white/[0.08] dark:hover:text-foreground dark:disabled:bg-white/[0.035]",
-        secondary:
-          "border-border/70 bg-secondary text-secondary-foreground shadow-sm hover:-translate-y-px hover:border-border/86 hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] hover:text-secondary-foreground aria-expanded:bg-secondary aria-expanded:text-secondary-foreground disabled:border-border/44 disabled:bg-muted/28 disabled:text-muted-foreground/72 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] dark:disabled:bg-white/[0.035]",
-        ghost:
-          "border-transparent bg-transparent text-foreground/88 shadow-none hover:border-border/48 hover:bg-accent/68 hover:text-foreground aria-expanded:border-border/48 aria-expanded:bg-accent/68 aria-expanded:text-foreground disabled:text-muted-foreground/64 dark:text-foreground/86 dark:hover:bg-white/[0.075] dark:disabled:text-muted-foreground/58",
-        destructive:
-          "border-destructive/20 bg-destructive text-destructive-foreground shadow-sm hover:-translate-y-px hover:bg-[color-mix(in_oklch,var(--destructive),white_7%)] hover:shadow-md focus-visible:border-destructive/45 focus-visible:ring-destructive/24 disabled:border-destructive/10 disabled:bg-destructive/42 disabled:text-destructive-foreground/70 dark:focus-visible:ring-destructive/35 dark:disabled:bg-destructive/34",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "",
+        outline: "",
+        secondary: "",
+        ghost: "",
+        destructive: "",
+        link: "rounded-none border-transparent bg-transparent p-0 shadow-none underline-offset-4",
       },
       size: {
         default:
@@ -69,6 +64,8 @@ function Button({
   return (
     <ButtonPrimitive
       data-slot="button"
+      data-variant={variant ?? "default"}
+      data-size={size ?? "default"}
       data-loading={loading || undefined}
       disabled={isDisabled}
       aria-busy={loading || undefined}

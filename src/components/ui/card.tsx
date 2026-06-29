@@ -8,13 +8,11 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "border-border/72 bg-card shadow-[0_10px_30px_rgba(15,23,42,0.05)] ring-1 ring-foreground/3",
-        elevated:
-          "border-border/68 bg-card shadow-[0_1px_2px_rgba(15,23,42,0.04),0_20px_46px_rgba(15,23,42,0.08)] ring-1 ring-foreground/4",
-        outline: "border-border/72 bg-card shadow-none",
-        soft: "border-border/40 bg-muted/28 shadow-none",
-        ghost: "border-transparent bg-transparent shadow-none",
+        default: "",
+        elevated: "",
+        outline: "",
+        soft: "",
+        ghost: "border-transparent bg-transparent shadow-none ring-0",
       },
       size: {
         sm: "[--card-spacing:--spacing(4)] data-[has-footer=true]:pb-0",
@@ -28,17 +26,17 @@ const cardVariants = cva(
       },
       tone: {
         neutral: "",
-        info: "border-blue-500/20 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),oklch(0.94_0.03_235)_32%),var(--card))]",
-        success: "border-emerald-500/20 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),oklch(0.94_0.04_155)_34%),var(--card))]",
-        warning: "border-amber-500/24 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),oklch(0.94_0.05_85)_34%),var(--card))]",
-        danger: "border-destructive/24 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),var(--destructive)_10%),var(--card))]",
+        info: "",
+        success: "",
+        warning: "",
+        danger: "",
       },
       interactive: {
-        true: "cursor-pointer hover:-translate-y-0.5 hover:border-ring/35 hover:shadow-[0_14px_34px_rgba(15,23,42,0.10)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/35",
+        true: "cursor-pointer hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-0",
         false: "",
       },
       selected: {
-        true: "border-primary/40 ring-2 ring-primary/18",
+        true: "",
         false: "",
       },
       disabled: {
@@ -76,6 +74,9 @@ function Card({
     <div
       data-slot="card"
       data-size={size ?? "default"}
+      data-variant={variant ?? "default"}
+      data-tone={tone ?? "neutral"}
+      data-density={density ?? "default"}
       data-interactive={interactive || undefined}
       data-selected={selected || undefined}
       data-disabled={disabled || undefined}
