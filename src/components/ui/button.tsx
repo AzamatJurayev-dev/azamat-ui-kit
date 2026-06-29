@@ -5,16 +5,16 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[transform,background-color,border-color,color,box-shadow,opacity] outline-none select-none focus-visible:ring-0 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-100 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:translate-y-0 aria-disabled:opacity-100 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-[var(--aui-control-radius,var(--radius-lg))] border border-[color:var(--aui-control-border-strong,var(--border))] bg-[color:var(--aui-control-surface,var(--background))] bg-clip-padding text-sm font-semibold text-foreground whitespace-nowrap shadow-[var(--aui-control-shadow,none)] transition-[transform,background-color,border-color,color,box-shadow,opacity] outline-none select-none hover:border-[color:var(--aui-control-hover-border,var(--ring))] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:ring-0 focus-visible:shadow-[var(--aui-control-shadow,none),0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:cursor-not-allowed disabled:translate-y-0 disabled:border-[color:color-mix(in_oklch,var(--border),transparent_24%)] disabled:bg-[color:var(--aui-control-surface-disabled,var(--muted))] disabled:text-muted-foreground disabled:shadow-none disabled:opacity-100 aria-disabled:pointer-events-none aria-disabled:cursor-not-allowed aria-disabled:translate-y-0 aria-disabled:opacity-100 aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "",
-        outline: "",
-        secondary: "",
-        ghost: "",
-        destructive: "",
-        warning: "",
+        default: "border-primary bg-primary text-primary-foreground shadow-[var(--aui-button-primary-shadow,var(--aui-control-shadow,none))] hover:bg-[color:color-mix(in_oklch,var(--primary),white_10%)]",
+        outline: "bg-[color:var(--aui-control-surface,var(--background))] text-foreground shadow-none",
+        secondary: "border-border bg-secondary text-secondary-foreground",
+        ghost: "border-transparent bg-transparent shadow-none hover:border-[color:var(--aui-control-border-strong,var(--border))]",
+        destructive: "border-destructive bg-destructive text-[color:var(--aui-danger-foreground,var(--primary-foreground))] shadow-[var(--aui-button-danger-shadow,var(--aui-control-shadow,none))] hover:bg-[color:color-mix(in_oklch,var(--destructive),white_10%)]",
+        warning: "border-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),transparent_64%)] bg-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),transparent_82%)] text-[color:var(--aui-warning-foreground,var(--foreground))]",
         link: "rounded-none border-transparent bg-transparent p-0 shadow-none underline-offset-4",
       },
       size: {

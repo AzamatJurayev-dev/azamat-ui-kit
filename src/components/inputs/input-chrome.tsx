@@ -22,7 +22,7 @@ function InputChrome({
     <div
       data-slot="input-chrome"
       className={cn(
-        "flex h-8 w-full min-w-0 items-center rounded-lg border border-input bg-transparent transition-colors focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50",
+        "flex h-10 w-full min-w-0 items-center rounded-[var(--aui-control-radius,var(--radius-lg))] border border-[color:var(--aui-control-border-strong,var(--input))] bg-[color:var(--aui-control-surface,var(--background))] shadow-[var(--aui-control-shadow,none)] transition-[background-color,border-color,box-shadow] hover:border-[color:var(--aui-control-hover-border,var(--ring))] hover:bg-[color:var(--aui-control-surface-hover,var(--background))] focus-within:border-[color:var(--ring)] focus-within:shadow-[var(--aui-control-shadow,none),0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)]",
         className
       )}
       {...props}

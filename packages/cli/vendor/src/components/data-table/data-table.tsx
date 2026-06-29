@@ -225,14 +225,15 @@ function DataTable<TData, TValue = unknown>({
   rowClassName,
   ...props
 }: DataTableProps<TData, TValue>) {
-  const resolvedColumns = React.useMemo<ColumnDef<TData, TValue | unknown>[]>(() => {
-    if (!rowActions || features?.rowActions === false) return columns
+  const resolvedColumns = React.useMemo<ColumnDef<TData, unknown>[]>(() => {
+    const baseColumns = columns as ColumnDef<TData, unknown>[]
+    if (!rowActions || features?.rowActions === false) return baseColumns
 
     return [
-      ...columns,
+      ...baseColumns,
       createDataTableActionsColumn<TData>({
         getActions: rowActions,
-      }) as ColumnDef<TData, TValue | unknown>,
+      }) as ColumnDef<TData, unknown>,
     ]
   }, [columns, features?.rowActions, rowActions])
 
