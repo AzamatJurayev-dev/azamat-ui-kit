@@ -54,11 +54,11 @@ Current status:
 
 ### Select
 
-- [ ] Keep `Select` as canonical choice surface.
-- [ ] Refine `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox` boundaries.
+- [x] Keep `Select` as canonical choice surface.
+- [x] Refine `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox` boundaries.
 - [x] Improve grouped, loading, empty and error states.
 - [x] Improve keyboard flow and focus clarity.
-- [ ] Decide whether creatable mode belongs in `Combobox` or `Select`.
+- [x] Decide whether creatable mode belongs in `Combobox` or `Select`.
 - [x] Review remote-data and cache behavior for async variants.
 
 ### Dialog
@@ -93,21 +93,21 @@ Current status:
 - [ ] Keep `AppShell`, `PageHeader`, `PageContainer`, `FormBuilder` secondary to reusable component catalog.
 - [ ] Strengthen `AppSidebar` for production:
   - [x] nested groups
-  - [ ] section labels
+  - [x] section labels
   - [ ] collapse rail behavior
   - [ ] footer account area
   - [ ] secondary actions
-  - [ ] tooltip-on-collapsed behavior
+  - [x] tooltip-on-collapsed behavior
 - [ ] Strengthen `SidebarNav`:
-  - [ ] nested items
-  - [ ] section grouping
-  - [ ] active/expanded state contract
-  - [ ] better router integration patterns
+  - [x] nested items
+  - [x] section grouping
+  - [x] active/expanded state contract
+  - [x] better router integration patterns
 - [ ] Strengthen `Breadcrumbs`:
   - [x] collapsed overflow
   - [x] max items
-  - [ ] icon support
-  - [ ] clearer current item contract
+  - [x] icon support
+  - [x] clearer current item contract
 - [ ] Decide whether `EntityHeader` should replace many current `PageHeader` use-cases.
 - [ ] Review navigation family boundaries:
   - [ ] `Pagination`

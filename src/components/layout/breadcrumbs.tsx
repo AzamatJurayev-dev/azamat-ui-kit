@@ -6,8 +6,10 @@ import { cn } from "@/lib/utils"
 export type BreadcrumbItem = {
   key: string
   label: React.ReactNode
+  icon?: React.ReactNode
   href?: string
   current?: boolean
+  currentLabel?: React.AriaAttributes["aria-current"]
   onSelect?: () => void
 }
 
@@ -73,24 +75,36 @@ function Breadcrumbs({
               renderLink ? renderLink({
                 item,
                 href: item.href,
+                "data-slot": "breadcrumbs-link",
                 className: "truncate transition-colors hover:text-foreground",
                 onClick: () => item.onSelect?.(),
-                children: item.label,
+                children: (
+                  <span className="inline-flex min-w-0 items-center gap-1.5">
+                    {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
+                    <span className="truncate">{item.label}</span>
+                  </span>
+                ),
               }) : (
                 <a
                   href={item.href}
+                  data-slot="breadcrumbs-link"
                   className="truncate transition-colors hover:text-foreground"
                   onClick={() => item.onSelect?.()}
                 >
-                  {item.label}
+                  <span className="inline-flex min-w-0 items-center gap-1.5">
+                    {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
+                    <span className="truncate">{item.label}</span>
+                  </span>
                 </a>
               )
             ) : (
               <span
-                aria-current={isCurrent ? "page" : undefined}
-                className={cn("truncate", isCurrent && "font-medium text-foreground")}
+                data-slot="breadcrumbs-current"
+                aria-current={isCurrent ? (item.currentLabel ?? "page") : undefined}
+                className={cn("inline-flex min-w-0 items-center gap-1.5 truncate", isCurrent && "font-medium text-foreground")}
               >
-                {item.label}
+                {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
+                <span className="truncate">{item.label}</span>
               </span>
             )}
           </React.Fragment>

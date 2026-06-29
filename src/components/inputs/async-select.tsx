@@ -480,10 +480,6 @@ function AsyncSelect<
   }, [loadOptions])
 
   React.useEffect(() => {
-    cacheRef.current.clear()
-  }, [loadOptions])
-
-  React.useEffect(() => {
     setOptionGroups(resolvedDefaultGroups)
   }, [resolvedDefaultGroups])
 
@@ -835,6 +831,10 @@ function AsyncMultiSelect<
   const visibleSelectableOptions = flatOptions.filter((option) => !option.disabled)
   const unselectedVisibleOptions = visibleSelectableOptions.filter((option) => !selectedSet.has(option.value))
   const canSelectAll = showSelectAll && unselectedVisibleOptions.length > 0 && !isMaxReached
+
+  React.useEffect(() => {
+    cacheRef.current.clear()
+  }, [loadOptions])
 
   React.useEffect(() => {
     setOptionGroups(resolvedDefaultGroups)

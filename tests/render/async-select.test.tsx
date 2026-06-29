@@ -150,6 +150,38 @@ describe("AsyncSelect", () => {
     })
   })
 
+  it("clears cached results when loadOptions changes", async () => {
+    const user = userEvent.setup()
+    const firstLoad = vi.fn(async (search: string) =>
+      search === "g" ? [{ value: "gamma", label: "Gamma" }] : []
+    )
+    const secondLoad = vi.fn(async (search: string) =>
+      search === "g" ? [{ value: "green", label: "Green" }] : []
+    )
+
+    const { rerender } = render(
+      <AsyncSelectFixture loadOptions={firstLoad} debounceMs={0} />
+    )
+
+    await user.click(screen.getByRole("button", { name: /select an item/i }))
+    const search = screen.getByPlaceholderText("Search items")
+    await user.type(search, "g")
+
+    await waitFor(() => {
+      expect(screen.getByText("Gamma")).toBeTruthy()
+    })
+
+    rerender(<AsyncSelectFixture loadOptions={secondLoad} debounceMs={0} />)
+    await user.clear(search)
+    await user.type(search, "g")
+
+    await waitFor(() => {
+      expect(screen.getByText("Green")).toBeTruthy()
+    })
+
+    expect(secondLoad).toHaveBeenCalledWith("g", expect.any(Object))
+  })
+
   it("supports keyboard clearing and aborts loadSelectedOption on cleanup", async () => {
     const abortSpy = vi.fn()
     const loadSelectedOption = vi.fn(async (_value: string, signal?: AbortSignal) => {

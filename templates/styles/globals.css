@@ -787,6 +787,15 @@
     border-left: 1px solid color-mix(in oklch, var(--sidebar-border), transparent 28%);
   }
 
+  [data-slot="app-sidebar-group-label"][data-slot="app-sidebar-group-label"] {
+    color: color-mix(in oklch, var(--sidebar-foreground), transparent 42%);
+  }
+
+  [data-slot="app-sidebar-footer-secondary"][data-slot="app-sidebar-footer-secondary"] {
+    border-bottom: 1px solid color-mix(in oklch, var(--sidebar-border), transparent 16%);
+    padding-bottom: 0.75rem;
+  }
+
   [data-slot="sidebar-nav-item"][data-slot="sidebar-nav-item"] {
     background: var(--aui-sidebar-nav-item-bg);
     color: var(--muted-foreground);
@@ -804,8 +813,30 @@
     color: var(--foreground);
   }
 
+  [data-slot="sidebar-nav-group-trigger"][data-slot="sidebar-nav-group-trigger"] {
+    color: var(--muted-foreground);
+  }
+
+  [data-slot="sidebar-nav-group-trigger"][data-slot="sidebar-nav-group-trigger"]:hover {
+    border-color: var(--aui-sidebar-nav-item-active-border);
+    background: var(--aui-sidebar-nav-item-hover-bg);
+    color: var(--foreground);
+  }
+
+  [data-slot="sidebar-nav-group-label"][data-slot="sidebar-nav-group-label"] {
+    color: color-mix(in oklch, var(--muted-foreground), transparent 12%);
+  }
+
   [data-slot="breadcrumbs-collapsed"][data-slot="breadcrumbs-collapsed"] {
     background: color-mix(in oklch, var(--muted), transparent 72%);
+  }
+
+  [data-slot="breadcrumbs-link"][data-slot="breadcrumbs-link"]:hover {
+    color: var(--foreground);
+  }
+
+  [data-slot="breadcrumbs-current"][data-slot="breadcrumbs-current"] {
+    color: var(--foreground);
   }
 
   [data-slot="file-upload-dropzone"][data-dragging="true"] {

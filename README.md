@@ -178,6 +178,13 @@ These source-of-truth exports keep the public docs and component families aligne
 - `FormFamily`
 - `DataTableFamily`
 
+Family intent:
+
+- `Input` is the canonical text-entry surface; presets stay subordinate.
+- `Select` is the canonical choice surface.
+- `AsyncSelect` and `AsyncMultiSelect` own remote and creatable option flows.
+- `Combobox` stays the local filter-first branch when command-style search matters more than strict select semantics.
+
 ## Development
 
 ```bash

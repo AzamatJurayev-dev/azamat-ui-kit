@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 export type AppSidebarNavItem = {
@@ -14,6 +15,8 @@ export type AppSidebarNavItem = {
   hidden?: boolean
   sectionLabel?: React.ReactNode
   defaultExpanded?: boolean
+  current?: React.AriaAttributes["aria-current"]
+  tooltip?: React.ReactNode
   onSelect?: () => void
 }
 
@@ -22,6 +25,9 @@ export type AppSidebarProps = React.ComponentProps<"aside"> & {
   footer?: React.ReactNode
   items?: AppSidebarNavItem[]
   collapsed?: boolean
+  collapsedRail?: React.ReactNode
+  footerSecondary?: React.ReactNode
+  tooltipOnCollapsed?: boolean
   onItemSelect?: (item: AppSidebarNavItem) => void
   renderItem?: (item: AppSidebarNavItem, state: { collapsed: boolean }) => React.ReactNode
   renderLink?: (props: React.ComponentProps<"a"> & { item: AppSidebarNavItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
@@ -49,7 +55,7 @@ function SidebarLeafItem({
   onItemSelect?: (item: AppSidebarNavItem) => void
   renderLink?: AppSidebarProps["renderLink"]
 }) {
-  const currentValue: React.AriaAttributes["aria-current"] = item.active ? "page" : undefined
+  const currentValue: React.AriaAttributes["aria-current"] = item.current ?? (item.active ? "page" : undefined)
   const commonProps = {
     "aria-current": currentValue,
     "aria-disabled": item.disabled || undefined,
@@ -71,9 +77,18 @@ function SidebarLeafItem({
     </>
   )
 
+  const wrapCollapsedContent = (node: React.ReactNode) =>
+    collapsed ? (
+      <Tooltip content={item.tooltip ?? item.label} side="right">
+        <span className="block">{node}</span>
+      </Tooltip>
+    ) : (
+      node
+    )
+
   if (item.href?.startsWith("/")) {
     if (renderLink) {
-      return (
+      return wrapCollapsedContent(
         <>
           {renderLink({
             item,
@@ -93,7 +108,7 @@ function SidebarLeafItem({
       )
     }
 
-    return (
+    return wrapCollapsedContent(
       <a
         href={item.href}
         {...commonProps}
@@ -112,7 +127,7 @@ function SidebarLeafItem({
   }
 
   if (item.href) {
-    return (
+    return wrapCollapsedContent(
       <button
         type="button"
         {...commonProps}
@@ -135,7 +150,7 @@ function SidebarLeafItem({
     )
   }
 
-  return (
+  return wrapCollapsedContent(
     <button
       type="button"
       disabled={item.disabled}
@@ -168,17 +183,27 @@ function SidebarTree({
 
     const hasChildren = hasVisibleSidebarChildren(item)
     const active = isSidebarItemActive(item)
+    const showSectionLabel = !collapsed && depth === 0 && item.sectionLabel
 
     if (!hasChildren) {
       return (
-        <SidebarLeafItem
-          key={item.key}
-          item={item}
-          collapsed={collapsed}
-          depth={depth}
-          onItemSelect={onItemSelect}
-          renderLink={renderLink}
-        />
+        <React.Fragment key={item.key}>
+          {showSectionLabel ? (
+            <div
+              data-slot="app-sidebar-group-label"
+              className="px-2.5 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground first:pt-0"
+            >
+              {item.sectionLabel}
+            </div>
+          ) : null}
+          <SidebarLeafItem
+            item={item}
+            collapsed={collapsed}
+            depth={depth}
+            onItemSelect={onItemSelect}
+            renderLink={renderLink}
+          />
+        </React.Fragment>
       )
     }
 
@@ -186,8 +211,11 @@ function SidebarTree({
 
     return (
       <div key={item.key} data-slot="app-sidebar-group" data-depth={depth}>
-        {!collapsed && item.sectionLabel && (
-          <div data-slot="app-sidebar-group-label" className="px-2.5 pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        {showSectionLabel && (
+          <div
+            data-slot="app-sidebar-group-label"
+            className="px-2.5 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground first:pt-0"
+          >
             {item.sectionLabel}
           </div>
         )}
@@ -195,11 +223,19 @@ function SidebarTree({
           <summary
             data-slot="app-sidebar-group-trigger"
             className={cn(
-              "flex min-h-9 list-none items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
-              collapsed && "justify-center px-2"
+              "flex min-h-9 list-none items-center gap-2 rounded-lg border border-transparent text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
+              collapsed ? "justify-center px-2" : "px-2.5"
             )}
           >
-            {item.icon && <span className="shrink-0">{item.icon}</span>}
+            {item.icon ? (
+              collapsed ? (
+                <Tooltip content={item.tooltip ?? item.label} side="right">
+                  <span className="shrink-0">{item.icon}</span>
+                </Tooltip>
+              ) : (
+                <span className="shrink-0">{item.icon}</span>
+              )
+            ) : null}
             {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
             {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
             {!collapsed && <span data-slot="app-sidebar-group-chevron" className="ml-auto text-xs text-muted-foreground transition-transform group-open/app-sidebar-details:rotate-90">›</span>}
@@ -225,6 +261,9 @@ function AppSidebar({
   footer,
   items = [],
   collapsed = false,
+  collapsedRail,
+  footerSecondary,
+  tooltipOnCollapsed = true,
   onItemSelect,
   renderItem,
   renderLink,
@@ -244,9 +283,20 @@ function AppSidebar({
 
       <nav data-slot="app-sidebar-nav" className="min-h-0 flex-1 space-y-1 overflow-y-auto p-2">
         {children ??
-          visibleItems.map((item) =>
-            renderItem ? <React.Fragment key={item.key}>{renderItem(item, { collapsed })}</React.Fragment> : null
-          )}
+          visibleItems.map((item) => {
+            if (!renderItem) return null
+
+            const renderedItem = renderItem(item, { collapsed })
+            if (!collapsed || !tooltipOnCollapsed) {
+              return <React.Fragment key={item.key}>{renderedItem}</React.Fragment>
+            }
+
+            return (
+              <Tooltip key={item.key} content={item.tooltip ?? item.label} side="right">
+                <span className="block">{renderedItem}</span>
+              </Tooltip>
+            )
+          })}
         {!children && !renderItem && (
           <SidebarTree
             items={visibleItems}
@@ -258,7 +308,17 @@ function AppSidebar({
         )}
       </nav>
 
-      {footer && <div data-slot="app-sidebar-footer" className="shrink-0 border-t p-3">{footer}</div>}
+      {(footerSecondary || footer || (collapsed && collapsedRail)) && (
+        <div data-slot="app-sidebar-footer" className="shrink-0 border-t p-3">
+          {collapsed && collapsedRail ? <div data-slot="app-sidebar-rail">{collapsedRail}</div> : null}
+          {!collapsed && footerSecondary ? (
+            <div data-slot="app-sidebar-footer-secondary" className="mb-3">
+              {footerSecondary}
+            </div>
+          ) : null}
+          {!collapsed && footer}
+        </div>
+      )}
     </aside>
   )
 }

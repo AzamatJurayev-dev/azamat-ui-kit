@@ -242,7 +242,7 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     section: "presets",
     maturity: "member",
     summary: "Remote-search single select.",
-    useWhen: "Use when options are loaded on demand from a server or large local source.",
+    useWhen: "Use when options are loaded on demand from a server or large local source, including cases where search and creation should stay in one remote-aware flow.",
   },
   {
     component: "AsyncMultiSelect",
@@ -250,7 +250,7 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     section: "presets",
     maturity: "member",
     summary: "Remote-search multi select.",
-    useWhen: "Use when users need to pick many remote items and review selected tags inline.",
+    useWhen: "Use when users need to pick many remote items, review selected tags inline, or create new items without leaving the remote-search flow.",
   },
   {
     component: "Combobox",
@@ -258,7 +258,7 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     section: "presets",
     maturity: "member",
     summary: "Searchable command-style select surface.",
-    useWhen: "Use when fast keyboard filtering matters more than strict select semantics.",
+    useWhen: "Use when fast local keyboard filtering matters more than strict select semantics; avoid using it as the main remote or creatable select path.",
   },
   {
     component: "FormSelect",
