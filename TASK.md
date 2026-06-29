@@ -94,9 +94,9 @@ Current status:
 - [ ] Strengthen `AppSidebar` for production:
   - [x] nested groups
   - [x] section labels
-  - [ ] collapse rail behavior
-  - [ ] footer account area
-  - [ ] secondary actions
+  - [x] collapse rail behavior
+  - [x] footer account area
+  - [x] secondary actions
   - [x] tooltip-on-collapsed behavior
 - [ ] Strengthen `SidebarNav`:
   - [x] nested items
@@ -183,8 +183,8 @@ Current status:
 - [x] Overlay/navigation interaction coverage exists.
 - [x] Public API snapshot coverage exists.
 - [ ] Add stronger visual-behavior tests for newly promoted core surfaces:
-  - [ ] `AppSidebar`
-  - [ ] `Breadcrumbs`
+  - [x] `AppSidebar`
+  - [x] `Breadcrumbs`
   - [ ] strengthened `Button`
   - [ ] strengthened `Input`
   - [ ] strengthened `Select`

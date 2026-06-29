@@ -801,6 +801,28 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     padding-bottom: 0.75rem;
   }
 
+  [data-slot="app-sidebar-action"][data-slot="app-sidebar-action"],
+  [data-slot="app-sidebar-account"][data-slot="app-sidebar-account"] {
+    background: color-mix(in oklch, var(--sidebar), transparent 24%);
+    color: color-mix(in oklch, var(--sidebar-foreground), transparent 10%);
+  }
+
+  [data-slot="app-sidebar-action"][data-slot="app-sidebar-action"]:hover,
+  [data-slot="app-sidebar-account"][data-slot="app-sidebar-account"]:hover {
+    border-color: color-mix(in oklch, var(--sidebar-border), white 6%);
+    background: var(--aui-sidebar-item-hover-bg);
+    color: var(--sidebar-accent-foreground);
+  }
+
+  [data-slot="app-sidebar-rail-actions"][data-slot="app-sidebar-rail-actions"] {
+    margin-bottom: 0.75rem;
+  }
+
+  [data-slot="app-sidebar-account-wrap"][data-slot="app-sidebar-account-wrap"] {
+    border-top: 1px solid color-mix(in oklch, var(--sidebar-border), transparent 18%);
+    padding-top: 0.75rem;
+  }
+
   [data-slot="sidebar-nav-item"][data-slot="sidebar-nav-item"] {
     background: var(--aui-sidebar-nav-item-bg);
     color: var(--muted-foreground);

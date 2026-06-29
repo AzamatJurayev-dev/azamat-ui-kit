@@ -20,12 +20,24 @@ export type AppSidebarNavItem = {
   onSelect?: () => void
 }
 
+export type AppSidebarFooterAccount = {
+  label: React.ReactNode
+  description?: React.ReactNode
+  avatar?: React.ReactNode
+  href?: string
+  tooltip?: React.ReactNode
+  onSelect?: () => void
+}
+
 export type AppSidebarProps = React.ComponentProps<"aside"> & {
   header?: React.ReactNode
   footer?: React.ReactNode
   items?: AppSidebarNavItem[]
   collapsed?: boolean
   collapsedRail?: React.ReactNode
+  railItems?: AppSidebarNavItem[]
+  footerAccount?: AppSidebarFooterAccount
+  secondaryActions?: AppSidebarNavItem[]
   footerSecondary?: React.ReactNode
   tooltipOnCollapsed?: boolean
   onItemSelect?: (item: AppSidebarNavItem) => void
@@ -255,6 +267,104 @@ function SidebarTree({
   })
 }
 
+function SidebarActionButton({
+  item,
+  collapsed,
+  onItemSelect,
+}: {
+  item: AppSidebarNavItem
+  collapsed: boolean
+  onItemSelect?: (item: AppSidebarNavItem) => void
+}) {
+  const content = (
+    <button
+      type="button"
+      data-slot="app-sidebar-action"
+      data-active={item.active || undefined}
+      data-disabled={item.disabled || undefined}
+      className={cn(
+        "flex min-h-9 items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+        collapsed && "justify-center px-2"
+      )}
+      disabled={item.disabled}
+      onClick={() => {
+        if (item.disabled) return
+        item.onSelect?.()
+        onItemSelect?.(item)
+      }}
+    >
+      {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
+      {!collapsed ? <span className="min-w-0 flex-1 truncate">{item.label}</span> : null}
+      {!collapsed && item.badge ? <span className="shrink-0">{item.badge}</span> : null}
+    </button>
+  )
+
+  return collapsed ? (
+    <Tooltip content={item.tooltip ?? item.label} side="right">
+      <span className="block">{content}</span>
+    </Tooltip>
+  ) : (
+    content
+  )
+}
+
+function SidebarFooterAccount({
+  account,
+  collapsed,
+}: {
+  account: AppSidebarFooterAccount
+  collapsed: boolean
+}) {
+  const body = (
+    <button
+      type="button"
+      data-slot="app-sidebar-account"
+      className={cn(
+        "flex w-full items-center gap-3 rounded-[min(var(--radius-xl),16px)] border border-transparent text-left transition-[background-color,border-color,color,box-shadow]",
+        collapsed ? "justify-center px-2 py-2.5" : "px-3 py-2.5"
+      )}
+      onClick={() => {
+        account.onSelect?.()
+        if (!account.href) return
+        if (account.href.startsWith("http")) {
+          window.open(account.href, "_blank", "noopener,noreferrer")
+          return
+        }
+        window.location.assign(account.href)
+      }}
+    >
+      {account.avatar ? (
+        <span
+          data-slot="app-sidebar-account-avatar"
+          className="inline-flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border/65 bg-muted/45 text-sm font-semibold"
+        >
+          {account.avatar}
+        </span>
+      ) : null}
+      {!collapsed ? (
+        <span className="min-w-0 flex-1">
+          <span data-slot="app-sidebar-account-label" className="block truncate text-sm font-semibold text-foreground">
+            {account.label}
+          </span>
+          {account.description ? (
+            <span data-slot="app-sidebar-account-description" className="block truncate text-xs text-muted-foreground">
+              {account.description}
+            </span>
+          ) : null}
+        </span>
+      ) : null}
+    </button>
+  )
+
+  return collapsed ? (
+    <Tooltip content={account.tooltip ?? account.label} side="right">
+      <span className="block">{body}</span>
+    </Tooltip>
+  ) : (
+    body
+  )
+}
+
 function AppSidebar({
   className,
   header,
@@ -262,6 +372,9 @@ function AppSidebar({
   items = [],
   collapsed = false,
   collapsedRail,
+  railItems = [],
+  footerAccount,
+  secondaryActions = [],
   footerSecondary,
   tooltipOnCollapsed = true,
   onItemSelect,
@@ -271,6 +384,8 @@ function AppSidebar({
   ...props
 }: AppSidebarProps) {
   const visibleItems = items.filter((item) => !item.hidden)
+  const visibleRailItems = railItems.filter((item) => !item.hidden)
+  const visibleSecondaryActions = secondaryActions.filter((item) => !item.hidden)
 
   return (
     <aside
@@ -308,12 +423,50 @@ function AppSidebar({
         )}
       </nav>
 
-      {(footerSecondary || footer || (collapsed && collapsedRail)) && (
+      {(footerAccount || footerSecondary || footer || visibleSecondaryActions.length > 0 || (collapsed && (collapsedRail || visibleRailItems.length > 0))) && (
         <div data-slot="app-sidebar-footer" className="shrink-0 border-t p-3">
-          {collapsed && collapsedRail ? <div data-slot="app-sidebar-rail">{collapsedRail}</div> : null}
+          {collapsed ? (
+            <>
+              {visibleRailItems.length > 0 ? (
+                <div data-slot="app-sidebar-rail-actions" className="grid gap-2">
+                  {visibleRailItems.map((item) => (
+                    <SidebarActionButton
+                      key={item.key}
+                      item={item}
+                      collapsed
+                      onItemSelect={onItemSelect}
+                    />
+                  ))}
+                </div>
+              ) : null}
+              {collapsedRail ? <div data-slot="app-sidebar-rail">{collapsedRail}</div> : null}
+            </>
+          ) : null}
+          {!collapsed && footerAccount ? (
+            <div data-slot="app-sidebar-account-wrap" className="mb-3">
+              <SidebarFooterAccount account={footerAccount} collapsed={false} />
+            </div>
+          ) : null}
+          {!collapsed && visibleSecondaryActions.length > 0 ? (
+            <div data-slot="app-sidebar-secondary-actions" className="mb-3 grid gap-2">
+              {visibleSecondaryActions.map((item) => (
+                <SidebarActionButton
+                  key={item.key}
+                  item={item}
+                  collapsed={false}
+                  onItemSelect={onItemSelect}
+                />
+              ))}
+            </div>
+          ) : null}
           {!collapsed && footerSecondary ? (
             <div data-slot="app-sidebar-footer-secondary" className="mb-3">
               {footerSecondary}
+            </div>
+          ) : null}
+          {collapsed && footerAccount ? (
+            <div data-slot="app-sidebar-account-wrap">
+              <SidebarFooterAccount account={footerAccount} collapsed />
             </div>
           ) : null}
           {!collapsed && footer}
