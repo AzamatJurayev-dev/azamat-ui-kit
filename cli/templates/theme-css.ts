@@ -105,6 +105,8 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-focus-ring-soft: color-mix(in oklch, var(--ring), transparent 82%);
   --aui-danger-ring: color-mix(in oklch, var(--destructive), transparent 48%);
   --aui-danger-ring-soft: color-mix(in oklch, var(--destructive), transparent 86%);
+  --aui-warning-ring: color-mix(in oklch, var(--aui-warning), transparent 48%);
+  --aui-warning-ring-soft: color-mix(in oklch, var(--aui-warning), transparent 86%);
   --aui-control-surface: color-mix(in oklch, var(--background), white 54%);
   --aui-control-surface-hover: color-mix(in oklch, var(--background), white 72%);
   --aui-control-surface-muted: color-mix(in oklch, var(--muted), white 24%);
@@ -196,6 +198,8 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-focus-ring-soft: color-mix(in oklch, var(--ring), transparent 80%);
   --aui-danger-ring: color-mix(in oklch, var(--destructive), transparent 46%);
   --aui-danger-ring-soft: color-mix(in oklch, var(--destructive), transparent 84%);
+  --aui-warning-ring: color-mix(in oklch, var(--aui-warning), transparent 46%);
+  --aui-warning-ring-soft: color-mix(in oklch, var(--aui-warning), transparent 84%);
   --aui-control-surface: oklch(1 0 0 / 4%);
   --aui-control-surface-hover: oklch(1 0 0 / 7%);
   --aui-control-surface-muted: oklch(1 0 0 / 6%);
@@ -329,6 +333,18 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     background: color-mix(in oklch, var(--destructive), white 10%);
   }
 
+  [data-slot="button"][data-variant="warning"] {
+    border-color: color-mix(in oklch, var(--aui-warning), transparent 64%);
+    background: color-mix(in oklch, var(--aui-warning), transparent 82%);
+    color: color-mix(in oklch, var(--aui-warning-foreground), black 12%);
+    box-shadow: 0 1px 0 color-mix(in oklch, white, transparent 82%), 0 16px 34px color-mix(in oklch, var(--aui-warning), transparent 82%);
+  }
+
+  [data-slot="button"][data-variant="warning"]:not(:disabled):not([aria-disabled="true"]) {
+    background: color-mix(in oklch, var(--aui-warning), transparent 74%);
+    box-shadow: 0 1px 0 color-mix(in oklch, white, transparent 84%), 0 18px 38px color-mix(in oklch, var(--aui-warning), transparent 76%);
+  }
+
   [data-slot="button"][data-variant="link"] {
     border-color: transparent;
     background: transparent;
@@ -359,6 +375,12 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   [data-slot="button"][data-variant="destructive"]:disabled,
   [data-slot="button"][data-variant="destructive"][aria-disabled="true"] {
     color: color-mix(in oklch, var(--primary-foreground), transparent 24%);
+  }
+
+  [data-slot="button"][data-variant="warning"]:disabled,
+  [data-slot="button"][data-variant="warning"][aria-disabled="true"] {
+    color: color-mix(in oklch, var(--aui-warning-foreground), transparent 30%);
+    background: color-mix(in oklch, var(--aui-warning), transparent 60%);
   }
 
   [data-slot="button"][data-variant="link"]:disabled,

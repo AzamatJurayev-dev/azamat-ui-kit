@@ -14,6 +14,7 @@ const buttonVariants = cva(
         secondary: "",
         ghost: "",
         destructive: "",
+        warning: "",
         link: "rounded-none border-transparent bg-transparent p-0 shadow-none underline-offset-4",
       },
       size: {

@@ -28,14 +28,25 @@ function ConfirmDialog({
   onOpenChange,
   ...props
 }: ConfirmDialogProps) {
+  const handleOpenChange = (open: boolean) => {
+    if (isLoading && open === false) {
+      return
+    }
+
+    onOpenChange?.(open)
+  }
+
   const handleCancel = () => {
     onCancel?.()
-    onOpenChange?.(false)
+    if (!isLoading) {
+      onOpenChange?.(false)
+    }
   }
 
   return (
     <ModalShell
-      onOpenChange={onOpenChange}
+      showCloseButton={!isLoading}
+      onOpenChange={handleOpenChange}
       footer={
         <DialogActions>
           <DialogActionButton
@@ -49,7 +60,7 @@ function ConfirmDialog({
           <DialogActionButton
             type="button"
             variant={confirmVariant}
-            disabled={confirmDisabled}
+            disabled={confirmDisabled || isLoading}
             isLoading={isLoading}
             onClick={onConfirm}
           >

@@ -39,7 +39,7 @@ Current status:
 - [x] Improve icon spacing for left/right/icon-only cases.
 - [x] Add stronger disabled/read-only visual consistency.
 - [ ] Decide whether split button belongs in core or actions family.
-- [ ] Review destructive, warning and link variants for shipped default contrast.
+- [x] Review destructive, warning and link variants for shipped default contrast.
 - [x] Add button interaction regression tests for hover/focus/loading/disabled combinations where meaningful.
 
 ### Input

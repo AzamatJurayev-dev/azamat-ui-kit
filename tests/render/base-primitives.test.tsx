@@ -52,6 +52,7 @@ describe("base primitives", () => {
     render(
       <div>
         <Button variant="destructive">Delete</Button>
+        <Button variant="warning">Warn now</Button>
         <Button variant="link">Read docs</Button>
         <Button variant="secondary" disabled>
           Disabled action
@@ -60,10 +61,12 @@ describe("base primitives", () => {
     )
 
     const destructiveButton = screen.getByRole("button", { name: "Delete" })
+    const warningButton = screen.getByRole("button", { name: "Warn now" })
     const linkButton = screen.getByRole("button", { name: "Read docs" })
     const disabledButton = screen.getByRole("button", { name: "Disabled action" })
 
     expect(destructiveButton.getAttribute("data-variant")).toBe("destructive")
+    expect(warningButton.getAttribute("data-variant")).toBe("warning")
     expect(linkButton.getAttribute("data-variant")).toBe("link")
     expect(disabledButton.getAttribute("data-variant")).toBe("secondary")
     expect(disabledButton.getAttribute("disabled")).toBe("")

@@ -58,9 +58,11 @@ function CommandShortcutHarness({
 function ConfirmDialogHarness({
   onCancel,
   onConfirm,
+  isLoading = false,
 }: {
   onCancel: () => void
   onConfirm: () => void
+  isLoading?: boolean
 }) {
   const [open, setOpen] = React.useState(false)
 
@@ -74,6 +76,7 @@ function ConfirmDialogHarness({
         description="This cannot be undone."
         cancelText="Stay here"
         confirmText="Delete now"
+        isLoading={isLoading}
         onCancel={onCancel}
         onConfirm={onConfirm}
       />
@@ -102,6 +105,40 @@ describe("overlay, command and navigation interactions", () => {
     await user.click(screen.getByRole("button", { name: "Open confirm" }))
     await user.click(screen.getByRole("button", { name: "Delete now" }))
     expect(onConfirm).toHaveBeenCalledTimes(1)
+  })
+
+  it("keeps confirm dialog interactions safe while loading", async () => {
+    const user = userEvent.setup()
+    const onCancel = vi.fn()
+    const onConfirm = vi.fn()
+    const onOpenChange = vi.fn()
+
+    render(
+      <ConfirmDialog
+        open
+        onOpenChange={onOpenChange}
+        title="Deleting item"
+        description="Async operation is running."
+        cancelText="Stay here"
+        confirmText="Delete now"
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+        isLoading
+      />
+    )
+
+    expect(screen.queryByRole("button", { name: "Close" })).toBeNull()
+
+    const confirmButton = screen.getByRole("button", { name: "Delete now" })
+    expect(confirmButton.getAttribute("disabled")).toBe("")
+    await user.click(confirmButton)
+    expect(onOpenChange).not.toHaveBeenCalledWith(false)
+    expect(onConfirm).not.toHaveBeenCalled()
+
+    const cancelButton = screen.getByRole("button", { name: "Stay here" })
+    await user.click(cancelButton)
+    expect(cancelButton.getAttribute("disabled")).toBe("")
+    expect(onOpenChange).not.toHaveBeenCalledWith(false)
   })
 
   it("opens drawers from a trigger and closes through the shared dialog close control", async () => {
