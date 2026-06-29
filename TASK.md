@@ -56,14 +56,14 @@ Current status:
 
 - [ ] Keep `Select` as canonical choice surface.
 - [ ] Refine `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox` boundaries.
-- [ ] Improve grouped, loading, empty and error states.
+- [x] Improve grouped, loading, empty and error states.
 - [ ] Improve keyboard flow and focus clarity.
 - [ ] Decide whether creatable mode belongs in `Combobox` or `Select`.
 - [ ] Review remote-data and cache behavior for async variants.
 
 ### Dialog
 
-- [ ] Refine `Dialog` size presets and content spacing.
+- [x] Refine `Dialog` size presets and content spacing.
 - [ ] Improve footer actions and async-confirm state patterns.
 - [ ] Add dirty-form close guard guidance/preset.
 - [ ] Review `ConfirmDialog`, `ModalShell`, `SheetShell`, `Drawer` layering and boundaries.

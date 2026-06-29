@@ -132,6 +132,10 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-sidebar-item-active-bg: color-mix(in oklch, var(--sidebar-primary), transparent 78%);
   --aui-sidebar-item-active-border: color-mix(in oklch, var(--sidebar-primary), transparent 56%);
   --aui-sidebar-item-active-fg: color-mix(in oklch, var(--sidebar-foreground), white 6%);
+  --aui-sidebar-nav-item-bg: transparent;
+  --aui-sidebar-nav-item-hover-bg: color-mix(in oklch, var(--muted), transparent 68%);
+  --aui-sidebar-nav-item-active-bg: color-mix(in oklch, var(--foreground), transparent 94%);
+  --aui-sidebar-nav-item-active-border: color-mix(in oklch, var(--border), white 4%);
   --aui-table-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 8%), var(--card));
   --aui-table-container-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 12%), var(--card));
   --aui-table-border: color-mix(in oklch, var(--border), white 5%);
@@ -213,6 +217,10 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-sidebar-item-active-bg: color-mix(in oklch, var(--sidebar-primary), transparent 80%);
   --aui-sidebar-item-active-border: color-mix(in oklch, var(--sidebar-primary), transparent 60%);
   --aui-sidebar-item-active-fg: var(--sidebar-foreground);
+  --aui-sidebar-nav-item-bg: transparent;
+  --aui-sidebar-nav-item-hover-bg: oklch(1 0 0 / 6%);
+  --aui-sidebar-nav-item-active-bg: oklch(1 0 0 / 7%);
+  --aui-sidebar-nav-item-active-border: oklch(1 0 0 / 10%);
   --aui-table-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 2%), var(--card));
   --aui-table-container-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 4%), var(--card));
   --aui-table-border: oklch(1 0 0 / 8%);
@@ -550,6 +558,30 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     background: var(--aui-overlay-footer-bg);
   }
 
+  [data-slot="dialog-content"][data-size="xs"] {
+    max-width: min(28rem, calc(100% - 2rem));
+  }
+
+  [data-slot="dialog-content"][data-size="sm"] {
+    max-width: min(34rem, calc(100% - 2rem));
+  }
+
+  [data-slot="dialog-content"][data-size="md"] {
+    max-width: min(40rem, calc(100% - 2rem));
+  }
+
+  [data-slot="dialog-content"][data-size="lg"] {
+    max-width: min(48rem, calc(100% - 2rem));
+  }
+
+  [data-slot="dialog-content"][data-size="xl"] {
+    max-width: min(64rem, calc(100% - 2rem));
+  }
+
+  [data-slot="dialog-content"][data-size="full"] {
+    max-width: min(84rem, calc(100% - 2rem));
+  }
+
   [data-slot="select-item"][data-slot="select-item"]:focus,
   [data-slot="select-item"][data-slot="select-item"][data-highlighted] {
     border-color: color-mix(in oklch, var(--border), var(--foreground) 8%);
@@ -561,6 +593,80 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     border-color: color-mix(in oklch, var(--primary), transparent 72%);
     background: color-mix(in oklch, var(--primary), transparent 88%);
     color: var(--foreground);
+  }
+
+  [data-slot="select-search"][data-slot="select-search"] {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+    background: var(--aui-control-surface);
+    box-shadow: var(--aui-control-shadow);
+  }
+
+  [data-slot="select-state"][data-slot="select-state"] {
+    color: var(--muted-foreground);
+  }
+
+  [data-slot="async-select-content"][data-slot="async-select-content"] {
+    border-color: var(--aui-overlay-border);
+    background: var(--aui-overlay-surface);
+    box-shadow: var(--aui-popover-shadow);
+  }
+
+  [data-slot="async-select-trigger"][data-slot="async-select-trigger"] {
+    background: var(--aui-control-surface);
+  }
+
+  [data-slot="async-select-meta"][data-slot="async-select-meta"] {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+    background: color-mix(in oklch, var(--muted), transparent 72%);
+  }
+
+  [data-slot="async-select-state"][data-slot="async-select-state"] {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+    background: color-mix(in oklch, var(--muted), transparent 72%);
+    box-shadow: inset 0 1px 0 oklch(1 0 0 / 8%);
+  }
+
+  [data-slot="async-select-option"][data-slot="async-select-option"]:hover {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+    background: color-mix(in oklch, var(--accent), transparent 16%);
+    color: var(--accent-foreground);
+  }
+
+  [data-slot="async-select-option"][data-selected="true"] {
+    border-color: color-mix(in oklch, var(--primary), transparent 70%);
+    background: color-mix(in oklch, var(--primary), transparent 88%);
+    color: var(--foreground);
+    box-shadow: inset 0 1px 0 oklch(1 0 0 / 10%);
+  }
+
+  [data-slot="async-select-create"][data-slot="async-select-create"] {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+    background: color-mix(in oklch, var(--background), transparent 14%);
+  }
+
+  [data-slot="async-select-create"][data-slot="async-select-create"]:hover {
+    border-color: color-mix(in oklch, var(--primary), transparent 68%);
+    background: color-mix(in oklch, var(--primary), transparent 92%);
+  }
+
+  [data-slot="async-select-tag"][data-slot="async-select-tag"] {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+    background: color-mix(in oklch, var(--muted), transparent 72%);
+    box-shadow: inset 0 1px 0 oklch(1 0 0 / 4%);
+  }
+
+  [data-slot="async-select-clear"][data-slot="async-select-clear"],
+  [data-slot="async-select-meta-action"][data-slot="async-select-meta-action"] {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+  }
+
+  [data-slot="async-select-clear"][data-slot="async-select-clear"]:hover,
+  [data-slot="async-select-meta-action"][data-slot="async-select-meta-action"]:hover {
+    background: color-mix(in oklch, var(--background), transparent 18%);
+  }
+
+  [data-slot="async-select-group-label"][data-slot="async-select-group-label"] {
+    color: var(--muted-foreground);
   }
 
   [data-slot="data-table-wrapper"][data-slot="data-table-wrapper"] {
@@ -670,6 +776,23 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
 
   [data-slot="app-sidebar-item"][data-slot="app-sidebar-item"]:focus-visible {
     box-shadow: 0 0 0 1px color-mix(in oklch, var(--sidebar-ring), transparent 40%), 0 0 0 5px color-mix(in oklch, var(--sidebar-ring), transparent 82%);
+  }
+
+  [data-slot="sidebar-nav-item"][data-slot="sidebar-nav-item"] {
+    background: var(--aui-sidebar-nav-item-bg);
+    color: var(--muted-foreground);
+  }
+
+  [data-slot="sidebar-nav-item"][data-slot="sidebar-nav-item"]:hover {
+    border-color: var(--aui-sidebar-nav-item-active-border);
+    background: var(--aui-sidebar-nav-item-hover-bg);
+    color: var(--foreground);
+  }
+
+  [data-slot="sidebar-nav-item"][data-active="true"] {
+    border-color: var(--aui-sidebar-nav-item-active-border);
+    background: var(--aui-sidebar-nav-item-active-bg);
+    color: var(--foreground);
   }
 
   [data-slot="file-upload-dropzone"][data-dragging="true"] {

@@ -57,7 +57,7 @@ function SidebarNav({
         )
 
         const commonClassName = cn(
-          "group flex min-h-8 items-center gap-2 rounded-lg px-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground data-[active=true]:bg-muted data-[active=true]:text-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+          "group flex min-h-8 items-center gap-2 rounded-lg border border-transparent px-2 text-sm font-medium transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
           collapsed && "justify-center px-0",
           itemClassName,
           item.active && activeItemClassName
@@ -71,6 +71,7 @@ function SidebarNav({
               {renderLink({
                 item,
                 href: item.href,
+                "data-slot": "sidebar-nav-item",
                 "data-active": item.active || undefined,
                 "data-disabled": item.disabled || undefined,
                 "aria-current": item.active ? "page" : undefined,
@@ -86,6 +87,7 @@ function SidebarNav({
             <a
               key={item.key}
               href={item.href}
+              data-slot="sidebar-nav-item"
               data-active={item.active || undefined}
               data-disabled={item.disabled || undefined}
               aria-current={item.active ? "page" : undefined}
@@ -102,6 +104,7 @@ function SidebarNav({
           <button
             key={item.key}
             type="button"
+            data-slot="sidebar-nav-item"
             data-active={item.active || undefined}
             data-disabled={item.disabled || undefined}
             aria-current={item.active ? "page" : undefined}
@@ -124,6 +127,7 @@ function SidebarNav({
           <button
             key={item.key}
             type="button"
+            data-slot="sidebar-nav-item"
             data-active={item.active || undefined}
             data-disabled={item.disabled || undefined}
             disabled={item.disabled}
