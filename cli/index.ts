@@ -9,12 +9,12 @@ const program = new Command()
 
 program
   .name("azamat-ui-kit")
-  .description("Azamat UI Kit CLI")
-  .version("0.3.11")
+  .description("Azamat UI Kit source-copy CLI")
+  .version("0.3.12")
 
 program
   .command("init")
-  .description("Initialize Azamat UI Kit in your project")
+  .description("Initialize local Azamat UI source files in your project")
   .option("--template <template>", "Project defaults: vite or next", "vite")
   .option("--skip-install", "Do not install base dependencies")
   .option("-y, --defaults", "Use template defaults without interactive prompts")
@@ -36,7 +36,7 @@ program
 
 program
   .command("add")
-  .description("Add components to your project")
+  .description("Copy component source files into your project")
   .argument("[components...]", "components to add")
   .option("-o, --overwrite", "overwrite existing files")
   .option("--dry-run", "show files without writing")

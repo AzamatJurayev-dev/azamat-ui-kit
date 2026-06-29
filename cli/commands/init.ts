@@ -5,10 +5,9 @@ import { logger } from "../utils/logger"
 import { detectPackageManager } from "../utils/detect-package-manager"
 import { installPackages } from "../utils/install-packages"
 import { upsertThemeCss } from "../utils/upsert-theme-css"
-import { getCliNpxCommand, LIBRARY_PACKAGE_NAME } from "../utils/cli-metadata"
+import { getCliNpxCommand } from "../utils/cli-metadata"
 
 const baseDependencies = [
-  LIBRARY_PACKAGE_NAME,
   "@base-ui/react",
   "@fontsource-variable/geist",
   "clsx",
@@ -200,7 +199,7 @@ export async function initCommand(options: InitCommandOptions = {}) {
     {
       type: "confirm",
       name: "installDeps",
-      message: "Asosiy dependencylarni o‘rnataymi? / Install base dependencies?",
+      message: "Component source uchun kerakli dependencylarni o‘rnataymi? / Install component dependencies?",
       initial: !options.skipInstall,
     },
     {
@@ -358,7 +357,7 @@ export function cn(...inputs: ClassValue[]) {
     logger.success(`Theme CSS yozildi / written: ${cssTarget}`)
   }
 
-  logger.success("Azamat UI Kit init qilindi / initialized.")
+  logger.success("Azamat UI Kit source-copy setup tayyor / initialized.")
   logger.info(`Component source root: ${componentsPath}`)
   logger.info(`UI primitives path: ${uiPath}`)
   logger.info(`Hooks path: ${hooksPath}`)

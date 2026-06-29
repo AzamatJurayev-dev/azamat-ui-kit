@@ -94,6 +94,18 @@ function assertFileExists(base, relativePath) {
   }
 }
 
+async function assertRuntimePackageNotInstalled(fixtureRoot, template) {
+  const packageJson = await fsExtra.readJson(path.join(fixtureRoot, "package.json"))
+  const installedPackages = new Set([
+    ...Object.keys(packageJson.dependencies ?? {}),
+    ...Object.keys(packageJson.devDependencies ?? {}),
+  ])
+
+  if (installedPackages.has("azamat-ui-kit")) {
+    throw new Error(`source-copy init should not install azamat-ui-kit runtime package for ${template}`)
+  }
+}
+
 async function runCli(fixtureRoot, args) {
   const child = await execa(nodeBin, [cliBinary, ...args], {
     cwd: fixtureRoot,
@@ -115,6 +127,7 @@ async function assertInitAndArtifacts(template) {
     await runCli(fixtureRoot, ["init", "--template", template, "--skip-install", "--defaults"])
 
     assertFileExists(fixtureRoot, "azamat-ui.json")
+    await assertRuntimePackageNotInstalled(fixtureRoot, template)
 
     const listResult = await runCli(fixtureRoot, ["list"])
     if (!listResult.stdout.includes("button")) {

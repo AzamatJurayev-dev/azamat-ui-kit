@@ -1,19 +1,31 @@
 # azamat-ui-kit-cli
 
-CLI package for `azamat-ui-kit`.
+Source-copy CLI for Azamat UI Kit.
 
-Use this CLI for the preferred source-copy workflow.
+Use this package to copy editable component source into a Next.js or Vite project. Normal app usage does not require `npm install azamat-ui-kit`.
+
+## Next.js
 
 ```bash
 npx azamat-ui-kit-cli init --template next --defaults
 npx azamat-ui-kit-cli add button input data-table
 ```
 
-Vite uchun:
+## Vite
 
 ```bash
-npm install -D azamat-ui-kit-cli
-npm install azamat-ui-kit
 npx azamat-ui-kit-cli init --template vite --defaults
-npx azamat-ui-kit-cli add button form-input
+npx azamat-ui-kit-cli add button input data-table
 ```
+
+## Commands
+
+```bash
+npx azamat-ui-kit-cli list
+npx azamat-ui-kit-cli add button input card
+npx azamat-ui-kit-cli preset minimal
+npx azamat-ui-kit-cli preset dashboard
+npx azamat-ui-kit-cli theme src/index.css
+```
+
+The CLI installs only third-party dependencies required by the copied source files.
