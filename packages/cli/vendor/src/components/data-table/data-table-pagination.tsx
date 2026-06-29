@@ -49,7 +49,7 @@ function DataTablePagination({
     <div
       data-slot="data-table-pagination"
       className={cn(
-        "flex flex-col gap-3 border-t border-border/70 bg-muted/[0.18] px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
+        "flex flex-col gap-3 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between",
         className
       )}
       {...props}

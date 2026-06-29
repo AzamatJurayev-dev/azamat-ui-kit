@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
+import { Controller, type Control, type FieldPath, type FieldValues, type RegisterOptions } from "react-hook-form"
 
 import { FormFieldShell, type FormFieldShellControlProps } from "@/components/form/form-field-shell"
 import { Textarea } from "@/components/ui/textarea"
@@ -11,6 +11,7 @@ export type FormTextareaProps<
   FormFieldShellControlProps & {
     control: Control<TFieldValues>
     name: TName
+    rules?: RegisterOptions<TFieldValues, TName>
     fieldClassName?: string
     transformIn?: (value: unknown) => string | number | readonly string[] | undefined
     transformOut?: (event: React.ChangeEvent<HTMLTextAreaElement>) => unknown
@@ -22,6 +23,7 @@ function FormTextarea<
 >({
   control,
   name,
+  rules,
   label,
   description,
   required,
@@ -53,6 +55,7 @@ function FormTextarea<
     <Controller
       control={control}
       name={name}
+      rules={rules}
       render={({ field, fieldState }) => (
         <FormFieldShell
           label={label}

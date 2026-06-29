@@ -408,7 +408,7 @@ function DataTable<TData, TValue = unknown>({
         data-striped={striped || undefined}
         data-bordered={bordered || undefined}
         className={cn(
-          "overflow-hidden rounded-[var(--radius-2xl)] border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_8%),var(--card))] shadow-sm ring-1 ring-foreground/5 backdrop-blur",
+          "overflow-hidden rounded-[var(--radius-2xl)] border backdrop-blur",
           !bordered && "border-border",
           renderMobileCard && "hidden md:block",
           tableWrapperClassName
@@ -419,7 +419,7 @@ function DataTable<TData, TValue = unknown>({
           className={cn("text-[0.95rem]", tableClassName)}
         >
           <TableHeader
-            className={cn(stickyHeader && "sticky top-0 z-10 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_5%),var(--background))] shadow-sm backdrop-blur")}
+            className={cn(stickyHeader && "sticky top-0 z-10 shadow-sm backdrop-blur")}
           >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -430,7 +430,7 @@ function DataTable<TData, TValue = unknown>({
                       className={cn(
                         densityHeadClassName[density],
                         "text-muted-foreground",
-                        stickyHeader && "bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_5%),var(--background))] backdrop-blur",
+                        stickyHeader && "backdrop-blur",
                         bordered && "border-r last:border-r-0",
                         getHeaderCellClassName(header, headerCellClassName)
                       )}
@@ -460,7 +460,6 @@ function DataTable<TData, TValue = unknown>({
                         className={cn(
                           onRowClick && !rowDisabled && "cursor-pointer",
                           !rowDisabled && "transition-colors",
-                          striped && rowIndex % 2 === 1 && "bg-muted/20",
                           rowDisabled && "pointer-events-none opacity-55",
                           getRowClassName(row, rowClassName)
                         )}

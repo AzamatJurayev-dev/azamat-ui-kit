@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react"
-import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
+import { Controller, type Control, type FieldPath, type FieldValues, type RegisterOptions } from "react-hook-form"
 
 import {
   DateRangeInput,
@@ -57,6 +57,7 @@ type FormControlledFieldProps<
 > = FormFieldShellControlProps & {
   control: Control<TFieldValues>
   name: TName
+  rules?: RegisterOptions<TFieldValues, TName>
   fieldClassName?: string
   id?: string
 }
@@ -226,6 +227,7 @@ function FormInput<
     <Controller
       control={props.control}
       name={props.name}
+      rules={props.rules}
       render={({ field, fieldState }) => {
         const error = fieldState.error?.message
 

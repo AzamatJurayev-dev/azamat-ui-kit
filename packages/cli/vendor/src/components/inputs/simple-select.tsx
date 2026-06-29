@@ -81,7 +81,7 @@ function SimpleSelect({
       <SelectTrigger
         size={size}
         className={cn(
-          "w-full border-border/80 bg-background/96 shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+          "w-full",
           triggerClassName
         )}
       >
@@ -104,12 +104,12 @@ function SimpleSelect({
       </SelectTrigger>
       <SelectContent
         className={cn(
-          "border-border/80 bg-popover/98 shadow-[0_20px_60px_rgba(15,23,42,0.18)] backdrop-blur",
+          "w-(--anchor-width)",
           contentClassName
         )}
       >
         {searchable ? (
-          <div className="sticky top-0 z-10 mb-1 flex items-center gap-2 rounded-[min(var(--radius-lg),14px)] border border-border/70 bg-background/95 px-2.5 py-2 text-sm">
+          <div data-slot="select-search" className="sticky top-0 z-10 mb-1 flex items-center gap-2 rounded-[min(var(--radius-lg),14px)] border px-2.5 py-2 text-sm">
             <SearchIcon className="size-4 text-muted-foreground" />
             <input
               value={search}
@@ -121,12 +121,12 @@ function SimpleSelect({
         ) : null}
 
         {loading ? (
-          <div className="flex items-center gap-2 rounded-[min(var(--radius-lg),14px)] px-3 py-2.5 text-sm text-muted-foreground">
+          <div data-slot="select-state" className="flex items-center gap-2 rounded-[min(var(--radius-lg),14px)] px-3 py-2.5 text-sm text-muted-foreground">
             <LoaderCircleIcon className="size-4 animate-spin" />
             {loadingLabel}
           </div>
         ) : filteredOptions.length === 0 ? (
-          <div className="rounded-[min(var(--radius-lg),14px)] px-3 py-2.5 text-sm text-muted-foreground">{emptyLabel}</div>
+          <div data-slot="select-state" className="rounded-[min(var(--radius-lg),14px)] px-3 py-2.5 text-sm text-muted-foreground">{emptyLabel}</div>
         ) : (
           filteredOptions.map((option) => {
             const selected = option.value === value

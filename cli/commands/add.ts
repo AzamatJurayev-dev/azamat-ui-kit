@@ -59,6 +59,59 @@ function applyAlias(content: string, alias = "@") {
   return content.replaceAll("@/", `${alias}/`);
 }
 
+function getLocalSourceTarget(sourcePath: string, config: AzamatUiConfig) {
+  const normalized = sourcePath.replaceAll("\\", "/");
+
+  if (normalized === "src/lib/utils.ts") return config.utilsPath ?? "src/lib/utils.ts";
+  if (normalized.startsWith("src/hooks/")) {
+    return path.join(config.paths?.hooks ?? "src/hooks", normalized.replace("src/hooks/", ""));
+  }
+  if (normalized.startsWith("src/families/")) {
+    return path.join("src/families", normalized.replace("src/families/", ""));
+  }
+  if (normalized.startsWith("src/components/ui/")) {
+    const uiPath = config.paths?.ui ?? config.componentsPath ?? "src/components/ui";
+    return path.join(uiPath, normalized.replace("src/components/ui/", ""));
+  }
+  if (normalized.startsWith("src/components/")) {
+    const componentsRoot = getComponentsRoot(config);
+    return path.join(componentsRoot, normalized.replace("src/components/", ""));
+  }
+
+  return undefined;
+}
+
+function resolveLocalImportSource(importPath: string) {
+  if (importPath === "@/lib/utils") return "src/lib/utils.ts";
+  if (importPath.startsWith("@/components/")) return `src/components/${importPath.replace("@/components/", "")}`;
+  if (importPath.startsWith("@/hooks/")) return `src/hooks/${importPath.replace("@/hooks/", "")}`;
+  if (importPath.startsWith("@/families/")) return `src/families/${importPath.replace("@/families/", "")}`;
+  return undefined;
+}
+
+function getImportCandidates(sourceWithoutExtension: string) {
+  return [
+    `${sourceWithoutExtension}.tsx`,
+    `${sourceWithoutExtension}.ts`,
+    path.join(sourceWithoutExtension, "index.ts").replaceAll("\\", "/"),
+    path.join(sourceWithoutExtension, "index.tsx").replaceAll("\\", "/"),
+  ];
+}
+
+function getLocalImports(content: string) {
+  const imports = new Set<string>();
+  const importPattern = /from\s+["'](@\/(?:components|hooks|lib|families)\/[^"']+)["']|import\s*\(\s*["'](@\/(?:components|hooks|lib|families)\/[^"']+)["']\s*\)/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = importPattern.exec(content))) {
+    const importPath = match[1] ?? match[2];
+    const sourcePath = resolveLocalImportSource(importPath);
+    if (sourcePath) imports.add(sourcePath);
+  }
+
+  return [...imports];
+}
+
 function collectRegistryItems(componentNames: ComponentName[]) {
   const collected: ComponentRegistryItem[] = [];
   const seen = new Set<ComponentName>();
@@ -122,34 +175,55 @@ export async function addCommand(components: string[], options: AddCommandOption
   const packageManager = detectPackageManager(cwd);
   const items = collectRegistryItems(validComponents);
   const dependenciesToInstall = new Set<string>();
+  const copiedSources = new Set<string>();
+
+  async function copySourceWithLocalImports(source: string, targetTemplate?: string) {
+    const normalizedSource = source.replaceAll("\\", "/");
+    if (copiedSources.has(normalizedSource)) return;
+
+    const sourcePath = path.join(packageRoot, normalizedSource);
+    if (!fs.existsSync(sourcePath)) {
+      logger.warn(`${normalizedSource} topilmadi. O‘tkazib yuborildi.`);
+      return;
+    }
+
+    copiedSources.add(normalizedSource);
+
+    const resolvedTarget = targetTemplate
+      ? resolveTargetPath(targetTemplate, config)
+      : getLocalSourceTarget(normalizedSource, config);
+
+    if (!resolvedTarget) return;
+
+    const targetPath = path.join(cwd, resolvedTarget);
+
+    if (options.dryRun) {
+      logger.info(`[dry-run] ${normalizedSource} -> ${path.relative(cwd, targetPath)}`);
+    } else if (fs.existsSync(targetPath) && !options.overwrite) {
+      logger.warn(`${path.relative(cwd, targetPath)} allaqachon mavjud. O‘tkazib yuborildi.`);
+    } else {
+      await fs.ensureDir(path.dirname(targetPath));
+      const sourceContent = await fs.readFile(sourcePath, "utf8");
+      await fs.writeFile(targetPath, applyAlias(sourceContent, config.alias));
+      logger.success(`${path.relative(cwd, targetPath)} qo‘shildi.`);
+    }
+
+    const sourceContent = await fs.readFile(sourcePath, "utf8");
+    for (const importedSource of getLocalImports(sourceContent)) {
+      for (const candidate of getImportCandidates(importedSource)) {
+        if (fs.existsSync(path.join(packageRoot, candidate))) {
+          await copySourceWithLocalImports(candidate);
+          break;
+        }
+      }
+    }
+  }
 
   for (const item of items) {
     item.dependencies?.forEach((dep) => dependenciesToInstall.add(dep));
 
     for (const file of item.files ?? []) {
-      const sourcePath = path.join(packageRoot, file.source);
-      const targetPath = path.join(cwd, resolveTargetPath(file.target, config));
-
-      if (!fs.existsSync(sourcePath)) {
-        logger.warn(`${file.source} topilmadi. O‘tkazib yuborildi.`);
-        continue;
-      }
-
-      if (options.dryRun) {
-        logger.info(`[dry-run] ${file.source} -> ${path.relative(cwd, targetPath)}`);
-        continue;
-      }
-
-      await fs.ensureDir(path.dirname(targetPath));
-
-      if (fs.existsSync(targetPath) && !options.overwrite) {
-        logger.warn(`${path.relative(cwd, targetPath)} allaqachon mavjud. O‘tkazib yuborildi.`);
-        continue;
-      }
-
-      const sourceContent = await fs.readFile(sourcePath, "utf8");
-      await fs.writeFile(targetPath, applyAlias(sourceContent, config.alias));
-      logger.success(`${path.relative(cwd, targetPath)} qo‘shildi.`);
+      await copySourceWithLocalImports(file.source, file.target);
     }
   }
 

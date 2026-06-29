@@ -297,6 +297,10 @@ function setCachedOptionGroups<
   })
 }
 
+function normalizeAsyncSearch(search: string) {
+  return search.trim().toLowerCase()
+}
+
 function AsyncStateMessage({
   className,
   children,
@@ -306,8 +310,9 @@ function AsyncStateMessage({
 }) {
   return (
     <div
+      data-slot="async-select-state"
       className={cn(
-        "rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-3 py-3 text-sm text-muted-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
+        "rounded-[min(var(--radius-xl),16px)] border px-3 py-3 text-sm text-muted-foreground",
         className
       )}
     >
@@ -345,9 +350,11 @@ function AsyncOptionButton<
     <button
       type="button"
       disabled={option.disabled}
+      data-slot="async-select-option"
+      data-selected={selected || undefined}
+      data-disabled={option.disabled || undefined}
       className={cn(
-        "flex w-full items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-border/70 hover:bg-accent/60 hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50",
-        selected && "border-primary/18 bg-primary/8 text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]",
+        "flex w-full items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] disabled:pointer-events-none disabled:opacity-50",
         optionClassName
       )}
       onClick={() => onSelect(option)}
@@ -387,7 +394,8 @@ function AsyncCreateButton({
     <button
       type="button"
       disabled={isCreating}
-      className="flex w-full items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/80 px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-primary/25 hover:bg-primary/6 hover:text-foreground disabled:pointer-events-none disabled:opacity-50"
+      data-slot="async-select-create"
+      className="flex w-full items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-dashed px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] disabled:pointer-events-none disabled:opacity-50"
       onClick={onCreate}
     >
       <span className="flex size-4 shrink-0 items-center justify-center">
@@ -466,6 +474,10 @@ function AsyncSelect<
     !searchTooShort &&
     Boolean(onCreateOption) &&
     (showCreateOption ?? defaultShowCreateOption)(search, flatOptions)
+
+  React.useEffect(() => {
+    cacheRef.current.clear()
+  }, [loadOptions])
 
   React.useEffect(() => {
     setOptionGroups(resolvedDefaultGroups)
@@ -562,6 +574,21 @@ function AsyncSelect<
     clearSelection()
   }
 
+  const handleTriggerKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (disabled) return
+
+    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      setOpen(true)
+      return
+    }
+
+    if ((event.key === "Backspace" || event.key === "Delete") && value) {
+      event.preventDefault()
+      clearSelection()
+    }
+  }
+
   const handleCreate = async () => {
     if (!onCreateOption || !search.trim() || searchTooShort) return
 
@@ -569,7 +596,11 @@ function AsyncSelect<
 
     try {
       const createdOption = await onCreateOption(search.trim())
+      const normalizedSearch = normalizeAsyncSearch(search)
       setOptionGroups((previousGroups) => [{ options: [createdOption] }, ...previousGroups])
+      if (cacheOptions && normalizedSearch) {
+        setCachedOptionGroups(cacheRef.current, normalizedSearch, [{ options: [createdOption] }])
+      }
       onValueChange?.(createdOption.value, createdOption)
       setSearch("")
       setOpen(false)
@@ -588,10 +619,12 @@ function AsyncSelect<
               variant="outline"
               disabled={disabled}
               aria-expanded={open}
+              data-slot="async-select-trigger"
               className={cn(
-                "min-h-11 w-full justify-between border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_0_rgba(255,255,255,0.06)]",
+                "min-h-11 w-full justify-between",
                 triggerClassName
               )}
+              onKeyDown={handleTriggerKeyDown}
             />
           }
         >
@@ -632,18 +665,20 @@ function AsyncSelect<
         </PopoverTrigger>
         <PopoverContent
           align="start"
+          data-slot="async-select-content"
           className={cn(
-            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-3.5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] p-3.5",
             contentClassName
           )}
         >
-          <div className="relative">
+          <div data-slot="async-select-search-wrap" className="relative">
             <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              data-slot="async-select-search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={labels?.searchPlaceholder ?? "Search..."}
-              className={cn("border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] pl-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
+              className={cn("pl-8", searchClassName)}
             />
           </div>
 
@@ -798,6 +833,10 @@ function AsyncMultiSelect<
   const canSelectAll = showSelectAll && unselectedVisibleOptions.length > 0 && !isMaxReached
 
   React.useEffect(() => {
+    cacheRef.current.clear()
+  }, [loadOptions])
+
+  React.useEffect(() => {
     setOptionGroups(resolvedDefaultGroups)
   }, [resolvedDefaultGroups])
 
@@ -907,7 +946,7 @@ function AsyncMultiSelect<
   }
 
   const handleTagRemoveKeyDown = (event: React.KeyboardEvent<HTMLElement>, option: TOption) => {
-    if (event.key !== "Enter" && event.key !== " ") return
+    if (event.key !== "Enter" && event.key !== " " && event.key !== "Backspace" && event.key !== "Delete") return
 
     event.preventDefault()
     event.stopPropagation()
@@ -915,7 +954,15 @@ function AsyncMultiSelect<
   }
 
   const handleTriggerKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (disabled || search.length > 0 || values.length === 0) return
+    if (disabled) return
+
+    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      setOpen(true)
+      return
+    }
+
+    if (search.length > 0 || values.length === 0) return
 
     if (event.key === "Backspace" || event.key === "Delete") {
       event.preventDefault()
@@ -955,6 +1002,7 @@ function AsyncMultiSelect<
 
     try {
       const createdOption = await onCreateOption(search.trim())
+      const normalizedSearch = normalizeAsyncSearch(search)
       const nextKnownOptions = mergeUniqueOptions(allKnownOptions, [createdOption])
       const nextValues = selectedSet.has(createdOption.value)
         ? values
@@ -963,6 +1011,9 @@ function AsyncMultiSelect<
           : [...values, createdOption.value]
 
       setOptionGroups((previousGroups) => [{ options: [createdOption] }, ...previousGroups])
+      if (cacheOptions && normalizedSearch) {
+        setCachedOptionGroups(cacheRef.current, normalizedSearch, [{ options: [createdOption] }])
+      }
       emitChange(nextValues, nextKnownOptions)
       setSearch("")
 
@@ -984,8 +1035,9 @@ function AsyncMultiSelect<
               variant="outline"
               disabled={disabled}
               aria-expanded={open}
+              data-slot="async-select-trigger"
               className={cn(
-                "min-h-11 w-full justify-between border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_0_rgba(255,255,255,0.06)]",
+                "min-h-11 w-full justify-between",
                 triggerClassName
               )}
               onKeyDown={handleTriggerKeyDown}
@@ -997,8 +1049,9 @@ function AsyncMultiSelect<
               currentOptions.map((option) => (
                 <span
                   key={option.value}
+                  data-slot="async-select-tag"
                   className={cn(
-                    "inline-flex max-w-full items-center gap-1 rounded-full border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-2 py-1 text-xs text-foreground shadow-[0_1px_0_rgba(255,255,255,0.04)]",
+                    "inline-flex max-w-full items-center gap-1 rounded-full border px-2 py-1 text-xs text-foreground",
                     tagClassName
                   )}
                 >
@@ -1016,6 +1069,7 @@ function AsyncMultiSelect<
                     <span
                       role="button"
                       tabIndex={0}
+                      data-slot="async-select-tag-remove"
                       className="rounded-full text-muted-foreground transition-colors hover:text-foreground"
                       aria-label={`Remove ${getOptionLabelText(option)}`}
                       onClick={(event) => {
@@ -1040,7 +1094,8 @@ function AsyncMultiSelect<
               <span
                 role="button"
                 tabIndex={0}
-                className="rounded-full border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground"
+                data-slot="async-select-clear"
+                className="rounded-full border p-1 text-muted-foreground transition-colors hover:text-foreground"
                 aria-label={labels?.clearAll ?? labels?.clear ?? "Clear all"}
                 onClick={handleClear}
                 onKeyDown={(event) => {
@@ -1058,22 +1113,24 @@ function AsyncMultiSelect<
         </PopoverTrigger>
         <PopoverContent
           align="start"
+          data-slot="async-select-content"
           className={cn(
-            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_10%),var(--popover))] p-3.5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] p-3.5",
             contentClassName
           )}
         >
-          <div className="relative">
+          <div data-slot="async-select-search-wrap" className="relative">
             <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              data-slot="async-select-search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={labels?.searchPlaceholder ?? "Search..."}
-              className={cn("border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_12%),var(--background))] pl-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.12),0_1px_0_rgba(255,255,255,0.05)]", searchClassName)}
+              className={cn("pl-8", searchClassName)}
             />
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),white_10%),color-mix(in_oklch,var(--muted),transparent_8%))] px-3 py-2 text-xs text-muted-foreground">
+          <div data-slot="async-select-meta" className="flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-xl),16px)] border px-3 py-2 text-xs text-muted-foreground">
             {hasValue && labels?.selectedCount && <span>{labels.selectedCount(values.length)}</span>}
             {isMaxReached &&
               (renderMaxSelected?.(state) ?? (
@@ -1083,6 +1140,7 @@ function AsyncMultiSelect<
               {canSelectAll && (
                 <button
                   type="button"
+                  data-slot="async-select-meta-action"
                   className="rounded-full border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
                   onClick={handleSelectAllVisible}
                 >
@@ -1092,6 +1150,7 @@ function AsyncMultiSelect<
               {canClear && (
                 <button
                   type="button"
+                  data-slot="async-select-meta-action"
                   className="rounded-full border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
                   onClick={() => onValueChange?.([], [])}
                 >
@@ -1147,7 +1206,7 @@ function AsyncMultiSelect<
                 <div key={groupIndex}>
                   {group.label && (
                     <div className="sticky top-0 z-10 bg-popover px-2 py-1 text-xs font-medium text-muted-foreground">
-                      {group.label}
+                      <span data-slot="async-select-group-label">{group.label}</span>
                     </div>
                   )}
                   {group.options.map((option) => (

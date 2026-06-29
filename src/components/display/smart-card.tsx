@@ -50,6 +50,7 @@ export type SmartCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "
   variant?: SmartCardVariant
   size?: SmartCardSize
   density?: SmartCardDensity
+  compact?: boolean
   loading?: boolean
   disabled?: boolean
   selected?: boolean
@@ -95,7 +96,8 @@ function SmartCard({
   orientation = "vertical",
   variant = "outline",
   size = "md",
-  density = "default",
+  density,
+  compact,
   loading = false,
   disabled = false,
   selected = false,
@@ -112,6 +114,7 @@ function SmartCard({
 }: SmartCardProps) {
   const ctx: SmartCardRenderContext = { eyebrow, title, description, media, icon, status, actions, meta, content, footer }
   const clickable = Boolean(onClick || interactive)
+  const resolvedDensity = compact ? "compact" : density ?? "default"
 
   return (
     <Card
@@ -131,7 +134,7 @@ function SmartCard({
       {...props}
     >
       {loading ? (
-        <div className={cn("grid gap-3", densityClassName[density])}>
+        <div className={cn("grid gap-3", densityClassName[resolvedDensity])}>
           <Skeleton className="h-5 w-1/2" />
           <SkeletonText rows={3} />
         </div>
@@ -150,7 +153,7 @@ function SmartCard({
                 {media}
               </div>
             ))}
-          <div data-slot="smart-card-body" className={cn("grid min-w-0 flex-1 gap-3", densityClassName[density], classNames?.body)}>
+          <div data-slot="smart-card-body" className={cn("grid min-w-0 flex-1 gap-3", densityClassName[resolvedDensity], classNames?.body)}>
             {renderHeader?.(ctx) ?? (
               <div data-slot="smart-card-header" className={cn("flex items-start justify-between gap-3", classNames?.header)}>
                 <div className="flex min-w-0 items-start gap-3">

@@ -29,9 +29,6 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `onChange` | `ChangeEventHandler<HTMLInputElement>` | Native change handler. |
 | `type` | `HTMLInputTypeAttribute` | Prefer text/search/email/password before moving to presets. |
 | `placeholder` | `string` | Short empty-state hint. |
-| `leading` / `trailing` | `ReactNode` | Decorators for contextual chrome before adding a specialized preset. |
-| `helperText` / `errorText` | `ReactNode` | Secondary guidance and validation copy under the field. |
-| `showCharacterCount` | `boolean` | Shows inline count metadata for bounded text entry. |
 | `disabled` | `boolean` | Locks editing and interaction. |
 
 ## Select
@@ -44,9 +41,6 @@ Related helpers can stay public, but they should be introduced from the canonica
 - The user is choosing from a finite option set.
 - The screen needs one canonical selection mental model.
 - You want FormSelect to stay the RHF entry point in docs and product code.
-- Use `AsyncSelect` or `AsyncMultiSelect` when the option source is remote or too large to preload.
-- Use `Combobox` only when local keyboard filtering matters more than strict select semantics.
-- Keep creatable flows with async select surfaces so search, fetch, and create stay in one place.
 
 ### Related Helpers
 
@@ -140,3 +134,4 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `sorting` | `SortingState` | Controlled sort state. |
 | `rowSelection` | `RowSelectionState` | Controlled selection state. |
 | `pagination` | `PaginationStateProps` | Current page, size, total count, and handlers. |
+

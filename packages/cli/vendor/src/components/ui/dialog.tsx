@@ -41,17 +41,20 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  size = "md",
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "full"
 }) {
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
+        data-size={size}
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[var(--radius-3xl)] border border-border/72 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--popover),white_8%),var(--popover))] p-6 text-sm text-popover-foreground shadow-[0_28px_88px_color-mix(in_oklch,var(--foreground),transparent_86%)] ring-1 ring-foreground/6 backdrop-blur duration-100 outline-none sm:max-w-lg data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[var(--radius-3xl)] border p-6 text-sm text-popover-foreground backdrop-blur duration-100 outline-none data-[size=xs]:sm:max-w-sm data-[size=sm]:sm:max-w-md data-[size=md]:sm:max-w-lg data-[size=lg]:sm:max-w-2xl data-[size=xl]:sm:max-w-4xl data-[size=full]:h-[min(92vh,56rem)] data-[size=full]:max-w-[min(96vw,84rem)] data-[size=full]:grid-rows-[auto_1fr] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -96,10 +99,10 @@ function DialogFooter({
   showCloseButton?: boolean
 }) {
   return (
-    <div
+        <div
       data-slot="dialog-footer"
       className={cn(
-        "-mx-6 -mb-6 flex flex-col-reverse gap-2 rounded-b-[var(--radius-3xl)] border-t border-border/58 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--muted),transparent_38%),color-mix(in_oklch,var(--muted),transparent_18%))] p-5 sm:flex-row sm:justify-end",
+        "-mx-6 -mb-6 flex flex-col-reverse gap-2 rounded-b-[var(--radius-3xl)] border-t p-5 sm:flex-row sm:justify-end",
         className
       )}
       {...props}

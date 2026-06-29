@@ -27,7 +27,7 @@ const inputDecoratorVariants = cva("relative flex w-full items-center", {
 
 export type InputDecoratorProps = Omit<React.ComponentProps<typeof InputPrimitive>, "value"> &
   VariantProps<typeof inputDecoratorVariants> & {
-    value?: string | number | null
+    value?: string | number | readonly string[] | null
     leading?: React.ReactNode
     trailing?: React.ReactNode
     leadingPointerEvents?: boolean
@@ -59,6 +59,14 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
   ) => {
     const hasLeading = Boolean(leading)
     const hasTrailing = Boolean(trailing)
+    const resolvedValue =
+      value == null
+        ? value === null
+          ? ""
+          : undefined
+        : Array.isArray(value)
+          ? value
+          : String(value)
 
     return (
       <div
@@ -82,7 +90,7 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
 
         <InputPrimitive
           ref={ref}
-          value={value == null ? "" : String(value)}
+          value={resolvedValue}
           className={cn(hasLeading && "pl-11", hasTrailing && "pr-12", inputClassName, className)}
           {...props}
         />
