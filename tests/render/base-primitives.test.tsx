@@ -48,6 +48,27 @@ describe("base primitives", () => {
     expect(loadingButton.querySelector("[data-slot='button-spinner']")).toBeTruthy()
   })
 
+  it("preserves public button variant and disabled data contract", () => {
+    render(
+      <div>
+        <Button variant="destructive">Delete</Button>
+        <Button variant="link">Read docs</Button>
+        <Button variant="secondary" disabled>
+          Disabled action
+        </Button>
+      </div>
+    )
+
+    const destructiveButton = screen.getByRole("button", { name: "Delete" })
+    const linkButton = screen.getByRole("button", { name: "Read docs" })
+    const disabledButton = screen.getByRole("button", { name: "Disabled action" })
+
+    expect(destructiveButton.getAttribute("data-variant")).toBe("destructive")
+    expect(linkButton.getAttribute("data-variant")).toBe("link")
+    expect(disabledButton.getAttribute("data-variant")).toBe("secondary")
+    expect(disabledButton.getAttribute("disabled")).toBe("")
+  })
+
   it("forwards refs and keeps native input behavior", async () => {
     const user = userEvent.setup()
     const ref = React.createRef<HTMLInputElement>()
@@ -140,6 +161,21 @@ describe("base primitives", () => {
     expect((badge as HTMLElement).querySelectorAll("[data-slot='badge-icon']")).toHaveLength(2)
   })
 
+  it("keeps badge metadata contract for dot, variant and size", () => {
+    render(
+      <Badge variant="outline" tone="warning" size="sm" dot>
+        Pending
+      </Badge>
+    )
+
+    const badge = screen.getByText("Pending").closest("[data-slot='badge']")
+    expect(badge).toBeTruthy()
+    expect(badge?.getAttribute("data-variant")).toBe("outline")
+    expect(badge?.getAttribute("data-tone")).toBe("warning")
+    expect(badge?.getAttribute("data-size")).toBe("sm")
+    expect(badge?.querySelector("[data-slot='badge-dot']")).toBeTruthy()
+  })
+
   it("renders card composition helpers in order", () => {
     render(
       <Card interactive selected>
@@ -162,6 +198,23 @@ describe("base primitives", () => {
     expect(screen.getByText("Build status").textContent).toBe("Build status")
     expect(screen.getByText("Content").textContent).toBe("Content")
     expect(screen.getByText("Footer").textContent).toBe("Footer")
+  })
+
+  it("keeps card size, density, tone and disabled data contract", () => {
+    render(
+      <Card variant="soft" size="lg" density="comfortable" tone="warning" disabled>
+        <CardContent>Review content</CardContent>
+      </Card>
+    )
+
+    const card = screen.getByText("Review content").closest("[data-slot='card']")
+    expect(card).toBeTruthy()
+    expect(card?.getAttribute("data-variant")).toBe("soft")
+    expect(card?.getAttribute("data-size")).toBe("lg")
+    expect(card?.getAttribute("data-density")).toBe("comfortable")
+    expect(card?.getAttribute("data-tone")).toBe("warning")
+    expect(card?.getAttribute("data-disabled")).toBe("true")
+    expect(card?.getAttribute("aria-disabled")).toBe("true")
   })
 
   it("keeps nested cards visually downgraded without breaking content structure", () => {

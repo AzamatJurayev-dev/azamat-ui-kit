@@ -40,7 +40,7 @@ Current status:
 - [x] Add stronger disabled/read-only visual consistency.
 - [ ] Decide whether split button belongs in core or actions family.
 - [ ] Review destructive, warning and link variants for shipped default contrast.
-- [ ] Add button interaction regression tests for hover/focus/loading/disabled combinations where meaningful.
+- [x] Add button interaction regression tests for hover/focus/loading/disabled combinations where meaningful.
 
 ### Input
 
@@ -81,8 +81,8 @@ Current status:
 - [ ] Refine `Checkbox` card-style and label-alignment patterns.
 - [ ] Refine `RadioGroup` option-card and dense form patterns.
 - [ ] Refine `Tooltip` delay, contrast and interactive helper usage.
-- [ ] Refine `Badge` visual hierarchy and intended metadata usage.
-- [ ] Refine `Card` shipped default density, contrast and nested-card avoidance patterns.
+- [x] Refine `Badge` visual hierarchy and intended metadata usage.
+- [x] Refine `Card` shipped default density, contrast and nested-card avoidance patterns.
 - [ ] Refine `Popover`, `DropdownMenu`, `HoverCard`, `RightClickMenu` so overlay family feels consistent.
 - [ ] Review `Kbd`, `ScrollBox`, `Collapse` defaults and docs positioning.
 
