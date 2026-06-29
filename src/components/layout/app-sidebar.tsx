@@ -42,10 +42,10 @@ function AppSidebar({
     <aside
       data-slot="app-sidebar"
       data-collapsed={collapsed || undefined}
-      className={cn("flex h-full min-h-0 flex-col bg-sidebar text-sidebar-foreground", className)}
+      className={cn("flex h-full min-h-0 flex-col", className)}
       {...props}
     >
-      {header && <div className="shrink-0 border-b p-3">{header}</div>}
+      {header && <div data-slot="app-sidebar-header" className="shrink-0 border-b p-3">{header}</div>}
 
       <nav data-slot="app-sidebar-nav" className="min-h-0 flex-1 space-y-1 overflow-y-auto p-2">
         {children ??
@@ -63,8 +63,9 @@ function AppSidebar({
                       "aria-disabled": item.disabled || undefined,
                       "data-active": item.active || undefined,
                       "data-disabled": item.disabled || undefined,
+                      "data-slot": "app-sidebar-item",
                       className: cn(
-                        "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                        "flex min-h-9 items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
                         collapsed && "justify-center px-2"
                       ),
                       onClick: (event) => {
@@ -91,10 +92,11 @@ function AppSidebar({
                     href={item.href}
                     aria-current={item.active ? "page" : undefined}
                     aria-disabled={item.disabled || undefined}
+                    data-slot="app-sidebar-item"
                     data-active={item.active || undefined}
                     data-disabled={item.disabled || undefined}
                     className={cn(
-                      "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                      "flex min-h-9 items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
                       collapsed && "justify-center px-2"
                     )}
                     onClick={(event) => {
@@ -118,10 +120,11 @@ function AppSidebar({
                   type="button"
                   aria-current={item.active ? "page" : undefined}
                   aria-disabled={item.disabled || undefined}
+                  data-slot="app-sidebar-item"
                   data-active={item.active || undefined}
                   data-disabled={item.disabled || undefined}
                   className={cn(
-                    "flex min-h-9 w-full items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                    "flex min-h-9 w-full items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
                     collapsed && "justify-center px-2"
                   )}
                   onClick={() => {
@@ -151,10 +154,11 @@ function AppSidebar({
                   disabled={item.disabled}
                   aria-current={item.active ? "page" : undefined}
                   aria-disabled={item.disabled || undefined}
+                  data-slot="app-sidebar-item"
                   data-active={item.active || undefined}
                   data-disabled={item.disabled || undefined}
                   className={cn(
-                    "flex min-h-9 items-center gap-2 rounded-lg px-2.5 text-sm font-medium outline-none transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+                    "flex min-h-9 items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
                     collapsed && "justify-center px-2"
                   )}
                   onClick={() => {
@@ -171,7 +175,7 @@ function AppSidebar({
           )}
       </nav>
 
-      {footer && <div className="shrink-0 border-t p-3">{footer}</div>}
+      {footer && <div data-slot="app-sidebar-footer" className="shrink-0 border-t p-3">{footer}</div>}
     </aside>
   )
 }

@@ -116,6 +116,20 @@
   --aui-card-soft-bg: color-mix(in oklch, var(--muted), white 36%);
   --aui-card-outline-bg: color-mix(in oklch, var(--card), white 18%);
   --aui-popover-shadow: 0 24px 70px oklch(0.24 0.02 255 / 18%);
+  --aui-overlay-surface: linear-gradient(180deg, color-mix(in oklch, var(--popover), white 10%), var(--popover));
+  --aui-overlay-border: color-mix(in oklch, var(--border), white 8%);
+  --aui-overlay-footer-bg: linear-gradient(180deg, color-mix(in oklch, var(--muted), transparent 42%), color-mix(in oklch, var(--muted), transparent 20%));
+  --aui-sidebar-surface: linear-gradient(180deg, color-mix(in oklch, var(--sidebar), white 18%), var(--sidebar));
+  --aui-sidebar-border: color-mix(in oklch, var(--sidebar-border), white 6%);
+  --aui-sidebar-item-bg: transparent;
+  --aui-sidebar-item-hover-bg: color-mix(in oklch, var(--sidebar-accent), transparent 18%);
+  --aui-sidebar-item-active-bg: color-mix(in oklch, var(--sidebar-primary), transparent 78%);
+  --aui-sidebar-item-active-border: color-mix(in oklch, var(--sidebar-primary), transparent 56%);
+  --aui-sidebar-item-active-fg: color-mix(in oklch, var(--sidebar-foreground), white 6%);
+  --aui-table-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 8%), var(--card));
+  --aui-table-container-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 12%), var(--card));
+  --aui-table-border: color-mix(in oklch, var(--border), white 5%);
+  --aui-table-selection-surface: color-mix(in oklch, var(--background), white 28%);
   --aui-button-primary-shadow: 0 1px 0 color-mix(in oklch, white, transparent 18%), 0 16px 34px color-mix(in oklch, var(--primary), transparent 78%);
   --aui-button-danger-shadow: 0 1px 0 color-mix(in oklch, white, transparent 28%), 0 16px 34px color-mix(in oklch, var(--destructive), transparent 80%);
   --aui-table-header-bg: linear-gradient(180deg, oklch(0.972 0.008 250), oklch(0.954 0.01 250));
@@ -183,6 +197,20 @@
   --aui-card-soft-bg: oklch(1 0 0 / 4%);
   --aui-card-outline-bg: oklch(1 0 0 / 2%);
   --aui-popover-shadow: 0 24px 80px oklch(0 0 0 / 48%);
+  --aui-overlay-surface: linear-gradient(180deg, color-mix(in oklch, var(--popover), white 3%), var(--popover));
+  --aui-overlay-border: oklch(1 0 0 / 10%);
+  --aui-overlay-footer-bg: linear-gradient(180deg, oklch(1 0 0 / 3%), oklch(1 0 0 / 7%));
+  --aui-sidebar-surface: linear-gradient(180deg, color-mix(in oklch, var(--sidebar), white 4%), var(--sidebar));
+  --aui-sidebar-border: oklch(1 0 0 / 10%);
+  --aui-sidebar-item-bg: transparent;
+  --aui-sidebar-item-hover-bg: oklch(1 0 0 / 7%);
+  --aui-sidebar-item-active-bg: color-mix(in oklch, var(--sidebar-primary), transparent 80%);
+  --aui-sidebar-item-active-border: color-mix(in oklch, var(--sidebar-primary), transparent 60%);
+  --aui-sidebar-item-active-fg: var(--sidebar-foreground);
+  --aui-table-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 2%), var(--card));
+  --aui-table-container-surface: linear-gradient(180deg, color-mix(in oklch, var(--card), white 4%), var(--card));
+  --aui-table-border: oklch(1 0 0 / 8%);
+  --aui-table-selection-surface: oklch(1 0 0 / 4%);
   --aui-control-border-strong: oklch(1 0 0 / 16%);
   --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 72%);
   --aui-control-panel-bg: oklch(1 0 0 / 5%);
@@ -507,9 +535,14 @@
   [data-slot="dialog-content"][data-slot="dialog-content"],
   [data-slot="sheet-content"][data-slot="sheet-content"],
   [data-slot="select-content"][data-slot="select-content"] {
-    border-color: color-mix(in oklch, var(--border), white 8%);
-    background: color-mix(in oklch, var(--popover), transparent 6%);
+    border-color: var(--aui-overlay-border);
+    background: var(--aui-overlay-surface);
     box-shadow: var(--aui-popover-shadow);
+  }
+
+  [data-slot="dialog-footer"][data-slot="dialog-footer"] {
+    border-color: color-mix(in oklch, var(--border), transparent 12%);
+    background: var(--aui-overlay-footer-bg);
   }
 
   [data-slot="select-item"][data-slot="select-item"]:focus,
@@ -526,6 +559,8 @@
   }
 
   [data-slot="data-table-wrapper"][data-slot="data-table-wrapper"] {
+    border-color: var(--aui-table-border);
+    background: var(--aui-table-surface);
     box-shadow: var(--aui-card-shadow);
   }
 
@@ -534,6 +569,18 @@
     border-radius: var(--aui-card-radius);
     background: var(--aui-table-toolbar-bg);
     box-shadow: var(--aui-card-shadow);
+  }
+
+  [data-slot="data-table-toolbar"][data-variant="soft"] {
+    border-color: transparent;
+    background: color-mix(in oklch, var(--muted), transparent 70%);
+    box-shadow: none;
+  }
+
+  [data-slot="data-table-selection-bar"][data-slot="data-table-selection-bar"] {
+    border-color: color-mix(in oklch, var(--border), white 4%);
+    background: var(--aui-table-selection-surface);
+    box-shadow: var(--aui-control-shadow);
   }
 
   [data-slot="data-table-wrapper"] thead {
@@ -553,7 +600,71 @@
   }
 
   [data-slot="data-table-pagination"][data-slot="data-table-pagination"] {
+    border-color: var(--aui-table-border);
     background: var(--aui-table-footer-bg);
+  }
+
+  [data-slot="table-container"][data-slot="table-container"] {
+    border-color: var(--aui-table-border);
+    background: var(--aui-table-container-surface);
+    box-shadow: var(--aui-card-shadow);
+  }
+
+  [data-slot="table-header"][data-slot="table-header"] {
+    background: color-mix(in oklch, var(--muted), transparent 72%);
+  }
+
+  [data-slot="table-footer"][data-slot="table-footer"] {
+    background: color-mix(in oklch, var(--muted), transparent 54%);
+  }
+
+  [data-slot="table-row"][data-slot="table-row"] {
+    border-color: color-mix(in oklch, var(--border), white 2%);
+  }
+
+  [data-slot="table-row"][data-slot="table-row"]:hover {
+    background: color-mix(in oklch, var(--muted), transparent 72%);
+  }
+
+  [data-slot="table-row"][data-state="selected"] {
+    background: color-mix(in oklch, var(--primary), transparent 88%);
+  }
+
+  [data-slot="table-row"][data-striped="true"] {
+    background: var(--aui-table-stripe-bg);
+  }
+
+  [data-slot="app-sidebar"][data-slot="app-sidebar"] {
+    border-right: 1px solid var(--aui-sidebar-border);
+    background: var(--aui-sidebar-surface);
+    box-shadow: inset -1px 0 0 oklch(1 0 0 / 4%);
+  }
+
+  [data-slot="app-sidebar-header"][data-slot="app-sidebar-header"],
+  [data-slot="app-sidebar-footer"][data-slot="app-sidebar-footer"] {
+    border-color: var(--aui-sidebar-border);
+  }
+
+  [data-slot="app-sidebar-item"][data-slot="app-sidebar-item"] {
+    background: var(--aui-sidebar-item-bg);
+    color: color-mix(in oklch, var(--sidebar-foreground), transparent 8%);
+  }
+
+  [data-slot="app-sidebar-item"][data-slot="app-sidebar-item"]:hover {
+    border-color: color-mix(in oklch, var(--sidebar-border), white 6%);
+    background: var(--aui-sidebar-item-hover-bg);
+    color: var(--sidebar-accent-foreground);
+  }
+
+  [data-slot="app-sidebar-item"][data-active="true"] {
+    border-color: var(--aui-sidebar-item-active-border);
+    background: var(--aui-sidebar-item-active-bg);
+    color: var(--aui-sidebar-item-active-fg);
+    box-shadow: 0 1px 0 oklch(1 0 0 / 6%), 0 10px 24px color-mix(in oklch, var(--sidebar-primary), transparent 88%);
+  }
+
+  [data-slot="app-sidebar-item"][data-slot="app-sidebar-item"]:focus-visible {
+    box-shadow: 0 0 0 1px color-mix(in oklch, var(--sidebar-ring), transparent 40%), 0 0 0 5px color-mix(in oklch, var(--sidebar-ring), transparent 82%);
   }
 
   [data-slot="file-upload-dropzone"][data-dragging="true"] {

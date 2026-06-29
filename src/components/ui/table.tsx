@@ -11,7 +11,7 @@ function Table({ className, containerClassName, ...props }: TableProps) {
     <div
       data-slot="table-container"
       className={cn(
-        "relative w-full overflow-x-auto rounded-[var(--radius-2xl)] border border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_12%),var(--card))] shadow-sm ring-1 ring-foreground/5",
+        "relative w-full overflow-x-auto rounded-[var(--radius-2xl)] border",
         containerClassName
       )}
     >
@@ -28,7 +28,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("bg-muted/30 [&_tr]:border-b", className)}
+      className={cn("[&_tr]:border-b", className)}
       {...props}
     />
   )
@@ -49,7 +49,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "border-t bg-muted/58 font-medium [&>tr]:last:border-b-0",
+        "border-t font-medium [&>tr]:last:border-b-0",
         className
       )}
       {...props}
@@ -62,7 +62,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b border-border/70 transition-colors hover:bg-muted/28 has-aria-expanded:bg-muted/36 data-[state=selected]:bg-primary/8",
+        "border-b transition-colors",
         className
       )}
       {...props}

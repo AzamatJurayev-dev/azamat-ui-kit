@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils"
 const dataTableToolbarVariants = cva("flex flex-col", {
   variants: {
     variant: {
-      default: "rounded-[var(--radius-2xl)] border border-border/70 bg-card/72 shadow-sm ring-1 ring-foreground/5",
+      default: "",
       plain: "border-transparent bg-transparent shadow-none",
-      soft: "rounded-[var(--radius-2xl)] border border-transparent bg-muted/32 shadow-none",
+      soft: "",
     },
     density: {
       compact: "gap-3 p-3",
@@ -64,6 +64,7 @@ function DataTableToolbar({
   return (
     <div
       data-slot="data-table-toolbar"
+      data-variant={variant ?? "plain"}
       data-density={density ?? "default"}
       className={cn(dataTableToolbarVariants({ variant, density }), className)}
       {...props}
@@ -90,7 +91,7 @@ function DataTableToolbar({
           </div>
 
           {hasSelection && (
-            <div className="flex shrink-0 items-center gap-2 rounded-full border border-border/75 bg-background/92 px-2.5 py-1.5 text-sm shadow-[0_1px_0_rgba(255,255,255,0.08)] backdrop-blur">
+            <div data-slot="data-table-selection-bar" className="flex shrink-0 items-center gap-2 rounded-full border px-2.5 py-1.5 text-sm backdrop-blur">
               <span className="text-muted-foreground">{selectedLabel(selectedCount, totalCount)}</span>
               {selectionActions}
             </div>
