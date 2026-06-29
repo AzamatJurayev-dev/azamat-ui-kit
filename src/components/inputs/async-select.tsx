@@ -297,6 +297,10 @@ function setCachedOptionGroups<
   })
 }
 
+function normalizeAsyncSearch(search: string) {
+  return search.trim().toLowerCase()
+}
+
 function AsyncStateMessage({
   className,
   children,
@@ -472,6 +476,14 @@ function AsyncSelect<
     (showCreateOption ?? defaultShowCreateOption)(search, flatOptions)
 
   React.useEffect(() => {
+    cacheRef.current.clear()
+  }, [loadOptions])
+
+  React.useEffect(() => {
+    cacheRef.current.clear()
+  }, [loadOptions])
+
+  React.useEffect(() => {
     setOptionGroups(resolvedDefaultGroups)
   }, [resolvedDefaultGroups])
 
@@ -566,6 +578,21 @@ function AsyncSelect<
     clearSelection()
   }
 
+  const handleTriggerKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    if (disabled) return
+
+    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      setOpen(true)
+      return
+    }
+
+    if ((event.key === "Backspace" || event.key === "Delete") && value) {
+      event.preventDefault()
+      clearSelection()
+    }
+  }
+
   const handleCreate = async () => {
     if (!onCreateOption || !search.trim() || searchTooShort) return
 
@@ -573,7 +600,11 @@ function AsyncSelect<
 
     try {
       const createdOption = await onCreateOption(search.trim())
+      const normalizedSearch = normalizeAsyncSearch(search)
       setOptionGroups((previousGroups) => [{ options: [createdOption] }, ...previousGroups])
+      if (cacheOptions && normalizedSearch) {
+        setCachedOptionGroups(cacheRef.current, normalizedSearch, [{ options: [createdOption] }])
+      }
       onValueChange?.(createdOption.value, createdOption)
       setSearch("")
       setOpen(false)
@@ -597,6 +628,7 @@ function AsyncSelect<
                 "min-h-11 w-full justify-between",
                 triggerClassName
               )}
+              onKeyDown={handleTriggerKeyDown}
             />
           }
         >
@@ -914,7 +946,7 @@ function AsyncMultiSelect<
   }
 
   const handleTagRemoveKeyDown = (event: React.KeyboardEvent<HTMLElement>, option: TOption) => {
-    if (event.key !== "Enter" && event.key !== " ") return
+    if (event.key !== "Enter" && event.key !== " " && event.key !== "Backspace" && event.key !== "Delete") return
 
     event.preventDefault()
     event.stopPropagation()
@@ -922,7 +954,15 @@ function AsyncMultiSelect<
   }
 
   const handleTriggerKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (disabled || search.length > 0 || values.length === 0) return
+    if (disabled) return
+
+    if (event.key === "ArrowDown" || event.key === "Enter" || event.key === " ") {
+      event.preventDefault()
+      setOpen(true)
+      return
+    }
+
+    if (search.length > 0 || values.length === 0) return
 
     if (event.key === "Backspace" || event.key === "Delete") {
       event.preventDefault()
@@ -962,6 +1002,7 @@ function AsyncMultiSelect<
 
     try {
       const createdOption = await onCreateOption(search.trim())
+      const normalizedSearch = normalizeAsyncSearch(search)
       const nextKnownOptions = mergeUniqueOptions(allKnownOptions, [createdOption])
       const nextValues = selectedSet.has(createdOption.value)
         ? values
@@ -970,6 +1011,9 @@ function AsyncMultiSelect<
           : [...values, createdOption.value]
 
       setOptionGroups((previousGroups) => [{ options: [createdOption] }, ...previousGroups])
+      if (cacheOptions && normalizedSearch) {
+        setCachedOptionGroups(cacheRef.current, normalizedSearch, [{ options: [createdOption] }])
+      }
       emitChange(nextValues, nextKnownOptions)
       setSearch("")
 

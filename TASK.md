@@ -57,9 +57,9 @@ Current status:
 - [ ] Keep `Select` as canonical choice surface.
 - [ ] Refine `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox` boundaries.
 - [x] Improve grouped, loading, empty and error states.
-- [ ] Improve keyboard flow and focus clarity.
+- [x] Improve keyboard flow and focus clarity.
 - [ ] Decide whether creatable mode belongs in `Combobox` or `Select`.
-- [ ] Review remote-data and cache behavior for async variants.
+- [x] Review remote-data and cache behavior for async variants.
 
 ### Dialog
 
@@ -92,7 +92,7 @@ Current status:
 - [x] Keep `Breadcrumbs` as its own component surface.
 - [ ] Keep `AppShell`, `PageHeader`, `PageContainer`, `FormBuilder` secondary to reusable component catalog.
 - [ ] Strengthen `AppSidebar` for production:
-  - [ ] nested groups
+  - [x] nested groups
   - [ ] section labels
   - [ ] collapse rail behavior
   - [ ] footer account area
@@ -104,8 +104,8 @@ Current status:
   - [ ] active/expanded state contract
   - [ ] better router integration patterns
 - [ ] Strengthen `Breadcrumbs`:
-  - [ ] collapsed overflow
-  - [ ] max items
+  - [x] collapsed overflow
+  - [x] max items
   - [ ] icon support
   - [ ] clearer current item contract
 - [ ] Decide whether `EntityHeader` should replace many current `PageHeader` use-cases.

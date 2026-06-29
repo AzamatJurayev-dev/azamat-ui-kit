@@ -778,6 +778,20 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     box-shadow: 0 0 0 1px color-mix(in oklch, var(--sidebar-ring), transparent 40%), 0 0 0 5px color-mix(in oklch, var(--sidebar-ring), transparent 82%);
   }
 
+  [data-slot="app-sidebar-group-trigger"][data-slot="app-sidebar-group-trigger"] {
+    color: color-mix(in oklch, var(--sidebar-foreground), transparent 8%);
+  }
+
+  [data-slot="app-sidebar-group-trigger"][data-slot="app-sidebar-group-trigger"]:hover {
+    border-color: color-mix(in oklch, var(--sidebar-border), white 6%);
+    background: var(--aui-sidebar-item-hover-bg);
+    color: var(--sidebar-accent-foreground);
+  }
+
+  [data-slot="app-sidebar-group-content"][data-slot="app-sidebar-group-content"] {
+    border-left: 1px solid color-mix(in oklch, var(--sidebar-border), transparent 28%);
+  }
+
   [data-slot="sidebar-nav-item"][data-slot="sidebar-nav-item"] {
     background: var(--aui-sidebar-nav-item-bg);
     color: var(--muted-foreground);
@@ -793,6 +807,10 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     border-color: var(--aui-sidebar-nav-item-active-border);
     background: var(--aui-sidebar-nav-item-active-bg);
     color: var(--foreground);
+  }
+
+  [data-slot="breadcrumbs-collapsed"][data-slot="breadcrumbs-collapsed"] {
+    background: color-mix(in oklch, var(--muted), transparent 72%);
   }
 
   [data-slot="file-upload-dropzone"][data-dragging="true"] {
