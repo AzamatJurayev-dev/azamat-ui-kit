@@ -6,24 +6,31 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-full border border-transparent font-semibold tracking-[0.01em] transition-[background-color,border-color,color,box-shadow,transform] focus-visible:ring-0 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
+  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-full border border-[color:color-mix(in_oklch,var(--border),var(--foreground)_5%)] bg-[color:color-mix(in_oklch,var(--muted),var(--background)_42%)] font-semibold tracking-[0.01em] text-foreground shadow-[inset_0_1px_0_color-mix(in_oklch,white,transparent_38%)] transition-[background-color,border-color,color,box-shadow,transform] focus-visible:ring-0 focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {
-        default: "",
-        secondary: "",
-        destructive: "",
-        outline: "",
-        ghost: "",
-        link: "border-transparent bg-transparent p-0 shadow-none underline-offset-4",
+        default:
+          "border-[color:color-mix(in_oklch,var(--primary),transparent_64%)] bg-[color:color-mix(in_oklch,var(--primary),transparent_82%)] text-[color:color-mix(in_oklch,var(--primary),black_28%)] dark:text-[color:color-mix(in_oklch,var(--primary),white_46%)]",
+        secondary:
+          "border-[color:color-mix(in_oklch,var(--border),var(--foreground)_6%)] bg-[color:color-mix(in_oklch,var(--muted),var(--background)_26%)] text-foreground",
+        destructive:
+          "border-[color:color-mix(in_oklch,var(--destructive),transparent_64%)] bg-[color:color-mix(in_oklch,var(--destructive),transparent_84%)] text-[color:color-mix(in_oklch,var(--destructive),black_18%)] dark:text-[color:color-mix(in_oklch,var(--destructive),white_44%)]",
+        outline: "bg-transparent text-foreground shadow-none",
+        ghost: "border-transparent bg-transparent text-muted-foreground shadow-none",
+        link: "border-transparent bg-transparent p-0 text-primary shadow-none underline-offset-4",
       },
       tone: {
         neutral: "",
-        info: "",
-        success: "",
-        warning: "",
-        danger: "",
-        muted: "",
+        info: "border-[color:color-mix(in_oklch,var(--aui-info,var(--primary)),transparent_64%)] bg-[color:color-mix(in_oklch,var(--aui-info,var(--primary)),transparent_82%)] text-[color:color-mix(in_oklch,var(--aui-info,var(--primary)),black_18%)] dark:text-[color:color-mix(in_oklch,var(--aui-info,var(--primary)),white_48%)]",
+        success:
+          "border-[color:color-mix(in_oklch,var(--aui-success,var(--primary)),transparent_64%)] bg-[color:color-mix(in_oklch,var(--aui-success,var(--primary)),transparent_82%)] text-[color:color-mix(in_oklch,var(--aui-success,var(--primary)),black_18%)] dark:text-[color:color-mix(in_oklch,var(--aui-success,var(--primary)),white_46%)]",
+        warning:
+          "border-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),transparent_58%)] bg-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),transparent_76%)] text-[color:color-mix(in_oklch,var(--aui-warning-foreground,var(--foreground)),black_10%)] dark:text-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),white_36%)]",
+        danger:
+          "border-[color:color-mix(in_oklch,var(--destructive),transparent_64%)] bg-[color:color-mix(in_oklch,var(--destructive),transparent_84%)] text-[color:color-mix(in_oklch,var(--destructive),black_18%)] dark:text-[color:color-mix(in_oklch,var(--destructive),white_44%)]",
+        muted:
+          "border-[color:color-mix(in_oklch,var(--border),var(--foreground)_6%)] bg-[color:color-mix(in_oklch,var(--muted),var(--background)_26%)] text-muted-foreground",
       },
       size: {
         sm: "min-h-5 px-2.5 py-0.5 text-[0.64rem]",

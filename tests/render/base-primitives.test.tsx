@@ -14,6 +14,10 @@ import {
   CardHeader,
   CardTitle,
   Checkbox,
+  CollapseContent,
+  CollapseGroup,
+  CollapseTrigger,
+  Collapse,
   Input,
   Tabs,
   TabsContent,
@@ -233,6 +237,35 @@ describe("base primitives", () => {
 
     expect(screen.getByText("Nested content")).toBeTruthy()
     expect(screen.getAllByText("Nested content")).toHaveLength(1)
+  })
+
+  it("renders collapse content and manages collapse group state", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <div>
+        <Collapse>
+          <CollapseTrigger>Standalone details</CollapseTrigger>
+          <CollapseContent>Standalone content</CollapseContent>
+        </Collapse>
+        <CollapseGroup
+          type="single"
+          items={[
+            { key: "usage", title: "Usage", content: "Usage content" },
+            { key: "api", title: "API", content: "API content" },
+          ]}
+        />
+      </div>
+    )
+
+    await user.click(screen.getByText("Standalone details"))
+    expect(screen.getByText("Standalone content")).toBeTruthy()
+
+    await user.click(screen.getByText("Usage"))
+    expect(screen.getByText("Usage content")).toBeTruthy()
+
+    await user.click(screen.getByText("API"))
+    expect(screen.getByText("API content")).toBeTruthy()
   })
 
   it("switches tabs and keeps selected state accessible", async () => {
