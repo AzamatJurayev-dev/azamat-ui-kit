@@ -476,8 +476,14 @@ function AppSidebar({
   )
 }
 
+/**
+ * Canonical sidebar surface for new usage.
+ */
 const Sidebar = AppSidebar
 
+/**
+ * @deprecated Use {@link Sidebar} instead. `AppSidebar` remains as a compatibility alias.
+ */
 export { AppSidebar, Sidebar }
 export type {
   AppSidebarFooterAccount as SidebarFooterAccount,

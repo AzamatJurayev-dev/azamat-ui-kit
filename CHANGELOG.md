@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+### Changed
+
+- stabilized the standalone `test:run` flow by auto-building `dist` before build-output smoke checks when needed
+- promoted `InfoCard` as the canonical display-card name while keeping `SmartCard` as a deprecated compatibility alias
+- marked compatibility wrappers such as `FormPasswordInput`, `FormAsyncSelect`, and `AppSidebar` more explicitly as migration aliases
+- rewrote `PUBLIC_API_INVENTORY.md`, regenerated `PUBLIC_COMPONENT_API.md`, and refreshed `README.md` so source-copy-first canonical APIs lead the docs surface
+
 ## 0.3.19 - 2026-06-30
 
 ### Added

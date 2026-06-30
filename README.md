@@ -53,6 +53,25 @@ import { DataTable } from "@/components/data-table/data-table"
 import { FormInput } from "@/components/form/form-input"
 ```
 
+## Canonical Components First
+
+Teach these names first in app code and docs:
+
+- `Button`
+- `Input`
+- `Select`
+- `FormInput`
+- `FormSelect`
+- `FormFieldShell`
+- `Card`
+- `InfoCard`
+- `Badge`
+- `Dialog`
+- `DataTable`
+- `Sidebar`
+
+Legacy wrappers such as `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, `FormDateInput`, `FormAsyncSelect`, `AppSidebar`, and `SmartCard` remain only as compatibility aliases.
+
 ## Notes
 
 - `init` writes theme tokens into your global CSS.

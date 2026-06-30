@@ -254,10 +254,10 @@ Current status:
 - [ ] 1) Merge `app-input` -> `input` with `kind` + update docs + migration warning + alias keep one minor cycle.
 - [ ] 2) Merge `form-app-input` + typed variants into `form-input` with a single canonical typed `kind` prop and `FormInput` story.
 - [ ] 3) Merge `status-badge` -> `badge` and remove duplicate public pattern.
-- [ ] 4) Normalize `info-card`/`smart-card` public naming (single exported canonical name, one alias only).
+- [x] 4) Normalize `info-card`/`smart-card` public naming (single exported canonical name, one alias only).
 - [ ] 5) Move `table-export-menu` and `table-import-button` behind `DataTable` helper section if not needed as top-level primitives.
 - [ ] 6) Move reviewed `patterns/*` helpers from top priority public API if not genuinely reusable for install-time copy users.
-- [ ] 7) Add one-page classification matrix to `PUBLIC_COMPONENT_API.md` for public vs pattern vs helper boundaries.
+- [x] 7) Add one-page classification matrix to `PUBLIC_COMPONENT_API.md` for public vs pattern vs helper boundaries.
 
 ## P0 - Core Primitive Polish
 
@@ -383,9 +383,9 @@ Current status:
 - [x] Keep `Input` as the canonical input entry.
 - [x] Keep `FormInput` as the canonical RHF input wrapper.
 - [x] Keep `Select` / `FormSelect` as the canonical select entries.
-- [ ] Keep `InfoCard` as the public display-card name; do not leak implementation-first names.
+- [x] Keep `InfoCard` as the public display-card name; do not leak implementation-first names.
 - [ ] Keep route-level patterns out of first-line public API recommendations unless reviewed.
-- [ ] Continue reducing alias-heavy public names when one canonical surface is enough.
+- [x] Continue reducing alias-heavy public names when one canonical surface is enough.
 - [ ] Review all current exports and classify each one:
   - [ ] canonical public component
   - [ ] related variant/helper
@@ -471,10 +471,10 @@ Current status:
 
 ## P1 - Documentation Inside Library Repo
 
-- [ ] Keep README short and current with source-copy-first model.
+- [x] Keep README short and current with source-copy-first model.
 - [ ] Keep installation guidance aligned with current CLI behavior.
-- [ ] Keep canonical API docs generated and synced.
-- [ ] Document which exports are canonical vs secondary vs migration alias.
+- [x] Keep canonical API docs generated and synced.
+- [x] Document which exports are canonical vs secondary vs migration alias.
 - [ ] Add maintainers-only notes for component maturity and public API boundaries.
 
 ## P2 - Advanced / Later Additions

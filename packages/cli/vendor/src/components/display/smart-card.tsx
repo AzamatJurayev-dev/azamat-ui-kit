@@ -4,17 +4,12 @@ import { Card } from "@/components/ui/card"
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 
-/** @deprecated Prefer `InfoCardVariant` via `InfoCard` or `CardFamily.Info` for new public usage. */
-export type SmartCardVariant = "default" | "outline" | "elevated" | "ghost"
-/** @deprecated Prefer `InfoCardSize` via `InfoCard` or `CardFamily.Info` for new public usage. */
-export type SmartCardSize = "sm" | "md" | "lg"
-/** @deprecated Prefer `InfoCardDensity` via `InfoCard` or `CardFamily.Info` for new public usage. */
-export type SmartCardDensity = "compact" | "default" | "comfortable"
-/** @deprecated Prefer `InfoCardOrientation` via `InfoCard` or `CardFamily.Info` for new public usage. */
-export type SmartCardOrientation = "vertical" | "horizontal"
+export type InfoCardVariant = "default" | "outline" | "elevated" | "ghost"
+export type InfoCardSize = "sm" | "md" | "lg"
+export type InfoCardDensity = "compact" | "default" | "comfortable"
+export type InfoCardOrientation = "vertical" | "horizontal"
 
-/** @deprecated Prefer `InfoCardClassNames` via `InfoCard` or `CardFamily.Info` for new public usage. */
-export type SmartCardClassNames = {
+export type InfoCardClassNames = {
   root?: string
   media?: string
   header?: string
@@ -30,8 +25,7 @@ export type SmartCardClassNames = {
   status?: string
 }
 
-/** @deprecated Prefer `InfoCardRenderContext` via `InfoCard` or `CardFamily.Info` for new public usage. */
-export type SmartCardRenderContext = {
+export type InfoCardRenderContext = {
   title?: React.ReactNode
   description?: React.ReactNode
   eyebrow?: React.ReactNode
@@ -44,45 +38,43 @@ export type SmartCardRenderContext = {
   footer?: React.ReactNode
 }
 
-/** @deprecated Prefer `InfoCardProps` via `InfoCard` or `CardFamily.Info` for new public usage. */
-export type SmartCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "content" | "size"> & SmartCardRenderContext & {
-  orientation?: SmartCardOrientation
-  variant?: SmartCardVariant
-  size?: SmartCardSize
-  density?: SmartCardDensity
+export type InfoCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "content" | "size"> & InfoCardRenderContext & {
+  orientation?: InfoCardOrientation
+  variant?: InfoCardVariant
+  size?: InfoCardSize
+  density?: InfoCardDensity
   compact?: boolean
   loading?: boolean
   disabled?: boolean
   selected?: boolean
   interactive?: boolean
-  classNames?: SmartCardClassNames
-  renderHeader?: (ctx: SmartCardRenderContext) => React.ReactNode
-  renderMedia?: (ctx: SmartCardRenderContext) => React.ReactNode
-  renderContent?: (ctx: SmartCardRenderContext) => React.ReactNode
-  renderFooter?: (ctx: SmartCardRenderContext) => React.ReactNode
+  classNames?: InfoCardClassNames
+  renderHeader?: (ctx: InfoCardRenderContext) => React.ReactNode
+  renderMedia?: (ctx: InfoCardRenderContext) => React.ReactNode
+  renderContent?: (ctx: InfoCardRenderContext) => React.ReactNode
+  renderFooter?: (ctx: InfoCardRenderContext) => React.ReactNode
 }
 
-const variantClassName: Record<SmartCardVariant, string> = {
+const variantClassName: Record<InfoCardVariant, string> = {
   default: "border border-border/70 bg-card/96 shadow-sm ring-1 ring-foreground/4",
   outline: "border border-border/75 bg-card/96 shadow-sm ring-1 ring-foreground/4",
   elevated: "border border-border/75 bg-card/98 shadow-[0_24px_80px_rgba(15,23,42,0.12)] ring-1 ring-foreground/4",
   ghost: "border-transparent bg-transparent shadow-none",
 }
 
-const densityClassName: Record<SmartCardDensity, string> = {
+const densityClassName: Record<InfoCardDensity, string> = {
   compact: "p-3",
   default: "p-4",
   comfortable: "p-5",
 }
 
-const titleClassName: Record<SmartCardSize, string> = {
+const titleClassName: Record<InfoCardSize, string> = {
   sm: "text-sm",
   md: "text-base",
   lg: "text-lg",
 }
 
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
-function SmartCard({
+function InfoCard({
   eyebrow,
   title,
   description,
@@ -111,14 +103,14 @@ function SmartCard({
   children,
   onClick,
   ...props
-}: SmartCardProps) {
-  const ctx: SmartCardRenderContext = { eyebrow, title, description, media, icon, status, actions, meta, content, footer }
+}: InfoCardProps) {
+  const ctx: InfoCardRenderContext = { eyebrow, title, description, media, icon, status, actions, meta, content, footer }
   const clickable = Boolean(onClick || interactive)
   const resolvedDensity = compact ? "compact" : density ?? "default"
 
   return (
     <Card
-      data-slot="smart-card"
+      data-slot="info-card"
       data-selected={selected || undefined}
       data-disabled={disabled || undefined}
       data-loading={loading || undefined}
@@ -143,7 +135,7 @@ function SmartCard({
           {media &&
             (renderMedia?.(ctx) ?? (
               <div
-                data-slot="smart-card-media"
+                data-slot="info-card-media"
                 className={cn(
                   "bg-muted/50",
                   orientation === "horizontal" ? "w-40 shrink-0 border-r border-border/70" : "aspect-video border-b border-border/70",
@@ -153,13 +145,13 @@ function SmartCard({
                 {media}
               </div>
             ))}
-          <div data-slot="smart-card-body" className={cn("grid min-w-0 flex-1 gap-3", densityClassName[resolvedDensity], classNames?.body)}>
+          <div data-slot="info-card-body" className={cn("grid min-w-0 flex-1 gap-3", densityClassName[resolvedDensity], classNames?.body)}>
             {renderHeader?.(ctx) ?? (
-              <div data-slot="smart-card-header" className={cn("flex items-start justify-between gap-3", classNames?.header)}>
+              <div data-slot="info-card-header" className={cn("flex items-start justify-between gap-3", classNames?.header)}>
                 <div className="flex min-w-0 items-start gap-3">
                   {icon && (
                     <div
-                      data-slot="smart-card-icon"
+                      data-slot="info-card-icon"
                       className={cn(
                         "flex size-9 shrink-0 items-center justify-center rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)]",
                         classNames?.icon
@@ -169,20 +161,20 @@ function SmartCard({
                     </div>
                   )}
                   <div className="grid min-w-0 gap-1">
-                    {eyebrow && <div data-slot="smart-card-eyebrow" className={cn("text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground", classNames?.eyebrow)}>{eyebrow}</div>}
+                    {eyebrow && <div data-slot="info-card-eyebrow" className={cn("text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground", classNames?.eyebrow)}>{eyebrow}</div>}
                     <div className="flex flex-wrap items-center gap-2">
-                      {title && <div data-slot="smart-card-title" className={cn("truncate font-semibold tracking-tight text-foreground", titleClassName[size], classNames?.title)}>{title}</div>}
-                      {status && <div data-slot="smart-card-status" className={classNames?.status}>{status}</div>}
+                      {title && <div data-slot="info-card-title" className={cn("truncate font-semibold tracking-tight text-foreground", titleClassName[size], classNames?.title)}>{title}</div>}
+                      {status && <div data-slot="info-card-status" className={classNames?.status}>{status}</div>}
                     </div>
-                    {description && <div data-slot="smart-card-description" className={cn("line-clamp-2 text-sm text-muted-foreground", classNames?.description)}>{description}</div>}
+                    {description && <div data-slot="info-card-description" className={cn("line-clamp-2 text-sm text-muted-foreground", classNames?.description)}>{description}</div>}
                   </div>
                 </div>
-                {actions && <div data-slot="smart-card-actions" className={cn("shrink-0", classNames?.actions)} onClick={(event) => event.stopPropagation()}>{actions}</div>}
+                {actions && <div data-slot="info-card-actions" className={cn("shrink-0", classNames?.actions)} onClick={(event) => event.stopPropagation()}>{actions}</div>}
               </div>
             )}
-            {meta && <div data-slot="smart-card-meta" className={cn("text-xs text-muted-foreground", classNames?.meta)}>{meta}</div>}
-            {(content || children) && (renderContent?.(ctx) ?? <div data-slot="smart-card-content" className={classNames?.content}>{content ?? children}</div>)}
-            {footer && (renderFooter?.(ctx) ?? <div data-slot="smart-card-footer" className={cn("border-t pt-3 text-sm text-muted-foreground", classNames?.footer)}>{footer}</div>)}
+            {meta && <div data-slot="info-card-meta" className={cn("text-xs text-muted-foreground", classNames?.meta)}>{meta}</div>}
+            {(content || children) && (renderContent?.(ctx) ?? <div data-slot="info-card-content" className={classNames?.content}>{content ?? children}</div>)}
+            {footer && (renderFooter?.(ctx) ?? <div data-slot="info-card-footer" className={cn("border-t pt-3 text-sm text-muted-foreground", classNames?.footer)}>{footer}</div>)}
           </div>
         </>
       )}
@@ -190,4 +182,24 @@ function SmartCard({
   )
 }
 
-export { SmartCard }
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardVariant = InfoCardVariant
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardSize = InfoCardSize
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardDensity = InfoCardDensity
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardOrientation = InfoCardOrientation
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardClassNames = InfoCardClassNames
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardRenderContext = InfoCardRenderContext
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+export type SmartCardProps = InfoCardProps
+
+/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+function SmartCard(props: SmartCardProps) {
+  return <InfoCard {...props} />
+}
+
+export { InfoCard, SmartCard }

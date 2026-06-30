@@ -13,6 +13,9 @@ export type FormAsyncSelectProps<
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 > = Omit<BaseFormAsyncSelectProps<TFieldValues, TName, TValue, TData, TOption>, "kind">
 
+/**
+ * @deprecated Use {@link FormSelect} with `kind="async"` instead.
+ */
 function FormAsyncSelect<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,

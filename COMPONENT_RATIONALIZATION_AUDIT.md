@@ -28,9 +28,9 @@ Goal: keep `azamat-ui-kit` as a strong, clean component library by reducing dupl
 - [x] Badge family: make `Badge` the only canonical badge component in docs, registry recommendations, and examples.
 - [x] Badge family: keep `StatusBadge` exported only as deprecated compatibility alias until the next major cleanup.
 - [ ] Badge family: update docs snippets from `<StatusBadge tone="success" />` to `<Badge tone="success" dot />`.
-- [ ] Card family: make `Card` + props/subcomponents the canonical primitive.
-- [ ] Card family: keep `InfoCard` as the canonical composed card preset.
-- [ ] Card family: mark `SmartCard` as implementation/deprecated only and remove docs-first exposure.
+- [x] Card family: make `Card` + props/subcomponents the canonical primitive.
+- [x] Card family: keep `InfoCard` as the canonical composed card preset.
+- [x] Card family: mark `SmartCard` as implementation/deprecated only and remove docs-first exposure.
 - [ ] Card family: audit `MetricCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard` and decide which remain as presets vs props-driven `InfoCard` examples.
 - [x] Hover surface family: do not present `HoverCard` as “another card”; classify it under overlay/interaction or merge its behavior into `Popover`-style primitives.
 - [x] Registry: remove duplicated equal-weight entries where aliases are shown beside canonical components.
@@ -40,18 +40,18 @@ Goal: keep `azamat-ui-kit` as a strong, clean component library by reducing dupl
 
 - [x] Overlay family: unify `Dialog`, `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, and `Drawer` under one overlay policy.
 - [ ] Overlay family: keep only genuinely different interaction primitives as public top-level docs pages.
-- [ ] Input family: keep `Input` canonical and treat `AppInput`, `UniversalInput`, `FormAppInput` as migration aliases.
+- [x] Input family: keep `Input` canonical and treat `AppInput`, `UniversalInput`, `FormAppInput` as migration aliases.
 - [ ] Input family: decide whether `SearchInput`, `PasswordInput`, `ClearableInput`, `NumberInput`, `MoneyInput`, `PhoneInput` remain separate source-copy components or become documented `Input` presets.
-- [ ] Select family: make `Select` canonical and document `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox` as members, not unrelated components.
+- [x] Select family: make `Select` canonical and document `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox` as members, not unrelated components.
 - [ ] Layout family: audit `AppShell`, `AppHeader`, `PageHeader`, `SectionHeader`, `PageContainer`, `WorkspaceShell`; keep product-layout components out of primitive component recommendations.
-- [ ] DataTable family: keep subcomponents public for source-copy power users, but docs should teach them from the `DataTable` page.
+- [x] DataTable family: keep subcomponents public for source-copy power users, but docs should teach them from the `DataTable` page.
 
 ## P2 Component Quality
 
 - [ ] Add consistent `tone`, `variant`, `size`, `density`, `interactive`, `selected`, `disabled`, and `loading` vocabulary across visual components.
 - [ ] Add tests that prevent a new “same job, new component name” export without family metadata.
 - [ ] Add registry validation that aliases are not promoted in `recommended.foundation`.
-- [ ] Add migration notes for deprecated aliases in `PUBLIC_COMPONENT_API.md`.
+- [x] Add migration notes for deprecated aliases in `PUBLIC_COMPONENT_API.md`.
 - [ ] Add examples showing canonical component + props for badge, card, input, select, and overlay families.
 
 ## Current Duplicate Groups

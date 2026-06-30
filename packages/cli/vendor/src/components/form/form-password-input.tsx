@@ -9,6 +9,9 @@ export type FormPasswordInputProps<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = Omit<BaseFormPasswordInputProps<TFieldValues, TName>, "kind">
 
+/**
+ * @deprecated Use {@link FormInput} with `kind="password"` instead.
+ */
 function FormPasswordInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,

@@ -2,11 +2,11 @@ export const publicComponentApiDocs = [
   {
     title: "Input",
     route: "/components/input",
-    summary: "Primary typed-value surface. Start here before moving into search, password, numeric, phone, date, or masked presets.",
+    summary: "Primary typed-value surface. Start here before moving into search, password, numeric, phone, money, date, quantity, or masked presets.",
     useWhen: [
       "You need one clear text-entry surface first.",
       "The screen needs typed values before it needs formatting helpers.",
-      "React Hook Form flows should still teach FormInput as the matching wrapper.",
+      "React Hook Form flows should still teach FormInput as the matching wrapper instead of per-variant wrappers.",
     ],
     related: [
       "ClearableInput",
@@ -18,6 +18,7 @@ export const publicComponentApiDocs = [
       "MaskedInput",
       "DateInput",
       "DateRangeInput",
+      "QuantityInput",
       "FormInput",
     ],
     props: [
@@ -32,11 +33,11 @@ export const publicComponentApiDocs = [
   {
     title: "Select",
     route: "/components/select",
-    summary: "Primary selection surface. Start here for known options, then expand into async, multi-select, or combobox only when the data shape requires it.",
+    summary: "Primary selection surface. Start here for known options, then expand into async, multi-select, or combobox members only when the data shape requires it.",
     useWhen: [
       "The user is choosing from a finite option set.",
       "The screen needs one canonical selection mental model.",
-      "You want FormSelect to stay the RHF entry point in docs and product code.",
+      "You want FormSelect to stay the RHF entry point instead of teaching async wrappers as separate first-class APIs.",
     ],
     related: [
       "SimpleSelect",
@@ -62,7 +63,7 @@ export const publicComponentApiDocs = [
     useWhen: [
       "The product needs one reusable field frame before adding control-specific wrappers.",
       "Teams want labels, descriptions, and validation copy to stay visually consistent.",
-      "FormInput, FormSelect, FormDatePicker, and FormDateRangePicker should read as wrappers around one shell.",
+      "FormInput, FormSelect, and picker wrappers should read as members around one shell.",
     ],
     related: [
       "FormInput",
@@ -88,9 +89,9 @@ export const publicComponentApiDocs = [
     route: "/components/card",
     summary: "General-purpose container plus the first reusable display-card entry for dashboard and data-heavy screens.",
     useWhen: [
-    "You need one neutral container before committing to a specialized card preset.",
+      "You need one neutral container before committing to a specialized card preset.",
       "The screen needs a reusable display card with consistent spacing and hierarchy.",
-      "InfoCard should stay the public display-card name, not internal implementation names.",
+      "InfoCard should stay the public display-card name, while SmartCard remains migration-only.",
     ],
     related: [
       "InfoCard",
@@ -115,7 +116,7 @@ export const publicComponentApiDocs = [
     useWhen: [
       "The interface needs compact metadata, status, counts, or category labels.",
       "Status indicators should share one visual vocabulary.",
-      "Use `tone` and `dot` props instead of separate status label wrappers.",
+      "Use `tone` and `dot` props instead of inventing extra badge-like wrappers.",
     ],
     related: [],
     props: [
@@ -134,7 +135,7 @@ export const publicComponentApiDocs = [
     useWhen: [
       "The user must complete or dismiss a focused task.",
       "The surface needs proper modal focus management.",
-      "Popover, menu, tooltip, sheet, drawer, and confirmation presets should stay related to one overlay mental model.",
+      "Popover, menu, tooltip, sheet, drawer, and confirmation presets should stay related to one overlay mental model instead of reading like separate component families.",
     ],
     related: [
       "Popover",
@@ -160,7 +161,7 @@ export const publicComponentApiDocs = [
   {
     title: "DataTable",
     route: "/components/data-table",
-    summary: "Operational table surface for sorting, search, row selection, pagination, toolbar actions, and row-level workflows.",
+    summary: "Operational table surface for sorting, search, row selection, pagination, saved filters, toolbar actions, and row-level workflows.",
     useWhen: [
       "The screen needs more than a simple read-only table.",
       "Search, sorting, selection, and pagination must work together.",
@@ -173,6 +174,7 @@ export const publicComponentApiDocs = [
       "DataTableRowActions",
       "DataTableBulkActions",
       "DataTableViewPresets",
+      "DataTableSavedFilters",
       "createDataTableSelectColumn",
       "createDataTableActionsColumn",
     ],

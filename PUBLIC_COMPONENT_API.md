@@ -8,17 +8,17 @@ Related helpers can stay public, but they should be introduced from the canonica
 ## Input
 
 - Canonical route: `/components/input`
-- Summary: Primary typed-value surface. Start here before moving into search, password, numeric, phone, date, or masked presets.
+- Summary: Primary typed-value surface. Start here before moving into search, password, numeric, phone, money, date, quantity, or masked presets.
 
 ### Use When
 
 - You need one clear text-entry surface first.
 - The screen needs typed values before it needs formatting helpers.
-- React Hook Form flows should still teach FormInput as the matching wrapper.
+- React Hook Form flows should still teach FormInput as the matching wrapper instead of per-variant wrappers.
 
 ### Related Helpers
 
-`ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `MoneyInput`, `PhoneInput`, `MaskedInput`, `DateInput`, `DateRangeInput`, `FormInput`
+`ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `MoneyInput`, `PhoneInput`, `MaskedInput`, `DateInput`, `DateRangeInput`, `QuantityInput`, `FormInput`
 
 ### Prop Highlights
 
@@ -34,13 +34,13 @@ Related helpers can stay public, but they should be introduced from the canonica
 ## Select
 
 - Canonical route: `/components/select`
-- Summary: Primary selection surface. Start here for known options, then expand into async, multi-select, or combobox only when the data shape requires it.
+- Summary: Primary selection surface. Start here for known options, then expand into async, multi-select, or combobox members only when the data shape requires it.
 
 ### Use When
 
 - The user is choosing from a finite option set.
 - The screen needs one canonical selection mental model.
-- You want FormSelect to stay the RHF entry point in docs and product code.
+- You want FormSelect to stay the RHF entry point instead of teaching async wrappers as separate first-class APIs.
 
 ### Related Helpers
 
@@ -66,7 +66,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 - The product needs one reusable field frame before adding control-specific wrappers.
 - Teams want labels, descriptions, and validation copy to stay visually consistent.
-- FormInput, FormSelect, FormDatePicker, and FormDateRangePicker should read as wrappers around one shell.
+- FormInput, FormSelect, and picker wrappers should read as members around one shell.
 
 ### Related Helpers
 
@@ -92,7 +92,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 - You need one neutral container before committing to a specialized card preset.
 - The screen needs a reusable display card with consistent spacing and hierarchy.
-- InfoCard should stay the public display-card name, not internal implementation names.
+- InfoCard should stay the public display-card name, while SmartCard remains migration-only.
 
 ### Related Helpers
 
@@ -118,7 +118,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 - The interface needs compact metadata, status, counts, or category labels.
 - Status indicators should share one visual vocabulary.
-- Use `tone` and `dot` props instead of separate status label wrappers.
+- Use `tone` and `dot` props instead of inventing extra badge-like wrappers.
 
 ### Related Helpers
 
@@ -144,7 +144,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 - The user must complete or dismiss a focused task.
 - The surface needs proper modal focus management.
-- Popover, menu, tooltip, sheet, drawer, and confirmation presets should stay related to one overlay mental model.
+- Popover, menu, tooltip, sheet, drawer, and confirmation presets should stay related to one overlay mental model instead of reading like separate component families.
 
 ### Related Helpers
 
@@ -164,7 +164,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 ## DataTable
 
 - Canonical route: `/components/data-table`
-- Summary: Operational table surface for sorting, search, row selection, pagination, toolbar actions, and row-level workflows.
+- Summary: Operational table surface for sorting, search, row selection, pagination, saved filters, toolbar actions, and row-level workflows.
 
 ### Use When
 
@@ -174,7 +174,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`DataTableToolbar`, `DataTablePagination`, `DataTableColumnVisibilityMenu`, `DataTableRowActions`, `DataTableBulkActions`, `DataTableViewPresets`, `createDataTableSelectColumn`, `createDataTableActionsColumn`
+`DataTableToolbar`, `DataTablePagination`, `DataTableColumnVisibilityMenu`, `DataTableRowActions`, `DataTableBulkActions`, `DataTableViewPresets`, `DataTableSavedFilters`, `createDataTableSelectColumn`, `createDataTableActionsColumn`
 
 ### Prop Highlights
 

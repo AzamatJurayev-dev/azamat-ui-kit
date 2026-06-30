@@ -1,12 +1,13 @@
 # Public API Inventory
 
-This file defines what should feel public, canonical and documented. It is not a full component manual.
+This file defines what should feel public, canonical, and teachable for `azamat-ui-kit`.
 
 ## Contract
 
-- Root exports should be understandable as the main product API.
-- Large systems and implementation helpers may stay available through subpaths or source-copy CLI, but they should not be shown as first-level docs components.
-- Compatibility aliases may remain for migration, but docs should teach one canonical name.
+- Root exports should read like a usable component library, not like an internal app dump.
+- Canonical names should lead docs, registry recommendations, and examples.
+- Migration aliases may stay exported for compatibility, but they must not compete with canonical names.
+- Pattern/layout systems can stay available, but they should not dominate first-level docs.
 - Any root export change must update this file and `CHANGELOG.md`.
 
 ## Canonical Root Surface
@@ -21,7 +22,7 @@ This file defines what should feel public, canonical and documented. It is not a
 
 ### Layout And Navigation
 
-`AppHeader`, `Sidebar`, `StatCard`, `SidebarNav`, `Breadcrumbs`, `PageContainer`, `Section`, `StickyFooterBar`, `Pagination`, `PageTabs`, `StepperTabs`, `AnchorNav`
+`Sidebar`, `AppHeader`, `SidebarNav`, `Breadcrumbs`, `PageContainer`, `Section`, `SectionHeader`, `Stack`, `StatCard`, `StickyFooterBar`, `Pagination`, `PageTabs`, `StepperTabs`, `AnchorNav`, `NavTabs`, `CommandBar`
 
 ### Inputs And Forms
 
@@ -35,73 +36,56 @@ Canonical docs entries:
 - `DatePicker`
 - `DateRangePicker`
 
-Related helpers and modes:
+Related helpers and members:
 
+- `ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `MoneyInput`, `PhoneInput`, `QuantityInput`, `QuantityStepper`, `MaskedInput`, `DateInput`, `DateRangeInput`, `OtpInput`, `ColorInput`
 - `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox`
-- `ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `DateInput`, `DateRangeInput`
-- `MoneyInput`, `QuantityInput`, `QuantityStepper`, `MaskedInput`, `PhoneInput`
-- `TagInput`, `Rating`, `Slider`, `RangeSlider`, `OtpInput`, `ColorInput`
+- `TagInput`, `Rating`, `Slider`, `RangeSlider`, `InlineEditable`
 - `FormAsyncSelect`, `FormTextarea`, `FormSwitch`, `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, `FormDateInput`, `FormDateRangeInput`, `FormDatePicker`, `FormDateRangePicker`
 
 ### Feedback And Display
 
-`EmptyState`, `LoadingState`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `MetricGrid`, `InfoCard`, `ActivityFeed`, `StatusLegend`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `DataList`, `DataListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `FileCard`, `PropertyGrid`, `KeyValueCard`, `EntityCard`
+`EmptyState`, `EmptySearchState`, `LoadingState`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Descriptions`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `ActivityFeed`, `MetricGrid`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `DataList`, `DataListRow`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `PropertyGrid`, `KeyValueCard`, `EntityHeader`, `EntityCard`, `FileCard`, `UserCard`, `StatusDot`, `StatusLegend`, `ProgressCircle`, `InfoCard`, `TrendCard`, `ComparisonCard`, `DeltaBadge`, `SkeletonTable`, `SkeletonForm`, `KanbanBoard`
 
-### Data And Overlay
+### Data, Overlay, Command And Upload
 
-`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `createDataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `createDataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DataTableSavedFilters`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`
+`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `createDataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `createDataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DataTableSavedFilters`, `DialogActions`, `AlertDialog`, `ConfirmDialog`, `Drawer`, `ModalShell`, `SheetShell`, `ToastProvider`, `useToast`, `NotificationCenter`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `FileDropzone`, `Stepper`, `Wizard`
 
 ### Charts And Hooks
 
-`ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, `MetricTrend`, `useSessionStorageState`, `useBeforeUnloadWhenDirty`, `useIsMobile`, `useDisclosure`, `useDebouncedCallback`, `useDebouncedValue`, `useDataTableViewState`
+`ChartFrame`, `BarChart`, `LineChart`, `Sparkline`, `DonutChart`, `ChartLegend`, `MetricTrend`, `KpiCard`, `ProgressRing`, `HorizontalBarChart`, `useSessionStorageState`, `useBeforeUnloadWhenDirty`, `useIsMobile`, `useDisclosure`, `useDebouncedCallback`, `useDebouncedValue`, `useDataTableViewState`
 
 ## Hidden From First-Level Docs
 
-These can exist as subpath exports, source-copy files, or advanced detail sections, but should not be primary docs cards:
+These can exist as root exports, subpath exports, source-copy files, or advanced detail sections, but they should not be the first component names users see:
 
 - `SmartCard`
-- `StatusBadge`
-- `HoverCard`
-- `SmartFormShell`
-- `WorkspaceShell`
-- `ActionSystem`
-- `StatusSystem`
-- `FilterBuilder`
-- `DataView`
-- `EntityDetails`
-- `ResourceSystem`
-- `CrudSystem`
-- `SettingsSection`
-- `SettingsRow`
+- `AppSidebar`
+- `TableExportMenu`
+- `TableImportButton`
 - `ResourcePage`
 - `ResourceDetailPage`
 - `FormBuilder`
 - form-builder preset helpers from `form-builder-presets`
-- `KpiCard`
-- `KpiGrid`
-- `ProgressRing`
-- `HorizontalBarChart`
-- `FloatingActionButton`
-- `ActionBar`
-- `TableExportMenu`
-- `TableImportButton`
+- `theme-provider`
+- family metadata exports from `families/*`
+- low-level input helpers such as `input-value`, `numeric-value`, `input-chrome`, `input-decorator`, `input-primitive`, `input-group`
 
 ## Family Display Rule
 
 The public site should show one clean component name first, then related variants inside the detail page:
 
-- `Input`: input presets, numeric inputs, phone, money, quantity, masked, date input and form input wrappers.
-- `Select`: native select wrapper, simple select, async select, async multi select, combobox and form select wrappers.
-- `Select`: `AsyncSelect` and `AsyncMultiSelect` own remote and creatable flows; `Combobox` stays the local search-first branch.
-- `FormFieldShell`: field shell, textarea/switch wrappers, date-picker wrappers and related form helpers.
-- `Card`: card, info card, stat card, statistic card, entity card and file card.
-- `Badge`: badge tones, dots, sizes and compatibility status badge aliases.
-- `Dialog`: dialog, popover, dropdown menu, tooltip, confirmation, sheet, drawer and hover-preview overlays.
-- `DataTable`: core table plus pagination, toolbar, visibility, row actions, bulk actions and presets.
+- `Input`: text entry, search, password, numeric, money, phone, quantity, masked, date, and date-range members plus `FormInput`.
+- `Select`: simple select, async select, async multi select, combobox, and `FormSelect`.
+- `FormFieldShell`: field shell plus form wrappers around canonical input and select families.
+- `Card`: card primitive first, then `InfoCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`, `TrendCard`, and `ComparisonCard` as members.
+- `Badge`: badge tones, sizes, icon slots, and dot usage; do not teach extra status-badge naming.
+- `Dialog`: dialog, popover, dropdown, tooltip, right-click menu, alert/confirm, drawer, and sheet behaviors under one overlay mental model.
+- `DataTable`: core table plus pagination, toolbar, saved filters, bulk actions, column visibility, and row actions.
 
 ## Required Maintenance
 
-- Update this file when `src/index.ts`, registry names or docs catalog names change.
-- Keep migration aliases visible in metadata, but avoid teaching them as the main API.
-- Keep registry alias metadata aligned with `registry.json` and `cli/registry.ts`.
-- Use `npm run test:root-exports` and `npm run test:registry` after export changes.
+- Update this file when `src/index.ts`, registry names, or docs catalog names change.
+- Keep migration aliases exported only as compatibility surfaces.
+- Keep registry alias metadata aligned with `registry.json` and CLI registry output.
+- Use `npm run test:root-exports`, `npm run test:registry`, and `npm run check:public-api-inventory` after export changes.
