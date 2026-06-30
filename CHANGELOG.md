@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.17 - 2026-06-30
+
+### Changed
+
+- strengthened `Select` trigger, popup, item, focus, invalid and disabled visuals so source-copied selects look styled without relying on extra site CSS
+- refined `Table` and `DataTable` surfaces with token-based borders, backgrounds, selected rows, striped rows and shadows
+- improved `DataTableToolbar` soft and selection-bar treatment for cleaner dashboard usage
+- synced CLI vendor component sources with the published package polish
+
 ## 0.3.11 - 2026-06-29
 
 ### Changed

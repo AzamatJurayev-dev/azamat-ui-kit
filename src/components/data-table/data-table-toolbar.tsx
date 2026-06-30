@@ -8,7 +8,7 @@ const dataTableToolbarVariants = cva("flex flex-col", {
     variant: {
       default: "",
       plain: "border-transparent bg-transparent shadow-none",
-      soft: "",
+      soft: "rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--card),var(--background)_16%)] shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))]",
     },
     density: {
       compact: "gap-3 p-3",
@@ -91,7 +91,7 @@ function DataTableToolbar({
           </div>
 
           {hasSelection && (
-            <div data-slot="data-table-selection-bar" className="flex shrink-0 items-center gap-2 rounded-full border px-2.5 py-1.5 text-sm backdrop-blur">
+            <div data-slot="data-table-selection-bar" className="flex shrink-0 items-center gap-2 rounded-full border border-[color:var(--aui-control-border-strong,var(--border))] bg-[color:var(--aui-control-surface,var(--background))] px-2.5 py-1.5 text-sm shadow-[var(--aui-control-shadow,none)] backdrop-blur">
               <span className="text-muted-foreground">{selectedLabel(selectedCount, totalCount)}</span>
               {selectionActions}
             </div>

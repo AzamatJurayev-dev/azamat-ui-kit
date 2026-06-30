@@ -388,6 +388,7 @@ function DataTable<TData, TValue = unknown>({
             selectionActions={defaultSelectionActions}
             selectedCount={selectedRowCount}
             totalCount={paginationConfig ? paginationConfig.rowCount ?? data.length : data.length}
+            variant="plain"
             {...resolvedToolbarProps}
           />
         ))}
@@ -409,8 +410,7 @@ function DataTable<TData, TValue = unknown>({
         data-striped={striped || undefined}
         data-bordered={bordered || undefined}
         className={cn(
-          "overflow-hidden rounded-[var(--radius-2xl)] border backdrop-blur",
-          !bordered && "border-border",
+          "overflow-hidden rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] backdrop-blur",
           renderMobileCard && "hidden md:block",
           tableWrapperClassName
         )}
@@ -430,8 +430,8 @@ function DataTable<TData, TValue = unknown>({
                     style={{ width: header.getSize() }}
                       className={cn(
                         densityHeadClassName[density],
-                        "text-muted-foreground",
-                        stickyHeader && "backdrop-blur",
+                        "bg-transparent text-muted-foreground",
+                        stickyHeader && "bg-[color:color-mix(in_oklch,var(--card),transparent_12%)] backdrop-blur",
                         bordered && "border-r last:border-r-0",
                         getHeaderCellClassName(header, headerCellClassName)
                       )}

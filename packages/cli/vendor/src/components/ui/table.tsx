@@ -11,7 +11,7 @@ function Table({ className, containerClassName, ...props }: TableProps) {
     <div
       data-slot="table-container"
       className={cn(
-        "relative w-full overflow-x-auto rounded-[var(--radius-2xl)] border",
+        "relative w-full overflow-x-auto rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))]",
         containerClassName
       )}
     >
@@ -28,7 +28,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
+      className={cn("bg-[color:color-mix(in_oklch,var(--muted),var(--background)_42%)] [&_tr]:border-b [&_tr]:border-[color:var(--aui-card-border,var(--border))]", className)}
       {...props}
     />
   )
@@ -49,7 +49,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "border-t font-medium [&>tr]:last:border-b-0",
+        "border-t border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),var(--background)_46%)] font-medium [&>tr]:last:border-b-0",
         className
       )}
       {...props}
@@ -62,7 +62,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b transition-colors",
+        "border-b border-[color:var(--aui-card-border,var(--border))] transition-colors hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] data-[state=selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] data-[striped=true]:bg-[color:color-mix(in_oklch,var(--muted),transparent_62%)]",
         className
       )}
       {...props}
@@ -88,7 +88,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "px-3 py-3 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+        "px-3 py-3 align-middle whitespace-nowrap text-foreground/92 [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
