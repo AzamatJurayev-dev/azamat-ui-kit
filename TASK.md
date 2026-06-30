@@ -26,7 +26,7 @@ Current status:
 - [x] Keep `PUBLIC_API_INVENTORY.md` aligned with root exports.
 - [x] Run `npm run release:gate` before publish.
 - [x] Publish `azamat-ui-kit` and `azamat-ui-kit-cli` only after build/test gate passes.
-- [ ] Investigate and remove flaky render tests from release publish flow, especially `form-builder` path.
+- [x] Investigate and remove flaky render tests from release publish flow, especially `form-builder` path.
 - [ ] Decide whether `prepublishOnly` should stay full-gate or use a lighter stable gate.
 - [ ] Add a dedicated publish checklist for package + CLI + docs app version sync.
 

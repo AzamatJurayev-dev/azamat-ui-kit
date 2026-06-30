@@ -1,6 +1,7 @@
 import * as React from "react"
 import type { ColumnDef } from "@tanstack/react-table"
-import type { Control, FieldValues } from "react-hook-form"
+import { useForm } from "react-hook-form"
+import type { FormBuilderField } from "../../src/components/patterns/form-builder"
 
 import {
   ActionMenu,
@@ -52,7 +53,34 @@ const products: Product[] = [
 ]
 
 const noop = () => undefined
-const control = {} as Control<FieldValues>
+
+function FormBuilderSmokeHarness() {
+  const { control } = useForm<{ title: string }>({
+    defaultValues: { title: "" },
+  })
+
+  const fields = [
+    {
+      id: "title",
+      type: "input",
+      props: {
+        name: "title",
+        label: "Title",
+        placeholder: "Type here",
+      },
+    },
+  ] as unknown as FormBuilderField<{ title: string }>[]
+
+  return (
+    <FormBuilder
+      control={control}
+      fields={fields}
+      layout="stack"
+      submitLabel="Save"
+      resetLabel="Reset"
+    />
+  )
+}
 
 export const smokeElements = [
   <Button key="button">Save</Button>,
@@ -87,7 +115,7 @@ export const smokeElements = [
     sections={[{ id: "main", title: "Main", items: [{ key: "name", label: "Name", value: "Keyboard" }] }]}
   />,
   <ResourcePageSection key="resource-section" title="Section">Content</ResourcePageSection>,
-  <FormBuilder key="form-builder" control={control} fields={[]} />,
+  <FormBuilderSmokeHarness key="form-builder" />,
 ]
 
 export function SmokeComponent() {
