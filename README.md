@@ -67,6 +67,8 @@ The package also exports docs metadata for catalog pages:
 - `InputFamily`
 - `SelectFamily`
 - `CardFamily`
+- `BadgeFamily`
+- `OverlayFamily`
 - `FormFamily`
 - `DataTableFamily`
 - `componentFamilyCatalog`

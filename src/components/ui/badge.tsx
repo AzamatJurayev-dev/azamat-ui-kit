@@ -23,6 +23,7 @@ const badgeVariants = cva(
         success: "",
         warning: "",
         danger: "",
+        muted: "",
       },
       size: {
         sm: "min-h-5 px-2.5 py-0.5 text-[0.64rem]",

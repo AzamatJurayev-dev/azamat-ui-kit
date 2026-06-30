@@ -1,6 +1,6 @@
 # Public Component API
 
-Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.15`.
+Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.16`.
 
 This file tracks the canonical public docs entries that should lead the product mental model.
 Related helpers can stay public, but they should be introduced from the canonical surface detail page instead of being taught as separate first-level names.
@@ -96,7 +96,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`InfoCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`, `SmartCard`
+`InfoCard`, `MetricCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`, `SmartCard`
 
 ### Prop Highlights
 
@@ -108,6 +108,58 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `tone` | `string` | Semantic emphasis when supported. |
 | `interactive` | `boolean` | Marks click-like card states when supported. |
 | `selected` | `boolean` | Highlights chosen card state when supported. |
+
+## Badge
+
+- Canonical route: `/components/badge`
+- Summary: Canonical inline metadata and status label. Use tone, dot, size, and variant props instead of separate status-specific components.
+
+### Use When
+
+- The interface needs compact metadata, status, counts, or category labels.
+- Status indicators should share one visual vocabulary.
+- Existing StatusBadge usage should migrate toward Badge with tone and dot props.
+
+### Related Helpers
+
+`StatusBadge`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `variant` | `'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'` | Controls surface treatment. |
+| `tone` | `'neutral' | 'info' | 'success' | 'warning' | 'danger' | 'muted'` | Controls semantic color. |
+| `size` | `'sm' | 'default' | 'lg'` | Controls badge height and text size. |
+| `dot` | `boolean` | Adds a leading status dot. |
+| `leftIcon` | `ReactNode` | Optional leading icon. |
+| `rightIcon` | `ReactNode` | Optional trailing icon. |
+
+## Dialog
+
+- Canonical route: `/components/dialog`
+- Summary: Canonical blocking overlay primitive. Related overlay presets are grouped around behavior, not card-like appearance.
+
+### Use When
+
+- The user must complete or dismiss a focused task.
+- The surface needs proper modal focus management.
+- Popover, menu, tooltip, sheet, drawer, and confirmation presets should stay related to one overlay mental model.
+
+### Related Helpers
+
+`Popover`, `DropdownMenu`, `Tooltip`, `RightClickMenu`, `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, `Drawer`, `DialogActions`, `HoverCard`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `open` | `boolean` | Controlled open state. |
+| `defaultOpen` | `boolean` | Uncontrolled initial open state. |
+| `onOpenChange` | `(open: boolean) => void` | Open-state change callback. |
+| `modal` | `boolean` | Controls modal interaction behavior when supported. |
+| `children` | `ReactNode` | Dialog trigger and content composition. |
+| `className` | `string` | Optional surface styling override. |
 
 ## DataTable
 

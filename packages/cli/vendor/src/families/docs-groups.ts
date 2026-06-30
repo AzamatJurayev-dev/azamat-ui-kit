@@ -4,6 +4,8 @@ export type ComponentDocsGroupName =
   | "Input"
   | "Select"
   | "Card"
+  | "Badge"
+  | "Overlay"
   | "FormField"
   | "DataTable"
 
@@ -139,13 +141,63 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "presets",
         label: "Presets",
         description: "Purpose-built card shapes for dashboards and data-heavy product screens.",
-        components: ["StatCard", "StatisticCard", "EntityCard", "FileCard"],
+        components: ["MetricCard", "StatCard", "StatisticCard", "EntityCard", "FileCard"],
       },
       {
         id: "transitional",
         label: "Transitional",
         description: "Older names that still work but should not lead new docs or examples.",
         components: ["SmartCard"],
+      },
+    ],
+  },
+  {
+    group: "Badge",
+    family: "BadgeFamily",
+    slug: "badge",
+    label: "Badge",
+    primaryComponent: "Badge",
+    description: "Inline metadata and status labels through one Badge component with tone, dot, size, and variant props.",
+    sections: [
+      {
+        id: "primitives",
+        label: "Primitives",
+        description: "The canonical badge component. Use props for status, metadata, and subtle labels.",
+        components: ["Badge"],
+      },
+      {
+        id: "transitional",
+        label: "Compatibility aliases",
+        description: "Old status-specific wrapper names that now delegate to Badge.",
+        components: ["StatusBadge"],
+      },
+    ],
+  },
+  {
+    group: "Overlay",
+    family: "OverlayFamily",
+    slug: "overlay",
+    label: "Overlay",
+    primaryComponent: "Dialog",
+    description: "Floating interaction surfaces grouped by behavior, not by card-like visual appearance.",
+    sections: [
+      {
+        id: "primitives",
+        label: "Primitives",
+        description: "Start with the primitive that matches the interaction model.",
+        components: ["Dialog", "Popover", "DropdownMenu"],
+      },
+      {
+        id: "presets",
+        label: "Presets",
+        description: "Composed overlay patterns for confirmations, sheets, drawers, tooltips, and context menus.",
+        components: ["Tooltip", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
+      },
+      {
+        id: "transitional",
+        label: "Compatibility aliases",
+        description: "HoverCard is an overlay preview surface, not a data card. Prefer Popover or Tooltip for new work.",
+        components: ["HoverCard"],
       },
     ],
   },

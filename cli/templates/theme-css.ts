@@ -513,6 +513,12 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
     color: color-mix(in oklch, var(--destructive), black 18%);
   }
 
+  [data-slot="badge"][data-tone="muted"] {
+    border-color: color-mix(in oklch, var(--border), var(--foreground) 6%);
+    background: color-mix(in oklch, var(--muted), var(--background) 26%);
+    color: var(--muted-foreground);
+  }
+
   [data-slot="tabs-list"][data-slot="tabs-list"],
   [data-slot="calendar"][data-slot="calendar"] {
     border-color: color-mix(in oklch, var(--border), white 4%);

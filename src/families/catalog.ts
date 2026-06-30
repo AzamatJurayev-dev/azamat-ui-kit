@@ -2,6 +2,8 @@ export type ComponentFamilyName =
   | "InputFamily"
   | "SelectFamily"
   | "CardFamily"
+  | "BadgeFamily"
+  | "OverlayFamily"
   | "FormFamily"
   | "DataTableFamily"
 
@@ -50,8 +52,24 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     label: "Card",
     description: "Primitive card plus dashboard and entity-oriented composed card presets.",
     canonical: ["Card", "InfoCard"],
-    members: ["StatCard", "StatisticCard", "EntityCard", "FileCard"],
+    members: ["MetricCard", "StatCard", "StatisticCard", "EntityCard", "FileCard"],
     transitional: ["SmartCard"],
+  },
+  {
+    family: "BadgeFamily",
+    label: "Badge",
+    description: "Status, metadata, and inline labels expressed through one Badge API with tone, dot, size, and variant props.",
+    canonical: ["Badge"],
+    members: [],
+    transitional: ["StatusBadge"],
+  },
+  {
+    family: "OverlayFamily",
+    label: "Overlay",
+    description: "Dialog, popover, menu, tooltip, drawer, and hover-preview interaction surfaces grouped by behavior.",
+    canonical: ["Dialog", "Popover", "DropdownMenu"],
+    members: ["Tooltip", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
+    transitional: ["HoverCard"],
   },
   {
     family: "FormFamily",

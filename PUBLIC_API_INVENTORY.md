@@ -93,6 +93,8 @@ The public site should show one clean component name first, then related variant
 - `Select`: `AsyncSelect` and `AsyncMultiSelect` own remote and creatable flows; `Combobox` stays the local search-first branch.
 - `FormFieldShell`: field shell, textarea/switch wrappers, date-picker wrappers and related form helpers.
 - `Card`: card, info card, stat card, statistic card, entity card and file card.
+- `Badge`: badge tones, dots, sizes and compatibility status badge aliases.
+- `Dialog`: dialog, popover, dropdown menu, tooltip, confirmation, sheet, drawer and hover-preview overlays.
 - `DataTable`: core table plus pagination, toolbar, visibility, row actions, bulk actions and presets.
 
 ## Required Maintenance

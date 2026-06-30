@@ -111,7 +111,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
 
   "empty-state": { name: "empty-state", category: "feedback", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/feedback/empty-state.tsx", "{components}/feedback/empty-state.tsx")] },
   "loading-state": { name: "loading-state", category: "feedback", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/feedback/loading-state.tsx", "{components}/feedback/loading-state.tsx")] },
-  "status-badge": { name: "status-badge", category: "feedback", registryDependencies: ["badge", "utils"], files: [file("src/components/feedback/status-badge.tsx", "{components}/feedback/status-badge.tsx")] },
+  "status-badge": { name: "status-badge", category: "feedback", registryDependencies: ["badge"], files: [file("src/components/feedback/status-badge.tsx", "{components}/feedback/status-badge.tsx")] },
   "page-state": { name: "page-state", category: "feedback", registryDependencies: ["button", "utils"], files: [file("src/components/feedback/page-state.tsx", "{components}/feedback/page-state.tsx")] },
   feedback: { name: "feedback", category: "group", registryDependencies: ["empty-state", "loading-state", "status-badge", "page-state"], files: [file("src/components/feedback/index.ts", "{components}/feedback/index.ts")] },
 
@@ -119,7 +119,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "stat-card": { name: "stat-card", category: "layout", registryDependencies: ["card", "badge", "utils"], files: [file("src/components/layout/stat-card.tsx", "{components}/layout/stat-card.tsx")] },
   layout: { name: "layout", category: "group", registryDependencies: ["page-header", "stat-card"], files: [file("src/components/layout/index.ts", "{components}/layout/index.ts")] },
 
-  "metric-card": { name: "metric-card", category: "display", registryDependencies: ["card"], files: [file("src/components/display/metric-card.tsx", "{components}/display/metric-card.tsx")] },
+  "metric-card": { name: "metric-card", category: "display", registryDependencies: ["stat-card"], files: [file("src/components/display/metric-card.tsx", "{components}/display/metric-card.tsx")] },
   calendar: { name: "calendar", category: "calendar", files: [file("src/components/calendar/calendar.tsx", "{components}/calendar/calendar.tsx"), file("src/components/calendar/date-utils.ts", "{components}/calendar/date-utils.ts")] },
   "date-picker": { name: "date-picker", category: "calendar", registryDependencies: ["calendar"], files: [file("src/components/calendar/date-picker.tsx", "{components}/calendar/date-picker.tsx")] },
   "date-range-picker": { name: "date-range-picker", category: "calendar", registryDependencies: ["calendar"], files: [file("src/components/calendar/date-range-picker.tsx", "{components}/calendar/date-range-picker.tsx")] },

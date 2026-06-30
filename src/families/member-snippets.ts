@@ -453,6 +453,19 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <InfoCard title="Revenue" description="Current month" content="$48,000" />`,
   },
   {
+    component: "MetricCard",
+    title: "Metric alias",
+    description: "MetricCard remains available but is implemented through the stat card surface.",
+    language: "tsx",
+    variant: "migration",
+    code: `import { MetricCard, StatCard } from "azamat-ui-kit"
+
+<MetricCard title="Revenue" value="$48,000" trend="+12%" />
+
+// New dashboard work can use:
+// <StatCard title="Revenue" value="$48,000" trend={{ value: "+12%", tone: "success" }} />`,
+  },
+  {
     component: "StatCard",
     title: "Compact KPI tile",
     description: "Use stat cards for small dashboard overview rows.",
@@ -501,6 +514,183 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     code: `import { SmartCard } from "azamat-ui-kit"
 
 <SmartCard title="Legacy surface" description="Prefer InfoCard for new work." />`,
+  },
+
+  {
+    component: "Badge",
+    title: "Status through props",
+    description: "Use Badge props instead of a separate status component.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Badge } from "azamat-ui-kit"
+
+<Badge tone="success" dot>Active</Badge>`,
+  },
+  {
+    component: "StatusBadge",
+    title: "Status alias migration",
+    description: "StatusBadge still works, but new code should use Badge with tone and dot props.",
+    language: "tsx",
+    variant: "migration",
+    code: `import { StatusBadge, Badge } from "azamat-ui-kit"
+
+<StatusBadge tone="success">Active</StatusBadge>
+
+// New work:
+// <Badge tone="success" dot>Active</Badge>`,
+  },
+
+  {
+    component: "Dialog",
+    title: "Blocking task dialog",
+    description: "Use Dialog when focus should stay inside the modal task.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "azamat-ui-kit"
+
+<Dialog>
+  <DialogTrigger render={<Button>Edit</Button>} />
+  <DialogContent>
+    <DialogTitle>Edit customer</DialogTitle>
+  </DialogContent>
+</Dialog>`,
+  },
+  {
+    component: "Popover",
+    title: "Anchored content",
+    description: "Use Popover for rich contextual content attached to a trigger.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Popover, PopoverContent, PopoverTrigger, Button } from "azamat-ui-kit"
+
+<Popover>
+  <PopoverTrigger render={<Button variant="outline">Filters</Button>} />
+  <PopoverContent>Filter controls</PopoverContent>
+</Popover>`,
+  },
+  {
+    component: "DropdownMenu",
+    title: "Action menu",
+    description: "Use DropdownMenu for command lists and compact actions.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Button } from "azamat-ui-kit"
+
+<DropdownMenu>
+  <DropdownMenuTrigger render={<Button variant="outline">Actions</Button>} />
+  <DropdownMenuContent>
+    <DropdownMenuItem>Edit</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`,
+  },
+  {
+    component: "Tooltip",
+    title: "Short helper text",
+    description: "Use Tooltip only for brief supporting copy.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Tooltip, Button } from "azamat-ui-kit"
+
+<Tooltip content="Export selected rows">
+  <Button>Export</Button>
+</Tooltip>`,
+  },
+  {
+    component: "RightClickMenu",
+    title: "Context menu",
+    description: "Use right-click menus as secondary shortcuts.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { RightClickMenu } from "azamat-ui-kit"
+
+<RightClickMenu items={[{ key: "copy", label: "Copy" }]}>
+  <div>Right click this row</div>
+</RightClickMenu>`,
+  },
+  {
+    component: "AlertDialog",
+    title: "Destructive confirmation",
+    description: "Use AlertDialog for high-risk confirmation flows.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { AlertDialog, Button } from "azamat-ui-kit"
+
+<AlertDialog title="Delete project?" actionLabel="Delete">
+  <Button variant="destructive">Delete</Button>
+</AlertDialog>`,
+  },
+  {
+    component: "ConfirmDialog",
+    title: "Confirm action",
+    description: "Use ConfirmDialog for reusable approval and submit confirmations.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ConfirmDialog, Button } from "azamat-ui-kit"
+
+<ConfirmDialog title="Publish changes?" confirmLabel="Publish">
+  <Button>Publish</Button>
+</ConfirmDialog>`,
+  },
+  {
+    component: "ModalShell",
+    title: "Structured modal",
+    description: "Use ModalShell when repeated modals need title, body and footer slots.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ModalShell, Button } from "azamat-ui-kit"
+
+<ModalShell title="Invite member" trigger={<Button>Invite</Button>}>
+  Invite form
+</ModalShell>`,
+  },
+  {
+    component: "SheetShell",
+    title: "Side sheet",
+    description: "Use SheetShell for edge-attached contextual workflows.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { SheetShell, Button } from "azamat-ui-kit"
+
+<SheetShell side="right" title="Filters" trigger={<Button>Open filters</Button>}>
+  Filter controls
+</SheetShell>`,
+  },
+  {
+    component: "Drawer",
+    title: "Detail drawer",
+    description: "Use Drawer for record details without leaving the page.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Drawer, Button } from "azamat-ui-kit"
+
+<Drawer title="Customer" trigger={<Button>Open customer</Button>}>
+  Customer details
+</Drawer>`,
+  },
+  {
+    component: "DialogActions",
+    title: "Footer actions",
+    description: "Use DialogActions to keep modal footers aligned.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { DialogActions, Button } from "azamat-ui-kit"
+
+<DialogActions>
+  <Button variant="outline">Cancel</Button>
+  <Button>Save</Button>
+</DialogActions>`,
+  },
+  {
+    component: "HoverCard",
+    title: "Hover alias migration",
+    description: "HoverCard is classified as an overlay preview, not a data card.",
+    language: "tsx",
+    variant: "migration",
+    code: `import { HoverCard, Popover } from "azamat-ui-kit"
+
+<HoverCard trigger="Customer" content="Preview details" />
+
+// New rich previews should prefer Popover.`,
   },
 
   {

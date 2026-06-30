@@ -1,3 +1,5 @@
+import type { ComponentFamilyName } from "@/families/catalog"
+
 export type FamilyMigrationStatus =
   | "canonical"
   | "family-member"
@@ -8,7 +10,7 @@ export type FamilyMigrationStatus =
 
 export type FamilyMigrationEntry = {
   component: string
-  family: "InputFamily" | "SelectFamily" | "CardFamily" | "FormFamily" | "DataTableFamily"
+  family: ComponentFamilyName
   member?: string
   status: FamilyMigrationStatus
   notes?: string
@@ -45,10 +47,27 @@ export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "Card", family: "CardFamily", member: "Root", status: "canonical" },
   { component: "InfoCard", family: "CardFamily", member: "Info", status: "canonical composed member" },
   { component: "SmartCard", family: "CardFamily", member: "Info", status: "transitional", notes: "Prefer InfoCard or CardFamily.Info in docs and new usage." },
+  { component: "MetricCard", family: "CardFamily", member: "Stat", status: "family-member", notes: "Display-facing alias implemented through the StatCard surface." },
   { component: "StatCard", family: "CardFamily", member: "Stat", status: "family-member" },
   { component: "StatisticCard", family: "CardFamily", member: "Statistic", status: "family-member" },
   { component: "EntityCard", family: "CardFamily", member: "Entity", status: "family-member" },
   { component: "FileCard", family: "CardFamily", member: "File", status: "family-member" },
+
+  { component: "Badge", family: "BadgeFamily", member: "Root", status: "canonical" },
+  { component: "StatusBadge", family: "BadgeFamily", member: "Status", status: "transitional", notes: "Prefer Badge with tone and dot props in docs and new usage." },
+
+  { component: "Dialog", family: "OverlayFamily", member: "Dialog", status: "canonical" },
+  { component: "Popover", family: "OverlayFamily", member: "Popover", status: "canonical" },
+  { component: "DropdownMenu", family: "OverlayFamily", member: "DropdownMenu", status: "canonical" },
+  { component: "Tooltip", family: "OverlayFamily", member: "Tooltip", status: "family-member" },
+  { component: "RightClickMenu", family: "OverlayFamily", member: "RightClickMenu", status: "family-member" },
+  { component: "AlertDialog", family: "OverlayFamily", member: "AlertDialog", status: "family-member" },
+  { component: "ConfirmDialog", family: "OverlayFamily", member: "ConfirmDialog", status: "family-member" },
+  { component: "ModalShell", family: "OverlayFamily", member: "ModalShell", status: "family-member" },
+  { component: "SheetShell", family: "OverlayFamily", member: "SheetShell", status: "family-member" },
+  { component: "Drawer", family: "OverlayFamily", member: "Drawer", status: "family-member" },
+  { component: "DialogActions", family: "OverlayFamily", member: "DialogActions", status: "family-member" },
+  { component: "HoverCard", family: "OverlayFamily", member: "Popover", status: "transitional", notes: "HoverCard is an overlay preview surface; prefer Popover or Tooltip for new usage." },
 
   { component: "FormFieldShell", family: "FormFamily", member: "Field", status: "canonical" },
   { component: "FormInput", family: "FormFamily", member: "Input", status: "family-member" },
