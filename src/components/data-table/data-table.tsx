@@ -433,7 +433,7 @@ function DataTable<TData, TValue = unknown>({
         data-striped={striped || undefined}
         data-bordered={bordered || undefined}
         className={cn(
-          "overflow-hidden rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] backdrop-blur",
+          "overflow-hidden rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_30px_rgba(15,23,42,0.08))] backdrop-blur",
           renderMobileCard && "hidden md:block",
           tableWrapperClassName
         )}
@@ -492,7 +492,7 @@ function DataTable<TData, TValue = unknown>({
                         data-disabled={rowDisabled || undefined}
                         className={cn(
                           onRowClick && !rowDisabled && "cursor-pointer",
-                          !rowDisabled && "transition-colors",
+                          !rowDisabled && "transition-colors hover:bg-[color:var(--aui-page-bg-alt)]",
                           rowDisabled && "pointer-events-none opacity-55",
                           getRowClassName(row, rowClassName)
                         )}
