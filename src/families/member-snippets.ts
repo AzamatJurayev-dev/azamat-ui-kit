@@ -414,19 +414,6 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <InfoCard title="Revenue" description="Current month" content="$48,000" />`,
   },
   {
-    component: "MetricCard",
-    title: "Metric alias",
-    description: "MetricCard remains available but is implemented through the stat card surface.",
-    language: "tsx",
-    variant: "migration",
-    code: `import { MetricCard, StatCard } from "azamat-ui-kit"
-
-<MetricCard title="Revenue" value="$48,000" trend="+12%" />
-
-// New dashboard work can use:
-// <StatCard title="Revenue" value="$48,000" trend={{ value: "+12%", tone: "success" }} />`,
-  },
-  {
     component: "StatCard",
     title: "Compact KPI tile",
     description: "Use stat cards for small dashboard overview rows.",

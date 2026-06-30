@@ -44,7 +44,6 @@ export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "Card", family: "CardFamily", member: "Root", status: "canonical" },
   { component: "InfoCard", family: "CardFamily", member: "Info", status: "canonical composed member" },
   { component: "SmartCard", family: "CardFamily", member: "Info", status: "transitional", notes: "Prefer InfoCard or CardFamily.Info in docs and new usage." },
-  { component: "MetricCard", family: "CardFamily", member: "Stat", status: "family-member", notes: "Display-facing alias implemented through the StatCard surface." },
   { component: "StatCard", family: "CardFamily", member: "Stat", status: "family-member" },
   { component: "StatisticCard", family: "CardFamily", member: "Statistic", status: "family-member" },
   { component: "EntityCard", family: "CardFamily", member: "Entity", status: "family-member" },

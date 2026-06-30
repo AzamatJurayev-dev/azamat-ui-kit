@@ -21,7 +21,7 @@ This file defines what should feel public, canonical and documented. It is not a
 
 ### Layout And Navigation
 
-`AppShell`, `AppHeader`, `AppSidebar`, `PageHeader`, `StatCard`, `SidebarNav`, `Breadcrumbs`, `PageContainer`, `Section`, `Toolbar`, `SplitLayout`, `StickyFooterBar`, `Pagination`, `PageTabs`, `StepperTabs`, `AnchorNav`
+`AppHeader`, `Sidebar`, `StatCard`, `SidebarNav`, `Breadcrumbs`, `PageContainer`, `Section`, `StickyFooterBar`, `Pagination`, `PageTabs`, `StepperTabs`, `AnchorNav`
 
 ### Inputs And Forms
 

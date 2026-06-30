@@ -270,14 +270,6 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     useWhen: "Use for common metric and summary content where teams need a faster default than raw Card composition.",
   },
   {
-    component: "MetricCard",
-    family: "CardFamily",
-    section: "presets",
-    maturity: "member",
-    summary: "Display-facing KPI card implemented through the StatCard surface.",
-    useWhen: "Use for existing display imports; prefer StatCard or CardFamily.Stat for new dashboard KPI tiles.",
-  },
-  {
     component: "StatCard",
     family: "CardFamily",
     section: "presets",

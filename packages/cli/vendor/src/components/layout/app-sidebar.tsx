@@ -476,4 +476,11 @@ function AppSidebar({
   )
 }
 
-export { AppSidebar }
+const Sidebar = AppSidebar
+
+export { AppSidebar, Sidebar }
+export type {
+  AppSidebarFooterAccount as SidebarFooterAccount,
+  AppSidebarNavItem as SidebarItem,
+  AppSidebarProps as SidebarProps,
+}

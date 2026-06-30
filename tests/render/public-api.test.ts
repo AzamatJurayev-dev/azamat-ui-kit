@@ -9,7 +9,6 @@ describe("public API", () => {
       "Alert",
       "AnchorNav",
       "AppHeader",
-      "AppSidebar",
       "AsyncMultiSelect",
       "AsyncSelect",
       "Badge",
@@ -76,6 +75,7 @@ describe("public API", () => {
       "SegmentedControl",
       "Select",
       "SheetShell",
+      "Sidebar",
       "Skeleton",
       "Sparkline",
       "Spinner",
@@ -102,7 +102,6 @@ describe("public API", () => {
         "Alert",
         "AnchorNav",
         "AppHeader",
-        "AppSidebar",
         "AsyncMultiSelect",
         "AsyncSelect",
         "Badge",
@@ -169,6 +168,7 @@ describe("public API", () => {
         "SegmentedControl",
         "Select",
         "SheetShell",
+        "Sidebar",
         "Skeleton",
         "Sparkline",
         "Spinner",
@@ -197,10 +197,12 @@ describe("public API", () => {
       "FormPasswordInput",
       "FormPhoneInput",
       "FormSearchInput",
+      "AppSidebar",
     ].filter((name) => name in kit)
 
     expect(migrationAliases.sort()).toMatchInlineSnapshot(`
       [
+        "AppSidebar",
         "FormDateInput",
         "FormNumberInput",
         "FormPasswordInput",

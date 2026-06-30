@@ -2,7 +2,7 @@ import * as React from "react"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 
-import { AppSidebar, Breadcrumbs, SidebarNav } from "@/index"
+import { Breadcrumbs, Sidebar, SidebarNav } from "@/index"
 
 describe("navigation contracts", () => {
   it("renders nested sidebar navigation with section labels", () => {
@@ -31,7 +31,7 @@ describe("navigation contracts", () => {
 
   it("keeps collapsed app sidebar items discoverable with tooltip content", () => {
     render(
-      <AppSidebar
+      <Sidebar
         collapsed
         railItems={[
           { key: "settings", label: "Settings", tooltip: "Open settings", onSelect: () => undefined },
@@ -73,7 +73,7 @@ describe("navigation contracts", () => {
 
   it("renders sidebar footer account and secondary actions when expanded", () => {
     render(
-      <AppSidebar
+      <Sidebar
         footerAccount={{
           label: "Azamat Jurayev",
           description: "Product owner",

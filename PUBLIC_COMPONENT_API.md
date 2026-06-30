@@ -96,7 +96,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`InfoCard`, `MetricCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`
+`InfoCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`
 
 ### Prop Highlights
 

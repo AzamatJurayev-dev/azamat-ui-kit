@@ -60,7 +60,7 @@ function MetricGrid({
       {visibleItems.map((item) => (
         <Card
           key={item.key}
-          data-slot="metric-card"
+          data-slot="stat-card"
           data-tone={item.tone ?? "default"}
           className={cn("min-w-0 overflow-hidden", toneClassName[item.tone ?? "default"], itemClassName, item.className)}
         >

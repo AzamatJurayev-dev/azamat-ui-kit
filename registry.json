@@ -100,7 +100,6 @@
       "keyboard-shortcut",
       "kanban",
       "list",
-      "metric-card",
       "metric-grid",
       "progress",
       "progress-circle",
@@ -123,7 +122,7 @@
     ],
     "layout": [
       "app-header",
-      "app-sidebar",
+      "sidebar",
       "breadcrumbs",
       "page-container",
       "section",
@@ -210,7 +209,7 @@
     "spinner",
     "tooltip",
     "kbd",
-    "app-sidebar",
+    "sidebar",
     "sidebar-nav",
     "breadcrumbs",
     "empty-state",
@@ -219,7 +218,7 @@
     "progress",
     "progress-circle",
     "metric-grid",
-    "metric-card",
+    "stat-card",
     "activity-feed",
     "user-card",
     "action-menu",
@@ -244,14 +243,14 @@
       "scroll-box"
     ],
     "sourceCopy": [
-      "app-sidebar",
+      "sidebar",
       "sidebar-nav",
       "breadcrumbs",
       "empty-state",
       "loading-state",
       "description-list",
       "progress-circle",
-      "metric-card",
+      "stat-card",
       "metric-grid",
       "activity-feed",
       "user-card",
@@ -272,7 +271,7 @@
     "system": [
       "data-table",
       "data-table-view-presets",
-      "app-sidebar",
+      "sidebar",
       "sidebar-nav"
     ]
   },
@@ -283,6 +282,7 @@
     "form-phone-input": "form-input",
     "form-date-input": "form-input",
     "form-async-select": "form-select",
+    "app-sidebar": "sidebar",
     "smart-card": "info-card"
   }
 }

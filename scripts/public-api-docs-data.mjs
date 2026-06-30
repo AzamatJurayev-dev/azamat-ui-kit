@@ -94,7 +94,6 @@ export const publicComponentApiDocs = [
     ],
     related: [
       "InfoCard",
-      "MetricCard",
       "StatCard",
       "StatisticCard",
       "EntityCard",

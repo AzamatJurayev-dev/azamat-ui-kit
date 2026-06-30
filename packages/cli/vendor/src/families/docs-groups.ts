@@ -138,7 +138,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "presets",
         label: "Presets",
         description: "Purpose-built card shapes for dashboards and data-heavy product screens.",
-        components: ["MetricCard", "StatCard", "StatisticCard", "EntityCard", "FileCard"],
+        components: ["StatCard", "StatisticCard", "EntityCard", "FileCard"],
       },
       {
         id: "transitional",

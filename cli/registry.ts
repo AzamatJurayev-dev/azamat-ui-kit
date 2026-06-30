@@ -108,9 +108,8 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   feedback: { name: "feedback", category: "group", registryDependencies: ["empty-state", "loading-state", "page-state"], files: [file("src/components/feedback/index.ts", "{components}/feedback/index.ts")] },
 
   "stat-card": { name: "stat-card", category: "layout", registryDependencies: ["card", "badge", "utils"], files: [file("src/components/layout/stat-card.tsx", "{components}/layout/stat-card.tsx")] },
-  layout: { name: "layout", category: "group", registryDependencies: ["stat-card"], files: [file("src/components/layout/index.ts", "{components}/layout/index.ts")] },
-
-  "metric-card": { name: "metric-card", category: "display", registryDependencies: ["stat-card"], files: [file("src/components/display/metric-card.tsx", "{components}/display/metric-card.tsx")] },
+  sidebar: { name: "sidebar", category: "layout", dependencies: ["react"], registryDependencies: ["tooltip", "utils"], files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/sidebar.tsx")] },
+  layout: { name: "layout", category: "group", registryDependencies: ["sidebar", "stat-card"], files: [file("src/components/layout/index.ts", "{components}/layout/index.ts")] },
   calendar: { name: "calendar", category: "calendar", files: [file("src/components/calendar/calendar.tsx", "{components}/calendar/calendar.tsx"), file("src/components/calendar/date-utils.ts", "{components}/calendar/date-utils.ts")] },
   "date-picker": { name: "date-picker", category: "calendar", registryDependencies: ["calendar"], files: [file("src/components/calendar/date-picker.tsx", "{components}/calendar/date-picker.tsx")] },
   "date-range-picker": { name: "date-range-picker", category: "calendar", registryDependencies: ["calendar"], files: [file("src/components/calendar/date-range-picker.tsx", "{components}/calendar/date-range-picker.tsx")] },
@@ -125,7 +124,7 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "alert", category: "feedback", files: [file("src/components/feedback/alert.tsx", "{components}/feedback/alert.tsx")] },
   { name: "anchor-nav", category: "navigation", files: [file("src/components/navigation/anchor-nav.tsx", "{components}/navigation/anchor-nav.tsx")] },
   { name: "app-header", category: "layout", files: [file("src/components/layout/app-header.tsx", "{components}/layout/app-header.tsx")] },
-  { name: "app-sidebar", category: "layout", files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/app-sidebar.tsx")] },
+  { name: "app-sidebar", category: "layout", migrationAliasFor: "sidebar", files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/app-sidebar.tsx")] },
   { name: "avatar", category: "display", files: [file("src/components/display/avatar.tsx", "{components}/display/avatar.tsx")] },
   { name: "breadcrumbs", category: "layout", files: [file("src/components/layout/breadcrumbs.tsx", "{components}/layout/breadcrumbs.tsx")] },
   { name: "button-group", category: "actions", files: [file("src/components/actions/button-group.tsx", "{components}/actions/button-group.tsx")] },

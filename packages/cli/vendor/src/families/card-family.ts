@@ -1,4 +1,4 @@
-import { EntityCard, FileCard, InfoCard, MetricCard, StatisticCard } from "@/components/display"
+import { EntityCard, FileCard, InfoCard, StatisticCard } from "@/components/display"
 import { StatCard } from "@/components/layout"
 import {
   Card,
@@ -19,7 +19,6 @@ const CardFamily = {
   Content: CardContent,
   Footer: CardFooter,
   Info: InfoCard,
-  Metric: MetricCard,
   Stat: StatCard,
   Statistic: StatisticCard,
   Entity: EntityCard,
