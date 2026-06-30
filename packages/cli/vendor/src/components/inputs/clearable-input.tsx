@@ -43,7 +43,7 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
   ) => {
     const inputRef = React.useRef<HTMLInputElement | null>(null)
     const stringValue = getInputValue(value)
-    const canClear = clearable && stringValue.length > 0 && !disabled
+    const canClear = clearable && stringValue.length > 0 && !disabled && !props.readOnly
     const handleChange = createInputChangeHandler({ onChange, onValueChange })
 
     React.useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)

@@ -58,6 +58,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
           "ColorInput",
           "DateInput",
           "DateRangeInput",
+          "InlineEditable",
         ],
       },
       {
@@ -138,7 +139,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "presets",
         label: "Presets",
         description: "Purpose-built card shapes for dashboards and data-heavy product screens.",
-        components: ["StatCard", "StatisticCard", "EntityCard", "FileCard"],
+        components: ["StatCard", "StatisticCard", "EntityCard", "FileCard", "TrendCard", "ComparisonCard"],
       },
       {
         id: "transitional",
@@ -160,7 +161,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "primitives",
         label: "Primitives",
         description: "The canonical badge component. Use props for status, metadata, and subtle labels.",
-        components: ["Badge"],
+        components: ["Badge", "DeltaBadge"],
       },
     ],
   },
@@ -204,7 +205,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "wrappers",
         label: "Wrappers",
         description: "Prewired wrappers for common field families and calendar-driven flows.",
-        components: ["FormTextarea", "FormSwitch", "FormDatePicker", "FormDateRangePicker"],
+        components: ["FormTextarea", "FormSwitch", "FormDatePicker", "FormDateRangePicker", "RepeaterField"],
       },
       {
         id: "advanced",

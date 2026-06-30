@@ -22,6 +22,7 @@ export type ComboboxProps<TValue extends string = string> = React.ComponentProps
   searchPlaceholder?: string
   emptyLabel?: React.ReactNode
   disabled?: boolean
+  invalid?: boolean
 }
 
 function Combobox<TValue extends string = string>({
@@ -32,6 +33,7 @@ function Combobox<TValue extends string = string>({
   searchPlaceholder = "Search...",
   emptyLabel = "No option found",
   disabled = false,
+  invalid,
   className,
   ...props
 }: ComboboxProps<TValue>) {
@@ -47,7 +49,7 @@ function Combobox<TValue extends string = string>({
 
   return (
     <div data-slot="combobox" className={cn("relative grid gap-2", className)} {...props}>
-      <Button type="button" variant="outline" disabled={disabled} className="w-full justify-between" onClick={() => setOpen((value) => !value)}>
+      <Button type="button" variant="outline" disabled={disabled} aria-invalid={invalid || undefined} className="w-full justify-between" onClick={() => setOpen((value) => !value)}>
         <span className={cn("truncate", !selectedOption && "text-muted-foreground")}>{selectedOption?.label ?? placeholder}</span>
         <ChevronDownIcon className="size-4 opacity-60" />
       </Button>

@@ -94,6 +94,7 @@ export type AsyncSelectProps<
   contentClassName?: string
   searchClassName?: string
   optionClassName?: string
+  invalid?: boolean
 }
 
 export type AsyncMultiSelectProps<
@@ -133,6 +134,7 @@ export type AsyncMultiSelectProps<
   searchClassName?: string
   optionClassName?: string
   tagClassName?: string
+  invalid?: boolean
 }
 
 type AsyncSelectCacheEntry<
@@ -440,6 +442,7 @@ function AsyncSelect<
   contentClassName,
   searchClassName,
   optionClassName,
+  invalid,
   ...props
 }: AsyncSelectProps<TValue, TData, TOption>) {
   const resolvedDefaultGroups = React.useMemo(() => normalizeOptionGroups(defaultOptions), [defaultOptions])
@@ -619,6 +622,7 @@ function AsyncSelect<
               variant="outline"
               disabled={disabled}
               aria-expanded={open}
+              aria-invalid={invalid || undefined}
               data-slot="async-select-trigger"
               className={cn(
                 "min-h-11 w-full justify-between",
@@ -788,6 +792,7 @@ function AsyncMultiSelect<
   searchClassName,
   optionClassName,
   tagClassName,
+  invalid,
   ...props
 }: AsyncMultiSelectProps<TValue, TData, TOption>) {
   const values = React.useMemo(() => value ?? [], [value])
@@ -1035,6 +1040,7 @@ function AsyncMultiSelect<
               variant="outline"
               disabled={disabled}
               aria-expanded={open}
+              aria-invalid={invalid || undefined}
               data-slot="async-select-trigger"
               className={cn(
                 "min-h-11 w-full justify-between",

@@ -1,6 +1,7 @@
 export * from "./description-list"
 export * from "./activity-feed"
 export * from "./avatar"
+export * from "./entity-header"
 export * from "./descriptions"
 export * from "./keyboard-shortcut"
 export * from "./kanban"
@@ -21,6 +22,11 @@ export * from "./tag-list"
 export * from "./timeline"
 export * from "./tree-view"
 export * from "./user-card"
+export * from "./trend-card"
+export * from "./comparison-card"
+export * from "./delta-badge"
+export * from "./skeleton-table"
+export * from "./skeleton-form"
 export {
   SmartCard as InfoCard,
   type SmartCardClassNames as InfoCardClassNames,

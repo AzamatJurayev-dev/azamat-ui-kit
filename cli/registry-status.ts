@@ -20,7 +20,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "radio-group": "stable",
   "scroll-box": "stable",
   "right-click-menu": "stable",
-  "kbd": "stable",
+  kbd: "stable",
 
   "dialog-actions": "stable",
   "modal-shell": "stable",
@@ -125,6 +125,19 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
 
   dashboard: "preview",
   all: "preview",
+
+  "trend-card": "preview",
+  "comparison-card": "preview",
+  "delta-badge": "preview",
+  "skeleton-table": "preview",
+  "skeleton-form": "preview",
+  "entity-header": "preview",
+  "inline-editable": "preview",
+  "repeater-field": "preview",
+  "empty-search-state": "preview",
+  "command-bar": "preview",
+  "saved-filter-select": "preview",
+  "notification-center": "preview",
 }
 
 export function getRegistryStatus(name: ComponentName): ComponentStatus {

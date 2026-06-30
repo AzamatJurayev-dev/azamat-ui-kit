@@ -42,7 +42,8 @@
       "nav-tabs",
       "page-tabs",
       "pagination",
-      "stepper-tabs"
+      "stepper-tabs",
+      "command-bar"
     ],
     "inputs": [
       "async-select",
@@ -63,7 +64,8 @@
       "search-input",
       "simple-select",
       "slider",
-      "tag-input"
+      "tag-input",
+      "inline-editable"
     ],
     "form": [
       "form-async-select",
@@ -79,13 +81,15 @@
       "form-search-input",
       "form-select",
       "form-switch",
-      "form-textarea"
+      "form-textarea",
+      "repeater-field"
     ],
     "feedback": [
       "alert",
       "empty-state",
       "loading-state",
-      "page-state"
+      "page-state",
+      "empty-search-state"
     ],
     "display": [
       "activity-feed",
@@ -111,7 +115,13 @@
       "tag-list",
       "timeline",
       "tree-view",
-      "user-card"
+      "user-card",
+      "trend-card",
+      "comparison-card",
+      "delta-badge",
+      "skeleton-table",
+      "skeleton-form",
+      "entity-header"
     ],
     "actions": [
       "action-menu",
@@ -134,7 +144,8 @@
     ],
     "filters": [
       "filter-chips",
-      "filter-bar"
+      "filter-bar",
+      "saved-filter-select"
     ],
     "data-table": [
       "data-table",
@@ -165,7 +176,8 @@
       "wizard"
     ],
     "notifications": [
-      "toast"
+      "toast",
+      "notification-center"
     ],
     "command": [
       "command-palette"
@@ -222,7 +234,12 @@
     "activity-feed",
     "user-card",
     "action-menu",
-    "filter-bar"
+    "filter-bar",
+    "trend-card",
+    "delta-badge",
+    "entity-header",
+    "notification-center",
+    "command-bar"
   ],
   "recommendedByMode": {
     "foundation": [
@@ -266,7 +283,12 @@
       "form-input",
       "form-select",
       "form-textarea",
-      "form-switch"
+      "form-switch",
+      "trend-card",
+      "delta-badge",
+      "entity-header",
+      "notification-center",
+      "command-bar"
     ],
     "system": [
       "data-table",

@@ -209,6 +209,18 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "use-session-storage-state", category: "hooks", files: [file("src/hooks/use-session-storage-state.ts", "{hooks}/use-session-storage-state.ts")] },
   { name: "user-card", category: "display", files: [file("src/components/display/user-card.tsx", "{components}/display/user-card.tsx")] },
   { name: "wizard", category: "wizard", files: [file("src/components/wizard/wizard.tsx", "{components}/wizard/wizard.tsx")] },
+  { name: "trend-card", category: "display", files: [file("src/components/display/trend-card.tsx", "{components}/display/trend-card.tsx")] },
+  { name: "comparison-card", category: "display", files: [file("src/components/display/comparison-card.tsx", "{components}/display/comparison-card.tsx")] },
+  { name: "delta-badge", category: "display", files: [file("src/components/display/delta-badge.tsx", "{components}/display/delta-badge.tsx")] },
+  { name: "skeleton-table", category: "display", files: [file("src/components/display/skeleton-table.tsx", "{components}/display/skeleton-table.tsx")] },
+  { name: "skeleton-form", category: "display", files: [file("src/components/display/skeleton-form.tsx", "{components}/display/skeleton-form.tsx")] },
+  { name: "entity-header", category: "display", files: [file("src/components/display/entity-header.tsx", "{components}/display/entity-header.tsx")] },
+  { name: "inline-editable", category: "inputs", files: [file("src/components/inputs/inline-editable.tsx", "{components}/inputs/inline-editable.tsx")] },
+  { name: "repeater-field", category: "form", files: [file("src/components/form/repeater-field.tsx", "{components}/form/repeater-field.tsx")] },
+  { name: "empty-search-state", category: "feedback", files: [file("src/components/feedback/empty-search-state.tsx", "{components}/feedback/empty-search-state.tsx")] },
+  { name: "command-bar", category: "navigation", files: [file("src/components/navigation/command-bar.tsx", "{components}/navigation/command-bar.tsx")] },
+  { name: "saved-filter-select", category: "filters", files: [file("src/components/filters/saved-filter-select.tsx", "{components}/filters/saved-filter-select.tsx")] },
+  { name: "notification-center", category: "notifications", files: [file("src/components/notifications/notification-center.tsx", "{components}/notifications/notification-center.tsx")] },
 ];
 
 for (const item of generatedSourceRegistry) {

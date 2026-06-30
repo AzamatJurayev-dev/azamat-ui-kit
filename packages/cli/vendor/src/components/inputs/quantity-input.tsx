@@ -76,7 +76,7 @@ function QuantityInput({
             variant="ghost"
             size="icon-sm"
             className="h-full rounded-none"
-            disabled={!canDecrease || props.disabled}
+            disabled={!canDecrease || props.disabled || props.readOnly}
             onClick={() => handleStep(-1)}
           >
             <MinusIcon />
@@ -90,7 +90,7 @@ function QuantityInput({
             variant="ghost"
             size="icon-sm"
             className="h-full rounded-none"
-            disabled={!canIncrease || props.disabled}
+            disabled={!canIncrease || props.disabled || props.readOnly}
             onClick={() => handleStep(1)}
           >
             <PlusIcon />

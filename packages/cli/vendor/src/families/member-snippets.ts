@@ -809,4 +809,71 @@ const actionsColumn = createDataTableActionsColumn({
     variant: "cli",
     code: `npx azamat-ui-kit-cli add input`,
   },
+  {
+    component: "InlineEditable",
+    title: "Inline edit field",
+    description: "Click-to-edit inline text. Commits on Enter or blur, cancels on Escape.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { InlineEditable } from "azamat-ui-kit"
+
+<InlineEditable value={name} onValueChange={setName} placeholder="Click to edit" />`,
+  },
+  {
+    component: "TrendCard",
+    title: "Metric with sparkline",
+    description: "Dashboard metric card showing trend direction and optional sparkline.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { TrendCard } from "azamat-ui-kit"
+
+<TrendCard title="Revenue" value="$45,231" change="+12.5%" trend="up" sparkline={[10, 20, 15, 25, 30]} />`,
+  },
+  {
+    component: "ComparisonCard",
+    title: "Side-by-side metrics",
+    description: "Compare multiple related metrics in one card.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ComparisonCard } from "azamat-ui-kit"
+
+<ComparisonCard
+  title="Q1 vs Q2"
+  items={[
+    { label: "Revenue", value: "$45k", change: "+12%", trend: "up" },
+    { label: "Expenses", value: "$32k", change: "-3%", trend: "down" },
+  ]}
+/>`,
+  },
+  {
+    component: "DeltaBadge",
+    title: "Inline trend badge",
+    description: "Show positive or negative change inline.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { DeltaBadge } from "azamat-ui-kit"
+
+<DeltaBadge value="+12.5%" trend="up" />
+<DeltaBadge value="-3.2%" trend="down" />`,
+  },
+  {
+    component: "RepeaterField",
+    title: "Dynamic form array",
+    description: "Add and remove repeated field groups in a form.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { RepeaterField } from "azamat-ui-kit"
+
+<RepeaterField
+  value={items}
+  onValueChange={setItems}
+  createItem={() => ({ name: "" })}
+  renderItem={(item, i, { remove, update }) => (
+    <div className="flex gap-2">
+      <input value={item.name} onChange={e => update({ name: e.target.value })} />
+      <button onClick={remove}>Remove</button>
+    </div>
+  )}
+/>`,
+  },
 ] as const

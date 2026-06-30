@@ -91,4 +91,9 @@ export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "createDataTableActionsColumn", family: "DataTableFamily", member: "createActionsColumn", status: "family-member helper" },
   { component: "TableExportMenu", family: "DataTableFamily", member: "ExportMenu", status: "advanced" },
   { component: "TableImportButton", family: "DataTableFamily", member: "ImportButton", status: "advanced" },
+  { component: "InlineEditable", family: "InputFamily", member: "InlineEditable", status: "family-member" },
+  { component: "TrendCard", family: "CardFamily", member: "Trend", status: "family-member" },
+  { component: "ComparisonCard", family: "CardFamily", member: "Comparison", status: "family-member" },
+  { component: "DeltaBadge", family: "BadgeFamily", member: "Delta", status: "family-member" },
+  { component: "RepeaterField", family: "FormFamily", member: "Repeater", status: "family-member" },
 ] as const

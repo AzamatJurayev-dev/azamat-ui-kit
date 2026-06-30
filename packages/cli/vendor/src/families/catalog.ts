@@ -36,6 +36,7 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
       "PhoneInput",
       "OtpInput",
       "ColorInput",
+      "InlineEditable",
     ],
     advanced: ["TagInput", "QuantityStepper"],
   },
@@ -51,7 +52,7 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     label: "Card",
     description: "Primitive card plus dashboard and entity-oriented composed card presets.",
     canonical: ["Card", "InfoCard"],
-    members: ["StatCard", "StatisticCard", "EntityCard", "FileCard"],
+    members: ["StatCard", "StatisticCard", "EntityCard", "FileCard", "TrendCard", "ComparisonCard"],
     transitional: ["SmartCard"],
   },
   {
@@ -59,7 +60,7 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     label: "Badge",
     description: "Status, metadata, and inline labels expressed through one Badge API with tone, dot, size, and variant props.",
     canonical: ["Badge"],
-    members: [],
+    members: ["DeltaBadge"],
   },
   {
     family: "OverlayFamily",
@@ -87,6 +88,7 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
       "FormDateRangeInput",
       "FormDatePicker",
       "FormDateRangePicker",
+      "RepeaterField",
     ],
     advanced: ["FormBuilder"],
   },

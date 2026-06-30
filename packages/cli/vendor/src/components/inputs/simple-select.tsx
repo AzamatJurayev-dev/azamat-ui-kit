@@ -40,6 +40,7 @@ export type SimpleSelectProps = Omit<
   itemClassName?: string
   searchClassName?: string
   renderOption?: (option: SimpleSelectOption, state: { selected: boolean }) => React.ReactNode
+  invalid?: boolean
 }
 
 function optionMatchesSearch(option: SimpleSelectOption, search: string) {
@@ -70,6 +71,7 @@ function SimpleSelect({
   itemClassName,
   searchClassName,
   renderOption,
+  invalid,
   ...props
 }: SimpleSelectProps) {
   const [search, setSearch] = React.useState("")
@@ -80,6 +82,7 @@ function SimpleSelect({
     <Select value={value} onValueChange={(val) => onValueChange?.(val as string)} disabled={disabled || loading} {...props}>
       <SelectTrigger
         size={size}
+        aria-invalid={invalid || undefined}
         className={cn(
           "w-full",
           triggerClassName

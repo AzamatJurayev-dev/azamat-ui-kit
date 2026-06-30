@@ -13,6 +13,9 @@ import {
   type SortingState,
   type Table as TanStackTable,
   type VisibilityState,
+  type ExpandedState,
+  type ColumnPinningState,
+  getExpandedRowModel,
 } from "@tanstack/react-table"
 
 import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
@@ -134,6 +137,12 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   headerCellClassName?: string | ((header: Header<TData, unknown>) => string)
   cellClassName?: string | ((cell: Cell<TData, unknown>) => string)
   rowClassName?: string | ((row: Row<TData>) => string)
+  renderExpandedRow?: (row: Row<TData>) => React.ReactNode
+  expanded?: ExpandedState
+  onExpandedChange?: OnChangeFn<ExpandedState>
+  getRowCanExpand?: (row: Row<TData>) => boolean
+  columnPinning?: ColumnPinningState
+  onColumnPinningChange?: OnChangeFn<ColumnPinningState>
 }
 
 const densityHeadClassName: Record<DataTableDensity, string> = {
@@ -223,6 +232,12 @@ function DataTable<TData, TValue = unknown>({
   headerCellClassName,
   cellClassName,
   rowClassName,
+  renderExpandedRow,
+  expanded,
+  onExpandedChange,
+  getRowCanExpand,
+  columnPinning,
+  onColumnPinningChange,
   ...props
 }: DataTableProps<TData, TValue>) {
   const resolvedColumns = React.useMemo<ColumnDef<TData, unknown>[]>(() => {
@@ -263,11 +278,17 @@ function DataTable<TData, TValue = unknown>({
       columnVisibility,
       rowSelection: resolvedRowSelection,
       pagination: controlledPagination,
+      expanded,
+      ...(columnPinning ? { columnPinning } : {}),
     },
     onSortingChange,
     onColumnVisibilityChange,
     onRowSelectionChange,
+    onExpandedChange,
+    onColumnPinningChange,
     enableRowSelection,
+    getRowCanExpand,
+    getExpandedRowModel: getExpandedRowModel(),
   })
 
   const rows = table.getRowModel().rows
@@ -318,6 +339,8 @@ function DataTable<TData, TValue = unknown>({
     <DataTableBulkActions
       rows={selectedRows}
       actions={bulkActions ?? []}
+      selectedLabel={() => "Actions"}
+      clearLabel={null} // Toolbar often has its own clear or we don't need double clear
       onClearSelection={() => table.resetRowSelection()}
       hideWhenEmpty={false}
     />
@@ -427,11 +450,20 @@ function DataTable<TData, TValue = unknown>({
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    style={{ width: header.getSize() }}
+                    style={{
+                      width: header.getSize(),
+                      ...(header.column.getIsPinned() === "left"
+                        ? { left: `${header.column.getStart("left")}px`, position: "sticky", zIndex: stickyHeader ? 20 : 11 }
+                        : {}),
+                      ...(header.column.getIsPinned() === "right"
+                        ? { right: `${header.column.getAfter("right")}px`, position: "sticky", zIndex: stickyHeader ? 20 : 11 }
+                        : {}),
+                    }}
                       className={cn(
                         densityHeadClassName[density],
                         "bg-transparent text-muted-foreground",
                         stickyHeader && "bg-[color:color-mix(in_oklch,var(--card),transparent_12%)] backdrop-blur",
+                        header.column.getIsPinned() && "bg-card shadow-[1px_0_0_var(--border)]",
                         bordered && "border-r last:border-r-0",
                         getHeaderCellClassName(header, headerCellClassName)
                       )}
@@ -453,9 +485,9 @@ function DataTable<TData, TValue = unknown>({
                     const rowDisabled = getRowDisabled?.(row) ?? false
 
                     return (
-                      <TableRow
-                        key={row.id}
-                        data-state={row.getIsSelected() ? "selected" : undefined}
+                      <React.Fragment key={row.id}>
+                        <TableRow
+                          data-state={row.getIsSelected() ? "selected" : undefined}
                         data-striped={striped && rowIndex % 2 === 1 ? "true" : undefined}
                         data-disabled={rowDisabled || undefined}
                         className={cn(
@@ -477,8 +509,17 @@ function DataTable<TData, TValue = unknown>({
                           return (
                             <TableCell
                               key={cell.id}
+                              style={{
+                                ...(cell.column.getIsPinned() === "left"
+                                  ? { left: `${cell.column.getStart("left")}px`, position: "sticky", zIndex: 10 }
+                                  : {}),
+                                ...(cell.column.getIsPinned() === "right"
+                                  ? { right: `${cell.column.getAfter("right")}px`, position: "sticky", zIndex: 10 }
+                                  : {}),
+                              }}
                               className={cn(
                                 densityCellClassName[density],
+                                cell.column.getIsPinned() && "bg-card shadow-[1px_0_0_var(--border)]",
                                 bordered && "border-r last:border-r-0",
                                 getCellClassName(cell, cellClassName)
                               )}
@@ -488,9 +529,17 @@ function DataTable<TData, TValue = unknown>({
                           )
                         })}
                       </TableRow>
-                    )
-                  })}
-          </TableBody>
+                      {row.getIsExpanded() && renderExpandedRow && (
+                        <TableRow className="bg-muted/50 hover:bg-muted/50">
+                          <TableCell colSpan={row.getVisibleCells().length}>
+                            {renderExpandedRow(row)}
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </React.Fragment>
+                  )
+                })}
+      </TableBody>
         </Table>
 
         {showPagination && paginationConfig && (

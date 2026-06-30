@@ -269,6 +269,7 @@ function FormInput<
                 ref={field.ref}
                 value={field.value ?? ""}
                 disabled={disabled}
+                readOnly={props.readOnly}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
@@ -323,6 +324,7 @@ function FormInput<
                 name={field.name}
                 value={field.value ?? ""}
                 disabled={disabled}
+                readOnly={props.readOnly}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
@@ -552,6 +554,7 @@ function FormInput<
                 ref={field.ref}
                 value={field.value ?? ""}
                 disabled={disabled}
+                readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
