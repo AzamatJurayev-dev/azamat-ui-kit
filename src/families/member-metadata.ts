@@ -505,15 +505,6 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     useWhen: "Use only when repeated internal forms justify abstraction over direct wrapper composition.",
   },
   {
-    component: "SmartFormShell",
-    family: "FormFamily",
-    section: "advanced",
-    maturity: "transitional",
-    summary: "Older shell abstraction kept during migration.",
-    useWhen: "Use only for migration or legacy screens; prefer FormFieldShell and explicit wrappers for new work.",
-  },
-
-  {
     component: "DataTable",
     family: "DataTableFamily",
     section: "primitives",

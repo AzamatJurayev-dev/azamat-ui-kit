@@ -225,7 +225,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "advanced",
         label: "Advanced",
         description: "Higher-level builders and shells for teams that need abstraction over raw fields.",
-        components: ["FormBuilder", "SmartFormShell"],
+        components: ["FormBuilder"],
       },
     ],
   },

@@ -74,7 +74,7 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
   {
     family: "FormFamily",
     label: "Form",
-    description: "Field shell, wrappers, sections, actions, shell composition, and builder presets.",
+    description: "Field shell, wrappers, and builder presets.",
     canonical: ["FormFieldShell"],
     members: [
       "FormInput",
@@ -91,7 +91,6 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
       "FormDatePicker",
       "FormDateRangePicker",
     ],
-    transitional: ["SmartFormShell"],
     advanced: ["FormBuilder"],
   },
   {

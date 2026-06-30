@@ -759,17 +759,6 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 />`,
   },
   {
-    component: "SmartFormShell",
-    title: "Legacy shell",
-    description: "Keep this only for migration; new work should prefer explicit form shell composition.",
-    language: "tsx",
-    variant: "migration",
-    code: `import { SmartFormShell } from "azamat-ui-kit"
-
-<SmartFormShell title="Legacy settings">{content}</SmartFormShell>`,
-  },
-
-  {
     component: "DataTable",
     title: "Canonical table",
     description: "DataTable owns the main grid surface and table orchestration.",

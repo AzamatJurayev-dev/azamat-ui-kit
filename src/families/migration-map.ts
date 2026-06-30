@@ -83,7 +83,6 @@ export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "FormDateRangeInput", family: "FormFamily", member: "DateRange", status: "family-member" },
   { component: "FormDatePicker", family: "FormFamily", member: "DatePicker", status: "family-member" },
   { component: "FormDateRangePicker", family: "FormFamily", member: "DateRangePicker", status: "family-member" },
-  { component: "SmartFormShell", family: "FormFamily", member: "Shell", status: "transitional" },
   { component: "FormBuilder", family: "FormFamily", member: "Builder", status: "advanced" },
 
   { component: "DataTable", family: "DataTableFamily", member: "Root", status: "canonical" },
