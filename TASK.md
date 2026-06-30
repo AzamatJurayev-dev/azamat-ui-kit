@@ -30,6 +30,235 @@ Current status:
 - [ ] Decide whether `prepublishOnly` should stay full-gate or use a lighter stable gate.
 - [ ] Add a dedicated publish checklist for package + CLI + docs app version sync.
 
+## Component Catalog Rationalization (Master Component Inventory)
+
+### Status legend
+
+- [x] **KEEP** — active, stable, should stay public
+- [ ] **KEEP** but needs API cleanup
+- [ ] **MERGE** — redundant with another canonical component
+- [ ] **DEPRECATE** — legacy alias/component; keep temporarily with `@deprecated`
+- [ ] **REVIEW** — not clearly component-like, decide scope
+
+### Foundation (src/components/ui)
+
+- [ ] **KEEP** `button`
+- [ ] **KEEP** `input`
+- [ ] **KEEP** `textarea`
+- [ ] **KEEP** `checkbox`
+- [ ] **KEEP** `switch`
+- [ ] **KEEP** `card`
+- [ ] **KEEP** `badge`
+- [ ] **KEEP** `tabs`
+- [ ] **KEEP** `dialog`
+- [ ] **KEEP** `dropdown-menu`
+- [ ] **KEEP** `popover`
+- [ ] **KEEP** `select`
+- [ ] **KEEP** `table`
+- [ ] **KEEP** `collapse`
+- [ ] **KEEP** `skeleton`
+- [ ] **KEEP** `divider`
+- [ ] **KEEP** `segmented-control`
+- [ ] **KEEP** `spinner`
+- [ ] **KEEP** `tooltip`
+- [ ] **KEEP** `kbd`
+- [ ] **KEEP** `radio-group`
+- [ ] **KEEP** `scroll-box`
+- [ ] **KEEP** `right-click-menu`
+- [ ] **KEEP** `tooltip` already shipped, keep token consistency
+
+### Input and form wrappers
+
+- [ ] **KEEP** `app-input` (candidate for **MERGE** into `Input` with `kind` + deprecation plan)
+- [ ] **KEEP** `async-select`
+- [ ] **KEEP** `simple-select`
+- [ ] **KEEP** `combobox`
+- [ ] **KEEP** `color-input`
+- [ ] **KEEP** `date-input`
+- [ ] **KEEP** `date-range-input`
+- [ ] **KEEP** `masked-input`
+- [ ] **KEEP** `money-input`
+- [ ] **KEEP** `number-input`
+- [ ] **KEEP** `otp-input`
+- [ ] **KEEP** `password-input`
+- [ ] **KEEP** `phone-input`
+- [ ] **KEEP** `quantity-input`
+- [ ] **KEEP** `quantity-stepper`
+- [ ] **KEEP** `rating`
+- [ ] **KEEP** `search-input`
+- [ ] **KEEP** `slider`
+- [ ] **KEEP** `tag-input`
+
+- [ ] **KEEP** `form-input`
+- [ ] **KEEP** `form-field-shell`
+- [ ] **KEEP** `form-select`
+- [ ] **KEEP** `form-textarea`
+- [ ] **KEEP** `form-switch`
+- [ ] **KEEP** `form-search-input`
+- [ ] **KEEP** `form-password-input`
+- [ ] **KEEP** `form-number-input`
+- [ ] **KEEP** `form-phone-input`
+- [ ] **KEEP** `form-app-input` (**MERGE** candidate into `FormInput` via `kind`)
+- [ ] **KEEP** `form-date-input`
+- [ ] **KEEP** `form-date-picker`
+- [ ] **KEEP** `form-date-range-input`
+- [ ] **KEEP** `form-date-range-picker`
+- [ ] **KEEP** `form-async-select`
+- [ ] **REVIEW** `form-field-utils` (utility, not component)
+- [ ] **REVIEW** `form-actions` (internal helper)
+- [ ] **REVIEW** `form-section` (layout pattern)
+- [ ] **REVIEW** `smart-form-shell` (helper shell)
+
+### Layout / navigation
+
+- [ ] **KEEP** `app-shell`
+- [ ] **KEEP** `app-header`
+- [ ] **KEEP** `app-sidebar`
+- [ ] **KEEP** `breadcrumbs`
+- [ ] **KEEP** `page-header`
+- [ ] **KEEP** `page-container`
+- [ ] **KEEP** `sidebar-nav`
+- [ ] **KEEP** `section`
+- [ ] **KEEP** `section-header`
+- [ ] **KEEP** `stack`
+- [ ] **KEEP** `stat-card`
+- [ ] **KEEP** `sticky-footer-bar`
+- [ ] **KEEP** `workspace-shell` (REVIEW if still needed as public surface)
+- [ ] **KEEP** `anchor-nav`
+- [ ] **KEEP** `nav-tabs`
+- [ ] **KEEP** `page-tabs`
+- [ ] **KEEP** `pagination`
+- [ ] **KEEP** `stepper-tabs`
+
+### Overlay and dialogs
+
+- [ ] **KEEP** `alert-dialog`
+- [ ] **KEEP** `confirm-dialog`
+- [ ] **KEEP** `dialog-actions`
+- [ ] **KEEP** `drawer`
+- [ ] **KEEP** `sheet-shell`
+- [ ] **KEEP** `modal-shell`
+- [ ] **KEEP** `hover-card`
+
+### Data, feedback, status
+
+- [ ] **KEEP** `data-table`
+- [ ] **KEEP** `data-table-pagination`
+- [ ] **KEEP** `data-table-toolbar`
+- [ ] **KEEP** `data-table-column-visibility-menu`
+- [ ] **KEEP** `data-table-select-column`
+- [ ] **KEEP** `data-table-sortable-header`
+- [ ] **KEEP** `data-table-row-actions`
+- [ ] **KEEP** `data-table-actions-column`
+- [ ] **KEEP** `data-table-bulk-actions`
+- [ ] **KEEP** `data-table-view-presets`
+- [ ] **KEEP** `table-export-menu` (decide if public; currently **REVIEW** utility)
+- [ ] **KEEP** `table-import-button` (decide if public; currently **REVIEW** utility)
+- [ ] **KEEP** `filter-chips` (currently in filters)
+- [ ] **KEEP** `filter-bar` (currently in filters)
+- [ ] **KEEP** `quick-action-grid`
+
+### Feedback / state
+
+- [ ] **KEEP** `alert`
+- [ ] **KEEP** `empty-state`
+- [ ] **KEEP** `loading-state`
+- [ ] **KEEP** `page-state`
+- [ ] **KEEP** `status-badge` (**MERGE** into `badge`)
+
+### Display and cards
+
+- [ ] **KEEP** `activity-feed`
+- [ ] **KEEP** `avatar`
+- [ ] **KEEP** `description-list`
+- [ ] **KEEP** `descriptions`
+- [ ] **KEEP** `property-grid`
+- [ ] **KEEP** `kanban`
+- [ ] **KEEP** `code-block`
+- [ ] **KEEP** `data-state`
+- [ ] **KEEP** `entity-card`
+- [ ] **KEEP** `file-card`
+- [ ] **KEEP** `list`
+- [ ] **KEEP** `metric-card`
+- [ ] **KEEP** `metric-grid`
+- [ ] **KEEP** `progress`
+- [ ] **KEEP** `progress-circle`
+- [ ] **KEEP** `result`
+- [ ] **KEEP** `statistic`
+- [ ] **KEEP** `status-dot`
+- [ ] **KEEP** `status-legend`
+- [ ] **KEEP** `tag-list`
+- [ ] **KEEP** `timeline`
+- [ ] **KEEP** `tree-view`
+- [ ] **KEEP** `user-card`
+- [ ] **KEEP** `info-card` (**REVIEW** as public alias to `SmartCard`)
+- [ ] **REVIEW** `smart-card` internals
+- [ ] **REVIEW** `keyboard-shortcut` (decide token usage if truly reusable)
+
+### Calendar / date
+
+- [ ] **KEEP** `calendar`
+- [ ] **KEEP** `date-picker`
+- [ ] **KEEP** `date-range-picker`
+- [ ] **KEEP** `form-date-picker`
+- [ ] **KEEP** `form-date-range-picker`
+- [ ] **KEEP** `date-utils`
+
+### Upload / media
+
+- [ ] **KEEP** `file-upload`
+- [ ] **KEEP** `image-upload`
+- [ ] **KEEP** `file-dropzone`
+
+### Notifications / command
+
+- [ ] **KEEP** `toast`
+- [ ] **KEEP** `command-palette`
+
+### Charts / wizard
+
+- [ ] **KEEP** `charts`
+- [ ] **KEEP** `kpi`
+- [ ] **KEEP** `progress-ring`
+- [ ] **KEEP** `horizontal-bar-chart`
+- [ ] **KEEP** `stepper`
+- [ ] **KEEP** `wizard`
+
+### Patterns (high-level reusable)
+
+- [ ] **KEEP** `resource-page`
+- [ ] **KEEP** `resource-detail-page`
+- [ ] **KEEP** `form-builder`
+- [ ] **REVIEW** `settings-section`
+- [ ] **REVIEW** `action-system`
+- [ ] **REVIEW** `status-system`
+- [ ] **REVIEW** `filter-builder`
+- [ ] **REVIEW** `data-view`
+- [ ] **REVIEW** `entity-details`
+- [ ] **REVIEW** `resource-system`
+- [ ] **REVIEW** `crud-system`
+
+### Non-component / secondary exports (must classify)
+
+- [ ] **REVIEW** `theme-provider` (provider, not base component)
+- [ ] **REVIEW** `use-session-storage-state` (hook)
+- [ ] **REVIEW** `use-before-unload-when-dirty` (hook)
+- [ ] **REVIEW** `use-is-mobile` (hook)
+- [ ] **REVIEW** `use-disclosure` (hook)
+- [ ] **REVIEW** `use-debounce` (hook)
+- [ ] **REVIEW** `use-data-table-view-state` (hook)
+- [ ] **REVIEW** `families/*` metadata exports (docs tooling / registry governance)
+
+### Merge / deprecation execution tasks
+
+- [ ] 1) Merge `app-input` -> `input` with `kind` + update docs + migration warning + alias keep one minor cycle.
+- [ ] 2) Merge `form-app-input` + typed variants into `form-input` with a single canonical typed `kind` prop and `FormInput` story.
+- [ ] 3) Merge `status-badge` -> `badge` and remove duplicate public pattern.
+- [ ] 4) Normalize `info-card`/`smart-card` public naming (single exported canonical name, one alias only).
+- [ ] 5) Move `table-export-menu` and `table-import-button` behind `DataTable` helper section if not needed as top-level primitives.
+- [ ] 6) Move reviewed `patterns/*` helpers from top priority public API if not genuinely reusable for install-time copy users.
+- [ ] 7) Add one-page classification matrix to `PUBLIC_COMPONENT_API.md` for public vs pattern vs helper boundaries.
+
 ## P0 - Core Primitive Polish
 
 ### Button
