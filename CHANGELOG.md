@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
+## 0.3.19 - 2026-06-30
+
+### Added
+
+- added `Accordion` as the canonical accordion API backed by the existing collapse interaction model
+- added `DataList` and `DataListRow` for compact operational list rows with values, metadata, icons and links
+- added `KeyValueCard` for concise key/value summaries inside dashboard and detail pages
+- added `DataTableSavedFilters` to the public registry groups so saved table filters are discoverable from the CLI registry
+
+### Changed
+
+- synced registry, CLI status metadata, public API inventory and render coverage for the new source-copy components
+
 ## 0.3.17 - 2026-06-30
 
 ### Changed

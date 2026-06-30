@@ -1,7 +1,7 @@
 {
   "$schema": "https://azamat-ui-kit.dev/registry.schema.json",
   "name": "azamat-ui-kit",
-  "version": "0.3.17",
+  "version": "0.3.19",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -9,6 +9,7 @@
       "button",
       "card",
       "checkbox",
+      "accordion",
       "collapse",
       "dialog",
       "divider",
@@ -95,6 +96,7 @@
       "activity-feed",
       "avatar",
       "code-block",
+      "data-list",
       "data-state",
       "descriptions",
       "description-list",
@@ -102,6 +104,7 @@
       "file-card",
       "info-card",
       "keyboard-shortcut",
+      "key-value-card",
       "kanban",
       "list",
       "metric-grid",
@@ -157,7 +160,8 @@
       "data-table-row-actions",
       "data-table-actions-column",
       "data-table-bulk-actions",
-      "data-table-view-presets"
+      "data-table-view-presets",
+      "data-table-saved-filters"
     ],
     "calendar": [
       "calendar",
@@ -217,6 +221,7 @@
     "card",
     "tabs",
     "collapse",
+    "accordion",
     "segmented-control",
     "spinner",
     "tooltip",
@@ -232,6 +237,8 @@
     "metric-grid",
     "stat-card",
     "activity-feed",
+    "data-list",
+    "key-value-card",
     "user-card",
     "action-menu",
     "filter-bar",

@@ -20,6 +20,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "radio-group": "stable",
   "scroll-box": "stable",
   "right-click-menu": "stable",
+  accordion: "stable",
   kbd: "stable",
 
   "dialog-actions": "stable",
@@ -94,6 +95,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "data-table-actions-column": "preview",
   "data-table-bulk-actions": "preview",
   "data-table-view-presets": "preview",
+  "data-table-saved-filters": "preview",
   "data-table": "preview",
 
   calendar: "preview",
@@ -132,6 +134,8 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "skeleton-table": "preview",
   "skeleton-form": "preview",
   "entity-header": "preview",
+  "data-list": "preview",
+  "key-value-card": "preview",
   "inline-editable": "preview",
   "repeater-field": "preview",
   "empty-search-state": "preview",

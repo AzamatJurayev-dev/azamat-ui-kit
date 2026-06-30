@@ -10,7 +10,10 @@ import {
   SkeletonTable,
   SkeletonForm,
   EntityHeader,
+  DataList,
+  KeyValueCard,
 } from "@/components/display"
+import { Accordion } from "@/components/ui/accordion"
 import { InlineEditable } from "@/components/inputs/inline-editable"
 import { RepeaterField } from "@/components/form/repeater-field"
 import { EmptySearchState } from "@/components/feedback"
@@ -52,6 +55,30 @@ describe("New components rendering tests", () => {
     render(<EntityHeader title="Acme Corp" description="Enterprise Customer" />)
     expect(screen.getByText("Acme Corp")).toBeInTheDocument()
     expect(screen.getByText("Enterprise Customer")).toBeInTheDocument()
+  })
+
+  it("renders Accordion", async () => {
+    const user = userEvent.setup()
+    render(<Accordion type="single" items={[{ key: "one", title: "Question", content: "Answer" }]} />)
+
+    await user.click(screen.getByText("Question"))
+    expect(screen.getByText("Answer")).toBeInTheDocument()
+  })
+
+  it("renders DataList", () => {
+    render(<DataList items={[{ key: "one", label: "Pipeline", value: "$24k", description: "Qualified opportunities" }]} />)
+
+    expect(screen.getByText("Pipeline")).toBeInTheDocument()
+    expect(screen.getByText("$24k")).toBeInTheDocument()
+    expect(screen.getByText("Qualified opportunities")).toBeInTheDocument()
+  })
+
+  it("renders KeyValueCard", () => {
+    render(<KeyValueCard title="Account" items={[{ key: "owner", label: "Owner", value: "Azamat" }]} />)
+
+    expect(screen.getByText("Account")).toBeInTheDocument()
+    expect(screen.getByText("Owner")).toBeInTheDocument()
+    expect(screen.getByText("Azamat")).toBeInTheDocument()
   })
 
   it("renders Skeleton presets", () => {

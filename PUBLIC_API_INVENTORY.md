@@ -13,7 +13,7 @@ This file defines what should feel public, canonical and documented. It is not a
 
 ### Base UI
 
-`Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Badge`, `Card`, `Tabs`, `Dialog`, `DropdownMenu`, `Popover`, `Select`, `Table`, `Collapse`, `Skeleton`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, `Tooltip`, `RadioGroup`, `Kbd`, `ScrollBox`, `RightClickMenu`
+`Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Badge`, `Card`, `Tabs`, `Dialog`, `DropdownMenu`, `Popover`, `Select`, `Table`, `Collapse`, `Accordion`, `Skeleton`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, `Tooltip`, `RadioGroup`, `Kbd`, `ScrollBox`, `RightClickMenu`
 
 ### Actions
 
@@ -45,11 +45,11 @@ Related helpers and modes:
 
 ### Feedback And Display
 
-`EmptyState`, `LoadingState`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `MetricGrid`, `InfoCard`, `ActivityFeed`, `StatusLegend`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `FileCard`, `PropertyGrid`, `EntityCard`
+`EmptyState`, `LoadingState`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `MetricGrid`, `InfoCard`, `ActivityFeed`, `StatusLegend`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `DataList`, `DataListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `FileCard`, `PropertyGrid`, `KeyValueCard`, `EntityCard`
 
 ### Data And Overlay
 
-`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `createDataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `createDataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`
+`DataTable`, `DataTablePagination`, `DataTableToolbar`, `DataTableColumnVisibilityMenu`, `createDataTableSelectColumn`, `DataTableSortableHeader`, `DataTableRowActions`, `createDataTableActionsColumn`, `DataTableBulkActions`, `DataTableViewPresets`, `DataTableSavedFilters`, `DialogActions`, `ModalShell`, `ConfirmDialog`, `SheetShell`, `ToastProvider`, `useToast`, `CommandPalette`, `Calendar`, `FileUpload`, `ImageUpload`, `Stepper`, `Wizard`
 
 ### Charts And Hooks
 
