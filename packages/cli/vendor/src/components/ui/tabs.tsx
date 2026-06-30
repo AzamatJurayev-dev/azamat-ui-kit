@@ -3,11 +3,16 @@ import { Tabs as BaseTabs } from "@base-ui/react/tabs"
 
 import { cn } from "@/lib/utils"
 
+export type TabsRootProps = React.ComponentPropsWithoutRef<typeof BaseTabs.Root>
+export type TabsListProps = React.ComponentPropsWithoutRef<typeof BaseTabs.List>
+export type TabsTriggerProps = React.ComponentPropsWithoutRef<typeof BaseTabs.Tab>
+export type TabsContentProps = React.ComponentPropsWithoutRef<typeof BaseTabs.Panel>
+
 const Tabs = BaseTabs.Root
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof BaseTabs.List>,
-  React.ComponentPropsWithoutRef<typeof BaseTabs.List>
+  TabsListProps
 >(({ className, ...props }, ref) => (
     <BaseTabs.List
       ref={ref}
@@ -23,7 +28,7 @@ TabsList.displayName = "TabsList"
 
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof BaseTabs.Tab>,
-  React.ComponentPropsWithoutRef<typeof BaseTabs.Tab>
+  TabsTriggerProps
 >(({ className, ...props }, ref) => (
     <BaseTabs.Tab
       ref={ref}
@@ -39,7 +44,7 @@ TabsTrigger.displayName = "TabsTrigger"
 
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof BaseTabs.Panel>,
-  React.ComponentPropsWithoutRef<typeof BaseTabs.Panel>
+  TabsContentProps
 >(({ className, ...props }, ref) => (
     <BaseTabs.Panel
       ref={ref}

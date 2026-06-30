@@ -1,14 +1,20 @@
 const DATE_KEY_REGEXP = /^\d{4}-\d{2}-\d{2}$/
 
-function padDatePart(value: number) {
+export type DateKey = string
+export type WeekStartsOn = 0 | 1
+export type CalendarDateInput = Date | string | null | undefined
+export type CalendarLocale = string | string[]
+export type CalendarMonth = Date
+
+function padDatePart(value: number): string {
   return String(value).padStart(2, "0")
 }
 
-function toDateKey(date: Date) {
+function toDateKey(date: Date): DateKey {
   return `${date.getFullYear()}-${padDatePart(date.getMonth() + 1)}-${padDatePart(date.getDate())}`
 }
 
-function parseDateKey(value?: string | null) {
+function parseDateKey(value?: string | null): Date | null {
   if (!value || !DATE_KEY_REGEXP.test(value)) return null
 
   const [year, month, day] = value.split("-").map(Number)
@@ -21,36 +27,43 @@ function parseDateKey(value?: string | null) {
   return date
 }
 
-function startOfMonth(date: Date) {
+function startOfMonth(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), 1)
 }
 
-function addMonths(date: Date, amount: number) {
+function addMonths(date: Date, amount: number): Date {
   return new Date(date.getFullYear(), date.getMonth() + amount, 1)
 }
 
-function isSameMonth(left: Date, right: Date) {
+function isSameMonth(left: Date, right: Date): boolean {
   return left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth()
 }
 
-function isBeforeDate(left: string, right?: string | null) {
+function isBeforeDate(left: DateKey, right?: DateKey | null): boolean {
   return Boolean(right && left < right)
 }
 
-function isAfterDate(left: string, right?: string | null) {
+function isAfterDate(left: DateKey, right?: DateKey | null): boolean {
   return Boolean(right && left > right)
 }
 
-function isWithinRange(date: string, from?: string | null, to?: string | null) {
+function isWithinRange(
+  date: DateKey,
+  from?: DateKey | null,
+  to?: DateKey | null
+): boolean {
   if (!from || !to) return false
   return date >= from && date <= to
 }
 
-function getMonthLabel(date: Date, locale = "en-US") {
+function getMonthLabel(date: Date, locale: CalendarLocale = "en-US"): string {
   return new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(date)
 }
 
-function getWeekdayLabels(locale = "en-US", weekStartsOn: 0 | 1 = 1) {
+function getWeekdayLabels(
+  locale: CalendarLocale = "en-US",
+  weekStartsOn: WeekStartsOn = 1
+): string[] {
   const baseDate = new Date(2024, 0, weekStartsOn === 1 ? 1 : 7)
 
   return Array.from({ length: 7 }, (_, index) => {
@@ -60,7 +73,7 @@ function getWeekdayLabels(locale = "en-US", weekStartsOn: 0 | 1 = 1) {
   })
 }
 
-function getMonthDays(month: Date, weekStartsOn: 0 | 1 = 1) {
+function getMonthDays(month: Date, weekStartsOn: WeekStartsOn = 1): CalendarMonth[] {
   const start = startOfMonth(month)
   const dayOfWeek = start.getDay()
   const offset = weekStartsOn === 1 ? (dayOfWeek + 6) % 7 : dayOfWeek

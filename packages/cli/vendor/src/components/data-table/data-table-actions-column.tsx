@@ -19,6 +19,10 @@ export type DataTableActionsColumnOptions<TData> = {
   emptyLabel?: React.ReactNode
 }
 
+export type DataTableActionsColumn = <TData>(
+  props?: DataTableActionsColumnOptions<TData>
+) => ColumnDef<TData>
+
 function createDataTableActionsColumn<TData>({
   id = "actions",
   size = 56,
