@@ -110,10 +110,10 @@ Status format: `[ ]` not audited yet, `[x]` audited + improved, `[! ]` flagged f
 - [ ] **data-table-pagination** — src\components\data-table\data-table-pagination.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **data-table-toolbar** — src\components\data-table\data-table-toolbar.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **data-table-column-visibility-menu** — src\components\data-table\data-table-column-visibility-menu.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
-- [ ] **data-table-select-column** — src\components\data-table\data-table-select-column.tsx — props:no — deprecated:no — no explicit Props type detected -> add typed public props contract.
+- [x] **data-table-select-column** — src\components\data-table\data-table-select-column.tsx — props:yes — deprecated:no — typed function contract added as `DataTableSelectColumnProps` + alias `DataTableSelectColumn`.
 - [ ] **data-table-sortable-header** — src\components\data-table\data-table-sortable-header.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **data-table-row-actions** — src\components\data-table\data-table-row-actions.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
-- [ ] **data-table-actions-column** — src\components\data-table\data-table-actions-column.tsx — props:no — deprecated:no — no explicit Props type detected -> add typed public props contract.
+- [x] **data-table-actions-column** — src\components\data-table\data-table-actions-column.tsx — props:yes — deprecated:no — typed function contract added as `DataTableActionsColumnOptions` + alias `DataTableActionsColumn`.
 - [ ] **data-table-bulk-actions** — src\components\data-table\data-table-bulk-actions.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **data-table-view-presets** — src\components\data-table\data-table-view-presets.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **table-export-menu** — src\components\data-table\table-export-menu.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
@@ -155,14 +155,14 @@ Status format: `[ ]` not audited yet, `[x]` audited + improved, `[! ]` flagged f
 - [ ] **timeline** — src\components\display\timeline.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **tree-view** — src\components\display\tree-view.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **user-card** — src\components\display\user-card.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
-- [ ] **info-card** — MISSING — locate implementation and decide if remains public.
+- [x] **info-card** — src\components\display\index.ts alias to `SmartCard` with deprecation guidance already present — canonicalization note: keep docs-visible `InfoCard` naming only.
 
 ## Calendar / date
 
 - [ ] **calendar** — src\components\calendar\calendar.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **date-picker** — src\components\calendar\date-picker.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
 - [ ] **date-range-picker** — src\components\calendar\date-range-picker.tsx — props:yes — deprecated:no — props contract exists, need full UX+state audit (focus, disabled, loading, error, keyboard, a11y labels).
-- [ ] **date-utils** — src\components\calendar\date-utils.ts — props:no — deprecated:no — no explicit Props type detected -> add typed public props contract.
+- [x] **date-utils** — src\components\calendar\date-utils.ts — props:yes — deprecated:no — typed utilities and aliases added (`DateKey`, `WeekStartsOn`, `CalendarLocale`, `CalendarMonth`) and explicit return/arg types.
 
 ## Upload
 

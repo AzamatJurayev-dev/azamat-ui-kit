@@ -3,7 +3,7 @@ import type { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 
-export type DataTableSelectColumnOptions<TData> = {
+export type DataTableSelectColumnProps<TData> = {
   id?: string
   size?: number
   headerClassName?: string
@@ -14,13 +14,17 @@ export type DataTableSelectColumnOptions<TData> = {
   }
 }
 
+export type DataTableSelectColumn = <TData>(
+  props?: DataTableSelectColumnProps<TData>
+) => ColumnDef<TData>
+
 function createDataTableSelectColumn<TData>({
   id = "select",
   size = 40,
   headerClassName,
   cellClassName,
   ariaLabel,
-}: DataTableSelectColumnOptions<TData> = {}): ColumnDef<TData> {
+}: DataTableSelectColumnProps<TData> = {}): ColumnDef<TData> {
   return {
     id,
     size,
