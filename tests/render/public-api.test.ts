@@ -9,7 +9,6 @@ describe("public API", () => {
       "Alert",
       "AnchorNav",
       "AppHeader",
-      "AppShell",
       "AppSidebar",
       "AsyncMultiSelect",
       "AsyncSelect",
@@ -54,7 +53,6 @@ describe("public API", () => {
       "FormSelect",
       "FormSwitch",
       "FormTextarea",
-      "HoverCard",
       "ImageUpload",
       "InfoCard",
       "InlineState",
@@ -67,7 +65,6 @@ describe("public API", () => {
       "MetricTrend",
       "ModalShell",
       "PageContainer",
-      "PageHeader",
       "Pagination",
       "Popover",
       "Progress",
@@ -86,7 +83,6 @@ describe("public API", () => {
       "Statistic",
       "StatisticCard",
       "StatisticGrid",
-      "StatusBadge",
       "Stepper",
       "StepperTabs",
       "Switch",
@@ -106,7 +102,6 @@ describe("public API", () => {
         "Alert",
         "AnchorNav",
         "AppHeader",
-        "AppShell",
         "AppSidebar",
         "AsyncMultiSelect",
         "AsyncSelect",
@@ -151,7 +146,6 @@ describe("public API", () => {
         "FormSelect",
         "FormSwitch",
         "FormTextarea",
-        "HoverCard",
         "ImageUpload",
         "InfoCard",
         "InlineState",
@@ -164,7 +158,6 @@ describe("public API", () => {
         "MetricTrend",
         "ModalShell",
         "PageContainer",
-        "PageHeader",
         "Pagination",
         "Popover",
         "Progress",
@@ -183,7 +176,6 @@ describe("public API", () => {
         "Statistic",
         "StatisticCard",
         "StatisticGrid",
-        "StatusBadge",
         "Stepper",
         "StepperTabs",
         "Switch",
@@ -200,26 +192,20 @@ describe("public API", () => {
 
   it("keeps migration aliases explicit while canonical names stay preferred", () => {
     const migrationAliases = [
-      "AppInput",
-      "FormAppInput",
       "FormDateInput",
       "FormNumberInput",
       "FormPasswordInput",
       "FormPhoneInput",
       "FormSearchInput",
-      "UniversalInput",
     ].filter((name) => name in kit)
 
     expect(migrationAliases.sort()).toMatchInlineSnapshot(`
       [
-        "AppInput",
-        "FormAppInput",
         "FormDateInput",
         "FormNumberInput",
         "FormPasswordInput",
         "FormPhoneInput",
         "FormSearchInput",
-        "UniversalInput",
       ]
     `)
   })

@@ -20,7 +20,6 @@ export * from './components/ui/spinner'
 export * from './components/ui/tooltip'
 export * from './components/ui/kbd'
 export * from './components/ui/radio-group'
-export * from './components/ui/hover-card'
 export * from './components/ui/scroll-box'
 export * from './components/ui/right-click-menu'
 

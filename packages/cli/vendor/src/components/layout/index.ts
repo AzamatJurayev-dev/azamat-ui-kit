@@ -1,7 +1,5 @@
-export * from "./app-shell"
 export * from "./app-header"
 export * from "./app-sidebar"
-export * from "./page-header"
 export * from "./stat-card"
 export * from "./sidebar-nav"
 export * from "./breadcrumbs"

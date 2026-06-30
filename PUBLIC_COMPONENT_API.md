@@ -122,7 +122,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`StatusBadge`
+
 
 ### Prop Highlights
 

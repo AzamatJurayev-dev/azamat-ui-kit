@@ -1,4 +1,3 @@
-export * from "./app-input"
 export * from "./async-select"
 export * from "./clearable-input"
 export * from "./combobox"

@@ -132,30 +132,6 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     useWhen: "Use as the primary RHF entry for text, search, password, number, phone, and date flows by switching the kind prop instead of learning many wrapper names.",
   },
   {
-    component: "AppInput",
-    family: "InputFamily",
-    section: "transitional",
-    maturity: "transitional",
-    summary: "Compatibility alias for Input with kind variants.",
-    useWhen: "Use only for legacy calls; prefer Input with `kind` in new work.",
-  },
-  {
-    component: "UniversalInput",
-    family: "InputFamily",
-    section: "transitional",
-    maturity: "transitional",
-    summary: "Legacy alias for Input through AppInput compatibility.",
-    useWhen: "Use only for migration; prefer Input with `kind` in all maintained code.",
-  },
-  {
-    component: "FormAppInput",
-    family: "InputFamily",
-    section: "transitional",
-    maturity: "transitional",
-    summary: "Legacy RHF wrapper alias for FormInput.",
-    useWhen: "Use only for migration; prefer FormInput with matching kind.",
-  },
-  {
     component: "FormSearchInput",
     family: "InputFamily",
     section: "transitional",
@@ -351,15 +327,6 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     useWhen: "Use for metadata, status, counts, and small labels by switching tone, variant, size, and dot props.",
   },
   {
-    component: "StatusBadge",
-    family: "BadgeFamily",
-    section: "transitional",
-    maturity: "transitional",
-    summary: "Compatibility alias that delegates to Badge.",
-    useWhen: "Use only while migrating older code; prefer Badge with tone and dot props for new work.",
-  },
-
-  {
     component: "Dialog",
     family: "OverlayFamily",
     section: "primitives",
@@ -447,15 +414,6 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     summary: "Shared dialog footer action row.",
     useWhen: "Use inside Dialog, ModalShell, SheetShell, or Drawer when footer buttons should align consistently.",
   },
-  {
-    component: "HoverCard",
-    family: "OverlayFamily",
-    section: "transitional",
-    maturity: "transitional",
-    summary: "Legacy hover-preview wrapper.",
-    useWhen: "Use only during migration; prefer Popover for rich preview content or Tooltip for short helper text.",
-  },
-
   {
     component: "FormFieldShell",
     family: "FormFamily",

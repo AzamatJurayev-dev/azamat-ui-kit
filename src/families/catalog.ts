@@ -38,7 +38,6 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
       "ColorInput",
     ],
     advanced: ["TagInput", "QuantityStepper"],
-    transitional: ["AppInput", "UniversalInput", "FormAppInput"],
   },
   {
     family: "SelectFamily",
@@ -61,7 +60,6 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     description: "Status, metadata, and inline labels expressed through one Badge API with tone, dot, size, and variant props.",
     canonical: ["Badge"],
     members: [],
-    transitional: ["StatusBadge"],
   },
   {
     family: "OverlayFamily",
@@ -69,7 +67,6 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     description: "Dialog, popover, menu, tooltip, drawer, and hover-preview interaction surfaces grouped by behavior.",
     canonical: ["Dialog", "Popover", "DropdownMenu"],
     members: ["Tooltip", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
-    transitional: ["HoverCard"],
   },
   {
     family: "FormFamily",

@@ -118,9 +118,7 @@ export const publicComponentApiDocs = [
       "Status indicators should share one visual vocabulary.",
       "Use `tone` and `dot` props instead of separate status label wrappers.",
     ],
-    related: [
-      "StatusBadge",
-    ],
+    related: [],
     props: [
       ["variant", "'default' | 'secondary' | 'destructive' | 'outline' | 'ghost' | 'link'", "Controls surface treatment."],
       ["tone", "'neutral' | 'info' | 'success' | 'warning' | 'danger' | 'muted'", "Controls semantic color."],

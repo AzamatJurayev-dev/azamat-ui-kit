@@ -71,9 +71,6 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         label: "Compatibility aliases",
         description: "Older wrapper names that still work, but new docs and new product work should prefer FormInput with a matching kind.",
         components: [
-          "AppInput",
-          "UniversalInput",
-          "FormAppInput",
           "FormSearchInput",
           "FormPasswordInput",
           "FormNumberInput",
@@ -165,12 +162,6 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         description: "The canonical badge component. Use props for status, metadata, and subtle labels.",
         components: ["Badge"],
       },
-      {
-        id: "transitional",
-        label: "Compatibility aliases",
-        description: "Old status-specific wrapper names that now delegate to Badge.",
-        components: ["StatusBadge"],
-      },
     ],
   },
   {
@@ -192,12 +183,6 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         label: "Presets",
         description: "Composed overlay patterns for confirmations, sheets, drawers, tooltips, and context menus.",
         components: ["Tooltip", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
-      },
-      {
-        id: "transitional",
-        label: "Compatibility aliases",
-        description: "HoverCard is an overlay preview surface, not a data card. Prefer Popover or Tooltip for new work.",
-        components: ["HoverCard"],
       },
     ],
   },

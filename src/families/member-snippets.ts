@@ -203,32 +203,6 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     <FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
   },
   {
-    component: "AppInput",
-    title: "Deprecated alias migration",
-    description: "Use this alias only for legacy callers; migrate to Input with kind.",
-    language: "tsx",
-    variant: "migration",
-    code: `import { AppInput } from "azamat-ui-kit"
-
-<AppInput placeholder="Email" value={value} onValueChange={setValue} />
-
-// New work:
-// <Input placeholder="Email" value={value} onValueChange={setValue} />`,
-  },
-  {
-    component: "UniversalInput",
-    title: "Universal alias migration",
-    description: "UniversalInput exists only for backward compatibility with older codebases.",
-    language: "tsx",
-    variant: "migration",
-    code: `import { UniversalInput } from "azamat-ui-kit"
-
-<UniversalInput placeholder="Email" kind="search" value={value} onValueChange={setValue} />
-
-// New work:
-// <Input kind="search" placeholder="Search" value={value} onValueChange={setValue} />`,
-  },
-  {
     component: "FormSearchInput",
     title: "Search alias migration",
     description: "Keep this only while migrating old forms to the universal FormInput entry.",
@@ -292,19 +266,6 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 
 // New work:
 // <FormInput control={control} name="startDate" kind="date" label="Start date" />`,
-  },
-  {
-    component: "FormAppInput",
-    title: "Form alias migration",
-    description: "Use this only for legacy form code; prefer FormInput with kind in all new work.",
-    language: "tsx",
-    variant: "migration",
-    code: `import { FormAppInput } from "azamat-ui-kit"
-
-<FormAppInput control={control} name="quantity" kind="number" label="Quantity" min={0} />
-
-// New work:
-// <FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
   },
   {
     component: "FormDateRangeInput",
@@ -527,20 +488,6 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <Badge tone="success" dot>Active</Badge>`,
   },
   {
-    component: "StatusBadge",
-    title: "Status alias migration",
-    description: "StatusBadge still works, but new code should use Badge with tone and dot props.",
-    language: "tsx",
-    variant: "migration",
-    code: `import { StatusBadge, Badge } from "azamat-ui-kit"
-
-<StatusBadge tone="success">Active</StatusBadge>
-
-// New work:
-// <Badge tone="success" dot>Active</Badge>`,
-  },
-
-  {
     component: "Dialog",
     title: "Blocking task dialog",
     description: "Use Dialog when focus should stay inside the modal task.",
@@ -680,19 +627,6 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   <Button>Save</Button>
 </DialogActions>`,
   },
-  {
-    component: "HoverCard",
-    title: "Hover alias migration",
-    description: "HoverCard is classified as an overlay preview, not a data card.",
-    language: "tsx",
-    variant: "migration",
-    code: `import { HoverCard, Popover } from "azamat-ui-kit"
-
-<HoverCard trigger="Customer" content="Preview details" />
-
-// New rich previews should prefer Popover.`,
-  },
-
   {
     component: "FormFieldShell",
     title: "Custom field shell",

@@ -34,7 +34,6 @@
       "confirm-dialog",
       "dialog-actions",
       "drawer",
-      "hover-card",
       "modal-shell",
       "sheet-shell"
     ],
@@ -46,7 +45,6 @@
       "stepper-tabs"
     ],
     "inputs": [
-      "app-input",
       "async-select",
       "clearable-input",
       "combobox",
@@ -68,7 +66,6 @@
       "tag-input"
     ],
     "form": [
-      "form-app-input",
       "form-async-select",
       "form-date-input",
       "form-date-picker",
@@ -88,8 +85,7 @@
       "alert",
       "empty-state",
       "loading-state",
-      "page-state",
-      "status-badge"
+      "page-state"
     ],
     "display": [
       "activity-feed",
@@ -127,11 +123,9 @@
     ],
     "layout": [
       "app-header",
-      "app-shell",
       "app-sidebar",
       "breadcrumbs",
       "page-container",
-      "page-header",
       "section",
       "section-header",
       "sidebar-nav",
@@ -283,16 +277,12 @@
     ]
   },
   "migrationAliases": {
-    "app-input": "input",
-    "form-app-input": "form-input",
     "form-search-input": "form-input",
     "form-password-input": "form-input",
     "form-number-input": "form-input",
     "form-phone-input": "form-input",
     "form-date-input": "form-input",
     "form-async-select": "form-select",
-    "status-badge": "badge",
-    "hover-card": "popover",
     "smart-card": "info-card"
   }
 }

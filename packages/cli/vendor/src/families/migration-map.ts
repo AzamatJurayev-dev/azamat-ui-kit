@@ -18,9 +18,6 @@ export type FamilyMigrationEntry = {
 
 export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "Input", family: "InputFamily", member: "Root", status: "canonical" },
-  { component: "AppInput", family: "InputFamily", member: "AppInput", status: "transitional" },
-  { component: "UniversalInput", family: "InputFamily", member: "UniversalInput", status: "transitional" },
-  { component: "FormAppInput", family: "InputFamily", member: "FormAppInput", status: "transitional" },
   { component: "ClearableInput", family: "InputFamily", member: "Clearable", status: "family-member" },
   { component: "SearchInput", family: "InputFamily", member: "Search", status: "family-member" },
   { component: "PasswordInput", family: "InputFamily", member: "Password", status: "family-member" },
@@ -54,7 +51,6 @@ export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "FileCard", family: "CardFamily", member: "File", status: "family-member" },
 
   { component: "Badge", family: "BadgeFamily", member: "Root", status: "canonical" },
-  { component: "StatusBadge", family: "BadgeFamily", member: "Status", status: "transitional", notes: "Prefer Badge with tone and dot props in docs and new usage." },
 
   { component: "Dialog", family: "OverlayFamily", member: "Dialog", status: "canonical" },
   { component: "Popover", family: "OverlayFamily", member: "Popover", status: "canonical" },
@@ -67,7 +63,6 @@ export const componentFamilyMigrationMap: FamilyMigrationEntry[] = [
   { component: "SheetShell", family: "OverlayFamily", member: "SheetShell", status: "family-member" },
   { component: "Drawer", family: "OverlayFamily", member: "Drawer", status: "family-member" },
   { component: "DialogActions", family: "OverlayFamily", member: "DialogActions", status: "family-member" },
-  { component: "HoverCard", family: "OverlayFamily", member: "Popover", status: "transitional", notes: "HoverCard is an overlay preview surface; prefer Popover or Tooltip for new usage." },
 
   { component: "FormFieldShell", family: "FormFamily", member: "Field", status: "canonical" },
   { component: "FormInput", family: "FormFamily", member: "Input", status: "family-member" },

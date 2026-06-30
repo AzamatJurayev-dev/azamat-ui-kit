@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import { describe, expect, it } from "vitest"
 import type { ColumnDef } from "@tanstack/react-table"
 
-import { AppShell } from "@/components/layout/app-shell"
 import { CommandPalette, type CommandPaletteGroup } from "@/components/command/command-palette"
 import { AsyncSelect, type AsyncSelectOption } from "@/components/inputs/async-select"
 import { DataTable } from "@/components/data-table/data-table"
@@ -49,23 +48,6 @@ function FormBuilderHarness() {
 }
 
 describe("render-based accessibility coverage", () => {
-  it("renders labelled app shell mobile navigation controls", () => {
-    const { container } = render(
-      <AppShell
-        header={<div>Header</div>}
-        sidebar={<nav aria-label="Primary">Sidebar</nav>}
-        defaultMobileSidebarOpen
-      >
-        <div>Main</div>
-      </AppShell>
-    )
-
-    expect(screen.getByRole("button", { name: "Open navigation" })).toBeTruthy()
-    expect(screen.getAllByRole("button", { name: "Close navigation" }).length).toBeGreaterThan(0)
-    expect(container.querySelector('[data-slot="app-shell-mobile-sidebar"]')).toBeTruthy()
-    expect(screen.getAllByLabelText("Primary").length).toBeGreaterThan(0)
-  })
-
   it("renders command palette as an accessible dialog with disabled reasons", () => {
     const groups: CommandPaletteGroup[] = [
       {

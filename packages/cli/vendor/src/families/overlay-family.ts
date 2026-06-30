@@ -7,7 +7,6 @@ import {
   SheetShell,
 } from "@/components/overlay"
 import { DropdownMenu } from "@/components/ui/dropdown-menu"
-import { HoverCard } from "@/components/ui/hover-card"
 import { Popover } from "@/components/ui/popover"
 import { RightClickMenu } from "@/components/ui/right-click-menu"
 import { Tooltip } from "@/components/ui/tooltip"
@@ -19,7 +18,6 @@ const OverlayFamily = {
   DropdownMenu,
   Tooltip,
   RightClickMenu,
-  HoverCard,
   AlertDialog,
   ConfirmDialog,
   ModalShell,

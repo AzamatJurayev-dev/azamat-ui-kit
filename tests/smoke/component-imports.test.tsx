@@ -7,8 +7,8 @@ import {
   ActionMenu,
   ActivityFeed,
   AppHeader,
-  AppShell,
   AsyncSelect,
+  Badge,
   Button,
   Calendar,
   Checkbox,
@@ -24,7 +24,6 @@ import {
   ModalShell,
   Pagination,
   SearchInput,
-  StatusBadge,
   ToastProvider,
   Wizard,
 } from "../../src"
@@ -88,7 +87,7 @@ export const smokeElements = [
   <Checkbox key="checkbox" aria-label="Accept" />,
   <SearchInput key="search" value="" onValueChange={noop} />,
   <Pagination key="pagination" page={1} pageCount={3} onPageChange={noop} />,
-  <StatusBadge key="status">Active</StatusBadge>,
+  <Badge key="status" tone="success" dot>Active</Badge>,
   <EmptyState key="empty" title="No data" />,
   <LoadingState key="loading" label="Loading" />,
   <MetricGrid key="metrics" items={[{ key: "sales", label: "Sales", value: "$12k" }]} />,
@@ -97,9 +96,6 @@ export const smokeElements = [
   <ActionMenu key="action-menu" actions={[{ key: "edit", label: "Edit", onSelect: noop }]} />,
   <ModalShell key="modal" open={false} onOpenChange={noop} title="Modal" />,
   <AppHeader key="header" left="Left" right="Right" />,
-  <AppShell key="shell" header={<AppHeader left="Dashboard" />} sidebar={<div>Sidebar</div>}>
-    Content
-  </AppShell>,
   <DataTable key="table" columns={columns} data={products} getRowId={(row: Product) => row.id} />,
   <AsyncSelect key="async-select" loadOptions={async () => []} />,
   <Calendar key="calendar" value="2026-01-01" onValueChange={noop} />,
