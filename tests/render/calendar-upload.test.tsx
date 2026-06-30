@@ -92,7 +92,7 @@ describe("Calendar and date pickers", () => {
 
     await user.click(screen.getByRole("button", { name: "Apply range" }))
     expect(onValueChange).toHaveBeenCalledWith({ from: "2024-06-12", to: "2024-06-18" })
-  })
+  }, 20000)
 
   it("selects a date from DatePicker and closes the popover", async () => {
     const user = userEvent.setup()

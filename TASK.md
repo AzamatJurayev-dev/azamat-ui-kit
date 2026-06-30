@@ -8,12 +8,12 @@ Bu fayl `azamat-ui-kit` uchun yagona aktiv roadmap. Asosiy qoida:
 
 Current status:
 
-- Package version: `0.3.13`
-- CLI package version: `0.3.13`
+- Package version: `0.3.19`
+- CLI package version: `0.3.19`
 - Main adoption model: `source-copy first`
 - Latest published packages:
-  - `azamat-ui-kit@0.3.13`
-  - `azamat-ui-kit-cli@0.3.13`
+  - `azamat-ui-kit@0.3.19`
+  - `azamat-ui-kit-cli@0.3.19`
 - Current product direction:
   - dashboard/admin reusable system
   - forms + data table + filters + sidebar
