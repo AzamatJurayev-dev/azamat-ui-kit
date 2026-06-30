@@ -13,7 +13,7 @@ This file defines what should feel public, canonical and documented. It is not a
 
 ### Base UI
 
-`Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Badge`, `Card`, `Tabs`, `Dialog`, `DropdownMenu`, `Popover`, `Select`, `Table`, `Collapse`, `Skeleton`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, `Tooltip`, `RadioGroup`, `Kbd`, `HoverCard`, `ScrollBox`, `RightClickMenu`
+`Button`, `Input`, `Textarea`, `Checkbox`, `Switch`, `Badge`, `Card`, `Tabs`, `Dialog`, `DropdownMenu`, `Popover`, `Select`, `Table`, `Collapse`, `Skeleton`, `Divider`, `SegmentedControl`, `Spinner`, `LoadingOverlay`, `Tooltip`, `RadioGroup`, `Kbd`, `ScrollBox`, `RightClickMenu`
 
 ### Actions
 
@@ -45,7 +45,7 @@ Related helpers and modes:
 
 ### Feedback And Display
 
-`EmptyState`, `LoadingState`, `StatusBadge`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `MetricGrid`, `InfoCard`, `ActivityFeed`, `StatusLegend`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `FileCard`, `PropertyGrid`, `EntityCard`
+`EmptyState`, `LoadingState`, `Alert`, `PageState`, `InlineState`, `DescriptionList`, `Progress`, `ProgressCard`, `Result`, `Timeline`, `MetricGrid`, `InfoCard`, `ActivityFeed`, `StatusLegend`, `Avatar`, `AvatarGroup`, `DataState`, `Statistic`, `StatisticCard`, `StatisticGrid`, `List`, `ListRow`, `Descriptions`, `KanbanBoard`, `TagList`, `TreeView`, `KeyboardShortcut`, `CodeBlock`, `FileCard`, `PropertyGrid`, `EntityCard`
 
 ### Data And Overlay
 
@@ -60,6 +60,8 @@ Related helpers and modes:
 These can exist as subpath exports, source-copy files, or advanced detail sections, but should not be primary docs cards:
 
 - `SmartCard`
+- `StatusBadge`
+- `HoverCard`
 - `SmartFormShell`
 - `WorkspaceShell`
 - `ActionSystem`

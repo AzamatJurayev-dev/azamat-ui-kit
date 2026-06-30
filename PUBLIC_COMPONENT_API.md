@@ -96,7 +96,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`InfoCard`, `MetricCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`, `SmartCard`
+`InfoCard`, `MetricCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`
 
 ### Prop Highlights
 
@@ -118,7 +118,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 - The interface needs compact metadata, status, counts, or category labels.
 - Status indicators should share one visual vocabulary.
-- Existing StatusBadge usage should migrate toward Badge with tone and dot props.
+- Use `tone` and `dot` props instead of separate status label wrappers.
 
 ### Related Helpers
 
@@ -148,7 +148,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`Popover`, `DropdownMenu`, `Tooltip`, `RightClickMenu`, `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, `Drawer`, `DialogActions`, `HoverCard`
+`Popover`, `DropdownMenu`, `Tooltip`, `RightClickMenu`, `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, `Drawer`, `DialogActions`
 
 ### Prop Highlights
 

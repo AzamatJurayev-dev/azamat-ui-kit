@@ -19,11 +19,11 @@
       "table",
       "radio-group",
       "kbd",
-      "hover-card",
       "scroll-box",
       "right-click-menu"
     ],
     "overlay": [
+      "hover-card",
       "dialog-actions",
       "modal-shell",
       "confirm-dialog",

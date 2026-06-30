@@ -104,6 +104,56 @@ Members/presets: `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, `Dr
 
 Decision: classify by interaction behavior, not by visual shell name.
 
+## Operational Sort (for immediate cleanup)
+
+### 1) Canonical-first items (keep as main component docs)
+
+- `Button`
+- `Input` (includes `SearchInput`, `PasswordInput`, `ClearableInput`, `NumberInput`, `MoneyInput`, `PhoneInput`, `MaskedInput`, `DateInput`, `DateRangeInput`, `OtpInput`, `ColorInput` as variants)
+- `Select` (includes `SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox` as variants)
+- `FormInput` / `FormFieldShell`
+- `Textarea`, `Checkbox`, `Switch`, `RadioGroup`, `Textarea`
+- `Dialog` group (`Tooltip`, `Popover`, `DropdownMenu`, `RightClickMenu`, `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, `Drawer`, `DialogActions`)
+- `Card` family (`InfoCard`, `MetricCard`, `StatCard`, `StatisticCard`, `FileCard`, `EntityCard` only as documented members)
+- `Badge` family (`StatusBadge` only alias)
+- `DataTable` group
+- `Toast`, `CommandPalette`
+- `Calendar` (`DatePicker`, `DateRangePicker`, `FormDatePicker`, `FormDateRangePicker` as composed usage)
+- `Upload` (`FileUpload`, `ImageUpload`, `FileDropzone`)
+
+### 2) Migration aliases (do not teach as independent first-class APIs)
+
+- `app-input` → `input`
+- `form-app-input` → `form-input`
+- `form-search-input` → `form-input`
+- `form-password-input` → `form-input`
+- `form-number-input` → `form-input`
+- `form-phone-input` → `form-input`
+- `form-date-input` → `form-input`
+- `form-async-select` → `form-select`
+- `status-badge` → `badge`
+- `hover-card` → `popover`
+- `smart-card` → `info-card`
+
+### 3) Not-component / helper / internal
+
+- `theme-provider` (provider, not UI primitive)
+- `date-utils`, `form-field-utils`, `input-value`, `numeric-value`
+- `input-chrome`, `input-decorator`, `input-primitive`, `input-group`
+- `table-export-menu`, `table-import-button`
+- `filter-chips`
+- `workspace-shell`, `section`, `stack`
+- `action-bar`, `form-actions`, `form-section`, `smart-form-shell`
+- `action-system`, `resource-system`, `entity-details`, `status-system`, `settings-section`, `filter-builder`, `crud-system`, `data-view`, `form-builder-presets`
+- `scroll helpers / chart internals`: `progress-ring`, `horizontal-bar-chart`, `kpi` (until a chart family API is fixed)
+- `kits`: `dashboard`, `calendar-kit`, `wizard-kit`, `all` (template/collection concept, not standalone component in current source tree)
+
+### 4) Non-library blocks / templates to keep in docs as patterns (if needed at all)
+
+- `AppShell`, `AppHeader`, `PageHeader`, `SectionHeader`, `PageContainer`, `WorkspaceShell`
+- `DataTable presets and action bars` when used as route/pattern examples
+- `ResourcePage`, `ResourceDetailPage`, `FormBuilder` as optional patterns, not component-primitive replacements
+
 ## Next Safe Refactor Order
 
 1. Badge docs/registry cleanup.

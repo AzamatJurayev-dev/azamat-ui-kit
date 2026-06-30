@@ -88,7 +88,7 @@ export const publicComponentApiDocs = [
     route: "/components/card",
     summary: "General-purpose container plus the first reusable display-card entry for dashboard and data-heavy screens.",
     useWhen: [
-      "You need one neutral container before committing to a specialized card preset.",
+    "You need one neutral container before committing to a specialized card preset.",
       "The screen needs a reusable display card with consistent spacing and hierarchy.",
       "InfoCard should stay the public display-card name, not internal implementation names.",
     ],
@@ -99,7 +99,6 @@ export const publicComponentApiDocs = [
       "StatisticCard",
       "EntityCard",
       "FileCard",
-      "SmartCard",
     ],
     props: [
       ["children", "ReactNode", "Card body content."],
@@ -117,7 +116,7 @@ export const publicComponentApiDocs = [
     useWhen: [
       "The interface needs compact metadata, status, counts, or category labels.",
       "Status indicators should share one visual vocabulary.",
-      "Existing StatusBadge usage should migrate toward Badge with tone and dot props.",
+      "Use `tone` and `dot` props instead of separate status label wrappers.",
     ],
     related: [
       "StatusBadge",
@@ -151,7 +150,6 @@ export const publicComponentApiDocs = [
       "SheetShell",
       "Drawer",
       "DialogActions",
-      "HoverCard",
     ],
     props: [
       ["open", "boolean", "Controlled open state."],

@@ -59,7 +59,13 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "segmented-control": { name: "segmented-control", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/segmented-control.tsx", "{ui}/segmented-control.tsx")] },
   "radio-group": { name: "radio-group", category: "ui", registryDependencies: ["button", "utils"], files: [file("src/components/ui/radio-group.tsx", "{ui}/radio-group.tsx")] },
   kbd: { name: "kbd", category: "ui", files: [file("src/components/ui/kbd.tsx", "{ui}/kbd.tsx")] },
-  "hover-card": { name: "hover-card", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/hover-card.tsx", "{ui}/hover-card.tsx")] },
+  "hover-card": {
+    name: "hover-card",
+    category: "ui",
+    migrationAliasFor: "popover",
+    registryDependencies: ["utils"],
+    files: [file("src/components/ui/hover-card.tsx", "{ui}/hover-card.tsx")],
+  },
   "scroll-box": { name: "scroll-box", category: "ui", files: [file("src/components/ui/scroll-box.tsx", "{ui}/scroll-box.tsx")] },
   "right-click-menu": { name: "right-click-menu", category: "ui", dependencies: ["react"], files: [file("src/components/ui/right-click-menu.tsx", "{ui}/right-click-menu.tsx")] },
 
@@ -111,7 +117,13 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
 
   "empty-state": { name: "empty-state", category: "feedback", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/feedback/empty-state.tsx", "{components}/feedback/empty-state.tsx")] },
   "loading-state": { name: "loading-state", category: "feedback", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/feedback/loading-state.tsx", "{components}/feedback/loading-state.tsx")] },
-  "status-badge": { name: "status-badge", category: "feedback", registryDependencies: ["badge"], files: [file("src/components/feedback/status-badge.tsx", "{components}/feedback/status-badge.tsx")] },
+  "status-badge": {
+    name: "status-badge",
+    category: "feedback",
+    migrationAliasFor: "badge",
+    registryDependencies: ["badge"],
+    files: [file("src/components/feedback/status-badge.tsx", "{components}/feedback/status-badge.tsx")],
+  },
   "page-state": { name: "page-state", category: "feedback", registryDependencies: ["button", "utils"], files: [file("src/components/feedback/page-state.tsx", "{components}/feedback/page-state.tsx")] },
   feedback: { name: "feedback", category: "group", registryDependencies: ["empty-state", "loading-state", "status-badge", "page-state"], files: [file("src/components/feedback/index.ts", "{components}/feedback/index.ts")] },
 
@@ -206,7 +218,12 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "settings-section", category: "patterns", files: [file("src/components/patterns/settings-section.tsx", "{components}/patterns/settings-section.tsx")] },
   { name: "sidebar-nav", category: "layout", files: [file("src/components/layout/sidebar-nav.tsx", "{components}/layout/sidebar-nav.tsx")] },
   { name: "slider", category: "inputs", files: [file("src/components/inputs/slider.tsx", "{components}/inputs/slider.tsx")] },
-  { name: "smart-card", category: "display", files: [file("src/components/display/smart-card.tsx", "{components}/display/smart-card.tsx")] },
+  {
+    name: "smart-card",
+    category: "display",
+    migrationAliasFor: "info-card",
+    files: [file("src/components/display/smart-card.tsx", "{components}/display/smart-card.tsx")],
+  },
   { name: "spinner", category: "ui", files: [file("src/components/ui/spinner.tsx", "{ui}/spinner.tsx")] },
   { name: "stack", category: "layout", files: [file("src/components/layout/stack.tsx", "{components}/layout/stack.tsx")] },
   { name: "statistic", category: "display", files: [file("src/components/display/statistic.tsx", "{components}/display/statistic.tsx")] },
