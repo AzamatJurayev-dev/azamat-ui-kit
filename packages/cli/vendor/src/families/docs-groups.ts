@@ -35,36 +35,10 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     primaryComponent: "Input",
     description: "Primary text-entry surface with a smaller public set of dashboard-ready input presets.",
     sections: [
-      {
-        id: "primitives",
-        label: "Primitives",
-        description: "Start from the base field and long-form text area before adding specialized behavior.",
-        components: ["Input", "Textarea"],
-      },
-      {
-        id: "core-presets",
-        label: "Core presets",
-        description: "Keep only the input variants that are common in real admin and dashboard screens.",
-        components: ["NumberInput", "PhoneInput", "MoneyInput", "DateInput", "DateRangeInput"],
-      },
-      {
-        id: "form-wrapper",
-        label: "Form wrapper",
-        description: "Use one universal form input wrapper instead of listing every compatibility alias as a public component.",
-        components: ["FormInput"],
-      },
-      {
-        id: "compatibility-aliases",
-        label: "Compatibility aliases",
-        description: "Older focused input wrappers that still work, but should not lead new adoption.",
-        components: ["ClearableInput", "SearchInput", "MaskedInput", "QuantityInput"],
-      },
-      {
-        id: "advanced",
-        label: "Advanced",
-        description: "Specialized controls that belong to the input family, but should appear after the core dashboard presets are already clear.",
-        components: ["Slider", "RangeSlider", "Rating", "OtpInput", "ColorInput", "InlineEditable", "TagInput", "QuantityStepper"],
-      },
+      { id: "primitives", label: "Primitives", description: "Start from the base field and long-form text area before adding specialized behavior.", components: ["Input", "Textarea"] },
+      { id: "core-presets", label: "Core presets", description: "Keep only the input variants that are common in real admin and dashboard screens.", components: ["NumberInput", "PhoneInput", "MoneyInput", "DateInput", "DateRangeInput"] },
+      { id: "form-wrapper", label: "Form wrapper", description: "Use one universal form input wrapper instead of listing every compatibility alias as a public component.", components: ["FormInput"] },
+      { id: "advanced", label: "Advanced presets", description: "Specialized controls that belong to the input family, but should not lead the main catalog.", components: ["Slider", "RangeSlider", "Rating", "OtpInput", "ColorInput", "InlineEditable", "TagInput", "QuantityStepper"] },
     ],
   },
   {
@@ -73,32 +47,11 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     slug: "select",
     label: "Select",
     primaryComponent: "Select",
-    description: "Primary choice-picking surface with static, async, multi-select, and search-first members built around it.",
+    description: "Primary choice-picking surface with async, multi-select, and combobox members used only when the interaction needs them.",
     sections: [
-      {
-        id: "primitives",
-        label: "Primitives",
-        description: "Start with the base select surface before reaching for remote, multi-value, or command-style members.",
-        components: ["Select"],
-      },
-      {
-        id: "presets",
-        label: "Presets",
-        description: "Shared select modes that keep one selection mental model instead of splitting docs into unrelated pickers.",
-        components: ["SimpleSelect", "AsyncSelect", "AsyncMultiSelect", "Combobox"],
-      },
-      {
-        id: "form-wrappers",
-        label: "Form wrappers",
-        description: "Use the universal RHF select wrapper first, then switch modes only when the field truly needs remote loading.",
-        components: ["FormSelect"],
-      },
-      {
-        id: "transitional",
-        label: "Compatibility aliases",
-        description: "Older wrapper names that still work, but new docs and new product work should point teams to FormSelect as the primary entry.",
-        components: ["FormAsyncSelect"],
-      },
+      { id: "primitives", label: "Primitives", description: "Start with the base select surface before reaching for remote, multi-value, or command-style members.", components: ["Select"] },
+      { id: "complex-presets", label: "Complex presets", description: "Keep only selection components with real extra behavior.", components: ["AsyncSelect", "AsyncMultiSelect", "Combobox"] },
+      { id: "form-wrapper", label: "Form wrapper", description: "Use one form select wrapper instead of listing async-specific form aliases as first-level components.", components: ["FormSelect"] },
     ],
   },
   {
@@ -107,26 +60,10 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     slug: "card",
     label: "Card",
     primaryComponent: "Card",
-    description: "General-purpose container plus reusable display presets for stats, files, and entities.",
+    description: "General-purpose container plus only the card presets that provide reusable product value.",
     sections: [
-      {
-        id: "primitives",
-        label: "Primitives",
-        description: "The base card surface and the most reusable composed card variant.",
-        components: ["Card", "InfoCard"],
-      },
-      {
-        id: "presets",
-        label: "Presets",
-        description: "Purpose-built card shapes for dashboards and data-heavy product screens.",
-        components: ["StatisticCard", "EntityCard", "FileCard", "TrendCard", "ComparisonCard"],
-      },
-      {
-        id: "transitional",
-        label: "Transitional",
-        description: "Older names that still work but should not lead new docs or examples.",
-        components: ["SmartCard", "StatCard"],
-      },
+      { id: "primitives", label: "Primitives", description: "The base card surface and reusable information card variant.", components: ["Card", "InfoCard"] },
+      { id: "product-cards", label: "Product cards", description: "Card presets that are harder to recreate as a one-off variant.", components: ["EntityCard", "FileCard"] },
     ],
   },
   {
@@ -137,12 +74,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     primaryComponent: "Badge",
     description: "Inline metadata and status labels through one Badge component with tone, dot, size, and variant props.",
     sections: [
-      {
-        id: "primitives",
-        label: "Primitives",
-        description: "The canonical badge component. Use props for status, metadata, and subtle labels.",
-        components: ["Badge", "DeltaBadge"],
-      },
+      { id: "primitives", label: "Primitives", description: "The canonical badge component. Use props for status, metadata, and subtle labels.", components: ["Badge", "DeltaBadge"] },
     ],
   },
   {
@@ -153,18 +85,8 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     primaryComponent: "Dialog",
     description: "Floating interaction surfaces grouped by behavior, not by card-like visual appearance.",
     sections: [
-      {
-        id: "primitives",
-        label: "Primitives",
-        description: "Start with the primitive that matches the interaction model.",
-        components: ["Dialog", "Popover", "DropdownMenu"],
-      },
-      {
-        id: "presets",
-        label: "Presets",
-        description: "Composed overlay patterns for confirmations, sheets, drawers, tooltips, and context menus.",
-        components: ["Tooltip", "HoverCard", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
-      },
+      { id: "primitives", label: "Primitives", description: "Start with the primitive that matches the interaction model.", components: ["Dialog", "Popover", "DropdownMenu", "Tooltip"] },
+      { id: "focused-flows", label: "Focused flows", description: "Keep only overlay presets with real flow-level behavior in the public catalog.", components: ["ConfirmDialog", "SheetShell", "HoverCard"] },
     ],
   },
   {
@@ -173,32 +95,11 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     slug: "form-field",
     label: "Form Field",
     primaryComponent: "FormFieldShell",
-    description: "Field-shell composition and RHF wrappers for consistent validation, copy, and layout.",
+    description: "Field-shell composition and a compact set of form wrappers for consistent validation, copy, and layout.",
     sections: [
-      {
-        id: "primitives",
-        label: "Primitives",
-        description: "The base field shell for labels, descriptions, and errors.",
-        components: ["FormFieldShell"],
-      },
-      {
-        id: "wrappers",
-        label: "Wrappers",
-        description: "Prewired wrappers for common field families and calendar-driven flows.",
-        components: ["FormInput", "FormTextarea", "FormSelect", "FormSwitch", "FormNumberInput", "FormPhoneInput", "FormDateInput", "FormDateRangeInput", "FormDatePicker", "FormDateRangePicker", "RepeaterField"],
-      },
-      {
-        id: "compatibility-aliases",
-        label: "Compatibility aliases",
-        description: "Older or specialized wrappers that still ship, but should follow the simpler public family narrative.",
-        components: ["FormAsyncSelect", "FormSearchInput", "FormPasswordInput"],
-      },
-      {
-        id: "advanced",
-        label: "Advanced",
-        description: "Higher-level builders and shells for teams that need abstraction over raw fields.",
-        components: ["FormBuilder"],
-      },
+      { id: "primitives", label: "Primitives", description: "The base field shell for labels, descriptions, and errors.", components: ["FormFieldShell"] },
+      { id: "core-wrappers", label: "Core wrappers", description: "Use broad wrappers that cover common fields instead of teaching every small alias as a component.", components: ["FormInput", "FormTextarea", "FormSelect", "FormSwitch", "FormDatePicker", "FormDateRangePicker", "RepeaterField"] },
+      { id: "advanced", label: "Advanced", description: "Higher-level builders and shells for teams that need abstraction over raw fields.", components: ["FormBuilder"] },
     ],
   },
   {
@@ -207,36 +108,11 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     slug: "data-table",
     label: "Data Table",
     primaryComponent: "DataTable",
-    description: "Tabular data surface with toolbar, pagination, bulk actions, and column helpers.",
+    description: "Tabular data surface with toolbar and pagination as the only first-level table companions.",
     sections: [
-      {
-        id: "primitives",
-        label: "Primitives",
-        description: "The canonical table surface teams should adopt first.",
-        components: ["DataTable"],
-      },
-      {
-        id: "extensions",
-        label: "Extensions",
-        description: "Composable table helpers for view controls, actions, and pagination.",
-        components: [
-          "DataTableToolbar",
-          "DataTablePagination",
-          "DataTableColumnVisibilityMenu",
-          "DataTableSortableHeader",
-          "DataTableRowActions",
-          "DataTableBulkActions",
-          "DataTableViewPresets",
-          "createDataTableSelectColumn",
-          "createDataTableActionsColumn",
-        ],
-      },
-      {
-        id: "advanced",
-        label: "Advanced",
-        description: "Import-export helpers that should be introduced only when the core grid is already clear.",
-        components: ["TableExportMenu", "TableImportButton"],
-      },
+      { id: "primitives", label: "Primitives", description: "The canonical table surface teams should adopt first.", components: ["DataTable"] },
+      { id: "core-companions", label: "Core companions", description: "Only the table companions that are commonly installed next to the main grid.", components: ["DataTableToolbar", "DataTablePagination"] },
+      { id: "advanced", label: "Advanced", description: "Import-export helpers belong after the core grid is already clear.", components: ["TableExportMenu", "TableImportButton"] },
     ],
   },
 ] as const
