@@ -50,8 +50,14 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
       {
         id: "form-wrapper",
         label: "Form wrapper",
-        description: "Use one universal form input wrapper instead of listing every compatibility alias as a public component.",
-        components: ["FormInput"],
+        description: "Input and its text-first presets can still connect to forms through the universal wrapper family.",
+        components: [],
+      },
+      {
+        id: "compatibility-aliases",
+        label: "Compatibility aliases",
+        description: "Older focused input wrappers that still work, but should not lead new adoption.",
+        components: ["ClearableInput", "SearchInput", "MaskedInput", "QuantityInput", "FormInput", "FormSearchInput", "FormPasswordInput", "FormNumberInput", "FormPhoneInput", "FormDateInput", "FormDateRangeInput"],
       },
       {
         id: "advanced",
@@ -164,10 +170,10 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         components: ["FormFieldShell"],
       },
       {
-        id: "core-wrappers",
-        label: "Core wrappers",
-        description: "Use broad wrappers that cover common fields instead of teaching every small alias as a component.",
-        components: ["FormInput", "FormTextarea", "FormSelect", "FormSwitch", "FormDatePicker", "FormDateRangePicker", "RepeaterField"],
+        id: "wrappers",
+        label: "Wrappers",
+        description: "Prewired wrappers for common field families and calendar-driven flows.",
+        components: ["FormTextarea", "FormSwitch", "FormDatePicker", "FormDateRangePicker", "RepeaterField"],
       },
       {
         id: "advanced",

@@ -20,9 +20,9 @@ function toSortedEntries(entries: FamilyMigrationEntry[]) {
   return [...entries].sort((left, right) => left.component.localeCompare(right.component))
 }
 
-function filterByCatalogList(entries: FamilyMigrationEntry[], components: string[] = []) {
-  const componentSet = new Set(components)
-  return entries.filter((entry) => componentSet.has(entry.component))
+function pickCatalogEntries(entries: FamilyMigrationEntry[], components: string[]) {
+  const allowed = new Set(components)
+  return toSortedEntries(entries.filter((entry) => allowed.has(entry.component)))
 }
 
 function getFamilyView(family: ComponentFamilyName): ComponentFamilyView | undefined {
@@ -31,10 +31,22 @@ function getFamilyView(family: ComponentFamilyName): ComponentFamilyView | undef
   if (!catalogEntry) return undefined
 
   const familyMembers = getFamilyMembers(family)
-  const canonicalEntries = toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.canonical))
-  const memberEntries = toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.members))
-  const transitionalEntries = toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.transitional))
-  const advancedEntries = toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.advanced))
+  const canonicalEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "canonical" || entry.status === "canonical composed member"),
+    catalogEntry.canonical
+  )
+  const transitionalEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "transitional"),
+    catalogEntry.transitional ?? []
+  )
+  const advancedEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "advanced"),
+    catalogEntry.advanced ?? []
+  )
+  const memberEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "family-member" || entry.status === "family-member helper"),
+    catalogEntry.members
+  )
 
   return {
     ...catalogEntry,

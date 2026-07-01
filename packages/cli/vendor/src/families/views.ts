@@ -1,6 +1,13 @@
 import type { ComponentFamilyCatalogEntry, ComponentFamilyName } from "@/families/catalog"
 import type { FamilyMigrationEntry } from "@/families/migration-map"
-import { getFamilyCatalogEntry, getFamilyMembers, listAdvancedComponents, listCanonicalComponents, listFamilyCatalogEntries, listTransitionalComponents } from "@/families/queries"
+import {
+  getFamilyCatalogEntry,
+  getFamilyMembers,
+  listAdvancedComponents,
+  listCanonicalComponents,
+  listFamilyCatalogEntries,
+  listTransitionalComponents,
+} from "@/families/queries"
 
 export type ComponentFamilyView = ComponentFamilyCatalogEntry & {
   canonicalEntries: FamilyMigrationEntry[]
@@ -13,21 +20,39 @@ function toSortedEntries(entries: FamilyMigrationEntry[]) {
   return [...entries].sort((left, right) => left.component.localeCompare(right.component))
 }
 
-function filterByCatalogList(entries: FamilyMigrationEntry[], components: string[] = []) {
-  const componentSet = new Set(components)
-  return entries.filter((entry) => componentSet.has(entry.component))
+function pickCatalogEntries(entries: FamilyMigrationEntry[], components: string[]) {
+  const allowed = new Set(components)
+  return toSortedEntries(entries.filter((entry) => allowed.has(entry.component)))
 }
 
 function getFamilyView(family: ComponentFamilyName): ComponentFamilyView | undefined {
   const catalogEntry = getFamilyCatalogEntry(family)
   if (!catalogEntry) return undefined
+
   const familyMembers = getFamilyMembers(family)
+  const canonicalEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "canonical" || entry.status === "canonical composed member"),
+    catalogEntry.canonical
+  )
+  const transitionalEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "transitional"),
+    catalogEntry.transitional ?? []
+  )
+  const advancedEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "advanced"),
+    catalogEntry.advanced ?? []
+  )
+  const memberEntries = pickCatalogEntries(
+    familyMembers.filter((entry) => entry.status === "family-member" || entry.status === "family-member helper"),
+    catalogEntry.members
+  )
+
   return {
     ...catalogEntry,
-    canonicalEntries: toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.canonical)),
-    memberEntries: toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.members)),
-    transitionalEntries: toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.transitional)),
-    advancedEntries: toSortedEntries(filterByCatalogList(familyMembers, catalogEntry.advanced)),
+    canonicalEntries,
+    memberEntries,
+    transitionalEntries,
+    advancedEntries,
   }
 }
 

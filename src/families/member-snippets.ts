@@ -44,6 +44,16 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 />`,
   },
   {
+    component: "Textarea",
+    title: "Multi-line notes",
+    description: "Use Textarea when the same input family needs longer freeform content.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Textarea } from "azamat-ui-kit"
+
+<Textarea placeholder="Write release notes or internal guidance..." rows={5} />`,
+  },
+  {
     component: "SearchInput",
     title: "Search filter",
     description: "Use the search preset when the base Input needs result-count or shortcut chrome out of the box.",

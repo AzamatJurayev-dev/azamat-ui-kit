@@ -10,6 +10,7 @@ export type SearchInputProps = Omit<ClearableInputProps, "leadingIcon" | "type" 
   resultCount?: number
   shortcut?: React.ReactNode
   debounceMs?: number
+  showMetaOnClear?: boolean
   onValueChange?: (value: string) => void
   onDebouncedValueChange?: (value: string) => void
 }
@@ -29,6 +30,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
       placeholder = "Search...",
       inputMode = "search",
       trailing,
+      showMetaOnClear = false,
       disabled,
       ...props
     },
@@ -66,7 +68,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
         disabled={disabled || loading}
         leadingIcon={searchIcon ?? <SearchIcon />}
         trailing={meta}
-        replaceTrailingWhenClear={false}
+        replaceTrailingWhenClear={!showMetaOnClear}
         onValueChange={onValueChange}
         {...props}
       />

@@ -2,6 +2,7 @@ import {
   FormInput,
   type FormInputNumberVariantProps,
 } from "@/components/form/form-input"
+import { warnDeprecatedComponent } from "@/lib/deprecated-warning"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
 export type FormNumberInputProps<
@@ -20,6 +21,10 @@ function FormNumberInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: FormNumberInputProps<TFieldValues, TName>) {
+  warnDeprecatedComponent(
+    "FormNumberInput",
+    "FormInput with kind=\"number\""
+  )
   return <FormInput {...props} kind="number" />
 }
 

@@ -2,6 +2,7 @@ import {
   FormInput,
   type FormInputSearchVariantProps,
 } from "@/components/form/form-input"
+import { warnDeprecatedComponent } from "@/lib/deprecated-warning"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
 export type FormSearchInputProps<
@@ -16,6 +17,10 @@ function FormSearchInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: FormSearchInputProps<TFieldValues, TName>) {
+  warnDeprecatedComponent(
+    "FormSearchInput",
+    "FormInput with kind=\"search\""
+  )
   return <FormInput {...props} kind="search" />
 }
 

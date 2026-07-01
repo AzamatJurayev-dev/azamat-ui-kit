@@ -1,7 +1,7 @@
 {
   "$schema": "https://azamat-ui-kit.dev/registry.schema.json",
   "name": "azamat-ui-kit",
-  "version": "0.3.20",
+  "version": "0.3.21",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
