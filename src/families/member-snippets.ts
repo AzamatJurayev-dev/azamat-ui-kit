@@ -351,7 +351,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "Select",
     title: "Base select",
-    description: "Start with the primitive select for standard single-choice flows.",
+    description: "Start with Select first and move into members only when option loading or interaction model changes.",
     language: "tsx",
     variant: "basic",
     code: `import { Select } from "azamat-ui-kit"
@@ -366,9 +366,25 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 />`,
   },
   {
+    component: "Select",
+    title: "Searchable primary select",
+    description: "Keep local filtering on the main Select surface before reaching for AsyncSelect or Combobox.",
+    language: "tsx",
+    variant: "advanced",
+    code: `import { Select } from "azamat-ui-kit"
+
+<Select
+  value={owner}
+  onValueChange={setOwner}
+  searchable
+  placeholder="Choose owner"
+  options={ownerOptions}
+/>`,
+  },
+  {
     component: "SimpleSelect",
     title: "Static options",
-    description: "Use the simple preset for compact static option lists.",
+    description: "Use the static-options helper when teams want a thinner wrapper around the main Select mental model.",
     language: "tsx",
     variant: "basic",
     code: `import { SimpleSelect } from "azamat-ui-kit"
@@ -378,7 +394,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "AsyncSelect",
     title: "Remote search",
-    description: "AsyncSelect should own the remote option loading flow.",
+    description: "Use the remote member when the main Select surface needs server-backed option loading.",
     language: "tsx",
     variant: "async",
     code: `import { AsyncSelect } from "azamat-ui-kit"
@@ -393,7 +409,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "AsyncMultiSelect",
     title: "Remote multi select",
-    description: "Use the async multi preset when selected tags should stay visible.",
+    description: "Use the remote multi member when selected tags and async loading should live in one selection flow.",
     language: "tsx",
     variant: "async",
     code: `import { AsyncMultiSelect } from "azamat-ui-kit"
@@ -407,7 +423,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "Combobox",
     title: "Keyboard-first selection",
-    description: "Combobox is useful when fast filtering matters more than strict select semantics.",
+    description: "Use Combobox only when fast local filtering matters more than the default Select trigger pattern.",
     language: "tsx",
     variant: "basic",
     code: `import { Combobox } from "azamat-ui-kit"
@@ -427,7 +443,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "FormSelect",
     title: "Universal async wrapper",
-    description: "Remote option loading can stay behind the same select wrapper contract.",
+    description: "Remote option loading can stay behind the same FormSelect contract instead of teaching a new wrapper name first.",
     language: "tsx",
     variant: "form",
     code: `import { FormSelect } from "azamat-ui-kit"

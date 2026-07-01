@@ -43,10 +43,11 @@ export const publicComponentApiDocs = [
   {
     title: "Select",
     route: "/components/select",
-    summary: "Primary selection surface. Start here for known options, then expand into async, multi-select, or combobox members only when the data shape requires it.",
+    summary: "Primary selection surface. Start here first, then expand into static, async, multi-select, or combobox members only when the data shape or interaction model requires it.",
     useWhen: [
       "The user is choosing from a finite option set.",
-      "The screen needs one canonical selection mental model.",
+      "The screen needs one canonical selection mental model before specialized loading behavior is introduced.",
+      "Local filtering can stay on the primary surface before you promote a separate member.",
       "You want FormSelect to stay the RHF entry point instead of teaching async wrappers as separate first-class APIs.",
     ],
     related: [
@@ -62,6 +63,8 @@ export const publicComponentApiDocs = [
       ["defaultValue", "string | string[]", "Uncontrolled initial value."],
       ["onValueChange", "(value) => void", "Selection change callback."],
       ["options", "Array<{ label; value; disabled? }>", "Visible option list."],
+      ["searchable", "boolean", "Enables local filtering on the main select surface when supported."],
+      ["multiple", "boolean", "Allows multi-value selection when the active member supports it."],
       ["placeholder", "string", "Shown before a value is selected."],
       ["disabled", "boolean", "Disables trigger and selection."],
     ],
