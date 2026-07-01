@@ -1,49 +1,84 @@
 # Modern Components Demo
 
-This page tracks modern UI components added after the public surface audit.
+Use the `modern` surface when a project needs richer product widgets that go beyond the base UI, form, or display groups.
 
 ## Import
 
 ```tsx
-import { AspectRatio, Tag, QRCode, TimePicker, Cascader, JsonInput, DualListPicker, Tour } from "azamat-ui-kit"
+import {
+  Affix,
+  DualListPicker,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  QRCode,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  Tag,
+  Tour,
+} from "azamat-ui-kit"
 ```
 
-## Display examples
+## Display and utility examples
 
 ```tsx
-<AspectRatio ratio={16 / 9} className="rounded-xl border bg-muted">
-  <div className="grid size-full place-items-center">Preview</div>
-</AspectRatio>
+<Affix offsetTop={16}>
+  <Tag tone="info">Pinned tools</Tag>
+</Affix>
 
-<Tag tone="success" removable>
-  Active
-</Tag>
-
-<QRCode value="https://example.com/table/12" />
+<QRCode value="https://azamat-ui.vercel.app" alt="Azamat UI" />
 ```
 
-## Form and workflow examples
+## Navigation and workflow examples
 
 ```tsx
-<TimePicker label="Start time" />
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/docs" active>
+        Docs
+      </NavigationMenuLink>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/components">Components</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
 
-<Cascader
-  value={["uz", "tashkent"]}
-  options={[{ label: "Uzbekistan", value: "uz", children: [{ label: "Tashkent", value: "tashkent" }] }]}
+<Tour
+  index={0}
+  steps={[
+    { title: "Open search", description: "Use Ctrl+K to jump between routes." },
+    { title: "Copy source", description: "Add only the pieces your app needs." },
+  ]}
 />
+```
 
-<JsonInput value="{}" />
+## Layout and selection examples
+
+```tsx
+<ResizablePanelGroup>
+  <ResizablePanel defaultSize="40%">Sidebar content</ResizablePanel>
+  <ResizableHandle />
+  <ResizablePanel defaultSize="60%">Main content</ResizablePanel>
+</ResizablePanelGroup>
 
 <DualListPicker
-  items={[{ label: "Admin", value: "admin" }, { label: "Manager", value: "manager" }]}
-  picked={["admin"]}
+  items={[
+    { label: "Revenue", value: "revenue" },
+    { label: "Customers", value: "customers" },
+    { label: "Churn", value: "churn" },
+  ]}
+  picked={["revenue"]}
 />
-
-<Tour steps={[{ title: "Welcome", description: "Start from the dashboard." }]} />
 ```
 
-## Notes
+## QR code note
 
-- `QRCode` includes an internal SVG fallback. For production scan accuracy, replace the fallback with a QR encoder dependency or server-generated QR image.
-- `RichTextEditor` is a lightweight scaffold. For complex editing, route it to a dedicated editor integration.
-- `DualListPicker` is the safe public name for transfer-style list picking.
+`QRCode` now includes an internal SVG fallback when `src` is not provided. This fallback is useful for docs, mockups, and local demos.
+
+Important:
+- It is not a scan-certified QR encoder.
+- For production scan accuracy, use a real QR encoder dependency or a server-generated QR image.

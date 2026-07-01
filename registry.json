@@ -191,6 +191,27 @@
       "resource-detail-page",
       "form-builder"
     ],
+    "modern": [
+      "affix",
+      "calendar-scheduler",
+      "dual-list-picker",
+      "menubar",
+      "navigation-menu",
+      "resizable-panel",
+      "rich-text-editor",
+      "tour",
+      "qr-code",
+      "tag",
+      "aspect-ratio",
+      "carousel",
+      "float-button",
+      "typography",
+      "watermark",
+      "cascader",
+      "json-input",
+      "mention-input",
+      "time-picker"
+    ],
     "hooks": [
       "use-session-storage-state",
       "use-before-unload-when-dirty",
