@@ -30,12 +30,15 @@ export type InputDecoratorProps = Omit<React.ComponentProps<typeof InputPrimitiv
     value?: string | number | readonly string[] | null
     leading?: React.ReactNode
     trailing?: React.ReactNode
+    trailingAction?: React.ReactNode
     leadingPointerEvents?: boolean
     trailingPointerEvents?: boolean
+    trailingActionPointerEvents?: boolean
     wrapperClassName?: string
     inputClassName?: string
     leadingClassName?: string
     trailingClassName?: string
+    trailingActionClassName?: string
   }
 
 const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
@@ -45,22 +48,26 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
       value,
       leading,
       trailing,
+      trailingAction,
       leadingPointerEvents = false,
       trailingPointerEvents = true,
+      trailingActionPointerEvents = true,
       wrapperClassName,
       inputClassName,
       leadingClassName,
       trailingClassName,
+      trailingActionClassName,
       density,
       tone,
       ...props
     },
     ref
-  ) => {
-    const hasLeading = Boolean(leading)
-    const hasTrailing = Boolean(trailing)
-    const resolvedValue =
-      value == null
+    ) => {
+      const hasLeading = Boolean(leading)
+      const hasTrailing = Boolean(trailing)
+      const hasTrailingAction = Boolean(trailingAction)
+      const resolvedValue =
+        value == null
         ? value === null
           ? ""
           : undefined
@@ -91,7 +98,12 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
         <InputPrimitive
           ref={ref}
           value={resolvedValue}
-          className={cn(hasLeading && "pl-11", hasTrailing && "pr-12", inputClassName, className)}
+          className={cn(
+            hasLeading && "pl-11",
+            hasTrailing && hasTrailingAction ? "pr-28" : hasTrailing || hasTrailingAction ? "pr-12" : undefined,
+            inputClassName,
+            className
+          )}
           {...props}
         />
 
@@ -99,12 +111,25 @@ const InputDecorator = React.forwardRef<HTMLInputElement, InputDecoratorProps>(
           <span
             data-slot="input-trailing"
             className={cn(
-              "absolute right-3 z-10 flex items-center gap-1.5 text-muted-foreground/74",
+              "absolute right-12 z-10 flex items-center gap-1.5 text-muted-foreground/74",
               !trailingPointerEvents && "pointer-events-none",
               trailingClassName
             )}
           >
             {trailing}
+          </span>
+        )}
+
+        {hasTrailingAction && (
+          <span
+            data-slot="input-trailing-action"
+            className={cn(
+              "absolute right-3 z-10 flex items-center gap-1.5 text-muted-foreground/74",
+              !trailingActionPointerEvents && "pointer-events-none",
+              trailingActionClassName
+            )}
+          >
+            {trailingAction}
           </span>
         )}
       </div>

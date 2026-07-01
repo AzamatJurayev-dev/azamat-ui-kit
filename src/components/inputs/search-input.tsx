@@ -66,6 +66,7 @@ const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
         disabled={disabled || loading}
         leadingIcon={searchIcon ?? <SearchIcon />}
         trailing={meta}
+        replaceTrailingWhenClear={false}
         onValueChange={onValueChange}
         {...props}
       />

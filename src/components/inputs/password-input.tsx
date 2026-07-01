@@ -111,7 +111,7 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
-        trailing={trailingContent}
+        trailingAction={trailingContent}
         {...props}
       />
     )

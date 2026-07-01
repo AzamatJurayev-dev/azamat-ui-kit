@@ -30,8 +30,16 @@ export type InputKind =
 export type InputTextProps = Omit<InputPrimitiveProps, "value"> & {
   kind?: "text"
   value?: string | number | readonly string[] | null
+  onValueChange?: (value: string) => void
   leading?: React.ReactNode
   trailing?: React.ReactNode
+  trailingAction?: React.ReactNode
+  clearable?: boolean
+  onClear?: () => void
+  clearLabel?: string
+  clearOnEscape?: boolean
+  focusAfterClear?: boolean
+  replaceTrailingWhenClear?: boolean
   helperText?: React.ReactNode
   errorText?: React.ReactNode
   showCharacterCount?: boolean
@@ -199,6 +207,14 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
     defaultValue,
     leading,
     trailing,
+    trailingAction,
+    clearable = false,
+    onValueChange,
+    onClear,
+    clearLabel,
+    clearOnEscape,
+    focusAfterClear,
+    replaceTrailingWhenClear,
     helperText,
     errorText,
     showCharacterCount = false,
@@ -226,7 +242,35 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
     onChange?.(event)
   }
 
-  const textInput = leading || trailing ? (
+  const handleTextValueChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    handleChange(event)
+    onValueChange?.(event.target.value)
+  }
+
+  const textInput = clearable ? (
+    <ClearableInput
+      ref={ref as React.ForwardedRef<HTMLInputElement>}
+      value={value as string | number | null | undefined}
+      defaultValue={value === undefined ? (defaultValue as string | number | undefined) : undefined}
+      type={restInputProps.type ?? "text"}
+      leadingIcon={leading}
+      trailing={trailing}
+      trailingAction={trailingAction}
+      clearable={clearable}
+      onChange={handleChange}
+      onValueChange={onValueChange}
+      onClear={onClear}
+      clearLabel={clearLabel}
+      clearOnEscape={clearOnEscape}
+      focusAfterClear={focusAfterClear}
+      replaceTrailingWhenClear={replaceTrailingWhenClear}
+      wrapperClassName={wrapperClassName}
+      inputClassName={inputClassName}
+      className={className}
+      maxLength={maxLength}
+      {...(restInputProps as Omit<ClearableInputProps, "value" | "defaultValue" | "type" | "onChange" | "onValueChange">)}
+    />
+  ) : leading || trailing || trailingAction ? (
     <InputDecorator
       ref={ref as React.ForwardedRef<HTMLInputElement>}
       value={value ?? undefined}
@@ -234,12 +278,13 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
       type={restInputProps.type ?? "text"}
       leading={leading}
       trailing={trailing}
+      trailingAction={trailingAction}
       leadingPointerEvents={leadingPointerEvents}
       trailingPointerEvents={trailingPointerEvents}
       wrapperClassName={wrapperClassName}
       inputClassName={inputClassName}
       className={className}
-      onChange={handleChange}
+      onChange={handleTextValueChange}
       maxLength={maxLength}
       {...(restInputProps as React.ComponentProps<typeof InputDecorator>)}
     />
@@ -250,7 +295,7 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
       defaultValue={value === undefined ? defaultValue : undefined}
       type={restInputProps.type ?? "text"}
       className={cn(inputClassName, className)}
-      onChange={handleChange}
+      onChange={handleTextValueChange}
       maxLength={maxLength}
       {...(restInputProps as React.ComponentProps<typeof InputPrimitive>)}
     />
