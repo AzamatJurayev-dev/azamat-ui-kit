@@ -50,6 +50,7 @@ function Slider({
 }: SliderProps) {
   const [internalValue, setInternalValue] = React.useState(defaultValue)
   const currentValue = value ?? internalValue
+  const resolvedValue = formatValue?.(currentValue) ?? currentValue
 
   const updateValue = (nextValue: number) => {
     if (value === undefined) setInternalValue(nextValue)
@@ -57,16 +58,16 @@ function Slider({
   }
 
   return (
-    <div data-slot="slider" className={cn("grid gap-2", className)}>
+    <div data-slot="slider" className={cn("grid gap-3", className)}>
       {(label || description || showValue) && (
         <div className="flex items-start justify-between gap-3">
-          <div className="grid gap-0.5">
-            {label && <label className="text-sm font-medium text-foreground">{label}</label>}
-            {description && <div className="text-xs text-muted-foreground">{description}</div>}
+          <div className="grid gap-1">
+            {label && <label className="text-sm font-semibold tracking-tight text-foreground">{label}</label>}
+            {description && <div className="text-xs leading-5 text-muted-foreground">{description}</div>}
           </div>
           {showValue && (
-            <div className="text-sm font-medium text-muted-foreground">
-              {formatValue?.(currentValue) ?? currentValue}
+            <div className="inline-flex min-h-8 items-center rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] px-3 text-sm font-semibold text-foreground shadow-sm">
+              {resolvedValue}
             </div>
           )}
         </div>
@@ -80,7 +81,7 @@ function Slider({
         step={step}
         disabled={disabled}
         style={getSliderTrackStyle(currentValue, min, max)}
-        className="h-2.5 w-full cursor-pointer appearance-none rounded-full bg-[color:var(--aui-control-bg)] shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)] outline-none transition disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_6px_18px_rgba(16,185,129,0.28)] [&::-moz-range-thumb]:transition [&::-moz-range-track]:h-2.5 [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:h-2.5 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:mt-[-4px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_6px_18px_rgba(16,185,129,0.28)]"
+        className="h-3 w-full cursor-pointer appearance-none rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)] outline-none transition hover:brightness-[1.02] disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[3px] [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-moz-range-thumb]:transition [&::-moz-range-track]:h-3 [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:h-3 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)]"
         onChange={(event) => updateValue(event.currentTarget.valueAsNumber)}
         {...props}
       />
@@ -125,6 +126,7 @@ function RangeSlider({
 }: RangeSliderProps) {
   const [internalValue, setInternalValue] = React.useState<RangeSliderValue>(defaultValue)
   const currentValue = value ?? internalValue
+  const resolvedValue = formatValue?.(currentValue) ?? `${currentValue[0]} - ${currentValue[1]}`
 
   const updateValue = (index: 0 | 1, nextPart: number) => {
     const nextValue: RangeSliderValue = index === 0
@@ -136,51 +138,51 @@ function RangeSlider({
   }
 
   return (
-    <div data-slot="range-slider" className={cn("grid gap-2", className)}>
+    <div data-slot="range-slider" className={cn("grid gap-3", className)}>
       {(label || description || showValue) && (
         <div className="flex items-start justify-between gap-3">
-          <div className="grid gap-0.5">
-            {label && <label className="text-sm font-medium text-foreground">{label}</label>}
-            {description && <div className="text-xs text-muted-foreground">{description}</div>}
+          <div className="grid gap-1">
+            {label && <label className="text-sm font-semibold tracking-tight text-foreground">{label}</label>}
+            {description && <div className="text-xs leading-5 text-muted-foreground">{description}</div>}
           </div>
           {showValue && (
-            <div className="text-sm font-medium text-muted-foreground">
-              {formatValue?.(currentValue) ?? `${currentValue[0]} - ${currentValue[1]}`}
+            <div className="inline-flex min-h-8 items-center rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] px-3 text-sm font-semibold text-foreground shadow-sm">
+              {resolvedValue}
             </div>
           )}
         </div>
       )}
-      <div className="grid gap-2">
+      <div className="grid gap-3 rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:color-mix(in_srgb,var(--aui-control-bg)_82%,white_18%)] px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:bg-[color:color-mix(in_srgb,var(--aui-control-bg)_90%,black_10%)]">
         <div className="relative h-6">
-          <div className="absolute top-1/2 h-2.5 w-full -translate-y-1/2 rounded-full bg-[color:var(--aui-control-bg)] shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)]" />
+          <div className="absolute top-1/2 h-3 w-full -translate-y-1/2 rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)]" />
           <div
-            className="absolute top-1/2 h-2.5 -translate-y-1/2 rounded-full bg-[color:var(--aui-brand-strong)] shadow-[0_6px_18px_rgba(16,185,129,0.18)]"
+            className="absolute top-1/2 h-3 -translate-y-1/2 rounded-full bg-[color:var(--aui-brand-strong)] shadow-[0_8px_24px_rgba(16,185,129,0.18)]"
             style={getRangeFillStyle(currentValue, min, max)}
           />
         </div>
         <div className="relative -mt-8 h-6">
-        <input
-          type="range"
-          value={currentValue[0]}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-          className="pointer-events-none absolute inset-0 h-6 w-full cursor-pointer appearance-none bg-transparent outline-none disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_6px_18px_rgba(16,185,129,0.28)] [&::-moz-range-track]:h-2.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-2.5 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-4px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_6px_18px_rgba(16,185,129,0.28)]"
-          onChange={(event) => updateValue(0, event.currentTarget.valueAsNumber)}
-          {...props}
-        />
-        <input
-          type="range"
-          value={currentValue[1]}
-          min={min}
-          max={max}
-          step={step}
-          disabled={disabled}
-          className="pointer-events-none absolute inset-0 h-6 w-full cursor-pointer appearance-none bg-transparent outline-none disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_6px_18px_rgba(16,185,129,0.28)] [&::-moz-range-track]:h-2.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-2.5 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-4px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_6px_18px_rgba(16,185,129,0.28)]"
-          onChange={(event) => updateValue(1, event.currentTarget.valueAsNumber)}
-          {...props}
-        />
+          <input
+            type="range"
+            value={currentValue[0]}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            className="pointer-events-none absolute inset-0 h-6 w-full cursor-pointer appearance-none bg-transparent outline-none disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[3px] [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-moz-range-track]:h-3 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-3 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)]"
+            onChange={(event) => updateValue(0, event.currentTarget.valueAsNumber)}
+            {...props}
+          />
+          <input
+            type="range"
+            value={currentValue[1]}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            className="pointer-events-none absolute inset-0 h-6 w-full cursor-pointer appearance-none bg-transparent outline-none disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[3px] [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-moz-range-track]:h-3 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-3 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)]"
+            onChange={(event) => updateValue(1, event.currentTarget.valueAsNumber)}
+            {...props}
+          />
         </div>
       </div>
     </div>

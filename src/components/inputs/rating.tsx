@@ -57,7 +57,10 @@ function Rating({
       data-slot="rating"
       role="radiogroup"
       aria-disabled={disabled || undefined}
-      className={cn("inline-flex items-center gap-1", className)}
+      className={cn(
+        "inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[color:var(--aui-surface-border)] bg-[color:color-mix(in_srgb,var(--aui-control-bg)_82%,white_18%)] px-2 py-1.5 shadow-sm dark:bg-[color:color-mix(in_srgb,var(--aui-control-bg)_90%,black_10%)]",
+        className
+      )}
       onMouseLeave={() => setHoverValue(null)}
       {...props}
     >
@@ -74,20 +77,24 @@ function Rating({
             disabled={disabled}
             tabIndex={readOnly ? -1 : 0}
             className={cn(
-              "rounded-sm text-muted-foreground outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
-              interactive && "hover:text-primary",
-              selected && "text-primary"
+              "inline-flex size-8 items-center justify-center rounded-full text-[color:var(--aui-text-muted)] outline-none transition duration-150 focus-visible:ring-2 focus-visible:ring-[color:var(--aui-brand-strong)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--aui-page-bg)] disabled:pointer-events-none disabled:opacity-50",
+              interactive && "hover:bg-[color:var(--aui-control-bg)] hover:text-[color:var(--aui-brand-strong)]",
+              selected && "bg-[color:color-mix(in_srgb,var(--aui-brand-strong)_16%,transparent)] text-[color:var(--aui-brand-strong)]"
             )}
             onMouseEnter={() => interactive && setHoverValue(nextValue)}
             onClick={() => setRating(nextValue)}
             onKeyDown={(event) => handleKeyDown(event, nextValue)}
           >
-            {icon ?? <StarIcon className={cn("size-5", selected && "fill-current")} />}
+            {icon ?? <StarIcon className={cn("size-4.5", selected && "fill-current")} />}
           </button>
         )
       })}
       {allowClear && currentValue > 0 && interactive && (
-        <button type="button" className="ml-1 text-xs text-muted-foreground hover:text-foreground" onClick={() => setRating(0)}>
+        <button
+          type="button"
+          className="ml-1 inline-flex h-8 items-center rounded-full border border-[color:var(--aui-surface-border)] px-3 text-xs font-semibold text-muted-foreground transition hover:bg-[color:var(--aui-control-bg)] hover:text-foreground"
+          onClick={() => setRating(0)}
+        >
           {labels?.clear ?? "Clear"}
         </button>
       )}

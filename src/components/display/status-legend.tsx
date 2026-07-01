@@ -56,13 +56,20 @@ function StatusLegend({
   const hasHeader = Boolean(title || description || actions)
 
   return (
-    <Card data-slot="status-legend" className={cn("min-w-0", className)} {...props}>
+    <Card
+      data-slot="status-legend"
+      className={cn(
+        "min-w-0 border-[color:var(--aui-surface-border)] bg-[color:color-mix(in_srgb,var(--aui-page-bg)_92%,white_8%)] shadow-sm dark:bg-[color:color-mix(in_srgb,var(--aui-page-bg)_96%,black_4%)]",
+        className
+      )}
+      {...props}
+    >
       {hasHeader && (
-        <CardHeader className={cn(compact && "p-4 pb-2")}>
+        <CardHeader className={cn("pb-3", compact && "p-4 pb-2")}>
           <div className="flex min-w-0 items-start justify-between gap-3">
             <div className="min-w-0 space-y-1">
-              {title && <CardTitle>{title}</CardTitle>}
-              {description && <CardDescription>{description}</CardDescription>}
+              {title && <CardTitle className="text-base tracking-tight">{title}</CardTitle>}
+              {description && <CardDescription className="leading-6">{description}</CardDescription>}
             </div>
             {actions && <div className="shrink-0">{actions}</div>}
           </div>
@@ -71,11 +78,11 @@ function StatusLegend({
 
       <CardContent
         className={cn(
-          "gap-2",
+          "gap-3",
           orientation === "vertical" && "grid",
           orientation === "horizontal" && "flex flex-wrap",
           orientation === "grid" && "grid sm:grid-cols-2",
-          compact && "p-4 pt-2",
+          compact ? "p-4 pt-2" : "pt-0",
           contentClassName
         )}
       >
@@ -84,20 +91,29 @@ function StatusLegend({
             key={item.key}
             data-slot="status-legend-item"
             data-tone={item.tone ?? "default"}
-            className={cn("flex min-w-0 items-start justify-between gap-3 rounded-lg border bg-muted/20 p-3", compact && "p-2", itemClassName, item.className)}
+            className={cn(
+              "flex min-w-0 items-start justify-between gap-3 rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition hover:border-[color:color-mix(in_srgb,var(--aui-brand-strong)_26%,var(--aui-surface-border))]",
+              compact && "p-2.5",
+              itemClassName,
+              item.className
+            )}
           >
             <div className="flex min-w-0 items-start gap-2">
               {item.icon ? (
-                <span className="mt-0.5 shrink-0 text-muted-foreground [&_svg]:size-4">{item.icon}</span>
+                <span className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-xl bg-[color:var(--aui-page-bg)] text-muted-foreground [&_svg]:size-4">{item.icon}</span>
               ) : (
-                <span className={cn("mt-1.5 size-2.5 shrink-0 rounded-full", dotClassName[item.tone ?? "default"])} />
+                <span className={cn("mt-1.5 size-2.5 shrink-0 rounded-full shadow-[0_0_0_4px_color-mix(in_srgb,var(--aui-page-bg)_72%,transparent)]", dotClassName[item.tone ?? "default"])} />
               )}
               <div className="min-w-0 space-y-0.5">
                 <div className="truncate text-sm font-medium text-foreground">{item.label}</div>
                 {item.description && <div className="text-xs leading-5 text-muted-foreground">{item.description}</div>}
               </div>
             </div>
-            {showCounts && item.count !== undefined && <Badge variant="secondary" className="shrink-0">{item.count}</Badge>}
+            {showCounts && item.count !== undefined && (
+              <Badge variant="secondary" className="shrink-0 rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-2.5 py-1 shadow-sm">
+                {item.count}
+              </Badge>
+            )}
           </div>
         ))}
       </CardContent>
