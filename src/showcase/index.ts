@@ -12,8 +12,10 @@ import { overlayShowcaseDemoRegistry } from "@/components/overlay/demo"
 import { patternsShowcaseDemoRegistry } from "@/components/patterns/demo"
 import { uploadShowcaseDemoRegistry } from "@/components/upload/demo"
 import { wizardShowcaseDemoRegistry } from "@/components/wizard/demo"
+import { premiumShowcaseDemoRegistry } from "./premium"
 
 export * from "./types"
+export * from "./premium"
 
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
@@ -30,4 +32,5 @@ export const showcaseDemoRegistry = {
   ...patternsShowcaseDemoRegistry,
   ...uploadShowcaseDemoRegistry,
   ...wizardShowcaseDemoRegistry,
+  ...premiumShowcaseDemoRegistry,
 }
