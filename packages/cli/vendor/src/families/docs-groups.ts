@@ -53,6 +53,18 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         description: "Use one universal form input wrapper instead of listing every compatibility alias as a public component.",
         components: ["FormInput"],
       },
+      {
+        id: "compatibility-aliases",
+        label: "Compatibility aliases",
+        description: "Older focused input wrappers that still work, but should not lead new adoption.",
+        components: ["ClearableInput", "SearchInput", "MaskedInput", "QuantityInput"],
+      },
+      {
+        id: "advanced",
+        label: "Advanced",
+        description: "Specialized controls that belong to the input family, but should appear after the core dashboard presets are already clear.",
+        components: ["Slider", "RangeSlider", "Rating", "OtpInput", "ColorInput", "InlineEditable", "TagInput", "QuantityStepper"],
+      },
     ],
   },
   {
@@ -173,7 +185,13 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "wrappers",
         label: "Wrappers",
         description: "Prewired wrappers for common field families and calendar-driven flows.",
-        components: ["FormTextarea", "FormSwitch", "FormDatePicker", "FormDateRangePicker", "RepeaterField"],
+        components: ["FormInput", "FormTextarea", "FormSelect", "FormSwitch", "FormNumberInput", "FormPhoneInput", "FormDateInput", "FormDateRangeInput", "FormDatePicker", "FormDateRangePicker", "RepeaterField"],
+      },
+      {
+        id: "compatibility-aliases",
+        label: "Compatibility aliases",
+        description: "Older or specialized wrappers that still ship, but should follow the simpler public family narrative.",
+        components: ["FormAsyncSelect", "FormSearchInput", "FormPasswordInput"],
       },
       {
         id: "advanced",

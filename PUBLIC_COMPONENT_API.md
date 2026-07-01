@@ -13,13 +13,14 @@ Related helpers can stay public, but they should be introduced from the canonica
 ### Use When
 
 - You need one clear text-entry surface first.
+- Multi-line copy can stay beside Input through the same family via Textarea.
 - The screen needs typed values before it needs dedicated preset chrome.
 - You want clearable behavior, trailing actions, and text callbacks without teaching many component names too early.
 - React Hook Form flows should still teach FormInput as the matching wrapper instead of per-variant wrappers.
 
 ### Related Helpers
 
-`ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `Slider`, `RangeSlider`, `Rating`, `MoneyInput`, `PhoneInput`, `MaskedInput`, `DateInput`, `DateRangeInput`, `QuantityInput`, `FormInput`
+`Textarea`, `NumberInput`, `MoneyInput`, `PhoneInput`, `DateInput`, `DateRangeInput`, `FormInput`
 
 ### Prop Highlights
 
@@ -41,12 +42,13 @@ Related helpers can stay public, but they should be introduced from the canonica
 ## Select
 
 - Canonical route: `/components/select`
-- Summary: Primary selection surface. Start here for known options, then expand into async, multi-select, or combobox members only when the data shape requires it.
+- Summary: Primary selection surface. Start here first, then expand into static, async, multi-select, or combobox members only when the data shape or interaction model requires it.
 
 ### Use When
 
 - The user is choosing from a finite option set.
-- The screen needs one canonical selection mental model.
+- The screen needs one canonical selection mental model before specialized loading behavior is introduced.
+- Local filtering can stay on the primary surface before you promote a separate member.
 - You want FormSelect to stay the RHF entry point instead of teaching async wrappers as separate first-class APIs.
 
 ### Related Helpers
@@ -61,6 +63,8 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `defaultValue` | `string | string[]` | Uncontrolled initial value. |
 | `onValueChange` | `(value) => void` | Selection change callback. |
 | `options` | `Array<{ label; value; disabled? }>` | Visible option list. |
+| `searchable` | `boolean` | Enables local filtering on the main select surface when supported. |
+| `multiple` | `boolean` | Allows multi-value selection when the active member supports it. |
 | `placeholder` | `string` | Shown before a value is selected. |
 | `disabled` | `boolean` | Disables trigger and selection. |
 
@@ -181,7 +185,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`DataTableToolbar`, `DataTablePagination`, `DataTableColumnVisibilityMenu`, `DataTableRowActions`, `DataTableBulkActions`, `DataTableViewPresets`, `DataTableSavedFilters`, `createDataTableSelectColumn`, `createDataTableActionsColumn`
+`DataTableToolbar`, `DataTablePagination`, `DataTableColumnVisibilityMenu`, `DataTableRowActions`, `DataTableBulkActions`, `DataTableViewPresets`, `createDataTableSelectColumn`, `createDataTableActionsColumn`, `TableExportMenu`, `TableImportButton`
 
 ### Prop Highlights
 
