@@ -42,7 +42,6 @@ export * from './components/calendar'
 export * from './components/upload'
 export * from './components/charts'
 export * from './components/wizard'
-export * from './components/patterns'
 
 // Meta and helpers
 export * from './families'

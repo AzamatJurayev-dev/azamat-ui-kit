@@ -28,6 +28,9 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
       "SearchInput",
       "PasswordInput",
       "NumberInput",
+      "Slider",
+      "RangeSlider",
+      "Rating",
       "DateInput",
       "DateRangeInput",
       "MoneyInput",
@@ -67,7 +70,7 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     label: "Overlay",
     description: "Dialog, popover, menu, tooltip, drawer, and hover-preview interaction surfaces grouped by behavior.",
     canonical: ["Dialog", "Popover", "DropdownMenu"],
-    members: ["Tooltip", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
+    members: ["Tooltip", "HoverCard", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
   },
   {
     family: "FormFamily",
