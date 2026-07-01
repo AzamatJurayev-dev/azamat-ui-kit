@@ -105,6 +105,11 @@
       "import": "./dist/showcase/index.js",
       "require": "./dist/showcase/index.cjs"
     },
+    "./showcase/*": {
+      "types": "./dist/showcase/*.d.ts",
+      "import": "./dist/showcase/*.js",
+      "require": "./dist/showcase/*.cjs"
+    },
     "./registry.json": "./registry.json",
     "./package.json": "./package.json"
   },

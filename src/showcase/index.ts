@@ -20,6 +20,8 @@ export * from "./premium"
 export * from "./registry-specific"
 export * from "./fallback"
 export * from "./families/index"
+export * from "./preview-catalog"
+export * from "./preview-registry"
 
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
