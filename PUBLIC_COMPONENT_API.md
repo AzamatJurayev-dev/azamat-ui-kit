@@ -1,6 +1,6 @@
 # Public Component API
 
-Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.19`.
+Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.20`.
 
 This file tracks the canonical public docs entries that should lead the product mental model.
 Related helpers can stay public, but they should be introduced from the canonical surface detail page instead of being taught as separate first-level names.
@@ -8,17 +8,18 @@ Related helpers can stay public, but they should be introduced from the canonica
 ## Input
 
 - Canonical route: `/components/input`
-- Summary: Primary typed-value surface. Start here before moving into search, password, numeric, phone, money, date, quantity, or masked presets.
+- Summary: Primary typed-value surface. Start here first, then move into search, password, numeric, phone, money, date, quantity, or masked presets only when behavior truly changes.
 
 ### Use When
 
 - You need one clear text-entry surface first.
-- The screen needs typed values before it needs formatting helpers.
+- The screen needs typed values before it needs dedicated preset chrome.
+- You want clearable behavior, trailing actions, and text callbacks without teaching many component names too early.
 - React Hook Form flows should still teach FormInput as the matching wrapper instead of per-variant wrappers.
 
 ### Related Helpers
 
-`ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `MoneyInput`, `PhoneInput`, `MaskedInput`, `DateInput`, `DateRangeInput`, `QuantityInput`, `FormInput`
+`ClearableInput`, `SearchInput`, `PasswordInput`, `NumberInput`, `Slider`, `RangeSlider`, `Rating`, `MoneyInput`, `PhoneInput`, `MaskedInput`, `DateInput`, `DateRangeInput`, `QuantityInput`, `FormInput`
 
 ### Prop Highlights
 
@@ -27,8 +28,14 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `value` | `string | number` | Controlled input value. |
 | `defaultValue` | `string | number` | Uncontrolled initial value. |
 | `onChange` | `ChangeEventHandler<HTMLInputElement>` | Native change handler. |
+| `onValueChange` | `(value: string) => void` | Direct text callback for controlled string flows. |
 | `type` | `HTMLInputTypeAttribute` | Prefer text/search/email/password before moving to presets. |
 | `placeholder` | `string` | Short empty-state hint. |
+| `clearable` | `boolean` | Shows the built-in clear action when the field has a value. |
+| `onClear` | `() => void` | Called after the field is cleared through the built-in clear action. |
+| `trailingAction` | `ReactNode` | Interactive trailing slot for counters, shortcuts, toggles, or actions. |
+| `replaceTrailingWhenClear` | `boolean` | Controls whether the clear button replaces trailing content or sits beside it. |
+| `clearOnEscape` | `boolean` | Lets Escape clear the value when clearable mode is active. |
 | `disabled` | `boolean` | Locks editing and interaction. |
 
 ## Select
@@ -96,7 +103,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`InfoCard`, `StatCard`, `StatisticCard`, `EntityCard`, `FileCard`
+`InfoCard`, `StatisticCard`, `EntityCard`, `FileCard`
 
 ### Prop Highlights
 
@@ -148,7 +155,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`Popover`, `DropdownMenu`, `Tooltip`, `RightClickMenu`, `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, `Drawer`, `DialogActions`
+`Popover`, `DropdownMenu`, `Tooltip`, `HoverCard`, `RightClickMenu`, `AlertDialog`, `ConfirmDialog`, `ModalShell`, `SheetShell`, `Drawer`, `DialogActions`
 
 ### Prop Highlights
 

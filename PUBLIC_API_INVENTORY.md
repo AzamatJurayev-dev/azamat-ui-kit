@@ -22,7 +22,7 @@ This file defines what should feel public, canonical, and teachable for `azamat-
 
 ### Layout And Navigation
 
-`Sidebar`, `AppHeader`, `SidebarNav`, `Breadcrumbs`, `PageContainer`, `Section`, `SectionHeader`, `Stack`, `StatCard`, `StickyFooterBar`, `Pagination`, `PageTabs`, `StepperTabs`, `AnchorNav`, `NavTabs`, `CommandBar`
+`Sidebar`, `SidebarNav`, `Breadcrumbs`, `PageContainer`, `Section`, `SectionHeader`, `Stack`, `StickyFooterBar`, `Pagination`, `PageTabs`, `StepperTabs`, `AnchorNav`, `NavTabs`, `CommandBar`
 
 ### Inputs And Forms
 
@@ -60,6 +60,8 @@ Related helpers and members:
 These can exist as root exports, subpath exports, source-copy files, or advanced detail sections, but they should not be the first component names users see:
 
 - `SmartCard`
+- `AppHeader`
+- `StatCard`
 - `AppSidebar`
 - `TableExportMenu`
 - `TableImportButton`

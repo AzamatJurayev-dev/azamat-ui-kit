@@ -16,8 +16,10 @@ export type ClearableInputProps = Omit<
   clearLabel?: string
   clearOnEscape?: boolean
   focusAfterClear?: boolean
+  replaceTrailingWhenClear?: boolean
   leadingIcon?: React.ReactNode
   trailing?: React.ReactNode
+  trailingAction?: React.ReactNode
   wrapperClassName?: string
   inputClassName?: string
 }
@@ -33,8 +35,10 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
       clearLabel = "Clear",
       clearOnEscape = true,
       focusAfterClear = true,
+      replaceTrailingWhenClear = true,
       leadingIcon,
       trailing,
+      trailingAction,
       disabled,
       onKeyDown,
       ...props
@@ -73,9 +77,10 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         leading={leadingIcon}
-        trailing={
+        trailing={canClear && replaceTrailingWhenClear ? null : trailing}
+        trailingAction={
           <>
-            {trailing}
+            {trailingAction}
             {canClear && (
               <button
                 type="button"

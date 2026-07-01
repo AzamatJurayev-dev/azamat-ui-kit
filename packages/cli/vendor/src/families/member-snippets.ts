@@ -20,7 +20,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "Input",
     title: "Basic text field",
-    description: "Start with the base input before reaching for presets.",
+    description: "Start with Input first and enable behavior through props before moving into presets.",
     language: "tsx",
     variant: "basic",
     code: `import { Input } from "azamat-ui-kit"
@@ -28,9 +28,25 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <Input placeholder="Email address" />`,
   },
   {
+    component: "Input",
+    title: "Clearable primary field",
+    description: "Input can own the clear behavior directly when you do not need a separate preset import.",
+    language: "tsx",
+    variant: "advanced",
+    code: `import { Input } from "azamat-ui-kit"
+
+<Input
+  value={query}
+  onValueChange={setQuery}
+  placeholder="Search customers..."
+  clearable
+  trailingAction={<span className="text-xs text-muted-foreground">12 results</span>}
+/>`,
+  },
+  {
     component: "SearchInput",
     title: "Search filter",
-    description: "Use the search preset for list and table filtering.",
+    description: "Use the search preset when the base Input needs result-count or shortcut chrome out of the box.",
     language: "tsx",
     variant: "basic",
     code: `import { SearchInput } from "azamat-ui-kit"
@@ -40,7 +56,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "ClearableInput",
     title: "Clearable field",
-    description: "Use the clearable preset when reset should stay inside the input chrome.",
+    description: "Use the clearable preset when teams want the Input clear action packaged as one helper.",
     language: "tsx",
     variant: "basic",
     code: `import { ClearableInput } from "azamat-ui-kit"
@@ -50,7 +66,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "PasswordInput",
     title: "Password field",
-    description: "Use the password preset when reveal and hide behavior matters.",
+    description: "Use the password preset when Input needs a reveal toggle and password-safe defaults.",
     language: "tsx",
     variant: "basic",
     code: `import { PasswordInput } from "azamat-ui-kit"
@@ -72,6 +88,50 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   onNumberChange={setQuantity}
   placeholder="Quantity"
 />`,
+  },
+  {
+    component: "Slider",
+    title: "Single-value slider",
+    description: "Use the slider when a bounded numeric value should be adjusted visually instead of typed.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Slider } from "azamat-ui-kit"
+
+<Slider
+  label="Density"
+  description="Tune content density."
+  min={0}
+  max={100}
+  defaultValue={64}
+  showValue
+/>`,
+  },
+  {
+    component: "RangeSlider",
+    title: "Range slider",
+    description: "Use the range slider when one surface should control a min and max bound together.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { RangeSlider } from "azamat-ui-kit"
+
+<RangeSlider
+  label="Revenue range"
+  description="Filter between two values."
+  min={0}
+  max={100}
+  defaultValue={[20, 80]}
+  showValue
+/>`,
+  },
+  {
+    component: "Rating",
+    title: "Rating input",
+    description: "Use rating for compact sentiment, score, or review capture.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Rating } from "azamat-ui-kit"
+
+<Rating defaultValue={4} labels={{ clear: "Reset" }} />`,
   },
   {
     component: "MaskedInput",
@@ -415,13 +475,13 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   },
   {
     component: "StatCard",
-    title: "Compact KPI tile",
-    description: "Use stat cards for small dashboard overview rows.",
+    title: "Legacy KPI tile",
+    description: "StatCard still works for migration, but new dashboard surfaces should prefer StatisticCard or InfoCard.",
     language: "tsx",
-    variant: "basic",
+    variant: "migration",
     code: `import { StatCard } from "azamat-ui-kit"
 
-<StatCard title="Active users" value="1,284" change="+12%" />`,
+<StatCard title="Active users" value="1,284" change="+12%" /> // prefer StatisticCard for new work`,
   },
   {
     component: "StatisticCard",
@@ -528,6 +588,25 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <Tooltip content="Export selected rows">
   <Button>Export</Button>
 </Tooltip>`,
+  },
+  {
+    component: "HoverCard",
+    title: "Rich hover preview",
+    description: "Use HoverCard when hover or focus should reveal richer preview content than a tooltip.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { HoverCard, Button } from "azamat-ui-kit"
+
+<HoverCard
+  content={
+    <div className="space-y-1">
+      <p className="font-medium">Azamat UI</p>
+      <p className="text-sm text-muted-foreground">Dashboard-focused React component library.</p>
+    </div>
+  }
+>
+  <Button variant="outline">Preview package</Button>
+</HoverCard>`,
   },
   {
     component: "RightClickMenu",

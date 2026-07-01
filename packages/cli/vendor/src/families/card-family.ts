@@ -1,5 +1,4 @@
 import { EntityCard, FileCard, InfoCard, StatisticCard } from "@/components/display"
-import { StatCard } from "@/components/layout"
 import {
   Card,
   CardAction,
@@ -19,7 +18,6 @@ const CardFamily = {
   Content: CardContent,
   Footer: CardFooter,
   Info: InfoCard,
-  Stat: StatCard,
   Statistic: StatisticCard,
   Entity: EntityCard,
   File: FileCard,

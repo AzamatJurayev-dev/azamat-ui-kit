@@ -90,6 +90,50 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 />`,
   },
   {
+    component: "Slider",
+    title: "Single-value slider",
+    description: "Use the slider when a bounded numeric value should be adjusted visually instead of typed.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Slider } from "azamat-ui-kit"
+
+<Slider
+  label="Density"
+  description="Tune content density."
+  min={0}
+  max={100}
+  defaultValue={64}
+  showValue
+/>`,
+  },
+  {
+    component: "RangeSlider",
+    title: "Range slider",
+    description: "Use the range slider when one surface should control a min and max bound together.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { RangeSlider } from "azamat-ui-kit"
+
+<RangeSlider
+  label="Revenue range"
+  description="Filter between two values."
+  min={0}
+  max={100}
+  defaultValue={[20, 80]}
+  showValue
+/>`,
+  },
+  {
+    component: "Rating",
+    title: "Rating input",
+    description: "Use rating for compact sentiment, score, or review capture.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Rating } from "azamat-ui-kit"
+
+<Rating defaultValue={4} labels={{ clear: "Reset" }} />`,
+  },
+  {
     component: "MaskedInput",
     title: "Custom mask",
     description: "MaskedInput is for custom displayed formatting over a raw string value.",
@@ -544,6 +588,25 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
 <Tooltip content="Export selected rows">
   <Button>Export</Button>
 </Tooltip>`,
+  },
+  {
+    component: "HoverCard",
+    title: "Rich hover preview",
+    description: "Use HoverCard when hover or focus should reveal richer preview content than a tooltip.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { HoverCard, Button } from "azamat-ui-kit"
+
+<HoverCard
+  content={
+    <div className="space-y-1">
+      <p className="font-medium">Azamat UI</p>
+      <p className="text-sm text-muted-foreground">Dashboard-focused React component library.</p>
+    </div>
+  }
+>
+  <Button variant="outline">Preview package</Button>
+</HoverCard>`,
   },
   {
     component: "RightClickMenu",

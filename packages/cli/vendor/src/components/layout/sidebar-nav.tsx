@@ -69,7 +69,7 @@ function SidebarLeaf({
   )
 
   const commonClassName = cn(
-    "group flex min-h-8 items-center gap-2 rounded-lg border border-transparent px-2 text-sm font-medium transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+    "group flex min-h-9 items-center gap-2 rounded-xl border border-transparent px-2.5 text-sm font-medium text-[color:var(--aui-page-muted-strong,var(--muted-foreground))] transition-[background-color,border-color,color,box-shadow] hover:border-[color:var(--aui-divider)] hover:bg-[color:var(--aui-page-bg-alt)] hover:text-[color:var(--aui-page-foreground)] data-[active=true]:border-[color:var(--aui-surface-border-strong,var(--ring))] data-[active=true]:bg-[color:var(--aui-control-bg)] data-[active=true]:text-[color:var(--aui-page-foreground)] data-[active=true]:shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
     collapsed && "justify-center px-0",
     depth > 0 && !collapsed && "pl-3",
     itemClassName,
@@ -232,7 +232,7 @@ function SidebarTree({
       <summary
         data-slot="sidebar-nav-group-trigger"
         className={cn(
-          "flex min-h-8 list-none items-center gap-2 rounded-lg border border-transparent text-sm font-medium transition-[background-color,border-color,color,box-shadow]",
+          "flex min-h-9 list-none items-center gap-2 rounded-xl border border-transparent px-2.5 text-sm font-medium text-[color:var(--aui-page-muted-strong,var(--muted-foreground))] transition-[background-color,border-color,color,box-shadow] hover:border-[color:var(--aui-divider)] hover:bg-[color:var(--aui-page-bg-alt)] hover:text-[color:var(--aui-page-foreground)]",
           collapsed ? "justify-center px-0" : "px-2"
         )}
       >
