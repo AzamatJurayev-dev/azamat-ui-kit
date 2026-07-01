@@ -11,7 +11,7 @@ function Table({ className, containerClassName, ...props }: TableProps) {
     <div
       data-slot="table-container"
       className={cn(
-        "relative w-full overflow-x-auto rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))]",
+        "relative w-full overflow-x-auto rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_30px_rgba(15,23,42,0.08))]",
         containerClassName
       )}
     >
@@ -28,7 +28,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("bg-[color:color-mix(in_oklch,var(--muted),var(--background)_42%)] [&_tr]:border-b [&_tr]:border-[color:var(--aui-card-border,var(--border))]", className)}
+      className={cn("bg-[color:color-mix(in_oklch,var(--muted),var(--background)_30%)] [&_tr]:border-b [&_tr]:border-[color:var(--aui-card-border,var(--border))]", className)}
       {...props}
     />
   )
@@ -62,7 +62,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b border-[color:var(--aui-card-border,var(--border))] transition-colors hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] data-[state=selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] data-[striped=true]:bg-[color:color-mix(in_oklch,var(--muted),transparent_62%)]",
+        "border-b border-[color:var(--aui-card-border,var(--border))] transition-colors hover:bg-[color:color-mix(in_oklch,var(--muted),var(--background)_14%)] data-[state=selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] data-[striped=true]:bg-[color:color-mix(in_oklch,var(--muted),transparent_68%)]",
         className
       )}
       {...props}
@@ -75,7 +75,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-11 px-3 text-left align-middle text-[0.76rem] font-semibold whitespace-nowrap uppercase tracking-[0.12em] text-muted-foreground [&:has([role=checkbox])]:pr-0",
+        "h-11 px-4 text-left align-middle text-[0.72rem] font-semibold whitespace-nowrap uppercase tracking-[0.14em] text-muted-foreground [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
@@ -88,7 +88,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "px-3 py-3 align-middle whitespace-nowrap text-foreground/92 [&:has([role=checkbox])]:pr-0",
+        "px-4 py-3.5 align-middle whitespace-nowrap text-foreground/92 [&:has([role=checkbox])]:pr-0",
         className
       )}
       {...props}
