@@ -13,9 +13,11 @@ import { patternsShowcaseDemoRegistry } from "@/components/patterns/demo"
 import { uploadShowcaseDemoRegistry } from "@/components/upload/demo"
 import { wizardShowcaseDemoRegistry } from "@/components/wizard/demo"
 import { premiumShowcaseDemoRegistry } from "./premium"
+import { registrySpecificDemoRegistry } from "./registry-specific"
 
 export * from "./types"
 export * from "./premium"
+export * from "./registry-specific"
 
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
@@ -32,5 +34,6 @@ export const showcaseDemoRegistry = {
   ...patternsShowcaseDemoRegistry,
   ...uploadShowcaseDemoRegistry,
   ...wizardShowcaseDemoRegistry,
+  ...registrySpecificDemoRegistry,
   ...premiumShowcaseDemoRegistry,
 }
