@@ -33,7 +33,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     slug: "input",
     label: "Input",
     primaryComponent: "Input",
-    description: "Single-field text entry with searchable, masked, numeric, date, and formatted presets.",
+    description: "Primary text-entry surface with clear, search, password, numeric, date, and formatted presets built around it.",
     sections: [
       {
         id: "primitives",
@@ -44,7 +44,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
       {
         id: "presets",
         label: "Presets",
-        description: "Common input variants that keep a shared text-field mental model.",
+        description: "Shared input modes that keep one text-field mental model instead of splitting into unrelated components.",
         components: [
           "ClearableInput",
           "SearchInput",

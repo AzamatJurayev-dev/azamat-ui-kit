@@ -2,10 +2,11 @@ export const publicComponentApiDocs = [
   {
     title: "Input",
     route: "/components/input",
-    summary: "Primary typed-value surface. Start here before moving into search, password, numeric, phone, money, date, quantity, or masked presets.",
+    summary: "Primary typed-value surface. Start here first, then move into search, password, numeric, phone, money, date, quantity, or masked presets only when behavior truly changes.",
     useWhen: [
       "You need one clear text-entry surface first.",
-      "The screen needs typed values before it needs formatting helpers.",
+      "The screen needs typed values before it needs dedicated preset chrome.",
+      "You want clearable behavior, trailing actions, and text callbacks without teaching many component names too early.",
       "React Hook Form flows should still teach FormInput as the matching wrapper instead of per-variant wrappers.",
     ],
     related: [
@@ -28,8 +29,14 @@ export const publicComponentApiDocs = [
       ["value", "string | number", "Controlled input value."],
       ["defaultValue", "string | number", "Uncontrolled initial value."],
       ["onChange", "ChangeEventHandler<HTMLInputElement>", "Native change handler."],
+      ["onValueChange", "(value: string) => void", "Direct text callback for controlled string flows."],
       ["type", "HTMLInputTypeAttribute", "Prefer text/search/email/password before moving to presets."],
       ["placeholder", "string", "Short empty-state hint."],
+      ["clearable", "boolean", "Shows the built-in clear action when the field has a value."],
+      ["onClear", "() => void", "Called after the field is cleared through the built-in clear action."],
+      ["trailingAction", "ReactNode", "Interactive trailing slot for counters, shortcuts, toggles, or actions."],
+      ["replaceTrailingWhenClear", "boolean", "Controls whether the clear button replaces trailing content or sits beside it."],
+      ["clearOnEscape", "boolean", "Lets Escape clear the value when clearable mode is active."],
       ["disabled", "boolean", "Locks editing and interaction."],
     ],
   },
