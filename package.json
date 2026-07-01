@@ -100,6 +100,11 @@
       "import": "./dist/families/*.js",
       "require": "./dist/families/*.cjs"
     },
+    "./showcase": {
+      "types": "./dist/showcase/index.d.ts",
+      "import": "./dist/showcase/index.js",
+      "require": "./dist/showcase/index.cjs"
+    },
     "./registry.json": "./registry.json",
     "./package.json": "./package.json"
   },
