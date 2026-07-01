@@ -415,13 +415,13 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   },
   {
     component: "StatCard",
-    title: "Compact KPI tile",
-    description: "Use stat cards for small dashboard overview rows.",
+    title: "Legacy KPI tile",
+    description: "StatCard still works for migration, but new dashboard surfaces should prefer StatisticCard or InfoCard.",
     language: "tsx",
-    variant: "basic",
+    variant: "migration",
     code: `import { StatCard } from "azamat-ui-kit"
 
-<StatCard title="Active users" value="1,284" change="+12%" />`,
+<StatCard title="Active users" value="1,284" change="+12%" /> // prefer StatisticCard for new work`,
   },
   {
     component: "StatisticCard",

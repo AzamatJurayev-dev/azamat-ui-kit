@@ -55,8 +55,8 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     label: "Card",
     description: "Primitive card plus dashboard and entity-oriented composed card presets.",
     canonical: ["Card", "InfoCard"],
-    members: ["StatCard", "StatisticCard", "EntityCard", "FileCard", "TrendCard", "ComparisonCard"],
-    transitional: ["SmartCard"],
+    members: ["StatisticCard", "EntityCard", "FileCard", "TrendCard", "ComparisonCard"],
+    transitional: ["SmartCard", "StatCard"],
   },
   {
     family: "BadgeFamily",

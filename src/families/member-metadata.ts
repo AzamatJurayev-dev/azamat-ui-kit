@@ -272,10 +272,10 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
   {
     component: "StatCard",
     family: "CardFamily",
-    section: "presets",
-    maturity: "member",
-    summary: "Compact stat display card.",
-    useWhen: "Use for dashboard KPI rows and overview panels.",
+    section: "transitional",
+    maturity: "transitional",
+    summary: "Legacy compact stat display card.",
+    useWhen: "Use only when migrating older KPI tiles; prefer StatisticCard or InfoCard for new product surfaces.",
   },
   {
     component: "StatisticCard",
