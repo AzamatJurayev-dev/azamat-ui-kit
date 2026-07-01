@@ -27,14 +27,14 @@ export const previewSurfaceCatalog: PreviewSurfaceRecord[] = [
     slug: "auth-01",
     title: "Authentication screen",
     command: "npx azamat-ui-kit-cli add input button",
-    code: `import { Button } from "@/components/ui/button"\nimport { Input } from "@/components/ui/input"\n\nexport function Auth01() {\n  return (\n    <div className=\"space-y-3\">\n      <Input placeholder=\"Email\" type=\"email\" />\n      <Input placeholder=\"Password\" type=\"password\" />\n      <Button>Sign in</Button>\n    </div>\n  )\n}`,
+    code: `import { Button } from "@/components/ui/button"\nimport { Input } from "@/components/ui/input"\n\nexport function Auth01() {\n  return (\n    <div className="space-y-3">\n      <Input placeholder="Email" type="email" />\n      <Input placeholder="Password" type="password" />\n      <Button>Sign in</Button>\n    </div>\n  )\n}`,
     tone: "auth",
   },
   {
     slug: "product-01",
     title: "Commerce product detail",
     command: "npx azamat-ui-kit-cli add badge button",
-    code: `import { Badge } from "@/components/ui/badge"\nimport { Button } from "@/components/ui/button"\n\nexport function Product01() {\n  return (\n    <div className=\"space-y-2\">\n      <Badge>Featured</Badge>\n      <div>Starter kit bundle</div>\n      <Button>Buy now</Button>\n    </div>\n  )\n}`,
+    code: `import { Badge } from "@/components/ui/badge"\nimport { Button } from "@/components/ui/button"\n\nexport function Product01() {\n  return (\n    <div className="space-y-2">\n      <Badge>Featured</Badge>\n      <div>Starter kit bundle</div>\n      <Button>Buy now</Button>\n    </div>\n  )\n}`,
     tone: "product",
   },
   {

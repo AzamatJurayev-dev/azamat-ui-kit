@@ -10,7 +10,7 @@ const items = [
 ]
 
 export function Example() {
-  return <Breadcrumbs items={items} separator=\"/\" />
+  return <Breadcrumbs items={items} separator="/" />
 }`,
   highlights: ["Readable route context", "Current route flagging", "Custom separator support", "Custom link rendering hook"],
   scenarios: [

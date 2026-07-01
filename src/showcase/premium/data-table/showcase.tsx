@@ -13,8 +13,6 @@ import {
   createDataTableSelectColumn,
 } from "@/index"
 
-import type { ComponentDemoProps } from "../types"
-
 type DataTableDemoRow = {
   invoice: string
   customer: string
@@ -30,7 +28,7 @@ const rows: DataTableDemoRow[] = [
   { invoice: "INV-4823", customer: "Globex", owner: "Jasur", amount: "$4,880", status: "Draft", updatedAt: "22m ago" },
 ]
 
-export function DataTableShowcase(_props: ComponentDemoProps) {
+export function DataTableShowcase() {
   const [search, setSearch] = React.useState("")
   const [selectedCount, setSelectedCount] = React.useState(0)
 
