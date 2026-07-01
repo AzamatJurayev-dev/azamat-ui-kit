@@ -22,6 +22,10 @@ export * from "./fallback"
 export * from "./families/index"
 export * from "./preview-catalog"
 export * from "./preview-registry"
+export * from "./site-data"
+export * from "./component-api-schema"
+export * from "./search-utils"
+export * from "./package-meta"
 
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
