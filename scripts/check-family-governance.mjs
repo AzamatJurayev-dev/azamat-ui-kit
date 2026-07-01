@@ -32,7 +32,7 @@ function unwrap(node) {
   return current
 }
 
-function evaluate(node) {
+function evaluate(node, context = {}) {
   const current = unwrap(node)
 
   if (ts.isStringLiteral(current) || ts.isNoSubstitutionTemplateLiteral(current)) {
@@ -42,20 +42,47 @@ function evaluate(node) {
   if (current.kind === ts.SyntaxKind.TrueKeyword) return true
   if (current.kind === ts.SyntaxKind.FalseKeyword) return false
 
+  if (ts.isIdentifier(current)) {
+    if (current.text in context) {
+      return context[current.text]
+    }
+
+    throw new Error(`unsupported identifier ${current.text}`)
+  }
+
   if (ts.isArrayLiteralExpression(current)) {
-    return current.elements.map((element) => evaluate(element))
+    return current.elements.flatMap((element) => {
+      if (ts.isSpreadElement(element)) {
+        const value = evaluate(element.expression, context)
+        if (!Array.isArray(value)) {
+          throw new Error(`spread expression must evaluate to an array`)
+        }
+        return value
+      }
+
+      return [evaluate(element, context)]
+    })
   }
 
   if (ts.isObjectLiteralExpression(current)) {
     const result = {}
 
     for (const property of current.properties) {
+      if (ts.isSpreadAssignment(property)) {
+        const value = evaluate(property.expression, context)
+        if (!value || typeof value !== "object" || Array.isArray(value)) {
+          throw new Error(`spread assignment must evaluate to an object`)
+        }
+        Object.assign(result, value)
+        continue
+      }
+
       if (!ts.isPropertyAssignment(property)) {
         throw new Error(`unsupported object property in ${(current.getSourceFile()?.fileName) ?? "source"}`)
       }
 
       const key = getPropertyName(property.name)
-      result[key] = evaluate(property.initializer)
+      result[key] = evaluate(property.initializer, context)
     }
 
     return result
@@ -72,7 +99,7 @@ function getPropertyName(name) {
   throw new Error(`unsupported property name kind ${ts.SyntaxKind[name.kind]}`)
 }
 
-function getExportedConstValue(sourceFile, exportName) {
+function getExportedConstValue(sourceFile, exportName, context = {}) {
   for (const statement of sourceFile.statements) {
     if (!ts.isVariableStatement(statement)) continue
 
@@ -81,7 +108,7 @@ function getExportedConstValue(sourceFile, exportName) {
 
     for (const declaration of statement.declarationList.declarations) {
       if (ts.isIdentifier(declaration.name) && declaration.name.text === exportName && declaration.initializer) {
-        return evaluate(declaration.initializer)
+        return evaluate(declaration.initializer, context)
       }
     }
   }
@@ -111,11 +138,23 @@ const catalogSource = readSource("src/families/catalog.ts")
 const docsGroupsSource = readSource("src/families/docs-groups.ts")
 const migrationSource = readSource("src/families/migration-map.ts")
 const registryStatusSource = readSource("cli/registry-status.ts")
+const rationalizationSource = readSource("src/families/public-surface-rationalization.ts")
 const readmePath = path.join(root, "README.md")
 const readmeText = fs.existsSync(readmePath) ? fs.readFileSync(readmePath, "utf8") : ""
 
-const componentFamilyCatalog = catalogSource ? getExportedConstValue(catalogSource, "componentFamilyCatalog") : []
-const componentDocsGroups = docsGroupsSource ? getExportedConstValue(docsGroupsSource, "componentDocsGroups") : []
+const additionalPublicFamilies = rationalizationSource
+  ? getExportedConstValue(rationalizationSource, "additionalPublicFamilies")
+  : []
+const additionalDocsGroups = rationalizationSource
+  ? getExportedConstValue(rationalizationSource, "additionalDocsGroups")
+  : []
+
+const componentFamilyCatalog = catalogSource
+  ? getExportedConstValue(catalogSource, "componentFamilyCatalog", { additionalPublicFamilies })
+  : []
+const componentDocsGroups = docsGroupsSource
+  ? getExportedConstValue(docsGroupsSource, "componentDocsGroups", { additionalDocsGroups })
+  : []
 const componentFamilyMigrationMap = migrationSource ? getExportedConstValue(migrationSource, "componentFamilyMigrationMap") : []
 const registryStatus = registryStatusSource ? getExportedConstValue(registryStatusSource, "registryStatus") : {}
 

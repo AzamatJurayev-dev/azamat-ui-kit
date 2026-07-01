@@ -1,6 +1,6 @@
 # Public Component API
 
-Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.21`.
+Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.22`.
 
 This file tracks the canonical public docs entries that should lead the product mental model.
 Related helpers can stay public, but they should be introduced from the canonical surface detail page instead of being taught as separate first-level names.
@@ -197,4 +197,160 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `sorting` | `SortingState` | Controlled sort state. |
 | `rowSelection` | `RowSelectionState` | Controlled selection state. |
 | `pagination` | `PaginationStateProps` | Current page, size, total count, and handlers. |
+
+## Button
+
+- Canonical route: `/components/button`
+- Summary: Canonical action trigger. Start here first, then expand into menus, copy patterns, or grouped action helpers only when the interaction needs them.
+
+### Use When
+
+- The user needs one clear primary or secondary action.
+- A flow should start from a direct trigger before hiding work behind menus.
+- Grouped or embedded action patterns should stay secondary to the main button mental model.
+
+### Related Helpers
+
+`ActionMenu`, `CopyButton`, `ButtonGroup`, `CopyField`, `QuickActionGrid`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `variant` | `'default' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive' | 'warning'` | Controls the visual action treatment. |
+| `size` | `'xs' | 'sm' | 'default' | 'lg' | 'icon'` | Controls action density. |
+| `loading` | `boolean` | Shows a pending state when the action is busy. |
+| `leftIcon` | `ReactNode` | Adds a leading icon slot. |
+| `rightIcon` | `ReactNode` | Adds a trailing icon slot. |
+| `fullWidth` | `boolean` | Lets the action stretch to fill its container. |
+
+## Alert
+
+- Canonical route: `/components/alert`
+- Summary: Canonical feedback route for status, empty, loading, progress, and toast surfaces.
+
+### Use When
+
+- The screen needs clear inline product feedback.
+- Loading, empty, and notification states should share one mental model instead of reading like unrelated exports.
+- Teams want a structured feedback vocabulary before reaching for low-level spinners or skeletons.
+
+### Related Helpers
+
+`EmptyState`, `LoadingState`, `Progress`, `ToastProvider`, `InlineState`, `LoadingOverlay`, `Spinner`, `Skeleton`, `useToast`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `tone` | `'info' | 'success' | 'warning' | 'destructive' | 'muted'` | Controls feedback emphasis. |
+| `title` | `ReactNode` | Primary feedback heading. |
+| `description` | `ReactNode` | Supporting detail under the title. |
+| `action` | `ReactNode` | Optional inline action area. |
+| `icon` | `ReactNode` | Overrides the default tone-based icon. |
+| `children` | `ReactNode` | Additional alert content. |
+
+## BarChart
+
+- Canonical route: `/components/bar-chart`
+- Summary: Canonical chart route for dashboard visuals and metric surfaces.
+
+### Use When
+
+- Category comparison should be obvious at a glance.
+- The product needs one chart-led entry point before exposing legends, frames, or micro-trend helpers.
+- Metric companions should stay related to the chart mental model instead of feeling like duplicate first-level exports.
+
+### Related Helpers
+
+`LineChart`, `DonutChart`, `MetricGrid`, `ChartFrame`, `ChartLegend`, `Sparkline`, `MetricTrend`, `Statistic`, `StatisticGrid`, `StatisticCard`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `data` | `Array<{ label: string; value: number }>` | Visible chart values. |
+| `size` | `'sm' | 'md' | 'lg'` | Controls chart density. |
+| `max` | `number` | Optional explicit upper bound for bar scaling. |
+| `showLabels` | `boolean` | Shows category labels under bars. |
+| `showValues` | `boolean` | Shows numeric values beside or above bars. |
+| `barClassName` | `string` | Optional class override for bar items. |
+
+## Sidebar
+
+- Canonical route: `/components/sidebar`
+- Summary: Canonical navigation and page-shell route for workspace apps.
+
+### Use When
+
+- The app needs persistent primary navigation.
+- Page framing, tabs, pagination, breadcrumbs, and guided flows should read as related navigation surfaces.
+- Teams want one layout-led route before exploring smaller structural helpers.
+
+### Related Helpers
+
+`PageContainer`, `Tabs`, `Pagination`, `Breadcrumbs`, `Wizard`, `Section`, `AnchorNav`, `Stepper`, `StepperTabs`, `SegmentedControl`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `items` | `SidebarItem[]` | Primary navigation items. |
+| `collapsed` | `boolean` | Controls the compact rail state when supported. |
+| `footerAccount` | `SidebarFooterAccount` | Optional user or workspace account block. |
+| `secondaryActions` | `SidebarItem[]` | Optional low-priority actions under the main nav tree. |
+| `renderLink` | `(props) => ReactNode` | Lets routing libraries own the anchor element. |
+| `onItemSelect` | `(item) => void` | Observes navigation selection events. |
+
+## FileUpload
+
+- Canonical route: `/components/file-upload`
+- Summary: Canonical upload route for generic files first, then image-specific behavior when previews matter.
+
+### Use When
+
+- Users should add, review, and remove files without leaving the current flow.
+- Validation, rejected files, and progress belong to the same product surface.
+- ImageUpload should stay related to the generic upload mental model instead of being taught as a disconnected first-level concept.
+
+### Related Helpers
+
+`ImageUpload`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `accept` | `string` | Native file accept pattern. |
+| `multiple` | `boolean` | Allows selecting more than one file. |
+| `maxFiles` | `number` | Caps how many files can be added. |
+| `maxSize` | `number` | Caps file size in bytes when validation is enabled. |
+| `files` | `File[]` | Controlled uploaded files list. |
+| `onFilesChange` | `(files: File[]) => void` | Observes uploaded file changes. |
+
+## Checkbox
+
+- Canonical route: `/components/checkbox`
+- Summary: Canonical primitive route for checked selection, toggles, tables, and supporting building blocks.
+
+### Use When
+
+- A screen needs explicit checked, unchecked, or indeterminate selection.
+- Single-choice, boolean toggle, table, and disclosure primitives should stay related instead of crowding the main catalog independently.
+- Teams need one primitive-led route before reaching for supporting layout helpers like Divider or ScrollBox.
+
+### Related Helpers
+
+`RadioGroup`, `Switch`, `Table`, `Accordion`, `Collapse`, `Calendar`, `Divider`, `Kbd`, `ScrollBox`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `checked` | `boolean | 'indeterminate'` | Controlled checked state. |
+| `defaultChecked` | `boolean | 'indeterminate'` | Uncontrolled initial checked state. |
+| `onCheckedChange` | `(checked) => void` | Checked-state change callback. |
+| `disabled` | `boolean` | Disables interaction. |
+| `required` | `boolean` | Marks the control as required in forms. |
+| `label` | `ReactNode` | Optional visible label content when supported. |
 

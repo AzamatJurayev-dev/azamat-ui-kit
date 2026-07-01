@@ -74,7 +74,7 @@ function DatePicker({
         <PopoverContent
           align="start"
           className={cn(
-            "w-auto rounded-[var(--radius-2xl)] border-border/80 bg-popover/98 p-0 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur",
+            "w-auto overflow-hidden rounded-[calc(var(--radius-2xl)+2px)] border-border/70 bg-popover p-0 shadow-[0_22px_56px_rgba(15,23,42,0.2)] backdrop-blur",
             contentClassName
           )}
         >

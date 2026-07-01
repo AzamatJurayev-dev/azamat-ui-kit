@@ -981,4 +981,568 @@ const actionsColumn = createDataTableActionsColumn({
   )}
 />`,
   },
+  {
+    component: "Button",
+    title: "Primary action",
+    description: "Use Button as the first action surface before reaching for grouped or menu patterns.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Button } from "azamat-ui-kit"
+
+<Button>Save changes</Button>`,
+  },
+  {
+    component: "ActionMenu",
+    title: "Compact actions",
+    description: "Group several actions behind one trigger when the surface should stay compact.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ActionMenu } from "azamat-ui-kit"
+
+<ActionMenu
+  actions={[
+    { key: "edit", label: "Edit", onSelect: () => console.log("edit") },
+    { key: "archive", label: "Archive", onSelect: () => console.log("archive") },
+  ]}
+/>`,
+  },
+  {
+    component: "CopyButton",
+    title: "Copy action",
+    description: "Use CopyButton for IDs, links, and tokens that need one-tap copy feedback.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { CopyButton } from "azamat-ui-kit"
+
+<CopyButton value="inv_2481" copyLabel="Copy invoice id" />`,
+  },
+  {
+    component: "ButtonGroup",
+    title: "Grouped actions",
+    description: "Keep related actions visually aligned without inventing a new primary trigger.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Button, ButtonGroup } from "azamat-ui-kit"
+
+<ButtonGroup>
+  <Button variant="outline">Cancel</Button>
+  <Button>Save</Button>
+</ButtonGroup>`,
+  },
+  {
+    component: "CopyField",
+    title: "Copy row",
+    description: "Show a visible value and copy affordance in one compact pattern.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { CopyField } from "azamat-ui-kit"
+
+<CopyField label="API key" value="sk_live_xxx" />`,
+  },
+  {
+    component: "QuickActionGrid",
+    title: "Shortcut board",
+    description: "Use a quick grid when several small actions should stay visible together.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { QuickActionGrid } from "azamat-ui-kit"
+
+<QuickActionGrid
+  actions={[
+    { key: "invite", label: "Invite" },
+    { key: "export", label: "Export" },
+    { key: "archive", label: "Archive" },
+  ]}
+/>`,
+  },
+  {
+    component: "Alert",
+    title: "Inline status",
+    description: "Use Alert for information, success, warning, or error states inside the page flow.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Alert } from "azamat-ui-kit"
+
+<Alert tone="warning" title="Unsaved changes" description="Save before leaving this page." />`,
+  },
+  {
+    component: "EmptyState",
+    title: "No data state",
+    description: "Use EmptyState when a view needs a stronger zero-data message than a plain paragraph.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { EmptyState } from "azamat-ui-kit"
+
+<EmptyState title="No customers yet" description="Add your first customer to start tracking revenue." />`,
+  },
+  {
+    component: "LoadingState",
+    title: "Structured loading",
+    description: "Prefer LoadingState when loading should include context, not only motion.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { LoadingState } from "azamat-ui-kit"
+
+<LoadingState label="Loading revenue report..." description="Gathering the latest month-to-date numbers." />`,
+  },
+  {
+    component: "Progress",
+    title: "Completion bar",
+    description: "Use Progress for visible task, upload, or rollout completion.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Progress } from "azamat-ui-kit"
+
+<Progress value={72} label="Upload progress" />`,
+  },
+  {
+    component: "ToastProvider",
+    title: "Notification host",
+    description: "Mount the provider once near the app root so features can dispatch toast feedback.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ToastProvider } from "azamat-ui-kit"
+
+<ToastProvider position="top-right">
+  <App />
+</ToastProvider>`,
+  },
+  {
+    component: "InlineState",
+    title: "Compact feedback row",
+    description: "Use InlineState when a card or side panel needs a smaller status treatment.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { InlineState } from "azamat-ui-kit"
+
+<InlineState tone="info" title="Syncing changes" description="This may take a few seconds." />`,
+  },
+  {
+    component: "LoadingOverlay",
+    title: "Blocking local loading",
+    description: "Keep the surface visible while preventing interaction during a local loading phase.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { LoadingOverlay } from "azamat-ui-kit"
+
+<LoadingOverlay loading label="Saving changes...">
+  <section>Form content</section>
+</LoadingOverlay>`,
+  },
+  {
+    component: "Spinner",
+    title: "Minimal loading",
+    description: "Use Spinner only when a tiny loading affordance is enough.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Spinner } from "azamat-ui-kit"
+
+<Spinner label="Loading invoices" />`,
+  },
+  {
+    component: "Skeleton",
+    title: "Loading placeholder",
+    description: "Keep structure visible while data is loading.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Skeleton } from "azamat-ui-kit"
+
+<Skeleton className="h-10 w-full" />`,
+  },
+  {
+    component: "useToast",
+    title: "Dispatch a toast",
+    description: "Use the hook after ToastProvider is mounted to trigger transient feedback.",
+    language: "tsx",
+    variant: "advanced",
+    code: `import { Button, useToast } from "azamat-ui-kit"
+
+function SaveButton() {
+  const { push } = useToast()
+
+  return <Button onClick={() => push({ title: "Saved", description: "Your changes are live." })}>Save</Button>
+}`,
+  },
+  {
+    component: "BarChart",
+    title: "Category comparison",
+    description: "Use a bar chart when categories should be scanned and compared quickly.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { BarChart } from "azamat-ui-kit"
+
+<BarChart data={[{ label: "Jan", value: 12 }, { label: "Feb", value: 18 }, { label: "Mar", value: 15 }]} />`,
+  },
+  {
+    component: "LineChart",
+    title: "Trend line",
+    description: "Use a line chart for ordered values or time-series movement.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { LineChart } from "azamat-ui-kit"
+
+<LineChart values={[12, 16, 18, 15, 22, 24]} showArea />`,
+  },
+  {
+    component: "DonutChart",
+    title: "Part to whole",
+    description: "Use a donut chart when a compact proportional split needs one central summary.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { DonutChart } from "azamat-ui-kit"
+
+<DonutChart
+  data={[
+    { label: "Paid", value: 72, color: "var(--chart-1)" },
+    { label: "Pending", value: 18, color: "var(--chart-2)" },
+    { label: "Refunded", value: 10, color: "var(--chart-3)" },
+  ]}
+  centerLabel="Orders"
+  centerValue="248"
+/>`,
+  },
+  {
+    component: "MetricGrid",
+    title: "KPI grid",
+    description: "Use MetricGrid to keep related KPIs aligned in one responsive surface.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { MetricGrid } from "azamat-ui-kit"
+
+<MetricGrid columns={3}>
+  <div>Revenue</div>
+  <div>MRR</div>
+  <div>Churn</div>
+</MetricGrid>`,
+  },
+  {
+    component: "ChartFrame",
+    title: "Chart shell",
+    description: "Frame chart content with consistent heading and action chrome.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { BarChart, ChartFrame } from "azamat-ui-kit"
+
+<ChartFrame title="Revenue by month" description="Last 6 months">
+  <BarChart data={[{ label: "Jan", value: 12 }, { label: "Feb", value: 18 }]} />
+</ChartFrame>`,
+  },
+  {
+    component: "ChartLegend",
+    title: "Series legend",
+    description: "Explicitly map series names to colors when the chart needs a legend.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ChartLegend } from "azamat-ui-kit"
+
+<ChartLegend
+  data={[
+    { label: "Paid", color: "var(--chart-1)" },
+    { label: "Pending", color: "var(--chart-2)" },
+  ]}
+/>`,
+  },
+  {
+    component: "Sparkline",
+    title: "Micro trend",
+    description: "Use Sparkline when a small historical hint should sit beside a KPI.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Sparkline } from "azamat-ui-kit"
+
+<Sparkline values={[5, 8, 7, 12, 11, 15]} />`,
+  },
+  {
+    component: "MetricTrend",
+    title: "Metric with movement",
+    description: "Bundle current value, delta, and mini-trend in one metric block.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { MetricTrend } from "azamat-ui-kit"
+
+<MetricTrend label="MRR" value="$24,880" change="+8.1%" values={[14, 16, 17, 19, 21, 24]} />`,
+  },
+  {
+    component: "Statistic",
+    title: "Single statistic",
+    description: "Use Statistic for one structured KPI readout with support text.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Statistic } from "azamat-ui-kit"
+
+<Statistic label="Active accounts" value="1,248" description="Compared to last week" />`,
+  },
+  {
+    component: "StatisticGrid",
+    title: "Statistics grid",
+    description: "Align several structured statistics in one grouped layout.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { StatisticGrid } from "azamat-ui-kit"
+
+<StatisticGrid items={[{ label: "MRR", value: "$18k" }, { label: "Churn", value: "2.1%" }]} />`,
+  },
+  {
+    component: "Sidebar",
+    title: "Primary app navigation",
+    description: "Use Sidebar for persistent workspace navigation and nested sections.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Sidebar } from "azamat-ui-kit"
+
+<Sidebar
+  items={[
+    { label: "Dashboard", href: "/dashboard", active: true },
+    { label: "Customers", href: "/customers" },
+  ]}
+/>`,
+  },
+  {
+    component: "PageContainer",
+    title: "Page width rhythm",
+    description: "Use PageContainer to keep horizontal page spacing consistent.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { PageContainer } from "azamat-ui-kit"
+
+<PageContainer size="lg">
+  <section>Page content</section>
+</PageContainer>`,
+  },
+  {
+    component: "Tabs",
+    title: "Section switcher",
+    description: "Use Tabs for a small set of peer views without leaving the page.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "azamat-ui-kit"
+
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="activity">Activity</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">Overview content</TabsContent>
+</Tabs>`,
+  },
+  {
+    component: "Pagination",
+    title: "Paged results",
+    description: "Move through indexed result sets with one reusable pagination surface.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Pagination } from "azamat-ui-kit"
+
+<Pagination page={2} totalPages={12} onPageChange={setPage} />`,
+  },
+  {
+    component: "Breadcrumbs",
+    title: "Location trail",
+    description: "Show the current nested path back through the app structure.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Breadcrumbs } from "azamat-ui-kit"
+
+<Breadcrumbs items={[{ label: "Workspace", href: "/" }, { label: "Customers", href: "/customers" }, { label: "Acme Corp" }]} />`,
+  },
+  {
+    component: "Wizard",
+    title: "Multi-step flow",
+    description: "Use Wizard when the product needs a guided, step-by-step completion flow.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Wizard } from "azamat-ui-kit"
+
+<Wizard steps={[{ id: "account", label: "Account" }, { id: "billing", label: "Billing" }]} currentStep={0} />`,
+  },
+  {
+    component: "Section",
+    title: "Page subsection",
+    description: "Group related page content without promoting it to a primary route.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Section } from "azamat-ui-kit"
+
+<Section title="Billing" description="Manage invoice and payment settings.">
+  Billing content
+</Section>`,
+  },
+  {
+    component: "AnchorNav",
+    title: "In-page sections",
+    description: "Jump between sections inside a long detail page.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { AnchorNav } from "azamat-ui-kit"
+
+<AnchorNav items={[{ id: "overview", label: "Overview" }, { id: "activity", label: "Activity" }]} />`,
+  },
+  {
+    component: "Stepper",
+    title: "Step progress",
+    description: "Use Stepper when the UI needs visible progress without the full Wizard shell.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Stepper } from "azamat-ui-kit"
+
+<Stepper steps={[{ id: "account", label: "Account" }, { id: "billing", label: "Billing" }]} currentStep={1} />`,
+  },
+  {
+    component: "StepperTabs",
+    title: "Step tabs",
+    description: "Use StepperTabs when sections read like steps but still switch like tabs.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { StepperTabs } from "azamat-ui-kit"
+
+<StepperTabs items={[{ value: "profile", label: "Profile" }, { value: "security", label: "Security" }]} value="profile" />`,
+  },
+  {
+    component: "SegmentedControl",
+    title: "Compact switcher",
+    description: "Use SegmentedControl for very small mutually exclusive sets.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { SegmentedControl } from "azamat-ui-kit"
+
+<SegmentedControl options={[{ label: "Day", value: "day" }, { label: "Week", value: "week" }]} value="week" />`,
+  },
+  {
+    component: "FileUpload",
+    title: "Generic file flow",
+    description: "Use FileUpload when users should add, review, and remove uploaded files in one place.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { FileUpload } from "azamat-ui-kit"
+
+<FileUpload multiple maxFiles={5} />`,
+  },
+  {
+    component: "ImageUpload",
+    title: "Image-specific upload",
+    description: "Use ImageUpload when previews and image-oriented UX matter.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ImageUpload } from "azamat-ui-kit"
+
+<ImageUpload maxFiles={1} />`,
+  },
+  {
+    component: "Checkbox",
+    title: "Binary selection",
+    description: "Use Checkbox for explicit checked and indeterminate selection states.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Checkbox } from "azamat-ui-kit"
+
+<Checkbox checked={selected} onCheckedChange={setSelected} />`,
+  },
+  {
+    component: "RadioGroup",
+    title: "Single choice set",
+    description: "Use RadioGroup when exactly one visible option should be selected.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { RadioGroup } from "azamat-ui-kit"
+
+<RadioGroup value="monthly" onValueChange={setBillingCycle} options={[{ label: "Monthly", value: "monthly" }, { label: "Yearly", value: "yearly" }]} />`,
+  },
+  {
+    component: "Switch",
+    title: "Immediate toggle",
+    description: "Use Switch when turning a setting on or off should feel direct and lightweight.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Switch } from "azamat-ui-kit"
+
+<Switch checked={enabled} onCheckedChange={setEnabled} />`,
+  },
+  {
+    component: "Table",
+    title: "Base table",
+    description: "Use Table when rows are simple enough that a full DataTable would be too heavy.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "azamat-ui-kit"
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Acme</TableCell>
+      <TableCell>Active</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>`,
+  },
+  {
+    component: "Accordion",
+    title: "Expandable sections",
+    description: "Use Accordion when stacked content should reveal details inline.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Accordion } from "azamat-ui-kit"
+
+<Accordion items={[{ value: "shipping", title: "Shipping", content: "2-3 business days" }]} />`,
+  },
+  {
+    component: "Collapse",
+    title: "Low-level disclosure",
+    description: "Use Collapse when you need raw expand and collapse behavior without Accordion’s higher-level API.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Collapse, CollapseContent, CollapseTrigger } from "azamat-ui-kit"
+
+<Collapse>
+  <CollapseTrigger>Toggle details</CollapseTrigger>
+  <CollapseContent>Hidden content</CollapseContent>
+</Collapse>`,
+  },
+  {
+    component: "Calendar",
+    title: "Raw calendar",
+    description: "Use Calendar when a custom date surface needs the primitive calendar control.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Calendar } from "azamat-ui-kit"
+
+<Calendar mode="single" selected={date} onSelect={setDate} />`,
+  },
+  {
+    component: "Divider",
+    title: "Section separator",
+    description: "Use Divider when content groups need a subtle visual boundary.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Divider } from "azamat-ui-kit"
+
+<Divider />`,
+  },
+  {
+    component: "Kbd",
+    title: "Shortcut token",
+    description: "Show keyboard shortcuts with one consistent keycap style.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { Kbd } from "azamat-ui-kit"
+
+<Kbd>Ctrl</Kbd>`,
+  },
+  {
+    component: "ScrollBox",
+    title: "Local scroll area",
+    description: "Use ScrollBox when a panel should scroll internally instead of growing the whole page.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ScrollBox } from "azamat-ui-kit"
+
+<ScrollBox maxHeight={280}>
+  <div>Scrollable content</div>
+</ScrollBox>`,
+  },
 ] as const

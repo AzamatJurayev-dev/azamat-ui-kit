@@ -1,3 +1,5 @@
+import { additionalPublicFamilies } from "@/families/public-surface-rationalization"
+
 export type ComponentFamilyName =
   | "InputFamily"
   | "SelectFamily"
@@ -6,15 +8,21 @@ export type ComponentFamilyName =
   | "OverlayFamily"
   | "FormFamily"
   | "DataTableFamily"
+  | "ActionFamily"
+  | "FeedbackFamily"
+  | "ChartFamily"
+  | "NavigationFamily"
+  | "UploadFamily"
+  | "PrimitiveFamily"
 
 export type ComponentFamilyCatalogEntry = {
   family: ComponentFamilyName
   label: string
   description: string
-  canonical: string[]
-  members: string[]
-  transitional?: string[]
-  advanced?: string[]
+  canonical: readonly string[]
+  members: readonly string[]
+  transitional?: readonly string[]
+  advanced?: readonly string[]
 }
 
 export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
@@ -39,7 +47,8 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     label: "Select",
     description: "Primitive select plus async, multi, combobox, and form integration presets.",
     canonical: ["Select"],
-    members: ["SimpleSelect", "AsyncSelect", "AsyncMultiSelect", "Combobox", "FormSelect", "FormAsyncSelect"],
+    members: ["AsyncSelect", "AsyncMultiSelect", "Combobox", "FormSelect"],
+    transitional: ["SimpleSelect", "FormAsyncSelect"],
   },
   {
     family: "CardFamily",
@@ -61,7 +70,8 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     label: "Overlay",
     description: "Dialog, popover, menu, tooltip, drawer, and hover-preview interaction surfaces grouped by behavior.",
     canonical: ["Dialog", "Popover", "DropdownMenu"],
-    members: ["Tooltip", "HoverCard", "RightClickMenu", "AlertDialog", "ConfirmDialog", "ModalShell", "SheetShell", "Drawer", "DialogActions"],
+    members: ["Tooltip", "HoverCard", "ConfirmDialog", "SheetShell"],
+    transitional: ["RightClickMenu", "AlertDialog", "ModalShell", "Drawer", "DialogActions"],
   },
   {
     family: "FormFamily",
@@ -74,15 +84,17 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
       "FormSelect",
       "FormAsyncSelect",
       "FormSwitch",
+      "FormDatePicker",
+      "FormDateRangePicker",
+      "RepeaterField",
+    ],
+    transitional: [
       "FormSearchInput",
       "FormPasswordInput",
       "FormNumberInput",
       "FormPhoneInput",
       "FormDateInput",
       "FormDateRangeInput",
-      "FormDatePicker",
-      "FormDateRangePicker",
-      "RepeaterField",
     ],
     advanced: ["FormBuilder"],
   },
@@ -104,4 +116,5 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
     ],
     advanced: ["TableExportMenu", "TableImportButton"],
   },
+  ...additionalPublicFamilies,
 ] as const

@@ -20,7 +20,7 @@ function toSortedEntries(entries: FamilyMigrationEntry[]) {
   return [...entries].sort((left, right) => left.component.localeCompare(right.component))
 }
 
-function pickCatalogEntries(entries: FamilyMigrationEntry[], components: string[]) {
+function pickCatalogEntries(entries: FamilyMigrationEntry[], components: readonly string[]) {
   const allowed = new Set(components)
   return toSortedEntries(entries.filter((entry) => allowed.has(entry.component)))
 }

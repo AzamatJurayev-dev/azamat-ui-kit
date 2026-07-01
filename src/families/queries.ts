@@ -28,15 +28,15 @@ const publicFamilyOverrides: Partial<Record<ComponentFamilyName, ComponentFamily
     label: "Card",
     description: "Primitive card plus only the card presets that provide reusable product value.",
     canonical: ["Card", "InfoCard"],
-    members: ["EntityCard", "FileCard"],
-    transitional: ["SmartCard", "StatCard", "StatisticCard", "TrendCard", "ComparisonCard"],
+    members: ["EntityCard", "FileCard", "TrendCard", "ComparisonCard"],
+    transitional: ["SmartCard", "StatCard"],
   },
   OverlayFamily: {
     family: "OverlayFamily",
     label: "Overlay",
     description: "Floating interaction surfaces grouped by behavior, not by card-like visual appearance.",
-    canonical: ["Dialog", "Popover", "DropdownMenu", "Tooltip"],
-    members: ["ConfirmDialog", "SheetShell", "HoverCard"],
+    canonical: ["Dialog", "Popover", "DropdownMenu"],
+    members: ["Tooltip", "ConfirmDialog", "SheetShell", "HoverCard"],
     transitional: ["RightClickMenu", "AlertDialog", "ModalShell", "Drawer", "DialogActions"],
   },
   FormFamily: {
@@ -45,7 +45,7 @@ const publicFamilyOverrides: Partial<Record<ComponentFamilyName, ComponentFamily
     description: "Field shell and a compact set of broad wrappers instead of many small aliases.",
     canonical: ["FormFieldShell"],
     members: ["FormInput", "FormTextarea", "FormSelect", "FormSwitch", "FormDatePicker", "FormDateRangePicker", "RepeaterField"],
-    transitional: ["FormAsyncSelect", "FormSearchInput", "FormNumberInput", "FormPhoneInput", "FormDateInput", "FormDateRangeInput"],
+    transitional: ["FormSearchInput", "FormPasswordInput", "FormNumberInput", "FormPhoneInput", "FormDateInput", "FormDateRangeInput"],
     advanced: ["FormBuilder"],
   },
   DataTableFamily: {
@@ -53,8 +53,7 @@ const publicFamilyOverrides: Partial<Record<ComponentFamilyName, ComponentFamily
     label: "Data Table",
     description: "Table shell with toolbar and pagination as the only first-level companions.",
     canonical: ["DataTable"],
-    members: ["DataTableToolbar", "DataTablePagination"],
-    transitional: ["DataTableColumnVisibilityMenu", "DataTableSortableHeader", "DataTableRowActions", "DataTableBulkActions", "DataTableViewPresets", "createDataTableSelectColumn", "createDataTableActionsColumn"],
+    members: ["DataTableToolbar", "DataTablePagination", "DataTableColumnVisibilityMenu", "DataTableSortableHeader", "DataTableRowActions", "DataTableBulkActions", "DataTableViewPresets", "createDataTableSelectColumn", "createDataTableActionsColumn"],
     advanced: ["TableExportMenu", "TableImportButton"],
   },
 }

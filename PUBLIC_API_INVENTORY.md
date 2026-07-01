@@ -84,6 +84,12 @@ The public site should show one clean component name first, then related variant
 - `Badge`: badge tones, sizes, icon slots, and dot usage; do not teach extra status-badge naming.
 - `Dialog`: dialog, popover, dropdown, tooltip, right-click menu, alert/confirm, drawer, and sheet behaviors under one overlay mental model.
 - `DataTable`: core table plus pagination, toolbar, saved filters, bulk actions, column visibility, and row actions.
+- `Button`: direct actions first, then menu, copy, and grouped-action helpers.
+- `Alert`: status, empty, loading, progress, and toast feedback surfaces grouped together.
+- `BarChart`: chart-led route with line, donut, metric, legend, and statistic helpers attached.
+- `Sidebar`: navigation-led route with page container, tabs, pagination, breadcrumbs, and wizard companions.
+- `FileUpload`: generic upload route with image-specific upload behavior as a related member.
+- `Checkbox`: primitive route for selection, tables, disclosure, and supporting low-level helpers.
 
 ## Required Maintenance
 

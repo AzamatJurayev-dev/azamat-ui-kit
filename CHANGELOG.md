@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 0.3.21 - 2026-07-01
+## 0.3.22 - 2026-07-01
 
 ### Changed
 
@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 - promoted `InfoCard` as the canonical display-card name while keeping `SmartCard` as a deprecated compatibility alias
 - marked compatibility wrappers such as `FormPasswordInput`, `FormAsyncSelect`, and `AppSidebar` more explicitly as migration aliases
 - rewrote `PUBLIC_API_INVENTORY.md`, regenerated `PUBLIC_COMPONENT_API.md`, and refreshed `README.md` so source-copy-first canonical APIs lead the docs surface
+- rationalized public family surfaces so actions, feedback, charts, navigation, primitives, and upload docs group around canonical component entry points
+- refined `Calendar`, `DatePicker`, and `DateRangePicker` popup chrome so installed dark-mode date pickers no longer render with heavy nested panels
 
 ## 0.3.19 - 2026-06-30
 

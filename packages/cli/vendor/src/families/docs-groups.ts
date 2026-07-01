@@ -1,4 +1,5 @@
 import type { ComponentFamilyName } from "@/families/catalog"
+import { additionalDocsGroups } from "@/families/public-surface-rationalization"
 
 export type ComponentDocsGroupName =
   | "Input"
@@ -8,12 +9,18 @@ export type ComponentDocsGroupName =
   | "Overlay"
   | "FormField"
   | "DataTable"
+  | "Button"
+  | "Alert"
+  | "BarChart"
+  | "Sidebar"
+  | "FileUpload"
+  | "Checkbox"
 
 export type ComponentDocsSection = {
   id: string
   label: string
   description: string
-  components: string[]
+  components: readonly string[]
 }
 
 export type ComponentDocsGroupEntry = {
@@ -23,7 +30,7 @@ export type ComponentDocsGroupEntry = {
   label: string
   primaryComponent: string
   description: string
-  sections: ComponentDocsSection[]
+  sections: readonly ComponentDocsSection[]
 }
 
 export const componentDocsGroups: ComponentDocsGroupEntry[] = [
@@ -85,13 +92,19 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "complex-presets",
         label: "Complex presets",
         description: "Keep only selection components with real extra behavior.",
-        components: ["AsyncSelect", "AsyncMultiSelect", "Combobox"],
+        components: ["SimpleSelect", "AsyncSelect", "AsyncMultiSelect", "Combobox"],
       },
       {
         id: "form-wrapper",
         label: "Form wrapper",
         description: "Use one form select wrapper instead of listing async-specific form aliases as first-level components.",
         components: ["FormSelect"],
+      },
+      {
+        id: "compatibility-aliases",
+        label: "Compatibility aliases",
+        description: "Older select wrappers can stay available, but they should not lead the first-level route.",
+        components: ["FormAsyncSelect"],
       },
     ],
   },
@@ -113,7 +126,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "product-cards",
         label: "Product cards",
         description: "Card presets that are harder to recreate as a one-off variant.",
-        components: ["EntityCard", "FileCard"],
+        components: ["EntityCard", "FileCard", "TrendCard", "ComparisonCard", "SmartCard", "StatCard"],
       },
     ],
   },
@@ -151,7 +164,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "focused-flows",
         label: "Focused flows",
         description: "Keep only overlay presets with real flow-level behavior in the public catalog.",
-        components: ["ConfirmDialog", "SheetShell", "HoverCard"],
+        components: ["ConfirmDialog", "SheetShell", "HoverCard", "RightClickMenu", "AlertDialog", "ModalShell", "Drawer", "DialogActions"],
       },
     ],
   },
@@ -201,7 +214,17 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
         id: "core-companions",
         label: "Core companions",
         description: "Only the table companions that are commonly installed next to the main grid.",
-        components: ["DataTableToolbar", "DataTablePagination"],
+        components: [
+          "DataTableToolbar",
+          "DataTablePagination",
+          "DataTableColumnVisibilityMenu",
+          "DataTableSortableHeader",
+          "DataTableRowActions",
+          "DataTableBulkActions",
+          "DataTableViewPresets",
+          "createDataTableSelectColumn",
+          "createDataTableActionsColumn",
+        ],
       },
       {
         id: "advanced",
@@ -211,4 +234,5 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
       },
     ],
   },
+  ...additionalDocsGroups,
 ] as const
