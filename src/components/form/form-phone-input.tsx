@@ -3,6 +3,7 @@ import {
   type FormInputPhoneInputValueMode,
   type FormInputPhoneVariantProps,
 } from "@/components/form/form-input"
+import { warnDeprecatedComponent } from "@/lib/deprecated-warning"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
 export type FormPhoneInputValueMode = FormInputPhoneInputValueMode
@@ -22,6 +23,7 @@ function FormPhoneInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: FormPhoneInputProps<TFieldValues, TName>) {
+  warnDeprecatedComponent("FormPhoneInput", "FormInput with kind=\"phone\"")
   const { valueMode, ...rest } = props
   return <FormInput {...rest} valueMode={valueMode} kind="phone" />
 }
