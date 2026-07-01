@@ -5,8 +5,22 @@ import {
   type FamilyMigrationStatus,
 } from "@/families/migration-map"
 
+const simplifiedInputFamilyEntry: ComponentFamilyCatalogEntry = {
+  family: "InputFamily",
+  label: "Input",
+  description: "Small core input surface for the input types used most often in dashboard screens.",
+  canonical: ["Input", "Textarea"],
+  members: ["NumberInput", "PhoneInput", "MoneyInput", "DateInput", "DateRangeInput", "FormInput"],
+  transitional: ["ClearableInput", "SearchInput", "MaskedInput", "QuantityInput"],
+  advanced: ["Slider", "RangeSlider", "Rating", "OtpInput", "ColorInput", "InlineEditable", "TagInput", "QuantityStepper"],
+}
+
+const componentFamilyPublicCatalog = componentFamilyCatalog.map((entry) =>
+  entry.family === "InputFamily" ? simplifiedInputFamilyEntry : entry
+)
+
 const familyCatalogMap = new Map<ComponentFamilyName, ComponentFamilyCatalogEntry>(
-  componentFamilyCatalog.map((entry) => [entry.family, entry])
+  componentFamilyPublicCatalog.map((entry) => [entry.family, entry])
 )
 
 const componentMigrationMap = new Map<string, FamilyMigrationEntry[]>()
@@ -19,6 +33,10 @@ for (const entry of componentFamilyMigrationMap) {
 
 function getFamilyCatalogEntry(family: ComponentFamilyName) {
   return familyCatalogMap.get(family)
+}
+
+function listFamilyCatalogEntries() {
+  return componentFamilyPublicCatalog
 }
 
 function getFamilyMembers(family: ComponentFamilyName) {
@@ -59,5 +77,6 @@ export {
   listAdvancedComponents,
   listCanonicalComponents,
   listComponentsByStatus,
+  listFamilyCatalogEntries,
   listTransitionalComponents,
 }
