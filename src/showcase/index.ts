@@ -12,13 +12,14 @@ import { overlayShowcaseDemoRegistry } from "@/components/overlay/demo"
 import { patternsShowcaseDemoRegistry } from "@/components/patterns/demo"
 import { uploadShowcaseDemoRegistry } from "@/components/upload/demo"
 import { wizardShowcaseDemoRegistry } from "@/components/wizard/demo"
-import { premiumShowcaseDemoRegistry } from "./premium"
+import { defaultComponentDemoState, premiumShowcaseDemoRegistry } from "./premium"
 import { registrySpecificDemoRegistry } from "./registry-specific"
 
 export * from "./types"
 export * from "./premium"
 export * from "./registry-specific"
 export * from "./fallback"
+export * from "./families/index"
 
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
@@ -38,3 +39,6 @@ export const showcaseDemoRegistry = {
   ...registrySpecificDemoRegistry,
   ...premiumShowcaseDemoRegistry,
 }
+
+export { defaultComponentDemoState }
+export const componentDemoRegistry = showcaseDemoRegistry
