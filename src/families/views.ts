@@ -1,10 +1,11 @@
-import { componentFamilyCatalog, type ComponentFamilyCatalogEntry, type ComponentFamilyName } from "@/families/catalog"
+import type { ComponentFamilyCatalogEntry, ComponentFamilyName } from "@/families/catalog"
 import type { FamilyMigrationEntry } from "@/families/migration-map"
 import {
   getFamilyCatalogEntry,
   getFamilyMembers,
   listAdvancedComponents,
   listCanonicalComponents,
+  listFamilyCatalogEntries,
   listTransitionalComponents,
 } from "@/families/queries"
 
@@ -25,22 +26,10 @@ function getFamilyView(family: ComponentFamilyName): ComponentFamilyView | undef
   if (!catalogEntry) return undefined
 
   const familyMembers = getFamilyMembers(family)
-  const canonicalEntries = toSortedEntries(
-    familyMembers.filter(
-      (entry) => entry.status === "canonical" || entry.status === "canonical composed member"
-    )
-  )
-  const transitionalEntries = toSortedEntries(
-    familyMembers.filter((entry) => entry.status === "transitional")
-  )
-  const advancedEntries = toSortedEntries(
-    familyMembers.filter((entry) => entry.status === "advanced")
-  )
-  const memberEntries = toSortedEntries(
-    familyMembers.filter(
-      (entry) => entry.status === "family-member" || entry.status === "family-member helper"
-    )
-  )
+  const canonicalEntries = toSortedEntries(familyMembers.filter((entry) => entry.status === "canonical" || entry.status === "canonical composed member"))
+  const transitionalEntries = toSortedEntries(familyMembers.filter((entry) => entry.status === "transitional"))
+  const advancedEntries = toSortedEntries(familyMembers.filter((entry) => entry.status === "advanced"))
+  const memberEntries = toSortedEntries(familyMembers.filter((entry) => entry.status === "family-member" || entry.status === "family-member helper"))
 
   return {
     ...catalogEntry,
@@ -52,13 +41,11 @@ function getFamilyView(family: ComponentFamilyName): ComponentFamilyView | undef
 }
 
 function listFamilyViews() {
-  return componentFamilyCatalog
-    .map((entry) => getFamilyView(entry.family))
-    .filter((entry): entry is ComponentFamilyView => Boolean(entry))
+  return listFamilyCatalogEntries().map((entry) => getFamilyView(entry.family)).filter(Boolean) as ComponentFamilyView[]
 }
 
 function getFamilyNavigation() {
-  return componentFamilyCatalog.map((entry) => ({
+  return listFamilyCatalogEntries().map((entry) => ({
     family: entry.family,
     label: entry.label,
     description: entry.description,
@@ -71,7 +58,7 @@ function getFamilyNavigation() {
 
 function getMetadataSummary() {
   return {
-    families: componentFamilyCatalog.length,
+    families: listFamilyCatalogEntries().length,
     canonical: listCanonicalComponents().length,
     transitional: listTransitionalComponents().length,
     advanced: listAdvancedComponents().length,
