@@ -18,6 +18,7 @@ import { registrySpecificDemoRegistry } from "./registry-specific"
 export * from "./types"
 export * from "./premium"
 export * from "./registry-specific"
+export * from "./fallback"
 
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
