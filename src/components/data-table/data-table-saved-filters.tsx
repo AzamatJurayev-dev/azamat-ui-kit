@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { stopInteractivePropagation } from "@/lib/utils"
 
 export type SavedFilter = {
   id: string
@@ -83,9 +84,11 @@ function DataTableSavedFilters({
                   className="absolute right-1 hidden group-hover:flex"
                   onClick={(e) => {
                     e.preventDefault()
-                    e.stopPropagation()
+                    stopInteractivePropagation(e)
                     onDeleteFilter?.(filter.id)
                   }}
+                  onMouseDown={stopInteractivePropagation}
+                  onDoubleClick={stopInteractivePropagation}
                 >
                   <XIcon className="size-3" />
                   <span className="sr-only">Delete</span>
@@ -131,8 +134,11 @@ function DataTableSavedFilters({
                 className="w-full justify-start gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
                 onClick={(e) => {
                   e.preventDefault()
+                  stopInteractivePropagation(e)
                   onClearFilters?.()
                 }}
+                onMouseDown={stopInteractivePropagation}
+                onDoubleClick={stopInteractivePropagation}
               >
                 <XIcon className="size-4" />
                 Clear active view

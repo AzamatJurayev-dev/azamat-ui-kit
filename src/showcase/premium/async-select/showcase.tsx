@@ -1,12 +1,9 @@
 import { useState } from "react"
 
 import { AsyncSelect, Badge, type AsyncSelectOption } from "@/index"
+import { routeWorkspaceOptions } from "@/showcase/component-route-data"
 
-const workspaceOptions: AsyncSelectOption[] = [
-  { value: "north", label: "North Region", description: "Sales ops" },
-  { value: "south", label: "South Region", description: "Support team" },
-  { value: "west", label: "West Region", description: "Billing operations" },
-]
+const workspaceOptions: AsyncSelectOption[] = routeWorkspaceOptions
 
 const panelClass =
   "rounded-[22px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5"
@@ -20,6 +17,7 @@ const loadOptions = async (query: string): Promise<typeof workspaceOptions> => {
 
 export function AsyncSelectShowcase() {
   const [value, setValue] = useState("")
+  const activeOption = routeWorkspaceOptions.find((item) => item.value === value)
 
   return (
     <div className="space-y-5">
@@ -54,14 +52,38 @@ export function AsyncSelectShowcase() {
                 debounceMs={220}
               />
             </div>
+            <div className="mt-4 grid gap-3 md:grid-cols-3">
+              <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+                <p className="font-medium aui-text-strong">Type to query</p>
+                <p className="mt-2 leading-6 aui-text-muted">Minimum search length keeps remote requests intentional.</p>
+              </div>
+              <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+                <p className="font-medium aui-text-strong">Clear safely</p>
+                <p className="mt-2 leading-6 aui-text-muted">Clear action is isolated from the trigger surface.</p>
+              </div>
+              <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+                <p className="font-medium aui-text-strong">Hydrate selection</p>
+                <p className="mt-2 leading-6 aui-text-muted">Selected value can be restored from ID-first edit state.</p>
+              </div>
+            </div>
           </div>
 
           <div className={panelClass}>
             <p className="text-sm font-medium aui-text-muted">Selected result</p>
-            <p className="mt-3 text-2xl font-semibold tracking-tight aui-text-strong">{value || "No region selected"}</p>
+            <p className="mt-3 text-2xl font-semibold tracking-tight aui-text-strong">{activeOption?.label || "No region selected"}</p>
             <p className="mt-2 text-sm leading-6 aui-text-muted">
               Start typing to simulate remote filtering. This should feel like a specialized extension of Select, not a completely separate mental model.
             </p>
+            <div className="mt-4 space-y-3">
+              <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3">
+                <p className="text-xs uppercase tracking-[0.2em] aui-text-muted">Value</p>
+                <p className="mt-2 text-sm font-medium aui-text-strong">{value || "none"}</p>
+              </div>
+              <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3">
+                <p className="text-xs uppercase tracking-[0.2em] aui-text-muted">Team</p>
+                <p className="mt-2 text-sm font-medium aui-text-strong">{activeOption ? routeWorkspaceOptions.find((item) => item.value === activeOption.value)?.team : "No team"}</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.23 - 2026-07-02
+
+### Changed
+
+- upgraded `Carousel` from a static slide shell to a usable component with internal state, arrows, dots, loop support, and keyboard navigation
+- replaced `SavedFilterSelect` browser `prompt()` saving with an inline input flow so saved-view creation is stylable, testable, and accessible
+- rebuilt `ResizablePanel` into an actual split-panel primitive with draggable and keyboard-accessible handles instead of a fake CSS resize shell
+- upgraded `MentionInput` into a real trigger-based mention surface with inline suggestions, keyboard selection, and cursor-aware insertion
+- synced `JsonInput` validation with controlled values and aligned `TrendCard` success sparkline colors with Azamat UI theme tokens
+- refreshed registry/showcase wiring and CLI vendor copies so the new component behavior ships consistently in both package and source-copy flows
+
 ## 0.3.22 - 2026-07-01
 
 ### Changed

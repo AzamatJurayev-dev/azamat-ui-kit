@@ -822,7 +822,7 @@ function renderGenericPreviewSurface(
             key: "done",
             title: "Done",
             cards: [
-              { key: "3", title: "Publish 0.3.22", description: "Release package and sync docs." },
+              { key: "3", title: "Publish 0.3.23", description: "Release package and sync docs." },
             ],
           },
         ]}
@@ -957,7 +957,11 @@ function renderGenericPreviewSurface(
         filters={[
           { value: "billing", label: "Billing", description: "Invoices and payment status" },
           { value: "ops", label: "Operations", description: "Queues and workload" },
+          { value: "owners", label: "Owner: Azamat", description: "Assigned records only" },
         ]}
+        onValueChange={() => undefined}
+        onSave={() => undefined}
+        onDelete={() => undefined}
       />
     )
   }
@@ -1027,3 +1031,4 @@ function renderGenericPreviewSurface(
     </div>
   )
 }
+

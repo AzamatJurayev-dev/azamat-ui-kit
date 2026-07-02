@@ -41,7 +41,7 @@ function TrendCard({
 
     const strokeColor =
       trend === "up"
-        ? "var(--emerald-500)"
+        ? "var(--aui-success,var(--primary))"
         : trend === "down"
           ? "var(--destructive)"
           : "var(--muted-foreground)"

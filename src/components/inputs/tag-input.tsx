@@ -3,7 +3,7 @@ import { XIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type TagInputProps = Omit<React.ComponentProps<"div">, "onChange"> & {
   value?: string[]
@@ -85,7 +85,12 @@ function TagInput({
               <button
                 type="button"
                 className="inline-flex size-5 items-center justify-center rounded-full text-muted-foreground transition hover:bg-[color:var(--aui-control-bg)] hover:text-foreground"
-                onClick={() => removeTag(tag)}
+                onClick={(event) => {
+                  stopInteractivePropagation(event)
+                  removeTag(tag)
+                }}
+                onMouseDown={stopInteractivePropagation}
+                onDoubleClick={stopInteractivePropagation}
               >
                 <XIcon className="size-3" />
               </button>

@@ -76,9 +76,14 @@ function RegistryShowcase({
   return (
     <div className="space-y-5">
       <header className="space-y-2">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[color:var(--aui-page-muted)]">
-          {definition.component}
-        </p>
+        <div className="flex flex-wrap gap-2">
+          <span className="rounded-full border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--aui-page-muted)]">
+            {definition.component}
+          </span>
+          <span className="rounded-full border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--aui-page-muted)]">
+            {definition.kind}
+          </span>
+        </div>
         <div>
           <h3 className="text-2xl font-semibold tracking-tight text-[color:var(--aui-page-foreground)]">
             {definition.title}
@@ -89,6 +94,17 @@ function RegistryShowcase({
 
       <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] p-4 sm:p-5">
         {renderShowcasePreview(definition, state, setState)}
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-3">
+        {definition.highlights.slice(0, 3).map((item) => (
+          <div
+            key={item}
+            className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm leading-6 text-[color:var(--aui-page-muted)]"
+          >
+            {item}
+          </div>
+        ))}
       </div>
     </div>
   )

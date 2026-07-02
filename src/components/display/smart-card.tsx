@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { Card } from "@/components/ui/card"
 import { Skeleton, SkeletonText } from "@/components/ui/skeleton"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type InfoCardVariant = "default" | "outline" | "elevated" | "ghost"
 export type InfoCardSize = "sm" | "md" | "lg"
@@ -169,7 +169,17 @@ function InfoCard({
                     {description && <div data-slot="info-card-description" className={cn("line-clamp-2 text-sm text-muted-foreground", classNames?.description)}>{description}</div>}
                   </div>
                 </div>
-                {actions && <div data-slot="info-card-actions" className={cn("shrink-0", classNames?.actions)} onClick={(event) => event.stopPropagation()}>{actions}</div>}
+                {actions && (
+                  <div
+                    data-slot="info-card-actions"
+                    className={cn("shrink-0", classNames?.actions)}
+                    onClick={stopInteractivePropagation}
+                    onMouseDown={stopInteractivePropagation}
+                    onDoubleClick={stopInteractivePropagation}
+                  >
+                    {actions}
+                  </div>
+                )}
               </div>
             )}
             {meta && <div data-slot="info-card-meta" className={cn("text-xs text-muted-foreground", classNames?.meta)}>{meta}</div>}

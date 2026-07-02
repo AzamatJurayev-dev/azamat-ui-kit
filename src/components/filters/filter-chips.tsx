@@ -3,7 +3,7 @@ import { XIcon } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type FilterChip = {
   key: string
@@ -41,7 +41,6 @@ function FilterChips({
   ...props
 }: FilterChipsProps) {
   const visibleChips = chips.filter((chip) => !chip.hidden)
-
   if (!visibleChips.length) {
     return <div data-slot="filter-chips-empty" className={cn("text-sm text-muted-foreground", className)} {...props}>{empty}</div>
   }
@@ -53,14 +52,35 @@ function FilterChips({
           <span>{chip.label}</span>
           {chip.value !== undefined && <span className="text-muted-foreground">{chip.value}</span>}
           {onRemove && !chip.disabled && (
-            <button type="button" className="rounded-full p-0.5 hover:bg-muted" onClick={() => onRemove(chip.key)}>
+            <button
+              type="button"
+              className="rounded-full p-0.5 hover:bg-muted"
+              onClick={(event) => {
+                stopInteractivePropagation(event)
+                onRemove(chip.key)
+              }}
+              onMouseDown={stopInteractivePropagation}
+              onDoubleClick={stopInteractivePropagation}
+            >
               <XIcon className="size-3" />
             </button>
           )}
         </Badge>
       ))}
       {onClear && (
-        <Button type="button" variant="ghost" size="xs" onClick={onClear}>{clearLabel}</Button>
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          onClick={(event) => {
+            stopInteractivePropagation(event)
+            onClear()
+          }}
+          onMouseDown={stopInteractivePropagation}
+          onDoubleClick={stopInteractivePropagation}
+        >
+          {clearLabel}
+        </Button>
       )}
     </div>
   )

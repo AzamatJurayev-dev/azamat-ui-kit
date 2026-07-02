@@ -2,6 +2,7 @@ import * as React from "react"
 import { CheckIcon, CopyIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { stopInteractivePropagation } from "@/lib/utils"
 
 export type CopyButtonProps = Omit<React.ComponentProps<typeof Button>, "onClick"> & {
   value: string
@@ -73,13 +74,20 @@ function CopyButton({
     }
   }, [copiedTimeout, onCopied, onCopyError, value])
 
+  const handleButtonClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    stopInteractivePropagation(event)
+    void handleCopy()
+  }
+
   return (
     <Button
       data-slot="copy-button"
       data-copied={copied || undefined}
       type={type}
       disabled={disabled || !value}
-      onClick={handleCopy}
+      onClick={handleButtonClick}
+      onMouseDown={stopInteractivePropagation}
+      onDoubleClick={stopInteractivePropagation}
       {...props}
     >
       {showIcon && (copied ? <CheckIcon data-icon="inline-start" /> : <CopyIcon data-icon="inline-start" />)}

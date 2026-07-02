@@ -2,7 +2,7 @@ import * as React from "react"
 import { FileIcon, MoreHorizontalIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type FileCardProps = React.ComponentProps<"div"> & {
   name: React.ReactNode
@@ -41,7 +41,14 @@ function FileCard({ name, description, meta, icon, preview, actions, selected = 
           {meta && <div className="mt-2 text-xs text-muted-foreground">{meta}</div>}
         </div>
         {actions ?? (
-          <Button type="button" variant="ghost" size="icon-xs" onClick={(event) => event.stopPropagation()}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            onClick={stopInteractivePropagation}
+            onMouseDown={stopInteractivePropagation}
+            onDoubleClick={stopInteractivePropagation}
+          >
             <MoreHorizontalIcon />
             <span className="sr-only">File actions</span>
           </Button>

@@ -1,3 +1,5 @@
+import * as React from "react"
+
 import type { ComponentDemoBundle } from "./types"
 
 import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
@@ -14,6 +16,15 @@ import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
 import { dataTableMock, DataTableShowcase } from "./data-table"
+import {
+  DataTablePartShowcase,
+  dataTableActionsColumnMock,
+  dataTablePaginationMock,
+  dataTableRowActionsMock,
+  dataTableSavedFiltersMock,
+  dataTableSelectColumnMock,
+  dataTableToolbarMock,
+} from "./data-table-parts"
 import { dateInputMock, DateInputShowcase } from "./date-input"
 import { DatePickerShowcase, datePickerMock } from "./date-picker"
 import { DateRangeInputShowcase, dateRangeInputMock } from "./date-range-input"
@@ -42,6 +53,7 @@ import { radioGroupMock, RadioGroupShowcase } from "./radio-group"
 import { resultMock, ResultShowcase } from "./result"
 import { rightClickMenuMock, RightClickMenuShowcase } from "./right-click-menu"
 import { scrollBoxMock, ScrollBoxShowcase } from "./scroll-box"
+import { savedFilterSelectMock, SavedFilterSelectShowcase } from "./saved-filter-select"
 import { selectMock, SelectShowcase } from "./select"
 import { sheetShellMock, SheetShellShowcase } from "./sheet-shell"
 import { sidebarNavMock, SidebarNavShowcase } from "./sidebar-nav"
@@ -52,6 +64,8 @@ import { tabsMock, TabsShowcase } from "./tabs"
 import { textareaMock, TextareaShowcase } from "./textarea"
 import { toastMock, ToastShowcase } from "./toast"
 import { tooltipMock, TooltipShowcase } from "./tooltip"
+import { fileUploadMock, FileUploadShowcase } from "./file-upload"
+import { imageUploadMock, ImageUploadShowcase } from "./image-upload"
 
 export { defaultComponentDemoState } from "./types"
 export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, ComponentDemoState } from "./types"
@@ -92,6 +106,13 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "hover-card": { mock: hoverCardMock, Showcase: HoverCardShowcase },
   "right-click-menu": { mock: rightClickMenuMock, Showcase: RightClickMenuShowcase },
   "data-table": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-pagination": { mock: dataTablePaginationMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-pagination" }) },
+  "data-table-toolbar": { mock: dataTableToolbarMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-toolbar" }) },
+  "data-table-row-actions": { mock: dataTableRowActionsMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-row-actions" }) },
+  "data-table-actions-column": { mock: dataTableActionsColumnMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-actions-column" }) },
+  "data-table-select-column": { mock: dataTableSelectColumnMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-select-column" }) },
+  "data-table-saved-filters": { mock: dataTableSavedFiltersMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-saved-filters" }) },
+  "saved-filter-select": { mock: savedFilterSelectMock, Showcase: SavedFilterSelectShowcase },
   "form-field": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-field-shell": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
@@ -122,6 +143,8 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
   result: { mock: resultMock, Showcase: ResultShowcase },
+  "file-upload": { mock: fileUploadMock, Showcase: FileUploadShowcase },
+  "image-upload": { mock: imageUploadMock, Showcase: ImageUploadShowcase },
   "scroll-box": { mock: scrollBoxMock, Showcase: ScrollBoxShowcase },
   toast: { mock: toastMock, Showcase: ToastShowcase },
 }

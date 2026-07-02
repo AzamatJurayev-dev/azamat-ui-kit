@@ -4,7 +4,7 @@ import { CheckIcon, ChevronsUpDownIcon, Loader2Icon, PlusIcon, SearchIcon, XIcon
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type AsyncSelectOption<TValue extends string = string, TData = unknown> = {
   value: TValue
@@ -573,7 +573,7 @@ function AsyncSelect<
   }
 
   const handleClear = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
+    stopInteractivePropagation(event)
     clearSelection()
   }
 
@@ -657,7 +657,7 @@ function AsyncSelect<
                 onKeyDown={(event) => {
                   if (event.key !== "Enter" && event.key !== " ") return
                   event.preventDefault()
-                  event.stopPropagation()
+                  stopInteractivePropagation(event)
                   clearSelection()
                 }}
               >
@@ -954,7 +954,7 @@ function AsyncMultiSelect<
     if (event.key !== "Enter" && event.key !== " " && event.key !== "Backspace" && event.key !== "Delete") return
 
     event.preventDefault()
-    event.stopPropagation()
+    stopInteractivePropagation(event)
     removeValue(option.value)
   }
 
@@ -996,7 +996,7 @@ function AsyncMultiSelect<
   }
 
   const handleClear = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
+    stopInteractivePropagation(event)
     clearAllSelection()
   }
 
@@ -1079,7 +1079,7 @@ function AsyncMultiSelect<
                       className="rounded-full text-muted-foreground transition-colors hover:text-foreground"
                       aria-label={`Remove ${getOptionLabelText(option)}`}
                       onClick={(event) => {
-                        event.stopPropagation()
+                        stopInteractivePropagation(event)
                         removeOption(option)
                       }}
                       onKeyDown={(event) => handleTagRemoveKeyDown(event, option)}
@@ -1107,7 +1107,7 @@ function AsyncMultiSelect<
                 onKeyDown={(event) => {
                   if (event.key !== "Enter" && event.key !== " ") return
                   event.preventDefault()
-                  event.stopPropagation()
+                  stopInteractivePropagation(event)
                   clearAllSelection()
                 }}
               >

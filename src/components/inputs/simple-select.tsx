@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type SimpleSelectOption = {
   label: React.ReactNode
@@ -97,9 +97,11 @@ function SimpleSelect({
             className="ml-1 rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={(event) => {
               event.preventDefault()
-              event.stopPropagation()
+              stopInteractivePropagation(event)
               onValueChange?.(undefined)
             }}
+            onMouseDown={stopInteractivePropagation}
+            onDoubleClick={stopInteractivePropagation}
           >
             <XIcon className="size-3.5" />
           </button>

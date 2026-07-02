@@ -9,7 +9,7 @@ import {
   type FileUploadRenderFileState,
 } from "@/components/upload/file-upload"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type ImageUploadProps = Omit<FileUploadProps, "accept" | "renderFile"> & {
   accept?: string
@@ -80,7 +80,18 @@ function defaultRenderImageFile({
           </div>
         )}
       </div>
-      <Button type="button" variant="ghost" size="icon-xs" className="rounded-full" onClick={remove}>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-xs"
+        className="rounded-full"
+        onClick={(event) => {
+          stopInteractivePropagation(event)
+          remove()
+        }}
+        onMouseDown={stopInteractivePropagation}
+        onDoubleClick={stopInteractivePropagation}
+      >
         <XIcon />
         <span className="sr-only">Remove image</span>
       </Button>

@@ -10,7 +10,7 @@ const program = new Command()
 program
   .name("azamat-ui-kit")
   .description("Azamat UI Kit source-copy CLI")
-  .version("0.3.22")
+  .version("0.3.23")
 
 program
   .command("init")
@@ -50,3 +50,4 @@ program
   .action(themeCommand)
 
 program.parse()
+

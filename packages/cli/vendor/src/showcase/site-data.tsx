@@ -483,7 +483,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "simple-select",
     title: "Simple Select",
-    description: "Static-options member for teams that want a thinner wrapper around the main Select surface.",
+    description: "Static-option select surface for compact forms, filter rows, and settings screens that do not need remote loading.",
     icon: ComponentIcon,
     category: "Forms",
     status: "Stable",
@@ -498,12 +498,12 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["disabled", "boolean", "false", "Disables select interaction."],
       ["triggerClassName", "string", "-", "Trigger custom class."],
     ],
-    features: ["Static options helper", "Controlled usage", "Shared select rhythm", "Disabled option support"],
+    features: ["Static options API", "Controlled and uncontrolled usage", "Shared select styling", "Compact filter and form flows"],
   },
   {
     slug: "async-select",
     title: "Async Select",
-    description: "Remote-aware single-select member for option loading, hydration, and pending states.",
+    description: "Remote-aware select for search-driven datasets, edit hydration, and production loading or empty states.",
     icon: ComponentIcon,
     category: "Forms",
     status: "Stable",
@@ -522,7 +522,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["labels", "AsyncSelectLabels", "-", "Copy and state copy labels."],
       ["renderLoading", "AsyncSelectStateRenderer", "-", "Custom loading content renderer."],
     ],
-    features: ["Remote options", "Async loading", "Shared select contract", "Controlled output"],
+    features: ["Remote option loading", "Debounced search", "Hydrated edit state", "Clearable controlled output"],
   },
   {
     slug: "async-multi-select",
@@ -1411,7 +1411,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "info-card",
     title: "Info Card",
-    description: "Single card surface for short context sections and metadata blocks.",
+    description: "Flexible context card for summaries, metadata, quick actions, and supporting media inside real product surfaces.",
     icon: FileTextIcon,
     category: "Data Display",
     status: "Stable",
@@ -1426,7 +1426,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["compact", "boolean", "false", "Compact card density."],
       ["orientation", "'vertical' | 'horizontal'", "'vertical'", "Content layout direction."],
     ],
-    features: ["Context cards", "Action regions", "Media slots", "Compact display"],
+    features: ["Metadata summaries", "Action regions", "Media slots", "Vertical or horizontal layout"],
   },
   {
     slug: "activity-feed",
@@ -1569,7 +1569,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "data-table",
     title: "Data Table",
-    description: "Feature-rich data grid with sorting, selection, toolbar, pagination and server-aware modes.",
+    description: "Primary reusable admin data grid with sorting, row selection, bulk actions, saved views, mobile cards, and server-aware pagination.",
     icon: Table2Icon,
     category: "Data Display",
     status: "Preview",
@@ -1590,7 +1590,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["emptyState", "EmptyState", "-", "State shown when no rows are present."],
       ["errorState", "ErrorState", "-", "State shown when `isError` is true."],
     ],
-    features: ["Column-based API", "Controlled rows", "Sorting and selection", "Pagination", "Toolbar and presets", "Empty/loading/error states", "Server mode"],
+    features: ["Column-based API", "Sorting and pagination", "Row selection and bulk actions", "Toolbar, visibility and saved views", "Mobile cards and server mode", "Empty/loading/error states"],
   },
 ]
 
@@ -1612,7 +1612,7 @@ export const componentRelations: ComponentRelationMap = {
     componentSlugs: ["simple-select", "async-select", "async-multi-select", "combobox"],
   },
   "simple-select": {
-    familySlugs: ["inputs", "form"],
+    familySlugs: ["inputs", "form", "filters"],
     componentSlugs: ["select", "async-select", "async-multi-select", "combobox"],
   },
   combobox: {
@@ -1624,7 +1624,7 @@ export const componentRelations: ComponentRelationMap = {
     componentSlugs: ["checkbox", "switch", "select"],
   },
   "async-select": {
-    familySlugs: ["inputs", "form"],
+    familySlugs: ["inputs", "form", "filters"],
     componentSlugs: ["select", "simple-select", "async-multi-select", "combobox"],
   },
   "async-multi-select": {
@@ -1824,8 +1824,8 @@ export const componentRelations: ComponentRelationMap = {
     componentSlugs: ["info-card", "activity-feed", "empty-state"],
   },
   "info-card": {
-    familySlugs: ["display"],
-    componentSlugs: ["metric-grid", "activity-feed", "result"],
+    familySlugs: ["display", "layout"],
+    componentSlugs: ["metric-grid", "activity-feed", "result", "card"],
   },
   "activity-feed": {
     familySlugs: ["display"],
@@ -2052,8 +2052,27 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
     {
       key: "core",
       title: "Primary data table surface",
-      description: "Start with the full DataTable route, then use its sub-exports only when you need to customize the surrounding behavior.",
-      slugs: ["data-table", "table"],
+      description: "Start with the full DataTable route first. It demonstrates the reusable grid the way product teams actually consume it.",
+      slugs: ["data-table"],
+    },
+    {
+      key: "advanced",
+      title: "Reusable table building blocks",
+      description: "These exports power the main table route and are useful when you need to compose a custom admin grid around the same core behavior.",
+      slugs: [
+        "data-table-toolbar",
+        "data-table-pagination",
+        "data-table-select-column",
+        "data-table-row-actions",
+        "data-table-actions-column",
+        "data-table-saved-filters",
+      ],
+    },
+    {
+      key: "related",
+      title: "Low-level primitive",
+      description: "Use the semantic table primitive only for lightweight markup. It is not the main reusable data-grid surface.",
+      slugs: ["table"],
     },
   ],
   toast: [

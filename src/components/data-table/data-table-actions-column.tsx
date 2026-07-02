@@ -5,7 +5,7 @@ import {
   DataTableRowActions,
   type DataTableRowAction,
 } from "@/components/data-table/data-table-row-actions"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type DataTableActionsColumnOptions<TData> = {
   id?: string
@@ -46,7 +46,12 @@ function createDataTableActionsColumn<TData>({
         </div>
       ) : null,
     cell: ({ row }) => (
-      <div className={cn("flex items-center justify-end", cellClassName)}>
+      <div
+        className={cn("flex items-center justify-end", cellClassName)}
+        onClick={stopInteractivePropagation}
+        onMouseDown={stopInteractivePropagation}
+        onDoubleClick={stopInteractivePropagation}
+      >
         <DataTableRowActions
           row={row}
           actions={actions}

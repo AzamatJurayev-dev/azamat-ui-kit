@@ -372,6 +372,52 @@ export function DataTableFamilyShowcase({ state, setState }: FamilyDemoProps) {
         />
       </div>
 
+      <div className="grid gap-4 lg:grid-cols-[1.3fr_0.7fr]">
+        <div className="rounded-[22px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface)] p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="outline">Row click focuses detail</Badge>
+            <Badge variant="outline">Checkbox stays isolated</Badge>
+            <Badge variant="outline">Action menu stays isolated</Badge>
+            <Badge variant="outline">Bulk actions use real selection</Badge>
+          </div>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <div className="rounded-[18px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+              <p className="aui-text-muted text-xs uppercase tracking-[0.18em]">Step 1</p>
+              <p className="aui-text-strong mt-2 text-sm font-medium">Click row body</p>
+              <p className="aui-text-subtle mt-2 text-sm leading-6">Focus shifts to the invoice summary card below without opening unrelated controls.</p>
+            </div>
+            <div className="rounded-[18px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+              <p className="aui-text-muted text-xs uppercase tracking-[0.18em]">Step 2</p>
+              <p className="aui-text-strong mt-2 text-sm font-medium">Use select checkbox</p>
+              <p className="aui-text-subtle mt-2 text-sm leading-6">Selection updates bulk actions only. It does not trigger row focus or open detail.</p>
+            </div>
+            <div className="rounded-[18px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+              <p className="aui-text-muted text-xs uppercase tracking-[0.18em]">Step 3</p>
+              <p className="aui-text-strong mt-2 text-sm font-medium">Open row actions</p>
+              <p className="aui-text-subtle mt-2 text-sm leading-6">Action menu dispatches row-specific commands and keeps parent row click untouched.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-[22px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface)] p-4">
+          <p className="aui-text-muted text-sm">Interaction proof</p>
+          <div className="mt-3 space-y-3">
+            <div className="rounded-[18px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+              <p className="aui-text-strong text-sm font-medium">{activeRow?.invoice ?? "No active invoice"}</p>
+              <p className="aui-text-subtle mt-1 text-sm">Active focus row</p>
+            </div>
+            <div className="rounded-[18px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+              <p className="aui-text-strong text-sm font-medium">{selectedRows.length} selected</p>
+              <p className="aui-text-subtle mt-1 text-sm">Selection state stays independent from row detail state.</p>
+            </div>
+            <div className="rounded-[18px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+              <p className="aui-text-strong text-sm font-medium">{detailOpen ? "Detail sheet open" : "Detail sheet closed"}</p>
+              <p className="aui-text-subtle mt-1 text-sm">Double click and menu actions can open the same reusable detail surface.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="grid gap-4 md:grid-cols-4">
         <div className="rounded-[22px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface)] p-4">
           <p className="aui-text-muted text-sm">Focused row</p>

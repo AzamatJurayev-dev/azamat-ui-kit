@@ -2,7 +2,7 @@ import * as React from "react"
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type FileUploadRejectReason = "max-files" | "max-size" | "type"
 
@@ -226,7 +226,18 @@ function defaultRenderFile({ file, progress, remove, removeLabel = "Remove file"
           </div>
         )}
       </div>
-      <Button type="button" variant="ghost" size="icon-xs" className="rounded-full" onClick={remove}>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-xs"
+        className="rounded-full"
+        onClick={(event) => {
+          stopInteractivePropagation(event)
+          remove()
+        }}
+        onMouseDown={stopInteractivePropagation}
+        onDoubleClick={stopInteractivePropagation}
+      >
         <XIcon />
         <span className="sr-only">{removeLabel}</span>
       </Button>
@@ -329,7 +340,7 @@ function FileUpload({
   const preventDisabledDragDefault = (event: React.DragEvent<HTMLDivElement>) => {
     if (!isDisabled) return false
     event.preventDefault()
-    event.stopPropagation()
+    stopInteractivePropagation(event)
     return true
   }
 
@@ -422,9 +433,11 @@ function FileUpload({
               size="sm"
               disabled={isDisabled}
               onClick={(event) => {
-                event.stopPropagation()
+                stopInteractivePropagation(event)
                 openFileDialog()
               }}
+              onMouseDown={stopInteractivePropagation}
+              onDoubleClick={stopInteractivePropagation}
             >
               {buttonLabel}
             </Button>
@@ -435,9 +448,11 @@ function FileUpload({
                 size="sm"
                 disabled={isDisabled}
                 onClick={(event) => {
-                  event.stopPropagation()
+                  stopInteractivePropagation(event)
                   clearFiles()
                 }}
+                onMouseDown={stopInteractivePropagation}
+                onDoubleClick={stopInteractivePropagation}
               >
                 {clearLabel}
               </Button>

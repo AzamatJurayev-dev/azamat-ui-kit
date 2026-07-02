@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type TagTone = "neutral" | "info" | "success" | "warning" | "danger"
 export type TagSize = "sm" | "default" | "lg"
@@ -42,7 +42,17 @@ function Tag({ tone = "neutral", size = "default", removable, selected, onRemove
     >
       <span>{children}</span>
       {removable && (
-        <button type="button" aria-label="Remove tag" className="-mr-1 inline-flex size-4 items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10" onClick={onRemove}>
+        <button
+          type="button"
+          aria-label="Remove tag"
+          className="-mr-1 inline-flex size-4 items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10"
+          onClick={(event) => {
+            stopInteractivePropagation(event)
+            onRemove?.()
+          }}
+          onMouseDown={stopInteractivePropagation}
+          onDoubleClick={stopInteractivePropagation}
+        >
           ×
         </button>
       )}

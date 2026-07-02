@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table"
 
 import { Checkbox } from "@/components/ui/checkbox"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type DataTableSelectColumnProps<TData> = {
   id?: string
@@ -41,7 +41,7 @@ function createDataTableSelectColumn<TData>({
                 : false
           }
           aria-label={ariaLabel?.selectAll ?? "Select all rows"}
-          onClick={(event) => event.stopPropagation()}
+          onClick={stopInteractivePropagation}
           onCheckedChange={(checked) => table.toggleAllPageRowsSelected(checked)}
         />
       </div>
@@ -52,7 +52,7 @@ function createDataTableSelectColumn<TData>({
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}
           aria-label={ariaLabel?.selectRow?.(row.original) ?? "Select row"}
-          onClick={(event) => event.stopPropagation()}
+          onClick={stopInteractivePropagation}
           onCheckedChange={(checked) => row.toggleSelected(checked)}
         />
       </div>

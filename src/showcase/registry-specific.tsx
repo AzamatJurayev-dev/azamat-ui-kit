@@ -16,6 +16,7 @@ import {
   AlertDialog,
   Alert,
   AnchorNav,
+  AsyncSelect,
   Badge,
   Button,
   ButtonGroup,
@@ -33,6 +34,7 @@ import {
   ImageUpload,
   FilterBar,
   FilterChips,
+  InfoCard,
   Input,
   List,
   NavTabs,
@@ -46,8 +48,10 @@ import {
   QuickActionGrid,
   RangeSlider,
   Rating,
+  SavedFilterSelect,
   SearchInput,
   SectionHeader,
+  SimpleSelect,
   Slider,
   StatusDot,
   StatusLegend,
@@ -310,6 +314,60 @@ function InputPreview({
 
   if (slug === "tag-input") {
     return <TagInput defaultValue={["dashboard", "beta", "ops"]} placeholder="Add label" />
+  }
+
+  if (slug === "simple-select") {
+    return (
+      <div className="grid gap-4">
+        <SimpleSelect
+          value="private"
+          onValueChange={() => undefined}
+          options={[
+            { value: "public", label: "Public", description: "Visible to all users" },
+            { value: "private", label: "Private", description: "Restricted to invited members" },
+            { value: "internal", label: "Internal", description: "Only workspace maintainers" },
+            { value: "archived", label: "Archived", description: "History only", disabled: true },
+          ]}
+          placeholder="Visibility"
+          searchable
+          clearable
+        />
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Static options with lightweight search.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Clear action stays inside the trigger surface.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Use before moving to AsyncSelect.</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (slug === "async-select") {
+    const asyncSelectOptions = [
+      { value: "north" as const, label: "North Region", description: "Sales ops" },
+      { value: "south" as const, label: "South Region", description: "Support team" },
+      { value: "west" as const, label: "West Region", description: "Billing operations" },
+    ]
+
+    return (
+      <div className="grid gap-4">
+        <AsyncSelect
+          value={"north" as string}
+          onValueChange={() => undefined}
+          loadOptions={async (search) => {
+            const query = search.trim().toLowerCase()
+            return query ? asyncSelectOptions.filter((item) => String(item.label).toLowerCase().includes(query)) : asyncSelectOptions
+          }}
+          defaultOptions={asyncSelectOptions}
+          minSearchLength={1}
+          clearable
+        />
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Remote-ready select surface.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Hydration and clear behavior stay aligned.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Good for large or changing datasets.</div>
+        </div>
+      </div>
+    )
   }
 
   return <Input value={value} onChange={(event) => setState({ textValue: event.currentTarget.value })} placeholder="Unified input" />
@@ -611,6 +669,27 @@ function DisplayPreview({ slug }: { slug: string }) {
     return <StatCard title={slug === "trend-card" ? "Weekly revenue" : "Current vs previous"} value="$84.2k" description="Compared with last month" trend={{ value: "+12.4%", tone: "success" }} icon={<LayoutDashboardIcon />} />
   }
 
+  if (slug === "info-card") {
+    return (
+      <div className="grid gap-4">
+        <InfoCard
+          eyebrow="Summary"
+          title="Workspace"
+          description="Reusable card surface with header, actions and metadata."
+          actions={<Button size="sm" variant="outline">Open</Button>}
+          selected
+        >
+          <p className="aui-text-muted mt-2 text-sm">Keep metadata, helper copy and compact actions in one reusable card surface.</p>
+        </InfoCard>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Vertical and horizontal layout support.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Selected and action-safe surfaces.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Useful for summary panels and detail sidebars.</div>
+        </div>
+      </div>
+    )
+  }
+
   return <UserCard name="Azamat Jurayev" description="Product designer and maintainer" meta="Admin workspace" actions={<Button size="sm">Invite</Button>} />
 }
 
@@ -707,6 +786,29 @@ function ActionsPreview({
             ]}
           />
         ) : null}
+      </div>
+    )
+  }
+
+  if (slug === "saved-filter-select") {
+    return (
+      <div className="grid gap-4">
+        <SavedFilterSelect
+          value="billing"
+          onValueChange={() => undefined}
+          onSave={() => undefined}
+          onDelete={() => undefined}
+          filters={[
+            { value: "billing", label: "Billing", description: "Invoices and payment status" },
+            { value: "ops", label: "Operations", description: "Queues and workload" },
+            { value: "owners", label: "Owner: Azamat", description: "Assigned records only" },
+          ]}
+        />
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Named view switching for table routes.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Delete action stays isolated from parent selection.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Useful in finance, ops and admin dashboards.</div>
+        </div>
       </div>
     )
   }

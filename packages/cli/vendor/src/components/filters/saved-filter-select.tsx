@@ -2,8 +2,9 @@ import * as React from "react"
 import { BookmarkIcon, SaveIcon, Trash2Icon, CheckIcon, ChevronsUpDownIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type SavedFilterItem = {
   value: string
@@ -19,6 +20,10 @@ export type SavedFilterSelectProps = Omit<React.ComponentProps<"div">, "value" |
   onDelete?: (value: string) => void
   placeholder?: string
   saveLabel?: string
+  savePlaceholder?: string
+  emptyMessage?: React.ReactNode
+  saveValue?: string
+  onSaveValueChange?: (value: string) => void
 }
 
 function SavedFilterSelect({
@@ -29,11 +34,30 @@ function SavedFilterSelect({
   onDelete,
   placeholder = "Views",
   saveLabel = "Save current view",
+  savePlaceholder = "Name this view",
+  emptyMessage = "No saved views",
+  saveValue,
+  onSaveValueChange,
   className,
   ...props
 }: SavedFilterSelectProps) {
   const [open, setOpen] = React.useState(false)
+  const [internalSaveValue, setInternalSaveValue] = React.useState("")
   const selectedFilter = filters.find((f) => f.value === value)
+  const nextSaveValue = saveValue ?? internalSaveValue
+
+  function setNextSaveValue(nextValue: string) {
+    if (saveValue === undefined) setInternalSaveValue(nextValue)
+    onSaveValueChange?.(nextValue)
+  }
+
+  function handleSave() {
+    const normalizedValue = nextSaveValue.trim()
+    if (!normalizedValue || !onSave) return
+    onSave(normalizedValue)
+    setNextSaveValue("")
+    setOpen(false)
+  }
 
   return (
     <div data-slot="saved-filter-select" className={className} {...props}>
@@ -54,9 +78,7 @@ function SavedFilterSelect({
         <PopoverContent className="w-[250px] p-0" align="start">
           <div className="max-h-[300px] overflow-y-auto p-1">
             {filters.length === 0 ? (
-              <div className="py-6 text-center text-sm text-muted-foreground">
-                No saved views
-              </div>
+              <div className="py-6 text-center text-sm text-muted-foreground">{emptyMessage}</div>
             ) : (
               <div className="grid gap-1">
                 {filters.map((filter) => {
@@ -95,9 +117,11 @@ function SavedFilterSelect({
                           size="icon"
                           className="size-6 shrink-0 opacity-0 group-hover:opacity-100 hover:text-destructive"
                           onClick={(e) => {
-                            e.stopPropagation()
+                            stopInteractivePropagation(e)
                             onDelete(filter.value)
                           }}
+                          onMouseDown={stopInteractivePropagation}
+                          onDoubleClick={stopInteractivePropagation}
                         >
                           <Trash2Icon className="size-3" />
                         </Button>
@@ -110,18 +134,19 @@ function SavedFilterSelect({
           </div>
           
           {onSave && (
-            <div className="border-t p-1">
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-sm font-normal"
-                onClick={() => {
-                  setOpen(false)
-                  const name = prompt("Enter a name for this view:")
-                  if (name) {
-                    onSave(name)
+            <div className="grid gap-2 border-t p-2">
+              <Input
+                value={nextSaveValue}
+                placeholder={savePlaceholder}
+                onChange={(event) => setNextSaveValue(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault()
+                    handleSave()
                   }
                 }}
-              >
+              />
+              <Button variant="outline" className="w-full justify-center text-sm font-medium" disabled={!nextSaveValue.trim()} onClick={handleSave}>
                 <SaveIcon className="mr-2 size-4" />
                 {saveLabel}
               </Button>

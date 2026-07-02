@@ -1,4 +1,5 @@
 import * as React from "react"
+import { GripVerticalIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -7,19 +8,205 @@ export type ResizablePanelGroupProps = React.ComponentProps<"div"> & {
 }
 
 export type ResizablePanelProps = React.ComponentProps<"div"> & {
-  defaultSize?: string
+  defaultSize?: number | string
+  minSize?: number
 }
 
-function ResizablePanelGroup({ direction = "horizontal", className, ...props }: ResizablePanelGroupProps) {
-  return <div data-slot="resizable-panel-group" data-direction={direction} className={cn("grid gap-2", direction === "horizontal" ? "md:grid-flow-col md:auto-cols-fr" : "grid-flow-row", className)} {...props} />
+type ResizablePanelInternalProps = ResizablePanelProps & {
+  "data-panel-index"?: number
 }
 
-function ResizablePanel({ defaultSize, className, style, ...props }: ResizablePanelProps) {
-  return <div data-slot="resizable-panel" className={cn("min-h-24 resize overflow-auto rounded-lg border bg-card p-3", className)} style={{ flexBasis: defaultSize, ...style }} {...props} />
+type ResizableHandleProps = React.ComponentProps<"button"> & {
+  "data-handle-index"?: number
 }
 
-function ResizableHandle({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="resizable-handle" className={cn("hidden w-px bg-border md:block", className)} {...props} />
+type ResizablePanelContextValue = {
+  direction: "horizontal" | "vertical"
+  getSize: (index: number) => number
+  resizePanels: (index: number, deltaPx: number) => void
+}
+
+const ResizablePanelContext = React.createContext<ResizablePanelContextValue | null>(null)
+
+function normalizeSizeValue(value: number | string | undefined) {
+  if (typeof value === "number") return value
+  if (typeof value === "string") {
+    const parsed = Number.parseFloat(value.replace("%", ""))
+    return Number.isFinite(parsed) ? parsed : undefined
+  }
+  return undefined
+}
+
+function ResizablePanelGroup({ direction = "horizontal", className, children, ...props }: ResizablePanelGroupProps) {
+  const groupRef = React.useRef<HTMLDivElement>(null)
+  const panelNodes = React.Children.toArray(children).filter((child) => React.isValidElement(child) && child.type === ResizablePanel)
+  const panelCount = panelNodes.length
+  const initialSizes = React.useMemo(() => {
+    const declaredSizes = panelNodes.map((child) => normalizeSizeValue((child as React.ReactElement<ResizablePanelProps>).props.defaultSize))
+    const declaredTotal = declaredSizes.reduce<number>((sum, value) => sum + (value ?? 0), 0)
+    const unresolvedCount = declaredSizes.filter((value) => value === undefined).length
+    const remaining = Math.max(100 - declaredTotal, 0)
+    const fallbackSize = unresolvedCount > 0 ? remaining / unresolvedCount : panelCount > 0 ? 100 / panelCount : 100
+
+    return declaredSizes.map((value) => value ?? fallbackSize)
+  }, [panelCount, panelNodes])
+  const minSizes = React.useMemo(
+    () => panelNodes.map((child) => (child as React.ReactElement<ResizablePanelProps>).props.minSize ?? 15),
+    [panelNodes]
+  )
+  const [sizes, setSizes] = React.useState(initialSizes)
+
+  React.useEffect(() => {
+    setSizes(initialSizes)
+  }, [initialSizes])
+
+  const resizePanels = React.useCallback(
+    (index: number, deltaPx: number) => {
+      const node = groupRef.current
+      if (!node || index < 0 || index >= panelCount - 1) return
+
+      const basis = direction === "horizontal" ? node.getBoundingClientRect().width : node.getBoundingClientRect().height
+      if (!basis) return
+
+      const deltaPercent = (deltaPx / basis) * 100
+
+      setSizes((currentSizes) => {
+        const nextSizes = [...currentSizes]
+        const previousSize = nextSizes[index] ?? 0
+        const followingSize = nextSizes[index + 1] ?? 0
+        const minPrevious = minSizes[index] ?? 15
+        const minFollowing = minSizes[index + 1] ?? 15
+
+        const requestedPrevious = previousSize + deltaPercent
+        const clampedPrevious = Math.min(Math.max(requestedPrevious, minPrevious), previousSize + followingSize - minFollowing)
+        const consumedDelta = clampedPrevious - previousSize
+
+        nextSizes[index] = clampedPrevious
+        nextSizes[index + 1] = followingSize - consumedDelta
+
+        return nextSizes
+      })
+    },
+    [direction, minSizes, panelCount]
+  )
+
+  const processedChildren = React.Children.map(children, (child) => {
+    if (!React.isValidElement(child)) return child
+
+    if (child.type === ResizablePanel) {
+      const panelIndex = panelNodes.findIndex((node) => node === child)
+      return React.cloneElement(child as React.ReactElement<ResizablePanelInternalProps>, { "data-panel-index": panelIndex })
+    }
+
+    if (child.type === ResizableHandle) {
+      const handleIndex = React.Children.toArray(children)
+        .slice(0, React.Children.toArray(children).indexOf(child))
+        .filter((node) => React.isValidElement(node) && node.type === ResizablePanel).length - 1
+
+      return React.cloneElement(child as React.ReactElement<ResizableHandleProps>, { "data-handle-index": handleIndex })
+    }
+
+    return child
+  })
+
+  return (
+    <ResizablePanelContext.Provider
+      value={{
+        direction,
+        getSize: (index) => sizes[index] ?? 100 / Math.max(panelCount, 1),
+        resizePanels,
+      }}
+    >
+      <div
+        ref={groupRef}
+        data-slot="resizable-panel-group"
+        data-direction={direction}
+        className={cn("flex gap-2", direction === "horizontal" ? "flex-row items-stretch" : "flex-col", className)}
+        {...props}
+      >
+        {processedChildren}
+      </div>
+    </ResizablePanelContext.Provider>
+  )
+}
+
+function ResizablePanel({ className, style, defaultSize, ...props }: ResizablePanelInternalProps) {
+  const context = React.useContext(ResizablePanelContext)
+  const panelIndex = Number(props["data-panel-index"] ?? 0)
+  const basis = context ? context.getSize(panelIndex) : normalizeSizeValue(defaultSize) ?? 100
+
+  return (
+    <div
+      data-slot="resizable-panel"
+      className={cn("min-h-24 overflow-auto rounded-lg border bg-card p-3", className)}
+      style={{ flexBasis: `${basis}%`, flexGrow: 0, flexShrink: 0, ...style }}
+      {...props}
+    />
+  )
+}
+
+function ResizableHandle({ className, ...props }: ResizableHandleProps) {
+  const context = React.useContext(ResizablePanelContext)
+  const handleIndex = Number(props["data-handle-index"] ?? 0)
+  const pointerStateRef = React.useRef<{ pointerId: number; axis: number } | null>(null)
+
+  return (
+    <button
+      type="button"
+      data-slot="resizable-handle"
+      aria-label="Resize panels"
+      className={cn(
+        "relative flex shrink-0 items-center justify-center rounded-full border border-border/70 bg-background/85 text-muted-foreground shadow-sm transition-colors hover:border-ring/45 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        context?.direction === "horizontal" ? "w-3 cursor-col-resize" : "h-3 cursor-row-resize",
+        className
+      )}
+      onPointerDown={(event) => {
+        if (!context) return
+        pointerStateRef.current = {
+          pointerId: event.pointerId,
+          axis: context.direction === "horizontal" ? event.clientX : event.clientY,
+        }
+        event.currentTarget.setPointerCapture(event.pointerId)
+      }}
+      onPointerMove={(event) => {
+        if (!context || !pointerStateRef.current || pointerStateRef.current.pointerId !== event.pointerId) return
+        const currentAxis = context.direction === "horizontal" ? event.clientX : event.clientY
+        const delta = currentAxis - pointerStateRef.current.axis
+        if (delta === 0) return
+        pointerStateRef.current.axis = currentAxis
+        context.resizePanels(handleIndex, delta)
+      }}
+      onPointerUp={(event) => {
+        if (pointerStateRef.current?.pointerId === event.pointerId) pointerStateRef.current = null
+      }}
+      onPointerCancel={() => {
+        pointerStateRef.current = null
+      }}
+      onKeyDown={(event) => {
+        if (!context) return
+        const step = event.shiftKey ? 24 : 12
+        if (context.direction === "horizontal" && event.key === "ArrowLeft") {
+          event.preventDefault()
+          context.resizePanels(handleIndex, -step)
+        }
+        if (context.direction === "horizontal" && event.key === "ArrowRight") {
+          event.preventDefault()
+          context.resizePanels(handleIndex, step)
+        }
+        if (context.direction === "vertical" && event.key === "ArrowUp") {
+          event.preventDefault()
+          context.resizePanels(handleIndex, -step)
+        }
+        if (context.direction === "vertical" && event.key === "ArrowDown") {
+          event.preventDefault()
+          context.resizePanels(handleIndex, step)
+        }
+      }}
+      {...props}
+    >
+      <GripVerticalIcon className={cn("size-3", context?.direction === "vertical" && "rotate-90")} />
+    </button>
+  )
 }
 
 export { ResizableHandle, ResizablePanel, ResizablePanelGroup }

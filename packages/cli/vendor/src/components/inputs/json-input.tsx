@@ -2,25 +2,35 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-export type JsonInputProps = Omit<React.ComponentProps<"textarea">, "onChange"> & {
+export type JsonInputProps = React.ComponentProps<"textarea"> & {
   value?: string
   onValueChange?: (value: string, parsed: unknown | null, valid: boolean) => void
   invalidText?: React.ReactNode
 }
 
-function JsonInput({ value = "", onValueChange, invalidText = "Invalid JSON", className, ...props }: JsonInputProps) {
+function parseJson(value: string) {
+  if (!value.trim()) return { parsed: null, valid: true }
+
+  try {
+    return { parsed: JSON.parse(value), valid: true }
+  } catch {
+    return { parsed: null, valid: false }
+  }
+}
+
+function JsonInput({ value = "", onValueChange, invalidText = "Invalid JSON", className, onChange, ...props }: JsonInputProps) {
   const [valid, setValid] = React.useState(true)
+
+  React.useEffect(() => {
+    setValid(parseJson(value).valid)
+  }, [value])
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     const nextValue = event.target.value
-    try {
-      const parsed = nextValue.trim() ? JSON.parse(nextValue) : null
-      setValid(true)
-      onValueChange?.(nextValue, parsed, true)
-    } catch {
-      setValid(false)
-      onValueChange?.(nextValue, null, false)
-    }
+    const result = parseJson(nextValue)
+    setValid(result.valid)
+    onValueChange?.(nextValue, result.parsed, result.valid)
+    onChange?.(event)
   }
 
   return (

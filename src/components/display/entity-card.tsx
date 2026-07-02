@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { Card } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type EntityCardProps = Omit<React.ComponentProps<typeof Card>, "title"> & {
   title: React.ReactNode
@@ -59,7 +59,16 @@ function EntityCard({ title, description, media, icon, status, meta, actions, fo
               {description && <div className="line-clamp-2 text-sm leading-6 text-muted-foreground">{description}</div>}
             </div>
           </div>
-          {actions && <div className="shrink-0" onClick={(event) => event.stopPropagation()}>{actions}</div>}
+          {actions && (
+            <div
+              className="shrink-0"
+              onClick={stopInteractivePropagation}
+              onMouseDown={stopInteractivePropagation}
+              onDoubleClick={stopInteractivePropagation}
+            >
+              {actions}
+            </div>
+          )}
         </div>
         {meta && <div className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">{meta}</div>}
         {footer && <div className="border-t border-[color:var(--aui-surface-border)] pt-3 text-sm text-muted-foreground">{footer}</div>}

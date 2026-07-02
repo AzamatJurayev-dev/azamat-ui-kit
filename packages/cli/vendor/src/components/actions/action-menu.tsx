@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
+import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type ActionMenuItem = {
   key: string
@@ -77,6 +77,9 @@ function ActionMenu({
                 "rounded-full border border-transparent text-muted-foreground hover:border-border/70 hover:bg-muted/50 hover:text-foreground",
                 triggerClassName
               )}
+              onClick={stopInteractivePropagation}
+              onMouseDown={stopInteractivePropagation}
+              onDoubleClick={stopInteractivePropagation}
             />
           )
         }
@@ -105,7 +108,12 @@ function ActionMenu({
               key={action.key}
               disabled={action.disabled || isLoading}
               variant={action.destructive ? "destructive" : "default"}
-              onClick={() => void handleSelect(action)}
+              onClick={(event) => {
+                stopInteractivePropagation(event)
+                void handleSelect(action)
+              }}
+              onMouseDown={stopInteractivePropagation}
+              onDoubleClick={stopInteractivePropagation}
             >
               {isLoading ? <Loader2Icon className="animate-spin" /> : action.icon}
               <span className="min-w-0 flex-1 truncate">{action.label}</span>

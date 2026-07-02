@@ -481,7 +481,10 @@ export function getComponentPreview(slug: string) {
         <div className={pageSurfaceClassName}>
           <div className={`mx-auto max-w-5xl space-y-6 rounded-[32px] p-6 ${panelClassName}`}>
             <div className="space-y-2">
-              <p className={`text-sm uppercase tracking-[0.24em] ${mutedTextClassName}`}>Component preview</p>
+              <div className="flex flex-wrap gap-2">
+                <span className={`rounded-full border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${mutedTextClassName}`}>Component preview</span>
+                <span className={`rounded-full border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] ${mutedTextClassName}`}>Playground route</span>
+              </div>
               <h1 className="text-4xl font-semibold tracking-tight capitalize">{slug}</h1>
               <p className={`text-base leading-7 ${mutedTextClassName}`}>Direct component demo route for iframe-based docs preview.</p>
             </div>
@@ -494,6 +497,17 @@ export function getComponentPreview(slug: string) {
               {demo.mock.highlights.map((item) => (
                 <div key={item} className="rounded-[24px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-surface-muted)] p-4 text-sm aui-text-subtle">{item}</div>
               ))}
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className={`rounded-[24px] p-4 ${cardClassName}`}>
+                <p className={`text-xs font-semibold uppercase tracking-[0.22em] ${mutedTextClassName}`}>CLI</p>
+                <code className="mt-3 block text-sm aui-text-strong">{`npx azamat-ui-kit-cli add ${slug}`}</code>
+              </div>
+              <div className={`rounded-[24px] p-4 ${cardClassName}`}>
+                <p className={`text-xs font-semibold uppercase tracking-[0.22em] ${mutedTextClassName}`}>Preview note</p>
+                <p className="mt-3 text-sm leading-6 aui-text-subtle">This route exists to inspect the live reusable surface in isolation before wiring it into docs, templates or application pages.</p>
+              </div>
             </div>
           </div>
         </div>

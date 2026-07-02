@@ -3,6 +3,7 @@ import { XIcon } from "lucide-react"
 
 import { InputDecorator } from "@/components/inputs/input-decorator"
 import { createInputChangeHandler, getInputValue } from "@/components/inputs/input-value"
+import { stopInteractivePropagation } from "@/lib/utils"
 
 export type ClearableInputProps = Omit<
   React.ComponentProps<typeof InputDecorator>,
@@ -59,6 +60,15 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
       if (focusAfterClear) inputRef.current?.focus()
     }
 
+    const handleClearClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+      stopInteractivePropagation(event)
+      clearValue()
+    }
+
+    const handleClearMouseDown: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+      stopInteractivePropagation(event)
+    }
+
     const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
       onKeyDown?.(event)
       if (event.defaultPrevented) return
@@ -87,7 +97,9 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
                 data-slot="clearable-input-clear"
                 aria-label={clearLabel}
                 className="inline-flex size-7 items-center justify-center rounded-full border border-transparent bg-transparent text-muted-foreground/74 transition hover:border-border/60 hover:bg-muted/58 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
-                onClick={clearValue}
+                onClick={handleClearClick}
+                onMouseDown={handleClearMouseDown}
+                onDoubleClick={handleClearMouseDown}
               >
                 <XIcon className="size-4" />
               </button>
