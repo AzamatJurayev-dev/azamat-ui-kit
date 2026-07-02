@@ -18,7 +18,7 @@ const TabsList = React.forwardRef<
       ref={ref}
       data-slot="tabs-list"
       className={cn(
-        "inline-flex min-h-11 items-center justify-center gap-1 rounded-[var(--radius-2xl)] border border-[color:color-mix(in_oklch,var(--border),white_4%)] bg-[color:var(--aui-control-panel-bg,var(--muted))] p-1 text-muted-foreground shadow-[var(--aui-control-panel-shadow,var(--aui-control-shadow,none))] backdrop-blur",
+        "inline-flex min-h-11 items-center justify-center gap-1 rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:color-mix(in_oklch,var(--border),white_4%)] bg-[color:var(--aui-control-panel-bg,var(--muted))] p-1 text-muted-foreground shadow-[var(--aui-control-panel-shadow,var(--aui-control-shadow,none))] backdrop-blur",
         className
       )}
     {...props}
@@ -34,7 +34,7 @@ const TabsTrigger = React.forwardRef<
       ref={ref}
       data-slot="tabs-trigger"
       className={cn(
-        "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-[calc(var(--radius-xl)-2px)] border border-transparent px-3.5 py-1.5 text-sm font-medium text-muted-foreground ring-offset-background transition-[background-color,color,box-shadow,border-color] hover:bg-[color:color-mix(in_oklch,var(--background),transparent_18%)] hover:text-foreground data-[selected]:border-[color:color-mix(in_oklch,var(--border),var(--foreground)_8%)] data-[selected]:bg-[color:var(--aui-control-surface,var(--background))] data-[selected]:text-foreground data-[selected]:shadow-[var(--aui-control-shadow,none)] aria-selected:border-[color:color-mix(in_oklch,var(--border),var(--foreground)_8%)] aria-selected:bg-[color:var(--aui-control-surface,var(--background))] aria-selected:text-foreground aria-selected:shadow-[var(--aui-control-shadow,none)] focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-[var(--aui-control-shadow,none),0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-[var(--radius-md)] border border-transparent px-3.5 py-1.5 text-sm font-medium text-muted-foreground ring-offset-background transition-[background-color,color,box-shadow,border-color] hover:bg-[color:color-mix(in_oklch,var(--background),transparent_18%)] hover:text-foreground data-[selected]:border-[color:color-mix(in_oklch,var(--border),var(--foreground)_8%)] data-[selected]:bg-[color:var(--aui-control-surface,var(--background))] data-[selected]:text-foreground data-[selected]:shadow-[var(--aui-control-shadow,none)] aria-selected:border-[color:color-mix(in_oklch,var(--border),var(--foreground)_8%)] aria-selected:bg-[color:var(--aui-control-surface,var(--background))] aria-selected:text-foreground aria-selected:shadow-[var(--aui-control-shadow,none)] focus-visible:outline-none focus-visible:ring-0 focus-visible:shadow-[var(--aui-control-shadow,none),0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] disabled:pointer-events-none disabled:opacity-50",
         className
       )}
     {...props}

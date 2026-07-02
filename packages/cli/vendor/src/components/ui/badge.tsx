@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-[color:color-mix(in_oklch,var(--border),var(--foreground)_6%)] bg-[color:color-mix(in_oklch,var(--muted),var(--background)_36%)] font-semibold tracking-[0.01em] text-foreground shadow-[inset_0_1px_0_color-mix(in_oklch,white,transparent_34%)] transition-[background-color,border-color,color,box-shadow,transform] focus-visible:ring-0 focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
+  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-[var(--radius-md)] border border-[color:color-mix(in_oklch,var(--border),var(--foreground)_6%)] bg-[color:color-mix(in_oklch,var(--muted),var(--background)_36%)] font-semibold tracking-[0.01em] text-foreground shadow-[inset_0_1px_0_color-mix(in_oklch,white,transparent_34%)] transition-[background-color,border-color,color,box-shadow,transform] focus-visible:ring-0 focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {

@@ -48,13 +48,13 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --radius-sm: calc(var(--radius) * 0.72);
+  --radius-md: calc(var(--radius) * 0.88);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.18);
+  --radius-2xl: calc(var(--radius) * 1.4);
+  --radius-3xl: calc(var(--radius) * 1.7);
+  --radius-4xl: calc(var(--radius) * 2);
 }
 
 :root,
@@ -82,7 +82,7 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --chart-3: oklch(0.78 0.11 165);
   --chart-4: oklch(0.72 0.15 45);
   --chart-5: oklch(0.66 0.15 15);
-  --radius: 0.875rem;
+  --radius: 0.75rem;
   --sidebar: oklch(0.982 0.006 250);
   --sidebar-foreground: oklch(0.238 0.02 255);
   --sidebar-primary: oklch(0.312 0.05 255);
@@ -100,7 +100,7 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-danger: var(--destructive);
   --aui-danger-foreground: oklch(0.985 0.004 95);
 
-  --aui-control-radius: var(--radius-xl);
+  --aui-control-radius: var(--radius-lg);
   --aui-focus-ring: color-mix(in oklch, var(--ring), transparent 44%);
   --aui-focus-ring-soft: color-mix(in oklch, var(--ring), transparent 82%);
   --aui-danger-ring: color-mix(in oklch, var(--destructive), transparent 48%);
@@ -117,7 +117,7 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 68%);
   --aui-control-panel-bg: color-mix(in oklch, var(--background), white 18%);
   --aui-control-panel-shadow: 0 1px 0 oklch(1 0 0 / 80%), 0 16px 36px oklch(0.24 0.02 255 / 8%);
-  --aui-card-radius: var(--radius-2xl);
+  --aui-card-radius: var(--radius-xl);
   --aui-card-border: color-mix(in oklch, var(--border), white 12%);
   --aui-card-shadow: 0 1px 0 oklch(1 0 0 / 80%), 0 18px 45px oklch(0.24 0.02 255 / 8%);
   --aui-card-shadow-hover: 0 1px 0 oklch(1 0 0 / 80%), 0 26px 58px oklch(0.24 0.02 255 / 10%);
