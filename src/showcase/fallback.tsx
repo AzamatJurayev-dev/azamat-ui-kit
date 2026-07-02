@@ -1,33 +1,93 @@
 import {
+  Accordion,
   Alert,
+  Affix,
   AnchorNav,
+  AspectRatio,
+  Avatar,
+  AvatarGroup,
   Badge,
   Button,
   ButtonGroup,
+  CalendarScheduler,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-  CollapseGroup,
+  Carousel,
+  CarouselItem,
+  Cascader,
+  CodeBlock,
   ColorInput,
+  CopyButton,
+  CopyField,
+  DataState,
   DescriptionList,
+  Descriptions,
+  Divider,
+  DualListPicker,
   EmptyState,
   EntityCard,
   FilterChips,
+  FloatButton,
+  Grid,
+  Heading,
   Input,
+  JsonInput,
+  KanbanBoard,
+  KeyboardShortcut,
   List,
+  Mark,
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+  MentionInput,
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
   OtpInput,
   PageState,
   PageTabs,
+  PropertyGrid,
   QuickActionGrid,
+  QRCode,
+  QuantityStepper,
   RangeSlider,
   Rating,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  RichTextEditor,
+  SavedFilterSelect,
+  Section,
   SegmentedControl,
+  Skeleton,
+  SkeletonCard,
+  SkeletonForm,
+  SkeletonTable,
+  SkeletonText,
   Slider,
   Spinner,
+  Stack,
   StepperTabs,
+  Statistic,
+  StatisticCard,
+  StatisticGrid,
+  StickyFooterBar,
   StatusLegend,
+  Tag,
   TagInput,
+  TagGroup,
+  TagList,
+  Text,
+  TimePicker,
+  TimeRangePicker,
+  Tour,
+  TreeView,
+  Watermark,
 } from "@/index"
 import { StatCard } from "@/components/layout/stat-card"
 
@@ -129,12 +189,174 @@ function renderGenericPreviewSurface(
 ) {
   if (item.slug === "accordion") {
     return (
-      <CollapseGroup
+      <Accordion
         type="single"
         defaultValue="api"
         items={[
           { key: "api", title: "Single open section", description: "Open one section at a time.", content: "Use one expanded panel when the page needs compact disclosure." },
           { key: "states", title: "State handling", description: "Controlled or uncontrolled usage.", content: "Use one expanded section for FAQs, settings clusters, and compact disclosure flows." },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "affix") {
+    return (
+      <div className="grid gap-3">
+        <Affix offsetTop={0}>
+          <div className="rounded-lg border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-3 py-2 text-sm font-medium">
+            Sticky helper bar
+          </div>
+        </Affix>
+        <div className="rounded-xl border border-dashed border-[color:var(--aui-divider)] p-4 text-sm text-[color:var(--aui-page-muted)]">
+          Use `Affix` when a small control or summary should remain visible while the surrounding content scrolls.
+        </div>
+      </div>
+    )
+  }
+
+  if (item.slug === "aspect-ratio") {
+    return (
+      <AspectRatio ratio={16 / 9} className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
+        <div className="flex size-full items-center justify-center bg-[linear-gradient(135deg,color-mix(in_oklch,var(--aui-brand),transparent_88%),transparent)] text-sm font-medium text-[color:var(--aui-page-foreground)]">
+          16:9 media surface
+        </div>
+      </AspectRatio>
+    )
+  }
+
+  if (item.slug === "avatar") {
+    return (
+      <div className="flex flex-wrap items-center gap-4">
+        <Avatar name="Azamat UI" />
+        <Avatar fallback="AJ" shape="rounded" />
+        <AvatarGroup
+          items={[
+            { key: "1", name: "Azamat" },
+            { key: "2", name: "Nodir" },
+            { key: "3", name: "Dilshod" },
+            { key: "4", name: "Madina" },
+          ]}
+        />
+      </div>
+    )
+  }
+
+  if (item.slug === "calendar-scheduler") {
+    return (
+      <CalendarScheduler
+        events={[
+          { id: "1", title: "Design review", date: "Mon", time: "10:00", tone: "default" },
+          { id: "2", title: "Release QA", date: "Tue", time: "14:00", tone: "warning" },
+          { id: "3", title: "Go live", date: "Fri", time: "09:30", tone: "success" },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "carousel") {
+    return (
+      <Carousel index={0}>
+        <CarouselItem>
+          <Card>
+            <CardContent className="p-5">
+              <p className="text-lg font-semibold">Release dashboard</p>
+              <p className="mt-2 text-sm text-muted-foreground">Compact KPI slide for weekly review.</p>
+            </CardContent>
+          </Card>
+        </CarouselItem>
+        <CarouselItem>
+          <Card>
+            <CardContent className="p-5">
+              <p className="text-lg font-semibold">Customer health</p>
+              <p className="mt-2 text-sm text-muted-foreground">Second slide with account risk summary.</p>
+            </CardContent>
+          </Card>
+        </CarouselItem>
+      </Carousel>
+    )
+  }
+
+  if (item.slug === "cascader") {
+    return (
+      <Cascader
+        value={["workspace", "billing", "invoices"]}
+        options={[
+          { value: "workspace", label: "Workspace", children: [{ value: "billing", label: "Billing", children: [{ value: "invoices", label: "Invoices" }, { value: "plans", label: "Plans" }] }] },
+          { value: "settings", label: "Settings", children: [{ value: "team", label: "Team" }] },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "code-block") {
+    return (
+      <CodeBlock
+        title="Install"
+        language="bash"
+        code={`npx azamat-ui-kit-cli init --template next\nnpx azamat-ui-kit-cli add button`}
+      />
+    )
+  }
+
+  if (item.slug === "copy-button") {
+    return <CopyButton value="npx azamat-ui-kit-cli add button">Copy command</CopyButton>
+  }
+
+  if (item.slug === "copy-field") {
+    return (
+      <CopyField
+        label="CLI command"
+        description="Quick source-copy command"
+        value="npx azamat-ui-kit-cli add input"
+      />
+    )
+  }
+
+  if (item.slug === "data-state") {
+    return (
+      <DataState
+        status="empty"
+        title="No matching rows"
+        description="Try another filter or import the first record."
+        actions={<Button size="sm">Import CSV</Button>}
+      />
+    )
+  }
+
+  if (item.slug === "descriptions") {
+    return (
+      <Descriptions
+        title="Workspace details"
+        columns={3}
+        items={[
+          { key: "owner", label: "Owner", value: "Azamat UI" },
+          { key: "plan", label: "Plan", value: "Scale" },
+          { key: "renewal", label: "Renewal", value: "Jul 14, 2026" },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "divider") {
+    return (
+      <div className="grid gap-3">
+        <div className="text-sm font-medium">Section above</div>
+        <Divider label="Summary" />
+        <div className="text-sm text-muted-foreground">Section below</div>
+      </div>
+    )
+  }
+
+  if (item.slug === "dual-list-picker") {
+    return (
+      <DualListPicker
+        picked={["billing", "support"]}
+        items={[
+          { value: "billing", label: "Billing" },
+          { value: "support", label: "Support" },
+          { value: "analytics", label: "Analytics" },
+          { value: "security", label: "Security" },
         ]}
       />
     )
@@ -164,8 +386,150 @@ function renderGenericPreviewSurface(
     )
   }
 
+  if (item.slug === "skeleton") {
+    return (
+      <div className="grid gap-3">
+        <Skeleton className="h-10 w-full" />
+        <SkeletonText rows={3} />
+        <SkeletonCard avatar />
+      </div>
+    )
+  }
+
+  if (item.slug === "skeleton-form") {
+    return <SkeletonForm />
+  }
+
+  if (item.slug === "skeleton-table") {
+    return <SkeletonTable rows={5} columns={4} />
+  }
+
   if (item.slug === "slider") {
     return <Slider label="Spacing scale" description="Adjust dashboard density." defaultValue={64} showValue />
+  }
+
+  if (item.slug === "stack") {
+    return (
+      <Stack gap="sm">
+        <div className="rounded-lg border p-3 text-sm">Header area</div>
+        <div className="rounded-lg border p-3 text-sm">Content area</div>
+        <div className="rounded-lg border p-3 text-sm">Footer area</div>
+      </Stack>
+    )
+  }
+
+  if (item.slug === "statistic") {
+    return (
+      <StatisticGrid columns={3}>
+        <StatisticCard label="ARR" value="$84.2k" change="+12.4%" trend="up" description="vs previous month" />
+        <Statistic label="MRR" value="$7.0k" change="+3.1%" trend="up" description="Live subscriptions" />
+        <Statistic label="Churn" value="1.9%" change="-0.4%" trend="down" description="Healthy range" />
+      </StatisticGrid>
+    )
+  }
+
+  if (item.slug === "sticky-footer-bar") {
+    return (
+      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
+        <div className="p-4 text-sm text-muted-foreground">Scrollable page content</div>
+        <StickyFooterBar start={<div className="text-sm font-medium">2 unsaved changes</div>} end={<><Button size="sm" variant="outline">Discard</Button><Button size="sm">Save</Button></>} />
+      </div>
+    )
+  }
+
+  if (item.slug === "tag") {
+    return (
+      <TagGroup>
+        <Tag>Default</Tag>
+        <Tag tone="success">Live</Tag>
+        <Tag tone="warning">Review</Tag>
+        <Tag tone="danger">Blocked</Tag>
+      </TagGroup>
+    )
+  }
+
+  if (item.slug === "tag-list") {
+    return (
+      <TagList
+        removable
+        items={[
+          { key: "1", label: "Dashboard" },
+          { key: "2", label: "Billing", variant: "secondary" },
+          { key: "3", label: "Priority", variant: "outline" },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "time-picker") {
+    return (
+      <div className="grid gap-3">
+        <TimePicker label="Start time" defaultValue="09:30" />
+        <TimeRangePicker from="09:30" to="17:30" />
+      </div>
+    )
+  }
+
+  if (item.slug === "tour") {
+    return (
+      <Tour
+        index={1}
+        steps={[
+          { title: "Workspace setup", description: "Initialize theme tokens first." },
+          { title: "Component add", description: "Copy only the component you need." },
+          { title: "Detail route", description: "Open docs, API and preview together." },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "tree-view") {
+    return (
+      <TreeView
+        defaultExpandedKeys={["components", "inputs"]}
+        selectedKey="button"
+        items={[
+          {
+            key: "components",
+            label: "Components",
+            children: [
+              {
+                key: "inputs",
+                label: "Inputs",
+                children: [
+                  { key: "button", label: "Button" },
+                  { key: "input", label: "Input" },
+                ],
+              },
+            ],
+          },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "typography") {
+    return (
+      <div className="grid gap-3">
+        <Heading level={2}>Dashboard typography</Heading>
+        <Text>Readable defaults for product copy and operational labels.</Text>
+        <blockquote className="border-l-4 pl-4 italic text-muted-foreground">Ship simple text hierarchy before adding decorative layout layers.</blockquote>
+        <Text muted size="sm">Use <Mark>Mark</Mark> only for emphasis that matters.</Text>
+      </div>
+    )
+  }
+
+  if (item.slug === "watermark") {
+    return (
+      <Watermark text="AZAMAT UI">
+        <Card>
+          <CardContent className="p-6">
+            <p className="text-lg font-semibold">Preview export</p>
+            <p className="mt-2 text-sm text-muted-foreground">Subtle branding surface for internal screenshots or mockups.</p>
+          </CardContent>
+        </Card>
+      </Watermark>
+    )
   }
 
   if (item.slug === "range-slider") {
@@ -306,6 +670,15 @@ function renderGenericPreviewSurface(
     )
   }
 
+  if (item.slug === "float-button") {
+    return (
+      <div className="relative min-h-28 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
+        <p className="text-sm text-muted-foreground">Floating action inside a content area.</p>
+        <FloatButton className="absolute bottom-4 right-4">+</FloatButton>
+      </div>
+    )
+  }
+
   if (item.slug === "data-list" || item.slug === "list") {
     return (
       <List
@@ -417,6 +790,132 @@ function renderGenericPreviewSurface(
     )
   }
 
+  if (item.slug === "json-input") {
+    return (
+      <JsonInput
+        value={`{\n  "workspace": "azamat-ui",\n  "theme": "dashboard"\n}`}
+        onValueChange={() => undefined}
+        rows={7}
+      />
+    )
+  }
+
+  if (item.slug === "kanban") {
+    return (
+      <KanbanBoard
+        columns={[
+          {
+            key: "todo",
+            title: "Todo",
+            cards: [
+              { key: "1", title: "Polish Button demo", description: "Improve interactive preview states." },
+            ],
+          },
+          {
+            key: "progress",
+            title: "In progress",
+            cards: [
+              { key: "2", title: "Refresh Input docs", description: "Clean API notes and examples." },
+            ],
+          },
+          {
+            key: "done",
+            title: "Done",
+            cards: [
+              { key: "3", title: "Publish 0.3.22", description: "Release package and sync docs." },
+            ],
+          },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "keyboard-shortcut") {
+    return (
+      <div className="flex flex-wrap gap-3">
+        <KeyboardShortcut keys={["Ctrl", "K"]} />
+        <KeyboardShortcut keys={["Shift", "Enter"]} />
+        <KeyboardShortcut keys={["Alt", "S"]} />
+      </div>
+    )
+  }
+
+  if (item.slug === "mention-input") {
+    return (
+      <MentionInput
+        defaultValue="@azamat can you review the DataTable route?"
+        options={[
+          { value: "@azamat", label: "@azamat" },
+          { value: "@team", label: "@team" },
+          { value: "@design", label: "@design" },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "menubar") {
+    return (
+      <Menubar>
+        <MenubarMenu>
+          <MenubarTrigger>File</MenubarTrigger>
+          <MenubarContent className="relative mt-2">
+            <MenubarItem>New page</MenubarItem>
+            <MenubarItem>Duplicate</MenubarItem>
+          </MenubarContent>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>Edit</MenubarTrigger>
+        </MenubarMenu>
+        <MenubarMenu>
+          <MenubarTrigger>View</MenubarTrigger>
+        </MenubarMenu>
+      </Menubar>
+    )
+  }
+
+  if (item.slug === "navigation-menu") {
+    return (
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem><NavigationMenuLink href="#" active>Overview</NavigationMenuLink></NavigationMenuItem>
+          <NavigationMenuItem><NavigationMenuLink href="#">Components</NavigationMenuLink></NavigationMenuItem>
+          <NavigationMenuItem><NavigationMenuLink href="#">Docs</NavigationMenuLink></NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    )
+  }
+
+  if (item.slug === "overlay") {
+    return (
+      <Grid columns={3} gap="sm">
+        <Card><CardContent className="p-4"><p className="font-medium">Dialog</p><p className="mt-1 text-sm text-muted-foreground">Focused confirmation and forms.</p></CardContent></Card>
+        <Card><CardContent className="p-4"><p className="font-medium">Popover</p><p className="mt-1 text-sm text-muted-foreground">Compact contextual actions.</p></CardContent></Card>
+        <Card><CardContent className="p-4"><p className="font-medium">Sheet</p><p className="mt-1 text-sm text-muted-foreground">Side panel workflows.</p></CardContent></Card>
+      </Grid>
+    )
+  }
+
+  if (item.slug === "property-grid") {
+    return (
+      <PropertyGrid
+        columns={3}
+        items={[
+          { key: "framework", label: "Framework", value: "Next.js", description: "App Router setup" },
+          { key: "theme", label: "Theme", value: "Light / Dark", description: "CSS tokens ready" },
+          { key: "mode", label: "Mode", value: "Source-copy", description: "Editable local files" },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "qr-code") {
+    return <QRCode value="https://azamat-ui.vercel.app" alt="Azamat UI" />
+  }
+
+  if (item.slug === "quantity-stepper") {
+    return <QuantityStepper defaultValue={3} min={1} max={10} />
+  }
+
   if (item.slug === "repeater-field") {
     return (
       <Card>
@@ -428,6 +927,51 @@ function renderGenericPreviewSurface(
           </div>
         </CardContent>
       </Card>
+    )
+  }
+
+  if (item.slug === "resizable-panel") {
+    return (
+      <ResizablePanelGroup>
+        <ResizablePanel defaultSize="45%">
+          <p className="text-sm font-medium">Preview panel</p>
+          <p className="mt-2 text-sm text-muted-foreground">Resize this surface in product screens with long content.</p>
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize="55%">
+          <p className="text-sm font-medium">Inspector panel</p>
+          <p className="mt-2 text-sm text-muted-foreground">Use for side-by-side data and editing tools.</p>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    )
+  }
+
+  if (item.slug === "rich-text-editor") {
+    return <RichTextEditor value="<p><strong>Release note</strong> with product details.</p>" onValueChange={() => undefined} />
+  }
+
+  if (item.slug === "saved-filter-select") {
+    return (
+      <SavedFilterSelect
+        value="billing"
+        filters={[
+          { value: "billing", label: "Billing", description: "Invoices and payment status" },
+          { value: "ops", label: "Operations", description: "Queues and workload" },
+        ]}
+      />
+    )
+  }
+
+  if (item.slug === "section") {
+    return (
+      <Section
+        title="Revenue summary"
+        description="Section wrapper for grouped content and actions."
+        actions={<Button size="sm">Export</Button>}
+        bordered
+      >
+        <div className="text-sm text-muted-foreground">Place chart, filters, table or any route content inside.</div>
+      </Section>
     )
   }
 
