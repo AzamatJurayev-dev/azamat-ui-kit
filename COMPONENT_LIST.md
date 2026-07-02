@@ -2,7 +2,7 @@
 
 Source of truth: `registry.json`
 
-Package version: `0.3.23`
+Package version: `0.3.24`
 
 Total registry entries: `182`
 

@@ -14,6 +14,7 @@ import { uploadShowcaseDemoRegistry } from "@/components/upload/demo"
 import { wizardShowcaseDemoRegistry } from "@/components/wizard/demo"
 import { defaultComponentDemoState, premiumShowcaseDemoRegistry } from "./premium"
 import { registrySpecificDemoRegistry } from "./registry-specific"
+import { supplementalShowcaseDemoRegistry } from "./supplemental"
 
 export * from "./types"
 export * from "./premium"
@@ -26,6 +27,7 @@ export * from "./site-data"
 export * from "./component-api-schema"
 export * from "./search-utils"
 export * from "./package-meta"
+export * from "./supplemental"
 
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
@@ -43,6 +45,7 @@ export const showcaseDemoRegistry = {
   ...uploadShowcaseDemoRegistry,
   ...wizardShowcaseDemoRegistry,
   ...registrySpecificDemoRegistry,
+  ...supplementalShowcaseDemoRegistry,
   ...premiumShowcaseDemoRegistry,
 }
 

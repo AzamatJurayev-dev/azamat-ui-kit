@@ -822,7 +822,7 @@ function renderGenericPreviewSurface(
             key: "done",
             title: "Done",
             cards: [
-              { key: "3", title: "Publish 0.3.23", description: "Release package and sync docs." },
+              { key: "3", title: "Publish 0.3.24", description: "Release package and sync docs." },
             ],
           },
         ]}

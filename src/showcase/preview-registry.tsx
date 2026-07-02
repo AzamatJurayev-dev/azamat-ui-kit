@@ -17,6 +17,7 @@ import { wizardShowcaseDemoRegistry } from "@/components/wizard/demo"
 import { Badge, Button, Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/index"
 import { defaultComponentDemoState, premiumShowcaseDemoRegistry } from "./premium"
 import { registrySpecificDemoRegistry } from "./registry-specific"
+import { supplementalShowcaseDemoRegistry } from "./supplemental"
 
 import { previewSurfaceCatalog, type PreviewSurfaceTone } from "./preview-catalog"
 
@@ -69,6 +70,7 @@ const componentPreviewRegistry = {
   ...uploadShowcaseDemoRegistry,
   ...wizardShowcaseDemoRegistry,
   ...registrySpecificDemoRegistry,
+  ...supplementalShowcaseDemoRegistry,
   ...premiumShowcaseDemoRegistry,
 }
 

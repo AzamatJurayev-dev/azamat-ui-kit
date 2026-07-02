@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.24 - 2026-07-02
+
+### Changed
+
+- filled public showcase demo coverage for every component catalog route so docs no longer fall back to missing generic detail states
+- added a supplemental showcase registry plus a coverage test to stop new public components from shipping without demo wiring
+- refreshed preview registry and source-copy showcase metadata so `azamat-ui` can consume the same complete demo surface after upgrade
+
 ## 0.3.23 - 2026-07-02
 
 ### Changed
