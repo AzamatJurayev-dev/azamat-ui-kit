@@ -1,4 +1,4 @@
 export { FormFamilyShowcase } from "./showcase"
 export { formFamilyMock } from "./mock"
-export { formDemoActions, formDemoFields } from "./data"
-export type { FormDemoAction, FormDemoField } from "./types"
+export { defaultFormValues, groupedWorkspaceOptions, workspaceOptions } from "./data"
+export type { FormValues, WorkspaceOption } from "./data"

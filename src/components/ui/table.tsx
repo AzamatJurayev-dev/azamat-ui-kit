@@ -11,7 +11,7 @@ function Table({ className, containerClassName, ...props }: TableProps) {
     <div
       data-slot="table-container"
       className={cn(
-        "relative w-full overflow-x-auto rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_30px_rgba(15,23,42,0.08))]",
+        "relative w-full overflow-x-auto rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-[color:var(--aui-table-container-surface,var(--card))] shadow-[var(--aui-card-shadow,0_12px_30px_rgba(15,23,42,0.08))]",
         containerClassName
       )}
     >

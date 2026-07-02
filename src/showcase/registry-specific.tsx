@@ -30,6 +30,7 @@ import {
   EntityCard,
   FileDropzone,
   FileUpload,
+  ImageUpload,
   FilterBar,
   FilterChips,
   Input,
@@ -811,7 +812,29 @@ function UploadPreview({ slug }: { slug: string }) {
   }
 
   if (slug === "file-upload") {
-    return <FileUpload dropzoneLabel="Upload documents" dropzoneDescription="Drag files here or choose from your device." buttonLabel="Choose files" helperText="Supports PDF, CSV and images." />
+    return (
+      <div className="grid gap-4">
+        <FileUpload dropzoneLabel="Upload documents" dropzoneDescription="Drag files here or choose from your device." buttonLabel="Choose files" helperText="Supports PDF, CSV and images." />
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Dropzone click and nested actions stay isolated.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Rejected states and helper copy live in the same component.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Use for production file routes, not just decorative previews.</div>
+        </div>
+      </div>
+    )
+  }
+
+  if (slug === "image-upload") {
+    return (
+      <div className="grid gap-4">
+        <ImageUpload dropzoneLabel="Upload product image" helperText="Preview-friendly upload for gallery and hero assets." />
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Image preview is part of the reusable component.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Remove action stays separate from the parent dropzone surface.</div>
+          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Good for template thumbnails and marketing assets.</div>
+        </div>
+      </div>
+    )
   }
 
   return (

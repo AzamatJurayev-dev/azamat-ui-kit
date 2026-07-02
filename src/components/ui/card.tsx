@@ -32,7 +32,7 @@ const cardVariants = cva(
         danger: "",
       },
       interactive: {
-        true: "cursor-pointer hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-0",
+        true: "cursor-pointer focus-visible:outline-none focus-visible:ring-0",
         false: "",
       },
       selected: {

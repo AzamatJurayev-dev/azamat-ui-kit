@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "border-[color:color-mix(in_oklch,var(--primary),black_10%)] bg-primary text-primary-foreground shadow-[var(--aui-button-primary-shadow,0_10px_24px_rgba(16,185,129,0.18))] hover:border-[color:color-mix(in_oklch,var(--primary),black_18%)] hover:bg-[color:color-mix(in_oklch,var(--primary),white_8%)]",
-        outline: "bg-[color:var(--aui-control-surface,var(--background))] text-foreground shadow-none hover:bg-[color:var(--aui-page-bg-alt)]",
-        secondary: "border-[color:color-mix(in_oklch,var(--border),var(--foreground)_6%)] bg-secondary text-secondary-foreground shadow-none hover:bg-[color:color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]",
-        ghost: "border-transparent bg-transparent shadow-none hover:border-[color:var(--aui-control-border-strong,var(--border))] hover:bg-[color:var(--aui-page-bg-alt)]",
+        outline: "bg-[color:var(--aui-control-surface,var(--background))] text-foreground shadow-none",
+        secondary: "border-[color:color-mix(in_oklch,var(--border),var(--foreground)_6%)] bg-secondary text-secondary-foreground shadow-none",
+        ghost: "border-transparent bg-transparent shadow-none",
         destructive: "border-[color:color-mix(in_oklch,var(--destructive),black_8%)] bg-destructive text-[color:var(--aui-danger-foreground,var(--primary-foreground))] shadow-[var(--aui-button-danger-shadow,0_10px_24px_rgba(239,68,68,0.16))] hover:border-[color:color-mix(in_oklch,var(--destructive),black_16%)] hover:bg-[color:color-mix(in_oklch,var(--destructive),white_6%)]",
         warning: "border-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),transparent_52%)] bg-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),transparent_78%)] text-[color:var(--aui-warning-foreground,var(--foreground))] shadow-none hover:bg-[color:color-mix(in_oklch,var(--aui-warning,var(--primary)),transparent_70%)]",
         link: "rounded-none border-transparent bg-transparent p-0 text-primary shadow-none underline-offset-4 hover:bg-transparent hover:text-[color:color-mix(in_oklch,var(--primary),black_10%)]",
