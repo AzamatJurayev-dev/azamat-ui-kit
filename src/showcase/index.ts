@@ -13,11 +13,13 @@ import { patternsShowcaseDemoRegistry } from "@/components/patterns/demo"
 import { uploadShowcaseDemoRegistry } from "@/components/upload/demo"
 import { wizardShowcaseDemoRegistry } from "@/components/wizard/demo"
 import { defaultComponentDemoState, premiumShowcaseDemoRegistry } from "./premium"
+import { registryQualityDemoRegistry } from "./registry-quality"
 import { registrySpecificDemoRegistry } from "./registry-specific"
 import { supplementalShowcaseDemoRegistry } from "./supplemental"
 
 export * from "./types"
 export * from "./premium"
+export * from "./registry-quality"
 export * from "./registry-specific"
 export * from "./fallback"
 export * from "./families/index"
@@ -47,6 +49,7 @@ export const showcaseDemoRegistry = {
   ...registrySpecificDemoRegistry,
   ...supplementalShowcaseDemoRegistry,
   ...premiumShowcaseDemoRegistry,
+  ...registryQualityDemoRegistry,
 }
 
 export { defaultComponentDemoState }
