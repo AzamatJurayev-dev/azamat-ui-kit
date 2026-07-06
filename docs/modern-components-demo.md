@@ -18,7 +18,7 @@ import {
   ResizablePanelGroup,
   Tag,
   Tour,
-} from "azamat-ui-kit"
+} from "azix"
 ```
 
 ## Display and utility examples

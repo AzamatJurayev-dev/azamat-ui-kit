@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const collapseMock: ComponentDemoMock = {
-  code: `import { CollapseGroup } from "azamat-ui-kit"
+  code: `import { CollapseGroup } from "azix"
 
 const sections = [
   {

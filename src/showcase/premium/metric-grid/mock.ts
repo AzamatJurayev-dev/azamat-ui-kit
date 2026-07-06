@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const metricGridMock: ComponentDemoMock = {
-  code: `import { MetricGrid } from "azamat-ui-kit"
+  code: `import { MetricGrid } from "azix"
 
 const items = [
   { key: "users", label: "Users", value: "2,410", description: "Last 30 days" },

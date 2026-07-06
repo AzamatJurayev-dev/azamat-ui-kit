@@ -1,8 +1,8 @@
-# azamat-ui-kit
+# azix
 
 Editable React components for Tailwind apps.
 
-Use the CLI to copy component source into your project. Do not install `azamat-ui-kit` as a runtime UI dependency for new apps.
+Use the CLI to copy component source into your project. Do not install `azix` as a runtime UI dependency for new apps.
 
 ## Next.js
 

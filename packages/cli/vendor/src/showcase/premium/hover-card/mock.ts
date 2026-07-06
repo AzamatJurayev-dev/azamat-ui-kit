@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const hoverCardMock: ComponentDemoMock = {
-  code: `import { Avatar, HoverCard } from "azamat-ui-kit"
+  code: `import { Avatar, HoverCard } from "azix"
 
 export function Example() {
   return (

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const emptyStateMock: ComponentDemoMock = {
-  code: `import { EmptyState } from "azamat-ui-kit"
+  code: `import { EmptyState } from "azix"
 
 export function Example() {
   return (

@@ -20,7 +20,7 @@ npm pack --dry-run
 
 Confirm:
 
-- package name is correct: `azamat-ui-kit`
+- package name is correct: `azix`
 - version is correct in `package.json`, `registry.json`, and `CHANGELOG.md`
 - `dist/index.js` does not contain runtime `require("react")`
 - `dist/index.cjs` exists for Node/CommonJS consumers
@@ -53,9 +53,9 @@ After `npm pack --dry-run`, you can still test one clean consumer app manually b
 ```bash
 npm create vite@latest aui-smoke -- --template react-ts
 cd aui-smoke
-npm install ../azamat-ui-kit-0.2.0.tgz
-npx azamat-ui-kit init --template vite
-npx azamat-ui-kit add button input data-table --dry-run
+npm install ../azix-0.2.0.tgz
+npx azix init --template vite
+npx azix add button input data-table --dry-run
 ```
 
 For Next.js:
@@ -63,14 +63,14 @@ For Next.js:
 ```bash
 npx create-next-app@latest aui-next-smoke --ts --app
 cd aui-next-smoke
-npm install ../azamat-ui-kit-0.2.0.tgz
-npx azamat-ui-kit init --template next
+npm install ../azix-0.2.0.tgz
+npx azix init --template next
 ```
 
 ## After publish
 
 ```bash
-npm view azamat-ui-kit version
+npm view azix version
 ```
 
 Recommended follow-up:

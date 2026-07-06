@@ -14,7 +14,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "azamat-ui-kit"
+} from "azix"
 
 export function Example() {
   const [status, setStatus] = useState("private")

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const selectMock: ComponentDemoMock = {
-  code: `import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "azamat-ui-kit"\n\nexport function Example() {\n  return (\n    <Select defaultValue="starter">\n      <SelectTrigger><SelectValue /></SelectTrigger>\n      <SelectContent>\n        <SelectItem value="starter">Starter</SelectItem>\n      </SelectContent>\n    </Select>\n  )\n}`,
+  code: `import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "azix"\n\nexport function Example() {\n  return (\n    <Select defaultValue="starter">\n      <SelectTrigger><SelectValue /></SelectTrigger>\n      <SelectContent>\n        <SelectItem value="starter">Starter</SelectItem>\n      </SelectContent>\n    </Select>\n  )\n}`,
   cliCommand: "npx azix add select",
   highlights: ["Primary selection surface", "Controlled selection", "Searchable local flow", "Compact trigger options"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "dashboard-starter"],

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const toastMock: ComponentDemoMock = {
-  code: `import { Button, ToastProvider, useToast } from "azamat-ui-kit"
+  code: `import { Button, ToastProvider, useToast } from "azix"
 
 function Demo() {
   const { addToast, clearToasts, success, warning } = useToast()

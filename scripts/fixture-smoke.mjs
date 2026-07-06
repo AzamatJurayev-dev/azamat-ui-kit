@@ -46,7 +46,7 @@ async function installConsumerFixture({
   for (const [relativePath, contents] of Object.entries(sourceFiles)) {
     const fullPath = path.join(cwd, relativePath)
     await fsExtra.ensureDir(path.dirname(fullPath))
-    if (/from\s+["']azamat-ui-kit\/[^"']+["']/.test(contents)) {
+    if (/from\s+["']azix\/[^"']+["']/.test(contents)) {
       throw new Error("Fixture source must not use package subpath imports. Use package root only.")
     }
     await fs.writeFile(fullPath, contents, "utf8")
@@ -82,7 +82,7 @@ async function installConsumerFixture({
 }
 
 async function main() {
-  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "azamat-ui-kit-fixtures-"))
+  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), "azix-fixtures-"))
 
   try {
     const tarballPath = await createTarball(fixtureRoot)
@@ -123,7 +123,7 @@ async function main() {
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "azamat-ui-kit"
+} from "azix"
 
 const value = [
   Button,
@@ -153,7 +153,7 @@ export default value
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "azamat-ui-kit"
+} from "azix"
 
 const required = [
   Button,
@@ -216,7 +216,7 @@ import {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "azamat-ui-kit"
+} from "azix"
 
 function DemoToastButton() {
   const { addToast } = useToast()
@@ -268,7 +268,7 @@ export default function Page() {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "azamat-ui-kit"
+} from "azix"
 
 const required = [
   Button,

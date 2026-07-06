@@ -8,7 +8,7 @@ export const dataTableFamilyMock: FamilyDemoMock = {
   DataTableSortableHeader,
   createDataTableActionsColumn,
   createDataTableSelectColumn,
-} from "azamat-ui-kit"
+} from "azix"
 
 export function Example() {
   return (

@@ -1,6 +1,6 @@
 # Public API Inventory
 
-This file defines what should feel public, canonical, and teachable for `azamat-ui-kit`.
+This file defines what should feel public, canonical, and teachable for `azix`.
 
 ## Contract
 

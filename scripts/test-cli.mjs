@@ -65,7 +65,7 @@ async function writeTemplateProjectFiles(fixtureRoot, template) {
   const paths = templateRootForFixture(template)
 
   const packageJson = {
-    name: `azamat-ui-kit-${template}-cli-smoke`,
+    name: `azix-${template}-cli-smoke`,
     private: true,
     type: "module",
     scripts: {
@@ -101,8 +101,8 @@ async function assertRuntimePackageNotInstalled(fixtureRoot, template) {
     ...Object.keys(packageJson.devDependencies ?? {}),
   ])
 
-  if (installedPackages.has("azamat-ui-kit")) {
-    throw new Error(`source-copy init should not install azamat-ui-kit runtime package for ${template}`)
+  if (installedPackages.has("azix")) {
+    throw new Error(`source-copy init should not install azix runtime package for ${template}`)
   }
 }
 

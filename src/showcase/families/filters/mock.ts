@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const filtersFamilyMock: FamilyDemoMock = {
-  code: `import { FilterBar, FilterChips } from "azamat-ui-kit"\n\nexport function Example() {\n  return <FilterBar />\n}`,
+  code: `import { FilterBar, FilterChips } from "azix"\n\nexport function Example() {\n  return <FilterBar />\n}`,
   highlights: ["Filter bars", "Applied chips", "Search + filter coupling", "Dashboard refinement"],
   scenarios: [
     { title: "Analytics toolbar", description: "Combine search, chips and status filters in one row." },

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const rightClickMenuMock: ComponentDemoMock = {
-  code: `import { RightClickMenu } from "azamat-ui-kit"
+  code: `import { RightClickMenu } from "azix"
 
 export function Example() {
   return (

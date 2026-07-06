@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const wizardFamilyMock: FamilyDemoMock = {
-  code: `import { Stepper, Wizard } from "azamat-ui-kit"\n\nexport function Example() {\n  return <Wizard />\n}`,
+  code: `import { Stepper, Wizard } from "azix"\n\nexport function Example() {\n  return <Wizard />\n}`,
   highlights: ["Multi-step flow", "Progress state", "Guided forms", "Step affordances"],
   scenarios: [
     { title: "Onboarding", description: "Guide users through setup without overwhelming them." },

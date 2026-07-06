@@ -98,7 +98,7 @@ export function Example() {
 
 export const formSelectMock: ComponentDemoMock = {
   code: `import { useForm } from "react-hook-form"
-import { Button, FormSelect } from "azamat-ui-kit"
+import { Button, FormSelect } from "azix"
 
 const statusOptions = [
   { label: "Draft", value: "draft" },
@@ -154,7 +154,7 @@ export function Example() {
 
 export const formAsyncSelectMock: ComponentDemoMock = {
   code: `import { useForm } from "react-hook-form"
-import { Button, FormAsyncSelect } from "azamat-ui-kit"
+import { Button, FormAsyncSelect } from "azix"
 
 export function Example() {
   const form = useForm({

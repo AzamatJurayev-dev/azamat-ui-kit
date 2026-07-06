@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const kbdMock: ComponentDemoMock = {
-  code: `import { Kbd } from "azamat-ui-kit"
+  code: `import { Kbd } from "azix"
 
 export function Example() {
   return (

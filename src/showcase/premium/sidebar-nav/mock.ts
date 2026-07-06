@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const sidebarNavMock: ComponentDemoMock = {
-  code: `import { SidebarNav } from "azamat-ui-kit"
+  code: `import { SidebarNav } from "azix"
 
 const items = [
   { key: "overview", label: "Overview", href: "/overview" },

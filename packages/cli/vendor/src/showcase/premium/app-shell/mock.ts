@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const appShellMock: ComponentDemoMock = {
-  code: `import { AppHeader, AppSidebar, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, SidebarNav, Button } from "azamat-ui-kit"
+  code: `import { AppHeader, AppSidebar, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, SidebarNav, Button } from "azix"
 
 const navItems = [
   { key: "overview", label: "Overview", href: "/overview", active: true },

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const tooltipMock: ComponentDemoMock = {
-  code: `import { Button, Tooltip } from "azamat-ui-kit"
+  code: `import { Button, Tooltip } from "azix"
 
 export function Example() {
   return (

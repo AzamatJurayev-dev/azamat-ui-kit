@@ -1,4 +1,4 @@
-export const LIBRARY_PACKAGE_NAME = "azamat-ui-kit"
+export const LIBRARY_PACKAGE_NAME = "azix"
 export const CLI_PACKAGE_NAME = "azix"
 export const CLI_EXECUTABLE_NAME = "azix"
 

@@ -1,5 +1,5 @@
 {
-  "name": "azamat-ui-kit",
+  "name": "azix",
   "version": "0.3.24",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
@@ -13,13 +13,13 @@
     "registry",
     "cli"
   ],
-  "homepage": "https://github.com/AzamatJurayev-dev/azamat-ui-kit#readme",
+  "homepage": "https://github.com/AzamatJurayev-dev/azix#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AzamatJurayev-dev/azamat-ui-kit.git"
+    "url": "git+https://github.com/AzamatJurayev-dev/azix.git"
   },
   "bugs": {
-    "url": "https://github.com/AzamatJurayev-dev/azamat-ui-kit/issues"
+    "url": "https://github.com/AzamatJurayev-dev/azix/issues"
   },
   "license": "MIT",
   "author": "Azamat Jurayev",

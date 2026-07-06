@@ -9,7 +9,7 @@ export function warnDeprecatedComponent(name: string, replacement: string) {
   warnedDeprecatedComponents.add(name)
   if (console?.warn) {
     console.warn(
-      `[azamat-ui-kit] ${name} is deprecated. ${replacement} This alias is kept for compatibility only.`
+      `[azix] ${name} is deprecated. ${replacement} This alias is kept for compatibility only.`
     )
   }
 }

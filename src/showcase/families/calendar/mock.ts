@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const calendarFamilyMock: FamilyDemoMock = {
-  code: `import { Calendar, DatePicker, DateRangePicker } from "azamat-ui-kit"\n\nexport function Example() {\n  return <DatePicker />\n}`,
+  code: `import { Calendar, DatePicker, DateRangePicker } from "azix"\n\nexport function Example() {\n  return <DatePicker />\n}`,
   highlights: ["Date picker", "Range picker", "Scheduling flows", "Reporting windows"],
   scenarios: [
     { title: "Campaign windows", description: "Select precise dates for launches and promotions." },

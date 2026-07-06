@@ -88,7 +88,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- restored the full root export contract so published package consumers receive patterns, families, and complete public component barrels from `azamat-ui-kit`
+- restored the full root export contract so published package consumers receive patterns, families, and complete public component barrels from `azix`
 
 ## 0.3.6 - 2026-06-26
 

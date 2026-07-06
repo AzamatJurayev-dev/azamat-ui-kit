@@ -80,7 +80,7 @@ export function ButtonShowcase() {
     <div className="space-y-0">
       <section className="pb-6">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] aui-text-muted">Installed from npm</p>
-        <h3 className="aui-text-strong mt-3 text-2xl font-semibold tracking-tight">Real azamat-ui-kit buttons</h3>
+        <h3 className="aui-text-strong mt-3 text-2xl font-semibold tracking-tight">Real azix buttons</h3>
         <p className="aui-text-muted mt-3 max-w-2xl text-sm leading-6">
           This preview uses the exported Button component directly from the installed package. The docs page only provides spacing around it.
         </p>

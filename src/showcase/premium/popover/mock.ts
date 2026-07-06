@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const popoverMock: ComponentDemoMock = {
-  code: `import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "azamat-ui-kit"
+  code: `import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "azix"
 
 export function Example() {
   return (

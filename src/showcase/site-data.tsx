@@ -34,7 +34,7 @@ import {
   getDocsGroupDetail,
   resolveDocsRoute,
 } from "@/index"
-import azamatKitRegistry from "./azamat-ui-kit-registry.json"
+import azamatKitRegistry from "./azix-registry.json"
 import {
   PACKAGE_LATEST_RELEASE_DATE,
   PACKAGE_LATEST_VERSION,
@@ -236,9 +236,9 @@ export type ComponentSurfaceMemberInventoryItem = {
   href: string
 }
 
-export const PACKAGE_NAME = "azamat-ui-kit"
+export const PACKAGE_NAME = "azix"
 export const CLI_PACKAGE_NAME = "azix"
-export const PACKAGE_IMPORT = "azamat-ui-kit"
+export const PACKAGE_IMPORT = "azix"
 export const DOCS_APP_NAME = "azamat-ui"
 export const CLI_INIT_NEXT_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template next --defaults`
 export const CLI_INIT_VITE_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template vite --defaults`
@@ -246,8 +246,8 @@ export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button form-input`
 export const PACKAGE_INSTALL_COMMAND = `${CLI_INIT_NEXT_COMMAND}\n${CLI_ADD_COMMAND}`
 export const CLI_INSTALL_COMMAND = `npx ${CLI_PACKAGE_NAME} --help`
 export const CLI_THEME_COMMAND = `npx ${CLI_PACKAGE_NAME} theme`
-export const PACKAGE_NPM_URL = "https://www.npmjs.com/package/azamat-ui-kit"
-export const PACKAGE_GITHUB_URL = "https://github.com/AzamatJurayev-dev/azamat-ui-kit"
+export const PACKAGE_NPM_URL = "https://www.npmjs.com/package/azix"
+export const PACKAGE_GITHUB_URL = "https://github.com/AzamatJurayev-dev/azix"
 export const PACKAGE_GITHUB_RELEASES_URL = `${PACKAGE_GITHUB_URL}/releases`
 export const DOCS_REPO_URL = "https://github.com/AzamatJurayev-dev/azamat-ui"
 export const PACKAGE_RELEASES_URL = PACKAGE_GITHUB_RELEASES_URL
@@ -2900,11 +2900,11 @@ export const globalSearchItems: GlobalSearchItem[] = [
     group: "Docs" as const,
     shortcut: "I",
     featured: true,
-    keywords: ["installation", "setup", "npm", "theme", "azamat-ui-kit", "cli"],
+    keywords: ["installation", "setup", "npm", "theme", "azix", "cli"],
   },
   {
     title: "Next.js installation",
-    description: "Initialize azamat-ui-kit in a Next.js app and write local component files.",
+    description: "Initialize azix in a Next.js app and write local component files.",
     href: "/docs/installation/next",
     group: "Docs" as const,
     shortcut: "I",
@@ -2912,7 +2912,7 @@ export const globalSearchItems: GlobalSearchItem[] = [
   },
   {
     title: "Vite installation",
-    description: "Initialize azamat-ui-kit in a Vite app and write local component files.",
+    description: "Initialize azix in a Vite app and write local component files.",
     href: "/docs/installation/vite",
     group: "Docs" as const,
     shortcut: "I",

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const tableMock: ComponentDemoMock = {
-  code: `import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "azamat-ui-kit"\n\nexport function Example() {\n  return (\n    <Table>\n      <TableHeader><TableRow><TableHead>Name</TableHead></TableRow></TableHeader>\n      <TableBody><TableRow><TableCell>Azamat UI</TableCell></TableRow></TableBody>\n    </Table>\n  )\n}`,
+  code: `import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "azix"\n\nexport function Example() {\n  return (\n    <Table>\n      <TableHeader><TableRow><TableHead>Name</TableHead></TableRow></TableHeader>\n      <TableBody><TableRow><TableCell>Azamat UI</TableCell></TableRow></TableBody>\n    </Table>\n  )\n}`,
   htmlCode: `<table data-slot="table">\n  <thead><tr><th>Name</th><th>Status</th><th>Revenue</th></tr></thead>\n  <tbody><tr><td>Acme Dashboard</td><td>Live</td><td>$24,780</td></tr></tbody>\n</table>`,
   cliCommand: "npx azix add table",
   highlights: ["Header rows", "Body rows", "Hover states", "Compact reporting"],

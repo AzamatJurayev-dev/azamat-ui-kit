@@ -20,7 +20,7 @@ await fs.writeFile(
   path.join(vendorRoot, "package.json"),
   JSON.stringify(
     {
-      name: "azamat-ui-kit",
+      name: "azix",
       private: true,
     },
     null,

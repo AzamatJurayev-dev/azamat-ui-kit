@@ -5,7 +5,7 @@
 ## Recommended usage
 
 ```tsx
-import { AppInput } from "azamat-ui-kit"
+import { AppInput } from "azix"
 
 <AppInput kind="text" placeholder="Name" />
 <AppInput kind="clearable" placeholder="Filter by product" />
@@ -55,7 +55,7 @@ The shared input surface supports the common decorator props:
 `FormAppInput` is the compatibility React Hook Form wrapper for the same input kinds. New docs should teach `FormInput` first:
 
 ```tsx
-import { FormInput } from "azamat-ui-kit"
+import { FormInput } from "azix"
 
 <FormInput control={control} name="firstName" kind="text" label="Name" />
 <FormInput control={control} name="search" kind="search" label="Search" />

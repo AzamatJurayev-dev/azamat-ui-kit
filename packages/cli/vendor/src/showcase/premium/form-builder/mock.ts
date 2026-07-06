@@ -9,7 +9,7 @@ import {
   phoneField,
   switchField,
   textareaField,
-} from "azamat-ui-kit"
+} from "azix"
 
 type DemoValues = {
   workspace: string
