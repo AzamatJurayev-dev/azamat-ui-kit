@@ -17,7 +17,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<span data-slot="tooltip">Hover or focus to reveal hint</span>`,
-  cliCommand: "npx azamat-ui-kit-cli add tooltip",
+  cliCommand: "npx azix add tooltip",
   highlights: ["Short helper copy", "Hover + focus states", "Placement control", "Low-noise guidance"],
   relatedBlockSlugs: ["settings-form", "dashboard-starter", "crm-dashboard"],
   scenarios: [

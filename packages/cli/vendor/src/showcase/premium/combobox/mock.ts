@@ -30,7 +30,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="combobox-trigger">Open combobox</button>`,
-  cliCommand: "npx azamat-ui-kit-cli add combobox",
+  cliCommand: "npx azix add combobox",
   highlights: ["Search-led selection", "Controlled value", "Description rows", "Fast reassignment flow"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

@@ -49,7 +49,7 @@ export function createShowcaseDemoRegistry(definitions: ShowcaseDemoDefinition[]
 
 function createMock(definition: ShowcaseDemoDefinition): ShowcaseDemoMock {
   return {
-    cliCommand: `npx azamat-ui-kit-cli add ${definition.slug}`,
+    cliCommand: `npx azix add ${definition.slug}`,
     code: createCodeSnippet(definition),
     highlights: definition.highlights,
     scenarios: definition.scenarios,

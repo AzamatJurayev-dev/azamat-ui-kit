@@ -119,7 +119,7 @@ async function runCli(fixtureRoot, args) {
 }
 
 async function assertInitAndArtifacts(template) {
-  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), `azamat-ui-kit-cli-${template}-`))
+  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), `azix-${template}-`))
 
   try {
     const paths = await writeTemplateProjectFiles(fixtureRoot, template)

@@ -22,7 +22,7 @@ export function Example() {
   return <CollapseGroup items={sections} type="single" defaultValue="permissions" />
 }`,
   htmlCode: `<details data-slot="collapse"><summary>Open details</summary></details>`,
-  cliCommand: "npx azamat-ui-kit-cli add collapse",
+  cliCommand: "npx azix add collapse",
   highlights: ["Progressive disclosure", "Single or multiple open items", "Dense settings layout", "Controlled group state"],
   relatedBlockSlugs: ["settings-form", "dashboard-starter", "crm-dashboard"],
   scenarios: [

@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const cardMock: ComponentDemoMock = {
   code: `import { Badge, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "azamat-ui-kit"\n\nexport function Example() {\n  return (\n    <Card>\n      <CardHeader>\n        <CardTitle>Project status</CardTitle>\n        <CardDescription>Release readiness and team alignment</CardDescription>\n      </CardHeader>\n      <CardContent className="space-y-2">\n        <p>Design review complete. QA pass: 84%.</p>\n        <Badge variant="secondary">Dashboard module</Badge>\n      </CardContent>\n      <CardFooter>Updated 12 minutes ago</CardFooter>\n    </Card>\n  )\n}\n`,
-  cliCommand: "npx azamat-ui-kit-cli add card",
+  cliCommand: "npx azix add card",
   highlights: ["Header and footer slots", "Compact density", "Dashboard modules", "Composed content"],
   relatedBlockSlugs: ["dashboard-starter", "sidebar-layout", "users-table"],
   scenarios: [

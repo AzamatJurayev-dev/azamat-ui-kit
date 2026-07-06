@@ -18,7 +18,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="date-range-picker">Date range</label><input id="date-range-picker" type="text" value="2026-06-01 to 2026-06-07" />',
-  cliCommand: "npx azamat-ui-kit-cli add date-range-picker",
+  cliCommand: "npx azix add date-range-picker",
   highlights: ["Range popover behavior", "disabledDates support", "from/to object format", "min/max constraints"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "pricing-section"],
   scenarios: [

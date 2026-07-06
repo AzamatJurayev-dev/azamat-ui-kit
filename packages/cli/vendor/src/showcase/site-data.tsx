@@ -237,7 +237,7 @@ export type ComponentSurfaceMemberInventoryItem = {
 }
 
 export const PACKAGE_NAME = "azamat-ui-kit"
-export const CLI_PACKAGE_NAME = "azamat-ui-kit-cli"
+export const CLI_PACKAGE_NAME = "azix"
 export const PACKAGE_IMPORT = "azamat-ui-kit"
 export const DOCS_APP_NAME = "azamat-ui"
 export const CLI_INIT_NEXT_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template next --defaults`
@@ -2631,7 +2631,7 @@ export const featuredBlock: BlockCard = {
   theme: "Soft",
   relatedTemplateSlug: "dashboard-starter",
   installSteps: [
-    "Run `npx azamat-ui-kit-cli init` and make sure the dashboard route already has theme tokens loaded.",
+    "Run `npx azix init` and make sure the dashboard route already has theme tokens loaded.",
     "Copy the shell section into an authenticated page and connect it to live KPI and activity data.",
     "Keep the block focused on one overview slice instead of turning it into a full page shell.",
   ],
@@ -2664,7 +2664,7 @@ export const blockCards: BlockCard[] = [
     theme: "Light",
     relatedTemplateSlug: "dashboard-starter",
     installSteps: [
-      "Run `npx azamat-ui-kit-cli init` and mount the shell inside an authenticated route group.",
+      "Run `npx azix init` and mount the shell inside an authenticated route group.",
       "Wire navigation items and header actions before copying child content zones into the shell.",
       "Keep the shell generic enough to reuse across more than one application page.",
     ],
@@ -2690,7 +2690,7 @@ export const blockCards: BlockCard[] = [
     theme: "Soft",
     relatedTemplateSlug: "crm-dashboard",
     installSteps: [
-      "Run `npx azamat-ui-kit-cli init` and reuse the CRM block inside an existing workspace route.",
+      "Run `npx azix init` and reuse the CRM block inside an existing workspace route.",
       "Connect stage counts, owners, and next actions to live CRM entities before release.",
       "Escalate to the CRM template only when the page needs reports, settings, and multiple sections together.",
     ],
@@ -2717,7 +2717,7 @@ export const blockCards: BlockCard[] = [
     theme: "Light",
     relatedTemplateSlug: "dashboard-starter",
     installSteps: [
-      "Run `npx azamat-ui-kit-cli init` and move the table block into the target resource page.",
+      "Run `npx azix init` and move the table block into the target resource page.",
       "Map columns, row identifiers, and action callbacks to your real API contract.",
       "Keep pagination, filters, and bulk actions aligned with backend capabilities.",
     ],
@@ -2744,7 +2744,7 @@ export const blockCards: BlockCard[] = [
     theme: "Light",
     relatedTemplateSlug: "dashboard-starter",
     installSteps: [
-      "Run `npx azamat-ui-kit-cli init` and mount the auth block on a public or gated entry route.",
+      "Run `npx azix init` and mount the auth block on a public or gated entry route.",
       "Replace demo trust copy, OAuth providers, and field labels with your real auth contract.",
       "Use the wider auth or app template only when onboarding needs multiple steps or side content.",
     ],
@@ -2770,7 +2770,7 @@ export const blockCards: BlockCard[] = [
     theme: "Light",
     relatedTemplateSlug: "dashboard-starter",
     installSteps: [
-      "Run `npx azamat-ui-kit-cli init` and place the settings block inside an existing account or workspace page.",
+      "Run `npx azix init` and place the settings block inside an existing account or workspace page.",
       "Wire field state, validation, and save feedback to your app settings contract.",
       "Only move to a larger settings template when multiple settings areas need shared navigation.",
     ],
@@ -2797,7 +2797,7 @@ export const blockCards: BlockCard[] = [
     theme: "Soft",
     relatedTemplateSlug: "dashboard-starter",
     installSteps: [
-      "Run `npx azamat-ui-kit-cli init` and copy the invoice block into the billing route.",
+      "Run `npx azix init` and copy the invoice block into the billing route.",
       "Connect payment status, row actions, and export flows to real finance data.",
       "Keep summaries close to the table instead of turning the block into a full finance dashboard.",
     ],

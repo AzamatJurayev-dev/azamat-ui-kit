@@ -7,7 +7,7 @@ function createDataTablePartMock(
 ): ComponentDemoMock {
   return {
     code: `import { ${component} } from "azamat-ui-kit"\n\nexport function Example() {\n  return <${component} />\n}`,
-    cliCommand: `npx azamat-ui-kit-cli add ${slug}`,
+    cliCommand: `npx azix add ${slug}`,
     highlights: [
       `${component} preview inside a real DataTable shell`,
       "Interaction-focused route",

@@ -912,7 +912,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Copy the input source into your app.",
     language: "cli",
     variant: "cli",
-    code: `npx azamat-ui-kit-cli add input`,
+    code: `npx azix add input`,
   },
   {
     component: "InlineEditable",

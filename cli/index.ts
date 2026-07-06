@@ -8,7 +8,8 @@ import { presetCommand } from "./commands/preset"
 const program = new Command()
 
 program
-  .name("azamat-ui-kit")
+  .name("azix")
+  .alias("azamat-ui-kit")
   .description("Azamat UI Kit source-copy CLI")
   .version("0.3.24")
 

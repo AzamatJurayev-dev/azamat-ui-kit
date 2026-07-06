@@ -7,8 +7,8 @@ Use the CLI to copy component source into your project. Do not install `azamat-u
 ## Next.js
 
 ```bash
-npx azamat-ui-kit-cli init --template next --defaults
-npx azamat-ui-kit-cli add button
+npx azix init --template next --defaults
+npx azix add button
 ```
 
 ```tsx
@@ -22,8 +22,8 @@ export default function Page() {
 ## Vite
 
 ```bash
-npx azamat-ui-kit-cli init --template vite --defaults
-npx azamat-ui-kit-cli add input
+npx azix init --template vite --defaults
+npx azix add input
 ```
 
 ```tsx
@@ -37,10 +37,10 @@ export default function App() {
 ## Common Commands
 
 ```bash
-npx azamat-ui-kit-cli list
-npx azamat-ui-kit-cli add button input data-table
-npx azamat-ui-kit-cli preset dashboard
-npx azamat-ui-kit-cli theme src/index.css
+npx azix list
+npx azix add button input data-table
+npx azix preset dashboard
+npx azix theme src/index.css
 ```
 
 ## Component Imports

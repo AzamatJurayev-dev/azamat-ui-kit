@@ -30,7 +30,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<label for="qty">Quantity</label><input id="qty" type="text" inputmode="numeric" />`,
-  cliCommand: "npx azamat-ui-kit-cli add quantity-input",
+  cliCommand: "npx azix add quantity-input",
   highlights: ["Stepper controls", "min/max boundaries", "controlled usage", "compact row compatibility"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "settings-form"],
   scenarios: [

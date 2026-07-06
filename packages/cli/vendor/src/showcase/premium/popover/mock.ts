@@ -26,7 +26,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="popover-trigger">Open popover</button>`,
-  cliCommand: "npx azamat-ui-kit-cli add popover",
+  cliCommand: "npx azix add popover",
   highlights: ["Anchored overlay", "Action-specific compact content", "Placement control", "Keyboard-focus hints"],
   relatedBlockSlugs: ["users-table", "dashboard-starter", "crm-dashboard"],
   scenarios: [

@@ -16,7 +16,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azamat-ui-kit-cli add image-upload",
+  cliCommand: "npx azix add image-upload",
   highlights: [
     "Image preview support",
     "Reusable remove action behavior",

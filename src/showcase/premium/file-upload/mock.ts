@@ -18,7 +18,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azamat-ui-kit-cli add file-upload",
+  cliCommand: "npx azix add file-upload",
   highlights: [
     "Reusable dropzone and file list",
     "Rejected state support",

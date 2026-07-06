@@ -58,7 +58,7 @@ export function Example() {
 }`
 ,
   htmlCode: `<button data-slot="async-select-trigger">Choose workspace</button>`,
-  cliCommand: "npx azamat-ui-kit-cli add async-select",
+  cliCommand: "npx azix add async-select",
   highlights: [
     "Asynchronous loadOptions and loading state support",
     "Debounced search requests",

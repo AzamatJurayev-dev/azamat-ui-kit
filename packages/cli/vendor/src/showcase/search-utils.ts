@@ -5,6 +5,8 @@ export type SearchItem = (typeof globalSearchItems)[number]
 export const searchGroupOrder: Array<SearchItem["group"]> = [
   "Components",
   "Docs",
+  "Templates",
+  "Blocks",
   "Examples",
 ]
 
@@ -55,6 +57,8 @@ export function scoreSearchItem(item: SearchItem, query: string) {
   if (description.includes(normalizedQuery)) score += 10
   if (item.featured) score += 4
   if (item.shortcut === "D" || item.shortcut === "C") score += 8
+  if (item.group === "Templates" && /\b(template|templates|page|dashboard)\b/.test(normalizedQuery)) score += 24
+  if (item.group === "Blocks" && /\b(block|blocks|section)\b/.test(normalizedQuery)) score += 24
   if (isAdvancedSearchItem(item) && !normalizedQuery.includes("api") && !normalizedQuery.includes("group") && !normalizedQuery.includes("member") && !normalizedQuery.includes("variant") && !normalizedQuery.includes("wrapper")) score -= 10
 
   return score
@@ -62,8 +66,6 @@ export function scoreSearchItem(item: SearchItem, query: string) {
 
 export function getVisibleSearchItems(query: string) {
   const normalizedQuery = query.toLowerCase().replace(/\s+/g, " ").trim()
-  if (/\b(block|blocks|template|templates)\b/.test(normalizedQuery)) return []
-
   const prefersAdvanced =
     normalizedQuery.includes("api") ||
     normalizedQuery.includes("group") ||
@@ -74,13 +76,12 @@ export function getVisibleSearchItems(query: string) {
     normalizedQuery.includes("wrapper")
 
   return globalSearchItems
-    .filter((item) => item.group !== "Blocks" && item.group !== "Templates")
     .map((item) => ({
       item,
       score: scoreSearchItem(item, normalizedQuery),
     }))
     .filter(({ item, score }) => {
-      if (!normalizedQuery) return (item.featured || item.group === "Docs" || item.group === "Templates" || item.group === "Components") && !isAdvancedSearchItem(item)
+      if (!normalizedQuery) return (item.featured || item.group === "Docs" || item.group === "Components" || item.group === "Templates") && !isAdvancedSearchItem(item)
       const haystack = [item.title, item.description, item.group, ...(item.keywords ?? [])].join(" ").toLowerCase()
       return score > 0 || haystack.includes(normalizedQuery) || (prefersAdvanced && isAdvancedSearchItem(item) && haystack.includes(normalizedQuery.replace("api", "").replace("group", "").replace("member", "").replace("variant", "").replace("wrapper", "").trim()))
     })

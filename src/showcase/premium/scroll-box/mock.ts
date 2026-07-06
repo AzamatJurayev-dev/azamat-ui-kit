@@ -15,7 +15,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<div data-slot="scroll-box"></div>`,
-  cliCommand: "npx azamat-ui-kit-cli add scroll-box",
+  cliCommand: "npx azix add scroll-box",
   highlights: ["Bounded scroll", "Axis control", "Dense lists", "Panel content"],
   relatedBlockSlugs: ["users-table", "crm-dashboard", "dashboard-starter"],
   scenarios: [

@@ -24,7 +24,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<textarea data-slot="textarea" placeholder="Write your message..." rows="6"></textarea>`,
-  cliCommand: "npx azamat-ui-kit-cli add textarea",
+  cliCommand: "npx azix add textarea",
   highlights: ["Long-form notes", "Multiline forms", "Rows/height control", "Validation-friendly error context"],
   relatedBlockSlugs: ["settings-form", "auth-sign-in", "pricing-section"],
   scenarios: [

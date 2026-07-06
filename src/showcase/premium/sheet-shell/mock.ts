@@ -36,7 +36,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="sheet-shell-trigger">Open sheet</button>`,
-  cliCommand: "npx azamat-ui-kit-cli add sheet-shell",
+  cliCommand: "npx azix add sheet-shell",
   highlights: [
     "Side-based drawer behavior",
     "Right and bottom anchors",

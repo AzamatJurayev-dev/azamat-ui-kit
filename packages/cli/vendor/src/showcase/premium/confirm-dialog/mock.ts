@@ -35,7 +35,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="confirm-trigger">Delete project</button>`,
-  cliCommand: "npx azamat-ui-kit-cli add confirm-dialog",
+  cliCommand: "npx azix add confirm-dialog",
   highlights: [
     "Controlled confirm flow",
     "Destructive tone and explicit labels",

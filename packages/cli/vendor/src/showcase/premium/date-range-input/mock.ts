@@ -18,7 +18,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="date-range">Date range</label><input id="date-range" type="text" value="2026-06-01 to 2026-06-30" />',
-  cliCommand: "npx azamat-ui-kit-cli add date-range-input",
+  cliCommand: "npx azix add date-range-input",
   highlights: ["from/to object contract", "range behavior", "min/max boundaries", "single source of truth formatting"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "users-table"],
   scenarios: [

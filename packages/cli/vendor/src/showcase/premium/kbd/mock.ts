@@ -11,7 +11,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<kbd data-slot="kbd">Ctrl</kbd>`,
-  cliCommand: "npx azamat-ui-kit-cli add kbd",
+  cliCommand: "npx azix add kbd",
   highlights: ["Shortcut tokens", "Size variants", "Inline hints", "Command palette labels"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "settings-form"],
   scenarios: [

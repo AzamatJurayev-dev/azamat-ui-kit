@@ -49,7 +49,7 @@ export function Example() {
     </AppShell>
   )
 }`,
-  cliCommand: "npx azamat-ui-kit-cli add app-shell",
+  cliCommand: "npx azix add app-shell",
   highlights: ["Shell slots (header, sidebar, aside)", "Static and mobile sidebar behavior", "Breadcrumbs inside page header", "Metric block composition"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "settings-form"],
   scenarios: [

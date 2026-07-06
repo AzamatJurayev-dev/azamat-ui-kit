@@ -78,7 +78,7 @@ export function Example() {
   )`
 ,
   htmlCode: '<form><label for="workspace">Workspace</label><input id="workspace" value="Azamat UI" /></form>',
-  cliCommand: "npx azamat-ui-kit-cli add form-wrapper",
+  cliCommand: "npx azix add form-wrapper",
   highlights: ["control + name contract", "Universal `kind` variants", "Error display and required markers", "Consistent wrapper shell behavior"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],
   scenarios: [
@@ -137,7 +137,7 @@ export function Example() {
     </form>
   )
 }`,
-  cliCommand: "npx azamat-ui-kit-cli add form-select",
+  cliCommand: "npx azix add form-select",
   highlights: ["One RHF select wrapper", "Simple + async under one API", "Shared shell labels and errors", "Preferred select-form entry"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],
   scenarios: [
@@ -180,7 +180,7 @@ export function Example() {
 
 // New work should prefer:
 // <FormSelect control={form.control} name="ownerId" kind="async" ... />`,
-  cliCommand: "npx azamat-ui-kit-cli add form-async-select",
+  cliCommand: "npx azix add form-async-select",
   highlights: ["Compatibility alias", "Async form selection", "Hydrated remote value support", "Migration-safe route"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],
   scenarios: [
