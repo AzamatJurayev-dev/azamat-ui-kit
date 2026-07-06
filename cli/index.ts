@@ -9,7 +9,6 @@ const program = new Command()
 
 program
   .name("azix")
-  .alias("azamat-ui-kit")
   .description("Azamat UI Kit source-copy CLI")
   .version("0.3.24")
 

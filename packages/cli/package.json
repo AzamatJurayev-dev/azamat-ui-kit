@@ -5,8 +5,7 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "azix": "dist/index.cjs",
-    "azamat-ui-kit": "dist/index.cjs"
+    "azix": "dist/index.cjs"
   },
   "files": [
     "dist",
