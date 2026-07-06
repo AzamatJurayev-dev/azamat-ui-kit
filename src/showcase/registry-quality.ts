@@ -1,6 +1,14 @@
 import { component, createShowcaseDemoRegistry } from "./create-demo"
 
 export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
+  component("button", "Button", "actions", "Primary action surface for clicks, submit, and quick triggers in dashboard workflows."),
+  component("input", "Input", "inputs", "Single-line text input for quick edits, queries, and form fields."),
+  component("select", "Select", "inputs", "Select component with menu-driven single choice workflows."),
+  component("dialog", "Dialog", "overlay", "Modal surface for confirmation, forms, and contextual workflows."),
+  component("data-table", "DataTable", "data-table", "High density table with search, filters, rows, actions and pagination context."),
+  component("date-picker", "DatePicker", "calendar", "Date picker surface for period and event selection."),
+  component("form-input", "FormInput", "form", "Input wrapper with RHF-ready metadata and helper text."),
+
   component("dialog-actions", "DialogActions", "overlay", "Modal footer action row with cancel, secondary and primary actions."),
   component("alert-dialog", "AlertDialog", "overlay", "Destructive confirmation dialog with loading-ready action states."),
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),

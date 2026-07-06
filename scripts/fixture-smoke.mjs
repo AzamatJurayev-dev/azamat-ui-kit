@@ -123,7 +123,7 @@ async function main() {
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "azix"
+} from "@ajdev/azix"
 
 const value = [
   Button,
@@ -153,7 +153,7 @@ export default value
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "azix"
+} from "@ajdev/azix"
 
 const required = [
   Button,
@@ -216,7 +216,7 @@ import {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "azix"
+} from "@ajdev/azix"
 
 function DemoToastButton() {
   const { addToast } = useToast()
@@ -268,7 +268,7 @@ export default function Page() {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "azix"
+} from "@ajdev/azix"
 
 const required = [
   Button,
