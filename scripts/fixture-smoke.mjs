@@ -15,12 +15,30 @@ async function writeJson(filePath, value) {
 }
 
 async function createTarball(tempRoot) {
-  await execa(npmBin, ["pack", "--pack-destination", tempRoot], {
+  const isDryRun = process.env.npm_config_dry_run === "true"
+  if (isDryRun) {
+    console.log("[fixture-smoke] skipping consumer fixture smoke in npm publish dry-run mode")
+    return null
+  }
+
+  const packResult = await execa(npmBin, ["pack", "--json", "--pack-destination", tempRoot], {
     cwd: root,
     stdio: "pipe",
   })
-  const filenames = (await fs.readdir(tempRoot)).filter((entry) => entry.endsWith(".tgz"))
-  const filename = filenames[0]
+
+  let filename
+  try {
+    const json = JSON.parse((packResult.stdout || "").trim())
+    const row = Array.isArray(json) ? json[0] : json
+    filename = row?.filename
+  } catch {
+    // fallback for npm versions without --json
+  }
+
+  if (!filename) {
+    const filenames = (await fs.readdir(tempRoot)).filter((entry) => entry.endsWith(".tgz"))
+    filename = filenames[0]
+  }
 
   if (!filename) {
     throw new Error("npm pack did not return a tarball filename")
@@ -86,6 +104,9 @@ async function main() {
 
   try {
     const tarballPath = await createTarball(fixtureRoot)
+    if (!tarballPath) {
+      return
+    }
 
     await installConsumerFixture({
       fixtureRoot,

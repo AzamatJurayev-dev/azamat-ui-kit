@@ -170,8 +170,13 @@ describe("FormBuilder", () => {
     await user.type(screen.getByLabelText("Title"), "Alpha")
     await user.type(screen.getByLabelText("Notes"), "Builder notes")
 
-    await user.click(screen.getAllByRole("combobox")[0])
-    await user.click(screen.getByRole("option", { name: "Manager" }))
+    const selectComboboxes = screen.getAllByRole("combobox")
+    await user.click(selectComboboxes[0])
+
+    await waitFor(() => {
+      expect(screen.getByText("Manager")).toBeTruthy()
+    })
+    await user.click(screen.getByText("Manager"))
 
     await user.click(screen.getByRole("button", { name: /select/i }))
     await user.type(screen.getByPlaceholderText("Search..."), "aza")
