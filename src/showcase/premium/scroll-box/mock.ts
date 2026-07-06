@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const scrollBoxMock: ComponentDemoMock = {
-  code: `import { ScrollBox } from "azix"
+  code: `import { ScrollBox } from "@azamatjurayevdev/azix"
 
 const items = ["Queue item 1", "Queue item 2", "Queue item 3", "Queue item 4", "Queue item 5"]
 
@@ -30,3 +30,4 @@ export function Example() {
     "Keep internal spacing readable; scroll should not become visual punishment.",
   ],
 }
+

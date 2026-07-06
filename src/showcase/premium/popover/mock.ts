@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const popoverMock: ComponentDemoMock = {
-  code: `import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "azix"
+  code: `import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -42,3 +42,4 @@ export function Example() {
     "Set focus behavior intentionally when nested controls are present.",
   ],
 }
+

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const kbdMock: ComponentDemoMock = {
-  code: `import { Kbd } from "azix"
+  code: `import { Kbd } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -26,3 +26,4 @@ export function Example() {
     "Inline command hints should stay secondary to the main action label.",
   ],
 }
+

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const resultMock: ComponentDemoMock = {
-  code: `import { Result } from "azix"
+  code: `import { Result } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -25,3 +25,4 @@ export function Example() {
     "Keep `description` short and specific to user intent.",
   ],
 }
+

@@ -46,7 +46,7 @@ async function installConsumerFixture({
   for (const [relativePath, contents] of Object.entries(sourceFiles)) {
     const fullPath = path.join(cwd, relativePath)
     await fsExtra.ensureDir(path.dirname(fullPath))
-    if (/from\s+["']azix\/[^"']+["']/.test(contents)) {
+    if (/from\s+["']@azamatjurayevdev\/azix\/[^"']+["']/.test(contents)) {
       throw new Error("Fixture source must not use package subpath imports. Use package root only.")
     }
     await fs.writeFile(fullPath, contents, "utf8")
@@ -123,7 +123,7 @@ async function main() {
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "@ajdev/azix"
+} from "@azamatjurayevdev/azix"
 
 const value = [
   Button,
@@ -153,7 +153,7 @@ export default value
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "@ajdev/azix"
+} from "@azamatjurayevdev/azix"
 
 const required = [
   Button,
@@ -216,7 +216,7 @@ import {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "@ajdev/azix"
+} from "@azamatjurayevdev/azix"
 
 function DemoToastButton() {
   const { addToast } = useToast()
@@ -268,7 +268,7 @@ export default function Page() {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "@ajdev/azix"
+} from "@azamatjurayevdev/azix"
 
 const required = [
   Button,
@@ -302,3 +302,4 @@ if (required.some((entry) => typeof entry !== "function" && typeof entry !== "ob
 }
 
 await main()
+

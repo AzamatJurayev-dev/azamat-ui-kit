@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const activityFeedMock: ComponentDemoMock = {
-  code: `import { ActivityFeed } from "azix"
+  code: `import { ActivityFeed } from "@azamatjurayevdev/azix"
 
 const items = [
   { id: "i-1", title: "Team invited", description: "New designer joined the workspace.", time: "2 min ago", tone: "info" },
@@ -25,3 +25,4 @@ export function Example() {
     "Use `compact` for narrow sidebars and dense dashboard sections.",
   ],
 }
+

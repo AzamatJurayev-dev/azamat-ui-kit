@@ -98,7 +98,7 @@ export function Example() {
 
 export const formSelectMock: ComponentDemoMock = {
   code: `import { useForm } from "react-hook-form"
-import { Button, FormSelect } from "azix"
+import { Button, FormSelect } from "@azamatjurayevdev/azix"
 
 const statusOptions = [
   { label: "Draft", value: "draft" },
@@ -154,7 +154,7 @@ export function Example() {
 
 export const formAsyncSelectMock: ComponentDemoMock = {
   code: `import { useForm } from "react-hook-form"
-import { Button, FormAsyncSelect } from "azix"
+import { Button, FormAsyncSelect } from "@azamatjurayevdev/azix"
 
 export function Example() {
   const form = useForm({
@@ -194,3 +194,4 @@ export function Example() {
     "Treat this alias as a migration member inside the wider Select family.",
   ],
 }
+

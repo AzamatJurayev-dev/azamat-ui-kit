@@ -6,7 +6,7 @@ function createDataTablePartMock(
   summary: string
 ): ComponentDemoMock {
   return {
-    code: `import { ${component} } from "azix"\n\nexport function Example() {\n  return <${component} />\n}`,
+    code: `import { ${component} } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  return <${component} />\n}`,
     cliCommand: `npx azix add ${slug}`,
     highlights: [
       `${component} preview inside a real DataTable shell`,
@@ -60,3 +60,4 @@ export const dataTableSavedFiltersMock = createDataTablePartMock(
   "DataTableSavedFilters",
   "Preview saved table views and named filter state restoration."
 )
+

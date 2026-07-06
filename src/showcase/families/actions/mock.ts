@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const actionsFamilyMock: FamilyDemoMock = {
-  code: `import { ActionMenu, CopyButton, QuickActionGrid } from "azix"\n\nexport function Example() {\n  return <QuickActionGrid items={[]} />\n}`,
+  code: `import { ActionMenu, CopyButton, QuickActionGrid } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  return <QuickActionGrid items={[]} />\n}`,
   highlights: ["Quick action grids", "Copy controls", "Context menus", "Dense admin actions"],
   scenarios: [
     { title: "Header shortcuts", description: "Place high-priority actions near page-level metrics and summaries." },
@@ -14,4 +14,5 @@ export const actionsFamilyMock: FamilyDemoMock = {
     { label: "Status", value: "Stable" },
   ],
 }
+
 

@@ -9,7 +9,7 @@ import {
   phoneField,
   switchField,
   textareaField,
-} from "azix"
+} from "@azamatjurayevdev/azix"
 
 type DemoValues = {
   workspace: string
@@ -76,3 +76,4 @@ export function Example() {
     "Combine `disabled` + `readOnly` for different page states like locked records and review modes.",
   ],
 }
+

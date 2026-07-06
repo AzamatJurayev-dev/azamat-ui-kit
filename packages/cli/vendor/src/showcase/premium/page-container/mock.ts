@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const pageContainerMock: ComponentDemoMock = {
-  code: `import { PageContainer } from "azix"
+  code: `import { PageContainer } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -22,3 +22,4 @@ export function Example() {
     "Wrap page-level cards in a single PageContainer to keep rhythm uniform.",
   ],
 }
+

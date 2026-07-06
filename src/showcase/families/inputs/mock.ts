@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const inputsFamilyMock: FamilyDemoMock = {
-  code: `import { AsyncSelect, AsyncMultiSelect } from "azix"\n\nexport function Example() {\n  return <AsyncSelect loadOptions={loadOptions} />\n}`,
+  code: `import { AsyncSelect, AsyncMultiSelect } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  return <AsyncSelect loadOptions={loadOptions} />\n}`,
   highlights: ["AsyncSelect hydration", "AsyncMultiSelect limits", "Create option flow", "Grouped remote results"],
   scenarios: [
     { title: "Workspace switching", description: "Load large remote workspace lists without blocking the form shell." },
@@ -14,4 +14,5 @@ export const inputsFamilyMock: FamilyDemoMock = {
     { label: "Status", value: "Stable" },
   ],
 }
+
 

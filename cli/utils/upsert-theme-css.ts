@@ -44,7 +44,21 @@ function normalizeImportPath(filePath: string) {
 export async function upsertThemeCss({ cwd, cssPath }: UpsertThemeCssOptions) {
   const targetPath = path.resolve(cwd, cssPath)
   const cssDir = path.dirname(targetPath)
-  const packageSourceGlob = normalizeImportPath(path.relative(cssDir, path.join(cwd, "node_modules", "azix", "dist", "**", "*.js")))
+  const scopedPackagePath = path.join(
+    cwd,
+    "node_modules",
+    "@azamatjurayevdev",
+    "azix",
+    "dist",
+    "**",
+    "*.js",
+  )
+  const legacyPackagePath = path.join(cwd, "node_modules", "azix", "dist", "**", "*.js")
+  const chosenPackagePath = fs.existsSync(path.join(cwd, "node_modules", "@azamatjurayevdev", "azix"))
+    ? scopedPackagePath
+    : legacyPackagePath
+
+  const packageSourceGlob = normalizeImportPath(path.relative(cssDir, chosenPackagePath))
 
   await fs.ensureDir(path.dirname(targetPath))
 

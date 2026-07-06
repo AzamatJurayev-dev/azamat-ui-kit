@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const collapseMock: ComponentDemoMock = {
-  code: `import { CollapseGroup } from "azix"
+  code: `import { CollapseGroup } from "@azamatjurayevdev/azix"
 
 const sections = [
   {
@@ -37,3 +37,4 @@ export function Example() {
     "Keep titles scannable so users know what each section reveals before opening it.",
   ],
 }
+

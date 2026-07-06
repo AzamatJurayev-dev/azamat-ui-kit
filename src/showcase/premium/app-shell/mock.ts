@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const appShellMock: ComponentDemoMock = {
-  code: `import { AppHeader, AppSidebar, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, SidebarNav, Button } from "azix"
+  code: `import { AppHeader, AppSidebar, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, SidebarNav, Button } from "@azamatjurayevdev/azix"
 
 const navItems = [
   { key: "overview", label: "Overview", href: "/overview", active: true },
@@ -64,3 +64,4 @@ export function Example() {
     "Avoid overloading the aside region in mobile contexts; hide non-essential context when needed.",
   ],
 }
+

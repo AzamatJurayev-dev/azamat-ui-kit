@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const loadingStateMock: ComponentDemoMock = {
-  code: `import { LoadingState } from "azix"
+  code: `import { LoadingState } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return <LoadingState label="Loading metrics" description="Preparing dashboard widgets and chart data." />
@@ -18,3 +18,4 @@ export function Example() {
     "Prefer replacing entire section with loading state over mixing partial stale data.",
   ],
 }
+

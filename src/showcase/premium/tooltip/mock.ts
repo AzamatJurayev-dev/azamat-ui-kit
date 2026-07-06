@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const tooltipMock: ComponentDemoMock = {
-  code: `import { Button, Tooltip } from "azix"
+  code: `import { Button, Tooltip } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -32,3 +32,4 @@ export function Example() {
     "If the content needs actions or long text, switch to Popover instead.",
   ],
 }
+

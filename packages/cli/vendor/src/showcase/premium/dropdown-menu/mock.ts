@@ -14,7 +14,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "azix"
+} from "@azamatjurayevdev/azix"
 
 export function Example() {
   const [status, setStatus] = useState("private")
@@ -66,4 +66,5 @@ export function Example() {
     "Map menu items to real route or action handlers and avoid deep workflows inside a single menu item.",
   ],
 }
+
 

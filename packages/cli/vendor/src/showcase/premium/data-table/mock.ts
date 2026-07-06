@@ -8,7 +8,7 @@ export const dataTableMock: ComponentDemoMock = {
   DataTableSortableHeader,
   createDataTableActionsColumn,
   createDataTableSelectColumn,
-} from "azix"
+} from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -33,4 +33,5 @@ export function Example() {
     { title: "Bulk handling", description: "Run row group actions with selection state and clear behavior." },
   ],
 }
+
 

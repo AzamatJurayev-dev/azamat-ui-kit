@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const toastMock: ComponentDemoMock = {
-  code: `import { Button, ToastProvider, useToast } from "azix"
+  code: `import { Button, ToastProvider, useToast } from "@azamatjurayevdev/azix"
 
 function Demo() {
   const { addToast, clearToasts, success, warning } = useToast()
@@ -41,3 +41,4 @@ export function Example() {
     "Prefer small toast counts (`maxToasts`) for stable layout.",
   ],
 }
+

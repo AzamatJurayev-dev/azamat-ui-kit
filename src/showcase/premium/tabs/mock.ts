@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const tabsMock: ComponentDemoMock = {
-  code: `import { useState } from "react"\nimport { Tabs, TabsContent, TabsList, TabsTrigger } from "azix"\n\nexport function Example() {\n  const [value, setValue] = useState("overview")\n\n  return (\n    <Tabs value={value} onValueChange={setValue} defaultValue="overview">\n      <TabsList>\n        <TabsTrigger value="overview">Overview</TabsTrigger>\n        <TabsTrigger value="activity">Activity</TabsTrigger>\n        <TabsTrigger value="settings">Settings</TabsTrigger>\n      </TabsList>\n      <TabsContent value="overview">Overview panel with KPIs.</TabsContent>\n      <TabsContent value="activity">Activity timeline and history.</TabsContent>\n      <TabsContent value="settings">Settings controls and workspace preferences.</TabsContent>\n    </Tabs>\n  )\n}\n\n// Use Tabs for local content sections.\n// For route transitions, prefer router-based tabs to persist deep links.`,
+  code: `import { useState } from "react"\nimport { Tabs, TabsContent, TabsList, TabsTrigger } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  const [value, setValue] = useState("overview")\n\n  return (\n    <Tabs value={value} onValueChange={setValue} defaultValue="overview">\n      <TabsList>\n        <TabsTrigger value="overview">Overview</TabsTrigger>\n        <TabsTrigger value="activity">Activity</TabsTrigger>\n        <TabsTrigger value="settings">Settings</TabsTrigger>\n      </TabsList>\n      <TabsContent value="overview">Overview panel with KPIs.</TabsContent>\n      <TabsContent value="activity">Activity timeline and history.</TabsContent>\n      <TabsContent value="settings">Settings controls and workspace preferences.</TabsContent>\n    </Tabs>\n  )\n}\n\n// Use Tabs for local content sections.\n// For route transitions, prefer router-based tabs to persist deep links.`,
   cliCommand: "npx azix add tabs",
   highlights: ["Segmented navigation", "Panel switching", "Controlled value", "Settings sections", "Keyboard interaction"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "settings-form"],
@@ -18,3 +18,4 @@ export const tabsMock: ComponentDemoMock = {
     "Use with local content sections; use route tabs when deep-linking is required.",
   ],
 }
+

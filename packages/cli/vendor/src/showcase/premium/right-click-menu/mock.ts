@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const rightClickMenuMock: ComponentDemoMock = {
-  code: `import { RightClickMenu } from "azix"
+  code: `import { RightClickMenu } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -34,3 +34,4 @@ export function Example() {
     "Reserve it for secondary actions, not the only way to complete a task.",
   ],
 }
+

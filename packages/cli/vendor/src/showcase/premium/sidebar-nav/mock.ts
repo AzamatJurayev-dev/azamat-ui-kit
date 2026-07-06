@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const sidebarNavMock: ComponentDemoMock = {
-  code: `import { SidebarNav } from "azix"
+  code: `import { SidebarNav } from "@azamatjurayevdev/azix"
 
 const items = [
   { key: "overview", label: "Overview", href: "/overview" },
@@ -25,3 +25,4 @@ export function Example() {
     "Disabled items should still show intent but block interaction clearly.",
   ],
 }
+

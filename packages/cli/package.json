@@ -1,6 +1,6 @@
 {
   "name": "azix",
-  "version": "0.3.24",
+  "version": "0.3.25",
   "description": "CLI for Azamat UI Kit source-copy, presets, and theme setup.",
   "license": "MIT",
   "type": "module",

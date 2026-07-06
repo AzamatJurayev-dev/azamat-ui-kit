@@ -236,9 +236,9 @@ export type ComponentSurfaceMemberInventoryItem = {
   href: string
 }
 
-export const PACKAGE_NAME = "azix"
+export const PACKAGE_NAME = "@azamatjurayevdev/azix"
 export const CLI_PACKAGE_NAME = "azix"
-export const PACKAGE_IMPORT = "azix"
+export const PACKAGE_IMPORT = "@azamatjurayevdev/azix"
 export const DOCS_APP_NAME = "azamat-ui"
 export const CLI_INIT_NEXT_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template next --defaults`
 export const CLI_INIT_VITE_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template vite --defaults`
@@ -246,7 +246,7 @@ export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button form-input`
 export const PACKAGE_INSTALL_COMMAND = `${CLI_INIT_NEXT_COMMAND}\n${CLI_ADD_COMMAND}`
 export const CLI_INSTALL_COMMAND = `npx ${CLI_PACKAGE_NAME} --help`
 export const CLI_THEME_COMMAND = `npx ${CLI_PACKAGE_NAME} theme`
-export const PACKAGE_NPM_URL = "https://www.npmjs.com/package/azix"
+export const PACKAGE_NPM_URL = "https://www.npmjs.com/package/@azamatjurayevdev%2fazix"
 export const PACKAGE_GITHUB_URL = "https://github.com/AzamatJurayev-dev/azix"
 export const PACKAGE_GITHUB_RELEASES_URL = `${PACKAGE_GITHUB_URL}/releases`
 export const DOCS_REPO_URL = "https://github.com/AzamatJurayev-dev/azamat-ui"

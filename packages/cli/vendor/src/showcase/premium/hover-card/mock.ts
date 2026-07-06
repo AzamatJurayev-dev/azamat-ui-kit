@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const hoverCardMock: ComponentDemoMock = {
-  code: `import { Avatar, HoverCard } from "azix"
+  code: `import { Avatar, HoverCard } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -27,3 +27,4 @@ export function Example() {
     "Support focus states so keyboard users can access the same content.",
   ],
 }
+

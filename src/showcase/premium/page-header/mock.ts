@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const pageHeaderMock: ComponentDemoMock = {
-  code: `import { Breadcrumbs, PageHeader } from "azix"
+  code: `import { Breadcrumbs, PageHeader } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -28,3 +28,4 @@ export function Example() {
     "Use `meta` for small KPI chips, tags or helper context." ,
   ],
 }
+

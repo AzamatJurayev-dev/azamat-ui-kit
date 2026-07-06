@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const breadcrumbsMock: ComponentDemoMock = {
-  code: `import { Breadcrumbs } from "azix"
+  code: `import { Breadcrumbs } from "@azamatjurayevdev/azix"
 
 const items = [
   { key: "home", label: "Home", href: "/" },
@@ -24,3 +24,4 @@ export function Example() {
     "Inject router-specific links through `renderLink` for framework compatibility.",
   ],
 }
+

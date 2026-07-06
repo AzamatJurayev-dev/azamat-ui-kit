@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const metricGridMock: ComponentDemoMock = {
-  code: `import { MetricGrid } from "azix"
+  code: `import { MetricGrid } from "@azamatjurayevdev/azix"
 
 const items = [
   { key: "users", label: "Users", value: "2,410", description: "Last 30 days" },
@@ -25,3 +25,4 @@ export function Example() {
     "Use `compact` for dense cards in dense dashboard toolbars.",
   ],
 }
+

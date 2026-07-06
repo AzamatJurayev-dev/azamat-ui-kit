@@ -1,6 +1,6 @@
 # Public Component API
 
-Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.24`.
+Generated from `scripts/public-api-docs-data.mjs` for package version `0.3.25`.
 
 This file tracks the canonical public docs entries that should lead the product mental model.
 Related helpers can stay public, but they should be introduced from the canonical surface detail page instead of being taught as separate first-level names.

@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const commandFamilyMock: FamilyDemoMock = {
-  code: `import { CommandPalette } from "azix"\n\nexport function Example() {\n  return <CommandPalette />\n}`,
+  code: `import { CommandPalette } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  return <CommandPalette />\n}`,
   highlights: ["Keyboard navigation", "Quick search", "Shortcut-driven discovery", "Global command access"],
   scenarios: [
     { title: "Jump anywhere", description: "Navigate docs, blocks and playgrounds from one entry point." },
@@ -14,4 +14,5 @@ export const commandFamilyMock: FamilyDemoMock = {
     { label: "Status", value: "Preview" },
   ],
 }
+
 

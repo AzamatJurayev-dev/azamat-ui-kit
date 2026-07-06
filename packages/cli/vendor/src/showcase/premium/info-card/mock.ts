@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const infoCardMock: ComponentDemoMock = {
-  code: `import { InfoCard } from "azix"
+  code: `import { InfoCard } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -27,3 +27,4 @@ export function Example() {
     "Switch to `compact` in dense lists; keep default for detailed descriptions.",
   ],
 }
+

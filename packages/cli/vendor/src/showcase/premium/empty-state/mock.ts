@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const emptyStateMock: ComponentDemoMock = {
-  code: `import { EmptyState } from "azix"
+  code: `import { EmptyState } from "@azamatjurayevdev/azix"
 
 export function Example() {
   return (
@@ -27,3 +27,4 @@ export function Example() {
     "Prefer one primary action + short explanation for fastest user decision.",
   ],
 }
+

@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const patternsFamilyMock: FamilyDemoMock = {
-  code: `import { ResourcePage, ResourceDetailPage, FormBuilder } from "azix"\n\nexport function Example() {\n  return <ResourcePage />\n}`,
+  code: `import { ResourcePage, ResourceDetailPage, FormBuilder } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  return <ResourcePage />\n}`,
   highlights: ["Resource pages", "Detail layouts", "Form builder presets", "Composed product patterns"],
   scenarios: [
     { title: "CMS resource page", description: "List, filter and inspect resources in a pattern-driven layout." },
@@ -14,4 +14,5 @@ export const patternsFamilyMock: FamilyDemoMock = {
     { label: "Status", value: "Stable" },
   ],
 }
+
 
