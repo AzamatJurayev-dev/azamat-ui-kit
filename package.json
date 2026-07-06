@@ -1,6 +1,6 @@
 {
   "name": "@azamatjurayevdev/azix",
-  "version": "0.3.25",
+  "version": "0.3.26",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
