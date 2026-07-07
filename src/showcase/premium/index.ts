@@ -2,6 +2,7 @@ import * as React from "react"
 
 import type { ComponentDemoBundle } from "./types"
 
+import { alertMock, AlertShowcase } from "./alert"
 import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
 import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
@@ -10,6 +11,7 @@ import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
 import { badgeMock, BadgeShowcase } from "./badge"
 import { breadcrumbsMock, BreadcrumbsShowcase } from "./breadcrumbs"
 import { buttonMock, ButtonShowcase } from "./button"
+import { calendarMock, CalendarShowcase } from "./calendar"
 import { cardMock, CardShowcase } from "./card"
 import { checkboxMock, CheckboxShowcase } from "./checkbox"
 import { collapseMock, CollapseShowcase } from "./collapse"
@@ -71,7 +73,9 @@ export { defaultComponentDemoState } from "./types"
 export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, ComponentDemoState } from "./types"
 
 export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = {
+  alert: { mock: alertMock, Showcase: AlertShowcase },
   button: { mock: buttonMock, Showcase: ButtonShowcase },
+  calendar: { mock: calendarMock, Showcase: CalendarShowcase },
   input: { mock: inputMock, Showcase: InputShowcase },
   textarea: { mock: textareaMock, Showcase: TextareaShowcase },
   select: { mock: selectMock, Showcase: SelectShowcase },
