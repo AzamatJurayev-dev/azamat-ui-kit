@@ -8,7 +8,7 @@ export function Example() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuLink href=\"#\" active>Home</NavigationMenuLink>
+          <NavigationMenuLink href="#" active>Home</NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
@@ -25,4 +25,3 @@ export function Example() {
     { title: "Docs menu", description: "Use for horizontally aligned documentation categories." },
   ],
 }
-

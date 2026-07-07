@@ -8,9 +8,7 @@ const ratioLabels: Array<{ label: string; ratio: number }> = [
 ]
 
 import { Button, AspectRatio } from "@/index"
-import type { ComponentDemoProps } from "../types"
-
-export function AspectRatioShowcase({}: ComponentDemoProps) {
+export function AspectRatioShowcase() {
   const [active, setActive] = React.useState(0)
 
   return (
