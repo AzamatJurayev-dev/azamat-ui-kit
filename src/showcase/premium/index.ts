@@ -3,7 +3,9 @@ import * as React from "react"
 import type { ComponentDemoBundle } from "./types"
 
 import { alertMock, AlertShowcase } from "./alert"
+import { AlertDialogShowcase, alertDialogMock } from "./alert-dialog"
 import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
+import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
 import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
 import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
@@ -11,6 +13,7 @@ import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
 import { badgeMock, BadgeShowcase } from "./badge"
 import { breadcrumbsMock, BreadcrumbsShowcase } from "./breadcrumbs"
 import { buttonMock, ButtonShowcase } from "./button"
+import { ButtonGroupShowcase, buttonGroupMock } from "./button-group"
 import { calendarMock, CalendarShowcase } from "./calendar"
 import { cardMock, CardShowcase } from "./card"
 import { checkboxMock, CheckboxShowcase } from "./checkbox"
@@ -35,6 +38,7 @@ import { DateRangePickerShowcase, dateRangePickerMock } from "./date-range-picke
 import { DescriptionListShowcase, descriptionListMock } from "./description-list"
 import { dialogMock, DialogShowcase } from "./dialog"
 import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
+import { DrawerShowcase, drawerMock } from "./drawer"
 import { emptyStateMock, EmptyStateShowcase } from "./empty-state"
 import { FormBuilderShowcase, formBuilderMock } from "./form-builder"
 import { FormWrapperShowcase, formAsyncSelectMock, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
@@ -85,7 +89,10 @@ export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, Compon
 
 export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = {
   alert: { mock: alertMock, Showcase: AlertShowcase },
+  "alert-dialog": { mock: alertDialogMock, Showcase: AlertDialogShowcase },
+  "action-menu": { mock: actionMenuMock, Showcase: ActionMenuShowcase },
   button: { mock: buttonMock, Showcase: ButtonShowcase },
+  "button-group": { mock: buttonGroupMock, Showcase: ButtonGroupShowcase },
   calendar: { mock: calendarMock, Showcase: CalendarShowcase },
   "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
   input: { mock: inputMock, Showcase: InputShowcase },
@@ -104,6 +111,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "date-picker": { mock: datePickerMock, Showcase: DatePickerShowcase },
   "date-range-picker": { mock: dateRangePickerMock, Showcase: DateRangePickerShowcase },
   "description-list": { mock: descriptionListMock, Showcase: DescriptionListShowcase },
+  drawer: { mock: drawerMock, Showcase: DrawerShowcase },
   "quantity-input": { mock: quantityInputMock, Showcase: QuantityInputShowcase },
   rating: { mock: ratingMock, Showcase: RatingShowcase },
   "masked-input": { mock: maskedInputMock, Showcase: MaskedInputShowcase },
