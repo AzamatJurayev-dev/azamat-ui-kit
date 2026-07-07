@@ -10,8 +10,8 @@ export const additionalPublicFamilies = [
   {
     family: "FeedbackFamily",
     label: "Feedback",
-    description: "Status, loading, progress, and notification surfaces grouped under one product feedback mental model.",
-    canonical: ["Alert", "EmptyState", "LoadingState", "Progress", "ToastProvider"],
+    description: "Status, loading, and notification surfaces grouped under one product feedback mental model.",
+    canonical: ["Alert", "EmptyState", "LoadingState", "ToastProvider"],
     members: ["InlineState", "LoadingOverlay", "Spinner", "Skeleton"],
     advanced: ["useToast"],
   },
@@ -82,7 +82,7 @@ export const additionalDocsGroups = [
         id: "core-feedback",
         label: "Core feedback",
         description: "These are the product feedback surfaces teams should reach for first.",
-        components: ["Alert", "EmptyState", "LoadingState", "Progress", "ToastProvider"],
+        components: ["Alert", "EmptyState", "LoadingState", "ToastProvider"],
       },
       {
         id: "secondary-feedback",
