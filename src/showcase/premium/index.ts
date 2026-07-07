@@ -11,6 +11,7 @@ import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
 import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
+import { avatarMock, AvatarShowcase } from "./avatar"
 import { badgeMock, BadgeShowcase } from "./badge"
 import { breadcrumbsMock, BreadcrumbsShowcase } from "./breadcrumbs"
 import { buttonMock, ButtonShowcase } from "./button"
@@ -51,6 +52,7 @@ import { hoverCardMock, HoverCardShowcase } from "./hover-card"
 import { infoCardMock, InfoCardShowcase } from "./info-card"
 import { inputMock, InputShowcase } from "./input"
 import { kbdMock, KbdShowcase } from "./kbd"
+import { listMock, ListShowcase } from "./list"
 import { loadingStateMock, LoadingStateShowcase } from "./loading-state"
 import { maskedInputMock, MaskedInputShowcase } from "./masked-input"
 import { metricGridMock, MetricGridShowcase } from "./metric-grid"
@@ -66,6 +68,7 @@ import { phoneInputMock, PhoneInputShowcase } from "./phone-input"
 import { pageStateMock, PageStateShowcase } from "./page-state"
 import { paginationMock, PaginationShowcase } from "./pagination"
 import { popoverMock, PopoverShowcase } from "./popover"
+import { propertyGridMock, PropertyGridShowcase } from "./property-grid"
 import { ProgressShowcase, progressMock } from "./progress"
 import { quantityInputMock, QuantityInputShowcase } from "./quantity-input"
 import { radioGroupMock, RadioGroupShowcase } from "./radio-group"
@@ -84,6 +87,7 @@ import { skeletonMock, SkeletonShowcase } from "./skeleton"
 import { spinnerMock, SpinnerShowcase } from "./spinner"
 import { switchMock, SwitchShowcase } from "./switch"
 import { TagInputShowcase, tagInputMock } from "./tag-input"
+import { tagListMock, TagListShowcase } from "./tag-list"
 import { tableMock, TableShowcase } from "./table"
 import { tabsMock, TabsShowcase } from "./tabs"
 import { textareaMock, TextareaShowcase } from "./textarea"
@@ -117,6 +121,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "simple-select": { mock: simpleSelectMock, Showcase: SimpleSelectShowcase },
   "async-select": { mock: asyncSelectMock, Showcase: AsyncSelectShowcase },
   "async-multi-select": { mock: asyncMultiSelectMock, Showcase: AsyncMultiSelectShowcase },
+  avatar: { mock: avatarMock, Showcase: AvatarShowcase },
   "number-input": { mock: numberInputMock, Showcase: NumberInputShowcase },
   "money-input": { mock: moneyInputMock, Showcase: MoneyInputShowcase },
   "password-input": { mock: passwordInputMock, Showcase: PasswordInputShowcase },
@@ -193,6 +198,8 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "metric-grid": { mock: metricGridMock, Showcase: MetricGridShowcase },
   "notification-center": { mock: notificationCenterMock, Showcase: NotificationCenterShowcase },
   "info-card": { mock: infoCardMock, Showcase: InfoCardShowcase },
+  list: { mock: listMock, Showcase: ListShowcase },
+  "property-grid": { mock: propertyGridMock, Showcase: PropertyGridShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
   "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
@@ -201,6 +208,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "file-upload": { mock: fileUploadMock, Showcase: FileUploadShowcase },
   "image-upload": { mock: imageUploadMock, Showcase: ImageUploadShowcase },
   "scroll-box": { mock: scrollBoxMock, Showcase: ScrollBoxShowcase },
+  "tag-list": { mock: tagListMock, Showcase: TagListShowcase },
   timeline: { mock: timelineMock, Showcase: TimelineShowcase },
   toast: { mock: toastMock, Showcase: ToastShowcase },
 }
