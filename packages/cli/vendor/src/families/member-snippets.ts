@@ -477,17 +477,17 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
   {
     component: "Card",
     title: "Base card",
-    description: "Use the base card when you need neutral composition freedom.",
+    description: "Use the base card when you need one ready surface with token-driven styling and minimal markup.",
     language: "tsx",
     variant: "basic",
-    code: `import { Card, CardContent, CardHeader, CardTitle } from "@azamatjurayevdev/azix-ui"
+    code: `import { Card } from "@azamatjurayevdev/azix-ui"
 
-<Card>
-  <CardHeader>
-    <CardTitle>Overview</CardTitle>
-  </CardHeader>
-  <CardContent>Revenue summary content</CardContent>
-</Card>`,
+<Card
+  title="Overview"
+  description="Weekly revenue summary"
+  content="Revenue summary content"
+  footer="Updated just now"
+/>`,
   },
   {
     component: "InfoCard",
@@ -558,7 +558,11 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     variant: "basic",
     code: `import { Badge } from "@azamatjurayevdev/azix-ui"
 
-<Badge tone="success" dot>Active</Badge>`,
+<Badge
+  status="success"
+  label="Active"
+  count={3}
+/>`,
   },
   {
     component: "Dialog",

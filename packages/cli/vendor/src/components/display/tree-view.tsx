@@ -12,7 +12,7 @@ export type TreeViewItem = {
   disabled?: boolean
 }
 
-export type TreeViewProps = React.ComponentProps<"div"> & {
+export type TreeViewProps = Omit<React.ComponentProps<"div">, "onSelect"> & {
   items: TreeViewItem[]
   defaultExpandedKeys?: string[]
   expandedKeys?: string[]

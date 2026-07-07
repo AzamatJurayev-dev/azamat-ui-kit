@@ -7,7 +7,27 @@ const cliRoot = path.join(root, "packages", "cli")
 const vendorRoot = path.join(cliRoot, "vendor")
 const sources = ["src", "templates"]
 
-await fs.rm(vendorRoot, { recursive: true, force: true })
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+async function safeRemove(target) {
+  const retryMs = [60, 120, 240, 480, 960, 1500]
+  for (let i = 0; i < retryMs.length; i += 1) {
+    try {
+      await fs.rm(target, { recursive: true, force: true })
+      return
+    } catch (error) {
+      if (error.code !== "EBUSY" && error.code !== "EPERM" && error.code !== "EACCES") {
+        throw error
+      }
+
+      await sleep(retryMs[i])
+    }
+  }
+
+  await fs.rm(target, { recursive: true, force: true })
+}
+
+await safeRemove(vendorRoot)
 await fs.mkdir(vendorRoot, { recursive: true })
 
 for (const source of sources) {

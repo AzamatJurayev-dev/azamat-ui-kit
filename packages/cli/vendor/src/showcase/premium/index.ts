@@ -2,19 +2,46 @@ import * as React from "react"
 
 import type { ComponentDemoBundle } from "./types"
 
+import { alertMock, AlertShowcase } from "./alert"
+import { AlertDialogShowcase, alertDialogMock } from "./alert-dialog"
+import { accordionMock, AccordionShowcase } from "./accordion"
+import { affixMock, AffixShowcase } from "./affix"
 import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
+import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
 import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
 import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
+import { aspectRatioMock, AspectRatioShowcase } from "./aspect-ratio"
+import { cascaderMock, CascaderShowcase } from "./cascader"
+import { avatarMock, AvatarShowcase } from "./avatar"
+import { carouselMock, CarouselShowcase } from "./carousel"
+import { floatButtonMock, FloatButtonShowcase } from "./float-button"
+import { jsonInputMock, JsonInputShowcase } from "./json-input"
+import { mentionInputMock, MentionInputShowcase } from "./mention-input"
+import { qrCodeMock, QRCodeShowcase } from "./qr-code"
+import { menubarMock, MenubarShowcase } from "./menubar"
+import { navigationMenuMock, NavigationMenuShowcase } from "./navigation-menu"
 import { badgeMock, BadgeShowcase } from "./badge"
+import { dividerMock, DividerShowcase } from "./divider"
 import { breadcrumbsMock, BreadcrumbsShowcase } from "./breadcrumbs"
 import { buttonMock, ButtonShowcase } from "./button"
+import { ButtonGroupShowcase, buttonGroupMock } from "./button-group"
+import { calendarMock, CalendarShowcase } from "./calendar"
+import { calendarSchedulerMock, CalendarSchedulerShowcase } from "./calendar-scheduler"
 import { cardMock, CardShowcase } from "./card"
 import { checkboxMock, CheckboxShowcase } from "./checkbox"
+import { codeBlockMock, CodeBlockShowcase } from "./code-block"
+import { dualListPickerMock, DualListPickerShowcase } from "./dual-list-picker"
+import { ClearableInputShowcase, clearableInputMock } from "./clearable-input"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
+import { commandBarMock, CommandBarShowcase } from "./command-bar"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
+import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
+import { copyButtonMock, CopyButtonShowcase } from "./copy-button"
+import { copyFieldMock, CopyFieldShowcase } from "./copy-field"
+import { dataStateMock, DataStateShowcase } from "./data-state"
 import { dataTableMock, DataTableShowcase } from "./data-table"
 import {
   DataTablePartShowcase,
@@ -29,49 +56,104 @@ import { dateInputMock, DateInputShowcase } from "./date-input"
 import { DatePickerShowcase, datePickerMock } from "./date-picker"
 import { DateRangeInputShowcase, dateRangeInputMock } from "./date-range-input"
 import { DateRangePickerShowcase, dateRangePickerMock } from "./date-range-picker"
+import { DescriptionListShowcase, descriptionListMock } from "./description-list"
+import { descriptionsMock, DescriptionsShowcase } from "./descriptions"
 import { dialogMock, DialogShowcase } from "./dialog"
 import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
+import { DrawerShowcase, drawerMock } from "./drawer"
 import { emptyStateMock, EmptyStateShowcase } from "./empty-state"
 import { FormBuilderShowcase, formBuilderMock } from "./form-builder"
 import { FormWrapperShowcase, formAsyncSelectMock, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
 import { hoverCardMock, HoverCardShowcase } from "./hover-card"
+import { kanbanBoardMock, KanbanBoardShowcase } from "./kanban-board"
 import { infoCardMock, InfoCardShowcase } from "./info-card"
 import { inputMock, InputShowcase } from "./input"
+import { keyboardShortcutMock, KeyboardShortcutShowcase } from "./keyboard-shortcut"
 import { kbdMock, KbdShowcase } from "./kbd"
+import { listMock, ListShowcase } from "./list"
 import { loadingStateMock, LoadingStateShowcase } from "./loading-state"
+import { richTextEditorMock, RichTextEditorShowcase } from "./rich-text-editor"
+import { timePickerMock, TimePickerShowcase } from "./time-picker"
+import { tourMock, TourShowcase } from "./tour"
+import { stickyFooterBarMock, StickyFooterBarShowcase } from "./sticky-footer-bar"
 import { maskedInputMock, MaskedInputShowcase } from "./masked-input"
 import { metricGridMock, MetricGridShowcase } from "./metric-grid"
 import { modalShellMock, ModalShellShowcase } from "./modal-shell"
+import { resizablePanelMock, ResizablePanelShowcase } from "./resizable-panel"
 import { moneyInputMock, MoneyInputShowcase } from "./money-input"
+import { NotificationCenterShowcase, notificationCenterMock } from "./notification-center"
 import { numberInputMock, NumberInputShowcase } from "./number-input"
+import { OtpInputShowcase, otpInputMock } from "./otp-input"
 import { pageContainerMock, PageContainerShowcase } from "./page-container"
 import { pageHeaderMock, PageHeaderShowcase } from "./page-header"
+import { PageTabsShowcase, pageTabsMock } from "./page-tabs"
+import { sectionMock, SectionShowcase } from "./section"
+import { stackMock, StackShowcase } from "./stack"
+import { skeletonFormMock, SkeletonFormShowcase } from "./skeleton-form"
+import { skeletonTableMock, SkeletonTableShowcase } from "./skeleton-table"
 import { phoneInputMock, PhoneInputShowcase } from "./phone-input"
+import { pageStateMock, PageStateShowcase } from "./page-state"
+import { paginationMock, PaginationShowcase } from "./pagination"
 import { popoverMock, PopoverShowcase } from "./popover"
+import { propertyGridMock, PropertyGridShowcase } from "./property-grid"
+import { ProgressShowcase, progressMock } from "./progress"
 import { quantityInputMock, QuantityInputShowcase } from "./quantity-input"
 import { radioGroupMock, RadioGroupShowcase } from "./radio-group"
 import { resultMock, ResultShowcase } from "./result"
 import { rightClickMenuMock, RightClickMenuShowcase } from "./right-click-menu"
 import { scrollBoxMock, ScrollBoxShowcase } from "./scroll-box"
 import { savedFilterSelectMock, SavedFilterSelectShowcase } from "./saved-filter-select"
+import { searchInputMock, SearchInputShowcase } from "./search-input"
+import { segmentedControlMock, SegmentedControlShowcase } from "./segmented-control"
 import { selectMock, SelectShowcase } from "./select"
 import { sheetShellMock, SheetShellShowcase } from "./sheet-shell"
 import { sidebarNavMock, SidebarNavShowcase } from "./sidebar-nav"
 import { simpleSelectMock, SimpleSelectShowcase } from "./simple-select"
+import { sliderMock, SliderShowcase } from "./slider"
+import { skeletonMock, SkeletonShowcase } from "./skeleton"
+import { spinnerMock, SpinnerShowcase } from "./spinner"
+import { statisticMock, StatisticShowcase } from "./statistic"
 import { switchMock, SwitchShowcase } from "./switch"
+import { TagInputShowcase, tagInputMock } from "./tag-input"
+import { tagListMock, TagListShowcase } from "./tag-list"
 import { tableMock, TableShowcase } from "./table"
 import { tabsMock, TabsShowcase } from "./tabs"
 import { textareaMock, TextareaShowcase } from "./textarea"
+import { TimelineShowcase, timelineMock } from "./timeline"
+import { tagMock, TagShowcase } from "./tag"
+import { typographyMock, TypographyShowcase } from "./typography"
+import { treeViewMock, TreeViewShowcase } from "./tree-view"
 import { toastMock, ToastShowcase } from "./toast"
 import { tooltipMock, TooltipShowcase } from "./tooltip"
 import { fileUploadMock, FileUploadShowcase } from "./file-upload"
 import { imageUploadMock, ImageUploadShowcase } from "./image-upload"
+import { passwordInputMock, PasswordInputShowcase } from "./password-input"
+import { ratingMock, RatingShowcase } from "./rating"
+import { watermarkMock, WatermarkShowcase } from "./watermark"
 
 export { defaultComponentDemoState } from "./types"
 export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, ComponentDemoState } from "./types"
 
 export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = {
+  alert: { mock: alertMock, Showcase: AlertShowcase },
+  "alert-dialog": { mock: alertDialogMock, Showcase: AlertDialogShowcase },
+  accordion: { mock: accordionMock, Showcase: AccordionShowcase },
+  affix: { mock: affixMock, Showcase: AffixShowcase },
+  "action-menu": { mock: actionMenuMock, Showcase: ActionMenuShowcase },
   button: { mock: buttonMock, Showcase: ButtonShowcase },
+  "button-group": { mock: buttonGroupMock, Showcase: ButtonGroupShowcase },
+  calendar: { mock: calendarMock, Showcase: CalendarShowcase },
+  "calendar-scheduler": { mock: calendarSchedulerMock, Showcase: CalendarSchedulerShowcase },
+  "cascader": { mock: cascaderMock, Showcase: CascaderShowcase },
+  "command-bar": { mock: commandBarMock, Showcase: CommandBarShowcase },
+  "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
+  "carousel": { mock: carouselMock, Showcase: CarouselShowcase },
+  "clearable-input": { mock: clearableInputMock, Showcase: ClearableInputShowcase },
+  "code-block": { mock: codeBlockMock, Showcase: CodeBlockShowcase },
+  "aspect-ratio": { mock: aspectRatioMock, Showcase: AspectRatioShowcase },
+  "dual-list-picker": { mock: dualListPickerMock, Showcase: DualListPickerShowcase },
+  "float-button": { mock: floatButtonMock, Showcase: FloatButtonShowcase },
+  divider: { mock: dividerMock, Showcase: DividerShowcase },
   input: { mock: inputMock, Showcase: InputShowcase },
   textarea: { mock: textareaMock, Showcase: TextareaShowcase },
   select: { mock: selectMock, Showcase: SelectShowcase },
@@ -80,18 +162,36 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "simple-select": { mock: simpleSelectMock, Showcase: SimpleSelectShowcase },
   "async-select": { mock: asyncSelectMock, Showcase: AsyncSelectShowcase },
   "async-multi-select": { mock: asyncMultiSelectMock, Showcase: AsyncMultiSelectShowcase },
+  avatar: { mock: avatarMock, Showcase: AvatarShowcase },
   "number-input": { mock: numberInputMock, Showcase: NumberInputShowcase },
   "money-input": { mock: moneyInputMock, Showcase: MoneyInputShowcase },
+  "password-input": { mock: passwordInputMock, Showcase: PasswordInputShowcase },
   "date-input": { mock: dateInputMock, Showcase: DateInputShowcase },
   "date-range-input": { mock: dateRangeInputMock, Showcase: DateRangeInputShowcase },
   "date-picker": { mock: datePickerMock, Showcase: DatePickerShowcase },
   "date-range-picker": { mock: dateRangePickerMock, Showcase: DateRangePickerShowcase },
+  "description-list": { mock: descriptionListMock, Showcase: DescriptionListShowcase },
+  descriptions: { mock: descriptionsMock, Showcase: DescriptionsShowcase },
+  drawer: { mock: drawerMock, Showcase: DrawerShowcase },
+  "json-input": { mock: jsonInputMock, Showcase: JsonInputShowcase },
+  kanban: { mock: kanbanBoardMock, Showcase: KanbanBoardShowcase },
+  "menubar": { mock: menubarMock, Showcase: MenubarShowcase },
+  "navigation-menu": { mock: navigationMenuMock, Showcase: NavigationMenuShowcase },
+  "otp-input": { mock: otpInputMock, Showcase: OtpInputShowcase },
   "quantity-input": { mock: quantityInputMock, Showcase: QuantityInputShowcase },
+  rating: { mock: ratingMock, Showcase: RatingShowcase },
   "masked-input": { mock: maskedInputMock, Showcase: MaskedInputShowcase },
   "phone-input": { mock: phoneInputMock, Showcase: PhoneInputShowcase },
+  "mention-input": { mock: mentionInputMock, Showcase: MentionInputShowcase },
+  "search-input": { mock: searchInputMock, Showcase: SearchInputShowcase },
+  slider: { mock: sliderMock, Showcase: SliderShowcase },
+  "time-picker": { mock: timePickerMock, Showcase: TimePickerShowcase },
+  "tag-input": { mock: tagInputMock, Showcase: TagInputShowcase },
   "dropdown-menu": { mock: dropdownMenuMock, Showcase: DropdownMenuShowcase },
   "confirm-dialog": { mock: confirmDialogMock, Showcase: ConfirmDialogShowcase },
   checkbox: { mock: checkboxMock, Showcase: CheckboxShowcase },
+  "copy-button": { mock: copyButtonMock, Showcase: CopyButtonShowcase },
+  "copy-field": { mock: copyFieldMock, Showcase: CopyFieldShowcase },
   switch: { mock: switchMock, Showcase: SwitchShowcase },
   badge: { mock: badgeMock, Showcase: BadgeShowcase },
   card: { mock: cardMock, Showcase: CardShowcase },
@@ -129,6 +229,9 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "form-date-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-builder": { mock: formBuilderMock, Showcase: FormBuilderShowcase },
+  "segmented-control": { mock: segmentedControlMock, Showcase: SegmentedControlShowcase },
+  skeleton: { mock: skeletonMock, Showcase: SkeletonShowcase },
+  spinner: { mock: spinnerMock, Showcase: SpinnerShowcase },
   table: { mock: tableMock, Showcase: TableShowcase },
   sidebar: { mock: appSidebarMock, Showcase: AppSidebarShowcase },
   "app-sidebar": { mock: appSidebarMock, Showcase: AppSidebarShowcase },
@@ -137,14 +240,39 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   breadcrumbs: { mock: breadcrumbsMock, Showcase: BreadcrumbsShowcase },
   "page-header": { mock: pageHeaderMock, Showcase: PageHeaderShowcase },
   "page-container": { mock: pageContainerMock, Showcase: PageContainerShowcase },
+  "page-state": { mock: pageStateMock, Showcase: PageStateShowcase },
+  "page-tabs": { mock: pageTabsMock, Showcase: PageTabsShowcase },
+  pagination: { mock: paginationMock, Showcase: PaginationShowcase },
   "metric-grid": { mock: metricGridMock, Showcase: MetricGridShowcase },
+  "notification-center": { mock: notificationCenterMock, Showcase: NotificationCenterShowcase },
   "info-card": { mock: infoCardMock, Showcase: InfoCardShowcase },
+  list: { mock: listMock, Showcase: ListShowcase },
+  "property-grid": { mock: propertyGridMock, Showcase: PropertyGridShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
   "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
+  "data-state": { mock: dataStateMock, Showcase: DataStateShowcase },
+  "keyboard-shortcut": { mock: keyboardShortcutMock, Showcase: KeyboardShortcutShowcase },
+  progress: { mock: progressMock, Showcase: ProgressShowcase },
   result: { mock: resultMock, Showcase: ResultShowcase },
+  "resizable-panel": { mock: resizablePanelMock, Showcase: ResizablePanelShowcase },
+  section: { mock: sectionMock, Showcase: SectionShowcase },
+  stack: { mock: stackMock, Showcase: StackShowcase },
+  statistic: { mock: statisticMock, Showcase: StatisticShowcase },
+  "skeleton-form": { mock: skeletonFormMock, Showcase: SkeletonFormShowcase },
+  "skeleton-table": { mock: skeletonTableMock, Showcase: SkeletonTableShowcase },
+  "sticky-footer-bar": { mock: stickyFooterBarMock, Showcase: StickyFooterBarShowcase },
+  "rich-text-editor": { mock: richTextEditorMock, Showcase: RichTextEditorShowcase },
+  tour: { mock: tourMock, Showcase: TourShowcase },
+  "qr-code": { mock: qrCodeMock, Showcase: QRCodeShowcase },
+  tag: { mock: tagMock, Showcase: TagShowcase },
+  typography: { mock: typographyMock, Showcase: TypographyShowcase },
+  "tree-view": { mock: treeViewMock, Showcase: TreeViewShowcase },
   "file-upload": { mock: fileUploadMock, Showcase: FileUploadShowcase },
   "image-upload": { mock: imageUploadMock, Showcase: ImageUploadShowcase },
+  watermark: { mock: watermarkMock, Showcase: WatermarkShowcase },
   "scroll-box": { mock: scrollBoxMock, Showcase: ScrollBoxShowcase },
+  "tag-list": { mock: tagListMock, Showcase: TagListShowcase },
+  timeline: { mock: timelineMock, Showcase: TimelineShowcase },
   toast: { mock: toastMock, Showcase: ToastShowcase },
 }
