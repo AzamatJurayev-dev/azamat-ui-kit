@@ -56,7 +56,36 @@ const cardVariants = cva(
   }
 )
 
-export type CardProps = React.ComponentProps<"div"> & VariantProps<typeof cardVariants>
+type CardSurfaceSlots = {
+  eyebrow?: React.ReactNode
+  title?: React.ReactNode
+  description?: React.ReactNode
+  badge?: React.ReactNode
+  action?: React.ReactNode
+  media?: React.ReactNode
+  content?: React.ReactNode
+  footer?: React.ReactNode
+  headerClassName?: string
+  titleClassName?: string
+  descriptionClassName?: string
+  contentClassName?: string
+  footerClassName?: string
+}
+
+export type CardProps = Omit<React.ComponentProps<"div">, keyof CardSurfaceSlots> & VariantProps<typeof cardVariants> & CardSurfaceSlots
+
+function hasSurfaceContent(props: CardSurfaceSlots) {
+  return (
+    props.eyebrow != null ||
+    props.title != null ||
+    props.description != null ||
+    props.badge != null ||
+    props.action != null ||
+    props.media != null ||
+    props.content != null ||
+    props.footer != null
+  )
+}
 
 function Card({
   className,
@@ -68,11 +97,40 @@ function Card({
   selected,
   disabled,
   tabIndex,
+  eyebrow,
+  title,
+  description,
+  badge,
+  action,
+  media,
+  content,
+  footer,
+  headerClassName,
+  titleClassName,
+  descriptionClassName,
+  contentClassName,
+  footerClassName,
+  children,
   ...props
 }: CardProps) {
+  const surfaceMode = hasSurfaceContent({
+    eyebrow,
+    title,
+    description,
+    badge,
+    action,
+    media,
+    content,
+    footer,
+  })
+  const resolvedContent = content ?? children
+  const hasHeader = eyebrow != null || title != null || description != null || badge != null || action != null
+  const hasFooter = footer != null
+
   return (
     <div
       data-slot="card"
+      data-surface={surfaceMode || undefined}
       data-size={size ?? "default"}
       data-variant={variant ?? "default"}
       data-tone={tone ?? "neutral"}
@@ -80,11 +138,43 @@ function Card({
       data-interactive={interactive || undefined}
       data-selected={selected || undefined}
       data-disabled={disabled || undefined}
+      data-has-footer={hasFooter || undefined}
       aria-disabled={disabled || undefined}
       tabIndex={interactive && !disabled ? tabIndex ?? 0 : tabIndex}
       className={cn(cardVariants({ variant, size, density, tone, interactive, selected, disabled }), className)}
       {...props}
-    />
+    >
+      {surfaceMode ? (
+        <>
+          {media}
+          {hasHeader ? (
+            <CardHeader className={headerClassName}>
+              <div className="min-w-0 space-y-1">
+                {eyebrow != null ? (
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80">
+                    {eyebrow}
+                  </div>
+                ) : null}
+                {title != null ? <CardTitle className={titleClassName}>{title}</CardTitle> : null}
+                {description != null ? (
+                  <CardDescription className={descriptionClassName}>{description}</CardDescription>
+                ) : null}
+              </div>
+              {badge != null || action != null ? (
+                <CardAction className="flex items-center gap-2">
+                  {badge}
+                  {action}
+                </CardAction>
+              ) : null}
+            </CardHeader>
+          ) : null}
+          {resolvedContent != null ? <CardContent className={contentClassName}>{resolvedContent}</CardContent> : null}
+          {hasFooter ? <CardFooter className={footerClassName}>{footer}</CardFooter> : null}
+        </>
+      ) : (
+        children
+      )}
+    </div>
   )
 }
 

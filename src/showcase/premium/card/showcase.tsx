@@ -1,4 +1,4 @@
-import { Badge, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/index"
+import { Badge, Card } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -40,12 +40,11 @@ export function CardShowcase({ state }: ComponentDemoProps) {
 
       <section className={panelClass}>
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
-          <Card size={state.cardCompact ? "sm" : "default"}>
-            <CardHeader>
-              <CardTitle>{primaryProject.title}</CardTitle>
-              <CardDescription>{primaryProject.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <Card
+            size={state.cardCompact ? "sm" : "default"}
+            title={primaryProject.title}
+            description={primaryProject.description}
+            content={
               <div className="grid gap-3 sm:grid-cols-3">
                 {primaryProject.metrics.map((metric) => (
                   <div key={metric} className="rounded-xl border border-[color:var(--aui-divider)] px-4 py-3 text-sm font-medium aui-text-strong">
@@ -53,24 +52,23 @@ export function CardShowcase({ state }: ComponentDemoProps) {
                   </div>
                 ))}
               </div>
-            </CardContent>
-            <CardFooter>{primaryProject.footer}</CardFooter>
-          </Card>
+            }
+            footer={primaryProject.footer}
+          />
 
-          <Card size="sm">
-            <CardHeader>
-              <CardTitle>{compactProject.title}</CardTitle>
-              <CardDescription>{compactProject.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
+          <Card
+            size="sm"
+            title={compactProject.title}
+            description={compactProject.description}
+            content={
               <div className="flex flex-wrap gap-2">
                 {compactProject.metrics.map((metric, index) => (
                   <Badge key={metric} variant={badgeVariants[index]}>{metric}</Badge>
                 ))}
               </div>
-            </CardContent>
-            <CardFooter>{compactProject.footer}</CardFooter>
-          </Card>
+            }
+            footer={compactProject.footer}
+          />
         </div>
       </section>
     </div>
