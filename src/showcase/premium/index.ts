@@ -19,6 +19,7 @@ import { ButtonGroupShowcase, buttonGroupMock } from "./button-group"
 import { calendarMock, CalendarShowcase } from "./calendar"
 import { cardMock, CardShowcase } from "./card"
 import { checkboxMock, CheckboxShowcase } from "./checkbox"
+import { codeBlockMock, CodeBlockShowcase } from "./code-block"
 import { ClearableInputShowcase, clearableInputMock } from "./clearable-input"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
@@ -27,6 +28,7 @@ import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
 import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
 import { copyButtonMock, CopyButtonShowcase } from "./copy-button"
 import { copyFieldMock, CopyFieldShowcase } from "./copy-field"
+import { dataStateMock, DataStateShowcase } from "./data-state"
 import { dataTableMock, DataTableShowcase } from "./data-table"
 import {
   DataTablePartShowcase,
@@ -51,6 +53,7 @@ import { FormWrapperShowcase, formAsyncSelectMock, formRHFWrapperMock, formSelec
 import { hoverCardMock, HoverCardShowcase } from "./hover-card"
 import { infoCardMock, InfoCardShowcase } from "./info-card"
 import { inputMock, InputShowcase } from "./input"
+import { keyboardShortcutMock, KeyboardShortcutShowcase } from "./keyboard-shortcut"
 import { kbdMock, KbdShowcase } from "./kbd"
 import { listMock, ListShowcase } from "./list"
 import { loadingStateMock, LoadingStateShowcase } from "./loading-state"
@@ -85,6 +88,7 @@ import { simpleSelectMock, SimpleSelectShowcase } from "./simple-select"
 import { sliderMock, SliderShowcase } from "./slider"
 import { skeletonMock, SkeletonShowcase } from "./skeleton"
 import { spinnerMock, SpinnerShowcase } from "./spinner"
+import { statisticMock, StatisticShowcase } from "./statistic"
 import { switchMock, SwitchShowcase } from "./switch"
 import { TagInputShowcase, tagInputMock } from "./tag-input"
 import { tagListMock, TagListShowcase } from "./tag-list"
@@ -113,6 +117,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "command-bar": { mock: commandBarMock, Showcase: CommandBarShowcase },
   "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
   "clearable-input": { mock: clearableInputMock, Showcase: ClearableInputShowcase },
+  "code-block": { mock: codeBlockMock, Showcase: CodeBlockShowcase },
   input: { mock: inputMock, Showcase: InputShowcase },
   textarea: { mock: textareaMock, Showcase: TextareaShowcase },
   select: { mock: selectMock, Showcase: SelectShowcase },
@@ -203,8 +208,11 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
   "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
+  "data-state": { mock: dataStateMock, Showcase: DataStateShowcase },
+  "keyboard-shortcut": { mock: keyboardShortcutMock, Showcase: KeyboardShortcutShowcase },
   progress: { mock: progressMock, Showcase: ProgressShowcase },
   result: { mock: resultMock, Showcase: ResultShowcase },
+  statistic: { mock: statisticMock, Showcase: StatisticShowcase },
   "file-upload": { mock: fileUploadMock, Showcase: FileUploadShowcase },
   "image-upload": { mock: imageUploadMock, Showcase: ImageUploadShowcase },
   "scroll-box": { mock: scrollBoxMock, Showcase: ScrollBoxShowcase },
