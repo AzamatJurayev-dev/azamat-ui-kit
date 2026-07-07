@@ -4,6 +4,7 @@ import type { ComponentDemoBundle } from "./types"
 
 import { alertMock, AlertShowcase } from "./alert"
 import { AlertDialogShowcase, alertDialogMock } from "./alert-dialog"
+import { accordionMock, AccordionShowcase } from "./accordion"
 import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
 import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
 import { appShellMock, AppShellShowcase } from "./app-shell"
@@ -20,8 +21,11 @@ import { checkboxMock, CheckboxShowcase } from "./checkbox"
 import { ClearableInputShowcase, clearableInputMock } from "./clearable-input"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
+import { commandBarMock, CommandBarShowcase } from "./command-bar"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
 import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
+import { copyButtonMock, CopyButtonShowcase } from "./copy-button"
+import { copyFieldMock, CopyFieldShowcase } from "./copy-field"
 import { dataTableMock, DataTableShowcase } from "./data-table"
 import {
   DataTablePartShowcase,
@@ -70,11 +74,14 @@ import { rightClickMenuMock, RightClickMenuShowcase } from "./right-click-menu"
 import { scrollBoxMock, ScrollBoxShowcase } from "./scroll-box"
 import { savedFilterSelectMock, SavedFilterSelectShowcase } from "./saved-filter-select"
 import { searchInputMock, SearchInputShowcase } from "./search-input"
+import { segmentedControlMock, SegmentedControlShowcase } from "./segmented-control"
 import { selectMock, SelectShowcase } from "./select"
 import { sheetShellMock, SheetShellShowcase } from "./sheet-shell"
 import { sidebarNavMock, SidebarNavShowcase } from "./sidebar-nav"
 import { simpleSelectMock, SimpleSelectShowcase } from "./simple-select"
 import { sliderMock, SliderShowcase } from "./slider"
+import { skeletonMock, SkeletonShowcase } from "./skeleton"
+import { spinnerMock, SpinnerShowcase } from "./spinner"
 import { switchMock, SwitchShowcase } from "./switch"
 import { TagInputShowcase, tagInputMock } from "./tag-input"
 import { tableMock, TableShowcase } from "./table"
@@ -94,10 +101,12 @@ export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, Compon
 export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = {
   alert: { mock: alertMock, Showcase: AlertShowcase },
   "alert-dialog": { mock: alertDialogMock, Showcase: AlertDialogShowcase },
+  accordion: { mock: accordionMock, Showcase: AccordionShowcase },
   "action-menu": { mock: actionMenuMock, Showcase: ActionMenuShowcase },
   button: { mock: buttonMock, Showcase: ButtonShowcase },
   "button-group": { mock: buttonGroupMock, Showcase: ButtonGroupShowcase },
   calendar: { mock: calendarMock, Showcase: CalendarShowcase },
+  "command-bar": { mock: commandBarMock, Showcase: CommandBarShowcase },
   "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
   "clearable-input": { mock: clearableInputMock, Showcase: ClearableInputShowcase },
   input: { mock: inputMock, Showcase: InputShowcase },
@@ -128,6 +137,8 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "dropdown-menu": { mock: dropdownMenuMock, Showcase: DropdownMenuShowcase },
   "confirm-dialog": { mock: confirmDialogMock, Showcase: ConfirmDialogShowcase },
   checkbox: { mock: checkboxMock, Showcase: CheckboxShowcase },
+  "copy-button": { mock: copyButtonMock, Showcase: CopyButtonShowcase },
+  "copy-field": { mock: copyFieldMock, Showcase: CopyFieldShowcase },
   switch: { mock: switchMock, Showcase: SwitchShowcase },
   badge: { mock: badgeMock, Showcase: BadgeShowcase },
   card: { mock: cardMock, Showcase: CardShowcase },
@@ -165,6 +176,9 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "form-date-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-builder": { mock: formBuilderMock, Showcase: FormBuilderShowcase },
+  "segmented-control": { mock: segmentedControlMock, Showcase: SegmentedControlShowcase },
+  skeleton: { mock: skeletonMock, Showcase: SkeletonShowcase },
+  spinner: { mock: spinnerMock, Showcase: SpinnerShowcase },
   table: { mock: tableMock, Showcase: TableShowcase },
   sidebar: { mock: appSidebarMock, Showcase: AppSidebarShowcase },
   "app-sidebar": { mock: appSidebarMock, Showcase: AppSidebarShowcase },
