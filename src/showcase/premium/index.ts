@@ -17,6 +17,7 @@ import { ButtonGroupShowcase, buttonGroupMock } from "./button-group"
 import { calendarMock, CalendarShowcase } from "./calendar"
 import { cardMock, CardShowcase } from "./card"
 import { checkboxMock, CheckboxShowcase } from "./checkbox"
+import { ClearableInputShowcase, clearableInputMock } from "./clearable-input"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
@@ -53,8 +54,10 @@ import { modalShellMock, ModalShellShowcase } from "./modal-shell"
 import { moneyInputMock, MoneyInputShowcase } from "./money-input"
 import { NotificationCenterShowcase, notificationCenterMock } from "./notification-center"
 import { numberInputMock, NumberInputShowcase } from "./number-input"
+import { OtpInputShowcase, otpInputMock } from "./otp-input"
 import { pageContainerMock, PageContainerShowcase } from "./page-container"
 import { pageHeaderMock, PageHeaderShowcase } from "./page-header"
+import { PageTabsShowcase, pageTabsMock } from "./page-tabs"
 import { phoneInputMock, PhoneInputShowcase } from "./phone-input"
 import { pageStateMock, PageStateShowcase } from "./page-state"
 import { paginationMock, PaginationShowcase } from "./pagination"
@@ -73,6 +76,7 @@ import { sidebarNavMock, SidebarNavShowcase } from "./sidebar-nav"
 import { simpleSelectMock, SimpleSelectShowcase } from "./simple-select"
 import { sliderMock, SliderShowcase } from "./slider"
 import { switchMock, SwitchShowcase } from "./switch"
+import { TagInputShowcase, tagInputMock } from "./tag-input"
 import { tableMock, TableShowcase } from "./table"
 import { tabsMock, TabsShowcase } from "./tabs"
 import { textareaMock, TextareaShowcase } from "./textarea"
@@ -95,6 +99,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "button-group": { mock: buttonGroupMock, Showcase: ButtonGroupShowcase },
   calendar: { mock: calendarMock, Showcase: CalendarShowcase },
   "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
+  "clearable-input": { mock: clearableInputMock, Showcase: ClearableInputShowcase },
   input: { mock: inputMock, Showcase: InputShowcase },
   textarea: { mock: textareaMock, Showcase: TextareaShowcase },
   select: { mock: selectMock, Showcase: SelectShowcase },
@@ -112,12 +117,14 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "date-range-picker": { mock: dateRangePickerMock, Showcase: DateRangePickerShowcase },
   "description-list": { mock: descriptionListMock, Showcase: DescriptionListShowcase },
   drawer: { mock: drawerMock, Showcase: DrawerShowcase },
+  "otp-input": { mock: otpInputMock, Showcase: OtpInputShowcase },
   "quantity-input": { mock: quantityInputMock, Showcase: QuantityInputShowcase },
   rating: { mock: ratingMock, Showcase: RatingShowcase },
   "masked-input": { mock: maskedInputMock, Showcase: MaskedInputShowcase },
   "phone-input": { mock: phoneInputMock, Showcase: PhoneInputShowcase },
   "search-input": { mock: searchInputMock, Showcase: SearchInputShowcase },
   slider: { mock: sliderMock, Showcase: SliderShowcase },
+  "tag-input": { mock: tagInputMock, Showcase: TagInputShowcase },
   "dropdown-menu": { mock: dropdownMenuMock, Showcase: DropdownMenuShowcase },
   "confirm-dialog": { mock: confirmDialogMock, Showcase: ConfirmDialogShowcase },
   checkbox: { mock: checkboxMock, Showcase: CheckboxShowcase },
@@ -167,6 +174,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "page-header": { mock: pageHeaderMock, Showcase: PageHeaderShowcase },
   "page-container": { mock: pageContainerMock, Showcase: PageContainerShowcase },
   "page-state": { mock: pageStateMock, Showcase: PageStateShowcase },
+  "page-tabs": { mock: pageTabsMock, Showcase: PageTabsShowcase },
   pagination: { mock: paginationMock, Showcase: PaginationShowcase },
   "metric-grid": { mock: metricGridMock, Showcase: MetricGridShowcase },
   "notification-center": { mock: notificationCenterMock, Showcase: NotificationCenterShowcase },
