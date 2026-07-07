@@ -32,6 +32,7 @@ import { dateInputMock, DateInputShowcase } from "./date-input"
 import { DatePickerShowcase, datePickerMock } from "./date-picker"
 import { DateRangeInputShowcase, dateRangeInputMock } from "./date-range-input"
 import { DateRangePickerShowcase, dateRangePickerMock } from "./date-range-picker"
+import { DescriptionListShowcase, descriptionListMock } from "./description-list"
 import { dialogMock, DialogShowcase } from "./dialog"
 import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
 import { emptyStateMock, EmptyStateShowcase } from "./empty-state"
@@ -46,6 +47,7 @@ import { maskedInputMock, MaskedInputShowcase } from "./masked-input"
 import { metricGridMock, MetricGridShowcase } from "./metric-grid"
 import { modalShellMock, ModalShellShowcase } from "./modal-shell"
 import { moneyInputMock, MoneyInputShowcase } from "./money-input"
+import { NotificationCenterShowcase, notificationCenterMock } from "./notification-center"
 import { numberInputMock, NumberInputShowcase } from "./number-input"
 import { pageContainerMock, PageContainerShowcase } from "./page-container"
 import { pageHeaderMock, PageHeaderShowcase } from "./page-header"
@@ -53,6 +55,7 @@ import { phoneInputMock, PhoneInputShowcase } from "./phone-input"
 import { pageStateMock, PageStateShowcase } from "./page-state"
 import { paginationMock, PaginationShowcase } from "./pagination"
 import { popoverMock, PopoverShowcase } from "./popover"
+import { ProgressShowcase, progressMock } from "./progress"
 import { quantityInputMock, QuantityInputShowcase } from "./quantity-input"
 import { radioGroupMock, RadioGroupShowcase } from "./radio-group"
 import { resultMock, ResultShowcase } from "./result"
@@ -69,6 +72,7 @@ import { switchMock, SwitchShowcase } from "./switch"
 import { tableMock, TableShowcase } from "./table"
 import { tabsMock, TabsShowcase } from "./tabs"
 import { textareaMock, TextareaShowcase } from "./textarea"
+import { TimelineShowcase, timelineMock } from "./timeline"
 import { toastMock, ToastShowcase } from "./toast"
 import { tooltipMock, TooltipShowcase } from "./tooltip"
 import { fileUploadMock, FileUploadShowcase } from "./file-upload"
@@ -99,6 +103,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "date-range-input": { mock: dateRangeInputMock, Showcase: DateRangeInputShowcase },
   "date-picker": { mock: datePickerMock, Showcase: DatePickerShowcase },
   "date-range-picker": { mock: dateRangePickerMock, Showcase: DateRangePickerShowcase },
+  "description-list": { mock: descriptionListMock, Showcase: DescriptionListShowcase },
   "quantity-input": { mock: quantityInputMock, Showcase: QuantityInputShowcase },
   rating: { mock: ratingMock, Showcase: RatingShowcase },
   "masked-input": { mock: maskedInputMock, Showcase: MaskedInputShowcase },
@@ -156,13 +161,16 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "page-state": { mock: pageStateMock, Showcase: PageStateShowcase },
   pagination: { mock: paginationMock, Showcase: PaginationShowcase },
   "metric-grid": { mock: metricGridMock, Showcase: MetricGridShowcase },
+  "notification-center": { mock: notificationCenterMock, Showcase: NotificationCenterShowcase },
   "info-card": { mock: infoCardMock, Showcase: InfoCardShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
   "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
+  progress: { mock: progressMock, Showcase: ProgressShowcase },
   result: { mock: resultMock, Showcase: ResultShowcase },
   "file-upload": { mock: fileUploadMock, Showcase: FileUploadShowcase },
   "image-upload": { mock: imageUploadMock, Showcase: ImageUploadShowcase },
   "scroll-box": { mock: scrollBoxMock, Showcase: ScrollBoxShowcase },
+  timeline: { mock: timelineMock, Showcase: TimelineShowcase },
   toast: { mock: toastMock, Showcase: ToastShowcase },
 }
