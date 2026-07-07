@@ -1,3 +1,4 @@
+import * as React from "react"
 import { Badge, Button } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
@@ -9,6 +10,7 @@ const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
 export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
   const variants = ["default", "secondary", "destructive", "outline", "ghost", "link"] as const
   const activeItem = badgeDemoItems.find((item) => item.variant === state.badgeVariant) ?? badgeDemoItems[0]
+  const [chipVisible, setChipVisible] = React.useState(true)
 
   return (
     <div className="space-y-0">
@@ -55,7 +57,14 @@ export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
 
           <div className="flex flex-wrap items-center gap-3">
             {badgeDemoItems.map((item, index) => (
-              <Badge key={item.label} variant={index === 0 ? state.badgeVariant : item.variant}>{item.label}</Badge>
+              <Badge
+                key={item.label}
+                variant={index === 0 ? state.badgeVariant : item.variant}
+                status={index === 0 ? "success" : undefined}
+                count={index === 1 ? 12 : undefined}
+              >
+                {item.label}
+              </Badge>
             ))}
           </div>
 
@@ -66,7 +75,7 @@ export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] aui-text-muted">Live example</p>
                   <p className="mt-2 text-lg font-semibold aui-text-strong">Customer workspace</p>
                 </div>
-                <Badge variant={state.badgeVariant}>{activeItem.label}</Badge>
+                <Badge variant={state.badgeVariant} status="success" label={activeItem.label} />
               </div>
 
               <div className="flex flex-wrap gap-2">
@@ -81,6 +90,23 @@ export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
                   </div>
                 ))}
               </div>
+
+              <div className="flex flex-wrap gap-2 border-t border-[color:var(--aui-divider)] pt-4">
+                <Badge variant="secondary" label="Customers" count={18} />
+                <Badge status="warning" label="Pending approval" />
+                {chipVisible ? (
+                  <Badge
+                    variant="outline"
+                    label="Design owner"
+                    removable
+                    onRemove={() => setChipVisible(false)}
+                  />
+                ) : (
+                  <Button size="sm" variant="secondary" onClick={() => setChipVisible(true)}>
+                    Restore chip
+                  </Button>
+                )}
+              </div>
             </div>
 
             <div className="border-y border-[color:var(--aui-divider)]">
@@ -90,7 +116,11 @@ export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
                     <p className="text-sm font-semibold aui-text-strong">{item.label}</p>
                     <p className="mt-1 text-sm leading-6 aui-text-muted">{item.note}</p>
                   </div>
-                  <Badge variant={item.variant}>{item.label}</Badge>
+                  <Badge
+                    variant={item.variant}
+                    status={item.label === "Live" ? "success" : item.label === "Review" ? "warning" : undefined}
+                    label={item.label}
+                  />
                 </div>
               ))}
             </div>
@@ -104,7 +134,7 @@ export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
             {badgeDemoItems.map((item) => (
               <div key={item.label} className="rounded-[18px] border border-[color:var(--aui-divider)] px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
-                  <Badge variant={item.variant}>{item.label}</Badge>
+                  <Badge variant={item.variant} label={item.label} count={item.label === "Queued" ? 4 : undefined} />
                   <span className="text-[11px] uppercase tracking-[0.2em] aui-text-muted">sample</span>
                 </div>
                 <p className="mt-3 text-sm leading-6 aui-text-muted">{item.note}</p>

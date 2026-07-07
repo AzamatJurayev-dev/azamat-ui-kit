@@ -558,7 +558,11 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     variant: "basic",
     code: `import { Badge } from "@azamatjurayevdev/azix-ui"
 
-<Badge tone="success" dot>Active</Badge>`,
+<Badge
+  status="success"
+  label="Active"
+  count={3}
+/>`,
   },
   {
     component: "Dialog",

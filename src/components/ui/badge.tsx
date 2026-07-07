@@ -2,6 +2,7 @@ import * as React from "react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
+import { XIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -53,6 +54,12 @@ const badgeVariants = cva(
 
 type BadgeProps = useRender.ComponentProps<"span"> &
   VariantProps<typeof badgeVariants> & {
+    label?: React.ReactNode
+    count?: React.ReactNode
+    status?: "neutral" | "info" | "success" | "warning" | "danger" | "muted"
+    removable?: boolean
+    onRemove?: () => void
+    removeLabel?: string
     leftIcon?: React.ReactNode
     rightIcon?: React.ReactNode
   }
@@ -63,30 +70,64 @@ function Badge({
   tone = "neutral",
   size = "default",
   dot = false,
+  label,
+  count,
+  status,
+  removable = false,
+  onRemove,
+  removeLabel = "Remove badge",
   leftIcon,
   rightIcon,
   children,
   render,
   ...props
 }: BadgeProps) {
+  const resolvedTone = status ?? tone
+  const resolvedLabel = label ?? children
+  const showDot = dot || status === "success" || status === "warning" || status === "danger" || status === "info"
+
   return useRender({
     defaultTagName: "span",
     props: mergeProps<"span">(
       {
-        className: cn(badgeVariants({ variant, tone, size, dot }), className),
+        className: cn(badgeVariants({ variant, tone: resolvedTone, size, dot: showDot }), className),
         children: (
           <>
-            {dot ? <span data-slot="badge-dot" className="size-1.5 rounded-full bg-current opacity-75" /> : null}
+            {showDot ? <span data-slot="badge-dot" className="size-1.5 rounded-full bg-current opacity-75" /> : null}
             {leftIcon ? <span data-icon="inline-start" data-slot="badge-icon" className="inline-flex shrink-0 items-center">{leftIcon}</span> : null}
-            {children ? <span data-slot="badge-label">{children}</span> : null}
+            {resolvedLabel ? <span data-slot="badge-label">{resolvedLabel}</span> : null}
+            {count != null ? (
+              <span
+                data-slot="badge-count"
+                className="inline-flex min-w-5 items-center justify-center rounded-full bg-[color:color-mix(in_oklch,currentColor,transparent_88%)] px-1.5 py-0.5 text-[0.72em] font-semibold"
+              >
+                {count}
+              </span>
+            ) : null}
             {rightIcon ? <span data-icon="inline-end" data-slot="badge-icon" className="inline-flex shrink-0 items-center">{rightIcon}</span> : null}
+            {removable ? (
+              <button
+                type="button"
+                data-slot="badge-remove"
+                aria-label={removeLabel}
+                onClick={(event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  onRemove?.()
+                }}
+                className="inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-[color:color-mix(in_oklch,currentColor,transparent_90%)] opacity-80 transition hover:opacity-100"
+              >
+                <XIcon className="size-3" />
+              </button>
+            ) : null}
           </>
         ),
       } as React.HTMLAttributes<HTMLSpanElement>,
       {
         "data-variant": variant ?? "default",
-        "data-tone": tone ?? "neutral",
+        "data-tone": resolvedTone ?? "neutral",
         "data-size": size ?? "default",
+        "data-removable": removable || undefined,
       } as React.HTMLAttributes<HTMLSpanElement>,
       props
     ),
@@ -94,9 +135,9 @@ function Badge({
     state: {
       slot: "badge",
       variant,
-      tone,
+      tone: resolvedTone,
       size,
-      dot,
+      dot: showDot,
     },
   })
 }
