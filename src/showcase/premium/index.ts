@@ -17,6 +17,7 @@ import { checkboxMock, CheckboxShowcase } from "./checkbox"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
+import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
 import { dataTableMock, DataTableShowcase } from "./data-table"
 import {
   DataTablePartShowcase,
@@ -49,6 +50,8 @@ import { numberInputMock, NumberInputShowcase } from "./number-input"
 import { pageContainerMock, PageContainerShowcase } from "./page-container"
 import { pageHeaderMock, PageHeaderShowcase } from "./page-header"
 import { phoneInputMock, PhoneInputShowcase } from "./phone-input"
+import { pageStateMock, PageStateShowcase } from "./page-state"
+import { paginationMock, PaginationShowcase } from "./pagination"
 import { popoverMock, PopoverShowcase } from "./popover"
 import { quantityInputMock, QuantityInputShowcase } from "./quantity-input"
 import { radioGroupMock, RadioGroupShowcase } from "./radio-group"
@@ -76,6 +79,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   alert: { mock: alertMock, Showcase: AlertShowcase },
   button: { mock: buttonMock, Showcase: ButtonShowcase },
   calendar: { mock: calendarMock, Showcase: CalendarShowcase },
+  "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
   input: { mock: inputMock, Showcase: InputShowcase },
   textarea: { mock: textareaMock, Showcase: TextareaShowcase },
   select: { mock: selectMock, Showcase: SelectShowcase },
@@ -141,6 +145,8 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   breadcrumbs: { mock: breadcrumbsMock, Showcase: BreadcrumbsShowcase },
   "page-header": { mock: pageHeaderMock, Showcase: PageHeaderShowcase },
   "page-container": { mock: pageContainerMock, Showcase: PageContainerShowcase },
+  "page-state": { mock: pageStateMock, Showcase: PageStateShowcase },
+  pagination: { mock: paginationMock, Showcase: PaginationShowcase },
   "metric-grid": { mock: metricGridMock, Showcase: MetricGridShowcase },
   "info-card": { mock: infoCardMock, Showcase: InfoCardShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
