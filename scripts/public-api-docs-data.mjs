@@ -45,11 +45,11 @@ export const publicComponentApiDocs = [
       "You want FormSelect to stay the RHF entry point instead of teaching async wrappers as separate first-class APIs.",
     ],
     related: [
-      "SimpleSelect",
       "AsyncSelect",
-      "AsyncMultiSelect",
       "Combobox",
+      "AsyncMultiSelect",
       "FormSelect",
+      "SimpleSelect",
       "FormAsyncSelect",
     ],
     props: [
@@ -177,10 +177,10 @@ export const publicComponentApiDocs = [
     related: [
       "DataTableToolbar",
       "DataTablePagination",
-      "DataTableColumnVisibilityMenu",
       "DataTableRowActions",
       "DataTableBulkActions",
       "DataTableViewPresets",
+      "DataTableColumnVisibilityMenu",
       "createDataTableSelectColumn",
       "createDataTableActionsColumn",
       "TableExportMenu",

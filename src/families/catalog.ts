@@ -45,10 +45,11 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
   {
     family: "SelectFamily",
     label: "Select",
-    description: "Primitive select plus async, multi, combobox, and form integration presets.",
+    description: "Base select surface with async, keyboard-search, and form-wrapper members layered only when the workflow needs them.",
     canonical: ["Select"],
-    members: ["AsyncSelect", "AsyncMultiSelect", "Combobox", "FormSelect"],
+    members: ["AsyncSelect", "Combobox", "FormSelect"],
     transitional: ["SimpleSelect", "FormAsyncSelect"],
+    advanced: ["AsyncMultiSelect"],
   },
   {
     family: "CardFamily",
@@ -101,20 +102,23 @@ export const componentFamilyCatalog: ComponentFamilyCatalogEntry[] = [
   {
     family: "DataTableFamily",
     label: "Data Table",
-    description: "Table shell, toolbar, pagination, actions, presets, and import-export helpers.",
+    description: "Canonical grid surface with a small set of reusable companions. Lower-level helpers stay secondary to the main table route.",
     canonical: ["DataTable"],
     members: [
       "DataTableToolbar",
       "DataTablePagination",
-      "DataTableColumnVisibilityMenu",
-      "DataTableSortableHeader",
       "DataTableRowActions",
       "DataTableBulkActions",
       "DataTableViewPresets",
+    ],
+    advanced: [
+      "DataTableColumnVisibilityMenu",
+      "DataTableSortableHeader",
       "createDataTableSelectColumn",
       "createDataTableActionsColumn",
+      "TableExportMenu",
+      "TableImportButton",
     ],
-    advanced: ["TableExportMenu", "TableImportButton"],
   },
   ...additionalPublicFamilies,
 ] as const

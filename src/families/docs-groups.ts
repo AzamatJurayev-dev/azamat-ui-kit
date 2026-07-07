@@ -80,7 +80,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     slug: "select",
     label: "Select",
     primaryComponent: "Select",
-    description: "Primary choice-picking surface with async, multi-select, and combobox members used only when the interaction needs them.",
+    description: "Primary choice-picking surface with async, combobox, and form members introduced only when the interaction actually changes.",
     sections: [
       {
         id: "primitives",
@@ -91,20 +91,26 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
       {
         id: "complex-presets",
         label: "Complex presets",
-        description: "Keep only selection components with real extra behavior.",
-        components: ["SimpleSelect", "AsyncSelect", "AsyncMultiSelect", "Combobox"],
+        description: "Promote only members that add real behavior beyond the base select.",
+        components: ["AsyncSelect", "Combobox"],
+      },
+      {
+        id: "advanced",
+        label: "Advanced",
+        description: "Remote multi-value selection is powerful, but it should stay behind the simpler select path.",
+        components: ["AsyncMultiSelect"],
       },
       {
         id: "form-wrapper",
         label: "Form wrapper",
-        description: "Use one form select wrapper instead of listing async-specific form aliases as first-level components.",
+        description: "Use one form select wrapper instead of teaching separate wrapper names for each select flavor.",
         components: ["FormSelect"],
       },
       {
         id: "compatibility-aliases",
         label: "Compatibility aliases",
         description: "Older select wrappers can stay available, but they should not lead the first-level route.",
-        components: ["FormAsyncSelect"],
+        components: ["SimpleSelect", "FormAsyncSelect"],
       },
     ],
   },
@@ -202,7 +208,7 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
     slug: "data-table",
     label: "Data Table",
     primaryComponent: "DataTable",
-    description: "Tabular data surface with toolbar and pagination as the only first-level table companions.",
+    description: "Tabular data surface centered on one canonical DataTable route, with helper pieces kept secondary.",
     sections: [
       {
         id: "primitives",
@@ -213,24 +219,27 @@ export const componentDocsGroups: ComponentDocsGroupEntry[] = [
       {
         id: "core-companions",
         label: "Core companions",
-        description: "Only the table companions that are commonly installed next to the main grid.",
+        description: "Only the companions that most product teams install next to the main grid.",
         components: [
           "DataTableToolbar",
           "DataTablePagination",
-          "DataTableColumnVisibilityMenu",
-          "DataTableSortableHeader",
           "DataTableRowActions",
           "DataTableBulkActions",
           "DataTableViewPresets",
-          "createDataTableSelectColumn",
-          "createDataTableActionsColumn",
         ],
       },
       {
         id: "advanced",
         label: "Advanced",
-        description: "Import-export helpers belong after the core grid is already clear.",
-        components: ["TableExportMenu", "TableImportButton"],
+        description: "Factories, visibility helpers, and import-export tooling belong after the main grid contract is already clear.",
+        components: [
+          "DataTableColumnVisibilityMenu",
+          "DataTableSortableHeader",
+          "createDataTableSelectColumn",
+          "createDataTableActionsColumn",
+          "TableExportMenu",
+          "TableImportButton",
+        ],
       },
     ],
   },
