@@ -704,11 +704,19 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
   },
   {
     component: "Progress",
-    family: "FeedbackFamily",
+    family: "ProgressFamily",
     section: "primitives",
     maturity: "canonical",
     summary: "Progress feedback bar for completion and status tracking.",
     useWhen: "Use when a task, upload, or rollout needs visible completion progress in the main interface.",
+  },
+  {
+    component: "ProgressCircle",
+    family: "ProgressFamily",
+    section: "advanced",
+    maturity: "advanced",
+    summary: "Compact circular progress indicator for constrained dashboard spaces.",
+    useWhen: "Use when the same completion signal must fit inside small cards, badges, or compact status blocks.",
   },
   {
     component: "ToastProvider",

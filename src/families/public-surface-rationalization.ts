@@ -16,6 +16,13 @@ export const additionalPublicFamilies = [
     advanced: ["useToast"],
   },
   {
+    family: "ProgressFamily",
+    label: "Progress",
+    description: "Completion and progress surfaces with linear and circular indicators.",
+    canonical: ["Progress"],
+    members: ["ProgressCircle"],
+  },
+  {
     family: "ChartFamily",
     label: "Charts",
     description: "Dashboard chart and metric surfaces with one clear chart-led public route.",
@@ -171,6 +178,28 @@ export const additionalDocsGroups = [
         label: "Supporting primitives",
         description: "Supporting content and layout primitives should stay secondary to the core controls.",
         components: ["Collapse", "Calendar", "Divider", "Kbd", "ScrollBox"],
+      },
+    ],
+  },
+  {
+    group: "Progress",
+    family: "ProgressFamily",
+    slug: "progress",
+    label: "Progress",
+    primaryComponent: "Progress",
+    description: "Progress surfaces grouped with linear and circular indicators, value formatting, and status tone.",
+    sections: [
+      {
+        id: "core-progress",
+        label: "Core progress",
+        description: "Start with linear progress states before composing status and circular variants.",
+        components: ["Progress", "ProgressCircle"],
+      },
+      {
+        id: "supporting-progress",
+        label: "Supporting signals",
+        description: "Small, reusable status helpers for quick loading feedback and skeleton-driven async states.",
+        components: [],
       },
     ],
   },

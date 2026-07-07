@@ -10,10 +10,17 @@ export const additionalPublicFamilies = [
   {
     family: "FeedbackFamily",
     label: "Feedback",
-    description: "Status, loading, progress, and notification surfaces grouped under one product feedback mental model.",
-    canonical: ["Alert", "EmptyState", "LoadingState", "Progress", "ToastProvider"],
+    description: "Status, loading, and notification surfaces grouped under one product feedback mental model.",
+    canonical: ["Alert", "EmptyState", "LoadingState", "ToastProvider"],
     members: ["InlineState", "LoadingOverlay", "Spinner", "Skeleton"],
     advanced: ["useToast"],
+  },
+  {
+    family: "ProgressFamily",
+    label: "Progress",
+    description: "Completion and progress surfaces with linear and circular indicators.",
+    canonical: ["Progress"],
+    members: ["ProgressCircle"],
   },
   {
     family: "ChartFamily",
@@ -82,7 +89,7 @@ export const additionalDocsGroups = [
         id: "core-feedback",
         label: "Core feedback",
         description: "These are the product feedback surfaces teams should reach for first.",
-        components: ["Alert", "EmptyState", "LoadingState", "Progress", "ToastProvider"],
+        components: ["Alert", "EmptyState", "LoadingState", "ToastProvider"],
       },
       {
         id: "secondary-feedback",
@@ -171,6 +178,28 @@ export const additionalDocsGroups = [
         label: "Supporting primitives",
         description: "Supporting content and layout primitives should stay secondary to the core controls.",
         components: ["Collapse", "Calendar", "Divider", "Kbd", "ScrollBox"],
+      },
+    ],
+  },
+  {
+    group: "Progress",
+    family: "ProgressFamily",
+    slug: "progress",
+    label: "Progress",
+    primaryComponent: "Progress",
+    description: "Progress surfaces grouped with linear and circular indicators, value formatting, and status tone.",
+    sections: [
+      {
+        id: "core-progress",
+        label: "Core progress",
+        description: "Start with linear progress states before composing status and circular variants.",
+        components: ["Progress", "ProgressCircle"],
+      },
+      {
+        id: "supporting-progress",
+        label: "Supporting signals",
+        description: "Small, reusable status helpers for quick loading feedback and skeleton-driven async states.",
+        components: [],
       },
     ],
   },

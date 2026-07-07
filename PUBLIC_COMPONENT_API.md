@@ -250,6 +250,38 @@ Related helpers can stay public, but they should be introduced from the canonica
 | `icon` | `ReactNode` | Overrides the default tone-based icon. |
 | `children` | `ReactNode` | Additional alert content. |
 
+## Progress
+
+- Canonical route: `/components/progress`
+- Summary: Canonical progress route for task completion, upload stages, and constrained status signals with optional labels.
+
+### Use When
+
+- A screen needs one consistent progress surface before introducing separate members.
+- Completion should be represented through a single component in list and wizard-like flows.
+- ProgressCircle should be used when compact visual indication is required.
+
+### Related Helpers
+
+`ProgressCircle`
+
+### Prop Highlights
+
+| Prop | Type | Notes |
+| --- | --- | --- |
+| `value` | `number` | Current completion value. |
+| `min` | `number` | Lower bound for the progress scale. |
+| `max` | `number` | Upper bound for the progress scale. |
+| `label` | `ReactNode` | Optional heading shown above the bar. |
+| `description` | `ReactNode` | Optional explanatory text. |
+| `showValue` | `boolean` | Shows percentage value when true. |
+| `valueFormatter` | `(value: number, percent: number) => ReactNode` | Formats the displayed value. |
+| `tone` | `'default' | 'success' | 'info' | 'warning' | 'danger' | 'muted'` | Visual emphasis style. |
+| `size` | `'sm' | 'default' | 'lg'` | Control bar height and density. |
+| `indeterminate` | `boolean` | Uses indefinite loading indicator when value is unknown. |
+| `trackClassName` | `string` | Class names for the track wrapper. |
+| `indicatorClassName` | `string` | Class names for the filled indicator. |
+
 ## BarChart
 
 - Canonical route: `/components/bar-chart`

@@ -10,6 +10,7 @@ export type ComponentFamilyName =
   | "DataTableFamily"
   | "ActionFamily"
   | "FeedbackFamily"
+  | "ProgressFamily"
   | "ChartFamily"
   | "NavigationFamily"
   | "UploadFamily"

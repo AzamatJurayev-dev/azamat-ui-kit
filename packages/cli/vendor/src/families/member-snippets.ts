@@ -1100,6 +1100,16 @@ const actionsColumn = createDataTableActionsColumn({
 <Progress value={72} label="Upload progress" />`,
   },
   {
+    component: "ProgressCircle",
+    title: "Circular status",
+    description: "Use ProgressCircle when completion is useful but width is limited.",
+    language: "tsx",
+    variant: "basic",
+    code: `import { ProgressCircle } from "@azamatjurayevdev/azix-ui"
+
+<ProgressCircle value={78} size="sm" />`,
+  },
+  {
     component: "ToastProvider",
     title: "Notification host",
     description: "Mount the provider once near the app root so features can dispatch toast feedback.",

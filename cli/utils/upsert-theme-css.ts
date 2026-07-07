@@ -48,13 +48,13 @@ export async function upsertThemeCss({ cwd, cssPath }: UpsertThemeCssOptions) {
     cwd,
     "node_modules",
     "@azamatjurayevdev",
-    "azix",
+    "azix-ui",
     "dist",
     "**",
     "*.js",
   )
-  const legacyPackagePath = path.join(cwd, "node_modules", "azix", "dist", "**", "*.js")
-  const chosenPackagePath = fs.existsSync(path.join(cwd, "node_modules", "@azamatjurayevdev", "azix"))
+  const legacyPackagePath = path.join(cwd, "node_modules", "azix-ui", "dist", "**", "*.js")
+  const chosenPackagePath = fs.existsSync(path.join(cwd, "node_modules", "@azamatjurayevdev", "azix-ui"))
     ? scopedPackagePath
     : legacyPackagePath
 

@@ -15,6 +15,7 @@ export type ComponentDocsGroupName =
   | "Sidebar"
   | "FileUpload"
   | "Checkbox"
+  | "Progress"
 
 export type ComponentDocsSection = {
   id: string

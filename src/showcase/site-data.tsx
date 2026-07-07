@@ -1900,6 +1900,8 @@ const primaryComponentSurfaceSlugs = new Set([
   "entity-header",
   "notification-center",
   "command-bar",
+  "progress",
+  "progress-circle",
 ])
 
 const componentPrimarySurfaceParent: Record<string, string> = {
@@ -1958,6 +1960,7 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "data-table-bulk-actions": "data-table",
   "data-table-view-presets": "data-table",
   table: "data-table",
+  "progress-circle": "progress",
 }
 
 const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMeta[]>> = {
@@ -2351,14 +2354,16 @@ export function getVisibleComponentCatalog() {
 export function getComponentDetailSidebarItems(activeSlug?: string): ComponentDetailSidebarItem[] {
   const activePrimary = activeSlug ? getPrimaryComponentSurfaceSlug(activeSlug) : undefined
 
-  return getVisibleComponentCatalog().map((item) => ({
-    slug: item.slug,
-    title: item.title,
-    href: componentDocsPath(item.slug),
-    status: item.status,
-    group: getComponentGroup(item.slug),
-    active: activePrimary ? getPrimaryComponentSurfaceSlug(item.slug) === activePrimary : false,
-  }))
+  return getPrimaryComponentCatalog()
+    .map((item) => ({
+      slug: item.slug,
+      title: item.title,
+      href: componentDocsPath(item.slug),
+      status: item.status,
+      group: getComponentGroup(item.slug),
+      active: activePrimary ? getPrimaryComponentSurfaceSlug(item.slug) === activePrimary : false,
+    }))
+    .sort((left, right) => left.title.localeCompare(right.title))
 }
 
 export function getComponentDetailSidebarSections(activeSlug?: string): ComponentDetailSidebarSection[] {

@@ -86,6 +86,7 @@ The public site should show one clean component name first, then related variant
 - `DataTable`: core table plus pagination, toolbar, saved filters, bulk actions, column visibility, and row actions.
 - `Button`: direct actions first, then menu, copy, and grouped-action helpers.
 - `Alert`: status, empty, loading, progress, and toast feedback surfaces grouped together.
+- `Progress`: linear progress first, then circular variant as a compact completion alternative.
 - `BarChart`: chart-led route with line, donut, metric, legend, and statistic helpers attached.
 - `Sidebar`: navigation-led route with page container, tabs, pagination, breadcrumbs, and wizard companions.
 - `FileUpload`: generic upload route with image-specific upload behavior as a related member.
