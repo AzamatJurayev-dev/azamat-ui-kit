@@ -236,6 +236,21 @@ export type ComponentSurfaceMemberInventoryItem = {
   href: string
 }
 
+export type ComponentDetailSidebarItem = {
+  slug: string
+  title: string
+  href: string
+  status: "Stable" | "Preview"
+  group: ComponentGroup
+  active: boolean
+}
+
+export type ComponentDetailSidebarSection = {
+  key: string
+  label: string
+  items: ComponentDetailSidebarItem[]
+}
+
 export const PACKAGE_NAME = "@azamatjurayevdev/azix-ui"
 export const CLI_PACKAGE_NAME = "azix"
 export const PACKAGE_IMPORT = "@azamatjurayevdev/azix-ui"
@@ -2331,6 +2346,40 @@ export function getVisibleComponentCatalog() {
   return Array.from(merged.values())
     .filter((item) => !hiddenDirectoryComponentSlugs.has(item.slug))
     .sort((left, right) => left.title.localeCompare(right.title))
+}
+
+export function getComponentDetailSidebarItems(activeSlug?: string): ComponentDetailSidebarItem[] {
+  const activePrimary = activeSlug ? getPrimaryComponentSurfaceSlug(activeSlug) : undefined
+
+  return getVisibleComponentCatalog().map((item) => ({
+    slug: item.slug,
+    title: item.title,
+    href: componentDocsPath(item.slug),
+    status: item.status,
+    group: getComponentGroup(item.slug),
+    active: activePrimary ? getPrimaryComponentSurfaceSlug(item.slug) === activePrimary : false,
+  }))
+}
+
+export function getComponentDetailSidebarSections(activeSlug?: string): ComponentDetailSidebarSection[] {
+  const sections = new Map<string, ComponentDetailSidebarSection>()
+
+  for (const item of getComponentDetailSidebarItems(activeSlug)) {
+    const firstLetter = item.title[0]?.toUpperCase() ?? "#"
+    const key = `${firstLetter} - ${item.group}`
+
+    if (!sections.has(key)) {
+      sections.set(key, {
+        key,
+        label: `${firstLetter} • ${item.group}`,
+        items: [],
+      })
+    }
+
+    sections.get(key)?.items.push(item)
+  }
+
+  return Array.from(sections.values())
 }
 
 export function getComponentSurfaceSections(slug: string) {
