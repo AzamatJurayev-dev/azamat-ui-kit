@@ -20,8 +20,9 @@ const publicFamilyOverrides: Partial<Record<ComponentFamilyName, ComponentFamily
     label: "Select",
     description: "Choice-picking surface with async, multi-select, and combobox only when the interaction needs them.",
     canonical: ["Select"],
-    members: ["AsyncSelect", "AsyncMultiSelect", "Combobox", "FormSelect"],
+    members: ["AsyncSelect", "Combobox", "FormSelect"],
     transitional: ["SimpleSelect", "FormAsyncSelect"],
+    advanced: ["AsyncMultiSelect"],
   },
   CardFamily: {
     family: "CardFamily",
@@ -53,8 +54,15 @@ const publicFamilyOverrides: Partial<Record<ComponentFamilyName, ComponentFamily
     label: "Data Table",
     description: "Table shell with toolbar and pagination as the only first-level companions.",
     canonical: ["DataTable"],
-    members: ["DataTableToolbar", "DataTablePagination", "DataTableColumnVisibilityMenu", "DataTableSortableHeader", "DataTableRowActions", "DataTableBulkActions", "DataTableViewPresets", "createDataTableSelectColumn", "createDataTableActionsColumn"],
-    advanced: ["TableExportMenu", "TableImportButton"],
+    members: ["DataTableToolbar", "DataTablePagination", "DataTableRowActions", "DataTableBulkActions", "DataTableViewPresets"],
+    advanced: [
+      "DataTableColumnVisibilityMenu",
+      "DataTableSortableHeader",
+      "createDataTableSelectColumn",
+      "createDataTableActionsColumn",
+      "TableExportMenu",
+      "TableImportButton",
+    ],
   },
 }
 

@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { Button, KanbanBoard } from "@/index"
+import type { KanbanColumn } from "@/components/display/kanban"
 
 const baseColumns = [
   {
@@ -21,7 +22,7 @@ const baseColumns = [
 ]
 
 export function KanbanBoardShowcase() {
-  const [columns, setColumns] = React.useState(baseColumns)
+  const [columns, setColumns] = React.useState<KanbanColumn[]>(baseColumns)
   const [selected, setSelected] = React.useState<string | undefined>(undefined)
 
   return (
@@ -55,4 +56,3 @@ export function KanbanBoardShowcase() {
     </div>
   )
 }
-

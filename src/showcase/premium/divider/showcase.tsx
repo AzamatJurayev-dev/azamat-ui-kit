@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import { Divider } from "@/index"
 
 export function DividerShowcase() {

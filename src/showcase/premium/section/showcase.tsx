@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import { Button, Section } from "@/index"
 
 export function SectionShowcase() {

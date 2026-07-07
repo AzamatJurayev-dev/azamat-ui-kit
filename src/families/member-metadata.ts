@@ -248,7 +248,7 @@ export const componentMemberMetadata: ComponentMemberMetadata[] = [
     component: "FormSelect",
     family: "SelectFamily",
     section: "form-wrappers",
-    maturity: "member",
+    maturity: "canonical",
     summary: "Canonical RHF wrapper for base, static, and async select flows.",
     useWhen: "Use as the main form entry for submitted select state, keeping simple and async modes behind one consistent wrapper contract.",
   },

@@ -53,7 +53,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`SimpleSelect`, `AsyncSelect`, `AsyncMultiSelect`, `Combobox`, `FormSelect`, `FormAsyncSelect`
+`AsyncSelect`, `Combobox`, `AsyncMultiSelect`, `FormSelect`, `SimpleSelect`, `FormAsyncSelect`
 
 ### Prop Highlights
 
@@ -185,7 +185,7 @@ Related helpers can stay public, but they should be introduced from the canonica
 
 ### Related Helpers
 
-`DataTableToolbar`, `DataTablePagination`, `DataTableColumnVisibilityMenu`, `DataTableRowActions`, `DataTableBulkActions`, `DataTableViewPresets`, `createDataTableSelectColumn`, `createDataTableActionsColumn`, `TableExportMenu`, `TableImportButton`
+`DataTableToolbar`, `DataTablePagination`, `DataTableRowActions`, `DataTableBulkActions`, `DataTableViewPresets`, `DataTableColumnVisibilityMenu`, `createDataTableSelectColumn`, `createDataTableActionsColumn`, `TableExportMenu`, `TableImportButton`
 
 ### Prop Highlights
 
