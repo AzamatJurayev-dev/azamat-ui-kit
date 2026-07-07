@@ -59,10 +59,12 @@ import { resultMock, ResultShowcase } from "./result"
 import { rightClickMenuMock, RightClickMenuShowcase } from "./right-click-menu"
 import { scrollBoxMock, ScrollBoxShowcase } from "./scroll-box"
 import { savedFilterSelectMock, SavedFilterSelectShowcase } from "./saved-filter-select"
+import { searchInputMock, SearchInputShowcase } from "./search-input"
 import { selectMock, SelectShowcase } from "./select"
 import { sheetShellMock, SheetShellShowcase } from "./sheet-shell"
 import { sidebarNavMock, SidebarNavShowcase } from "./sidebar-nav"
 import { simpleSelectMock, SimpleSelectShowcase } from "./simple-select"
+import { sliderMock, SliderShowcase } from "./slider"
 import { switchMock, SwitchShowcase } from "./switch"
 import { tableMock, TableShowcase } from "./table"
 import { tabsMock, TabsShowcase } from "./tabs"
@@ -71,6 +73,8 @@ import { toastMock, ToastShowcase } from "./toast"
 import { tooltipMock, TooltipShowcase } from "./tooltip"
 import { fileUploadMock, FileUploadShowcase } from "./file-upload"
 import { imageUploadMock, ImageUploadShowcase } from "./image-upload"
+import { passwordInputMock, PasswordInputShowcase } from "./password-input"
+import { ratingMock, RatingShowcase } from "./rating"
 
 export { defaultComponentDemoState } from "./types"
 export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, ComponentDemoState } from "./types"
@@ -90,13 +94,17 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "async-multi-select": { mock: asyncMultiSelectMock, Showcase: AsyncMultiSelectShowcase },
   "number-input": { mock: numberInputMock, Showcase: NumberInputShowcase },
   "money-input": { mock: moneyInputMock, Showcase: MoneyInputShowcase },
+  "password-input": { mock: passwordInputMock, Showcase: PasswordInputShowcase },
   "date-input": { mock: dateInputMock, Showcase: DateInputShowcase },
   "date-range-input": { mock: dateRangeInputMock, Showcase: DateRangeInputShowcase },
   "date-picker": { mock: datePickerMock, Showcase: DatePickerShowcase },
   "date-range-picker": { mock: dateRangePickerMock, Showcase: DateRangePickerShowcase },
   "quantity-input": { mock: quantityInputMock, Showcase: QuantityInputShowcase },
+  rating: { mock: ratingMock, Showcase: RatingShowcase },
   "masked-input": { mock: maskedInputMock, Showcase: MaskedInputShowcase },
   "phone-input": { mock: phoneInputMock, Showcase: PhoneInputShowcase },
+  "search-input": { mock: searchInputMock, Showcase: SearchInputShowcase },
+  slider: { mock: sliderMock, Showcase: SliderShowcase },
   "dropdown-menu": { mock: dropdownMenuMock, Showcase: DropdownMenuShowcase },
   "confirm-dialog": { mock: confirmDialogMock, Showcase: ConfirmDialogShowcase },
   checkbox: { mock: checkboxMock, Showcase: CheckboxShowcase },
