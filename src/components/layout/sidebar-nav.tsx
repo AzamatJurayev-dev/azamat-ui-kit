@@ -24,6 +24,7 @@ export type SidebarNavItem = {
 export type SidebarNavProps = React.ComponentProps<"nav"> & {
   items: SidebarNavItem[]
   collapsed?: boolean
+  scrollable?: boolean
   tooltipOnCollapsed?: boolean
   itemClassName?: string
   activeItemClassName?: string
@@ -304,6 +305,7 @@ function SidebarNav({
   className,
   items,
   collapsed = false,
+  scrollable = true,
   itemClassName,
   activeItemClassName,
   renderItem,
@@ -316,7 +318,7 @@ function SidebarNav({
     <nav
       data-slot="sidebar-nav"
       data-collapsed={collapsed || undefined}
-      className={cn("grid gap-1", className)}
+      className={cn("grid min-h-0 gap-1", scrollable ? "overflow-y-auto overscroll-contain" : null, className)}
       {...props}
     >
       <SidebarTree

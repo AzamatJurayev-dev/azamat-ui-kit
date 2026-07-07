@@ -391,12 +391,12 @@ function AppSidebar({
     <aside
       data-slot="app-sidebar"
       data-collapsed={collapsed || undefined}
-      className={cn("flex h-full min-h-0 flex-col", className)}
+      className={cn("flex h-full min-h-0 flex-col overflow-hidden", className)}
       {...props}
     >
       {header && <div data-slot="app-sidebar-header" className="shrink-0 border-b p-3">{header}</div>}
 
-      <nav data-slot="app-sidebar-nav" className="min-h-0 flex-1 space-y-1 overflow-y-auto p-2">
+      <nav data-slot="app-sidebar-nav" className="min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain p-2">
         {children ??
           visibleItems.map((item) => {
             if (!renderItem) return null
