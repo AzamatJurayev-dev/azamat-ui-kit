@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const resultMock: ComponentDemoMock = {
-  code: `import { Result } from "@azamatjurayevdev/azix"
+  code: `import { Result } from "@azamatjurayevdev/azix-ui"
 
 export function Example() {
   return (

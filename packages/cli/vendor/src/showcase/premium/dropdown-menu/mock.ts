@@ -14,7 +14,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@azamatjurayevdev/azix"
+} from "@azamatjurayevdev/azix-ui"
 
 export function Example() {
   const [status, setStatus] = useState("private")
@@ -50,7 +50,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="dropdown-trigger">Open menu</button>`,
-  cliCommand: "npx azix add dropdown-menu",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add dropdown-menu",
   highlights: ["Action items", "Checkbox and radio items", "Shortcut labels", "Disabled/danger variants"],
   relatedBlockSlugs: ["settings-form", "users-table", "dashboard-starter"],
   scenarios: [

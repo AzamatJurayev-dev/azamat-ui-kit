@@ -1,6 +1,6 @@
 {
-  "name": "@azamatjurayevdev/azix",
-  "version": "0.3.26",
+  "name": "@azamatjurayevdev/azix-ui",
+  "version": "0.3.27",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -24,6 +24,9 @@
   "license": "MIT",
   "author": "Azamat Jurayev",
   "type": "module",
+  "bin": {
+    "azixui": "bin/azix.cjs"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -114,7 +117,10 @@
     "./package.json": "./package.json"
   },
   "files": [
+    "bin",
     "dist",
+    "packages/cli/dist",
+    "packages/cli/vendor",
     "registry.json",
     "README.md",
     "CHANGELOG.md",

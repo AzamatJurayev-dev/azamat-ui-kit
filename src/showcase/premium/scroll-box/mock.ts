@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const scrollBoxMock: ComponentDemoMock = {
-  code: `import { ScrollBox } from "@azamatjurayevdev/azix"
+  code: `import { ScrollBox } from "@azamatjurayevdev/azix-ui"
 
 const items = ["Queue item 1", "Queue item 2", "Queue item 3", "Queue item 4", "Queue item 5"]
 
@@ -15,7 +15,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<div data-slot="scroll-box"></div>`,
-  cliCommand: "npx azix add scroll-box",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add scroll-box",
   highlights: ["Bounded scroll", "Axis control", "Dense lists", "Panel content"],
   relatedBlockSlugs: ["users-table", "crm-dashboard", "dashboard-starter"],
   scenarios: [

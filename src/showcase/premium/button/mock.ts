@@ -70,7 +70,7 @@ export function ControlledButton() {
   htmlCode: `<button data-slot="button" data-variant="primary">
   Continue
 </button>`,
-  cliCommand: "npx azix add button",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add button",
   highlights: [
     "Primary/secondary/outline/destructive/ghost/link and size tokens",
     "Icon slots with helper text and compact icon-only variant",

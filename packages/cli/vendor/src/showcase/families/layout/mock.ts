@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const layoutFamilyMock: FamilyDemoMock = {
-  code: `import { AppShell, AppHeader, AppSidebar, PageHeader, StatCard } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  return <AppShell />\n}`,
+  code: `import { AppShell, AppHeader, AppSidebar, PageHeader, StatCard } from "@azamatjurayevdev/azix-ui"\n\nexport function Example() {\n  return <AppShell />\n}`,
   highlights: ["App shell composition", "Sidebar navigation", "Page headers", "Dashboard stat surfaces"],
   scenarios: [
     { title: "Admin workspace", description: "Combine shell, sidebar and stat cards into a dense admin product." },

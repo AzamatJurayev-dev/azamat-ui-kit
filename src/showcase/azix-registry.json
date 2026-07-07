@@ -1,6 +1,6 @@
 {
   "$schema": "https://azix.dev/registry.schema.json",
-  "name": "@azamatjurayevdev/azix",
+  "name": "@azamatjurayevdev/azix-ui",
   "version": "0.3.25",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {

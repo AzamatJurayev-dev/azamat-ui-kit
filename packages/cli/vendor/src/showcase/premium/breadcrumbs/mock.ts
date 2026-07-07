@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const breadcrumbsMock: ComponentDemoMock = {
-  code: `import { Breadcrumbs } from "@azamatjurayevdev/azix"
+  code: `import { Breadcrumbs } from "@azamatjurayevdev/azix-ui"
 
 const items = [
   { key: "home", label: "Home", href: "/" },

@@ -114,7 +114,7 @@ export function createGenericShowcaseDemo({
   return {
     Showcase: (props) => <GenericComponentShowcase {...props} item={item} groupLabel={groupLabel} />,
     mock: {
-      cliCommand: `npx azix add ${item.slug}`,
+      cliCommand: `npx @azamatjurayevdev/azix-ui add ${item.slug}`,
       code: `${importSnippet}\n\nexport function Example() {\n  return <${exportName} />\n}`,
       highlights: item.features,
       scenarios: item.features.slice(0, 3).map((feature) => ({
@@ -170,7 +170,7 @@ function GenericComponentShowcase({
       </div>
 
       <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-code-bg)] px-4 py-3">
-        <code className="text-sm text-[color:var(--aui-code-fg)]">npx azix add {item.slug}</code>
+        <code className="text-sm text-[color:var(--aui-code-fg)]">npx @azamatjurayevdev/azix-ui add {item.slug}</code>
       </div>
 
       <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] p-4 sm:p-5">
@@ -294,13 +294,13 @@ function renderGenericPreviewSurface(
       <CodeBlock
         title="Install"
         language="bash"
-        code={`npx azix init --template next\nnpx azix add button`}
+        code={`npx @azamatjurayevdev/azix-ui init --template next\nnpx @azamatjurayevdev/azix-ui add button`}
       />
     )
   }
 
   if (item.slug === "copy-button") {
-    return <CopyButton value="npx azix add button">Copy command</CopyButton>
+    return <CopyButton value="npx @azamatjurayevdev/azix-ui add button">Copy command</CopyButton>
   }
 
   if (item.slug === "copy-field") {
@@ -308,7 +308,7 @@ function renderGenericPreviewSurface(
       <CopyField
         label="CLI command"
         description="Quick source-copy command"
-        value="npx azix add input"
+        value="npx @azamatjurayevdev/azix-ui add input"
       />
     )
   }

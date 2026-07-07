@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const uploadFamilyMock: FamilyDemoMock = {
-  code: `import { FileUpload, ImageUpload } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  return <FileUpload />\n}`,
+  code: `import { FileUpload, ImageUpload } from "@azamatjurayevdev/azix-ui"\n\nexport function Example() {\n  return <FileUpload />\n}`,
   highlights: ["File upload", "Image upload", "Attachment counts", "Media-ready flows"],
   scenarios: [
     { title: "Asset manager", description: "Collect multiple files and preview uploaded media." },

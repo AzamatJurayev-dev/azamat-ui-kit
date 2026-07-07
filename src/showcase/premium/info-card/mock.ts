@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const infoCardMock: ComponentDemoMock = {
-  code: `import { InfoCard } from "@azamatjurayevdev/azix"
+  code: `import { InfoCard } from "@azamatjurayevdev/azix-ui"
 
 export function Example() {
   return (

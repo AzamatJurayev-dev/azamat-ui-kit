@@ -1,5 +1,5 @@
-export const LIBRARY_PACKAGE_NAME = "@azamatjurayevdev/azix"
-export const CLI_PACKAGE_NAME = "azix"
+export const LIBRARY_PACKAGE_NAME = "@azamatjurayevdev/azix-ui"
+export const CLI_PACKAGE_NAME = "@azamatjurayevdev/azix-ui"
 export const CLI_EXECUTABLE_NAME = "azix"
 
 export function getCliNpxCommand(args = "") {

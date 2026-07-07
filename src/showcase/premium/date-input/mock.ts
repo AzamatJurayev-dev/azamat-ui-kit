@@ -18,7 +18,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="date">Date</label><input id="date" type="text" value="2026-06-19" placeholder="YYYY-MM-DD" />',
-  cliCommand: "npx azix add date-input",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add date-input",
   highlights: ["ISO-like string format assumptions", "min/max constraints", "Controlled editing", "Clear disabled behavior"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "settings-form"],
   scenarios: [

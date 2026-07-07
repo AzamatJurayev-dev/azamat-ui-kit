@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const collapseMock: ComponentDemoMock = {
-  code: `import { CollapseGroup } from "@azamatjurayevdev/azix"
+  code: `import { CollapseGroup } from "@azamatjurayevdev/azix-ui"
 
 const sections = [
   {
@@ -22,7 +22,7 @@ export function Example() {
   return <CollapseGroup items={sections} type="single" defaultValue="permissions" />
 }`,
   htmlCode: `<details data-slot="collapse"><summary>Open details</summary></details>`,
-  cliCommand: "npx azix add collapse",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add collapse",
   highlights: ["Progressive disclosure", "Single or multiple open items", "Dense settings layout", "Controlled group state"],
   relatedBlockSlugs: ["settings-form", "dashboard-starter", "crm-dashboard"],
   scenarios: [

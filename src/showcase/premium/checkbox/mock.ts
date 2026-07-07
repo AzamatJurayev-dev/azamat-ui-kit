@@ -1,8 +1,8 @@
 import type { ComponentDemoMock } from "../types"
 
 export const checkboxMock: ComponentDemoMock = {
-  code: `import * as React from "react"\nimport { Checkbox } from "@azamatjurayevdev/azix"\n\nexport function Example() {\n  const [termsAccepted, setTermsAccepted] = React.useState(false)\n\n  return (\n    <div className="space-y-3">\n      <label className="flex items-center gap-2">\n        <Checkbox\n          checked={termsAccepted}\n          onCheckedChange={(checked) => setTermsAccepted(Boolean(checked))}\n        />\n        <span>Accept terms and conditions</span>\n      </label>\n      <label className="flex items-center gap-2">\n        <Checkbox id="indeterminate" indeterminate />\n        <span>Parent selection (mixed state)</span>\n      </label>\n      <label className="flex items-center gap-2">\n        <Checkbox id="readonly" readOnly checked />\n        <span>Read-only state example</span>\n      </label>\n    </div>\n  )\n}\n`,
-  cliCommand: "npx azix add checkbox",
+  code: `import * as React from "react"\nimport { Checkbox } from "@azamatjurayevdev/azix-ui"\n\nexport function Example() {\n  const [termsAccepted, setTermsAccepted] = React.useState(false)\n\n  return (\n    <div className="space-y-3">\n      <label className="flex items-center gap-2">\n        <Checkbox\n          checked={termsAccepted}\n          onCheckedChange={(checked) => setTermsAccepted(Boolean(checked))}\n        />\n        <span>Accept terms and conditions</span>\n      </label>\n      <label className="flex items-center gap-2">\n        <Checkbox id="indeterminate" indeterminate />\n        <span>Parent selection (mixed state)</span>\n      </label>\n      <label className="flex items-center gap-2">\n        <Checkbox id="readonly" readOnly checked />\n        <span>Read-only state example</span>\n      </label>\n    </div>\n  )\n}\n`,
+  cliCommand: "npx @azamatjurayevdev/azix-ui add checkbox",
   highlights: ["Checked state", "Indeterminate-ready API", "Task lists", "Permission groups"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

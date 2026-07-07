@@ -101,7 +101,7 @@ async function assertRuntimePackageNotInstalled(fixtureRoot, template) {
     ...Object.keys(packageJson.devDependencies ?? {}),
   ])
 
-  if (installedPackages.has("azix") || installedPackages.has("@azamatjurayevdev/azix")) {
+  if (installedPackages.has("azix") || installedPackages.has("@azamatjurayevdev/azix-ui")) {
     throw new Error(`source-copy init should not install azix runtime package for ${template}`)
   }
 }

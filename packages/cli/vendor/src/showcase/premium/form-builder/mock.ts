@@ -9,7 +9,7 @@ import {
   phoneField,
   switchField,
   textareaField,
-} from "@azamatjurayevdev/azix"
+} from "@azamatjurayevdev/azix-ui"
 
 type DemoValues = {
   workspace: string
@@ -60,7 +60,7 @@ export function Example() {
 }`
 ,
   htmlCode: `<form><label for="workspace">Workspace</label><input id="workspace" value="Azamat UI" /></form>`,
-  cliCommand: "npx azix add form-builder",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add form-builder",
   highlights: ["Field schema", "Sections and presets", "submitLabel / resetLabel wiring", "Disabled/readOnly passthrough", "Reusable field helpers"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard"],
   scenarios: [

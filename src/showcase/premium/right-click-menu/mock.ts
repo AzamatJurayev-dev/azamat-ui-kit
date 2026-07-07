@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const rightClickMenuMock: ComponentDemoMock = {
-  code: `import { RightClickMenu } from "@azamatjurayevdev/azix"
+  code: `import { RightClickMenu } from "@azamatjurayevdev/azix-ui"
 
 export function Example() {
   return (
@@ -19,7 +19,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<div data-slot="right-click-menu"></div>`,
-  cliCommand: "npx azix add right-click-menu",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add right-click-menu",
   highlights: ["Context actions", "Pointer workflow", "Compact menus", "Workspace interactions"],
   relatedBlockSlugs: ["users-table", "crm-dashboard", "dashboard-starter"],
   scenarios: [

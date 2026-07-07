@@ -23,7 +23,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Start with Input first and enable behavior through props before moving into presets.",
     language: "tsx",
     variant: "basic",
-    code: `import { Input } from "@azamatjurayevdev/azix"
+    code: `import { Input } from "@azamatjurayevdev/azix-ui"
 
 <Input placeholder="Email address" />`,
   },
@@ -33,7 +33,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Input can own the clear behavior directly when you do not need a separate preset import.",
     language: "tsx",
     variant: "advanced",
-    code: `import { Input } from "@azamatjurayevdev/azix"
+    code: `import { Input } from "@azamatjurayevdev/azix-ui"
 
 <Input
   value={query}
@@ -49,7 +49,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use Textarea when the same input family needs longer freeform content.",
     language: "tsx",
     variant: "basic",
-    code: `import { Textarea } from "@azamatjurayevdev/azix"
+    code: `import { Textarea } from "@azamatjurayevdev/azix-ui"
 
 <Textarea placeholder="Write release notes or internal guidance..." rows={5} />`,
   },
@@ -59,7 +59,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the search preset when the base Input needs result-count or shortcut chrome out of the box.",
     language: "tsx",
     variant: "basic",
-    code: `import { SearchInput } from "@azamatjurayevdev/azix"
+    code: `import { SearchInput } from "@azamatjurayevdev/azix-ui"
 
 <SearchInput value={query} onValueChange={setQuery} placeholder="Search products..." />`,
   },
@@ -69,7 +69,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the clearable preset when teams want the Input clear action packaged as one helper.",
     language: "tsx",
     variant: "basic",
-    code: `import { ClearableInput } from "@azamatjurayevdev/azix"
+    code: `import { ClearableInput } from "@azamatjurayevdev/azix-ui"
 
 <ClearableInput value={keyword} onValueChange={setKeyword} placeholder="Keyword" />`,
   },
@@ -79,7 +79,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the password preset when Input needs a reveal toggle and password-safe defaults.",
     language: "tsx",
     variant: "basic",
-    code: `import { PasswordInput } from "@azamatjurayevdev/azix"
+    code: `import { PasswordInput } from "@azamatjurayevdev/azix-ui"
 
 <PasswordInput value={password} onValueChange={setPassword} placeholder="Password" />`,
   },
@@ -89,7 +89,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep both raw entry and parsed number when needed.",
     language: "tsx",
     variant: "basic",
-    code: `import { NumberInput } from "@azamatjurayevdev/azix"
+    code: `import { NumberInput } from "@azamatjurayevdev/azix-ui"
 
 <NumberInput
   min={0}
@@ -105,7 +105,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the slider when a bounded numeric value should be adjusted visually instead of typed.",
     language: "tsx",
     variant: "basic",
-    code: `import { Slider } from "@azamatjurayevdev/azix"
+    code: `import { Slider } from "@azamatjurayevdev/azix-ui"
 
 <Slider
   label="Density"
@@ -122,7 +122,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the range slider when one surface should control a min and max bound together.",
     language: "tsx",
     variant: "basic",
-    code: `import { RangeSlider } from "@azamatjurayevdev/azix"
+    code: `import { RangeSlider } from "@azamatjurayevdev/azix-ui"
 
 <RangeSlider
   label="Revenue range"
@@ -139,7 +139,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use rating for compact sentiment, score, or review capture.",
     language: "tsx",
     variant: "basic",
-    code: `import { Rating } from "@azamatjurayevdev/azix"
+    code: `import { Rating } from "@azamatjurayevdev/azix-ui"
 
 <Rating defaultValue={4} labels={{ clear: "Reset" }} />`,
   },
@@ -149,7 +149,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "MaskedInput is for custom displayed formatting over a raw string value.",
     language: "tsx",
     variant: "advanced",
-    code: `import { MaskedInput } from "@azamatjurayevdev/azix"
+    code: `import { MaskedInput } from "@azamatjurayevdev/azix-ui"
 
 <MaskedInput
   value={invoiceCode}
@@ -163,7 +163,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Phone input keeps visible formatting while emitting a normalized value.",
     language: "tsx",
     variant: "basic",
-    code: `import { PhoneInput } from "@azamatjurayevdev/azix"
+    code: `import { PhoneInput } from "@azamatjurayevdev/azix-ui"
 
 <PhoneInput value={phone} onValueChange={(masked) => setPhone(masked)} />`,
   },
@@ -173,7 +173,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Prefix and suffix keep financial context in the field chrome.",
     language: "tsx",
     variant: "basic",
-    code: `import { MoneyInput } from "@azamatjurayevdev/azix"
+    code: `import { MoneyInput } from "@azamatjurayevdev/azix-ui"
 
 <MoneyInput
   prefix="$"
@@ -188,7 +188,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use quantity input when typing and step controls should live together.",
     language: "tsx",
     variant: "basic",
-    code: `import { QuantityInput } from "@azamatjurayevdev/azix"
+    code: `import { QuantityInput } from "@azamatjurayevdev/azix-ui"
 
 <QuantityInput value={count} min={1} max={20} onValueChange={setCount} />`,
   },
@@ -198,7 +198,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the stepper when free typing should be avoided entirely.",
     language: "tsx",
     variant: "advanced",
-    code: `import { QuantityStepper } from "@azamatjurayevdev/azix"
+    code: `import { QuantityStepper } from "@azamatjurayevdev/azix-ui"
 
 <QuantityStepper value={count} min={1} max={10} onValueChange={setCount} />`,
   },
@@ -208,7 +208,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "OtpInput handles per-cell focus and paste behavior for short codes.",
     language: "tsx",
     variant: "basic",
-    code: `import { OtpInput } from "@azamatjurayevdev/azix"
+    code: `import { OtpInput } from "@azamatjurayevdev/azix-ui"
 
 <OtpInput value={otp} onValueChange={setOtp} length={6} />`,
   },
@@ -218,7 +218,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the color preset when browser-native selection is sufficient.",
     language: "tsx",
     variant: "basic",
-    code: `import { ColorInput } from "@azamatjurayevdev/azix"
+    code: `import { ColorInput } from "@azamatjurayevdev/azix-ui"
 
 <ColorInput value={brandColor} onValueChange={setBrandColor} />`,
   },
@@ -228,7 +228,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the native wrapper when a full date picker is unnecessary.",
     language: "tsx",
     variant: "basic",
-    code: `import { DateInput } from "@azamatjurayevdev/azix"
+    code: `import { DateInput } from "@azamatjurayevdev/azix-ui"
 
 <DateInput value={startDate} onValueChange={setStartDate} />`,
   },
@@ -238,7 +238,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the range preset for lightweight report and filter intervals.",
     language: "tsx",
     variant: "basic",
-    code: `import { DateRangeInput } from "@azamatjurayevdev/azix"
+    code: `import { DateRangeInput } from "@azamatjurayevdev/azix-ui"
 
 <DateRangeInput value={range} onValueChange={setRange} />`,
   },
@@ -248,7 +248,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the universal RHF wrapper when field framing and validation should stay consistent.",
     language: "tsx",
     variant: "form",
-    code: `import { FormInput } from "@azamatjurayevdev/azix"
+    code: `import { FormInput } from "@azamatjurayevdev/azix-ui"
 
 <FormInput control={control} name="email" label="Email" placeholder="Email address" />`,
   },
@@ -258,7 +258,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use kind switching instead of separate wrapper names for common field variants.",
     language: "tsx",
     variant: "form",
-    code: `import { FormInput } from "@azamatjurayevdev/azix"
+    code: `import { FormInput } from "@azamatjurayevdev/azix-ui"
 
 <FormInput control={control} name="query" kind="search" label="Search" placeholder="Search products..." />`,
   },
@@ -268,7 +268,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Parsed numeric form state can stay behind the same wrapper contract.",
     language: "tsx",
     variant: "form",
-    code: `import { FormInput } from "@azamatjurayevdev/azix"
+    code: `import { FormInput } from "@azamatjurayevdev/azix-ui"
 
     <FormInput control={control} name="quantity" kind="number" label="Quantity" min={0} />`,
   },
@@ -278,7 +278,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
     variant: "migration",
-    code: `import { FormSearchInput } from "@azamatjurayevdev/azix"
+    code: `import { FormSearchInput } from "@azamatjurayevdev/azix-ui"
 
 <FormSearchInput control={control} name="query" label="Search" />
 
@@ -291,7 +291,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
     variant: "migration",
-    code: `import { FormPasswordInput } from "@azamatjurayevdev/azix"
+    code: `import { FormPasswordInput } from "@azamatjurayevdev/azix-ui"
 
 <FormPasswordInput control={control} name="password" label="Password" />
 
@@ -304,7 +304,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
     variant: "migration",
-    code: `import { FormNumberInput } from "@azamatjurayevdev/azix"
+    code: `import { FormNumberInput } from "@azamatjurayevdev/azix-ui"
 
 <FormNumberInput control={control} name="quantity" label="Quantity" min={0} />
 
@@ -317,7 +317,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
     variant: "migration",
-    code: `import { FormPhoneInput } from "@azamatjurayevdev/azix"
+    code: `import { FormPhoneInput } from "@azamatjurayevdev/azix-ui"
 
 <FormPhoneInput control={control} name="phone" label="Phone" />
 
@@ -330,7 +330,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep this only while migrating old forms to the universal FormInput entry.",
     language: "tsx",
     variant: "migration",
-    code: `import { FormDateInput } from "@azamatjurayevdev/azix"
+    code: `import { FormDateInput } from "@azamatjurayevdev/azix-ui"
 
 <FormDateInput control={control} name="startDate" label="Start date" />
 
@@ -343,7 +343,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the plain range wrapper for submitted from/to date objects.",
     language: "tsx",
     variant: "form",
-    code: `import { FormDateRangeInput } from "@azamatjurayevdev/azix"
+    code: `import { FormDateRangeInput } from "@azamatjurayevdev/azix-ui"
 
 <FormDateRangeInput control={control} name="period" label="Period" />`,
   },
@@ -353,7 +353,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Only reach for TagInput when repeated freeform values are truly required.",
     language: "tsx",
     variant: "advanced",
-    code: `import { TagInput } from "@azamatjurayevdev/azix"
+    code: `import { TagInput } from "@azamatjurayevdev/azix-ui"
 
 <TagInput value={tags} onValueChange={setTags} placeholder="Add tag" />`,
   },
@@ -364,7 +364,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Start with Select first and move into members only when option loading or interaction model changes.",
     language: "tsx",
     variant: "basic",
-    code: `import { Select } from "@azamatjurayevdev/azix"
+    code: `import { Select } from "@azamatjurayevdev/azix-ui"
 
 <Select
   value={status}
@@ -381,7 +381,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep local filtering on the main Select surface before reaching for AsyncSelect or Combobox.",
     language: "tsx",
     variant: "advanced",
-    code: `import { Select } from "@azamatjurayevdev/azix"
+    code: `import { Select } from "@azamatjurayevdev/azix-ui"
 
 <Select
   value={owner}
@@ -397,7 +397,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the static-options helper when teams want a thinner wrapper around the main Select mental model.",
     language: "tsx",
     variant: "basic",
-    code: `import { SimpleSelect } from "@azamatjurayevdev/azix"
+    code: `import { SimpleSelect } from "@azamatjurayevdev/azix-ui"
 
 <SimpleSelect value={role} onValueChange={setRole} options={roleOptions} />`,
   },
@@ -407,7 +407,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the remote member when the main Select surface needs server-backed option loading.",
     language: "tsx",
     variant: "async",
-    code: `import { AsyncSelect } from "@azamatjurayevdev/azix"
+    code: `import { AsyncSelect } from "@azamatjurayevdev/azix-ui"
 
 <AsyncSelect
   value={userId}
@@ -422,7 +422,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the remote multi member when selected tags and async loading should live in one selection flow.",
     language: "tsx",
     variant: "async",
-    code: `import { AsyncMultiSelect } from "@azamatjurayevdev/azix"
+    code: `import { AsyncMultiSelect } from "@azamatjurayevdev/azix-ui"
 
 <AsyncMultiSelect
   value={assigneeIds}
@@ -436,7 +436,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use Combobox only when fast local filtering matters more than the default Select trigger pattern.",
     language: "tsx",
     variant: "basic",
-    code: `import { Combobox } from "@azamatjurayevdev/azix"
+    code: `import { Combobox } from "@azamatjurayevdev/azix-ui"
 
 <Combobox value={country} onValueChange={setCountry} options={countryOptions} />`,
   },
@@ -446,7 +446,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the universal RHF wrapper when select state belongs to submitted form data.",
     language: "tsx",
     variant: "form",
-    code: `import { FormSelect } from "@azamatjurayevdev/azix"
+    code: `import { FormSelect } from "@azamatjurayevdev/azix-ui"
 
 <FormSelect control={control} name="role" label="Role" options={roleOptions} />`,
   },
@@ -456,7 +456,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Remote option loading can stay behind the same FormSelect contract instead of teaching a new wrapper name first.",
     language: "tsx",
     variant: "form",
-    code: `import { FormSelect } from "@azamatjurayevdev/azix"
+    code: `import { FormSelect } from "@azamatjurayevdev/azix-ui"
 
 <FormSelect control={control} name="ownerId" kind="async" label="Owner" loadOptions={loadUsers} />`,
   },
@@ -466,7 +466,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Keep this only while migrating old forms to the universal FormSelect entry.",
     language: "tsx",
     variant: "migration",
-    code: `import { FormAsyncSelect } from "@azamatjurayevdev/azix"
+    code: `import { FormAsyncSelect } from "@azamatjurayevdev/azix-ui"
 
 <FormAsyncSelect control={control} name="ownerId" label="Owner" loadOptions={loadUsers} />
 
@@ -480,7 +480,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the base card when you need neutral composition freedom.",
     language: "tsx",
     variant: "basic",
-    code: `import { Card, CardContent, CardHeader, CardTitle } from "@azamatjurayevdev/azix"
+    code: `import { Card, CardContent, CardHeader, CardTitle } from "@azamatjurayevdev/azix-ui"
 
 <Card>
   <CardHeader>
@@ -495,7 +495,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "InfoCard is the faster default when the content is already card-shaped.",
     language: "tsx",
     variant: "basic",
-    code: `import { InfoCard } from "@azamatjurayevdev/azix"
+    code: `import { InfoCard } from "@azamatjurayevdev/azix-ui"
 
 <InfoCard title="Revenue" description="Current month" content="$48,000" />`,
   },
@@ -505,7 +505,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "StatCard still works for migration, but new dashboard surfaces should prefer StatisticCard or InfoCard.",
     language: "tsx",
     variant: "migration",
-    code: `import { StatCard } from "@azamatjurayevdev/azix"
+    code: `import { StatCard } from "@azamatjurayevdev/azix-ui"
 
 <StatCard title="Active users" value="1,284" change="+12%" /> // prefer StatisticCard for new work`,
   },
@@ -515,7 +515,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use statistic cards when the metric needs label, value, and support context together.",
     language: "tsx",
     variant: "basic",
-    code: `import { StatisticCard } from "@azamatjurayevdev/azix"
+    code: `import { StatisticCard } from "@azamatjurayevdev/azix-ui"
 
 <StatisticCard title="Conversion" value="4.8%" description="Last 30 days" />`,
   },
@@ -525,7 +525,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Entity cards work well for compact user and record previews.",
     language: "tsx",
     variant: "basic",
-    code: `import { EntityCard } from "@azamatjurayevdev/azix"
+    code: `import { EntityCard } from "@azamatjurayevdev/azix-ui"
 
 <EntityCard title="Azamat Jurayev" description="Admin user" />`,
   },
@@ -535,7 +535,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use file cards for uploads and attached resources.",
     language: "tsx",
     variant: "basic",
-    code: `import { FileCard } from "@azamatjurayevdev/azix"
+    code: `import { FileCard } from "@azamatjurayevdev/azix-ui"
 
 <FileCard name="invoice.pdf" size="2.4 MB" />`,
   },
@@ -545,7 +545,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "This exists for legacy migration and should not lead new docs.",
     language: "tsx",
     variant: "migration",
-    code: `import { SmartCard } from "@azamatjurayevdev/azix"
+    code: `import { SmartCard } from "@azamatjurayevdev/azix-ui"
 
 <SmartCard title="Legacy surface" description="Prefer InfoCard for new work." />`,
   },
@@ -556,7 +556,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use Badge props instead of a separate status component.",
     language: "tsx",
     variant: "basic",
-    code: `import { Badge } from "@azamatjurayevdev/azix"
+    code: `import { Badge } from "@azamatjurayevdev/azix-ui"
 
 <Badge tone="success" dot>Active</Badge>`,
   },
@@ -566,7 +566,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use Dialog when focus should stay inside the modal task.",
     language: "tsx",
     variant: "basic",
-    code: `import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "@azamatjurayevdev/azix"
+    code: `import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "@azamatjurayevdev/azix-ui"
 
 <Dialog>
   <DialogTrigger render={<Button>Edit</Button>} />
@@ -581,7 +581,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use Popover for rich contextual content attached to a trigger.",
     language: "tsx",
     variant: "basic",
-    code: `import { Popover, PopoverContent, PopoverTrigger, Button } from "@azamatjurayevdev/azix"
+    code: `import { Popover, PopoverContent, PopoverTrigger, Button } from "@azamatjurayevdev/azix-ui"
 
 <Popover>
   <PopoverTrigger render={<Button variant="outline">Filters</Button>} />
@@ -594,7 +594,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use DropdownMenu for command lists and compact actions.",
     language: "tsx",
     variant: "basic",
-    code: `import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Button } from "@azamatjurayevdev/azix"
+    code: `import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Button } from "@azamatjurayevdev/azix-ui"
 
 <DropdownMenu>
   <DropdownMenuTrigger render={<Button variant="outline">Actions</Button>} />
@@ -609,7 +609,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use Tooltip only for brief supporting copy.",
     language: "tsx",
     variant: "basic",
-    code: `import { Tooltip, Button } from "@azamatjurayevdev/azix"
+    code: `import { Tooltip, Button } from "@azamatjurayevdev/azix-ui"
 
 <Tooltip content="Export selected rows">
   <Button>Export</Button>
@@ -621,7 +621,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use HoverCard when hover or focus should reveal richer preview content than a tooltip.",
     language: "tsx",
     variant: "basic",
-    code: `import { HoverCard, Button } from "@azamatjurayevdev/azix"
+    code: `import { HoverCard, Button } from "@azamatjurayevdev/azix-ui"
 
 <HoverCard
   content={
@@ -640,7 +640,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use right-click menus as secondary shortcuts.",
     language: "tsx",
     variant: "basic",
-    code: `import { RightClickMenu } from "@azamatjurayevdev/azix"
+    code: `import { RightClickMenu } from "@azamatjurayevdev/azix-ui"
 
 <RightClickMenu items={[{ key: "copy", label: "Copy" }]}>
   <div>Right click this row</div>
@@ -652,7 +652,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use AlertDialog for high-risk confirmation flows.",
     language: "tsx",
     variant: "basic",
-    code: `import { AlertDialog, Button } from "@azamatjurayevdev/azix"
+    code: `import { AlertDialog, Button } from "@azamatjurayevdev/azix-ui"
 
 <AlertDialog title="Delete project?" actionLabel="Delete">
   <Button variant="destructive">Delete</Button>
@@ -664,7 +664,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use ConfirmDialog for reusable approval and submit confirmations.",
     language: "tsx",
     variant: "basic",
-    code: `import { ConfirmDialog, Button } from "@azamatjurayevdev/azix"
+    code: `import { ConfirmDialog, Button } from "@azamatjurayevdev/azix-ui"
 
 <ConfirmDialog title="Publish changes?" confirmLabel="Publish">
   <Button>Publish</Button>
@@ -676,7 +676,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use ModalShell when repeated modals need title, body and footer slots.",
     language: "tsx",
     variant: "basic",
-    code: `import { ModalShell, Button } from "@azamatjurayevdev/azix"
+    code: `import { ModalShell, Button } from "@azamatjurayevdev/azix-ui"
 
 <ModalShell title="Invite member" trigger={<Button>Invite</Button>}>
   Invite form
@@ -688,7 +688,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use SheetShell for edge-attached contextual workflows.",
     language: "tsx",
     variant: "basic",
-    code: `import { SheetShell, Button } from "@azamatjurayevdev/azix"
+    code: `import { SheetShell, Button } from "@azamatjurayevdev/azix-ui"
 
 <SheetShell side="right" title="Filters" trigger={<Button>Open filters</Button>}>
   Filter controls
@@ -700,7 +700,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use Drawer for record details without leaving the page.",
     language: "tsx",
     variant: "basic",
-    code: `import { Drawer, Button } from "@azamatjurayevdev/azix"
+    code: `import { Drawer, Button } from "@azamatjurayevdev/azix-ui"
 
 <Drawer title="Customer" trigger={<Button>Open customer</Button>}>
   Customer details
@@ -712,7 +712,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use DialogActions to keep modal footers aligned.",
     language: "tsx",
     variant: "basic",
-    code: `import { DialogActions, Button } from "@azamatjurayevdev/azix"
+    code: `import { DialogActions, Button } from "@azamatjurayevdev/azix-ui"
 
 <DialogActions>
   <Button variant="outline">Cancel</Button>
@@ -725,7 +725,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the shell when you are composing a custom control by hand.",
     language: "tsx",
     variant: "basic",
-    code: `import { FormFieldShell, Input } from "@azamatjurayevdev/azix"
+    code: `import { FormFieldShell, Input } from "@azamatjurayevdev/azix-ui"
 
 <FormFieldShell label="Workspace name" description="Shown across the admin panel.">
   <Input placeholder="Acme HQ" />
@@ -737,7 +737,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Textarea wrapper keeps validation and copy aligned with other fields.",
     language: "tsx",
     variant: "form",
-    code: `import { FormTextarea } from "@azamatjurayevdev/azix"
+    code: `import { FormTextarea } from "@azamatjurayevdev/azix-ui"
 
 <FormTextarea control={control} name="notes" label="Notes" rows={4} />`,
   },
@@ -747,7 +747,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Switch wrappers keep label and description wiring aligned with other form fields.",
     language: "tsx",
     variant: "form",
-    code: `import { FormSwitch } from "@azamatjurayevdev/azix"
+    code: `import { FormSwitch } from "@azamatjurayevdev/azix-ui"
 
 <FormSwitch control={control} name="isActive" label="Active" />`,
   },
@@ -757,7 +757,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the calendar wrapper when native date input is too limited.",
     language: "tsx",
     variant: "form",
-    code: `import { FormDatePicker } from "@azamatjurayevdev/azix"
+    code: `import { FormDatePicker } from "@azamatjurayevdev/azix-ui"
 
 <FormDatePicker control={control} name="birthday" label="Birthday" />`,
   },
@@ -767,7 +767,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the range picker wrapper for visual date interval selection.",
     language: "tsx",
     variant: "form",
-    code: `import { FormDateRangePicker } from "@azamatjurayevdev/azix"
+    code: `import { FormDateRangePicker } from "@azamatjurayevdev/azix-ui"
 
 <FormDateRangePicker control={control} name="reportingRange" label="Reporting range" />`,
   },
@@ -777,7 +777,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "FormBuilder is for repeated internal patterns, not simple one-off forms.",
     language: "tsx",
     variant: "advanced",
-    code: `import { FormBuilder } from "@azamatjurayevdev/azix"
+    code: `import { FormBuilder } from "@azamatjurayevdev/azix-ui"
 
 <FormBuilder
   control={control}
@@ -790,7 +790,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "DataTable owns the main grid surface and table orchestration.",
     language: "tsx",
     variant: "basic",
-    code: `import { DataTable } from "@azamatjurayevdev/azix"
+    code: `import { DataTable } from "@azamatjurayevdev/azix-ui"
 
 <DataTable columns={columns} data={rows} />`,
   },
@@ -800,7 +800,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the toolbar helper for consistent filters and actions around the grid.",
     language: "tsx",
     variant: "basic",
-    code: `import { DataTableToolbar, SearchInput } from "@azamatjurayevdev/azix"
+    code: `import { DataTableToolbar, SearchInput } from "@azamatjurayevdev/azix-ui"
 
 <DataTableToolbar title="Orders" search={<SearchInput placeholder="Search orders..." />} />`,
   },
@@ -810,7 +810,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the shared pagination helper to keep table paging UI consistent.",
     language: "tsx",
     variant: "basic",
-    code: `import { DataTablePagination } from "@azamatjurayevdev/azix"
+    code: `import { DataTablePagination } from "@azamatjurayevdev/azix-ui"
 
 <DataTablePagination pageIndex={pageIndex} pageCount={pageCount} onPageChange={setPageIndex} />`,
   },
@@ -820,7 +820,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Column visibility helpers keep personalization aligned with the table system.",
     language: "tsx",
     variant: "advanced",
-    code: `import { DataTableColumnVisibilityMenu } from "@azamatjurayevdev/azix"
+    code: `import { DataTableColumnVisibilityMenu } from "@azamatjurayevdev/azix-ui"
 
 <DataTableColumnVisibilityMenu table={table} />`,
   },
@@ -830,7 +830,7 @@ export const componentSnippetExamples: ComponentSnippetExample[] = [
     description: "Use the shared header helper instead of custom sort indicator plumbing.",
     language: "tsx",
     variant: "basic",
-    code: `import { DataTableSortableHeader } from "@azamatjurayevdev/azix"
+    code: `import { DataTableSortableHeader } from "@azamatjurayevdev/azix-ui"
 
 header: ({ column }) => <DataTableSortableHeader column={column}>Name</DataTableSortableHeader>`,
   },
@@ -840,7 +840,7 @@ header: ({ column }) => <DataTableSortableHeader column={column}>Name</DataTable
     description: "Use shared row actions when each record needs contextual operations.",
     language: "tsx",
     variant: "basic",
-    code: `import { DataTableRowActions } from "@azamatjurayevdev/azix"
+    code: `import { DataTableRowActions } from "@azamatjurayevdev/azix-ui"
 
 <DataTableRowActions actions={[{ key: "edit", label: "Edit", onSelect: openEdit }]} />`,
   },
@@ -850,7 +850,7 @@ header: ({ column }) => <DataTableSortableHeader column={column}>Name</DataTable
     description: "Bulk actions should appear only when a selection exists.",
     language: "tsx",
     variant: "advanced",
-    code: `import { DataTableBulkActions } from "@azamatjurayevdev/azix"
+    code: `import { DataTableBulkActions } from "@azamatjurayevdev/azix-ui"
 
 <DataTableBulkActions rows={selectedRows} actions={[{ key: "delete", label: "Delete selected", onSelect: removeMany }]} />`,
   },
@@ -860,7 +860,7 @@ header: ({ column }) => <DataTableSortableHeader column={column}>Name</DataTable
     description: "Use view presets when users switch between saved table perspectives.",
     language: "tsx",
     variant: "advanced",
-    code: `import { DataTableViewPresets } from "@azamatjurayevdev/azix"
+    code: `import { DataTableViewPresets } from "@azamatjurayevdev/azix-ui"
 
 <DataTableViewPresets presets={presets} value={activePreset} onValueChange={setActivePreset} />`,
   },
@@ -870,7 +870,7 @@ header: ({ column }) => <DataTableSortableHeader column={column}>Name</DataTable
     description: "Use the factory to keep row-selection behavior standardized.",
     language: "tsx",
     variant: "advanced",
-    code: `import { createDataTableSelectColumn } from "@azamatjurayevdev/azix"
+    code: `import { createDataTableSelectColumn } from "@azamatjurayevdev/azix-ui"
 
 const selectColumn = createDataTableSelectColumn()`,
   },
@@ -880,7 +880,7 @@ const selectColumn = createDataTableSelectColumn()`,
     description: "Column factories reduce repeated row action boilerplate.",
     language: "tsx",
     variant: "advanced",
-    code: `import { createDataTableActionsColumn } from "@azamatjurayevdev/azix"
+    code: `import { createDataTableActionsColumn } from "@azamatjurayevdev/azix-ui"
 
 const actionsColumn = createDataTableActionsColumn({
   getActions: (_row, order) => [{ key: "open", label: "Open", onSelect: () => openOrder(order) }],
@@ -892,7 +892,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Keep export helpers secondary to the core table experience.",
     language: "tsx",
     variant: "advanced",
-    code: `import { TableExportMenu } from "@azamatjurayevdev/azix"
+    code: `import { TableExportMenu } from "@azamatjurayevdev/azix-ui"
 
 <TableExportMenu options={[{ key: "csv", label: "Export CSV", onSelect: exportCsv }]} />`,
   },
@@ -902,7 +902,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Keep import controls secondary to the main grid experience.",
     language: "tsx",
     variant: "advanced",
-    code: `import { TableImportButton } from "@azamatjurayevdev/azix"
+    code: `import { TableImportButton } from "@azamatjurayevdev/azix-ui"
 
 <TableImportButton onFilesSelect={handleImport} />`,
   },
@@ -912,7 +912,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Copy the input source into your app.",
     language: "cli",
     variant: "cli",
-    code: `npx azix add input`,
+    code: `npx @azamatjurayevdev/azix-ui add input`,
   },
   {
     component: "InlineEditable",
@@ -920,7 +920,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Click-to-edit inline text. Commits on Enter or blur, cancels on Escape.",
     language: "tsx",
     variant: "basic",
-    code: `import { InlineEditable } from "@azamatjurayevdev/azix"
+    code: `import { InlineEditable } from "@azamatjurayevdev/azix-ui"
 
 <InlineEditable value={name} onValueChange={setName} placeholder="Click to edit" />`,
   },
@@ -930,7 +930,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Dashboard metric card showing trend direction and optional sparkline.",
     language: "tsx",
     variant: "basic",
-    code: `import { TrendCard } from "@azamatjurayevdev/azix"
+    code: `import { TrendCard } from "@azamatjurayevdev/azix-ui"
 
 <TrendCard title="Revenue" value="$45,231" change="+12.5%" trend="up" sparkline={[10, 20, 15, 25, 30]} />`,
   },
@@ -940,7 +940,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Compare multiple related metrics in one card.",
     language: "tsx",
     variant: "basic",
-    code: `import { ComparisonCard } from "@azamatjurayevdev/azix"
+    code: `import { ComparisonCard } from "@azamatjurayevdev/azix-ui"
 
 <ComparisonCard
   title="Q1 vs Q2"
@@ -956,7 +956,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Show positive or negative change inline.",
     language: "tsx",
     variant: "basic",
-    code: `import { DeltaBadge } from "@azamatjurayevdev/azix"
+    code: `import { DeltaBadge } from "@azamatjurayevdev/azix-ui"
 
 <DeltaBadge value="+12.5%" trend="up" />
 <DeltaBadge value="-3.2%" trend="down" />`,
@@ -967,7 +967,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Add and remove repeated field groups in a form.",
     language: "tsx",
     variant: "basic",
-    code: `import { RepeaterField } from "@azamatjurayevdev/azix"
+    code: `import { RepeaterField } from "@azamatjurayevdev/azix-ui"
 
 <RepeaterField
   value={items}
@@ -987,7 +987,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use Button as the first action surface before reaching for grouped or menu patterns.",
     language: "tsx",
     variant: "basic",
-    code: `import { Button } from "@azamatjurayevdev/azix"
+    code: `import { Button } from "@azamatjurayevdev/azix-ui"
 
 <Button>Save changes</Button>`,
   },
@@ -997,7 +997,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Group several actions behind one trigger when the surface should stay compact.",
     language: "tsx",
     variant: "basic",
-    code: `import { ActionMenu } from "@azamatjurayevdev/azix"
+    code: `import { ActionMenu } from "@azamatjurayevdev/azix-ui"
 
 <ActionMenu
   actions={[
@@ -1012,7 +1012,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use CopyButton for IDs, links, and tokens that need one-tap copy feedback.",
     language: "tsx",
     variant: "basic",
-    code: `import { CopyButton } from "@azamatjurayevdev/azix"
+    code: `import { CopyButton } from "@azamatjurayevdev/azix-ui"
 
 <CopyButton value="inv_2481" copyLabel="Copy invoice id" />`,
   },
@@ -1022,7 +1022,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Keep related actions visually aligned without inventing a new primary trigger.",
     language: "tsx",
     variant: "basic",
-    code: `import { Button, ButtonGroup } from "@azamatjurayevdev/azix"
+    code: `import { Button, ButtonGroup } from "@azamatjurayevdev/azix-ui"
 
 <ButtonGroup>
   <Button variant="outline">Cancel</Button>
@@ -1035,7 +1035,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Show a visible value and copy affordance in one compact pattern.",
     language: "tsx",
     variant: "basic",
-    code: `import { CopyField } from "@azamatjurayevdev/azix"
+    code: `import { CopyField } from "@azamatjurayevdev/azix-ui"
 
 <CopyField label="API key" value="sk_live_xxx" />`,
   },
@@ -1045,7 +1045,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use a quick grid when several small actions should stay visible together.",
     language: "tsx",
     variant: "basic",
-    code: `import { QuickActionGrid } from "@azamatjurayevdev/azix"
+    code: `import { QuickActionGrid } from "@azamatjurayevdev/azix-ui"
 
 <QuickActionGrid
   actions={[
@@ -1061,7 +1061,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use Alert for information, success, warning, or error states inside the page flow.",
     language: "tsx",
     variant: "basic",
-    code: `import { Alert } from "@azamatjurayevdev/azix"
+    code: `import { Alert } from "@azamatjurayevdev/azix-ui"
 
 <Alert tone="warning" title="Unsaved changes" description="Save before leaving this page." />`,
   },
@@ -1071,7 +1071,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use EmptyState when a view needs a stronger zero-data message than a plain paragraph.",
     language: "tsx",
     variant: "basic",
-    code: `import { EmptyState } from "@azamatjurayevdev/azix"
+    code: `import { EmptyState } from "@azamatjurayevdev/azix-ui"
 
 <EmptyState title="No customers yet" description="Add your first customer to start tracking revenue." />`,
   },
@@ -1081,7 +1081,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Prefer LoadingState when loading should include context, not only motion.",
     language: "tsx",
     variant: "basic",
-    code: `import { LoadingState } from "@azamatjurayevdev/azix"
+    code: `import { LoadingState } from "@azamatjurayevdev/azix-ui"
 
 <LoadingState label="Loading revenue report..." description="Gathering the latest month-to-date numbers." />`,
   },
@@ -1091,7 +1091,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use Progress for visible task, upload, or rollout completion.",
     language: "tsx",
     variant: "basic",
-    code: `import { Progress } from "@azamatjurayevdev/azix"
+    code: `import { Progress } from "@azamatjurayevdev/azix-ui"
 
 <Progress value={72} label="Upload progress" />`,
   },
@@ -1101,7 +1101,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Mount the provider once near the app root so features can dispatch toast feedback.",
     language: "tsx",
     variant: "basic",
-    code: `import { ToastProvider } from "@azamatjurayevdev/azix"
+    code: `import { ToastProvider } from "@azamatjurayevdev/azix-ui"
 
 <ToastProvider position="top-right">
   <App />
@@ -1113,7 +1113,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use InlineState when a card or side panel needs a smaller status treatment.",
     language: "tsx",
     variant: "basic",
-    code: `import { InlineState } from "@azamatjurayevdev/azix"
+    code: `import { InlineState } from "@azamatjurayevdev/azix-ui"
 
 <InlineState tone="info" title="Syncing changes" description="This may take a few seconds." />`,
   },
@@ -1123,7 +1123,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Keep the surface visible while preventing interaction during a local loading phase.",
     language: "tsx",
     variant: "basic",
-    code: `import { LoadingOverlay } from "@azamatjurayevdev/azix"
+    code: `import { LoadingOverlay } from "@azamatjurayevdev/azix-ui"
 
 <LoadingOverlay loading label="Saving changes...">
   <section>Form content</section>
@@ -1135,7 +1135,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use Spinner only when a tiny loading affordance is enough.",
     language: "tsx",
     variant: "basic",
-    code: `import { Spinner } from "@azamatjurayevdev/azix"
+    code: `import { Spinner } from "@azamatjurayevdev/azix-ui"
 
 <Spinner label="Loading invoices" />`,
   },
@@ -1145,7 +1145,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Keep structure visible while data is loading.",
     language: "tsx",
     variant: "basic",
-    code: `import { Skeleton } from "@azamatjurayevdev/azix"
+    code: `import { Skeleton } from "@azamatjurayevdev/azix-ui"
 
 <Skeleton className="h-10 w-full" />`,
   },
@@ -1155,7 +1155,7 @@ const actionsColumn = createDataTableActionsColumn({
     description: "Use the hook after ToastProvider is mounted to trigger transient feedback.",
     language: "tsx",
     variant: "advanced",
-    code: `import { Button, useToast } from "@azamatjurayevdev/azix"
+    code: `import { Button, useToast } from "@azamatjurayevdev/azix-ui"
 
 function SaveButton() {
   const { push } = useToast()
@@ -1169,7 +1169,7 @@ function SaveButton() {
     description: "Use a bar chart when categories should be scanned and compared quickly.",
     language: "tsx",
     variant: "basic",
-    code: `import { BarChart } from "@azamatjurayevdev/azix"
+    code: `import { BarChart } from "@azamatjurayevdev/azix-ui"
 
 <BarChart data={[{ label: "Jan", value: 12 }, { label: "Feb", value: 18 }, { label: "Mar", value: 15 }]} />`,
   },
@@ -1179,7 +1179,7 @@ function SaveButton() {
     description: "Use a line chart for ordered values or time-series movement.",
     language: "tsx",
     variant: "basic",
-    code: `import { LineChart } from "@azamatjurayevdev/azix"
+    code: `import { LineChart } from "@azamatjurayevdev/azix-ui"
 
 <LineChart values={[12, 16, 18, 15, 22, 24]} showArea />`,
   },
@@ -1189,7 +1189,7 @@ function SaveButton() {
     description: "Use a donut chart when a compact proportional split needs one central summary.",
     language: "tsx",
     variant: "basic",
-    code: `import { DonutChart } from "@azamatjurayevdev/azix"
+    code: `import { DonutChart } from "@azamatjurayevdev/azix-ui"
 
 <DonutChart
   data={[
@@ -1207,7 +1207,7 @@ function SaveButton() {
     description: "Use MetricGrid to keep related KPIs aligned in one responsive surface.",
     language: "tsx",
     variant: "basic",
-    code: `import { MetricGrid } from "@azamatjurayevdev/azix"
+    code: `import { MetricGrid } from "@azamatjurayevdev/azix-ui"
 
 <MetricGrid columns={3}>
   <div>Revenue</div>
@@ -1221,7 +1221,7 @@ function SaveButton() {
     description: "Frame chart content with consistent heading and action chrome.",
     language: "tsx",
     variant: "basic",
-    code: `import { BarChart, ChartFrame } from "@azamatjurayevdev/azix"
+    code: `import { BarChart, ChartFrame } from "@azamatjurayevdev/azix-ui"
 
 <ChartFrame title="Revenue by month" description="Last 6 months">
   <BarChart data={[{ label: "Jan", value: 12 }, { label: "Feb", value: 18 }]} />
@@ -1233,7 +1233,7 @@ function SaveButton() {
     description: "Explicitly map series names to colors when the chart needs a legend.",
     language: "tsx",
     variant: "basic",
-    code: `import { ChartLegend } from "@azamatjurayevdev/azix"
+    code: `import { ChartLegend } from "@azamatjurayevdev/azix-ui"
 
 <ChartLegend
   data={[
@@ -1248,7 +1248,7 @@ function SaveButton() {
     description: "Use Sparkline when a small historical hint should sit beside a KPI.",
     language: "tsx",
     variant: "basic",
-    code: `import { Sparkline } from "@azamatjurayevdev/azix"
+    code: `import { Sparkline } from "@azamatjurayevdev/azix-ui"
 
 <Sparkline values={[5, 8, 7, 12, 11, 15]} />`,
   },
@@ -1258,7 +1258,7 @@ function SaveButton() {
     description: "Bundle current value, delta, and mini-trend in one metric block.",
     language: "tsx",
     variant: "basic",
-    code: `import { MetricTrend } from "@azamatjurayevdev/azix"
+    code: `import { MetricTrend } from "@azamatjurayevdev/azix-ui"
 
 <MetricTrend label="MRR" value="$24,880" change="+8.1%" values={[14, 16, 17, 19, 21, 24]} />`,
   },
@@ -1268,7 +1268,7 @@ function SaveButton() {
     description: "Use Statistic for one structured KPI readout with support text.",
     language: "tsx",
     variant: "basic",
-    code: `import { Statistic } from "@azamatjurayevdev/azix"
+    code: `import { Statistic } from "@azamatjurayevdev/azix-ui"
 
 <Statistic label="Active accounts" value="1,248" description="Compared to last week" />`,
   },
@@ -1278,7 +1278,7 @@ function SaveButton() {
     description: "Align several structured statistics in one grouped layout.",
     language: "tsx",
     variant: "basic",
-    code: `import { StatisticGrid } from "@azamatjurayevdev/azix"
+    code: `import { StatisticGrid } from "@azamatjurayevdev/azix-ui"
 
 <StatisticGrid items={[{ label: "MRR", value: "$18k" }, { label: "Churn", value: "2.1%" }]} />`,
   },
@@ -1288,7 +1288,7 @@ function SaveButton() {
     description: "Use Sidebar for persistent workspace navigation and nested sections.",
     language: "tsx",
     variant: "basic",
-    code: `import { Sidebar } from "@azamatjurayevdev/azix"
+    code: `import { Sidebar } from "@azamatjurayevdev/azix-ui"
 
 <Sidebar
   items={[
@@ -1303,7 +1303,7 @@ function SaveButton() {
     description: "Use PageContainer to keep horizontal page spacing consistent.",
     language: "tsx",
     variant: "basic",
-    code: `import { PageContainer } from "@azamatjurayevdev/azix"
+    code: `import { PageContainer } from "@azamatjurayevdev/azix-ui"
 
 <PageContainer size="lg">
   <section>Page content</section>
@@ -1315,7 +1315,7 @@ function SaveButton() {
     description: "Use Tabs for a small set of peer views without leaving the page.",
     language: "tsx",
     variant: "basic",
-    code: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@azamatjurayevdev/azix"
+    code: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@azamatjurayevdev/azix-ui"
 
 <Tabs defaultValue="overview">
   <TabsList>
@@ -1331,7 +1331,7 @@ function SaveButton() {
     description: "Move through indexed result sets with one reusable pagination surface.",
     language: "tsx",
     variant: "basic",
-    code: `import { Pagination } from "@azamatjurayevdev/azix"
+    code: `import { Pagination } from "@azamatjurayevdev/azix-ui"
 
 <Pagination page={2} totalPages={12} onPageChange={setPage} />`,
   },
@@ -1341,7 +1341,7 @@ function SaveButton() {
     description: "Show the current nested path back through the app structure.",
     language: "tsx",
     variant: "basic",
-    code: `import { Breadcrumbs } from "@azamatjurayevdev/azix"
+    code: `import { Breadcrumbs } from "@azamatjurayevdev/azix-ui"
 
 <Breadcrumbs items={[{ label: "Workspace", href: "/" }, { label: "Customers", href: "/customers" }, { label: "Acme Corp" }]} />`,
   },
@@ -1351,7 +1351,7 @@ function SaveButton() {
     description: "Use Wizard when the product needs a guided, step-by-step completion flow.",
     language: "tsx",
     variant: "basic",
-    code: `import { Wizard } from "@azamatjurayevdev/azix"
+    code: `import { Wizard } from "@azamatjurayevdev/azix-ui"
 
 <Wizard steps={[{ id: "account", label: "Account" }, { id: "billing", label: "Billing" }]} currentStep={0} />`,
   },
@@ -1361,7 +1361,7 @@ function SaveButton() {
     description: "Group related page content without promoting it to a primary route.",
     language: "tsx",
     variant: "basic",
-    code: `import { Section } from "@azamatjurayevdev/azix"
+    code: `import { Section } from "@azamatjurayevdev/azix-ui"
 
 <Section title="Billing" description="Manage invoice and payment settings.">
   Billing content
@@ -1373,7 +1373,7 @@ function SaveButton() {
     description: "Jump between sections inside a long detail page.",
     language: "tsx",
     variant: "basic",
-    code: `import { AnchorNav } from "@azamatjurayevdev/azix"
+    code: `import { AnchorNav } from "@azamatjurayevdev/azix-ui"
 
 <AnchorNav items={[{ id: "overview", label: "Overview" }, { id: "activity", label: "Activity" }]} />`,
   },
@@ -1383,7 +1383,7 @@ function SaveButton() {
     description: "Use Stepper when the UI needs visible progress without the full Wizard shell.",
     language: "tsx",
     variant: "basic",
-    code: `import { Stepper } from "@azamatjurayevdev/azix"
+    code: `import { Stepper } from "@azamatjurayevdev/azix-ui"
 
 <Stepper steps={[{ id: "account", label: "Account" }, { id: "billing", label: "Billing" }]} currentStep={1} />`,
   },
@@ -1393,7 +1393,7 @@ function SaveButton() {
     description: "Use StepperTabs when sections read like steps but still switch like tabs.",
     language: "tsx",
     variant: "basic",
-    code: `import { StepperTabs } from "@azamatjurayevdev/azix"
+    code: `import { StepperTabs } from "@azamatjurayevdev/azix-ui"
 
 <StepperTabs items={[{ value: "profile", label: "Profile" }, { value: "security", label: "Security" }]} value="profile" />`,
   },
@@ -1403,7 +1403,7 @@ function SaveButton() {
     description: "Use SegmentedControl for very small mutually exclusive sets.",
     language: "tsx",
     variant: "basic",
-    code: `import { SegmentedControl } from "@azamatjurayevdev/azix"
+    code: `import { SegmentedControl } from "@azamatjurayevdev/azix-ui"
 
 <SegmentedControl options={[{ label: "Day", value: "day" }, { label: "Week", value: "week" }]} value="week" />`,
   },
@@ -1413,7 +1413,7 @@ function SaveButton() {
     description: "Use FileUpload when users should add, review, and remove uploaded files in one place.",
     language: "tsx",
     variant: "basic",
-    code: `import { FileUpload } from "@azamatjurayevdev/azix"
+    code: `import { FileUpload } from "@azamatjurayevdev/azix-ui"
 
 <FileUpload multiple maxFiles={5} />`,
   },
@@ -1423,7 +1423,7 @@ function SaveButton() {
     description: "Use ImageUpload when previews and image-oriented UX matter.",
     language: "tsx",
     variant: "basic",
-    code: `import { ImageUpload } from "@azamatjurayevdev/azix"
+    code: `import { ImageUpload } from "@azamatjurayevdev/azix-ui"
 
 <ImageUpload maxFiles={1} />`,
   },
@@ -1433,7 +1433,7 @@ function SaveButton() {
     description: "Use Checkbox for explicit checked and indeterminate selection states.",
     language: "tsx",
     variant: "basic",
-    code: `import { Checkbox } from "@azamatjurayevdev/azix"
+    code: `import { Checkbox } from "@azamatjurayevdev/azix-ui"
 
 <Checkbox checked={selected} onCheckedChange={setSelected} />`,
   },
@@ -1443,7 +1443,7 @@ function SaveButton() {
     description: "Use RadioGroup when exactly one visible option should be selected.",
     language: "tsx",
     variant: "basic",
-    code: `import { RadioGroup } from "@azamatjurayevdev/azix"
+    code: `import { RadioGroup } from "@azamatjurayevdev/azix-ui"
 
 <RadioGroup value="monthly" onValueChange={setBillingCycle} options={[{ label: "Monthly", value: "monthly" }, { label: "Yearly", value: "yearly" }]} />`,
   },
@@ -1453,7 +1453,7 @@ function SaveButton() {
     description: "Use Switch when turning a setting on or off should feel direct and lightweight.",
     language: "tsx",
     variant: "basic",
-    code: `import { Switch } from "@azamatjurayevdev/azix"
+    code: `import { Switch } from "@azamatjurayevdev/azix-ui"
 
 <Switch checked={enabled} onCheckedChange={setEnabled} />`,
   },
@@ -1463,7 +1463,7 @@ function SaveButton() {
     description: "Use Table when rows are simple enough that a full DataTable would be too heavy.",
     language: "tsx",
     variant: "basic",
-    code: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@azamatjurayevdev/azix"
+    code: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@azamatjurayevdev/azix-ui"
 
 <Table>
   <TableHeader>
@@ -1486,7 +1486,7 @@ function SaveButton() {
     description: "Use Accordion when stacked content should reveal details inline.",
     language: "tsx",
     variant: "basic",
-    code: `import { Accordion } from "@azamatjurayevdev/azix"
+    code: `import { Accordion } from "@azamatjurayevdev/azix-ui"
 
 <Accordion items={[{ value: "shipping", title: "Shipping", content: "2-3 business days" }]} />`,
   },
@@ -1496,7 +1496,7 @@ function SaveButton() {
     description: "Use Collapse when you need raw expand and collapse behavior without Accordion’s higher-level API.",
     language: "tsx",
     variant: "basic",
-    code: `import { Collapse, CollapseContent, CollapseTrigger } from "@azamatjurayevdev/azix"
+    code: `import { Collapse, CollapseContent, CollapseTrigger } from "@azamatjurayevdev/azix-ui"
 
 <Collapse>
   <CollapseTrigger>Toggle details</CollapseTrigger>
@@ -1509,7 +1509,7 @@ function SaveButton() {
     description: "Use Calendar when a custom date surface needs the primitive calendar control.",
     language: "tsx",
     variant: "basic",
-    code: `import { Calendar } from "@azamatjurayevdev/azix"
+    code: `import { Calendar } from "@azamatjurayevdev/azix-ui"
 
 <Calendar mode="single" selected={date} onSelect={setDate} />`,
   },
@@ -1519,7 +1519,7 @@ function SaveButton() {
     description: "Use Divider when content groups need a subtle visual boundary.",
     language: "tsx",
     variant: "basic",
-    code: `import { Divider } from "@azamatjurayevdev/azix"
+    code: `import { Divider } from "@azamatjurayevdev/azix-ui"
 
 <Divider />`,
   },
@@ -1529,7 +1529,7 @@ function SaveButton() {
     description: "Show keyboard shortcuts with one consistent keycap style.",
     language: "tsx",
     variant: "basic",
-    code: `import { Kbd } from "@azamatjurayevdev/azix"
+    code: `import { Kbd } from "@azamatjurayevdev/azix-ui"
 
 <Kbd>Ctrl</Kbd>`,
   },
@@ -1539,7 +1539,7 @@ function SaveButton() {
     description: "Use ScrollBox when a panel should scroll internally instead of growing the whole page.",
     language: "tsx",
     variant: "basic",
-    code: `import { ScrollBox } from "@azamatjurayevdev/azix"
+    code: `import { ScrollBox } from "@azamatjurayevdev/azix-ui"
 
 <ScrollBox maxHeight={280}>
   <div>Scrollable content</div>

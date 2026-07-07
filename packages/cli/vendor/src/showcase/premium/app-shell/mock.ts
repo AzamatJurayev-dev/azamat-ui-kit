@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const appShellMock: ComponentDemoMock = {
-  code: `import { AppHeader, AppSidebar, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, SidebarNav, Button } from "@azamatjurayevdev/azix"
+  code: `import { AppHeader, AppSidebar, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, SidebarNav, Button } from "@azamatjurayevdev/azix-ui"
 
 const navItems = [
   { key: "overview", label: "Overview", href: "/overview", active: true },
@@ -49,7 +49,7 @@ export function Example() {
     </AppShell>
   )
 }`,
-  cliCommand: "npx azix add app-shell",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add app-shell",
   highlights: ["Shell slots (header, sidebar, aside)", "Static and mobile sidebar behavior", "Breadcrumbs inside page header", "Metric block composition"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "settings-form"],
   scenarios: [

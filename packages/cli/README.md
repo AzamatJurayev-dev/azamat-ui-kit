@@ -7,25 +7,25 @@ Use this package to copy editable component source into a Next.js or Vite projec
 ## Next.js
 
 ```bash
-npx azix init --template next --defaults
-npx azix add button input data-table
+npx @azamatjurayevdev/azix-ui init --template next --defaults
+npx @azamatjurayevdev/azix-ui add button input data-table
 ```
 
 ## Vite
 
 ```bash
-npx azix init --template vite --defaults
-npx azix add button input data-table
+npx @azamatjurayevdev/azix-ui init --template vite --defaults
+npx @azamatjurayevdev/azix-ui add button input data-table
 ```
 
 ## Commands
 
 ```bash
-npx azix list
-npx azix add button input card
-npx azix preset minimal
-npx azix preset dashboard
-npx azix theme src/index.css
+npx @azamatjurayevdev/azix-ui list
+npx @azamatjurayevdev/azix-ui add button input card
+npx @azamatjurayevdev/azix-ui preset minimal
+npx @azamatjurayevdev/azix-ui preset dashboard
+npx @azamatjurayevdev/azix-ui theme src/index.css
 ```
 
 The CLI installs only third-party dependencies required by the copied source files.

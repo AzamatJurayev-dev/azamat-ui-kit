@@ -205,7 +205,7 @@ function component(
 
 function createMock(definition: RegistryDemoDefinition): ComponentDemoMock {
   return {
-    cliCommand: `npx azix add ${definition.slug}`,
+    cliCommand: `npx @azamatjurayevdev/azix-ui add ${definition.slug}`,
     code: createCodeSnippet(definition),
     highlights: definition.highlights,
     scenarios: definition.scenarios,

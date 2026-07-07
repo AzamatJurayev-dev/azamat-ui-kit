@@ -18,7 +18,7 @@ export function Example() {
 }
 `,
   htmlCode: '<label for="masked">Referral code</label><input id="masked" type="text" value="AA-123" placeholder="AA-123" />',
-  cliCommand: "npx azix add masked-input",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add masked-input",
   highlights: [
     "Mask callback runs on each edit",
     "Uppercase and slicing are explicit formatting assumptions",

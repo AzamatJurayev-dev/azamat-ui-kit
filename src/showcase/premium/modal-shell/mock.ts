@@ -32,7 +32,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="modal-shell-trigger">Open modal</button>`,
-  cliCommand: "npx azix add modal-shell",
+  cliCommand: "npx @azamatjurayevdev/azix-ui add modal-shell",
   highlights: [
     "Controlled modal shell",
     "Reusable form shell layout",

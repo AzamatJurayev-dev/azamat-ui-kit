@@ -1,14 +1,14 @@
-# azix
+# @azamatjurayevdev/azix-ui
 
 Editable React components for Tailwind apps.
 
-Use the CLI to copy component source into your project. Do not install `azix` as a runtime UI dependency for new apps.
+Use the CLI to copy component source into your project. Do not install `@azamatjurayevdev/azix-ui` as a runtime UI dependency for new apps.
 
 ## Next.js
 
 ```bash
-npx azix init --template next --defaults
-npx azix add button
+npx @azamatjurayevdev/azix-ui init --template next --defaults
+npx @azamatjurayevdev/azix-ui add button
 ```
 
 ```tsx
@@ -22,8 +22,8 @@ export default function Page() {
 ## Vite
 
 ```bash
-npx azix init --template vite --defaults
-npx azix add input
+npx @azamatjurayevdev/azix-ui init --template vite --defaults
+npx @azamatjurayevdev/azix-ui add input
 ```
 
 ```tsx
@@ -37,10 +37,10 @@ export default function App() {
 ## Common Commands
 
 ```bash
-npx azix list
-npx azix add button input data-table
-npx azix preset dashboard
-npx azix theme src/index.css
+npx @azamatjurayevdev/azix-ui list
+npx @azamatjurayevdev/azix-ui add button input data-table
+npx @azamatjurayevdev/azix-ui preset dashboard
+npx @azamatjurayevdev/azix-ui theme src/index.css
 ```
 
 ## Component Imports
