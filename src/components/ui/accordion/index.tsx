@@ -9,7 +9,7 @@ import {
   type CollapseItem,
   type CollapseProps,
   type CollapseTriggerProps,
-} from "./collapse"
+} from "../collapse"
 
 export type AccordionItem = CollapseItem
 export type AccordionProps = CollapseGroupProps

@@ -150,6 +150,16 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "primitive.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "form", "form-select.tsx"))
 
+    await runCli(fixtureRoot, ["add", "accordion", "checkbox", "dropdown-menu", "popover", "switch", "table", "tabs", "textarea", "--overwrite", "--skip-install"])
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "accordion", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "checkbox", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "dropdown-menu", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "popover", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "switch", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "table", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "tabs", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "textarea", "index.tsx"))
+
     await runCli(fixtureRoot, ["theme", paths.cssPath])
     const themePath = path.join(fixtureRoot, paths.cssPath)
     const themeContent = await fs.readFile(themePath, "utf8")
