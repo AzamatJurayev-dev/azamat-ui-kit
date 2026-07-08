@@ -12,7 +12,7 @@ export function Example() {
     </Carousel>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add carousel",
+  cliCommand: "npx azix add carousel",
   highlights: [
     "Keyboard and control-aware slider",
     "Works with any slide content",

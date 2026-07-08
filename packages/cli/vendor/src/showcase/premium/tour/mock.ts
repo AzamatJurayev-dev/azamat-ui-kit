@@ -20,7 +20,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add tour",
+  cliCommand: "npx azix add tour",
   highlights: [
     "Controlled tour state with index-driven steps",
     "Built-in close handling",

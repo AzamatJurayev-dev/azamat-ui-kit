@@ -11,7 +11,7 @@ export function Example() {
     </Stack>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add stack",
+  cliCommand: "npx azix add stack",
   highlights: [
     "Flexible vertical layout helper",
     "Split insert points without extra wrappers",

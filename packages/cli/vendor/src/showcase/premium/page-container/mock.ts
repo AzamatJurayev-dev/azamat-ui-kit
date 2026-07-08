@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const pageContainerMock: ComponentDemoMock = {
-  code: `import { PageContainer } from "@azamatjurayevdev/azix-ui"
+  code: `import { PageContainer } from "azix"
 
 export function Example() {
   return (

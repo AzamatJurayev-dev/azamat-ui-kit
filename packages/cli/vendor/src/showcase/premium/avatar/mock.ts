@@ -17,7 +17,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add avatar",
+  cliCommand: "npx azix add avatar",
   highlights: [
     "Single avatar plus stacked group export",
     "Fallback initials, shape, size, and status dot support",

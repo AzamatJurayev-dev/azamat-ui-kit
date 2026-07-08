@@ -15,7 +15,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add property-grid",
+  cliCommand: "npx azix add property-grid",
   highlights: [
     "Dense key/value metadata layout",
     "Responsive columns with optional span support",

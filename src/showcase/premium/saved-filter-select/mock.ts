@@ -23,7 +23,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add saved-filter-select",
+  cliCommand: "npx azix add saved-filter-select",
   highlights: [
     "Named view switching",
     "Nested delete action behavior",

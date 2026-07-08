@@ -16,7 +16,7 @@ export function Example() {
     </Menubar>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add menubar",
+  cliCommand: "npx azix add menubar",
   highlights: [
     "Composable menubar surfaces with grouped actions",
     "Trigger + content + item primitives",

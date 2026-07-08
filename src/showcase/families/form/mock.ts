@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const formFamilyMock: FamilyDemoMock = {
-  code: `import { FormInput, FormSelect, FormSwitch } from "@azamatjurayevdev/azix-ui"\n\nexport function Example() {\n  return (\n    <>\n      <FormInput control={control} name="workspaceName" label="Workspace" />\n      <FormInput control={control} name="ownerPhone" kind="phone" label="Owner phone" />\n      <FormSelect control={control} name="owner" kind="async" label="Linked workspace" />\n      <FormSwitch control={control} name="publishChanges" label="Publish after save" />\n    </>\n  )\n}`,
+  code: `import { FormInput, FormSelect, FormSwitch } from "azix"\n\nexport function Example() {\n  return (\n    <>\n      <FormInput control={control} name="workspaceName" label="Workspace" />\n      <FormInput control={control} name="ownerPhone" kind="phone" label="Owner phone" />\n      <FormSelect control={control} name="owner" kind="async" label="Linked workspace" />\n      <FormSwitch control={control} name="publishChanges" label="Publish after save" />\n    </>\n  )\n}`,
   highlights: ["Universal form wrappers", "Async field hydration", "Dirty + reset flow", "Consistent validation surfaces"],
   scenarios: [
     { title: "Settings form", description: "Keep labels, helper text, toggles and async fields aligned through the same wrapper language." },

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const progressMock: ComponentDemoMock = {
-  code: `import { Progress, ProgressCard } from "@azamatjurayevdev/azix-ui"
+  code: `import { Progress, ProgressCard } from "azix"
 
 export function Example() {
   return (

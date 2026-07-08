@@ -14,7 +14,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add calendar-scheduler",
+  cliCommand: "npx azix add calendar-scheduler",
   highlights: [
     "Compact scheduler timeline by day",
     "Tone variants for different event priorities",

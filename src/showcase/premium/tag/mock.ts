@@ -14,7 +14,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add tag",
+  cliCommand: "npx azix add tag",
   highlights: [
     "Semantic tones for state and status information",
     "Selectable and removable tags",

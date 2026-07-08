@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const alertMock: ComponentDemoMock = {
-  code: `import { Alert, Button } from "@azamatjurayevdev/azix-ui"
+  code: `import { Alert, Button } from "azix"
 
 export function Example() {
   return (

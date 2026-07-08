@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const pageStateMock: ComponentDemoMock = {
-  code: `import { Button, PageState } from "@azamatjurayevdev/azix-ui"
+  code: `import { Button, PageState } from "azix"
 
 export function Example() {
   return (

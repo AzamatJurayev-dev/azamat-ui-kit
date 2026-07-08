@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const pageTabsMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { PageTabs } from "@azamatjurayevdev/azix-ui"
+import { PageTabs } from "azix"
 
 export function Example() {
   const [tab, setTab] = React.useState("overview")

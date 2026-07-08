@@ -1,8 +1,5 @@
-import {
-  FormSelect,
-  type FormSelectAsyncVariantProps as BaseFormAsyncSelectProps,
-} from "@/components/form/form-select"
-import { warnDeprecatedComponent } from "@/lib/deprecated-warning"
+import { type FormSelectAsyncVariantProps as BaseFormAsyncSelectProps } from "@/components/form/form-select"
+import { renderDeprecatedFormSelectAlias } from "@/components/form/deprecated-compat"
 import type { AsyncSelectOption } from "@/components/inputs/async-select"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
@@ -24,8 +21,12 @@ function FormAsyncSelect<
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 >(props: FormAsyncSelectProps<TFieldValues, TName, TValue, TData, TOption>) {
-  warnDeprecatedComponent("FormAsyncSelect", "FormSelect with kind=\"async\"")
-  return <FormSelect {...props} kind="async" />
+  return renderDeprecatedFormSelectAlias({
+    componentName: "FormAsyncSelect",
+    replacement: "FormSelect with kind=\"async\"",
+    kind: "async",
+    props,
+  })
 }
 
 export { FormAsyncSelect }

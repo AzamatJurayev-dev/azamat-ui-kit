@@ -3,12 +3,12 @@ import type { ComponentDemoMock } from "../types"
 export const codeBlockMock: ComponentDemoMock = {
   code: `import { CodeBlock } from "@/index"
 
-const snippet = \`npx @azamatjurayevdev/azix-ui add button select\`
+const snippet = \`npx azix add button select\`
 
 export function Example() {
   return <CodeBlock title="CLI" language="bash" code={snippet} />
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add code-block",
+  cliCommand: "npx azix add code-block",
   highlights: [
     "Header with title, language and built-in copy action",
     "Supports long wrapped snippets or horizontal scroll",

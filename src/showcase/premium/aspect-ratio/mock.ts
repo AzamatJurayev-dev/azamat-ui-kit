@@ -12,7 +12,7 @@ export function Example() {
     </AspectRatio>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add aspect-ratio",
+  cliCommand: "npx azix add aspect-ratio",
   highlights: [
     "Controls media card proportions in one place",
     "Works for images, iframes, and any fixed-ratio container",

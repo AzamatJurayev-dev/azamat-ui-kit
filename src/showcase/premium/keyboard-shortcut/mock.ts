@@ -6,7 +6,7 @@ export const keyboardShortcutMock: ComponentDemoMock = {
 export function Example() {
   return <KeyboardShortcut keys={["Ctrl", "K"]} />
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add keyboard-shortcut",
+  cliCommand: "npx azix add keyboard-shortcut",
   highlights: [
     "Compact visual hint for one or many keys",
     "Accepts key arrays or raw children",

@@ -7,15 +7,15 @@ Use it to initialize a project and copy editable component source into local `co
 ## Quick start
 
 ```bash
-npx @azamatjurayevdev/azix-ui init --template next --defaults
-npx @azamatjurayevdev/azix-ui add button input
+npx azix init --template next --defaults
+npx azix add button input
 ```
 
 ## Main commands
 
 ```bash
-npx @azamatjurayevdev/azix-ui list
-npx @azamatjurayevdev/azix-ui add button input data-table
-npx @azamatjurayevdev/azix-ui preset minimal
-npx @azamatjurayevdev/azix-ui theme src/index.css
+npx azix list
+npx azix add button input data-table
+npx azix preset minimal
+npx azix theme src/index.css
 ```

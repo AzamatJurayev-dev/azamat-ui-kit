@@ -12,7 +12,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add time-picker",
+  cliCommand: "npx azix add time-picker",
   highlights: ["Time, datetime, and range pickers in one family", "Native input controls with consistent style"],
   scenarios: [
     { title: "Planning UI", description: "Define working hours and event time." },

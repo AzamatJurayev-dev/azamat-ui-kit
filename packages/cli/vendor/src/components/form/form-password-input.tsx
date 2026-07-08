@@ -1,8 +1,5 @@
-import {
-  FormInput,
-  type FormInputPasswordVariantProps as BaseFormPasswordInputProps,
-} from "@/components/form/form-input"
-import { warnDeprecatedComponent } from "@/lib/deprecated-warning"
+import { type FormInputPasswordVariantProps as BaseFormPasswordInputProps } from "@/components/form/form-input"
+import { renderDeprecatedFormInputAlias } from "@/components/form/deprecated-compat"
 import type { FieldPath, FieldValues } from "react-hook-form"
 
 export type FormPasswordInputProps<
@@ -17,11 +14,12 @@ function FormPasswordInput<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(props: FormPasswordInputProps<TFieldValues, TName>) {
-  warnDeprecatedComponent(
-    "FormPasswordInput",
-    "FormInput with kind=\"password\""
-  )
-  return <FormInput {...props} kind="password" />
+  return renderDeprecatedFormInputAlias({
+    componentName: "FormPasswordInput",
+    replacement: "FormInput with kind=\"password\"",
+    kind: "password",
+    props,
+  })
 }
 
 export { FormPasswordInput }

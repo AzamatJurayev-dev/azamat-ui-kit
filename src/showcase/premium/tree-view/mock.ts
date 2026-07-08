@@ -20,7 +20,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add tree-view",
+  cliCommand: "npx azix add tree-view",
   highlights: [
     "Tree data model with nested children",
     "Controlled and uncontrolled expand state support",

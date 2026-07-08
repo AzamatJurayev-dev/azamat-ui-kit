@@ -40,7 +40,7 @@ await fs.writeFile(
   path.join(vendorRoot, "package.json"),
   JSON.stringify(
     {
-      name: "azix",
+      name: "azix-vendor",
       private: true,
     },
     null,

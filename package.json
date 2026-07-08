@@ -1,6 +1,6 @@
 {
-  "name": "@azamatjurayevdev/azix-ui",
-  "version": "0.3.28",
+  "name": "azix",
+  "version": "1.0.0",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -25,7 +25,7 @@
   "author": "Azamat Jurayev",
   "type": "module",
   "bin": {
-    "azixui": "bin/azix.cjs"
+    "azix": "bin/azix.cjs"
   },
   "publishConfig": {
     "access": "public"
@@ -131,10 +131,10 @@
     "clean": "node scripts/clean-dist.mjs",
     "build": "npm run clean && vite build && tsc -p tsconfig.build.json && npm run test:build-output",
     "build:lib": "vite build && tsc -p tsconfig.build.json",
-    "build:cli": "npm run build --workspace azix",
+    "build:cli": "npm run build --workspace azix-cli-internal",
     "build:all": "npm run build && npm run build:cli",
     "prepack": "node scripts/prepack-root.mjs",
-    "pack:dry-run": "npm pack --dry-run && npm pack --dry-run --workspace azix",
+    "pack:dry-run": "npm pack --dry-run && npm pack --dry-run --workspace azix-cli-internal",
     "check-version-sync": "node scripts/check-version-sync.mjs",
     "check-neutral-palette": "node scripts/check-neutral-palette.mjs",
     "check:showcase-quality": "node scripts/check-showcase-quality.mjs",

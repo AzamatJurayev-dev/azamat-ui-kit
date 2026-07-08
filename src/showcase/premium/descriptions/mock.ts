@@ -17,7 +17,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add descriptions",
+  cliCommand: "npx azix add descriptions",
   highlights: [
     "Title and metadata layout in a compact two-axis grid",
     "Bordered style with configurable columns",

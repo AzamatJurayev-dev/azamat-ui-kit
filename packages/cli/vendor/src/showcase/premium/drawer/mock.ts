@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const drawerMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Button, Drawer, DrawerCloseButton } from "@azamatjurayevdev/azix-ui"
+import { Button, Drawer, DrawerCloseButton } from "azix"
 
 export function Example() {
   const [open, setOpen] = React.useState(false)

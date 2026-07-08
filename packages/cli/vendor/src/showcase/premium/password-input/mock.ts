@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const passwordInputMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { PasswordInput } from "@azamatjurayevdev/azix-ui"
+import { PasswordInput } from "azix"
 
 export function Example() {
   const [value, setValue] = React.useState("")

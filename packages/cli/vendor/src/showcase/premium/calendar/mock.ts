@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const calendarMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Calendar } from "@azamatjurayevdev/azix-ui"
+import { Calendar } from "azix"
 
 export function Example() {
   const [range, setRange] = React.useState({ from: "2026-07-10", to: "2026-07-15" })

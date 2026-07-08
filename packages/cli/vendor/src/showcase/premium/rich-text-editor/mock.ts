@@ -8,7 +8,7 @@ export function Example() {
 
   return <RichTextEditor value={value} onValueChange={setValue} />
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add rich-text-editor",
+  cliCommand: "npx azix add rich-text-editor",
   highlights: [
     "Inline editable content block",
     "Simple toolbar actions for basic formatting",

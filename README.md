@@ -1,4 +1,4 @@
-# @azamatjurayevdev/azix-ui
+# azix
 
 Azix is a source-copy-first React UI kit.
 
@@ -9,15 +9,15 @@ The CLI copies editable component source into your app. New projects should trea
 Next.js:
 
 ```bash
-npx @azamatjurayevdev/azix-ui init --template next --defaults
-npx @azamatjurayevdev/azix-ui add button input
+npx azix init --template next --defaults
+npx azix add button input
 ```
 
 Vite:
 
 ```bash
-npx @azamatjurayevdev/azix-ui init --template vite --defaults
-npx @azamatjurayevdev/azix-ui add button input
+npx azix init --template vite --defaults
+npx azix add button input
 ```
 
 ## Use
@@ -35,6 +35,10 @@ import { Input } from "@/components/ui/input"
 - `add` copies component source into your app.
 - Local source is the product surface.
 - Runtime package import is compatibility-only, not the main path.
+
+## Family governance
+
+The public component model is kept intentionally small. `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, and `DataTableFamily` define the main grouped surfaces, while `componentFamilyCatalog`, `componentDocsGroups`, and `componentFamilyMigrationMap` keep docs, registry metadata, and migration aliases aligned.
 
 ## Current direction
 

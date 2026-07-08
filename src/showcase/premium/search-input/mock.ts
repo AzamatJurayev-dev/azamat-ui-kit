@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const searchInputMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Kbd, SearchInput } from "@azamatjurayevdev/azix-ui"
+import { Kbd, SearchInput } from "azix"
 
 export function Example() {
   const [value, setValue] = React.useState("")

@@ -6,7 +6,7 @@ export const jsonInputMock: ComponentDemoMock = {
 export function Example() {
   return <JsonInput value='{"name":"azix"}' />
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add json-input",
+  cliCommand: "npx azix add json-input",
   highlights: [
     "Validates JSON on edit",
     "Returns parsed payload and validity in callback",

@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const paginationMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Pagination } from "@azamatjurayevdev/azix-ui"
+import { Pagination } from "azix"
 
 export function Example() {
   const [page, setPage] = React.useState(6)

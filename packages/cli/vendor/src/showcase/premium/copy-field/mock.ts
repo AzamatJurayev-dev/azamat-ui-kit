@@ -12,7 +12,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add copy-field",
+  cliCommand: "npx azix add copy-field",
   highlights: [
     "Label, helper text, value surface, and copy action in one unit",
     "Works well for tokens, endpoints, environment values, and invite links",

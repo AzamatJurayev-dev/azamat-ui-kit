@@ -18,7 +18,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add list",
+  cliCommand: "npx azix add list",
   highlights: [
     "Compact title/description rows with optional avatar and extra slot",
     "Clickable row pattern without building a table",

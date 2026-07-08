@@ -12,7 +12,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add skeleton",
+  cliCommand: "npx azix add skeleton",
   highlights: [
     "Base line/block placeholder plus text and card presets",
     "Useful while data shape is known but content is still loading",

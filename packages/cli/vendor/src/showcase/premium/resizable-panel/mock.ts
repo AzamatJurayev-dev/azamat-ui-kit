@@ -12,7 +12,7 @@ export function Example() {
     </ResizablePanelGroup>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add resizable-panel",
+  cliCommand: "npx azix add resizable-panel",
   highlights: [
     "Declarative split layout with customizable handles",
     "Supports horizontal and vertical directions",

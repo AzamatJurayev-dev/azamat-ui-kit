@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const tooltipMock: ComponentDemoMock = {
-  code: `import { Button, Tooltip } from "@azamatjurayevdev/azix-ui"
+  code: `import { Button, Tooltip } from "azix"
 
 export function Example() {
   return (
@@ -17,7 +17,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<span data-slot="tooltip">Hover or focus to reveal hint</span>`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add tooltip",
+  cliCommand: "npx azix add tooltip",
   highlights: ["Short helper copy", "Hover + focus states", "Placement control", "Low-noise guidance"],
   relatedBlockSlugs: ["settings-form", "dashboard-starter", "crm-dashboard"],
   scenarios: [

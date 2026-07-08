@@ -24,7 +24,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add kanban",
+  cliCommand: "npx azix add kanban",
   highlights: [
     "Horizontal scrollable board layout",
     "Custom column metadata and counts",

@@ -144,7 +144,7 @@ async function main() {
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "@azamatjurayevdev/azix-ui"
+} from "azix"
 
 const value = [
   Button,
@@ -174,7 +174,7 @@ export default value
   CommandPalette,
   ProgressCard,
   RightClickMenu,
-} from "@azamatjurayevdev/azix-ui"
+} from "azix"
 
 const required = [
   Button,
@@ -237,7 +237,7 @@ import {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "@azamatjurayevdev/azix-ui"
+} from "azix"
 
 function DemoToastButton() {
   const { addToast } = useToast()
@@ -289,7 +289,7 @@ export default function Page() {
   DataTablePagination,
   useSessionStorageState,
   useToast,
-} from "@azamatjurayevdev/azix-ui"
+} from "azix"
 
 const required = [
   Button,

@@ -1,8 +1,8 @@
 import type { ComponentDemoMock } from "../types"
 
 export const cardMock: ComponentDemoMock = {
-  code: `import { Badge, Card } from "@azamatjurayevdev/azix-ui"\n\nexport function Example() {\n  return (\n    <Card\n      title="Project status"\n      description="Release readiness and team alignment"\n      content={\n        <div className="space-y-2">\n          <p>Design review complete. QA pass: 84%.</p>\n          <Badge variant="secondary">Dashboard module</Badge>\n        </div>\n      }\n      footer="Updated 12 minutes ago"\n    />\n  )\n}\n`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add card",
+  code: `import { Badge, Card } from "azix"\n\nexport function Example() {\n  return (\n    <Card\n      title="Project status"\n      description="Release readiness and team alignment"\n      content={\n        <div className="space-y-2">\n          <p>Design review complete. QA pass: 84%.</p>\n          <Badge variant="secondary">Dashboard module</Badge>\n        </div>\n      }\n      footer="Updated 12 minutes ago"\n    />\n  )\n}\n`,
+  cliCommand: "npx azix add card",
   highlights: ["Prop-driven surface", "Compact density", "Dashboard modules", "Token-ready styling"],
   relatedBlockSlugs: ["dashboard-starter", "sidebar-layout", "users-table"],
   scenarios: [

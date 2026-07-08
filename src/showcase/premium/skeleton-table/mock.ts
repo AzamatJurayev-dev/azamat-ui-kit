@@ -6,7 +6,7 @@ export const skeletonTableMock: ComponentDemoMock = {
 export function Example() {
   return <SkeletonTable rows={4} columns={4} showHeader showToolbar />
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add skeleton-table",
+  cliCommand: "npx azix add skeleton-table",
   highlights: [
     "Compact placeholder for async table loading",
     "Supports header and action bar variants",

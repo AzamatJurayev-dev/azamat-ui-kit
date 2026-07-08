@@ -16,7 +16,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add sticky-footer-bar",
+  cliCommand: "npx azix add sticky-footer-bar",
   highlights: [
     "Sticky bottom action bar with start/end slots",
     "Useful in long forms or page-level action surfaces",

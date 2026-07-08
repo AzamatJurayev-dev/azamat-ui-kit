@@ -31,7 +31,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="simple-select-trigger">Open options</button>`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add simple-select",
+  cliCommand: "npx azix add simple-select",
   highlights: ["Controlled usage", "Static options", "Clear default value", "Disabled option handling"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

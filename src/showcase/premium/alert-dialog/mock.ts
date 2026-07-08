@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const alertDialogMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { AlertDialog, Button } from "@azamatjurayevdev/azix-ui"
+import { AlertDialog, Button } from "azix"
 
 export function Example() {
   const [open, setOpen] = React.useState(false)

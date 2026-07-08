@@ -14,7 +14,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add spinner",
+  cliCommand: "npx azix add spinner",
   highlights: [
     "Inline spinner plus overlay mode from the same export",
     "Size tokens for dense buttons, cards, and page sections",

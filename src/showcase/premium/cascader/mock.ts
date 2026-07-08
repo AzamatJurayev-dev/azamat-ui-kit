@@ -10,7 +10,7 @@ export function Example() {
 
   return <Cascader options={options} value={value} onValueChange={setValue} />
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add cascader",
+  cliCommand: "npx azix add cascader",
   highlights: [
     "Three-level dependency selects",
     "Controlled by string path value",

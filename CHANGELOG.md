@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0 - 2026-07-08
+
+### Changed
+
+- renamed the public npm package to `azix` so installs and CLI usage can use `npm i azix` and `npx azix`
+- moved the workspace CLI package to the private internal name `azix-cli-internal` to avoid npm workspace name collisions
+- updated the registry, README, showcase metadata, docs snippets, and fixture smoke imports to use the new `azix` package name
+- reset the public package line to `1.0.0` for the short-name release
+
 ## 0.3.24 - 2026-07-02
 
 ### Changed

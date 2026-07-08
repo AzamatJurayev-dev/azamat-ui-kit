@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const sliderMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { RangeSlider, Slider } from "@azamatjurayevdev/azix-ui"
+import { RangeSlider, Slider } from "azix"
 
 export function Example() {
   const [score, setScore] = React.useState(72)

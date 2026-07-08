@@ -14,7 +14,7 @@ export function Example() {
     </NavigationMenu>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add navigation-menu",
+  cliCommand: "npx azix add navigation-menu",
   highlights: [
     "Accessible anchor-style navigation links",
     "Active state is handled via prop",

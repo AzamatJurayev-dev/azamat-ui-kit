@@ -26,7 +26,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="dialog-trigger">Open dialog</button>`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add dialog",
+  cliCommand: "npx azix add dialog",
   highlights: [
     "Controlled open state",
     "Title and description requirement",

@@ -78,7 +78,7 @@ export function Example() {
   )`
 ,
   htmlCode: '<form><label for="workspace">Workspace</label><input id="workspace" value="Azamat UI" /></form>',
-  cliCommand: "npx @azamatjurayevdev/azix-ui add form-wrapper",
+  cliCommand: "npx azix add form-wrapper",
   highlights: ["control + name contract", "Universal `kind` variants", "Error display and required markers", "Consistent wrapper shell behavior"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],
   scenarios: [
@@ -98,7 +98,7 @@ export function Example() {
 
 export const formSelectMock: ComponentDemoMock = {
   code: `import { useForm } from "react-hook-form"
-import { Button, FormSelect } from "@azamatjurayevdev/azix-ui"
+import { Button, FormSelect } from "azix"
 
 const statusOptions = [
   { label: "Draft", value: "draft" },
@@ -137,7 +137,7 @@ export function Example() {
     </form>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add form-select",
+  cliCommand: "npx azix add form-select",
   highlights: ["One RHF select wrapper", "Simple + async under one API", "Shared shell labels and errors", "Preferred select-form entry"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],
   scenarios: [
@@ -154,7 +154,7 @@ export function Example() {
 
 export const formAsyncSelectMock: ComponentDemoMock = {
   code: `import { useForm } from "react-hook-form"
-import { Button, FormAsyncSelect } from "@azamatjurayevdev/azix-ui"
+import { Button, FormAsyncSelect } from "azix"
 
 export function Example() {
   const form = useForm({
@@ -180,7 +180,7 @@ export function Example() {
 
 // New work should prefer:
 // <FormSelect control={form.control} name="ownerId" kind="async" ... />`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add form-async-select",
+  cliCommand: "npx azix add form-async-select",
   highlights: ["Compatibility alias", "Async form selection", "Hydrated remote value support", "Migration-safe route"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],
   scenarios: [

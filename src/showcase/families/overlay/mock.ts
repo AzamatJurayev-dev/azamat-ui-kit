@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const overlayFamilyMock: FamilyDemoMock = {
-  code: `import { ConfirmDialog, ModalShell, SheetShell } from "@azamatjurayevdev/azix-ui"\n\nexport function Example() {\n  return <ConfirmDialog />\n}`,
+  code: `import { ConfirmDialog, ModalShell, SheetShell } from "azix"\n\nexport function Example() {\n  return <ConfirmDialog />\n}`,
   highlights: ["Confirm dialogs", "Sheet surfaces", "Modal actions", "Focused flows"],
   scenarios: [
     { title: "Deletion confirm", description: "Protect destructive actions with explicit confirmation." },

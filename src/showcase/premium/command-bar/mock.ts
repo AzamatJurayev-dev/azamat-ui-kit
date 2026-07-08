@@ -12,7 +12,7 @@ export function Example() {
     </CommandBar>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add command-bar",
+  cliCommand: "npx azix add command-bar",
   highlights: [
     "Floating action rail for global shortcuts or workflow actions",
     "Top or bottom positioning",

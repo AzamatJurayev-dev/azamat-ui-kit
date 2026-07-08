@@ -12,7 +12,7 @@ export function Example() {
     </Watermark>
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add watermark",
+  cliCommand: "npx azix add watermark",
   highlights: [
     "Optional watermark for document and export previews",
     "Works on any container content",

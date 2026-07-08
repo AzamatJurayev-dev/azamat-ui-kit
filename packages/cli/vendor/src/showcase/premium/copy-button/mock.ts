@@ -14,7 +14,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add copy-button",
+  cliCommand: "npx azix add copy-button",
   highlights: [
     "Built-in copied feedback state",
     "Works with the exported Button API surface",

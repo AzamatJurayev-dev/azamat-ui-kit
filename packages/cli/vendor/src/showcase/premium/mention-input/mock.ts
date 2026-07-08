@@ -12,7 +12,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx @azamatjurayevdev/azix-ui add mention-input",
+  cliCommand: "npx azix add mention-input",
   highlights: [
     "Trigger-based suggestion filtering",
     "Keyboard navigation for suggestions",
