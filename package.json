@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -149,7 +149,7 @@
     "test:render": "vitest run --config vitest.config.ts",
     "test:fixtures": "node scripts/fixture-smoke.mjs",
     "test:run": "npm run test:types && npm run test:render && npm run test:a11y && npm run test:registry && npm run test:family-governance && npm run test:root-exports && node scripts/ensure-build-output.mjs && npm run test:build-output && npm run check:showcase-quality",
-    "release:quick": "npm run test:types && npm run test:registry && npm run test:root-exports && npx vitest run tests/render/async-select.test.tsx tests/render/form-select.test.tsx tests/render/base-primitives.test.tsx --config vitest.config.ts && npm run build:all && npm run check-version-sync && npm run pack:dry-run",
+    "release:quick": "npm run test:types && npm run test:registry && npm run test:root-exports && npx vitest run tests/render/async-select.test.tsx tests/render/form-select.test.tsx tests/render/base-primitives.test.tsx tests/render/calendar-upload.test.tsx tests/render/data-table.test.tsx --config vitest.config.ts && npm run build:all && npm run check-version-sync && npm run pack:dry-run",
     "release:gate": "npm run lint && npm run build:all && npm run check-version-sync && npm run test:run && npm run test:cli && npm run test:fixtures && npm run pack:dry-run"
   },
   "peerDependencies": {

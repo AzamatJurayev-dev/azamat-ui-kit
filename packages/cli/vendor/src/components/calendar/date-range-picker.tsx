@@ -119,7 +119,7 @@ function DateRangePicker({
               variant="outline"
               disabled={disabled}
               className={cn(
-                "min-h-11 w-full justify-start rounded-[min(var(--radius-xl),16px)] border-border/80 bg-background/96 text-left font-normal shadow-[0_1px_0_rgba(255,255,255,0.06)]",
+                "min-h-11 w-full justify-start rounded-[var(--aui-control-radius,var(--radius-md))] border-border/80 bg-background/96 text-left font-normal shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04))]",
                 !hasValue && "text-muted-foreground",
                 triggerClassName
               )}
@@ -132,7 +132,7 @@ function DateRangePicker({
         <PopoverContent
           align="start"
           className={cn(
-            "w-auto overflow-hidden rounded-[calc(var(--radius-2xl)+2px)] border-border/70 bg-popover p-0 shadow-[0_22px_56px_rgba(15,23,42,0.2)] backdrop-blur",
+            "w-auto overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border-border/70 bg-popover p-0 shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))] backdrop-blur",
             contentClassName
           )}
         >
@@ -151,13 +151,12 @@ function DateRangePicker({
                 <span className="block truncate">{draftLabel}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Button type="button" variant="ghost" size="sm" className="rounded-full" onClick={clearDraftValue}>
+                <Button type="button" variant="ghost" size="sm" onClick={clearDraftValue}>
                   {labels?.clear ?? "Clear"}
                 </Button>
                 <Button
                   type="button"
                   size="sm"
-                  className="rounded-full"
                   disabled={!hasDraftValue}
                   onClick={applyDraftValue}
                 >

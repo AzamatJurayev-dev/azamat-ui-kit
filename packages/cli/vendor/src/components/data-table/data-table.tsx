@@ -433,7 +433,7 @@ function DataTable<TData, TValue = unknown>({
         data-striped={striped || undefined}
         data-bordered={bordered || undefined}
         className={cn(
-          "overflow-hidden rounded-[var(--radius-2xl)] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_30px_rgba(15,23,42,0.08))] backdrop-blur",
+          "overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_10px_24px_rgba(15,23,42,0.07))] backdrop-blur",
           renderMobileCard && "hidden md:block",
           tableWrapperClassName
         )}
@@ -461,7 +461,7 @@ function DataTable<TData, TValue = unknown>({
                     }}
                       className={cn(
                         densityHeadClassName[density],
-                        "bg-transparent text-muted-foreground",
+                        "bg-[color:color-mix(in_oklch,var(--card),var(--background)_10%)] text-muted-foreground",
                         stickyHeader && "bg-[color:color-mix(in_oklch,var(--card),transparent_12%)] backdrop-blur",
                         header.column.getIsPinned() && "bg-card shadow-[1px_0_0_var(--border)]",
                         bordered && "border-r last:border-r-0",
@@ -492,7 +492,7 @@ function DataTable<TData, TValue = unknown>({
                         data-disabled={rowDisabled || undefined}
                         className={cn(
                           onRowClick && !rowDisabled && "cursor-pointer",
-                          !rowDisabled && "transition-colors hover:bg-[color:var(--aui-page-bg-alt)]",
+                          !rowDisabled && "transition-colors hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_96%)] data-[state=selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)]",
                           rowDisabled && "pointer-events-none opacity-55",
                           getRowClassName(row, rowClassName)
                         )}

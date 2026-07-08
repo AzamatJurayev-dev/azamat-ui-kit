@@ -29,7 +29,7 @@ export type SimpleSelectProps = Omit<
   searchPlaceholder?: string
   emptyLabel?: React.ReactNode
   clearLabel?: string
-  size?: "sm" | "default"
+  size?: "sm" | "default" | "lg"
   clearable?: boolean
   searchable?: boolean
   loading?: boolean
@@ -94,7 +94,7 @@ function SimpleSelect({
           <button
             type="button"
             aria-label={clearLabel}
-            className="ml-1 rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="ml-1 rounded-[var(--radius-sm)] border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={(event) => {
               event.preventDefault()
               stopInteractivePropagation(event)
@@ -114,7 +114,7 @@ function SimpleSelect({
         )}
       >
         {searchable ? (
-          <div data-slot="select-search" className="sticky top-0 z-10 mb-1 flex items-center gap-2 rounded-[min(var(--radius-lg),14px)] border px-2.5 py-2 text-sm">
+          <div data-slot="select-search" className="sticky top-0 z-10 mb-1 flex items-center gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-popover px-2.5 py-2 text-sm">
             <SearchIcon className="size-4 text-muted-foreground" />
             <input
               value={search}
@@ -126,12 +126,12 @@ function SimpleSelect({
         ) : null}
 
         {loading ? (
-          <div data-slot="select-state" className="flex items-center gap-2 rounded-[min(var(--radius-lg),14px)] px-3 py-2.5 text-sm text-muted-foreground">
+          <div data-slot="select-state" className="flex items-center gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-2.5 text-sm text-muted-foreground">
             <LoaderCircleIcon className="size-4 animate-spin" />
             {loadingLabel}
           </div>
         ) : filteredOptions.length === 0 ? (
-          <div data-slot="select-state" className="rounded-[min(var(--radius-lg),14px)] px-3 py-2.5 text-sm text-muted-foreground">{emptyLabel}</div>
+          <div data-slot="select-state" className="rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-2.5 text-sm text-muted-foreground">{emptyLabel}</div>
         ) : (
           filteredOptions.map((option) => {
             const selected = option.value === value
@@ -140,7 +140,7 @@ function SimpleSelect({
                 key={option.value}
                 value={option.value}
                 disabled={option.disabled}
-                className={cn("rounded-[min(var(--radius-lg),14px)]", itemClassName)}
+                className={cn("rounded-[var(--radius-md)]", itemClassName)}
               >
                 {renderOption ? (
                   renderOption(option, { selected })

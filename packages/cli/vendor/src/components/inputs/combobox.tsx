@@ -3,6 +3,7 @@ import { CheckIcon, ChevronDownIcon, SearchIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 
 export type ComboboxOption<TValue extends string = string> = {
@@ -23,6 +24,10 @@ export type ComboboxProps<TValue extends string = string> = React.ComponentProps
   emptyLabel?: React.ReactNode
   disabled?: boolean
   invalid?: boolean
+  triggerClassName?: string
+  contentClassName?: string
+  optionClassName?: string
+  searchClassName?: string
 }
 
 function Combobox<TValue extends string = string>({
@@ -34,6 +39,10 @@ function Combobox<TValue extends string = string>({
   emptyLabel = "No option found",
   disabled = false,
   invalid,
+  triggerClassName,
+  contentClassName,
+  optionClassName,
+  searchClassName,
   className,
   ...props
 }: ComboboxProps<TValue>) {
@@ -48,16 +57,33 @@ function Combobox<TValue extends string = string>({
   })
 
   return (
-    <div data-slot="combobox" className={cn("relative grid gap-2", className)} {...props}>
-      <Button type="button" variant="outline" disabled={disabled} aria-invalid={invalid || undefined} className="w-full justify-between" onClick={() => setOpen((value) => !value)}>
-        <span className={cn("truncate", !selectedOption && "text-muted-foreground")}>{selectedOption?.label ?? placeholder}</span>
-        <ChevronDownIcon className="size-4 opacity-60" />
-      </Button>
-      {open && (
-        <div className="absolute top-full z-30 mt-2 w-full rounded-md border bg-popover p-2 text-popover-foreground shadow-md">
+    <div data-slot="combobox" className={cn("grid w-full gap-2", className)} {...props}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger
+          render={
+            <Button
+              type="button"
+              variant="outline"
+              disabled={disabled}
+              aria-expanded={open}
+              aria-invalid={invalid || undefined}
+              className={cn("min-h-11 w-full justify-between rounded-[var(--aui-control-radius,var(--radius-md))] px-3.5 text-left", triggerClassName)}
+            />
+          }
+        >
+          <span className={cn("min-w-0 flex-1 truncate font-medium", !selectedOption && "font-normal text-muted-foreground")}>
+            {selectedOption?.label ?? placeholder}
+          </span>
+          <ChevronDownIcon className="size-4 opacity-60" />
+        </PopoverTrigger>
+        <PopoverContent
+          align="start"
+          data-slot="combobox-content"
+          className={cn("w-(--anchor-width) min-w-72 rounded-[var(--aui-card-radius,var(--radius-lg))] border-[color:var(--aui-card-border,var(--border))] bg-popover p-3 shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))]", contentClassName)}
+        >
           <div className="relative mb-2">
             <SearchIcon className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={searchPlaceholder} className="h-9 pl-8" />
+            <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={searchPlaceholder} className={cn("h-9 pl-8", searchClassName)} />
           </div>
           <div className="max-h-64 overflow-y-auto">
             {filteredOptions.length ? filteredOptions.map((option) => {
@@ -67,23 +93,27 @@ function Combobox<TValue extends string = string>({
                   key={option.value}
                   type="button"
                   disabled={option.disabled}
-                  className={cn("flex w-full items-start gap-2 rounded-md px-2 py-2 text-left text-sm hover:bg-muted disabled:pointer-events-none disabled:opacity-50", active && "bg-muted")}
+                  data-selected={active || undefined}
+                  className={cn(
+                    "flex w-full items-start gap-2.5 rounded-[var(--radius-md)] border border-transparent px-3 py-2.5 text-left text-sm transition-colors hover:border-[color:color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_93%)] disabled:pointer-events-none disabled:opacity-50 data-[selected=true]:border-[color:color-mix(in_oklch,var(--primary),transparent_68%)] data-[selected=true]:bg-[color:color-mix(in_oklch,var(--primary),transparent_89%)]",
+                    optionClassName
+                  )}
                   onClick={() => {
                     onValueChange?.(option.value, option)
                     setOpen(false)
                   }}
                 >
-                  <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center">{active && <CheckIcon className="size-4" />}</span>
+                  <span className={cn("mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border border-border/70", active && "border-primary bg-primary text-primary-foreground")}>{active && <CheckIcon className="size-3" />}</span>
                   <span className="min-w-0">
                     <span className="block truncate font-medium">{option.label}</span>
                     {option.description && <span className="block text-xs text-muted-foreground">{option.description}</span>}
                   </span>
                 </button>
               )
-            }) : <div className="px-2 py-6 text-center text-sm text-muted-foreground">{emptyLabel}</div>}
+            }) : <div className="rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-6 text-center text-sm text-muted-foreground">{emptyLabel}</div>}
           </div>
-        </div>
-      )}
+        </PopoverContent>
+      </Popover>
     </div>
   )
 }

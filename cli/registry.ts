@@ -41,8 +41,8 @@ const file = (source: string, target: string): RegistryFile => ({ source, target
 export const registry: Record<ComponentName, ComponentRegistryItem> = {
   utils: { name: "utils", category: "lib", dependencies: ["clsx", "tailwind-merge"], files: [file("src/lib/utils.ts", "{utils}")] },
 
-  button: { name: "button", category: "ui", dependencies: ["@base-ui/react", "class-variance-authority"], registryDependencies: ["utils"], files: [file("src/components/ui/button", "{ui}/button")] },
-  input: { name: "input", category: "ui", dependencies: ["@base-ui/react"], registryDependencies: ["utils"], files: [file("src/components/ui/input", "{ui}/input")] },
+  button: { name: "button", category: "ui", dependencies: ["@base-ui/react", "class-variance-authority"], registryDependencies: ["utils"], files: [file("src/components/ui/button", "{ui}/button"), file("src/components/ui/button.tsx", "{ui}/button.tsx")] },
+  input: { name: "input", category: "ui", dependencies: ["@base-ui/react"], registryDependencies: ["utils"], files: [file("src/components/ui/input", "{ui}/input"), file("src/components/ui/input.tsx", "{ui}/input.tsx")] },
   textarea: { name: "textarea", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/textarea", "{ui}/textarea")] },
   checkbox: { name: "checkbox", category: "ui", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/ui/checkbox", "{ui}/checkbox")] },
   switch: { name: "switch", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/switch", "{ui}/switch")] },
