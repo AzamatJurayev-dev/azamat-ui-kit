@@ -2,11 +2,12 @@ import * as React from "react"
 import { render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { useForm, useWatch } from "react-hook-form"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import {
   FormAsyncSelect,
   FormSelect,
+  SimpleSelect,
   type AsyncSelectOption,
   type SimpleSelectOption,
 } from "@/index"
@@ -118,5 +119,25 @@ describe("FormSelect consolidation", () => {
     await user.click(screen.getByRole("button", { name: "Nodir" }))
 
     expect(screen.getByTestId("reviewer-value").textContent).toBe("u2")
+  })
+
+  it("clears simple select from a singular clear affordance", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <SimpleSelect
+        value="admin"
+        onValueChange={onValueChange}
+        options={roleOptions}
+        clearable
+      />
+    )
+
+    const clearButtons = screen.getAllByRole("button", { name: "Clear selection" })
+    expect(clearButtons).toHaveLength(1)
+
+    await user.click(clearButtons[0])
+    expect(onValueChange).toHaveBeenCalledWith(undefined)
   })
 })

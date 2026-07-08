@@ -33,6 +33,13 @@ export type CalendarLabels = {
   disabledDate?: (date: string, reason: CalendarDisabledReason) => string
 }
 
+export type CalendarSummaryState = {
+  mode: "single" | "range"
+  value?: string | null
+  range?: CalendarDateRange
+  locale: string
+}
+
 export type CalendarProps = React.ComponentProps<"div"> & {
   value?: string | null
   range?: CalendarDateRange
@@ -55,6 +62,7 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   showClearShortcut?: boolean
   showSelectionSummary?: boolean
   labels?: CalendarLabels
+  renderSelectionSummary?: (state: CalendarSummaryState) => React.ReactNode
 }
 
 function getInitialMonth(defaultMonth?: Date | string | null, value?: string | null, range?: CalendarDateRange) {
@@ -100,6 +108,12 @@ function getDateKeysBetween(from: string, to: string) {
   return keys
 }
 
+function formatCalendarSummaryDate(value: string | null | undefined, locale: string) {
+  const date = parseDateKey(value)
+  if (!date || !value) return null
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(date)
+}
+
 function Calendar({
   className,
   value,
@@ -123,6 +137,7 @@ function Calendar({
   showClearShortcut = false,
   showSelectionSummary = false,
   labels,
+  renderSelectionSummary,
   ...props
 }: CalendarProps) {
   const isControlledSingle = value !== undefined
@@ -272,6 +287,29 @@ function Calendar({
     if (rangeIncludesDisabledDate) return null
     return { from: currentRange.from, to: hoveredDateKey }
   }, [currentRange?.from, currentRange?.to, hoveredDateKey, isDateDisabled, mode])
+
+  const summaryContent = React.useMemo(() => {
+    if (!showSelectionSummary && !renderSelectionSummary) return null
+
+    if (renderSelectionSummary) {
+      return renderSelectionSummary({
+        mode,
+        value: currentValue,
+        range: currentRange,
+        locale,
+      })
+    }
+
+    if (mode === "range") {
+      const formattedFrom = formatCalendarSummaryDate(currentRange?.from, locale)
+      const formattedTo = formatCalendarSummaryDate(currentRange?.to, locale)
+      if (formattedFrom && formattedTo) return `${formattedFrom} -> ${formattedTo}`
+      if (formattedFrom) return `${formattedFrom} -> ...`
+      return "No range selected"
+    }
+
+    return formatCalendarSummaryDate(currentValue, locale) ?? "No date selected"
+  }, [currentRange, currentValue, locale, mode, renderSelectionSummary, showSelectionSummary])
 
   const clearSelection = () => {
     if (mode === "single") {
@@ -450,15 +488,9 @@ function Calendar({
           </div>
         ))}
       </div>
-      {(showTodayShortcut || showClearShortcut || showSelectionSummary) ? (
+      {(showTodayShortcut || showClearShortcut || showSelectionSummary || renderSelectionSummary) ? (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[color:var(--aui-card-border,var(--border))] pt-3">
-          <div className="text-xs text-muted-foreground">
-            {mode === "range"
-              ? currentRange?.from
-                ? `${currentRange.from}${currentRange.to ? ` -> ${currentRange.to}` : ""}`
-                : "No range selected"
-              : currentValue || "No date selected"}
-          </div>
+          <div className="text-xs text-muted-foreground">{summaryContent}</div>
           <div className="flex flex-wrap gap-2">
             {showClearShortcut ? (
               <Button type="button" size="sm" variant="ghost" onClick={clearSelection}>

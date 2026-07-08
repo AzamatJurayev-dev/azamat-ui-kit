@@ -236,6 +236,14 @@ function DateRangePicker({
             range={activeValue}
             onRangeChange={handleRangeChange}
             labels={labels}
+            renderSelectionSummary={({ range }) => {
+              const fromValue = range?.from ? formatValue(range.from) : null
+              const toValue = range?.to ? formatValue(range.to) : null
+
+              if (fromValue && toValue) return `${fromValue} -> ${toValue}`
+              if (fromValue) return `${fromValue} -> ...`
+              return "No range selected"
+            }}
             numberOfMonths={numberOfMonths}
             pagedNavigation={pagedNavigation}
             showClearShortcut={!showFooter && clearable}

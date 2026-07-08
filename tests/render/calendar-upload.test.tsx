@@ -94,6 +94,19 @@ describe("Calendar and date pickers", () => {
     expect(onValueChange).toHaveBeenCalledWith({ from: "2024-06-12", to: "2024-06-18" })
   }, 20000)
 
+  it("renders formatted calendar summary content", () => {
+    render(
+      <Calendar
+        mode="range"
+        range={{ from: "2024-06-12", to: "2024-06-18" }}
+        defaultMonth="2024-06-01"
+        showSelectionSummary
+      />
+    )
+
+    expect(screen.getByText("Jun 12, 2024 -> Jun 18, 2024")).toBeTruthy()
+  })
+
   it("supports multi-month paging and keeps next viewport visible", async () => {
     const user = userEvent.setup()
 

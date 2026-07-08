@@ -112,8 +112,9 @@ function SimpleSelect({
         </SelectValue>
         {loading ? <LoaderCircleIcon className="size-4 animate-spin text-muted-foreground" /> : null}
         {clearable && value && !disabled && !loading ? (
-          <button
-            type="button"
+          <span
+            role="button"
+            tabIndex={0}
             aria-label={clearLabel}
             className="ml-1 rounded-[var(--radius-sm)] border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={(event) => {
@@ -123,9 +124,15 @@ function SimpleSelect({
             }}
             onMouseDown={stopInteractivePropagation}
             onDoubleClick={stopInteractivePropagation}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault()
+                onValueChange?.(undefined)
+              }
+            }}
           >
             <XIcon className="size-3.5" />
-          </button>
+          </span>
         ) : null}
       </SelectTrigger>
       <SelectContent
