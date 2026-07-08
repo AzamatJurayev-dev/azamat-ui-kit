@@ -113,7 +113,6 @@
       "tree-view",
       "user-card",
       "trend-card",
-      "comparison-card",
       "delta-badge",
       "entity-header"
     ],
@@ -141,16 +140,10 @@
     ],
     "data-table": [
       "data-table",
-      "data-table-toolbar",
-      "data-table-pagination",
-      "data-table-row-actions",
       "data-table-bulk-actions",
       "data-table-view-presets",
-      "data-table-saved-filters",
       "data-table-column-visibility-menu",
-      "data-table-select-column",
-      "data-table-sortable-header",
-      "data-table-actions-column"
+      "data-table-sortable-header"
     ],
     "calendar": [
       "calendar",

@@ -118,12 +118,10 @@ const registryDemoDefinitions = [
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
-  component("comparison-card", "ComparisonCard", "display", "Compare current and previous values in one compact card."),
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
   component("filter-chips", "FilterChips", "actions", "Inline active filter summaries with clear and remove actions."),
-  component("data-table-saved-filters", "SavedFilterSelect", "actions", "Saved filter chips and quick view controls."),
   component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
   component("section-header", "SectionHeader", "layout", "Reusable section title block with actions and metadata."),
   component("stat-card", "StatCard", "layout", "Dashboard stat card for KPI, trend and helper text."),
@@ -132,13 +130,8 @@ const registryDemoDefinitions = [
   component("stepper-tabs", "StepperTabs", "navigation", "Step-like tabs for setup and onboarding progress."),
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
-  component("data-table-pagination", "DataTablePagination", "data-table", "Pagination control used by DataTable pages."),
-  component("data-table-toolbar", "DataTableToolbar", "data-table", "Toolbar surface for DataTable search, filters and actions."),
   component("data-table-column-visibility-menu", "DataTableColumnVisibilityMenu", "data-table", "Column visibility menu pattern for table views."),
-  component("data-table-select-column", "DataTableSelectColumn", "data-table", "Selection column pattern for bulk table workflows."),
   component("data-table-sortable-header", "DataTableSortableHeader", "data-table", "Sortable header trigger with clear visual state."),
-  component("data-table-row-actions", "DataTableRowActions", "data-table", "Row action menu for inspect, duplicate and archive operations."),
-  component("data-table-actions-column", "DataTableActionsColumn", "data-table", "Reusable actions column for DataTable definitions."),
   component("data-table-bulk-actions", "DataTableBulkActions", "data-table", "Bulk action bar for selected rows."),
   component("data-table-view-presets", "DataTableViewPresets", "data-table", "Saved table view presets for operational dashboards."),
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
@@ -635,7 +628,7 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "trend-card" || slug === "comparison-card") {
+  if (slug === "trend-card") {
     return <StatCard title={slug === "trend-card" ? "Weekly revenue" : "Current vs previous"} value="$84.2k" description="Compared with last month" trend={{ value: "+12.4%", tone: "success" }} icon={<LayoutDashboardIcon />} />
   }
 
@@ -709,7 +702,7 @@ function ActionsPreview({
     )
   }
 
-  if (slug === "filter-chips" || slug === "data-table-saved-filters") {
+  if (slug === "filter-chips") {
     return (
       <div className="grid gap-3">
         <FilterChips
@@ -721,16 +714,6 @@ function ActionsPreview({
           onRemove={() => undefined}
           onClear={() => undefined}
         />
-        {slug === "data-table-saved-filters" ? (
-          <ButtonGroup
-            attached={false}
-            items={[
-              { key: "default", label: "Default", variant: "secondary" },
-              { key: "billing", label: "Billing" },
-              { key: "ops", label: "Operations" },
-            ]}
-          />
-        ) : null}
       </div>
     )
   }
@@ -807,13 +790,8 @@ function LayoutPreview({ slug }: { slug: string }) {
 
 function DataTablePartsPreview({ slug }: { slug: string }) {
   const labels: Record<string, string> = {
-    "data-table-pagination": "Pagination footer",
-    "data-table-toolbar": "Search and filter toolbar",
     "data-table-column-visibility-menu": "Column visibility",
-    "data-table-select-column": "Row selection",
     "data-table-sortable-header": "Sortable header",
-    "data-table-row-actions": "Row actions",
-    "data-table-actions-column": "Actions column",
     "data-table-bulk-actions": "Bulk action bar",
     "data-table-view-presets": "Saved view presets",
   }

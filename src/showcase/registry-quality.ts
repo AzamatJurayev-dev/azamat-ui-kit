@@ -52,7 +52,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
-  component("comparison-card", "ComparisonCard", "display", "Compare current and previous values in one compact card."),
 
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),

@@ -10,9 +10,9 @@ import {
   DataTableSortableHeader,
   SearchInput,
   SimpleSelect,
-  createDataTableActionsColumn,
-  createDataTableSelectColumn,
 } from "@/index"
+import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
+import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
 
 type DataTableDemoRow = {
   invoice: string
