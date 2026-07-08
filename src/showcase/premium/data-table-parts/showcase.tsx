@@ -15,8 +15,7 @@ import {
   createDataTableSelectColumn,
 } from "@/index"
 
-import { buildDataTableDemoRows, dataTableDemoPresets } from "@/showcase/families/data-table/data"
-import type { DataTableDemoRow } from "@/showcase/families/data-table/types"
+import { buildDataTableDemoRows, dataTableDemoPresets, type DataTableDemoRow } from "./data"
 
 import type { ComponentDemoProps } from "../types"
 

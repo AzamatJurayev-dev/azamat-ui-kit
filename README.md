@@ -36,9 +36,9 @@ import { Input } from "@/components/ui/input"
 - Local source is the product surface.
 - Runtime package import is compatibility-only, not the main path.
 
-## Family governance
+## Component model
 
-The public component model is kept intentionally small. `InputFamily`, `SelectFamily`, `CardFamily`, `FormFamily`, and `DataTableFamily` define the main grouped surfaces, while `componentFamilyCatalog`, `componentDocsGroups`, and `componentFamilyMigrationMap` keep docs, registry metadata, and migration aliases aligned.
+Every public surface is a component. Repeated behavior should be handled with props, hooks, helpers, and local source files, not separate family abstractions.
 
 ## Current direction
 

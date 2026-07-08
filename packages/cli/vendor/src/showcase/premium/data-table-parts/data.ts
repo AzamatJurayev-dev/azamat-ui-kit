@@ -1,4 +1,28 @@
-import type { DataTableDemoPreset, DataTableDemoRow, DataTableDemoToolbarAction } from "./types"
+export type DataTableDemoRow = {
+  invoice: string
+  order: string
+  customer: string
+  owner: string
+  channel: string
+  status: "Paid" | "Review" | "Draft" | "Overdue"
+  stock: number
+  items: number
+  amount: string
+  amountValue: number
+  trend: "up" | "down" | "steady"
+  updatedAt: string
+}
+
+export type DataTableDemoToolbarAction = {
+  label: string
+  variant: "default" | "outline"
+}
+
+export type DataTableDemoPreset = {
+  value: "all" | "finance" | "at-risk"
+  label: string
+  description: string
+}
 
 const customers = ["Acme Inc.", "Larana", "ShipFast", "Toolpad", "Pixels UI", "Northstar"] as const
 const owners = ["Azamat", "Malika", "Sardor", "Nodira", "Asadbek", "Kamola"] as const

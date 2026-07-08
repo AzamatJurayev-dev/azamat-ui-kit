@@ -23,7 +23,6 @@ export type ComponentCategory =
   | "command"
   | "patterns"
   | "hooks"
-  | "families"
   | "group";
 
 export type ComponentRegistryItem = {

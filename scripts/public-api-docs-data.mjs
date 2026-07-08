@@ -141,7 +141,7 @@ export const publicComponentApiDocs = [
     useWhen: [
       "The user must complete or dismiss a focused task.",
       "The surface needs proper modal focus management.",
-      "Popover, menu, tooltip, sheet, drawer, and confirmation presets should stay related to one overlay mental model instead of reading like separate component families.",
+      "Popover, menu, tooltip, sheet, drawer, and confirmation presets should stay related to one overlay mental model instead of reading like separate disconnected components.",
     ],
     related: [
       "Popover",

@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -93,16 +93,6 @@
       "import": "./dist/components/data-table/*.js",
       "require": "./dist/components/data-table/*.cjs"
     },
-    "./families": {
-      "types": "./dist/families/index.d.ts",
-      "import": "./dist/families/index.js",
-      "require": "./dist/families/index.cjs"
-    },
-    "./families/*": {
-      "types": "./dist/families/*.d.ts",
-      "import": "./dist/families/*.js",
-      "require": "./dist/families/*.cjs"
-    },
     "./showcase": {
       "types": "./dist/showcase/index.d.ts",
       "import": "./dist/showcase/index.js",
@@ -143,12 +133,11 @@
     "test:types": "tsc -p tsconfig.test.json --noEmit",
     "test:a11y": "vitest run tests/a11y/render-accessibility.test.tsx --config vitest.config.ts",
     "test:registry": "node scripts/validate-registry.mjs",
-    "test:family-governance": "node scripts/check-family-governance.mjs",
     "test:build-output": "node scripts/check-build-output.mjs",
     "test:root-exports": "node scripts/check-root-exports.mjs",
     "test:render": "vitest run --config vitest.config.ts",
     "test:fixtures": "node scripts/fixture-smoke.mjs",
-    "test:run": "npm run test:types && npm run test:render && npm run test:a11y && npm run test:registry && npm run test:family-governance && npm run test:root-exports && node scripts/ensure-build-output.mjs && npm run test:build-output && npm run check:showcase-quality",
+    "test:run": "npm run test:types && npm run test:render && npm run test:a11y && npm run test:registry && npm run test:root-exports && node scripts/ensure-build-output.mjs && npm run test:build-output && npm run check:showcase-quality",
     "release:quick": "npm run test:types && npm run test:registry && npm run test:root-exports && npx vitest run tests/render/async-select.test.tsx tests/render/form-select.test.tsx tests/render/base-primitives.test.tsx tests/render/calendar-upload.test.tsx tests/render/data-table.test.tsx --config vitest.config.ts && npm run build:all && npm run check-version-sync && npm run pack:dry-run",
     "release:gate": "npm run lint && npm run build:all && npm run check-version-sync && npm run test:run && npm run test:cli && npm run test:fixtures && npm run pack:dry-run"
   },

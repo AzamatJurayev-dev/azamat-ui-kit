@@ -11,10 +11,10 @@ const items = [
     content: "Keep product decisions inside tokens instead of hardcoded one-off wrappers.",
   },
   {
-    key: "families",
-    title: "Component families",
-    description: "Teach one primary surface first.",
-    content: "Members like AsyncSelect or FormAsyncSelect should stay inside the canonical route.",
+    key: "composition",
+    title: "Component composition",
+    description: "Teach one component first.",
+    content: "Advanced behavior should be exposed through props, hooks, and helpers instead of separate public groups.",
   },
 ]
 

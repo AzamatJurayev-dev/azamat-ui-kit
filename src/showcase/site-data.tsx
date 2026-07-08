@@ -28,12 +28,6 @@ import {
   ToggleLeftIcon,
   WorkflowIcon,
 } from "lucide-react"
-import {
-  componentDocsGroups,
-  getComponentDocsAdoption,
-  getDocsGroupDetail,
-  resolveDocsRoute,
-} from "@/index"
 import azamatKitRegistry from "./tembro-registry.json"
 import {
   PACKAGE_LATEST_RELEASE_DATE,
@@ -191,12 +185,12 @@ const formRHFWrapperCommonFeatures = [
 export type ComponentRelationMap = Record<
   string,
   {
-    familySlugs: string[]
+    groupSlugs: string[]
     componentSlugs: string[]
   }
 >
 
-export type ModuleFamilyItem = {
+export type ComponentModuleItem = {
   slug: string
   title: string
   description: string
@@ -280,7 +274,7 @@ export const releaseHistory: PackageReleaseRecord[] = [
     summary: "Expanded the registry with newer dashboard, input, badge, sidebar, and notification primitives.",
     notes: [
       "Registry truth now includes `accordion`, `sidebar`, `trend-card`, `delta-badge`, `entity-header`, `notification-center`, and `command-bar`.",
-      "Family metadata was refreshed so docs can group canonical surfaces and related members more accurately.",
+      "Component metadata was refreshed so docs can keep canonical surfaces and related helpers accurate.",
       "CLI-first local component setup remains the default path for Next.js and Vite users.",
     ],
   },
@@ -290,7 +284,7 @@ export const releaseHistory: PackageReleaseRecord[] = [
     status: "Published",
     summary: "Refined grouped docs and related-surface mapping.",
     notes: [
-      "Input, Select, Card, Badge, Overlay, Form, and Data Table families were aligned with the latest public exports.",
+      "Input, Select, Card, Badge, Overlay, Form, and Data Table components were aligned with the latest public exports.",
       "Deprecated route-level names stayed aliased for compatibility while primary docs move toward simpler canonical surfaces.",
       "Docs app metadata now prefers current package registry vocabulary over older showcase-only names.",
     ],
@@ -301,9 +295,9 @@ export const PACKAGE_RELEASE_DATE = releaseHistory[0]?.date ?? PACKAGE_LATEST_RE
 
 export const componentDocsPath = (slug: string) => `/components/${slug}`
 export const componentPlaygroundPath = (slug: string) => `/playground/${slug}`
-export const moduleFamilyPath = (slug: string) => `/components/${slug}`
-export const moduleFamilyExportSlug = (value: string) => value.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()
-export const moduleFamilyExportPath = (familySlug: string, exportName: string) => `/components/${familySlug}/${moduleFamilyExportSlug(exportName)}`
+export const componentModulePath = (slug: string) => `/components/${slug}`
+export const componentExportSlug = (value: string) => value.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()
+export const componentExportPath = (moduleSlug: string, exportName: string) => `/components/${moduleSlug}/${componentExportSlug(exportName)}`
 export const templatePath = (slug: string) => `/templates/${slug}`
 export const blockPath = (slug: string) => `/blocks/${slug}`
 export const componentGroupOrder: ComponentGroup[] = ["Primitives", "Form Controls", "Overlay", "Data Display", "Layout", "Feedback", "Patterns"]
@@ -1615,263 +1609,263 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
 
 export const componentRelations: ComponentRelationMap = {
   button: {
-    familySlugs: ["actions", "navigation", "layout"],
+    groupSlugs: ["actions", "navigation", "layout"],
     componentSlugs: ["badge", "card", "tabs"],
   },
   input: {
-    familySlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["inputs", "form", "filters"],
     componentSlugs: ["textarea", "select", "switch"],
   },
   textarea: {
-    familySlugs: ["inputs", "form", "layout"],
+    groupSlugs: ["inputs", "form", "layout"],
     componentSlugs: ["input", "card", "badge"],
   },
   select: {
-    familySlugs: ["inputs", "filters", "overlay"],
+    groupSlugs: ["inputs", "filters", "overlay"],
     componentSlugs: ["simple-select", "async-select", "async-multi-select", "combobox"],
   },
   "simple-select": {
-    familySlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["inputs", "form", "filters"],
     componentSlugs: ["select", "async-select", "async-multi-select", "combobox"],
   },
   combobox: {
-    familySlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["inputs", "form", "filters"],
     componentSlugs: ["select", "simple-select", "async-select", "async-multi-select"],
   },
   "radio-group": {
-    familySlugs: ["inputs", "form"],
+    groupSlugs: ["inputs", "form"],
     componentSlugs: ["checkbox", "switch", "select"],
   },
   "async-select": {
-    familySlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["inputs", "form", "filters"],
     componentSlugs: ["select", "simple-select", "async-multi-select", "combobox"],
   },
   "async-multi-select": {
-    familySlugs: ["inputs", "form"],
+    groupSlugs: ["inputs", "form"],
     componentSlugs: ["select", "async-select", "simple-select", "combobox"],
   },
   "number-input": {
-    familySlugs: ["inputs", "form"],
+    groupSlugs: ["inputs", "form"],
     componentSlugs: ["money-input", "quantity-input", "input"],
   },
   "date-input": {
-    familySlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["inputs", "form", "filters"],
     componentSlugs: ["date-range-input", "date-picker", "date-range-picker", "table", "select"],
   },
   "date-range-input": {
-    familySlugs: ["inputs", "filters", "form"],
+    groupSlugs: ["inputs", "filters", "form"],
     componentSlugs: ["date-input", "date-picker", "date-range-picker", "data-table"],
   },
   "date-picker": {
-    familySlugs: ["inputs", "form", "display"],
+    groupSlugs: ["inputs", "form", "display"],
     componentSlugs: ["calendar", "date-input", "date-range-picker"],
   },
   "date-range-picker": {
-    familySlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["inputs", "form", "filters"],
     componentSlugs: ["date-picker", "date-range-input", "calendar", "data-table"],
   },
   "form-field-shell": {
-    familySlugs: ["form"],
+    groupSlugs: ["form"],
     componentSlugs: ["form-input", "form-select", "form-textarea", "form-switch", "input", "textarea", "switch"],
   },
   "form-input": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-field-shell", "form-textarea", "form-number-input", "form-password-input", "input", "password", "phone-input"],
   },
   "form-select": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-async-select", "select", "simple-select", "form-field-shell"],
   },
   "form-async-select": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-select", "async-select", "form-field-shell", "input"],
   },
   "form-textarea": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-input", "textarea", "form-field-shell", "quantity-input"],
   },
   "form-switch": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-field-shell", "switch", "checkbox", "form-builder"],
   },
   "form-search-input": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-input", "input", "form-field-shell"],
   },
   "form-password-input": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-input", "input", "form-field-shell"],
   },
   "form-number-input": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["number-input", "money-input", "quantity-input", "form-field-shell", "form-input"],
   },
   "form-phone-input": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["phone-input", "form-input", "masked-input", "form-field-shell"],
   },
   "form-date-input": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["date-input", "date-picker", "form-field-shell", "form-date-picker"],
   },
   "form-date-range-input": {
-    familySlugs: ["form", "filters"],
+    groupSlugs: ["form", "filters"],
     componentSlugs: ["date-range-input", "date-range-picker", "form-date-range-picker", "form-field-shell"],
   },
   "form-date-picker": {
-    familySlugs: ["form", "inputs"],
+    groupSlugs: ["form", "inputs"],
     componentSlugs: ["date-picker", "form-date-input", "calendar", "form-field-shell"],
   },
   "form-date-range-picker": {
-    familySlugs: ["form", "filters"],
+    groupSlugs: ["form", "filters"],
     componentSlugs: ["date-range-picker", "form-date-range-input", "calendar", "form-field-shell"],
   },
   "form-builder": {
-    familySlugs: ["patterns", "form"],
+    groupSlugs: ["patterns", "form"],
     componentSlugs: ["form-field-shell", "form-input", "form-switch", "form-textarea", "form-async-select"],
   },
   "phone-input": {
-    familySlugs: ["inputs", "form"],
+    groupSlugs: ["inputs", "form"],
     componentSlugs: ["input", "textarea", "simple-select"],
   },
   "masked-input": {
-    familySlugs: ["inputs", "form"],
+    groupSlugs: ["inputs", "form"],
     componentSlugs: ["input", "number-input", "phone-input"],
   },
   "money-input": {
-    familySlugs: ["inputs", "display"],
+    groupSlugs: ["inputs", "display"],
     componentSlugs: ["number-input", "quantity-input", "input"],
   },
   "quantity-input": {
-    familySlugs: ["inputs", "form"],
+    groupSlugs: ["inputs", "form"],
     componentSlugs: ["number-input", "money-input", "input"],
   },
   checkbox: {
-    familySlugs: ["inputs", "form"],
+    groupSlugs: ["inputs", "form"],
     componentSlugs: ["switch", "button", "card"],
   },
   switch: {
-    familySlugs: ["inputs", "layout"],
+    groupSlugs: ["inputs", "layout"],
     componentSlugs: ["checkbox", "tabs", "badge"],
   },
   badge: {
-    familySlugs: ["actions", "display"],
+    groupSlugs: ["actions", "display"],
     componentSlugs: ["button", "card", "tabs"],
   },
   card: {
-    familySlugs: ["layout", "display", "actions"],
+    groupSlugs: ["layout", "display", "actions"],
     componentSlugs: ["tabs", "badge", "button"],
   },
   tabs: {
-    familySlugs: ["navigation", "layout"],
+    groupSlugs: ["navigation", "layout"],
     componentSlugs: ["dialog", "card", "button"],
   },
   collapse: {
-    familySlugs: ["layout", "display", "form"],
+    groupSlugs: ["layout", "display", "form"],
     componentSlugs: ["tabs", "card", "sidebar-nav"],
   },
   dialog: {
-    familySlugs: ["overlay", "notifications"],
+    groupSlugs: ["overlay", "notifications"],
     componentSlugs: ["popover", "confirm-dialog", "sheet-shell"],
   },
   popover: {
-    familySlugs: ["overlay", "navigation"],
+    groupSlugs: ["overlay", "navigation"],
     componentSlugs: ["dropdown-menu", "dialog", "confirm-dialog"],
   },
   "dropdown-menu": {
-    familySlugs: ["overlay", "navigation", "actions"],
+    groupSlugs: ["overlay", "navigation", "actions"],
     componentSlugs: ["popover", "dialog", "confirm-dialog"],
   },
   tooltip: {
-    familySlugs: ["overlay", "actions", "form"],
+    groupSlugs: ["overlay", "actions", "form"],
     componentSlugs: ["popover", "button", "input"],
   },
   "hover-card": {
-    familySlugs: ["overlay", "display"],
+    groupSlugs: ["overlay", "display"],
     componentSlugs: ["tooltip", "card", "info-card"],
   },
   "right-click-menu": {
-    familySlugs: ["overlay", "actions", "navigation"],
+    groupSlugs: ["overlay", "actions", "navigation"],
     componentSlugs: ["dropdown-menu", "popover", "data-table"],
   },
   "confirm-dialog": {
-    familySlugs: ["overlay", "notifications"],
+    groupSlugs: ["overlay", "notifications"],
     componentSlugs: ["dialog", "modal-shell", "sheet-shell"],
   },
   "modal-shell": {
-    familySlugs: ["overlay", "layout"],
+    groupSlugs: ["overlay", "layout"],
     componentSlugs: ["sheet-shell", "dialog", "confirm-dialog"],
   },
   "sheet-shell": {
-    familySlugs: ["overlay", "layout", "navigation"],
+    groupSlugs: ["overlay", "layout", "navigation"],
     componentSlugs: ["modal-shell", "dialog", "dropdown-menu"],
   },
   table: {
-    familySlugs: ["data-table", "display", "filters"],
+    groupSlugs: ["data-table", "display", "filters"],
     componentSlugs: ["card", "tabs", "badge"],
   },
   "data-table": {
-    familySlugs: ["data-table", "layout", "filters"],
+    groupSlugs: ["data-table", "layout", "filters"],
     componentSlugs: ["table", "card", "tabs"],
   },
   sidebar: {
-    familySlugs: ["layout", "navigation"],
+    groupSlugs: ["layout", "navigation"],
     componentSlugs: ["sidebar-nav", "breadcrumbs", "app-shell", "page-container"],
   },
   "app-shell": {
-    familySlugs: ["layout"],
+    groupSlugs: ["layout"],
     componentSlugs: ["sidebar", "sidebar-nav", "page-header", "page-container"],
   },
   "sidebar-nav": {
-    familySlugs: ["layout", "navigation"],
+    groupSlugs: ["layout", "navigation"],
     componentSlugs: ["sidebar", "breadcrumbs", "app-shell"],
   },
   breadcrumbs: {
-    familySlugs: ["layout", "navigation"],
+    groupSlugs: ["layout", "navigation"],
     componentSlugs: ["page-header", "sidebar", "sidebar-nav"],
   },
   "page-header": {
-    familySlugs: ["layout"],
+    groupSlugs: ["layout"],
     componentSlugs: ["breadcrumbs", "sidebar", "metric-grid", "info-card"],
   },
   "page-container": {
-    familySlugs: ["layout"],
+    groupSlugs: ["layout"],
     componentSlugs: ["page-header", "app-shell", "info-card"],
   },
   "metric-grid": {
-    familySlugs: ["display"],
+    groupSlugs: ["display"],
     componentSlugs: ["info-card", "activity-feed", "empty-state"],
   },
   "info-card": {
-    familySlugs: ["display", "layout"],
+    groupSlugs: ["display", "layout"],
     componentSlugs: ["metric-grid", "activity-feed", "result", "card"],
   },
   "activity-feed": {
-    familySlugs: ["display"],
+    groupSlugs: ["display"],
     componentSlugs: ["info-card", "metric-grid", "result"],
   },
   "empty-state": {
-    familySlugs: ["display"],
+    groupSlugs: ["display"],
     componentSlugs: ["loading-state", "result", "data-table"],
   },
   "loading-state": {
-    familySlugs: ["display"],
+    groupSlugs: ["display"],
     componentSlugs: ["empty-state", "result", "data-table"],
   },
   result: {
-    familySlugs: ["display"],
+    groupSlugs: ["display"],
     componentSlugs: ["empty-state", "loading-state", "page-header"],
   },
   "scroll-box": {
-    familySlugs: ["display", "layout"],
+    groupSlugs: ["display", "layout"],
     componentSlugs: ["table", "data-table", "page-container"],
   },
   toast: {
-    familySlugs: ["notifications", "overlay"],
+    groupSlugs: ["notifications", "overlay"],
     componentSlugs: ["confirm-dialog", "sheet-shell", "modal-shell"],
   },
   kbd: {
-    familySlugs: ["command", "actions"],
+    groupSlugs: ["command", "actions"],
     componentSlugs: ["button", "tooltip", "input"],
   },
 }
@@ -2226,24 +2220,7 @@ for (const [group, groupSlugs] of Object.entries(kitGroups)) {
 const fallbackComponentCatalog = [...generatedComponentCatalog.values()]
 export const componentCatalog: ComponentCatalogItem[] = [...baseComponentCatalog, ...fallbackComponentCatalog]
 
-const packageDocsSurfaceCatalog = componentDocsGroups
-  .map((group) => {
-    const source =
-      componentCatalog.find((item) => item.slug === group.slug) ??
-      componentCatalog.find((item) => item.slug === moduleFamilyExportSlug(group.primaryComponent))
-
-    if (!source) return null
-
-    return {
-      ...source,
-      slug: group.slug,
-      title: group.label,
-      description: group.description,
-      status: getComponentDocsAdoption(group.primaryComponent)?.badge.tone === "preview" ? "Preview" : source.status,
-      features: group.sections.map((section) => section.label),
-    } satisfies ComponentCatalogItem
-  })
-  .filter((item): item is ComponentCatalogItem => Boolean(item))
+const packageDocsSurfaceCatalog: ComponentCatalogItem[] = []
 
 const packageDocsSurfaceCatalogMap = new Map(packageDocsSurfaceCatalog.map((item) => [item.slug, item] as const))
 const hiddenPrimaryComponentCatalogSlugs = new Set([
@@ -2269,20 +2246,6 @@ const hiddenPrimaryComponentCatalogSlugs = new Set([
 ])
 const hiddenDirectoryComponentSlugs = new Set([...hiddenPrimaryComponentCatalogSlugs, ...legacyComponentSlugAliases.keys()])
 
-function mapDocsSectionKey(sectionId: string): ComponentSurfaceSectionKey {
-  if (sectionId === "primitives") return "core"
-  if (sectionId === "form-wrappers" || sectionId === "wrappers") return "integrations"
-  if (sectionId === "advanced") return "advanced"
-  if (sectionId === "transitional") return "compatibility"
-  return "related"
-}
-
-function mapDocsComponentsToSlugs(components: readonly string[]) {
-  return components
-    .map((component) => componentCatalog.find((item) => item.slug === moduleFamilyExportSlug(component))?.slug)
-    .filter((slug): slug is string => Boolean(slug))
-}
-
 export function getComponentSurfaceCatalogItem(slug?: string) {
   if (!slug) return undefined
 
@@ -2290,22 +2253,13 @@ export function getComponentSurfaceCatalogItem(slug?: string) {
   const primarySurfaceSlug = getPrimaryComponentSurfaceSlug(canonicalSlug)
 
   if (canonicalSlug !== primarySurfaceSlug) {
-    const primaryRouteMatch = resolveDocsRoute(primarySurfaceSlug)
     return (
-      (primaryRouteMatch ? packageDocsSurfaceCatalogMap.get(primaryRouteMatch.slug) : undefined) ??
+      packageDocsSurfaceCatalogMap.get(primarySurfaceSlug) ??
       componentCatalog.find((entry) => entry.slug === primarySurfaceSlug)
     )
   }
 
-  const routeMatch = resolveDocsRoute(canonicalSlug)
-  if (routeMatch) {
-    return (
-      packageDocsSurfaceCatalogMap.get(routeMatch.slug) ??
-      componentCatalog.find((item) => item.slug === moduleFamilyExportSlug(routeMatch.primaryComponent))
-    )
-  }
-
-  return componentCatalog.find((item) => item.slug === canonicalSlug)
+  return packageDocsSurfaceCatalogMap.get(canonicalSlug) ?? componentCatalog.find((item) => item.slug === canonicalSlug)
 }
 
 export function isPrimaryComponentSurface(slug: string) {
@@ -2314,9 +2268,7 @@ export function isPrimaryComponentSurface(slug: string) {
 
 export function getPrimaryComponentSurfaceSlug(slug: string) {
   const canonicalSlug = resolveLegacyComponentSlug(slug)
-  const docsRoute = resolveDocsRoute(canonicalSlug)
-
-  return docsRoute?.slug ?? (isPrimaryComponentSurface(canonicalSlug) ? canonicalSlug : componentPrimarySurfaceParent[canonicalSlug] ?? canonicalSlug)
+  return isPrimaryComponentSurface(canonicalSlug) ? canonicalSlug : componentPrimarySurfaceParent[canonicalSlug] ?? canonicalSlug
 }
 
 export function getPrimaryComponentSurfaceTitle(slug: string) {
@@ -2400,56 +2352,38 @@ export function getComponentDetailSidebarSections(activeSlug?: string): Componen
 
 export function getComponentSurfaceSections(slug: string) {
   const primarySlug = getPrimaryComponentSurfaceSlug(slug)
-  const routeMatch = resolveDocsRoute(primarySlug)
-  if (routeMatch) {
-    const detail = getDocsGroupDetail(routeMatch.group)
-    if (detail) {
-      return detail.sections
-        .map((section) => ({
-          key: mapDocsSectionKey(section.id),
-          title: section.label,
-          description: section.description,
-          slugs: mapDocsComponentsToSlugs(section.components),
-        }))
-        .filter((section) => section.slugs.length > 0)
-    }
-  }
-
   return componentSurfaceSections[primarySlug] ?? []
 }
 
 export function getPrimaryComponentMemberInventory(surfaceSlug?: string): ComponentSurfaceMemberInventoryItem[] {
-  const groups = surfaceSlug
-    ? componentDocsGroups.filter((group) => group.slug === getPrimaryComponentSurfaceSlug(surfaceSlug))
-    : componentDocsGroups
+  const surfaceSlugs = surfaceSlug ? [getPrimaryComponentSurfaceSlug(surfaceSlug)] : Object.keys(componentSurfaceSections)
 
-  return groups.flatMap((group) => {
-    const detail = getDocsGroupDetail(group.group)
-    if (!detail) return []
+  return surfaceSlugs.flatMap((currentSurfaceSlug) => {
+    const surface = getComponentSurfaceCatalogItem(currentSurfaceSlug)
+    const sections = componentSurfaceSections[currentSurfaceSlug] ?? []
 
-    return detail.sections.flatMap((section) => {
+    return sections.flatMap((section) => {
       const entries: ComponentSurfaceMemberInventoryItem[] = []
 
-      for (const item of section.items) {
-          const slug = componentCatalog.find((entry) => entry.slug === moduleFamilyExportSlug(item.component))?.slug
-          if (!slug) continue
-
+      for (const slug of section.slugs) {
           const source = componentCatalog.find((entry) => entry.slug === slug)
+          if (!source) continue
+
           entries.push({
-            component: item.component,
-            slug,
-            title: source?.title ?? item.component,
-            surfaceSlug: group.slug,
-            surfaceTitle: group.label,
-            sectionId: section.id,
-            sectionLabel: section.label,
-            sectionKey: mapDocsSectionKey(section.id),
-            summary: item.metadata?.summary ?? source?.description ?? group.description,
-            useWhen: item.metadata?.useWhen ?? group.description,
-            maturity: item.metadata?.maturity ?? "member",
-            status: item.adoption?.badge.tone === "preview" ? "Preview" : "Stable",
-            href: componentDocsPath(slug),
-          } satisfies ComponentSurfaceMemberInventoryItem)
+            component: source.title,
+            slug: source.slug,
+            title: source.title,
+            surfaceSlug: currentSurfaceSlug,
+            surfaceTitle: surface?.title ?? currentSurfaceSlug,
+            sectionId: section.key,
+            sectionLabel: section.title,
+            sectionKey: section.key,
+            summary: source.description,
+            useWhen: section.description,
+            maturity: section.key === "core" ? "core" : "helper",
+            status: source.status,
+            href: componentDocsPath(source.slug),
+          })
       }
 
       return entries
@@ -2466,7 +2400,7 @@ export function getDocumentedMembersByComponents(components: string[]) {
   return getPrimaryComponentMemberInventory().filter((item) => componentSet.has(item.component))
 }
 
-export const moduleFamilyCatalog: ModuleFamilyItem[] = [
+export const componentModuleCatalog: ComponentModuleItem[] = [
   {
     slug: "actions",
     title: "Actions",
@@ -2474,7 +2408,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: MousePointerClickIcon,
     category: "Actions",
     exports: ["ActionMenu", "CopyButton", "QuickActionGrid"],
-    href: moduleFamilyPath("actions"),
+    href: componentModulePath("actions"),
     status: "Stable",
     features: ["Quick actions", "Copy affordances", "Dense command blocks"],
   },
@@ -2485,7 +2419,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: LayoutDashboardIcon,
     category: "Layout",
     exports: ["Sidebar", "SidebarNav", "Breadcrumbs", "PageContainer", "Section", "SectionHeader", "StickyFooterBar"],
-    href: moduleFamilyPath("layout"),
+    href: componentModulePath("layout"),
     status: "Stable",
     features: ["Sidebar navigation", "Page framing", "Section structure", "Sticky actions"],
   },
@@ -2496,7 +2430,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: SlidersHorizontalIcon,
     category: "Data",
     exports: ["FilterBar", "FilterChips"],
-    href: moduleFamilyPath("filters"),
+    href: componentModulePath("filters"),
     status: "Stable",
     features: ["Filter bars", "Chips", "Search + filter pairing"],
   },
@@ -2507,7 +2441,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: AlertCircleIcon,
     category: "Overlay",
     exports: ["DialogActions", "ModalShell", "ConfirmDialog", "SheetShell", "Tooltip", "HoverCard", "RightClickMenu"],
-    href: moduleFamilyPath("overlay"),
+    href: componentModulePath("overlay"),
     status: "Stable",
     features: ["Confirm flows", "Sheet layouts", "Modal actions", "Lightweight helper hints"],
   },
@@ -2518,7 +2452,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: ChevronRightIcon,
     category: "Layout",
     exports: ["Pagination", "PageTabs", "StepperTabs"],
-    href: moduleFamilyPath("navigation"),
+    href: componentModulePath("navigation"),
     status: "Stable",
     features: ["Pagination", "Page tabs", "Stepper tabs"],
   },
@@ -2529,7 +2463,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: FormInputIcon,
     category: "Forms",
     exports: ["Input", "Textarea", "Select", "DatePicker", "NumberInput", "MoneyInput", "PhoneInput", "TagInput"],
-    href: moduleFamilyPath("inputs"),
+    href: componentModulePath("inputs"),
     status: "Stable",
     features: ["Text entry", "Select flows", "Date controls", "Money input", "Tag input"],
   },
@@ -2540,7 +2474,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: FileTextIcon,
     category: "Forms",
     exports: ["FormFieldShell", "FormInput", "FormSelect", "FormTextarea", "FormSwitch", "FormDatePicker"],
-    href: moduleFamilyPath("form"),
+    href: componentModulePath("form"),
     status: "Stable",
     features: ["Field shell", "Wrapped controls", "Date helpers", "Consistent validation"],
   },
@@ -2551,7 +2485,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: DatabaseIcon,
     category: "Data",
     exports: ["DescriptionList", "Progress", "Result", "Timeline", "MetricGrid", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
-    href: moduleFamilyPath("display"),
+    href: componentModulePath("display"),
     status: "Stable",
     features: ["Metric grids", "Timelines", "Activity feeds", "Status legends"],
   },
@@ -2562,7 +2496,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: Table2Icon,
     category: "Data",
     exports: ["DataTable"],
-    href: moduleFamilyPath("data-table"),
+    href: componentModulePath("data-table"),
     status: "Stable",
     features: ["Toolbar", "Selection", "Row actions", "Saved views", "Pagination"],
   },
@@ -2573,7 +2507,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: BadgeIcon,
     category: "Overlay",
     exports: ["Toast"],
-    href: moduleFamilyPath("notifications"),
+    href: componentModulePath("notifications"),
     status: "Preview",
     features: ["Toasts", "Transient feedback", "Status messaging"],
   },
@@ -2584,7 +2518,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: TerminalSquareIcon,
     category: "Workflow",
     exports: ["CommandPalette"],
-    href: moduleFamilyPath("command"),
+    href: componentModulePath("command"),
     status: "Preview",
     features: ["Command palette", "Keyboard discovery", "Quick navigation"],
   },
@@ -2595,7 +2529,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: Grid2x2Icon,
     category: "Workflow",
     exports: ["DateUtils", "Calendar", "DatePicker", "DateRangePicker"],
-    href: moduleFamilyPath("calendar"),
+    href: componentModulePath("calendar"),
     status: "Stable",
     features: ["Date picker", "Range picker", "Scheduling flows"],
   },
@@ -2606,7 +2540,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: BlocksIcon,
     category: "Workflow",
     exports: ["FileUpload", "ImageUpload"],
-    href: moduleFamilyPath("upload"),
+    href: componentModulePath("upload"),
     status: "Preview",
     features: ["File upload", "Image upload", "Attachment flows"],
   },
@@ -2617,7 +2551,7 @@ export const moduleFamilyCatalog: ModuleFamilyItem[] = [
     icon: WorkflowIcon,
     category: "Workflow",
     exports: ["Stepper", "Wizard"],
-    href: moduleFamilyPath("wizard"),
+    href: componentModulePath("wizard"),
     status: "Stable",
     features: ["Step flow", "Guided forms", "Progress state"],
   },
@@ -2939,7 +2873,7 @@ export const globalSearchItems: GlobalSearchItem[] = [
   },
   {
     title: "Components",
-    description: "Browse component docs and grouped families.",
+    description: "Browse component docs and related modules.",
     href: "/components",
     group: "Docs",
     shortcut: "C",
@@ -3025,7 +2959,7 @@ export const globalSearchItems: GlobalSearchItem[] = [
       "wrapper",
     ],
   })),
-  ...moduleFamilyCatalog.map((item) => ({
+  ...componentModuleCatalog.map((item) => ({
     title: `${item.title} group`,
     description: `${item.description} Open the grouped docs surface for related exports and usage boundaries.`,
     href: item.href,
@@ -3034,14 +2968,15 @@ export const globalSearchItems: GlobalSearchItem[] = [
     featured: item.slug === "data-table" || item.slug === "form" || item.slug === "layout",
     keywords: [item.slug, item.title, item.category, ...item.features, ...item.exports, "component group", "catalog", "system"],
   })),
-  ...moduleFamilyCatalog.flatMap((item) =>
+  ...componentModuleCatalog.flatMap((item) =>
     item.exports.map((exportName) => ({
       title: `${exportName} API`,
       description: `${item.title} export detail with import path, related docs and usage context.`,
-      href: moduleFamilyExportPath(item.slug, exportName),
+      href: componentExportPath(item.slug, exportName),
       group: "Components" as const,
       shortcut: "E",
       keywords: [exportName, item.title, item.slug, ...item.features, "export", "api", "component"],
     }))
   ),
 ]
+

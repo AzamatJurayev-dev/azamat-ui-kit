@@ -66,9 +66,6 @@ function getLocalSourceTarget(sourcePath: string, config: TembroConfig) {
   if (normalized.startsWith("src/hooks/")) {
     return path.join(config.paths?.hooks ?? "src/hooks", normalized.replace("src/hooks/", ""));
   }
-  if (normalized.startsWith("src/families/")) {
-    return path.join("src/families", normalized.replace("src/families/", ""));
-  }
   if (normalized.startsWith("src/components/ui/")) {
     const uiPath = config.paths?.ui ?? config.componentsPath ?? "src/components/ui";
     return path.join(uiPath, normalized.replace("src/components/ui/", ""));
@@ -85,7 +82,6 @@ function resolveLocalImportSource(importPath: string) {
   if (importPath === "@/lib/utils") return "src/lib/utils.ts";
   if (importPath.startsWith("@/components/")) return `src/components/${importPath.replace("@/components/", "")}`;
   if (importPath.startsWith("@/hooks/")) return `src/hooks/${importPath.replace("@/hooks/", "")}`;
-  if (importPath.startsWith("@/families/")) return `src/families/${importPath.replace("@/families/", "")}`;
   return undefined;
 }
 
@@ -100,7 +96,7 @@ function getImportCandidates(sourceWithoutExtension: string) {
 
 function getLocalImports(content: string) {
   const imports = new Set<string>();
-  const importPattern = /from\s+["'](@\/(?:components|hooks|lib|families)\/[^"']+)["']|import\s*\(\s*["'](@\/(?:components|hooks|lib|families)\/[^"']+)["']\s*\)/g;
+  const importPattern = /from\s+["'](@\/(?:components|hooks|lib)\/[^"']+)["']|import\s*\(\s*["'](@\/(?:components|hooks|lib)\/[^"']+)["']\s*\)/g;
   let match: RegExpExecArray | null;
 
   while ((match = importPattern.exec(content))) {

@@ -192,22 +192,22 @@ function InfoCard({
   )
 }
 
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 export type SmartCardVariant = InfoCardVariant
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 export type SmartCardSize = InfoCardSize
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 export type SmartCardDensity = InfoCardDensity
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 export type SmartCardOrientation = InfoCardOrientation
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 export type SmartCardClassNames = InfoCardClassNames
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 export type SmartCardRenderContext = InfoCardRenderContext
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 export type SmartCardProps = InfoCardProps
 
-/** @deprecated Prefer `InfoCard` or `CardFamily.Info` for new public usage. */
+/** @deprecated Prefer `InfoCard` for new public usage. */
 function SmartCard(props: SmartCardProps) {
   return <InfoCard {...props} />
 }

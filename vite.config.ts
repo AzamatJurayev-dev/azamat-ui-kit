@@ -32,6 +32,11 @@ function collectBuildEntries(directory: string): string[] {
     const fullPath = path.join(directory, entry.name);
 
     if (entry.isDirectory()) {
+      const normalizedPath = fullPath.replaceAll(path.sep, "/");
+      if (entry.name === "families" || normalizedPath.endsWith("/showcase/families")) {
+        continue;
+      }
+
       entries.push(...collectBuildEntries(fullPath));
       continue;
     }
