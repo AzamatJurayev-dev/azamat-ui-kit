@@ -787,24 +787,51 @@ function renderGenericPreviewSurface(
 
   if (item.category === "Overlay") {
     return (
-      <div className="rounded-2xl border border-dashed border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
-        <p className="text-sm font-semibold text-[color:var(--aui-page-foreground)]">{item.title}</p>
-        <p className="mt-2 text-sm leading-6 text-[color:var(--aui-page-muted)]">
-          This overlay route needs a dedicated interactive demo. The docs fallback avoids rendering a different component as a substitute.
-        </p>
+      <div className="grid gap-4 rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-[color:var(--aui-page-foreground)]">{item.title}</p>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-[color:var(--aui-page-muted)]">
+              Overlay surfaces should stay compact, focused, and secondary to the route behind them.
+            </p>
+          </div>
+          <Badge variant="outline">Overlay</Badge>
+        </div>
+
+        <div className="rounded-2xl border border-dashed border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] p-4">
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <Button variant="ghost">Cancel</Button>
+            <Button variant="outline">Save draft</Button>
+            <Button>Confirm</Button>
+          </div>
+        </div>
       </div>
     )
   }
 
   if (item.category === "Data Display") {
     return (
-      <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
+      <div className="grid gap-4 rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-lg font-semibold">{item.title}</p>
-            <p className="mt-1 text-sm text-muted-foreground">Generic display fallback kept neutral until a dedicated showcase is added.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Display surfaces should prioritize readable values, compact metadata, and clear scanning order.</p>
           </div>
           <Badge variant="outline">{mode}</Badge>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3">
+          {[
+            { label: "Primary value", value: "84.2k", note: "Strong first read" },
+            { label: "Supporting meta", value: "12 teams", note: "Context stays secondary" },
+            { label: "Status", value: "Live", note: "One concise badge or tone" },
+          ].map((entry) => (
+            <div key={entry.label} className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3">
+              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{entry.label}</p>
+              <p className="mt-2 text-lg font-semibold text-[color:var(--aui-page-foreground)]">{entry.value}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{entry.note}</p>
+            </div>
+          ))}
         </div>
       </div>
     )
