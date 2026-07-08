@@ -7,11 +7,15 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuItemDescription,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/index"
 
@@ -22,6 +26,7 @@ const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
 export function DropdownMenuShowcase({ mode }: ComponentDemoProps) {
   const [status, setStatus] = React.useState("private")
   const [notifications, setNotifications] = React.useState(true)
+  const [compact, setCompact] = React.useState(false)
 
   return (
     <div className="space-y-0">
@@ -63,12 +68,34 @@ export function DropdownMenuShowcase({ mode }: ComponentDemoProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Workspace actions</DropdownMenuLabel>
-              <DropdownMenuItem>Open workspace</DropdownMenuItem>
-              <DropdownMenuItem disabled>Delete from archive</DropdownMenuItem>
+              <DropdownMenuItem>
+                <span className="grid gap-0.5">
+                  <span>Open workspace</span>
+                  <DropdownMenuItemDescription>Go to the main dashboard route</DropdownMenuItemDescription>
+                </span>
+                <DropdownMenuShortcut>↵</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <span className="grid gap-0.5">
+                  <span>Delete from archive</span>
+                  <DropdownMenuItemDescription>Locked until retention expires</DropdownMenuItemDescription>
+                </span>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuCheckboxItem checked={notifications} onCheckedChange={(value) => setNotifications(Boolean(value))}>
                 Notification access
               </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem checked={compact} onCheckedChange={(value) => setCompact(Boolean(value))}>
+                Compact density
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>Export</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>CSV</DropdownMenuItem>
+                  <DropdownMenuItem>PDF summary</DropdownMenuItem>
+                  <DropdownMenuItem>JSON payload</DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
               <DropdownMenuGroup>
                 <DropdownMenuRadioGroup value={status} onValueChange={(value) => setStatus(value)}>
                   <DropdownMenuRadioItem value="public">Public</DropdownMenuRadioItem>
