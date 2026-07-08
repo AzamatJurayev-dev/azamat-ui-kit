@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const quantityInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { QuantityInput } from "@/index"
+import { QuantityInput } from "tembro"
 
 export function Example() {
   const [quantity, setQuantity] = useState<number | null>(3)

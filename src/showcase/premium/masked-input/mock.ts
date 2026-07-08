@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const maskedInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { MaskedInput } from "@/index"
+import { MaskedInput } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState("AA-123")

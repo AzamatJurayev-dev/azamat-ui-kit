@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const phoneInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { PhoneInput } from "@/index"
+import { PhoneInput } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState("+998 90 123 45 67")

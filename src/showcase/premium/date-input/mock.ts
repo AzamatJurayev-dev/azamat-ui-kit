@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const dateInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { DateInput } from "@/index"
+import { DateInput } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState("2026-06-19")
