@@ -13,6 +13,7 @@ import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
 import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { avatarMock, AvatarShowcase } from "./avatar"
 import { carouselMock, CarouselShowcase } from "./carousel"
+import { clearableInputMock, ClearableInputShowcase } from "./clearable-input"
 import { jsonInputMock, JsonInputShowcase } from "./json-input"
 import { qrCodeMock, QRCodeShowcase } from "./qr-code"
 import { menubarMock, MenubarShowcase } from "./menubar"
@@ -31,8 +32,10 @@ import { dualListPickerMock, DualListPickerShowcase } from "./dual-list-picker"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
 import { commandBarMock, CommandBarShowcase } from "./command-bar"
+import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
 import { copyButtonMock, CopyButtonShowcase } from "./copy-button"
+import { copyFieldMock, CopyFieldShowcase } from "./copy-field"
 import { dataStateMock, DataStateShowcase } from "./data-state"
 import { dataTableMock, DataTableShowcase } from "./data-table"
 import { dateInputMock, DateInputShowcase } from "./date-input"
@@ -119,9 +122,9 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   calendar: { mock: calendarMock, Showcase: CalendarShowcase },
   "calendar-scheduler": { mock: calendarSchedulerMock, Showcase: CalendarSchedulerShowcase },
   "command-bar": { mock: commandBarMock, Showcase: CommandBarShowcase },
-  "command-palette": { mock: commandBarMock, Showcase: CommandBarShowcase },
+  "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
   "carousel": { mock: carouselMock, Showcase: CarouselShowcase },
-  "clearable-input": { mock: inputMock, Showcase: InputShowcase },
+  "clearable-input": { mock: clearableInputMock, Showcase: ClearableInputShowcase },
   "code-block": { mock: codeBlockMock, Showcase: CodeBlockShowcase },
   "dual-list-picker": { mock: dualListPickerMock, Showcase: DualListPickerShowcase },
   divider: { mock: dividerMock, Showcase: DividerShowcase },
@@ -161,7 +164,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "confirm-dialog": { mock: confirmDialogMock, Showcase: ConfirmDialogShowcase },
   checkbox: { mock: checkboxMock, Showcase: CheckboxShowcase },
   "copy-button": { mock: copyButtonMock, Showcase: CopyButtonShowcase },
-  "copy-field": { mock: copyButtonMock, Showcase: CopyButtonShowcase },
+  "copy-field": { mock: copyFieldMock, Showcase: CopyFieldShowcase },
   switch: { mock: switchMock, Showcase: SwitchShowcase },
   badge: { mock: badgeMock, Showcase: BadgeShowcase },
   card: { mock: cardMock, Showcase: CardShowcase },
