@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const notificationsFamilyMock: FamilyDemoMock = {
-  code: `import { Toast } from "azix"\n\nexport function Example() {\n  return <Toast />\n}`,
+  code: `import { Toast } from "tembro"\n\nexport function Example() {\n  return <Toast />\n}`,
   highlights: ["Toast messages", "Transient feedback", "Success and warning states", "Async completion"],
   scenarios: [
     { title: "Success feedback", description: "Acknowledge completed actions without interrupting the user." },

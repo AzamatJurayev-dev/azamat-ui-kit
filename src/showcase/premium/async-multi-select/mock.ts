@@ -43,7 +43,7 @@ export function Example() {
 }`
   ,
   htmlCode: `<button data-slot="async-multiselect-trigger">Choose modules</button>`,
-  cliCommand: "npx azix add async-multi-select",
+  cliCommand: "npx tembro add async-multi-select",
   highlights: ["Multiple selected tags", "maxSelected guard", "select-all action", "remove by tag/checkbox"],
   relatedBlockSlugs: ["users-table", "crm-dashboard", "settings-form"],
   scenarios: [

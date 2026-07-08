@@ -13,7 +13,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add data-state",
+  cliCommand: "npx tembro add data-state",
   highlights: [
     "Idle, loading, empty, error and success state surface",
     "Optional retry action and custom content area",

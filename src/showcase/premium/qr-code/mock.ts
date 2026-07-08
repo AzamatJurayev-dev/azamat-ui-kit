@@ -6,7 +6,7 @@ export const qrCodeMock: ComponentDemoMock = {
 export function Example() {
   return <QRCode value="https://azamat-ui.vercel.app" alt="Azamat UI" />
 }`,
-  cliCommand: "npx azix add qr-code",
+  cliCommand: "npx tembro add qr-code",
   highlights: [
     "Fallback SVG renderer if no image is provided",
     "Configurable size and module density",

@@ -17,7 +17,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx azix add avatar",
+  cliCommand: "npx tembro add avatar",
   highlights: [
     "Single avatar plus stacked group export",
     "Fallback initials, shape, size, and status dot support",

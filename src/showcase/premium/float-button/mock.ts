@@ -11,7 +11,7 @@ export function Example() {
     </FloatButton>
   )
 }`,
-  cliCommand: "npx azix add float-button",
+  cliCommand: "npx tembro add float-button",
   highlights: [
     "Fixed-position shortcut button",
     "Placement variants across corners",

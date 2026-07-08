@@ -70,9 +70,9 @@ export async function presetCommand(name: string, options: PresetCommandOptions 
   }
 
   const cwd = process.cwd()
-  const configPath = path.join(cwd, "azamat-ui.json")
+  const configPath = path.join(cwd, "tembro.json")
   if (!fs.existsSync(configPath)) {
-    logger.error("azamat-ui.json topilmadi. Avval init qiling.")
+    logger.error("tembro.json topilmadi. Avval init qiling.")
     process.exit(1)
   }
 

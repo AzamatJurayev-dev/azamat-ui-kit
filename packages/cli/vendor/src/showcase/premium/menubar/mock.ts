@@ -16,7 +16,7 @@ export function Example() {
     </Menubar>
   )
 }`,
-  cliCommand: "npx azix add menubar",
+  cliCommand: "npx tembro add menubar",
   highlights: [
     "Composable menubar surfaces with grouped actions",
     "Trigger + content + item primitives",

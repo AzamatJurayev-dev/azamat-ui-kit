@@ -12,7 +12,7 @@ export function Example() {
     </StatisticGrid>
   )
 }`,
-  cliCommand: "npx azix add statistic",
+  cliCommand: "npx tembro add statistic",
   highlights: [
     "Single statistic, statistic card and grid exports work together",
     "Trend badge, loading state and description support",

@@ -8,7 +8,7 @@ const registryJsonPath = path.join(root, "registry.json")
 const registryTsPath = path.join(root, "cli/registry.ts")
 const registryStatusTsPath = path.join(root, "cli/registry-status.ts")
 const publicComponentSurfaceTsPath = path.join(root, "src/public-component-surface.ts")
-const showcaseRegistryJsonPath = path.join(root, "src/showcase/azix-registry.json")
+const showcaseRegistryJsonPath = path.join(root, "src/showcase/tembro-registry.json")
 
 const failures = []
 
@@ -150,11 +150,11 @@ if (registryJson) {
 
 if (registryJson && showcaseRegistryJson) {
   if (registryJson.version !== showcaseRegistryJson.version) {
-    failures.push("src/showcase/azix-registry.json version does not match registry.json")
+    failures.push("src/showcase/tembro-registry.json version does not match registry.json")
   }
 
   if (JSON.stringify(showcaseRegistryJson.publicSurface ?? {}) !== JSON.stringify(registryJson.publicSurface ?? {})) {
-    failures.push("src/showcase/azix-registry.json publicSurface does not match registry.json")
+    failures.push("src/showcase/tembro-registry.json publicSurface does not match registry.json")
   }
 }
 

@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { Button, Watermark } from "@/index"
 
-const labels = ["AZIX", "STAGING", "DRAFT", "PRIVATE BETA"]
+const labels = ["tembro", "STAGING", "DRAFT", "PRIVATE BETA"]
 
 export function WatermarkShowcase() {
   const [label, setLabel] = React.useState(labels[0])

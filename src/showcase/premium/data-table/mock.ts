@@ -8,7 +8,7 @@ export const dataTableMock: ComponentDemoMock = {
   DataTableSortableHeader,
   createDataTableActionsColumn,
   createDataTableSelectColumn,
-} from "azix"
+} from "tembro"
 
 export function Example() {
   return (

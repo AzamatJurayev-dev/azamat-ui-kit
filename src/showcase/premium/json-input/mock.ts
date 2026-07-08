@@ -4,9 +4,9 @@ export const jsonInputMock: ComponentDemoMock = {
   code: `import { JsonInput } from "@/index"
 
 export function Example() {
-  return <JsonInput value='{"name":"azix"}' />
+  return <JsonInput value='{"name":"tembro"}' />
 }`,
-  cliCommand: "npx azix add json-input",
+  cliCommand: "npx tembro add json-input",
   highlights: [
     "Validates JSON on edit",
     "Returns parsed payload and validity in callback",

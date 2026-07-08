@@ -14,7 +14,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add copy-button",
+  cliCommand: "npx tembro add copy-button",
   highlights: [
     "Built-in copied feedback state",
     "Works with the exported Button API surface",

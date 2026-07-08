@@ -12,7 +12,7 @@ export function Example() {
     </Watermark>
   )
 }`,
-  cliCommand: "npx azix add watermark",
+  cliCommand: "npx tembro add watermark",
   highlights: [
     "Optional watermark for document and export previews",
     "Works on any container content",

@@ -6,8 +6,8 @@ function createDataTablePartMock(
   summary: string
 ): ComponentDemoMock {
   return {
-    code: `import { ${component} } from "azix"\n\nexport function Example() {\n  return <${component} />\n}`,
-    cliCommand: `npx azix add ${slug}`,
+    code: `import { ${component} } from "tembro"\n\nexport function Example() {\n  return <${component} />\n}`,
+    cliCommand: `npx tembro add ${slug}`,
     highlights: [
       `${component} preview inside a real DataTable shell`,
       "Interaction-focused route",

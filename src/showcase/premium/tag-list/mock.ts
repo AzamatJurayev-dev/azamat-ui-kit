@@ -13,7 +13,7 @@ export function Example() {
 
   return <TagList items={items} removable onRemove={(item) => setItems((list) => list.filter((entry) => entry.key !== item.key))} />
 }`,
-  cliCommand: "npx azix add tag-list",
+  cliCommand: "npx tembro add tag-list",
   highlights: [
     "Compact badge-based collection of labels",
     "Optional remove actions for editable taxonomies",

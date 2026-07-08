@@ -26,7 +26,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="dialog-trigger">Open dialog</button>`,
-  cliCommand: "npx azix add dialog",
+  cliCommand: "npx tembro add dialog",
   highlights: [
     "Controlled open state",
     "Title and description requirement",

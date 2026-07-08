@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const navigationFamilyMock: FamilyDemoMock = {
-  code: `import { Pagination, PageTabs, StepperTabs } from "azix"\n\nexport function Example() {\n  return <Pagination />\n}`,
+  code: `import { Pagination, PageTabs, StepperTabs } from "tembro"\n\nexport function Example() {\n  return <Pagination />\n}`,
   highlights: ["Pagination controls", "Page tabs", "Stepper tabs", "Route-aware segmentation"],
   scenarios: [
     { title: "Paged reports", description: "Move through dense result sets with explicit page state." },

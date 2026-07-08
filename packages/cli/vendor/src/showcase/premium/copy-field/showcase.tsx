@@ -6,7 +6,7 @@ const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
 
 const values = {
   secret: "whsec_workspace_live_72AJK1P",
-  endpoint: "https://api.azix.dev/webhooks/events",
+  endpoint: "https://api.tembro.dev/webhooks/events",
   invite: "ops-release-2026",
 }
 

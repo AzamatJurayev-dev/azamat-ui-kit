@@ -14,7 +14,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx azix add tag",
+  cliCommand: "npx tembro add tag",
   highlights: [
     "Semantic tones for state and status information",
     "Selectable and removable tags",

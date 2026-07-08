@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const popoverMock: ComponentDemoMock = {
-  code: `import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "azix"
+  code: `import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "tembro"
 
 export function Example() {
   return (
@@ -26,7 +26,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="popover-trigger">Open popover</button>`,
-  cliCommand: "npx azix add popover",
+  cliCommand: "npx tembro add popover",
   highlights: ["Anchored overlay", "Action-specific compact content", "Placement control", "Keyboard-focus hints"],
   relatedBlockSlugs: ["users-table", "dashboard-starter", "crm-dashboard"],
   scenarios: [

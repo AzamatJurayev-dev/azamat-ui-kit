@@ -1,6 +1,6 @@
 {
-  "$schema": "https://azix.dev/registry.schema.json",
-  "name": "azix",
+  "$schema": "https://tembro.dev/registry.schema.json",
+  "name": "tembro",
   "version": "1.0.0",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {

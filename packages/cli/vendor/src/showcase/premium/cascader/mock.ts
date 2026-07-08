@@ -10,7 +10,7 @@ export function Example() {
 
   return <Cascader options={options} value={value} onValueChange={setValue} />
 }`,
-  cliCommand: "npx azix add cascader",
+  cliCommand: "npx tembro add cascader",
   highlights: [
     "Three-level dependency selects",
     "Controlled by string path value",

@@ -12,7 +12,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx azix add divider",
+  cliCommand: "npx tembro add divider",
   highlights: [
     "Horizontal divider as labeled group boundary",
     "Vertical divider for compact dense layouts",

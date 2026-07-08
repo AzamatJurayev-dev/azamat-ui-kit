@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const otpInputMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { OtpInput } from "azix"
+import { OtpInput } from "tembro"
 
 export function Example() {
   const [code, setCode] = React.useState("")

@@ -20,7 +20,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add tour",
+  cliCommand: "npx tembro add tour",
   highlights: [
     "Controlled tour state with index-driven steps",
     "Built-in close handling",

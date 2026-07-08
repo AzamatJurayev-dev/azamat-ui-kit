@@ -14,7 +14,7 @@ export function Example() {
     </NavigationMenu>
   )
 }`,
-  cliCommand: "npx azix add navigation-menu",
+  cliCommand: "npx tembro add navigation-menu",
   highlights: [
     "Accessible anchor-style navigation links",
     "Active state is handled via prop",

@@ -12,7 +12,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add mention-input",
+  cliCommand: "npx tembro add mention-input",
   highlights: [
     "Trigger-based suggestion filtering",
     "Keyboard navigation for suggestions",

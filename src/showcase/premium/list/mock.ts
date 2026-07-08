@@ -18,7 +18,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add list",
+  cliCommand: "npx tembro add list",
   highlights: [
     "Compact title/description rows with optional avatar and extra slot",
     "Clickable row pattern without building a table",

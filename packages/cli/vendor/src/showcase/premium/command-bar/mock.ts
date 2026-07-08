@@ -12,7 +12,7 @@ export function Example() {
     </CommandBar>
   )
 }`,
-  cliCommand: "npx azix add command-bar",
+  cliCommand: "npx tembro add command-bar",
   highlights: [
     "Floating action rail for global shortcuts or workflow actions",
     "Top or bottom positioning",

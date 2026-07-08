@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const actionMenuMock: ComponentDemoMock = {
-  code: `import { ActionMenu } from "azix"
+  code: `import { ActionMenu } from "tembro"
 
 export function Example() {
   return (

@@ -21,7 +21,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add dual-list-picker",
+  cliCommand: "npx tembro add dual-list-picker",
   highlights: [
     "Move items between available/selected lists",
     "Supports disabled choices",

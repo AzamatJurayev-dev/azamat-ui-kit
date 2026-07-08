@@ -53,7 +53,7 @@ export function CopyButtonShowcase() {
       <section className={panelClass}>
         <div className="flex flex-wrap items-center gap-3">
           <CopyButton value="INV-2026-00482" size="sm" variant="outline" copyLabel="Copy invoice id" />
-          <CopyButton value="https://azix.dev/invite/team-ops" variant="secondary" copyLabel="Copy invite link" />
+          <CopyButton value="https://tembro.dev/invite/team-ops" variant="secondary" copyLabel="Copy invite link" />
           <CopyButton value="workspace_admin" variant="ghost" copyLabel="Copy role" />
         </div>
       </section>

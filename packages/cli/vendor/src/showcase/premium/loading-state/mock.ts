@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const loadingStateMock: ComponentDemoMock = {
-  code: `import { LoadingState } from "azix"
+  code: `import { LoadingState } from "tembro"
 
 export function Example() {
   return <LoadingState label="Loading metrics" description="Preparing dashboard widgets and chart data." />

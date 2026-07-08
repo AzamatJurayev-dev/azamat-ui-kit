@@ -24,7 +24,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add kanban",
+  cliCommand: "npx tembro add kanban",
   highlights: [
     "Horizontal scrollable board layout",
     "Custom column metadata and counts",

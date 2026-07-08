@@ -11,7 +11,7 @@ export function Example() {
     </Stack>
   )
 }`,
-  cliCommand: "npx azix add stack",
+  cliCommand: "npx tembro add stack",
   highlights: [
     "Flexible vertical layout helper",
     "Split insert points without extra wrappers",

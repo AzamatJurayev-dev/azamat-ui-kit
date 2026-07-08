@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const pageHeaderMock: ComponentDemoMock = {
-  code: `import { Breadcrumbs, PageHeader } from "azix"
+  code: `import { Breadcrumbs, PageHeader } from "tembro"
 
 export function Example() {
   return (

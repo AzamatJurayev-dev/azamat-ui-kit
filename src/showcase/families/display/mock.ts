@@ -1,7 +1,7 @@
 import type { FamilyDemoMock } from "../types"
 
 export const displayFamilyMock: FamilyDemoMock = {
-  code: `import { MetricGrid, Timeline, ActivityFeed, Avatar } from "azix"\n\nexport function Example() {\n  return <MetricGrid />\n}`,
+  code: `import { MetricGrid, Timeline, ActivityFeed, Avatar } from "tembro"\n\nexport function Example() {\n  return <MetricGrid />\n}`,
   highlights: ["Metric grids", "Timelines", "Activity feeds", "Status legends"],
   scenarios: [
     { title: "KPI dashboards", description: "Present summary metrics with clear information hierarchy." },

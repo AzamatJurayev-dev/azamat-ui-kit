@@ -14,7 +14,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx azix add spinner",
+  cliCommand: "npx tembro add spinner",
   highlights: [
     "Inline spinner plus overlay mode from the same export",
     "Size tokens for dense buttons, cards, and page sections",

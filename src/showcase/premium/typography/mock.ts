@@ -14,7 +14,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx azix add typography",
+  cliCommand: "npx tembro add typography",
   highlights: ["Heading hierarchy", "Muted and default text sizes", "Blockquote and mark patterns for content-heavy pages"],
   scenarios: [
     { title: "Docs pages", description: "Use components for stable copy rhythm." },

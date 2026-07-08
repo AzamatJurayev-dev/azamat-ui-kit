@@ -18,7 +18,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="date-picker">Date</label><input id="date-picker" type="text" value="2026-06-19" />',
-  cliCommand: "npx azix add date-picker",
+  cliCommand: "npx tembro add date-picker",
   highlights: ["Popover selection", "Range guard rails", "disabledDates support", "Min and max windows"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "settings-form"],
   scenarios: [

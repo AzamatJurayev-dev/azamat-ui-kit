@@ -16,7 +16,7 @@ export function Example() {
   return <RadioGroup value={value} onValueChange={setValue} options={planOptions} />
 }`,
   htmlCode: `<div data-slot="radio-group" role="radiogroup"></div>`,
-  cliCommand: "npx azix add radio-group",
+  cliCommand: "npx tembro add radio-group",
   highlights: ["Single choice", "Description rows", "Controlled value", "Plan selection"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "dashboard-starter"],
   scenarios: [

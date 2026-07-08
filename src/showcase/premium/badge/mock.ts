@@ -1,9 +1,9 @@
 import type { ComponentDemoMock } from "../types"
 
 export const badgeMock: ComponentDemoMock = {
-  code: `import { Badge } from "azix"\n\nexport function Example() {\n  return (\n    <div className="flex flex-wrap gap-2">\n      <Badge status="success" label="Active" />\n      <Badge status="warning" label="Needs review" />\n      <Badge variant="secondary" label="Invoices" count={12} />\n      <Badge variant="outline" label="Design" removable onRemove={() => console.log("remove")} />\n    </div>\n  )\n}\n`,
+  code: `import { Badge } from "tembro"\n\nexport function Example() {\n  return (\n    <div className="flex flex-wrap gap-2">\n      <Badge status="success" label="Active" />\n      <Badge status="warning" label="Needs review" />\n      <Badge variant="secondary" label="Invoices" count={12} />\n      <Badge variant="outline" label="Design" removable onRemove={() => console.log("remove")} />\n    </div>\n  )\n}\n`,
   htmlCode: `<span data-slot="badge" data-variant="secondary">New</span>`,
-  cliCommand: "npx azix add badge",
+  cliCommand: "npx tembro add badge",
   highlights: ["Status props", "Count chip", "Removable chip", "Compact metadata"],
   relatedBlockSlugs: ["users-table", "crm-dashboard", "dashboard-starter"],
   scenarios: [

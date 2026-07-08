@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const tagInputMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { TagInput } from "azix"
+import { TagInput } from "tembro"
 
 export function Example() {
   const [tags, setTags] = React.useState(["billing", "priority"])

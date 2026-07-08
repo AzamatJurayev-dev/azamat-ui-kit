@@ -15,7 +15,7 @@ export function Example() {
     </Section>
   )
 }`,
-  cliCommand: "npx azix add section",
+  cliCommand: "npx tembro add section",
   highlights: ["Header, description and actions in one wrapper", "Bordered mode for page sections", "Reusable container semantics"],
   scenarios: [
     { title: "Overview", description: "Use as dashboard section shell." },

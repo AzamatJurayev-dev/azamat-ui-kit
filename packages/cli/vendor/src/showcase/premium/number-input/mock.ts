@@ -36,7 +36,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<label for="example-number">Amount</label><input id="example-number" inputmode="decimal" type="text" />`,
-  cliCommand: "npx azix add number-input",
+  cliCommand: "npx tembro add number-input",
   highlights: ["Numeric parsing", "Min/max constraints", "Decimal steps", "allowEmpty fallback"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

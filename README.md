@@ -1,6 +1,6 @@
-# azix
+# tembro
 
-Azix is a source-copy-first React UI kit.
+tembro is a source-copy-first React UI kit.
 
 The CLI copies editable component source into your app. New projects should treat local `components` code as the canonical surface.
 
@@ -9,15 +9,15 @@ The CLI copies editable component source into your app. New projects should trea
 Next.js:
 
 ```bash
-npx azix init --template next --defaults
-npx azix add button input
+npx tembro init --template next --defaults
+npx tembro add button input
 ```
 
 Vite:
 
 ```bash
-npx azix init --template vite --defaults
-npx azix add button input
+npx tembro init --template vite --defaults
+npx tembro add button input
 ```
 
 ## Use

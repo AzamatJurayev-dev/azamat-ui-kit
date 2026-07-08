@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const pageContainerMock: ComponentDemoMock = {
-  code: `import { PageContainer } from "azix"
+  code: `import { PageContainer } from "tembro"
 
 export function Example() {
   return (

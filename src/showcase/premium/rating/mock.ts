@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const ratingMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Rating } from "azix"
+import { Rating } from "tembro"
 
 export function Example() {
   const [value, setValue] = React.useState(4)

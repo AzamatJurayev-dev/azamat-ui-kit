@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const clearableInputMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { ClearableInput } from "azix"
+import { ClearableInput } from "tembro"
 
 export function Example() {
   const [value, setValue] = React.useState("workspace token")

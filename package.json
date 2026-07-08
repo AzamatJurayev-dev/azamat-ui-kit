@@ -1,5 +1,5 @@
 {
-  "name": "azix",
+  "name": "tembro",
   "version": "1.0.0",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
@@ -13,19 +13,19 @@
     "registry",
     "cli"
   ],
-  "homepage": "https://github.com/AzamatJurayev-dev/azix#readme",
+  "homepage": "https://github.com/AzamatJurayev-dev/tembro#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AzamatJurayev-dev/azix.git"
+    "url": "git+https://github.com/AzamatJurayev-dev/tembro.git"
   },
   "bugs": {
-    "url": "https://github.com/AzamatJurayev-dev/azix/issues"
+    "url": "https://github.com/AzamatJurayev-dev/tembro/issues"
   },
   "license": "MIT",
   "author": "Azamat Jurayev",
   "type": "module",
   "bin": {
-    "azix": "bin/azix.cjs"
+    "tembro": "bin/tembro.cjs"
   },
   "publishConfig": {
     "access": "public"
@@ -131,10 +131,10 @@
     "clean": "node scripts/clean-dist.mjs",
     "build": "npm run clean && vite build && tsc -p tsconfig.build.json && npm run test:build-output",
     "build:lib": "vite build && tsc -p tsconfig.build.json",
-    "build:cli": "npm run build --workspace azix-cli-internal",
+    "build:cli": "npm run build --workspace tembro-cli-internal",
     "build:all": "npm run build && npm run build:cli",
     "prepack": "node scripts/prepack-root.mjs",
-    "pack:dry-run": "npm pack --dry-run && npm pack --dry-run --workspace azix-cli-internal",
+    "pack:dry-run": "npm pack --dry-run && npm pack --dry-run --workspace tembro-cli-internal",
     "check-version-sync": "node scripts/check-version-sync.mjs",
     "check-neutral-palette": "node scripts/check-neutral-palette.mjs",
     "check:showcase-quality": "node scripts/check-showcase-quality.mjs",

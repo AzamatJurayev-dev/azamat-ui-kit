@@ -12,7 +12,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx azix add skeleton",
+  cliCommand: "npx tembro add skeleton",
   highlights: [
     "Base line/block placeholder plus text and card presets",
     "Useful while data shape is known but content is still loading",

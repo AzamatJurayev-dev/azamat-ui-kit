@@ -20,7 +20,7 @@ export function Example() {
     />
   )
 }`,
-  cliCommand: "npx azix add tree-view",
+  cliCommand: "npx tembro add tree-view",
   highlights: [
     "Tree data model with nested children",
     "Controlled and uncontrolled expand state support",

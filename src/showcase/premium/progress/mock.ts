@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const progressMock: ComponentDemoMock = {
-  code: `import { Progress, ProgressCard } from "azix"
+  code: `import { Progress, ProgressCard } from "tembro"
 
 export function Example() {
   return (

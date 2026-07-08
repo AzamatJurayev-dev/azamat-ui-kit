@@ -8,13 +8,13 @@ import { presetCommand } from "./commands/preset"
 const program = new Command()
 
 program
-  .name("azix")
-  .description("Azamat UI Kit source-copy CLI")
+  .name("tembro")
+  .description("Tembro source-copy CLI")
   .version("1.0.0")
 
 program
   .command("init")
-  .description("Initialize local Azamat UI source files in your project")
+  .description("Initialize local Tembro source files in your project")
   .option("--template <template>", "Project defaults: vite or next", "vite")
   .option("--skip-install", "Do not install base dependencies")
   .option("-y, --defaults", "Use template defaults without interactive prompts")
@@ -45,8 +45,8 @@ program
 
 program
   .command("theme")
-  .description("Write or update Azamat UI theme CSS in your global CSS file")
-  .argument("[cssPath]", "global CSS path, default from azamat-ui.json or src/index.css")
+  .description("Write or update Tembro theme CSS in your global CSS file")
+  .argument("[cssPath]", "global CSS path, default from tembro.json or src/index.css")
   .action(themeCommand)
 
 program.parse()

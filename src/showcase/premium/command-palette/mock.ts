@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const commandPaletteMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { CommandPalette, Kbd } from "azix"
+import { CommandPalette, Kbd } from "tembro"
 
 export function Example() {
   const [open, setOpen] = React.useState(true)

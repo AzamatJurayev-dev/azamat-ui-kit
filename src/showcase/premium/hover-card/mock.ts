@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const hoverCardMock: ComponentDemoMock = {
-  code: `import { Avatar, HoverCard } from "azix"
+  code: `import { Avatar, HoverCard } from "tembro"
 
 export function Example() {
   return (
@@ -12,7 +12,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<div data-slot="hover-card"></div>`,
-  cliCommand: "npx azix add hover-card",
+  cliCommand: "npx tembro add hover-card",
   highlights: ["Entity preview", "Hover + focus", "Secondary context", "Compact detail card"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "settings-form"],
   scenarios: [

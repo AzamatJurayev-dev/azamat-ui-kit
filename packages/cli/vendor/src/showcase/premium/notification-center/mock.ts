@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const notificationCenterMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { NotificationCenter } from "azix"
+import { NotificationCenter } from "tembro"
 
 export function Example() {
   const [items, setItems] = React.useState([

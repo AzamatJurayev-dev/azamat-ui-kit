@@ -13,7 +13,7 @@ export function Example() {
     </div>
   )
 }`,
-  cliCommand: "npx azix add affix",
+  cliCommand: "npx tembro add affix",
   highlights: [
     "Pin content to an offset within a scrollable container",
     "Simple API with top and z-index control",

@@ -18,7 +18,7 @@ export function Example() {
 }
 `,
   htmlCode: '<label for="phone">Phone</label><input id="phone" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" />',
-  cliCommand: "npx azix add phone-input",
+  cliCommand: "npx tembro add phone-input",
   highlights: ["Phone formatting assumptions", "Locale/defaultCountry behavior", "Controlled value contract", "Raw vs displayed phone forms"],
   relatedBlockSlugs: ["users-table", "settings-form", "pricing-section"],
   scenarios: [

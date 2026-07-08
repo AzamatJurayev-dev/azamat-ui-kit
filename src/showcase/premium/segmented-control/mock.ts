@@ -20,7 +20,7 @@ export function Example() {
   <button role="radio" aria-checked="true">Board</button>
   <button role="radio" aria-checked="false">List</button>
 </div>`,
-  cliCommand: "npx azix add segmented-control",
+  cliCommand: "npx tembro add segmented-control",
   highlights: [
     "Controlled or uncontrolled value handling",
     "Icon + label segments with size tokens",

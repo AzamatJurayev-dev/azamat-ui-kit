@@ -7,7 +7,7 @@ import { installPackages } from "../utils/install-packages";
 import { getCliNpxCommand } from "../utils/cli-metadata";
 import { getPackageRootFromImportMeta } from "../utils/package-root";
 
-type AzamatUiConfig = {
+type TembroConfig = {
   style?: string;
   alias?: string;
   componentsPath?: string;
@@ -30,7 +30,7 @@ function isComponentName(value: string): value is ComponentName {
   return value in registry;
 }
 
-function getComponentsRoot(config: AzamatUiConfig) {
+function getComponentsRoot(config: TembroConfig) {
   if (config.paths?.components) return config.paths.components;
 
   const legacyComponentsPath = config.componentsPath ?? "src/components/ui";
@@ -39,7 +39,7 @@ function getComponentsRoot(config: AzamatUiConfig) {
     : legacyComponentsPath;
 }
 
-function resolveTargetPath(target: string, config: AzamatUiConfig) {
+function resolveTargetPath(target: string, config: TembroConfig) {
   const componentsRoot = getComponentsRoot(config);
   const uiPath = config.paths?.ui ?? config.componentsPath ?? path.join(componentsRoot, "ui");
   const hooksPath = config.paths?.hooks ?? "src/hooks";
@@ -59,7 +59,7 @@ function applyAlias(content: string, alias = "@") {
   return content.replaceAll("@/", `${alias}/`);
 }
 
-function getLocalSourceTarget(sourcePath: string, config: AzamatUiConfig) {
+function getLocalSourceTarget(sourcePath: string, config: TembroConfig) {
   const normalized = sourcePath.replaceAll("\\", "/");
 
   if (normalized === "src/lib/utils.ts") return config.utilsPath ?? "src/lib/utils.ts";
@@ -139,10 +139,10 @@ function formatAvailableComponents() {
 
 export async function addCommand(components: string[], options: AddCommandOptions = {}) {
   const cwd = process.cwd();
-  const configPath = path.join(cwd, "azamat-ui.json");
+  const configPath = path.join(cwd, "tembro.json");
 
   if (!fs.existsSync(configPath)) {
-    logger.error("azamat-ui.json topilmadi. Avval init qiling:");
+    logger.error("tembro.json topilmadi. Avval init qiling:");
     logger.info(getCliNpxCommand("init"));
     process.exit(1);
   }
@@ -170,7 +170,7 @@ export async function addCommand(components: string[], options: AddCommandOption
     process.exit(1);
   }
 
-  const config = (await fs.readJson(configPath)) as AzamatUiConfig;
+  const config = (await fs.readJson(configPath)) as TembroConfig;
   const packageRoot = getPackageRootFromImportMeta(import.meta.url);
   const packageManager = detectPackageManager(cwd);
   const items = collectRegistryItems(validComponents);

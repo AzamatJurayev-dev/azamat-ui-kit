@@ -31,7 +31,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="simple-select-trigger">Open options</button>`,
-  cliCommand: "npx azix add simple-select",
+  cliCommand: "npx tembro add simple-select",
   highlights: ["Controlled usage", "Static options", "Clear default value", "Disabled option handling"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

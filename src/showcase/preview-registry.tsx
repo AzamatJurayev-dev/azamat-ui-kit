@@ -476,7 +476,7 @@ export function getComponentPreview(slug: string) {
 
   return {
     title: `${slug} preview`,
-    command: `npx azix add ${slug}`,
+    command: `npx tembro add ${slug}`,
     code: demo.mock.code,
     Render() {
       return (
@@ -504,7 +504,7 @@ export function getComponentPreview(slug: string) {
             <div className="grid gap-4 md:grid-cols-2">
               <div className={`rounded-[24px] p-4 ${cardClassName}`}>
                 <p className={`text-xs font-semibold uppercase tracking-[0.22em] ${mutedTextClassName}`}>CLI</p>
-                <code className="mt-3 block text-sm aui-text-strong">{`npx azix add ${slug}`}</code>
+                <code className="mt-3 block text-sm aui-text-strong">{`npx tembro add ${slug}`}</code>
               </div>
               <div className={`rounded-[24px] p-4 ${cardClassName}`}>
                 <p className={`text-xs font-semibold uppercase tracking-[0.22em] ${mutedTextClassName}`}>Preview note</p>

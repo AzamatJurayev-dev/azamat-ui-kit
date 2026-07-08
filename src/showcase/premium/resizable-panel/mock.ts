@@ -12,7 +12,7 @@ export function Example() {
     </ResizablePanelGroup>
   )
 }`,
-  cliCommand: "npx azix add resizable-panel",
+  cliCommand: "npx tembro add resizable-panel",
   highlights: [
     "Declarative split layout with customizable handles",
     "Supports horizontal and vertical directions",

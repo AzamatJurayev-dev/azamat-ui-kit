@@ -19,7 +19,7 @@ if (hasBuildOutput) {
   process.exit(0)
 }
 
-const result = spawnSync(npmBin, ["run", "build", "--workspace", "azix-cli-internal"], {
+const result = spawnSync(npmBin, ["run", "build", "--workspace", "tembro-cli-internal"], {
   cwd: root,
   stdio: "inherit",
   shell: false,

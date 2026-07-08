@@ -1,6 +1,6 @@
-export const AZAMAT_UI_THEME_START = "/* azix:start */"
-export const AZAMAT_UI_THEME_END = "/* azix:end */"
-export const AZAMAT_UI_THEME_MARKER = "azix"
+export const AZAMAT_UI_THEME_START = "/* tembro:start */"
+export const AZAMAT_UI_THEME_END = "/* tembro:end */"
+export const AZAMAT_UI_THEME_MARKER = "tembro"
 
 export function getAzamatUiThemeCss(packageSourcePath: string) {
   return `${AZAMAT_UI_THEME_START}

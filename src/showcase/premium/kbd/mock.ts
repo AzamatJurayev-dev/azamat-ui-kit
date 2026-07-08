@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const kbdMock: ComponentDemoMock = {
-  code: `import { Kbd } from "azix"
+  code: `import { Kbd } from "tembro"
 
 export function Example() {
   return (
@@ -11,7 +11,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<kbd data-slot="kbd">Ctrl</kbd>`,
-  cliCommand: "npx azix add kbd",
+  cliCommand: "npx tembro add kbd",
   highlights: ["Shortcut tokens", "Size variants", "Inline hints", "Command palette labels"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "settings-form"],
   scenarios: [

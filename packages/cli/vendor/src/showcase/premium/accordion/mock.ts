@@ -25,7 +25,7 @@ export function Example() {
   <summary data-slot="accordion-trigger">Theme tokens</summary>
   <div data-slot="accordion-content">Keep product decisions inside tokens.</div>
 </details>`,
-  cliCommand: "npx azix add accordion",
+  cliCommand: "npx tembro add accordion",
   highlights: [
     "Single and multiple expansion behavior",
     "Title, description, and body content through one item contract",

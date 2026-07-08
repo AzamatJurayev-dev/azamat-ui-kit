@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const buttonGroupMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { ButtonGroup } from "azix"
+import { ButtonGroup } from "tembro"
 
 export function Example() {
   const [view, setView] = React.useState("list")

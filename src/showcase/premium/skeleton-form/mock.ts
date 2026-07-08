@@ -6,7 +6,7 @@ export const skeletonFormMock: ComponentDemoMock = {
 export function Example() {
   return <SkeletonForm fields={3} showTitle columns={2} />
 }`,
-  cliCommand: "npx azix add skeleton-form",
+  cliCommand: "npx tembro add skeleton-form",
   highlights: [
     "Form-first loading states that preserve field rhythm",
     "Supports one- or two-column layouts",

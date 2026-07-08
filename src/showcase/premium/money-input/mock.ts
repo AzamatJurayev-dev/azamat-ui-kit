@@ -29,7 +29,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="money">Budget</label><div>$<input id="money" inputmode="decimal" type="text" /></div>',
-  cliCommand: "npx azix add money-input",
+  cliCommand: "npx tembro add money-input",
   highlights: ["Currency prefix/suffix", "Numeric payload", "Invalid text handling", "Custom keyboard mode"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

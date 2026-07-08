@@ -29,7 +29,7 @@ export const groupedWorkspaceOptions = [
 ]
 
 export const defaultFormValues: FormValues = {
-  workspaceName: "Azamat UI Kit",
+  workspaceName: "Tembro",
   status: "review",
   owner: "azamat-ui",
   publishChanges: true,

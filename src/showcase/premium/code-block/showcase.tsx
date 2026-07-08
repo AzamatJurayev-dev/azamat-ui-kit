@@ -2,8 +2,8 @@ import { Badge, CodeBlock } from "@/index"
 
 const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
 
-const installSnippet = `npx azix init
-npx azix add button input data-table`
+const installSnippet = `npx tembro init
+npx tembro add button input data-table`
 
 const cssSnippet = `:root {
   --aui-card-radius: 18px;

@@ -12,7 +12,7 @@ export function Example() {
     </Carousel>
   )
 }`,
-  cliCommand: "npx azix add carousel",
+  cliCommand: "npx tembro add carousel",
   highlights: [
     "Keyboard and control-aware slider",
     "Works with any slide content",

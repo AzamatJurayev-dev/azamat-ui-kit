@@ -36,7 +36,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="sheet-shell-trigger">Open sheet</button>`,
-  cliCommand: "npx azix add sheet-shell",
+  cliCommand: "npx tembro add sheet-shell",
   highlights: [
     "Side-based drawer behavior",
     "Right and bottom anchors",

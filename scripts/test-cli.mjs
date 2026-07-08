@@ -65,7 +65,7 @@ async function writeTemplateProjectFiles(fixtureRoot, template) {
   const paths = templateRootForFixture(template)
 
   const packageJson = {
-    name: `azix-${template}-cli-smoke`,
+    name: `tembro-${template}-cli-smoke`,
     private: true,
     type: "module",
     scripts: {
@@ -101,8 +101,8 @@ async function assertRuntimePackageNotInstalled(fixtureRoot, template) {
     ...Object.keys(packageJson.devDependencies ?? {}),
   ])
 
-  if (installedPackages.has("azix") || installedPackages.has("azix")) {
-    throw new Error(`source-copy init should not install azix runtime package for ${template}`)
+  if (installedPackages.has("tembro") || installedPackages.has("tembro")) {
+    throw new Error(`source-copy init should not install tembro runtime package for ${template}`)
   }
 }
 
@@ -119,14 +119,14 @@ async function runCli(fixtureRoot, args) {
 }
 
 async function assertInitAndArtifacts(template) {
-  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), `azix-${template}-`))
+  const fixtureRoot = await fs.mkdtemp(path.join(os.tmpdir(), `tembro-${template}-`))
 
   try {
     const paths = await writeTemplateProjectFiles(fixtureRoot, template)
     await buildCli()
     await runCli(fixtureRoot, ["init", "--template", template, "--skip-install", "--defaults"])
 
-    assertFileExists(fixtureRoot, "azamat-ui.json")
+    assertFileExists(fixtureRoot, "tembro.json")
     await assertRuntimePackageNotInstalled(fixtureRoot, template)
 
     const listResult = await runCli(fixtureRoot, ["list"])

@@ -6,9 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- renamed the public npm package to `azix` so installs and CLI usage can use `npm i azix` and `npx azix`
-- moved the workspace CLI package to the private internal name `azix-cli-internal` to avoid npm workspace name collisions
-- updated the registry, README, showcase metadata, docs snippets, and fixture smoke imports to use the new `azix` package name
+- renamed the public npm package to `tembro` so installs and CLI usage can use `npm i tembro` and `npx tembro`
+- moved the workspace CLI package to the private internal name `tembro-cli-internal` to avoid npm workspace name collisions
+- updated the registry, README, showcase metadata, docs snippets, and fixture smoke imports to use the new `tembro` package name
 - reset the public package line to `1.0.0` for the short-name release
 
 ## 0.3.24 - 2026-07-02
@@ -97,7 +97,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- restored the full root export contract so published package consumers receive patterns, families, and complete public component barrels from `azix`
+- restored the full root export contract so published package consumers receive patterns, families, and complete public component barrels from `tembro`
 
 ## 0.3.6 - 2026-06-26
 
