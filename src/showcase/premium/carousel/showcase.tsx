@@ -3,9 +3,9 @@ import * as React from "react"
 import { Button, Carousel, CarouselItem } from "@/index"
 
 const steps = [
-  { title: "Onboarding", text: "Guide quickly from first login." },
-  { title: "Components", text: "Review ready-made dashboard patterns." },
-  { title: "Release", text: "Publish, test, and iterate faster." },
+  { title: "Onboarding", text: "Guide quickly from first login.", tone: "Launch" },
+  { title: "Components", text: "Review ready-made dashboard patterns.", tone: "Library" },
+  { title: "Release", text: "Publish, test, and iterate faster.", tone: "Ship" },
 ]
 
 export function CarouselShowcase() {
@@ -24,6 +24,20 @@ export function CarouselShowcase() {
         </Button>
       </div>
 
+      <div className="grid gap-3 md:grid-cols-3">
+        {steps.map((step, slideIndex) => (
+          <Button
+            key={step.title}
+            type="button"
+            variant={index === slideIndex ? "default" : "outline"}
+            className="justify-start"
+            onClick={() => setIndex(slideIndex)}
+          >
+            {slideIndex + 1}. {step.title}
+          </Button>
+        ))}
+      </div>
+
       <Carousel
         index={index}
         loop
@@ -35,12 +49,16 @@ export function CarouselShowcase() {
       >
         {steps.map((step, slideIndex) => (
           <CarouselItem key={step.title}>
-            <div className="rounded-xl border border-border bg-card p-8">
-                <div className="flex items-start justify-between gap-3">
+            <div className="min-h-56 rounded-xl border border-border bg-card p-8">
+              <div className="flex items-start justify-between gap-3">
                 <div className="grid gap-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">{step.tone}</p>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">{`Slide ${slideIndex + 1}`}</p>
                   <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
                   <p className="text-sm text-muted-foreground">{step.text}</p>
+                </div>
+                <div className="rounded-full border border-border/70 px-3 py-1 text-xs text-muted-foreground">
+                  {slideIndex + 1}/{steps.length}
                 </div>
               </div>
             </div>

@@ -136,6 +136,25 @@ export function ButtonShowcase() {
             </div>
           </div>
         </div>
+
+        <div className="mt-6 grid gap-3 md:grid-cols-4">
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Primary</p>
+            <p className="mt-2 leading-6 aui-text-muted">Main action with filled emphasis.</p>
+          </div>
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Secondary</p>
+            <p className="mt-2 leading-6 aui-text-muted">Alternative action without stealing focus.</p>
+          </div>
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Outline</p>
+            <p className="mt-2 leading-6 aui-text-muted">Low-emphasis action for previews and neutral workflows.</p>
+          </div>
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Destructive</p>
+            <p className="mt-2 leading-6 aui-text-muted">Reserved for archive, delete, or dangerous transitions.</p>
+          </div>
+        </div>
       </section>
 
       <section className={panelClass}>

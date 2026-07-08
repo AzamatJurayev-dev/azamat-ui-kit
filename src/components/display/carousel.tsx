@@ -16,6 +16,7 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   ariaLabel?: string
   previousLabel?: string
   nextLabel?: string
+  swipeThreshold?: number
 }
 
 export type CarouselItemProps = React.ComponentProps<"div">
@@ -38,12 +39,14 @@ function Carousel({
   ariaLabel = "Carousel",
   previousLabel = "Previous slide",
   nextLabel = "Next slide",
+  swipeThreshold = 44,
   className,
   children,
   ...props
 }: CarouselProps) {
   const items = React.Children.toArray(children)
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex)
+  const touchStartXRef = React.useRef<number | null>(null)
   const controlled = index !== undefined
   const activeIndex = clampIndex(controlled ? index : internalIndex, items.length, loop)
 
@@ -56,6 +59,21 @@ function Carousel({
   const canGoPrevious = loop || activeIndex > 0
   const canGoNext = loop || activeIndex < items.length - 1
 
+  const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = (event) => {
+    touchStartXRef.current = event.touches[0]?.clientX ?? null
+  }
+
+  const handleTouchEnd: React.TouchEventHandler<HTMLDivElement> = (event) => {
+    if (touchStartXRef.current == null || items.length <= 1) return
+    const endX = event.changedTouches[0]?.clientX ?? touchStartXRef.current
+    const deltaX = endX - touchStartXRef.current
+    touchStartXRef.current = null
+
+    if (Math.abs(deltaX) < swipeThreshold) return
+    if (deltaX > 0 && canGoPrevious) setActiveIndex(activeIndex - 1)
+    if (deltaX < 0 && canGoNext) setActiveIndex(activeIndex + 1)
+  }
+
   return (
     <div
       data-slot="carousel"
@@ -63,6 +81,7 @@ function Carousel({
       role="region"
       aria-roledescription="carousel"
       aria-label={ariaLabel}
+      tabIndex={keyboard ? 0 : undefined}
       className={cn("grid gap-3", className)}
       onKeyDown={(event) => {
         if (!keyboard || items.length <= 1) return
@@ -75,6 +94,8 @@ function Carousel({
           setActiveIndex(activeIndex + 1)
         }
       }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       {...props}
     >
       <div className={cn(

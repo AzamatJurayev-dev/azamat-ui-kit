@@ -17,7 +17,9 @@ const loadOptions = async (query: string): Promise<typeof workspaceOptions> => {
 
 export function AsyncSelectShowcase() {
   const [value, setValue] = useState("")
+  const [teamValues, setTeamValues] = useState<string[]>(["north", "west"])
   const activeOption = routeWorkspaceOptions.find((item) => item.value === value)
+  const selectedTeams = routeWorkspaceOptions.filter((item) => teamValues.includes(String(item.value)))
 
   return (
     <div className="space-y-5">
@@ -52,6 +54,23 @@ export function AsyncSelectShowcase() {
                 debounceMs={220}
               />
             </div>
+            <div className="mt-5">
+              <p className="text-sm font-medium aui-text-muted">Multi select uses the same component</p>
+              <div className="mt-3">
+                <AsyncSelect
+                  isMulti
+                  value={teamValues}
+                  onValueChange={(nextValue) => setTeamValues(nextValue)}
+                  loadOptions={loadOptions}
+                  defaultOptions={workspaceOptions}
+                  minSearchLength={1}
+                  clearable
+                  showSelectAll
+                  maxSelected={3}
+                  debounceMs={220}
+                />
+              </div>
+            </div>
             <div className="mt-4 grid gap-3 md:grid-cols-3">
               <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
                 <p className="font-medium aui-text-strong">Type to query</p>
@@ -82,6 +101,10 @@ export function AsyncSelectShowcase() {
               <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3">
                 <p className="text-xs uppercase tracking-[0.2em] aui-text-muted">Team</p>
                 <p className="mt-2 text-sm font-medium aui-text-strong">{activeOption ? routeWorkspaceOptions.find((item) => item.value === activeOption.value)?.team : "No team"}</p>
+              </div>
+              <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3">
+                <p className="text-xs uppercase tracking-[0.2em] aui-text-muted">Multi mode</p>
+                <p className="mt-2 text-sm font-medium aui-text-strong">{selectedTeams.length ? selectedTeams.map((item) => item.label).join(", ") : "No teams selected"}</p>
               </div>
             </div>
           </div>
