@@ -29,6 +29,8 @@ export type AlertDialogProps = Omit<React.ComponentProps<typeof Dialog>, "childr
   confirmDescription?: React.ReactNode
   confirmCaseSensitive?: boolean
   severityNote?: React.ReactNode
+  errorMessage?: React.ReactNode
+  onActionError?: (error: unknown) => void
   onAction?: () => void | Promise<void>
   children?: React.ReactNode
 }
@@ -49,6 +51,8 @@ function AlertDialog({
   confirmDescription,
   confirmCaseSensitive = true,
   severityNote,
+  errorMessage = "Action could not be completed. Try again.",
+  onActionError,
   onAction,
   children,
   onOpenChange,
@@ -56,6 +60,7 @@ function AlertDialog({
 }: AlertDialogProps) {
   const [pending, setPending] = React.useState(false)
   const [confirmationInput, setConfirmationInput] = React.useState("")
+  const [actionError, setActionError] = React.useState<React.ReactNode | null>(null)
   const resolvedLoading = loading || pending
   const requiresTypedConfirmation = Boolean(confirmValue?.trim())
   const expectedConfirmation = confirmCaseSensitive ? confirmValue?.trim() : confirmValue?.trim().toLowerCase()
@@ -65,6 +70,7 @@ function AlertDialog({
   React.useEffect(() => {
     if (!props.open) {
       setConfirmationInput("")
+      setActionError(null)
     }
   }, [props.open])
 
@@ -74,6 +80,7 @@ function AlertDialog({
 
   const handleAction = async () => {
     if (!canConfirm || resolvedLoading) return
+    setActionError(null)
     if (!onAction) {
       if (closeOnAction) closeDialog()
       return
@@ -83,6 +90,9 @@ function AlertDialog({
       setPending(true)
       await onAction()
       if (closeOnAction) closeDialog()
+    } catch (error) {
+      setActionError(errorMessage)
+      onActionError?.(error)
     } finally {
       setPending(false)
     }
@@ -124,6 +134,14 @@ function AlertDialog({
         {severityNote ? (
           <div className="rounded-2xl border border-border/70 bg-muted/35 px-3.5 py-3 text-sm leading-6 text-muted-foreground">
             {severityNote}
+          </div>
+        ) : null}
+        {actionError ? (
+          <div
+            role="alert"
+            className="rounded-2xl border border-destructive/20 bg-destructive/8 px-3.5 py-3 text-sm leading-6 text-destructive"
+          >
+            {actionError}
           </div>
         ) : null}
         <DialogFooter>

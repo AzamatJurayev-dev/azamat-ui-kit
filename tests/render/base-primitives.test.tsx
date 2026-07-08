@@ -247,6 +247,38 @@ describe("base primitives", () => {
     expect(onValueChange).toHaveBeenCalledWith("board")
   })
 
+  it("supports button group deselect and keyboard focus movement", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <ButtonGroup
+        value="comfortable"
+        allowDeselect
+        onValueChange={onValueChange}
+        items={[
+          { key: "comfortable", label: "Comfortable" },
+          { key: "compact", label: "Compact" },
+          { key: "dense", label: "Dense" },
+        ]}
+      />
+    )
+
+    const comfortable = screen.getByRole("button", { name: "Comfortable" })
+    const compact = screen.getByRole("button", { name: "Compact" })
+    const dense = screen.getByRole("button", { name: "Dense" })
+
+    comfortable.focus()
+    await user.keyboard("{ArrowRight}")
+    expect(compact).toHaveFocus()
+
+    await user.keyboard("{End}")
+    expect(dense).toHaveFocus()
+
+    await user.click(comfortable)
+    expect(onValueChange).toHaveBeenCalledWith("")
+  })
+
   it("keeps badge metadata contract for dot, variant and size", () => {
     render(
       <Badge variant="outline" tone="warning" size="sm" dot>

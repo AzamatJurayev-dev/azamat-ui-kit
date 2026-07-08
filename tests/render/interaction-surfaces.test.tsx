@@ -160,6 +160,32 @@ describe("overlay, command and navigation interactions", () => {
     expect(onAction).toHaveBeenCalledTimes(1)
   })
 
+  it("shows alert dialog async error state when action throws", async () => {
+    const user = userEvent.setup()
+    const onActionError = vi.fn()
+
+    render(
+      <AlertDialog
+        open
+        onOpenChange={() => undefined}
+        title="Delete workspace"
+        actionLabel="Delete workspace"
+        errorMessage="Delete failed"
+        onActionError={onActionError}
+        onAction={async () => {
+          throw new Error("boom")
+        }}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: "Delete workspace" }))
+
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toHaveTextContent("Delete failed")
+    })
+    expect(onActionError).toHaveBeenCalledTimes(1)
+  })
+
   it("supports dismissible alerts", async () => {
     const user = userEvent.setup()
     const onDismiss = vi.fn()
