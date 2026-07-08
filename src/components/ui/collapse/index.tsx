@@ -85,7 +85,7 @@ function CollapseTrigger({
       data-inset={inset || undefined}
       data-indicator-position={indicatorPosition}
       className={cn(
-        "flex cursor-pointer list-none items-start gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[indicator-position=end]:justify-between data-[indicator-position=start]:justify-start data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
+        "rounded-[calc(var(--aui-card-radius,var(--radius-xl))-1px)] group-open:rounded-b-none flex cursor-pointer list-none items-start gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow,border-radius] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[indicator-position=end]:justify-between data-[indicator-position=start]:justify-start data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
         props["aria-disabled"] && "cursor-not-allowed opacity-75 hover:bg-transparent",
         className
       )}

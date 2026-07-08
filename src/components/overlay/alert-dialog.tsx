@@ -33,6 +33,9 @@ export type AlertDialogProps = Omit<React.ComponentProps<typeof Dialog>, "childr
   onActionError?: (error: unknown) => void
   onAction?: () => void | Promise<void>
   children?: React.ReactNode
+  preventCloseWhileLoading?: boolean
+  actionButtonProps?: Omit<React.ComponentProps<typeof Button>, "type" | "variant" | "loading" | "disabled" | "onClick" | "children">
+  cancelButtonProps?: Omit<React.ComponentProps<typeof Button>, "type" | "variant" | "disabled" | "children">
 }
 
 function AlertDialog({
@@ -55,6 +58,9 @@ function AlertDialog({
   onActionError,
   onAction,
   children,
+  preventCloseWhileLoading = true,
+  actionButtonProps,
+  cancelButtonProps,
   onOpenChange,
   ...props
 }: AlertDialogProps) {
@@ -74,8 +80,18 @@ function AlertDialog({
     }
   }, [props.open])
 
+  const handleOpenChange = React.useCallback(
+    (nextOpen: boolean, eventDetails: unknown) => {
+      if (!nextOpen && preventCloseWhileLoading && resolvedLoading) {
+        return
+      }
+      onOpenChange?.(nextOpen, eventDetails as never)
+    },
+    [onOpenChange, preventCloseWhileLoading, resolvedLoading]
+  )
+
   const closeDialog = () => {
-    ;(onOpenChange as ((open: boolean, eventDetails: never) => void) | undefined)?.(false, undefined as never)
+    handleOpenChange(false, undefined)
   }
 
   const handleAction = async () => {
@@ -99,7 +115,7 @@ function AlertDialog({
   }
 
   return (
-    <Dialog onOpenChange={onOpenChange} {...props}>
+    <Dialog onOpenChange={handleOpenChange} {...props}>
       {children}
       <DialogContent>
         <DialogHeader>
@@ -128,6 +144,8 @@ function AlertDialog({
               autoComplete="off"
               autoCapitalize="off"
               spellCheck={false}
+              aria-invalid={actionError ? true : undefined}
+              aria-describedby={actionError ? "alert-dialog-error" : undefined}
             />
           </div>
         ) : null}
@@ -138,7 +156,9 @@ function AlertDialog({
         ) : null}
         {actionError ? (
           <div
+            id="alert-dialog-error"
             role="alert"
+            aria-live="polite"
             className="rounded-2xl border border-destructive/20 bg-destructive/8 px-3.5 py-3 text-sm leading-6 text-destructive"
           >
             {actionError}
@@ -146,7 +166,7 @@ function AlertDialog({
         ) : null}
         <DialogFooter>
           <DialogClose render={() => (
-            <Button type="button" variant={cancelVariant} disabled={resolvedLoading}>
+            <Button type="button" variant={cancelVariant} disabled={resolvedLoading} {...cancelButtonProps}>
               {cancelLabel}
             </Button>
           )} />
@@ -156,6 +176,7 @@ function AlertDialog({
             loading={resolvedLoading}
             disabled={!canConfirm && !resolvedLoading}
             onClick={() => void handleAction()}
+            {...actionButtonProps}
           >
             {actionLabel}
           </Button>

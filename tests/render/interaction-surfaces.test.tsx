@@ -186,6 +186,23 @@ describe("overlay, command and navigation interactions", () => {
     expect(onActionError).toHaveBeenCalledTimes(1)
   })
 
+  it("prevents alert dialog from closing while loading when protection is enabled", async () => {
+    const onOpenChange = vi.fn()
+
+    render(
+      <AlertDialog
+        open
+        loading
+        onOpenChange={onOpenChange}
+        title="Delete workspace"
+        actionLabel="Delete workspace"
+      />
+    )
+
+    fireEvent.keyDown(document, { key: "Escape" })
+    expect(onOpenChange).not.toHaveBeenCalledWith(false, expect.anything())
+  })
+
   it("supports dismissible alerts", async () => {
     const user = userEvent.setup()
     const onDismiss = vi.fn()
