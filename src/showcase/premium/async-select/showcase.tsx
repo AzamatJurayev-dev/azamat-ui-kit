@@ -72,12 +72,14 @@ export function AsyncSelectShowcase() {
                   clearable
                   showSelectAll
                   maxSelected={3}
+                  maxVisibleTags={2}
                   showSelectedDescription
                   debounceMs={220}
                   labels={{
                     multiPlaceholder: "Choose team coverage",
                     searchPlaceholder: "Search team regions...",
                     selectedCount: (count) => `${count} regions selected`,
+                    hiddenSelected: (count) => `+${count} more`,
                   }}
                 />
               </div>

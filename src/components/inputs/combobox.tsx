@@ -103,12 +103,20 @@ function Combobox<TValue extends string = string>({
           {clearable && selectedOption && !disabled ? (
             <span
               role="button"
+              tabIndex={0}
               aria-label="Clear value"
               className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/55 hover:text-foreground"
               onClick={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
                 onValueChange?.(undefined, undefined)
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  onValueChange?.(undefined, undefined)
+                }
               }}
             >
               ×
