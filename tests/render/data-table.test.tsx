@@ -101,6 +101,21 @@ describe("DataTable", () => {
     expect(screen.queryByRole("columnheader", { name: "Role" })).toBeNull()
   })
 
+  it("does not render a floating columns-only toolbar", () => {
+    render(
+      <DataTable
+        columns={getColumns()}
+        data={rows}
+        rowSelection={{}}
+        features={{
+          columnVisibility: true,
+        }}
+      />
+    )
+
+    expect(screen.queryByRole("button", { name: /columns/i })).toBeNull()
+  })
+
   it("renders row actions and triggers pagination callbacks", async () => {
     const user = userEvent.setup()
     const onPageChange = vi.fn()

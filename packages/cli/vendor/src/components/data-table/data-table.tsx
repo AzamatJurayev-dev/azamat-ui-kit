@@ -306,6 +306,15 @@ function DataTable<TData, TValue = unknown>({
   const shouldShowRefresh = Boolean(features?.refresh && onRefresh)
   const shouldShowExport = Boolean(features?.export && onExport)
   const shouldShowBulkActions = Boolean(features?.bulkActions !== false && bulkActions?.length)
+  const hasPrimaryToolbarContent = Boolean(
+    title ||
+      description ||
+      search ||
+      toolbarActions ||
+      shouldShowRefresh ||
+      shouldShowExport
+  )
+  const shouldShowColumnVisibilityInToolbar = shouldShowColumnVisibility && hasPrimaryToolbarContent
   const defaultSearch = shouldShowSearch && search ? (
     <SearchInput
       value={search.value}
@@ -322,7 +331,7 @@ function DataTable<TData, TValue = unknown>({
   const defaultActions = (
     <>
       {typeof toolbarActions === "function" ? toolbarActions(actionContext) : toolbarActions}
-      {shouldShowColumnVisibility && <DataTableColumnVisibilityMenu table={table} />}
+      {shouldShowColumnVisibilityInToolbar && <DataTableColumnVisibilityMenu table={table} />}
       {shouldShowRefresh && (
         <Button type="button" variant="outline" size="sm" disabled={isLoading} onClick={() => onRefresh?.(actionContext)}>
           {refreshLabel}
@@ -350,7 +359,7 @@ function DataTable<TData, TValue = unknown>({
       description ||
       defaultSearch ||
       toolbarActions ||
-      shouldShowColumnVisibility ||
+      shouldShowColumnVisibilityInToolbar ||
       shouldShowRefresh ||
       shouldShowExport ||
       defaultSelectionActions
