@@ -15,14 +15,37 @@ export type ButtonGroupProps = React.ComponentProps<"div"> & {
   attached?: boolean
   size?: ButtonProps["size"]
   variant?: ButtonProps["variant"]
+  orientation?: "horizontal" | "vertical"
+  fullWidth?: boolean
 }
 
-function ButtonGroup({ items, attached = true, size = "sm", variant = "outline", className, children, ...props }: ButtonGroupProps) {
+function ButtonGroup({
+  items,
+  attached = true,
+  size = "sm",
+  variant = "outline",
+  orientation = "horizontal",
+  fullWidth = false,
+  className,
+  children,
+  ...props
+}: ButtonGroupProps) {
+  const isVertical = orientation === "vertical"
+
   return (
     <div
       data-slot="button-group"
       role="group"
-      className={cn("inline-flex items-center", !attached && "gap-2", className)}
+      data-orientation={orientation}
+      className={cn(
+        "inline-flex",
+        isVertical ? "flex-col" : "items-center",
+        fullWidth && "w-full",
+        attached
+          ? "overflow-hidden rounded-[var(--aui-control-radius,var(--radius-md))] border border-[color:var(--aui-control-border,var(--border))] bg-[color:var(--aui-control-surface,var(--background))] shadow-[var(--aui-control-shadow,none)]"
+          : "gap-2",
+        className
+      )}
       {...props}
     >
       {items?.map(({ key, label, className: itemClassName, size: itemSize, variant: itemVariant, ...item }) => (
@@ -31,7 +54,14 @@ function ButtonGroup({ items, attached = true, size = "sm", variant = "outline",
           size={itemSize ?? size}
           variant={itemVariant ?? variant}
           className={cn(
-            attached && "rounded-none first:rounded-l-md last:rounded-r-md -ml-px first:ml-0",
+            attached &&
+              cn(
+                "relative rounded-none border-0 shadow-none first:ml-0",
+                fullWidth && "flex-1",
+                isVertical
+                  ? "w-full border-t border-[color:var(--aui-control-border,var(--border))] first:border-t-0"
+                  : "border-l border-[color:var(--aui-control-border,var(--border))] first:border-l-0"
+              ),
             itemClassName
           )}
           {...item}

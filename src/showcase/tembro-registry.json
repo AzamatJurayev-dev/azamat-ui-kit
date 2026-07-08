@@ -39,7 +39,6 @@
       "sheet-shell"
     ],
     "navigation": [
-      "anchor-nav",
       "nav-tabs",
       "page-tabs",
       "pagination",
@@ -54,7 +53,6 @@
       "phone-input",
       "async-select",
       "combobox",
-      "clearable-input",
       "search-input",
       "password-input",
       "masked-input",
@@ -63,7 +61,6 @@
       "otp-input",
       "slider",
       "rating",
-      "color-input",
       "quantity-stepper",
       "inline-editable",
       "simple-select"
@@ -124,7 +121,6 @@
       "action-menu",
       "button-group",
       "copy-button",
-      "copy-field",
       "quick-action-grid"
     ],
     "layout": [
@@ -176,9 +172,7 @@
       "toast",
       "notification-center"
     ],
-    "command": [
-      "command-palette"
-    ],
+    "command": [],
     "patterns": [
       "resource-page",
       "resource-detail-page",
@@ -245,8 +239,7 @@
     "action-menu",
     "date-picker",
     "data-table",
-    "notification-center",
-    "command-palette"
+    "notification-center"
   ],
   "recommendedByMode": {
     "foundation": [
@@ -281,7 +274,6 @@
       "date-range-picker",
       "file-upload",
       "file-dropzone",
-      "command-palette",
       "use-data-table-view-state",
       "data-table",
       "form-input",
@@ -335,7 +327,6 @@
       "statistic",
       "tree-view",
       "copy-button",
-      "copy-field",
       "section",
       "sticky-footer-bar",
       "calendar-scheduler",

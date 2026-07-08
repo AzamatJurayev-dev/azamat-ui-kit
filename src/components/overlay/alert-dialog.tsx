@@ -20,6 +20,7 @@ export type AlertDialogProps = Omit<React.ComponentProps<typeof Dialog>, "childr
   actionLabel?: React.ReactNode
   actionTone?: "default" | "destructive"
   loading?: boolean
+  closeOnAction?: boolean
   onAction?: () => void | Promise<void>
   children?: React.ReactNode
 }
@@ -32,12 +33,35 @@ function AlertDialog({
   actionLabel = "Continue",
   actionTone = "destructive",
   loading = false,
+  closeOnAction = true,
   onAction,
   children,
+  onOpenChange,
   ...props
 }: AlertDialogProps) {
+  const [pending, setPending] = React.useState(false)
+  const resolvedLoading = loading || pending
+  const closeDialog = () => {
+    ;(onOpenChange as ((open: boolean, eventDetails: never) => void) | undefined)?.(false, undefined as never)
+  }
+
+  const handleAction = async () => {
+    if (!onAction) {
+      if (closeOnAction) closeDialog()
+      return
+    }
+
+    try {
+      setPending(true)
+      await onAction()
+      if (closeOnAction) closeDialog()
+    } finally {
+      setPending(false)
+    }
+  }
+
   return (
-    <Dialog {...props}>
+    <Dialog onOpenChange={onOpenChange} {...props}>
       {children}
       <DialogContent>
         <DialogHeader>
@@ -49,11 +73,16 @@ function AlertDialog({
         </DialogHeader>
         <DialogFooter>
           <DialogClose render={() => (
-            <Button type="button" variant="outline" disabled={loading}>
+            <Button type="button" variant="outline" disabled={resolvedLoading}>
               {cancelLabel}
             </Button>
           )} />
-          <Button type="button" variant={actionTone === "destructive" ? "destructive" : "default"} loading={loading} onClick={() => void onAction?.()}>
+          <Button
+            type="button"
+            variant={actionTone === "destructive" ? "destructive" : "default"}
+            loading={resolvedLoading}
+            onClick={() => void handleAction()}
+          >
             {actionLabel}
           </Button>
         </DialogFooter>

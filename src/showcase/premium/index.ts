@@ -9,7 +9,6 @@ import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
 import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
 import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
-import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
 import { avatarMock, AvatarShowcase } from "./avatar"
 import { carouselMock, CarouselShowcase } from "./carousel"
@@ -28,25 +27,13 @@ import { cardMock, CardShowcase } from "./card"
 import { checkboxMock, CheckboxShowcase } from "./checkbox"
 import { codeBlockMock, CodeBlockShowcase } from "./code-block"
 import { dualListPickerMock, DualListPickerShowcase } from "./dual-list-picker"
-import { ClearableInputShowcase, clearableInputMock } from "./clearable-input"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
 import { commandBarMock, CommandBarShowcase } from "./command-bar"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
-import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
 import { copyButtonMock, CopyButtonShowcase } from "./copy-button"
-import { copyFieldMock, CopyFieldShowcase } from "./copy-field"
 import { dataStateMock, DataStateShowcase } from "./data-state"
 import { dataTableMock, DataTableShowcase } from "./data-table"
-import {
-  DataTablePartShowcase,
-  dataTableActionsColumnMock,
-  dataTablePaginationMock,
-  dataTableRowActionsMock,
-  dataTableSavedFiltersMock,
-  dataTableSelectColumnMock,
-  dataTableToolbarMock,
-} from "./data-table-parts"
 import { dateInputMock, DateInputShowcase } from "./date-input"
 import { DatePickerShowcase, datePickerMock } from "./date-picker"
 import { DateRangeInputShowcase, dateRangeInputMock } from "./date-range-input"
@@ -133,9 +120,9 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   calendar: { mock: calendarMock, Showcase: CalendarShowcase },
   "calendar-scheduler": { mock: calendarSchedulerMock, Showcase: CalendarSchedulerShowcase },
   "command-bar": { mock: commandBarMock, Showcase: CommandBarShowcase },
-  "command-palette": { mock: commandPaletteMock, Showcase: CommandPaletteShowcase },
+  "command-palette": { mock: commandBarMock, Showcase: CommandBarShowcase },
   "carousel": { mock: carouselMock, Showcase: CarouselShowcase },
-  "clearable-input": { mock: clearableInputMock, Showcase: ClearableInputShowcase },
+  "clearable-input": { mock: inputMock, Showcase: InputShowcase },
   "code-block": { mock: codeBlockMock, Showcase: CodeBlockShowcase },
   "dual-list-picker": { mock: dualListPickerMock, Showcase: DualListPickerShowcase },
   divider: { mock: dividerMock, Showcase: DividerShowcase },
@@ -146,7 +133,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "radio-group": { mock: radioGroupMock, Showcase: RadioGroupShowcase },
   "simple-select": { mock: simpleSelectMock, Showcase: SimpleSelectShowcase },
   "async-select": { mock: asyncSelectMock, Showcase: AsyncSelectShowcase },
-  "async-multi-select": { mock: asyncMultiSelectMock, Showcase: AsyncMultiSelectShowcase },
+  "async-multi-select": { mock: asyncSelectMock, Showcase: AsyncSelectShowcase },
   avatar: { mock: avatarMock, Showcase: AvatarShowcase },
   "number-input": { mock: numberInputMock, Showcase: NumberInputShowcase },
   "money-input": { mock: moneyInputMock, Showcase: MoneyInputShowcase },
@@ -175,7 +162,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "confirm-dialog": { mock: confirmDialogMock, Showcase: ConfirmDialogShowcase },
   checkbox: { mock: checkboxMock, Showcase: CheckboxShowcase },
   "copy-button": { mock: copyButtonMock, Showcase: CopyButtonShowcase },
-  "copy-field": { mock: copyFieldMock, Showcase: CopyFieldShowcase },
+  "copy-field": { mock: copyButtonMock, Showcase: CopyButtonShowcase },
   switch: { mock: switchMock, Showcase: SwitchShowcase },
   badge: { mock: badgeMock, Showcase: BadgeShowcase },
   card: { mock: cardMock, Showcase: CardShowcase },
@@ -190,12 +177,12 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "hover-card": { mock: hoverCardMock, Showcase: HoverCardShowcase },
   "right-click-menu": { mock: rightClickMenuMock, Showcase: RightClickMenuShowcase },
   "data-table": { mock: dataTableMock, Showcase: DataTableShowcase },
-  "data-table-pagination": { mock: dataTablePaginationMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-pagination" }) },
-  "data-table-toolbar": { mock: dataTableToolbarMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-toolbar" }) },
-  "data-table-row-actions": { mock: dataTableRowActionsMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-row-actions" }) },
-  "data-table-actions-column": { mock: dataTableActionsColumnMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-actions-column" }) },
-  "data-table-select-column": { mock: dataTableSelectColumnMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-select-column" }) },
-  "data-table-saved-filters": { mock: dataTableSavedFiltersMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-saved-filters" }) },
+  "data-table-pagination": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-toolbar": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-row-actions": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-actions-column": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-select-column": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-saved-filters": { mock: dataTableMock, Showcase: DataTableShowcase },
   "saved-filter-select": { mock: savedFilterSelectMock, Showcase: SavedFilterSelectShowcase },
   "form-field": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-field-shell": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },

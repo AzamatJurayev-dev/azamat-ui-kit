@@ -68,6 +68,7 @@ export type AsyncSelectProps<
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 > = Omit<React.ComponentProps<"div">, "onChange"> & {
+  isMulti?: false
   value?: TValue
   selectedOption?: TOption | null
   onValueChange?: (value: TValue | undefined, option?: TOption) => void
@@ -95,6 +96,14 @@ export type AsyncSelectProps<
   searchClassName?: string
   optionClassName?: string
   invalid?: boolean
+}
+
+export type AsyncSelectMultiModeProps<
+  TValue extends string = string,
+  TData = unknown,
+  TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
+> = AsyncMultiSelectProps<TValue, TData, TOption> & {
+  isMulti: true
 }
 
 export type AsyncMultiSelectProps<
@@ -414,7 +423,13 @@ function AsyncSelect<
   TValue extends string = string,
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
->({
+>(props: AsyncSelectProps<TValue, TData, TOption> | AsyncSelectMultiModeProps<TValue, TData, TOption>) {
+  if ("isMulti" in props && props.isMulti) {
+    const { isMulti: _isMulti, ...multiProps } = props
+    return <AsyncMultiSelect {...multiProps} />
+  }
+
+  const {
   className,
   value,
   selectedOption,
@@ -443,8 +458,8 @@ function AsyncSelect<
   searchClassName,
   optionClassName,
   invalid,
-  ...props
-}: AsyncSelectProps<TValue, TData, TOption>) {
+  ...rootProps
+  } = props as AsyncSelectProps<TValue, TData, TOption>
   const resolvedDefaultGroups = React.useMemo(() => normalizeOptionGroups(defaultOptions), [defaultOptions])
   const defaultFlatOptions = React.useMemo(() => flattenOptionGroups(resolvedDefaultGroups), [resolvedDefaultGroups])
   const [open, setOpen] = React.useState(false)
@@ -613,7 +628,7 @@ function AsyncSelect<
   }
 
   return (
-    <div data-slot="async-select" className={cn("w-full", className)} {...props}>
+    <div data-slot="async-select" className={cn("w-full", className)} {...rootProps}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           render={

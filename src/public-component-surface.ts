@@ -41,7 +41,6 @@ export const standalonePublicComponentSurfaces: readonly PublicComponentSurfaceE
   { slug: "statistic", registryName: "statistic", surface: "standalone" },
   { slug: "tree-view", registryName: "tree-view", surface: "standalone" },
   { slug: "copy-button", registryName: "copy-button", surface: "standalone" },
-  { slug: "copy-field", registryName: "copy-field", surface: "standalone" },
   { slug: "section", registryName: "section", surface: "standalone" },
   { slug: "sticky-footer-bar", registryName: "sticky-footer-bar", surface: "standalone" },
   { slug: "calendar-scheduler", registryName: "calendar-scheduler", surface: "standalone" },

@@ -115,7 +115,13 @@ function Calendar({
   labels,
   ...props
 }: CalendarProps) {
+  const isControlledSingle = value !== undefined
+  const isControlledRange = range !== undefined
+  const [internalValue, setInternalValue] = React.useState<string | null | undefined>(value ?? null)
+  const [internalRange, setInternalRange] = React.useState<CalendarDateRange>(range ?? {})
   const [internalMonth, setInternalMonth] = React.useState(() => getInitialMonth(defaultMonth, value, range))
+  const currentValue = isControlledSingle ? value : internalValue
+  const currentRange = isControlledRange ? range : internalRange
   const currentMonth = month ?? internalMonth
   const resolvedNumberOfMonths = Math.max(numberOfMonths, 1)
   const shouldShowMonthHeaders = showMonthHeaders ?? resolvedNumberOfMonths > 1
@@ -161,10 +167,24 @@ function Calendar({
 
   const tabbableDateKey = React.useMemo(() => {
     const preferred = value ?? range?.from ?? todayKey
+    const selectedFrom = currentRange?.from ?? undefined
+    const selectedValue = currentValue ?? undefined
     if (visibleEnabledKeys.includes(focusedDateKey)) return focusedDateKey
-    if (visibleEnabledKeys.includes(preferred)) return preferred
+    if (visibleEnabledKeys.includes(selectedValue ?? selectedFrom ?? preferred)) return selectedValue ?? selectedFrom ?? preferred
     return visibleEnabledKeys[0]
-  }, [focusedDateKey, range?.from, todayKey, value, visibleEnabledKeys])
+  }, [currentRange?.from, currentValue, focusedDateKey, range?.from, todayKey, value, visibleEnabledKeys])
+
+  React.useEffect(() => {
+    if (isControlledSingle) {
+      setInternalValue(value ?? null)
+    }
+  }, [isControlledSingle, value])
+
+  React.useEffect(() => {
+    if (isControlledRange && range) {
+      setInternalRange(range)
+    }
+  }, [isControlledRange, range])
 
   React.useEffect(() => {
     if (!focusedDateKey) return
@@ -201,26 +221,33 @@ function Calendar({
     if (isDateDisabled(dateKey)) return
 
     if (mode === "single") {
+      if (!isControlledSingle) setInternalValue(dateKey)
       onValueChange?.(dateKey)
       return
     }
 
-    const from = range?.from ?? null
-    const to = range?.to ?? null
+    const from = currentRange?.from ?? null
+    const to = currentRange?.to ?? null
 
     if (!from || (from && to) || dateKey < from) {
-      onRangeChange?.({ from: dateKey, to: null })
+      const nextRange = { from: dateKey, to: null }
+      if (!isControlledRange) setInternalRange(nextRange)
+      onRangeChange?.(nextRange)
       return
     }
 
     const rangeHasDisabledDate = getDateKeysBetween(from, dateKey).some((key) => isDateDisabled(key))
 
     if (rangeHasDisabledDate) {
-      onRangeChange?.({ from: dateKey, to: null })
+      const nextRange = { from: dateKey, to: null }
+      if (!isControlledRange) setInternalRange(nextRange)
+      onRangeChange?.(nextRange)
       return
     }
 
-    onRangeChange?.({ from, to: dateKey })
+    const nextRange = { from, to: dateKey }
+    if (!isControlledRange) setInternalRange(nextRange)
+    onRangeChange?.(nextRange)
   }
 
   const handleDateKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, date: Date) => {
@@ -329,8 +356,8 @@ function Calendar({
               {days.map((date) => {
                 const dateKey = toDateKey(date)
                 const outside = !isSameMonth(date, visibleMonth)
-                const selected = mode === "single" ? value === dateKey : dateKey === range?.from || dateKey === range?.to
-                const inRange = mode === "range" && isWithinRange(dateKey, range?.from, range?.to)
+                const selected = mode === "single" ? currentValue === dateKey : dateKey === currentRange?.from || dateKey === currentRange?.to
+                const inRange = mode === "range" && isWithinRange(dateKey, currentRange?.from, currentRange?.to)
                 const disabledReason = getDisabledReason(dateKey)
                 const disabled = Boolean(disabledReason)
                 const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined

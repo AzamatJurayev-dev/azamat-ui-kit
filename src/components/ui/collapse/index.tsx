@@ -18,7 +18,7 @@ function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, childr
     <details
       data-slot="collapse"
       className={cn(
-        "group rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card text-card-foreground shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] transition-[background-color,border-color,box-shadow] open:border-[color:var(--aui-control-hover-border,var(--ring))]",
+        "group overflow-hidden rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card text-card-foreground shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] transition-[background-color,border-color,box-shadow] hover:border-[color:var(--aui-control-hover-border,var(--ring))] open:border-[color:var(--aui-control-hover-border,var(--ring))]",
         className
       )}
       onToggle={(event) => {
@@ -47,7 +47,7 @@ function CollapseTrigger({ icon, hideIcon = false, className, children, ...props
     <summary
       data-slot="collapse-trigger"
       className={cn(
-        "flex cursor-pointer list-none items-center justify-between gap-3 rounded-[calc(var(--aui-card-radius,var(--radius-xl))-1px)] px-4 py-3 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground [&::-webkit-details-marker]:hidden",
+        "flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground [&::-webkit-details-marker]:hidden",
         className
       )}
       {...props}
@@ -67,7 +67,7 @@ function CollapseContent({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="collapse-content"
       className={cn(
-        "border-t border-[color:var(--aui-card-border,var(--border))] px-4 py-3 text-sm leading-6 text-muted-foreground",
+        "border-t border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_70%)] px-4 py-3 text-sm leading-6 text-muted-foreground",
         className
       )}
       {...props}
