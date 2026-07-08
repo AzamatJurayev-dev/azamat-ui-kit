@@ -62,6 +62,9 @@ describe("base primitives", () => {
         <Button variant="secondary" disabled>
           Disabled action
         </Button>
+        <Button fullWidth pressed>
+          Active action
+        </Button>
       </div>
     )
 
@@ -69,12 +72,16 @@ describe("base primitives", () => {
     const warningButton = screen.getByRole("button", { name: "Warn now" })
     const linkButton = screen.getByRole("button", { name: "Read docs" })
     const disabledButton = screen.getByRole("button", { name: "Disabled action" })
+    const pressedButton = screen.getByRole("button", { name: "Active action" })
 
     expect(destructiveButton.getAttribute("data-variant")).toBe("destructive")
     expect(warningButton.getAttribute("data-variant")).toBe("warning")
     expect(linkButton.getAttribute("data-variant")).toBe("link")
     expect(disabledButton.getAttribute("data-variant")).toBe("secondary")
     expect(disabledButton.getAttribute("disabled")).toBe("")
+    expect(pressedButton.getAttribute("data-pressed")).toBe("true")
+    expect(pressedButton.getAttribute("aria-pressed")).toBe("true")
+    expect(pressedButton.className).toContain("w-full")
   })
 
   it("forwards refs and keeps native input behavior", async () => {
@@ -183,6 +190,22 @@ describe("base primitives", () => {
     expect(checkbox.getAttribute("data-size")).toBe("lg")
     expect(checkbox.getAttribute("aria-invalid")).toBe("true")
     expect(checkbox.getAttribute("aria-checked")).toBe("mixed")
+  })
+
+  it("cycles checkbox through indeterminate when enabled", async () => {
+    const user = userEvent.setup()
+    const onCheckedStateChange = vi.fn()
+
+    render(<Checkbox aria-label="Tri-state" allowIndeterminate onCheckedStateChange={onCheckedStateChange} />)
+
+    const checkbox = screen.getByRole("checkbox", { name: "Tri-state" })
+    await user.click(checkbox)
+    await user.click(checkbox)
+    await user.click(checkbox)
+
+    expect(onCheckedStateChange).toHaveBeenNthCalledWith(1, "indeterminate")
+    expect(onCheckedStateChange).toHaveBeenNthCalledWith(2, true)
+    expect(onCheckedStateChange).toHaveBeenNthCalledWith(3, false)
   })
 
   it("renders badge tone content without breaking inline layout", () => {

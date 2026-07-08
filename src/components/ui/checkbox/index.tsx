@@ -12,12 +12,20 @@ export type CheckboxProps = Omit<
   checked?: CheckboxCheckedState
   defaultChecked?: CheckboxCheckedState
   onCheckedChange?: (checked: boolean) => void
+  onCheckedStateChange?: (checked: CheckboxCheckedState) => void
   size?: "sm" | "md" | "lg"
   invalid?: boolean
+  allowIndeterminate?: boolean
 }
 
-function getNextCheckedState(checked: CheckboxCheckedState) {
-  return checked === true ? false : true
+function getNextCheckedState(checked: CheckboxCheckedState, allowIndeterminate: boolean) {
+  if (!allowIndeterminate) {
+    return checked === true ? false : true
+  }
+
+  if (checked === false) return "indeterminate"
+  if (checked === "indeterminate") return true
+  return false
 }
 
 const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
@@ -27,8 +35,10 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
       checked,
       defaultChecked = false,
       onCheckedChange,
+      onCheckedStateChange,
       size = "md",
       invalid = false,
+      allowIndeterminate = false,
       disabled,
       onClick,
       children,
@@ -42,13 +52,14 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     const dataState = currentChecked === "indeterminate" ? "indeterminate" : currentChecked ? "checked" : "unchecked"
 
     const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
-      const nextChecked = getNextCheckedState(currentChecked)
+      const nextChecked = getNextCheckedState(currentChecked, allowIndeterminate)
 
       if (!isControlled) {
         setInternalChecked(nextChecked)
       }
 
-      onCheckedChange?.(nextChecked)
+      onCheckedStateChange?.(nextChecked)
+      onCheckedChange?.(nextChecked === true)
       onClick?.(event)
     }
 

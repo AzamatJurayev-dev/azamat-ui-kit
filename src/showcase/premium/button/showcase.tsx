@@ -55,11 +55,12 @@ function StateButton({
   }
 
   return (
-    <Button
-      variant={variant}
-      disabled={state === "Disabled"}
-      className={state === "Focus" ? "ring-2 ring-[color:var(--aui-ring)] ring-offset-2 ring-offset-[color:var(--aui-page-bg)]" : undefined}
-    >
+        <Button
+          variant={variant}
+          pressed={state === "Focus"}
+          disabled={state === "Disabled"}
+          className={state === "Focus" ? "ring-2 ring-[color:var(--aui-ring)] ring-offset-2 ring-offset-[color:var(--aui-page-bg)]" : undefined}
+        >
       {state}
     </Button>
   )
@@ -127,6 +128,7 @@ export function ButtonShowcase() {
               <Button variant="outline">Preview</Button>
               <Button
                 variant={selectedVariant}
+                fullWidth
                 loading={approvalState === "saving"}
                 loadingLabel="Approving"
                 onClick={approveInvoice}

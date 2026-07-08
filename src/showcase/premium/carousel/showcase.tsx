@@ -13,6 +13,7 @@ export function CarouselShowcase() {
   const [showDots, setShowDots] = React.useState(true)
   const [autoplay, setAutoplay] = React.useState(false)
   const [index, setIndex] = React.useState(0)
+  const [playing, setPlaying] = React.useState(false)
 
   return (
     <div className="space-y-5">
@@ -49,7 +50,9 @@ export function CarouselShowcase() {
         showDots={showDots}
         autoplay={autoplay}
         autoplayInterval={2200}
+        showPlaybackControl
         onIndexChange={(next) => setIndex(next)}
+        onAutoplayChange={setPlaying}
         previousLabel="Previous slide"
         nextLabel="Next slide"
       >
@@ -71,6 +74,7 @@ export function CarouselShowcase() {
           </CarouselItem>
         ))}
       </Carousel>
+      <div className="text-sm text-muted-foreground">Playback: {playing || autoplay ? "active" : "paused"}</div>
     </div>
   )
 }

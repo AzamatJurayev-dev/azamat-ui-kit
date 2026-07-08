@@ -21,6 +21,10 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   autoplayInterval?: number
   pauseOnHover?: boolean
   stopAutoplayOnInteraction?: boolean
+  showPlaybackControl?: boolean
+  playLabel?: string
+  pauseLabel?: string
+  onAutoplayChange?: (playing: boolean) => void
 }
 
 export type CarouselItemProps = React.ComponentProps<"div">
@@ -48,6 +52,10 @@ function Carousel({
   autoplayInterval = 4500,
   pauseOnHover = true,
   stopAutoplayOnInteraction = true,
+  showPlaybackControl = false,
+  playLabel = "Start autoplay",
+  pauseLabel = "Pause autoplay",
+  onAutoplayChange,
   className,
   children,
   ...props
@@ -57,14 +65,23 @@ function Carousel({
   const touchStartXRef = React.useRef<number | null>(null)
   const [isHovered, setIsHovered] = React.useState(false)
   const [autoplayStopped, setAutoplayStopped] = React.useState(false)
+  const [autoplayEnabled, setAutoplayEnabled] = React.useState(autoplay)
   const controlled = index !== undefined
   const activeIndex = clampIndex(controlled ? index : internalIndex, items.length, loop)
+
+  React.useEffect(() => {
+    setAutoplayEnabled(autoplay)
+  }, [autoplay])
 
   function setActiveIndex(nextIndex: number, reason: "manual" | "autoplay" = "manual") {
     const resolvedIndex = clampIndex(nextIndex, items.length, loop)
     if (!controlled) setInternalIndex(resolvedIndex)
     if (reason === "manual" && stopAutoplayOnInteraction) {
       setAutoplayStopped(true)
+      if (autoplayEnabled) {
+        setAutoplayEnabled(false)
+        onAutoplayChange?.(false)
+      }
     }
     onIndexChange?.(resolvedIndex)
   }
@@ -88,7 +105,7 @@ function Carousel({
   }
 
   React.useEffect(() => {
-    if (!autoplay || items.length <= 1 || autoplayStopped) return
+    if (!autoplayEnabled || items.length <= 1 || autoplayStopped) return
     if (pauseOnHover && isHovered) return
 
     const timer = window.setInterval(() => {
@@ -102,7 +119,7 @@ function Carousel({
     return () => {
       window.clearInterval(timer)
     }
-  }, [activeIndex, autoplay, autoplayInterval, autoplayStopped, isHovered, items.length, loop, pauseOnHover])
+  }, [activeIndex, autoplayEnabled, autoplayInterval, autoplayStopped, isHovered, items.length, loop, pauseOnHover])
 
   return (
     <div
@@ -166,7 +183,7 @@ function Carousel({
         ) : null}
       </div>
       {showDots && items.length > 1 && (
-        <div className="flex items-center justify-center gap-2" role="tablist" aria-label={`${ariaLabel} slides`}>
+        <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label={`${ariaLabel} slides`}>
           {items.map((_, itemIndex) => (
             <button
               key={itemIndex}
@@ -181,6 +198,22 @@ function Carousel({
               onClick={() => setActiveIndex(itemIndex)}
             />
           ))}
+          {showPlaybackControl ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="ml-2 rounded-full"
+              onClick={() => {
+                const nextPlaying = !autoplayEnabled
+                setAutoplayStopped(false)
+                setAutoplayEnabled(nextPlaying)
+                onAutoplayChange?.(nextPlaying)
+              }}
+            >
+              {autoplayEnabled ? pauseLabel : playLabel}
+            </Button>
+          ) : null}
         </div>
       )}
     </div>

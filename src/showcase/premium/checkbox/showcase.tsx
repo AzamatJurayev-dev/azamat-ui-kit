@@ -33,9 +33,12 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
           <div className={`${panelClass} flex items-start gap-3`}>
             <Checkbox
               size="lg"
+              allowIndeterminate
               checked={triState === "mixed" ? "indeterminate" : triState === "checked"}
-              onCheckedChange={(checked) => {
-                if (checked) {
+              onCheckedStateChange={(checked) => {
+                if (checked === "indeterminate") {
+                  setState({ checked: false, textValue: "mixed" })
+                } else if (checked) {
                   setState({ checked: true, textValue: "checked" })
                 } else {
                   setState({ checked: false, textValue: "unchecked" })
@@ -91,7 +94,7 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
               Release checklist is {triState}
             </h4>
             <p className="mt-2 text-sm leading-6 aui-text-muted">
-              Toggle the first row or use these actions to verify controlled checkbox behavior.
+              Toggle the first row or use these actions to verify controlled tri-state checkbox behavior.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

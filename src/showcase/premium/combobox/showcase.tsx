@@ -1,3 +1,5 @@
+import * as React from "react"
+
 import { Badge, Button, Combobox } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
@@ -15,6 +17,7 @@ const teammateOptions = [
 export function ComboboxShowcase({ state, setState }: ComponentDemoProps) {
   const currentValue = teammateOptions.some((option) => option.value === state.selectValue) ? state.selectValue : "azamat"
   const currentOption = teammateOptions.find((option) => option.value === currentValue) ?? teammateOptions[0]
+  const [searchValue, setSearchValue] = React.useState("")
 
   return (
     <div className="space-y-5">
@@ -45,6 +48,10 @@ export function ComboboxShowcase({ state, setState }: ComponentDemoProps) {
                 onValueChange={(value) => setState({ selectValue: value ?? "azamat" })}
                 placeholder="Choose teammate"
                 searchPlaceholder="Search teammate..."
+                clearable
+                allowDeselect
+                showSelectedDescription
+                onSearchChange={setSearchValue}
               />
             </div>
           </div>
@@ -68,6 +75,7 @@ export function ComboboxShowcase({ state, setState }: ComponentDemoProps) {
             <p className="mt-2 text-sm leading-6 aui-text-muted">
               Use quick actions below to verify that the value stays controlled outside the dropdown itself.
             </p>
+            <p className="mt-2 text-sm leading-6 aui-text-muted">Search query: {searchValue || "empty"}</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Button type="button" size="sm" onClick={() => setState({ selectValue: "nodira" })}>

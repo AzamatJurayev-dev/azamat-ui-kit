@@ -46,6 +46,8 @@ export type ButtonProps = ButtonPrimitive.Props &
     loadingLabel?: string
     leftIcon?: React.ReactNode
     rightIcon?: React.ReactNode
+    fullWidth?: boolean
+    pressed?: boolean
   }
 
 function Button({
@@ -57,6 +59,8 @@ function Button({
   loadingLabel = "Loading",
   leftIcon,
   rightIcon,
+  fullWidth = false,
+  pressed = false,
   children,
   ...props
 }: ButtonProps) {
@@ -68,9 +72,15 @@ function Button({
       data-variant={variant ?? "default"}
       data-size={size ?? "default"}
       data-loading={loading || undefined}
+      data-pressed={pressed || undefined}
       disabled={isDisabled}
       aria-busy={loading || undefined}
-      className={cn(buttonVariants({ variant, size, className }))}
+      aria-pressed={pressed || undefined}
+      className={cn(
+        buttonVariants({ variant, size, className }),
+        fullWidth && "w-full",
+        pressed && "shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04)),0_0_0_1px_var(--aui-focus-ring,var(--ring))]"
+      )}
       {...props}
     >
       {loading ? (
