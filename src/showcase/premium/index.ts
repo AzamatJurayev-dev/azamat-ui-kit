@@ -10,6 +10,7 @@ import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
 import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
 import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
+import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { avatarMock, AvatarShowcase } from "./avatar"
 import { carouselMock, CarouselShowcase } from "./carousel"
 import { jsonInputMock, JsonInputShowcase } from "./json-input"
@@ -131,7 +132,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "radio-group": { mock: radioGroupMock, Showcase: RadioGroupShowcase },
   "simple-select": { mock: simpleSelectMock, Showcase: SimpleSelectShowcase },
   "async-select": { mock: asyncSelectMock, Showcase: AsyncSelectShowcase },
-  "async-multi-select": { mock: asyncSelectMock, Showcase: AsyncSelectShowcase },
+  "async-multi-select": { mock: asyncMultiSelectMock, Showcase: AsyncMultiSelectShowcase },
   avatar: { mock: avatarMock, Showcase: AvatarShowcase },
   "number-input": { mock: numberInputMock, Showcase: NumberInputShowcase },
   "money-input": { mock: moneyInputMock, Showcase: MoneyInputShowcase },

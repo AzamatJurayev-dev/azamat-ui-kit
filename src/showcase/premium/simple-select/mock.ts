@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const simpleSelectMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { Button, SimpleSelect } from "@/index"
+import { Button, SimpleSelect } from "tembro"
 
 const selectOptions = [
   { value: "public", label: "Public", disabled: false },

@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const asyncMultiSelectMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { AsyncMultiSelect } from "@/index"
+import { AsyncSelect } from "tembro"
 
 const projectOptions = [
   { value: "analytics", label: "Analytics", description: "Dashboards and reports" },
@@ -25,7 +25,8 @@ export function Example() {
 
   return (
     <div className="space-y-3">
-      <AsyncMultiSelect
+      <AsyncSelect
+        isMulti
         value={selected}
         onValueChange={(values) => setSelected(values)}
         loadOptions={loadProjectOptions}
@@ -43,8 +44,8 @@ export function Example() {
 }`
   ,
   htmlCode: `<button data-slot="async-multiselect-trigger">Choose modules</button>`,
-  cliCommand: "npx tembro add async-multi-select",
-  highlights: ["Multiple selected tags", "maxSelected guard", "select-all action", "remove by tag/checkbox"],
+  cliCommand: "npx tembro add async-select",
+  highlights: ["Multi-value remote tags", "maxSelected guard", "select-all action", "canonical isMulti flow"],
   relatedBlockSlugs: ["users-table", "crm-dashboard", "settings-form"],
   scenarios: [
     { title: "Project scope", description: "Attach multiple modules to one workspace or permission set." },
@@ -53,7 +54,7 @@ export function Example() {
     { title: "Async updates", description: "Keep tags synced with changing remote data." },
   ],
   capabilityNotes: [
-    "Use `AsyncMultiSelect` for sparse multi-select forms where dataset changes over time.",
+    "Prefer `AsyncSelect isMulti` for sparse multi-select forms where dataset changes over time.",
     "Show clear limits with `maxSelected` and help text from validation.",
     "`onValueChange` returns both ids and resolved options when custom payloads are needed.",
     "Disable close-on-select when users are likely to make batch picks.",
