@@ -34,6 +34,7 @@ describe("public API", () => {
       "DataTableRowActions",
       "DataTableSortableHeader",
       "DataTableToolbar",
+      "DataState",
       "DatePicker",
       "DateRangePicker",
       "Dialog",
@@ -41,11 +42,8 @@ describe("public API", () => {
       "Divider",
       "DonutChart",
       "DropdownMenu",
-      "EmptyState",
       "FileUpload",
       "FormAsyncSelect",
-      "FormDatePicker",
-      "FormDateRangePicker",
       "FormFieldShell",
       "FormInput",
       "FormSelect",
@@ -122,13 +120,11 @@ describe("public API", () => {
         "ConfirmDialog",
         "CopyButton",
         "CopyField",
+        "DataState",
         "DataTable",
         "DataTableBulkActions",
         "DataTableColumnVisibilityMenu",
-        "DataTablePagination",
-        "DataTableRowActions",
         "DataTableSortableHeader",
-        "DataTableToolbar",
         "DatePicker",
         "DateRangePicker",
         "Dialog",
@@ -136,11 +132,8 @@ describe("public API", () => {
         "Divider",
         "DonutChart",
         "DropdownMenu",
-        "EmptyState",
         "FileUpload",
         "FormAsyncSelect",
-        "FormDatePicker",
-        "FormDateRangePicker",
         "FormFieldShell",
         "FormInput",
         "FormSelect",
@@ -196,22 +189,12 @@ describe("public API", () => {
 
   it("keeps migration aliases explicit while canonical names stay preferred", () => {
     const migrationAliases = [
-      "FormDateInput",
-      "FormNumberInput",
-      "FormPasswordInput",
-      "FormPhoneInput",
-      "FormSearchInput",
       "AppSidebar",
     ].filter((name) => name in kit)
 
     expect(migrationAliases.sort()).toMatchInlineSnapshot(`
       [
         "AppSidebar",
-        "FormDateInput",
-        "FormNumberInput",
-        "FormPasswordInput",
-        "FormPhoneInput",
-        "FormSearchInput",
       ]
     `)
   })

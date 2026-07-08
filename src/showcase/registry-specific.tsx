@@ -7,7 +7,6 @@ import {
   FilterIcon,
   LayoutDashboardIcon,
   MoreHorizontalIcon,
-  SearchIcon,
   UploadCloudIcon,
 } from "lucide-react"
 
@@ -20,16 +19,12 @@ import {
   Button,
   ButtonGroup,
   Calendar,
-  DialogActionButton,
-  DialogActions,
   DescriptionList,
   Drawer,
-  EntityCard,
   FileDropzone,
   FileUpload,
   ImageUpload,
   FilterBar,
-  FilterChips,
   InfoCard,
   Input,
   List,
@@ -92,7 +87,6 @@ type RegistryDemoDefinition = {
 }
 
 const registryDemoDefinitions = [
-  component("dialog-actions", "DialogActions", "overlay", "Modal footer action row with cancel, secondary and primary actions."),
   component("alert-dialog", "AlertDialog", "overlay", "Destructive confirmation dialog with loading-ready action states."),
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),
   component("pagination", "Pagination", "navigation", "Controlled page navigation with edge buttons and active state."),
@@ -104,24 +98,18 @@ const registryDemoDefinitions = [
   component("rating", "Rating", "inputs", "Compact score input for feedback and review flows."),
   component("otp-input", "OtpInput", "inputs", "One-time code entry with fixed-length slots."),
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
-  component("description-list", "DescriptionList", "display", "Structured key-value details for entity, invoice and profile pages."),
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
   component("progress-circle", "ProgressCircle", "display", "Compact circular progress for sidebars and status cards."),
   component("timeline", "Timeline", "display", "Vertical or horizontal event stream for workflow history."),
   component("status-dot", "StatusDot", "display", "Tiny live status indicator with optional pulse animation."),
   component("user-card", "UserCard", "display", "User summary row with avatar, metadata and actions."),
-  component("delta-badge", "DeltaBadge", "display", "Compact positive, negative, and risk deltas for metric summaries."),
-  component("entity-header", "EntityHeader", "display", "Top summary row for a customer, invoice, or workspace."),
   component("notification-center", "NotificationCenter", "display", "Compact activity and notifications stream."),
-  component("entity-card", "EntityCard", "display", "Structured summary card with title, meta, state and actions."),
-  component("file-card", "FileCard", "display", "Compact file summary with state and actions."),
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
-  component("filter-chips", "FilterChips", "actions", "Inline active filter summaries with clear and remove actions."),
   component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
   component("section-header", "SectionHeader", "layout", "Reusable section title block with actions and metadata."),
   component("stat-card", "StatCard", "layout", "Dashboard stat card for KPI, trend and helper text."),
@@ -374,18 +362,6 @@ function FormPreview({
 }
 
 function OverlayPreview({ slug }: { slug: string }) {
-  if (slug === "dialog-actions") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
-        <DialogActions align="end">
-          <DialogActionButton variant="ghost">Cancel</DialogActionButton>
-          <DialogActionButton variant="outline">Save draft</DialogActionButton>
-          <DialogActionButton>Publish</DialogActionButton>
-        </DialogActions>
-      </div>
-    )
-  }
-
   if (slug === "alert-dialog") {
     return (
       <AlertDialog
@@ -496,21 +472,6 @@ function FeedbackPreview({ slug }: { slug?: string }) {
 }
 
 function DisplayPreview({ slug }: { slug: string }) {
-  if (slug === "description-list") {
-    return (
-      <DescriptionList
-        title="Invoice details"
-        description="Structured facts with responsive columns."
-        items={[
-          { key: "id", label: "Invoice", value: "#4821" },
-          { key: "amount", label: "Amount", value: "$12,420" },
-          { key: "status", label: "Status", value: <DemoStatusBadge tone="success">Paid</DemoStatusBadge> },
-          { key: "owner", label: "Owner", value: "Finance team" },
-        ]}
-      />
-    )
-  }
-
   if (slug === "progress") {
     return <Progress label="Migration progress" description="Production rollout" value={68} tone="success" showValue />
   }
@@ -547,35 +508,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "delta-badge") {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <Badge variant="secondary">+12.4%</Badge>
-        <Badge variant="outline">-3.1%</Badge>
-        <Badge variant="destructive">Risk</Badge>
-      </div>
-    )
-  }
-
-  if (slug === "entity-header") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
-            <Badge variant="outline">Customer</Badge>
-            <div>
-              <h3 className="text-xl font-semibold">Acme Holdings</h3>
-              <p className="text-sm text-muted-foreground">Enterprise account with billing and admin ownership.</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">Archive</Button>
-            <Button size="sm">Edit</Button>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   if (slug === "notification-center") {
     return (
@@ -589,17 +521,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "entity-card" || slug === "file-card") {
-    return (
-      <EntityCard
-        title={slug === "file-card" ? "Design-spec.pdf" : "Azamat Workspace"}
-        description={slug === "file-card" ? "Shared with 4 reviewers." : "Admin console and live dashboard route."}
-        status={<Badge variant="secondary">Live</Badge>}
-        meta={slug === "file-card" ? "2.4 MB" : "Updated 8 min ago"}
-        actions={<Button size="sm" variant="outline">Open</Button>}
-      />
-    )
-  }
 
   if (slug === "data-list") {
     return (
@@ -702,21 +623,6 @@ function ActionsPreview({
     )
   }
 
-  if (slug === "filter-chips") {
-    return (
-      <div className="grid gap-3">
-        <FilterChips
-          chips={[
-            { key: "status", label: "Status", value: "Active", tone: "success" },
-            { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
-            { key: "region", label: "Region", value: "APAC", tone: "info" },
-          ]}
-          onRemove={() => undefined}
-          onClear={() => undefined}
-        />
-      </div>
-    )
-  }
 
   if (slug === "saved-filter-select") {
     return (

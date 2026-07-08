@@ -24,7 +24,6 @@ export const presetFiles: Record<string, PresetFile[]> = {
     { source: "src/components/filters/filter-bar.tsx", target: "{components}/filters/filter-bar.tsx" },
     { source: "src/components/display/property-grid.tsx", target: "{components}/display/property-grid.tsx" },
     { source: "src/components/display/smart-card.tsx", target: "{components}/display/smart-card.tsx" },
-    { source: "src/components/display/entity-card.tsx", target: "{components}/display/entity-card.tsx" },
     { source: "src/components/data-table/data-table.tsx", target: "{components}/data-table/data-table.tsx" }
   ]
 }

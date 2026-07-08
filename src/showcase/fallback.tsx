@@ -20,9 +20,7 @@ import {
   Descriptions,
   Divider,
   DualListPicker,
-  EmptyState,
-  EntityCard,
-  FilterChips,
+  FilterBar,
   Heading,
   Input,
   JsonInput,
@@ -482,28 +480,26 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "filter-chips" || item.slug === "data-table-saved-filters") {
+  if (item.slug === "data-table-saved-filters") {
     return (
       <div className="grid gap-3">
-        <FilterChips
+        <FilterBar
           chips={[
             { key: "status", label: "Status", value: "Active", tone: "success" },
             { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
             { key: "region", label: "Region", value: "APAC", tone: "info" },
           ]}
-          onRemove={() => undefined}
-          onClear={() => undefined}
+          onRemoveChip={() => undefined}
+          onReset={() => undefined}
         />
-        {item.slug === "data-table-saved-filters" ? (
-          <ButtonGroup
-            attached={false}
-            items={[
-              { key: "default", label: "Default", variant: "secondary" },
-              { key: "billing", label: "Billing" },
-              { key: "ops", label: "Operations" },
-            ]}
-          />
-        ) : null}
+        <ButtonGroup
+          attached={false}
+          items={[
+            { key: "default", label: "Default", variant: "secondary" },
+            { key: "billing", label: "Billing" },
+            { key: "ops", label: "Operations" },
+          ]}
+        />
       </div>
     )
   }
@@ -564,16 +560,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "empty-search-state") {
-    return (
-      <EmptyState
-        title="No matching components"
-        description="Try a shorter keyword or switch to a broader family."
-        action={<Button size="sm">Clear search</Button>}
-      />
-    )
-  }
-
   if (item.slug === "data-list" || item.slug === "list") {
     return (
       <List
@@ -582,18 +568,6 @@ function renderGenericPreviewSurface(
           { key: "2", title: "Growth plan", description: "Most used by product teams", extra: "$199" },
           { key: "3", title: "Starter plan", description: "Lightweight team setup", extra: "$49" },
         ]}
-      />
-    )
-  }
-
-  if (item.slug === "entity-card" || item.slug === "file-card") {
-    return (
-      <EntityCard
-        title={item.slug === "file-card" ? "Design-spec.pdf" : "Azamat Workspace"}
-        description={item.slug === "file-card" ? "Shared with 4 reviewers." : "Admin console and live dashboard route."}
-        status={<Badge variant="secondary">Live</Badge>}
-        meta={item.slug === "file-card" ? "2.4 MB" : "Updated 8 min ago"}
-        actions={<Button size="sm" variant="outline">Open</Button>}
       />
     )
   }
@@ -622,26 +596,6 @@ function renderGenericPreviewSurface(
         <Badge variant="outline">-3.1%</Badge>
         <Badge variant="destructive">Risk</Badge>
       </div>
-    )
-  }
-
-  if (item.slug === "entity-header") {
-    return (
-      <Card>
-        <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
-            <Badge variant="outline">Customer</Badge>
-            <div>
-              <h3 className="text-xl font-semibold">Acme Holdings</h3>
-              <p className="text-sm text-muted-foreground">Enterprise account with billing and admin ownership.</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">Archive</Button>
-            <Button size="sm">Edit</Button>
-          </div>
-        </CardContent>
-      </Card>
     )
   }
 

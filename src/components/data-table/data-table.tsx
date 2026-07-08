@@ -24,7 +24,7 @@ import { DataTableColumnVisibilityMenu } from "@/components/data-table/data-tabl
 import { DataTablePagination, type DataTablePaginationProps } from "@/components/data-table/data-table-pagination"
 import { type DataTableRowAction } from "@/components/data-table/data-table-row-actions"
 import { DataTableToolbar, type DataTableToolbarProps } from "@/components/data-table/data-table-toolbar"
-import { EmptyState, type EmptyStateProps } from "@/components/feedback/empty-state"
+import { DataState, type DataStateProps } from "@/components/display/data-state"
 import { LoadingState, type LoadingStateProps } from "@/components/feedback/loading-state"
 import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
 import { Button } from "@/components/ui/button"
@@ -107,8 +107,8 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string
   isLoading?: boolean
   isError?: boolean
-  emptyState?: EmptyStateProps
-  errorState?: EmptyStateProps
+  emptyState?: Omit<DataStateProps, "status">
+  errorState?: Omit<DataStateProps, "status">
   loadingState?: LoadingStateProps
   loadingVariant?: DataTableLoadingVariant
   toolbar?: React.ReactNode | ((table: TanStackTable<TData>) => React.ReactNode)
@@ -403,9 +403,9 @@ function DataTable<TData, TValue = unknown>({
   const stateContent = shouldRenderSkeleton ? null : isLoading ? (
     <LoadingState label="Loading data..." {...loadingState} />
   ) : isError ? (
-    <EmptyState title="Could not load data" description="Please try again." {...errorState} />
+    <DataState status="error" title="Could not load data" description="Please try again." variant="plain" {...errorState} />
   ) : rows.length === 0 ? (
-    <EmptyState {...emptyState} />
+    <DataState status="empty" variant="plain" {...emptyState} />
   ) : null
 
   return (

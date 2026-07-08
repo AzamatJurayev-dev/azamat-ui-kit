@@ -142,7 +142,10 @@ export function Demo() {
   return (
     <FilterBar
       search={<SearchInput value="" placeholder="Search rows..." readOnly />}
-      activeCount={2}
+      chips={[
+        { key: "status", label: "Status", value: "Active", tone: "success" },
+        { key: "owner", label: "Owner", value: "Azamat" },
+      ]}
       filters={<Button variant="outline">Status</Button>}
       actions={<Button>Export</Button>}
       onReset={() => undefined}
@@ -160,21 +163,6 @@ export function Demo() {
         { key: "amount", label: "Amount", value: "$12,420" },
         { key: "status", label: "Status", value: "Paid" },
       ]}
-    />
-  )
-}`,
-  "entity-card": `import { EntityCard } from "@/components/entity-card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-
-export function Demo() {
-  return (
-    <EntityCard
-      title="Azamat Workspace"
-      description="Admin console and live dashboard route."
-      status={<Badge variant="secondary">Live</Badge>}
-      meta="Updated 8 min ago"
-      actions={<Button size="sm" variant="outline">Open</Button>}
     />
   )
 }`,

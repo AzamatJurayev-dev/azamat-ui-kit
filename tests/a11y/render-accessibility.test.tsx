@@ -10,7 +10,8 @@ import { DataTable } from "@/components/data-table/data-table"
 import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
 import { FileUpload } from "@/components/upload/file-upload"
 import { ResourcePage } from "@/components/patterns/resource-page"
-import { FormBuilder, type FormBuilderField } from "@/components/patterns/form-builder"
+import { FormInput } from "@/components/form/form-input"
+import { Button } from "@/components/ui/button"
 
 type PersonRow = {
   id: string
@@ -18,32 +19,19 @@ type PersonRow = {
   role: string
 }
 
-function FormBuilderHarness() {
+function FormHarness() {
   const { control } = useForm({
     defaultValues: {
       name: "Azamat",
     },
   })
 
-  const fields: FormBuilderField<{ name: string }>[] = [
-    {
-      id: "name",
-      type: "input",
-      props: {
-        name: "name",
-        kind: "text",
-        label: "Name",
-      },
-    },
-  ]
-
   return (
-    <FormBuilder
-      control={control}
-      fields={fields}
-      submitLabel="Save"
-      resetLabel="Reset"
-    />
+    <form>
+      <FormInput control={control} name="name" label="Name" />
+      <Button type="submit">Save</Button>
+      <Button type="reset" variant="outline">Reset</Button>
+    </form>
   )
 }
 
@@ -194,7 +182,7 @@ describe("render-based accessibility coverage", () => {
             data: rows,
           }}
         />
-        <FormBuilderHarness />
+        <FormHarness />
       </div>
     )
 

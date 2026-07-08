@@ -43,8 +43,6 @@ import { descriptionsMock, DescriptionsShowcase } from "./descriptions"
 import { dialogMock, DialogShowcase } from "./dialog"
 import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
 import { DrawerShowcase, drawerMock } from "./drawer"
-import { emptyStateMock, EmptyStateShowcase } from "./empty-state"
-import { FormBuilderShowcase, formBuilderMock } from "./form-builder"
 import { FormWrapperShowcase, formAsyncSelectMock, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
 import { hoverCardMock, HoverCardShowcase } from "./hover-card"
 import { kanbanBoardMock, KanbanBoardShowcase } from "./kanban-board"
@@ -193,7 +191,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "form-date-range-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-builder": { mock: formBuilderMock, Showcase: FormBuilderShowcase },
   "segmented-control": { mock: segmentedControlMock, Showcase: SegmentedControlShowcase },
   skeleton: { mock: skeletonMock, Showcase: SkeletonShowcase },
   spinner: { mock: spinnerMock, Showcase: SpinnerShowcase },
@@ -214,7 +211,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   list: { mock: listMock, Showcase: ListShowcase },
   "property-grid": { mock: propertyGridMock, Showcase: PropertyGridShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
-  "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
   "data-state": { mock: dataStateMock, Showcase: DataStateShowcase },
   progress: { mock: progressMock, Showcase: ProgressShowcase },

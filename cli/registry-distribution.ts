@@ -48,7 +48,6 @@ const explicitDistribution: Partial<Record<ComponentName, RegistryDistribution>>
   "use-debounce": "foundation",
   hooks: "foundation",
   "data-table": "system",
-  "form-builder": "system",
   "resource-page": "system",
   "resource-detail-page": "system",
   "calendar-kit": "system",

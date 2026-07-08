@@ -33,7 +33,6 @@
     "overlay": [
       "alert-dialog",
       "confirm-dialog",
-      "dialog-actions",
       "drawer",
       "modal-shell",
       "sheet-shell"
@@ -48,8 +47,6 @@
     "inputs": [
       "async-select",
       "combobox",
-      "date-input",
-      "date-range-input",
       "masked-input",
       "money-input",
       "number-input",
@@ -66,27 +63,18 @@
       "inline-editable"
     ],
     "form": [
-      "form-async-select",
-      "form-date-input",
-      "form-date-picker",
-      "form-date-range-input",
-      "form-date-range-picker",
       "form-field-shell",
       "form-input",
-      "form-number-input",
-      "form-password-input",
-      "form-phone-input",
-      "form-search-input",
       "form-select",
+      "form-textarea",
       "form-switch",
-      "form-textarea"
+      "form-async-select"
     ],
     "feedback": [
       "alert",
-      "empty-state",
       "loading-state",
       "page-state",
-      "empty-search-state"
+      "data-state"
     ],
     "display": [
       "activity-feed",
@@ -94,10 +82,6 @@
       "code-block",
       "data-list",
       "data-state",
-      "descriptions",
-      "description-list",
-      "entity-card",
-      "file-card",
       "info-card",
       "kanban",
       "list",
@@ -112,9 +96,7 @@
       "timeline",
       "tree-view",
       "user-card",
-      "trend-card",
-      "delta-badge",
-      "entity-header"
+      "trend-card"
     ],
     "actions": [
       "action-menu",
@@ -134,7 +116,6 @@
       "sticky-footer-bar"
     ],
     "filters": [
-      "filter-chips",
       "filter-bar",
       "saved-filter-select"
     ],
@@ -148,9 +129,7 @@
     "calendar": [
       "calendar",
       "date-picker",
-      "date-range-picker",
-      "form-date-picker",
-      "form-date-range-picker"
+      "date-range-picker"
     ],
     "upload": [
       "file-upload",
@@ -168,8 +147,7 @@
     "command": [],
     "patterns": [
       "resource-page",
-      "resource-detail-page",
-      "form-builder"
+      "resource-detail-page"
     ],
     "modern": [
       "calendar-scheduler",
@@ -224,9 +202,8 @@
     "sidebar",
     "sidebar-nav",
     "breadcrumbs",
-    "empty-state",
+    "data-state",
     "loading-state",
-    "description-list",
     "progress",
     "progress-circle",
     "metric-grid",
@@ -237,8 +214,6 @@
     "action-menu",
     "filter-bar",
     "trend-card",
-    "delta-badge",
-    "entity-header",
     "notification-center",
     "command-bar"
   ],
@@ -264,9 +239,8 @@
       "sidebar",
       "sidebar-nav",
       "breadcrumbs",
-      "empty-state",
+      "data-state",
       "loading-state",
-      "description-list",
       "progress-circle",
       "stat-card",
       "metric-grid",
@@ -285,8 +259,6 @@
       "form-textarea",
       "form-switch",
       "trend-card",
-      "delta-badge",
-      "entity-header",
       "notification-center",
       "command-bar"
     ],
@@ -323,11 +295,9 @@
       "command-bar",
       "quantity-stepper",
       "inline-editable",
-      "empty-search-state",
       "avatar",
       "code-block",
       "data-state",
-      "descriptions",
       "kanban",
       "list",
       "property-grid",
@@ -352,11 +322,6 @@
     ]
   },
   "migrationAliases": {
-    "form-search-input": "form-input",
-    "form-password-input": "form-input",
-    "form-number-input": "form-input",
-    "form-phone-input": "form-input",
-    "form-date-input": "form-input",
     "form-async-select": "form-select",
     "app-sidebar": "sidebar",
     "smart-card": "info-card"

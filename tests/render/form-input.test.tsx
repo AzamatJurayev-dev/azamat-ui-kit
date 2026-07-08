@@ -4,13 +4,7 @@ import userEvent from "@testing-library/user-event"
 import { useForm, useWatch } from "react-hook-form"
 import { describe, expect, it } from "vitest"
 
-import {
-  FormDateInput,
-  FormInput,
-  FormNumberInput,
-  FormPhoneInput,
-  FormSearchInput,
-} from "@/index"
+import { FormInput } from "@/index"
 
 function TextHarness() {
   const { control } = useForm({ defaultValues: { title: "" } })
@@ -42,7 +36,7 @@ function NumberHarness() {
 
   return (
     <>
-      <FormNumberInput control={control} name="count" label="Count" />
+      <FormInput control={control} name="count" kind="number" label="Count" />
       <output data-testid="count-value">{String(count)}</output>
     </>
   )
@@ -54,7 +48,7 @@ function PhoneHarness() {
 
   return (
     <>
-      <FormPhoneInput control={control} name="phone" label="Phone" valueMode="raw" />
+      <FormInput control={control} name="phone" kind="phone" label="Phone" valueMode="raw" />
       <output data-testid="phone-value">{phone}</output>
     </>
   )
@@ -66,7 +60,7 @@ function DateHarness() {
 
   return (
     <>
-      <FormDateInput control={control} name="dueDate" label="Due date" />
+      <FormInput control={control} name="dueDate" kind="date" label="Due date" />
       <output data-testid="date-value">{dueDate}</output>
     </>
   )
@@ -78,7 +72,7 @@ function SearchAliasHarness() {
 
   return (
     <>
-      <FormSearchInput control={control} name="search" label="Search" />
+      <FormInput control={control} name="search" kind="search" label="Search" />
       <output data-testid="search-value">{search}</output>
     </>
   )
@@ -106,7 +100,7 @@ describe("FormInput consolidation", () => {
     expect(screen.getByTestId("query-value").textContent).toBe("Button")
   })
 
-  it("keeps wrapper aliases wired to the universal implementation", async () => {
+  it("uses the universal search variant instead of a wrapper alias", async () => {
     const user = userEvent.setup()
 
     render(<SearchAliasHarness />)
@@ -116,7 +110,7 @@ describe("FormInput consolidation", () => {
     expect(screen.getByTestId("search-value").textContent).toBe("Palette")
   })
 
-  it("stores numeric values through the number alias", async () => {
+  it("stores numeric values through the number variant", async () => {
     const user = userEvent.setup()
 
     render(<NumberHarness />)
@@ -140,7 +134,7 @@ describe("FormInput consolidation", () => {
     expect(screen.getByTestId("phone-value").textContent).toBe("998901234567")
   })
 
-  it("writes date values through the date alias", async () => {
+  it("writes date values through the date variant", async () => {
     const user = userEvent.setup()
 
     render(<DateHarness />)
