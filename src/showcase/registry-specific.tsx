@@ -180,7 +180,7 @@ function createMock(definition: RegistryDemoDefinition): ComponentDemoMock {
     scenarios: definition.scenarios,
     capabilityNotes: [
       `Add ${definition.slug} into your local source with the CLI.`,
-      `Import from your configured components alias after the file is copied.`,
+      "Import the public component surface from `tembro` in app code.",
     ],
   }
 }
@@ -188,7 +188,7 @@ function createMock(definition: RegistryDemoDefinition): ComponentDemoMock {
 function createCodeSnippet(definition: RegistryDemoDefinition) {
   const importName = definition.importName ?? definition.component
 
-  return `import { ${importName} } from "@/components/${definition.slug}"\n\nexport function Demo() {\n  return <${importName} />\n}`
+  return `import { ${importName} } from "tembro"\n\nexport function Demo() {\n  return <${importName} />\n}`
 }
 
 function RegistrySpecificShowcase({
