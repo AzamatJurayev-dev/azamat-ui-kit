@@ -13,7 +13,9 @@ export type DataStateProps = Omit<React.ComponentProps<typeof Card>, "content" |
   status: DataStateStatus
   title?: React.ReactNode
   description?: React.ReactNode
+  badge?: React.ReactNode
   actions?: React.ReactNode
+  footer?: React.ReactNode
   icon?: React.ReactNode
   tone?: DataStateTone
   variant?: DataStateVariant
@@ -48,7 +50,9 @@ function DataState({
   status,
   title,
   description,
+  badge,
   actions,
+  footer,
   icon,
   tone,
   variant = "card",
@@ -83,7 +87,10 @@ function DataState({
       >
         {icon ?? content.icon}
       </div>
-      <div className={cn("font-semibold tracking-tight text-foreground", compact ? "text-sm" : "text-base")}>{title ?? content.title}</div>
+      <div className={cn("flex flex-wrap items-center gap-2", align === "center" ? "justify-center" : "justify-start")}>
+        <div className={cn("font-semibold tracking-tight text-foreground", compact ? "text-sm" : "text-base")}>{title ?? content.title}</div>
+        {badge}
+      </div>
       <p className="mt-1 max-w-md text-sm text-muted-foreground">{description ?? content.description}</p>
       {query && (
         <div className="mt-3 max-w-full rounded-md border border-border/70 bg-muted/45 px-2.5 py-1 text-sm text-muted-foreground">
@@ -103,6 +110,7 @@ function DataState({
           {actions}
         </div>
       )}
+      {footer ? <div className="mt-4 w-full">{footer}</div> : null}
     </div>
   )
 

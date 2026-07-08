@@ -17,6 +17,7 @@ export type DropdownMenuLabelProps = React.ComponentProps<"div"> & { inset?: boo
 export type DropdownMenuItemProps = MenuPrimitive.Item.Props & {
   inset?: boolean
   variant?: "default" | "destructive"
+  closeOnSelect?: boolean
 }
 export type DropdownMenuSubmenuProps = MenuPrimitive.SubmenuRoot.Props
 export type DropdownMenuSubmenuTriggerProps = MenuPrimitive.SubmenuTrigger.Props & {
@@ -25,10 +26,12 @@ export type DropdownMenuSubmenuTriggerProps = MenuPrimitive.SubmenuTrigger.Props
 export type DropdownMenuSubmenuContentProps = React.ComponentProps<typeof DropdownMenuContent>
 export type DropdownMenuCheckboxItemProps = MenuPrimitive.CheckboxItem.Props & {
   inset?: boolean
+  closeOnSelect?: boolean
 }
 export type DropdownMenuRadioGroupProps = MenuPrimitive.RadioGroup.Props
 export type DropdownMenuRadioItemProps = MenuPrimitive.RadioItem.Props & {
   inset?: boolean
+  closeOnSelect?: boolean
 }
 export type DropdownMenuSeparatorProps = MenuPrimitive.Separator.Props
 export type DropdownMenuShortcutProps = React.ComponentProps<"span">
@@ -46,6 +49,11 @@ function DropdownMenuPortal({ ...props }: DropdownMenuPortalProps) {
 }
 
 function DropdownMenuTrigger({ ...props }: DropdownMenuTriggerProps) {
+  if (!("render" in props) && React.isValidElement(props.children)) {
+    const { children, ...rest } = props
+    return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" render={children} {...rest} />
+  }
+
   return <MenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />
 }
 
@@ -102,6 +110,8 @@ function DropdownMenuItem({
   className,
   inset,
   variant = "default",
+  closeOnSelect = true,
+  onSelect,
   ...props
 }: DropdownMenuItemProps) {
   return (
@@ -114,6 +124,12 @@ function DropdownMenuItem({
         menuItemClassName,
         className
       )}
+      onSelect={(event) => {
+        if (!closeOnSelect) {
+          event.preventDefault()
+        }
+        onSelect?.(event)
+      }}
       {...props}
     />
   )
@@ -172,6 +188,8 @@ function DropdownMenuCheckboxItem({
   children,
   checked,
   inset,
+  closeOnSelect = true,
+  onSelect,
   ...props
 }: DropdownMenuCheckboxItemProps) {
   return (
@@ -184,6 +202,12 @@ function DropdownMenuCheckboxItem({
         className
       )}
       checked={checked}
+      onSelect={(event) => {
+        if (!closeOnSelect) {
+          event.preventDefault()
+        }
+        onSelect?.(event)
+      }}
       {...props}
     >
       <span
@@ -213,6 +237,8 @@ function DropdownMenuRadioItem({
   className,
   children,
   inset,
+  closeOnSelect = true,
+  onSelect,
   ...props
 }: DropdownMenuRadioItemProps) {
   return (
@@ -224,6 +250,12 @@ function DropdownMenuRadioItem({
         menuItemClassName,
         className
       )}
+      onSelect={(event) => {
+        if (!closeOnSelect) {
+          event.preventDefault()
+        }
+        onSelect?.(event)
+      }}
       {...props}
     >
       <span
