@@ -51,7 +51,12 @@ export function AsyncSelectShowcase() {
                 defaultOptions={workspaceOptions}
                 minSearchLength={1}
                 clearable
+                showSelectedDescription
                 debounceMs={220}
+                labels={{
+                  placeholder: "Choose service region",
+                  searchPlaceholder: "Search regions...",
+                }}
               />
             </div>
             <div className="mt-5">
@@ -67,7 +72,13 @@ export function AsyncSelectShowcase() {
                   clearable
                   showSelectAll
                   maxSelected={3}
+                  showSelectedDescription
                   debounceMs={220}
+                  labels={{
+                    multiPlaceholder: "Choose team coverage",
+                    searchPlaceholder: "Search team regions...",
+                    selectedCount: (count) => `${count} regions selected`,
+                  }}
                 />
               </div>
             </div>

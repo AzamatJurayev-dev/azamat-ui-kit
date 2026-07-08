@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import {
   Badge,
+  ButtonGroup,
   Button,
   Card,
   CardAction,
@@ -195,6 +196,31 @@ describe("base primitives", () => {
     expect(badge).toBeTruthy()
     expect((badge as HTMLElement).getAttribute("data-tone")).toBe("success")
     expect((badge as HTMLElement).querySelectorAll("[data-slot='badge-icon']")).toHaveLength(2)
+  })
+
+  it("updates controlled button group value and pressed state", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <ButtonGroup
+        value="list"
+        onValueChange={onValueChange}
+        items={[
+          { key: "list", label: "List" },
+          { key: "board", label: "Board", description: "Kanban" },
+        ]}
+      />
+    )
+
+    const listButton = screen.getByRole("button", { name: "List" })
+    const boardButton = screen.getByRole("button", { name: "BoardKanban" })
+
+    expect(listButton.getAttribute("aria-pressed")).toBe("true")
+    expect(boardButton.getAttribute("aria-pressed")).toBeNull()
+
+    await user.click(boardButton)
+    expect(onValueChange).toHaveBeenCalledWith("board")
   })
 
   it("keeps badge metadata contract for dot, variant and size", () => {

@@ -261,4 +261,5 @@ describe("overlay, command and navigation interactions", () => {
     expect(onPageTabChange).toHaveBeenCalledWith("examples", expect.objectContaining({ value: "examples" }))
     expect(screen.queryByRole("button", { name: "Hidden" })).toBeNull()
   })
+
 })

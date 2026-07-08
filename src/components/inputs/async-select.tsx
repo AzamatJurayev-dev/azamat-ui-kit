@@ -50,6 +50,7 @@ export type AsyncSelectStateRenderer<
 
 export type AsyncSelectLabels = {
   placeholder?: string
+  multiPlaceholder?: string
   searchPlaceholder?: string
   loading?: string
   creating?: string
@@ -91,6 +92,7 @@ export type AsyncSelectProps<
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
+  showSelectedDescription?: boolean
   triggerClassName?: string
   contentClassName?: string
   searchClassName?: string
@@ -138,6 +140,7 @@ export type AsyncMultiSelectProps<
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
+  showSelectedDescription?: boolean
   triggerClassName?: string
   contentClassName?: string
   searchClassName?: string
@@ -453,6 +456,7 @@ function AsyncSelect<
   onCreateOption,
   createOptionLabel,
   showCreateOption,
+  showSelectedDescription = true,
   triggerClassName,
   contentClassName,
   searchClassName,
@@ -653,9 +657,11 @@ function AsyncSelect<
                 <span className="truncate font-semibold">
                   {renderValue?.(currentOption) ?? currentOption.label}
                 </span>
-                {currentOption.disabled && currentOption.disabledReason && (
-                  <span className="truncate text-xs text-muted-foreground">{currentOption.disabledReason}</span>
-                )}
+                {showSelectedDescription && (currentOption.description || (currentOption.disabled && currentOption.disabledReason)) ? (
+                  <span className="truncate text-xs text-muted-foreground">
+                    {currentOption.description ?? currentOption.disabledReason}
+                  </span>
+                ) : null}
               </span>
             ) : (
               <span className="truncate text-muted-foreground">{labels?.placeholder ?? "Select"}</span>
@@ -802,6 +808,7 @@ function AsyncMultiSelect<
   onCreateOption,
   createOptionLabel,
   showCreateOption,
+  showSelectedDescription = true,
   triggerClassName,
   contentClassName,
   searchClassName,
@@ -1082,9 +1089,11 @@ function AsyncMultiSelect<
                         renderValue?.(option) ??
                         option.label}
                     </span>
-                    {option.disabled && option.disabledReason && (
-                      <span className="truncate text-[11px] text-muted-foreground">{option.disabledReason}</span>
-                    )}
+                    {showSelectedDescription && (option.description || (option.disabled && option.disabledReason)) ? (
+                      <span className="truncate text-[11px] text-muted-foreground">
+                        {option.description ?? option.disabledReason}
+                      </span>
+                    ) : null}
                   </span>
                   {!disabled && (
                     <span
@@ -1106,7 +1115,7 @@ function AsyncMultiSelect<
               ))
             ) : (
               <span className="truncate text-muted-foreground">
-                {labels?.placeholder ?? "Select"}
+                {labels?.multiPlaceholder ?? labels?.placeholder ?? "Select"}
               </span>
             )}
           </span>
