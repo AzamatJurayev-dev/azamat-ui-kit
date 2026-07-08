@@ -1789,20 +1789,8 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
     },
     {
       key: "related",
-      title: "Core companions",
-      description: "These are the most common helpers teams install next to the main grid.",
-      slugs: ["data-table-column-visibility-menu", "data-table-bulk-actions", "data-table-view-presets"],
-    },
-    {
-      key: "advanced",
-      title: "Composable helpers",
-      description: "Factories and low-level pieces belong after the main grid contract is already clear.",
-      slugs: ["data-table-column-visibility-menu", "data-table-sortable-header"],
-    },
-    {
-      key: "related",
-      title: "Low-level primitive",
-      description: "Use the semantic table primitive only for lightweight markup. It is not the main reusable data-grid surface.",
+      title: "Supporting primitive",
+      description: "Drop down to the semantic table primitive only when you do not need the full DataTable workflow.",
       slugs: ["table"],
     },
   ],

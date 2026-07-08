@@ -28,6 +28,7 @@ export type DataTableToolbarProps = React.ComponentProps<"div"> &
     description?: React.ReactNode
     search?: React.ReactNode
     filters?: React.ReactNode
+    summary?: React.ReactNode
     actions?: React.ReactNode
     selectionActions?: React.ReactNode
     selectedCount?: number
@@ -35,6 +36,9 @@ export type DataTableToolbarProps = React.ComponentProps<"div"> &
     selectedLabel?: (selectedCount: number, totalCount?: number) => React.ReactNode
     titleClassName?: string
     descriptionClassName?: string
+    searchClassName?: string
+    filtersClassName?: string
+    summaryClassName?: string
     actionsClassName?: string
   }
 
@@ -46,6 +50,7 @@ function DataTableToolbar({
   description,
   search,
   filters,
+  summary,
   actions,
   selectionActions,
   selectedCount = 0,
@@ -54,12 +59,16 @@ function DataTableToolbar({
     total === undefined ? `${selected} selected` : `${selected} of ${total} selected`,
   titleClassName,
   descriptionClassName,
+  searchClassName,
+  filtersClassName,
+  summaryClassName,
   actionsClassName,
   children,
   ...props
 }: DataTableToolbarProps) {
   const hasHeading = Boolean(title || description)
   const hasSelection = selectedCount > 0 && Boolean(selectionActions)
+  const hasMainControls = Boolean(search || filters || children)
 
   return (
     <div
@@ -82,12 +91,24 @@ function DataTableToolbar({
         </div>
       )}
 
-      {(search || filters || hasSelection || children) && (
-        <div className="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between">
-          <div className="flex min-w-0 flex-1 flex-col gap-2 lg:flex-row lg:flex-wrap lg:items-center">
-            {search}
-            {filters}
-            {children}
+      {(hasMainControls || summary || hasSelection) && (
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-start xl:justify-between">
+          <div className="flex min-w-0 flex-1 flex-col gap-3">
+            {hasMainControls && (
+              <div className="flex min-w-0 flex-1 flex-col gap-2 lg:flex-row lg:flex-wrap lg:items-center">
+                {search ? <div className={cn("min-w-[16rem] max-w-xl flex-1", searchClassName)}>{search}</div> : null}
+                {filters ? <div className={cn("flex min-w-0 flex-1 flex-wrap items-center gap-2", filtersClassName)}>{filters}</div> : null}
+                {children}
+              </div>
+            )}
+            {summary ? (
+              <div
+                data-slot="data-table-summary"
+                className={cn("flex flex-wrap items-center gap-2 text-sm text-muted-foreground", summaryClassName)}
+              >
+                {summary}
+              </div>
+            ) : null}
           </div>
 
           {hasSelection && (

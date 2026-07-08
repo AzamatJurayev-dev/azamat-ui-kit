@@ -57,11 +57,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
 
-  component("data-table-column-visibility-menu", "DataTableColumnVisibilityMenu", "data-table", "Column visibility menu pattern for table views."),
-  component("data-table-sortable-header", "DataTableSortableHeader", "data-table", "Sortable header trigger with clear visual state."),
-  component("data-table-bulk-actions", "DataTableBulkActions", "data-table", "Bulk action bar for selected rows."),
-  component("data-table-view-presets", "DataTableViewPresets", "data-table", "Saved table view presets for operational dashboards."),
-
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
 
   component("file-upload", "FileUpload", "upload", "Full file upload surface with dropzone, action button and helper text."),

@@ -6,6 +6,7 @@ import type { ColumnDef, VisibilityState } from "@tanstack/react-table"
 
 import { DataTable } from "@/components/data-table/data-table"
 import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
+import { Badge } from "@/components/ui/badge"
 
 type PersonRow = {
   id: string
@@ -114,6 +115,27 @@ describe("DataTable", () => {
     )
 
     expect(screen.queryByRole("button", { name: /columns/i })).toBeNull()
+  })
+
+  it("renders canonical filters and summary inside the default toolbar", () => {
+    render(
+      <DataTable
+        columns={getColumns()}
+        data={rows}
+        rowSelection={{}}
+        title="Team"
+        search={{
+          value: "",
+          onValueChange: () => undefined,
+          placeholder: "Search team",
+        }}
+        filters={<button type="button">Status</button>}
+        summary={<Badge variant="outline">2 rows</Badge>}
+      />
+    )
+
+    expect(screen.getByRole("button", { name: "Status" })).toBeTruthy()
+    expect(screen.getByText("2 rows")).toBeTruthy()
   })
 
   it("renders row actions and triggers pagination callbacks", async () => {
