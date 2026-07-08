@@ -18,7 +18,7 @@
   "scripts": {
     "build": "node ../../scripts/sync-cli-assets.mjs && tsup",
     "clean": "node -e \"import('node:fs').then(fs => { fs.rmSync('dist', { recursive: true, force: true }); fs.rmSync('vendor', { recursive: true, force: true }); })\"",
-    "prepack": "npm run build"
+    "prepack": "node ../../scripts/prepack-cli.mjs"
   },
   "dependencies": {
     "commander": "^15.0.0",
