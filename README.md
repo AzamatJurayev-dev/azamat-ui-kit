@@ -1,108 +1,54 @@
 # @azamatjurayevdev/azix-ui
 
-Editable React components for Tailwind apps.
+Azix is a source-copy-first React UI kit.
 
-Use the CLI to copy component source into your project. Do not install `@azamatjurayevdev/azix-ui` as a runtime UI dependency for new apps.
+The CLI copies editable component source into your app. New projects should treat local `components` code as the canonical surface.
 
-## Next.js
+## Start
+
+Next.js:
 
 ```bash
 npx @azamatjurayevdev/azix-ui init --template next --defaults
-npx @azamatjurayevdev/azix-ui add button
+npx @azamatjurayevdev/azix-ui add button input
 ```
 
-```tsx
-import { Button } from "@/components/ui/button"
-
-export default function Page() {
-  return <Button>Create workspace</Button>
-}
-```
-
-## Vite
+Vite:
 
 ```bash
 npx @azamatjurayevdev/azix-ui init --template vite --defaults
-npx @azamatjurayevdev/azix-ui add input
+npx @azamatjurayevdev/azix-ui add button input
 ```
 
-```tsx
-import { Input } from "@/components/ui/input"
+## Use
 
-export default function App() {
-  return <Input placeholder="Workspace name" />
-}
-```
-
-## Common Commands
-
-```bash
-npx @azamatjurayevdev/azix-ui list
-npx @azamatjurayevdev/azix-ui add button input data-table
-npx @azamatjurayevdev/azix-ui preset dashboard
-npx @azamatjurayevdev/azix-ui theme src/index.css
-```
-
-## Component Imports
-
-After `add`, import from your app source:
+After `add`, import from local app source:
 
 ```tsx
 import { Button } from "@/components/ui/button"
-import { DataTable } from "@/components/data-table/data-table"
-import { FormInput } from "@/components/form/form-input"
+import { Input } from "@/components/ui/input"
 ```
 
-## Canonical Components First
+## Core rule
 
-Teach these names first in app code and docs:
+- `init` sets up config and theme tokens.
+- `add` copies component source into your app.
+- Local source is the product surface.
+- Runtime package import is compatibility-only, not the main path.
 
-- `Button`
-- `Input`
-- `Select`
-- `FormInput`
-- `FormSelect`
-- `FormFieldShell`
-- `Card`
-- `InfoCard`
-- `Badge`
-- `Dialog`
-- `DataTable`
-- `Sidebar`
+## Current direction
 
-Legacy wrappers such as `FormSearchInput`, `FormPasswordInput`, `FormNumberInput`, `FormPhoneInput`, `FormDateInput`, `FormAsyncSelect`, `AppSidebar`, and `SmartCard` remain only as compatibility aliases.
+The docs layer is being rebuilt from scratch around:
 
-## Notes
+- source-copy workflow
+- fewer public component names
+- stronger component quality
+- simpler theming and API contracts
 
-- `init` writes theme tokens into your global CSS.
-- `add` copies only the requested component source and required support files.
-- Tailwind scans copied files naturally because they live inside your `src` folder.
-- You can edit copied components like normal app code.
-
-## Public Metadata
-
-The package also exports docs metadata for catalog pages:
-
-- `InputFamily`
-- `SelectFamily`
-- `CardFamily`
-- `BadgeFamily`
-- `OverlayFamily`
-- `FormFamily`
-- `DataTableFamily`
-- `componentFamilyCatalog`
-- `componentDocsGroups`
-- `componentFamilyMigrationMap`
-
-## Verify
+## Local verification
 
 ```bash
 npm run lint
 npm run build
+npm run test:run
 ```
-
-Check that your app has:
-
-- `azamat-ui.json`
-- Azamat UI tokens in global CSS
-- local imports from `@/components/...`
