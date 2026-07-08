@@ -126,12 +126,16 @@ function DateRangePicker({
     onValueChange?.(nextValue)
   }
 
-  const clearValue = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
+  const resetValue = () => {
     const nextValue = {}
     setDraftValue(nextValue)
     onValueChange?.(nextValue)
+  }
+
+  const clearValue = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    resetValue()
   }
 
   const selectPreset = (presetValue: DateRangePickerValue) => {
@@ -187,14 +191,21 @@ function DateRangePicker({
             </span>
           )}
           {clearable && hasValue ? (
-            <button
-              type="button"
+            <span
+              role="button"
+              tabIndex={0}
               aria-label={getTextLabel(labels?.clear, "Clear date range")}
               className="ml-auto inline-flex size-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground opacity-80 transition hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
               onClick={clearValue}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  resetValue()
+                }
+              }}
             >
               <XIcon className="size-3.5" />
-            </button>
+            </span>
           ) : null}
         </PopoverTrigger>
         <PopoverContent
