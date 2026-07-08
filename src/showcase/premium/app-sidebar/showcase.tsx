@@ -2,6 +2,7 @@ import * as React from "react"
 import { BarChart3Icon, CreditCardIcon, FolderIcon, HomeIcon, SettingsIcon } from "lucide-react"
 
 import { AppSidebar, Badge, Button } from "@/index"
+import { cn } from "@/lib/utils"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -18,6 +19,7 @@ const panelClass = "rounded-[22px] border border-[color:var(--aui-divider)] bg-[
 export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
   const [activeKey, setActiveKey] = React.useState("overview")
   const [collapsed, setCollapsed] = React.useState(mode === "playground")
+  const [previewSurface, setPreviewSurface] = React.useState<"desktop" | "mobile">("desktop")
 
   const items = React.useMemo(
     () =>
@@ -30,6 +32,7 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
   )
 
   const activeItem = navItems.find((item) => item.key === activeKey)
+  const mobilePreview = previewSurface === "mobile"
 
   return (
     <div className="space-y-5">
@@ -45,7 +48,7 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
           <div className="flex flex-wrap gap-2">
             <Badge variant="outline" className="rounded-full">Header slot</Badge>
             <Badge variant="outline" className="rounded-full">Badges</Badge>
-            <Badge variant="outline" className="rounded-full">Collapsed rail</Badge>
+            <Badge variant="outline" className="rounded-full">Mobile drawer</Badge>
           </div>
         </div>
       </section>
@@ -58,14 +61,25 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
           <Button size="sm" variant="outline" onClick={() => setActiveKey("reports")}>
             Jump to reports
           </Button>
+          <Button size="sm" variant={mobilePreview ? "default" : "outline"} onClick={() => setPreviewSurface("mobile")}>
+            Mobile drawer
+          </Button>
+          <Button size="sm" variant={!mobilePreview ? "default" : "outline"} onClick={() => setPreviewSurface("desktop")}>
+            Desktop rail
+          </Button>
         </div>
       ) : null}
 
       <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <section className={panelClass}>
+        <section className={cn(panelClass, mobilePreview && "mx-auto w-full max-w-[420px]")}>
           <AppSidebar
             collapsed={collapsed}
             items={items}
+            responsive
+            mobileBreakpoint={mobilePreview ? 10000 : 0}
+            mobileTitle="Workspace navigation"
+            mobileDescription="Open routes, check badges, and move between sections from one compact drawer."
+            mobileToggleLabel="Open workspace menu"
             header={<div className="px-3 py-2 text-sm font-semibold">Azamat Workspace</div>}
             footer={<div className="aui-text-muted px-3 py-2 text-xs">Starter plan • 3 editors</div>}
             className="min-h-[440px] rounded-[22px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface)]"
@@ -81,8 +95,8 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
 
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="rounded-[20px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] aui-text-muted">Mode</p>
-              <p className="mt-2 text-lg font-semibold aui-text-strong">{collapsed ? "Collapsed" : "Expanded"}</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] aui-text-muted">Shell</p>
+              <p className="mt-2 text-lg font-semibold aui-text-strong">{mobilePreview ? "Mobile drawer" : (collapsed ? "Collapsed" : "Expanded")}</p>
             </div>
             <div className="rounded-[20px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3">
               <p className="text-[11px] font-semibold uppercase tracking-[0.24em] aui-text-muted">Visible items</p>

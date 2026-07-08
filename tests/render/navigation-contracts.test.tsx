@@ -1,8 +1,24 @@
 import * as React from "react"
-import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { fireEvent, render, screen } from "@testing-library/react"
+import { describe, expect, it, vi } from "vitest"
 
 import { Breadcrumbs, Sidebar, SidebarNav } from "@/index"
+
+function mockMatchMedia(matches: boolean) {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches,
+      media: query,
+      onchange: null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  })
+}
 
 describe("navigation contracts", () => {
   it("renders nested sidebar navigation with section labels", () => {
@@ -90,5 +106,34 @@ describe("navigation contracts", () => {
     expect(screen.getByText("Product owner")).toBeTruthy()
     expect(screen.getByText("Help center")).toBeTruthy()
     expect(screen.getByText("Send feedback")).toBeTruthy()
+  })
+
+  it("switches to a mobile drawer with a hamburger trigger and closes after selection", () => {
+    mockMatchMedia(true)
+
+    const onItemSelect = vi.fn()
+    render(
+      <Sidebar
+        responsive
+        mobileTitle="Workspace navigation"
+        items={[
+          { key: "dashboard", label: "Dashboard", onSelect: () => undefined },
+          { key: "reports", label: "Reports", onSelect: () => undefined },
+        ]}
+        onItemSelect={onItemSelect}
+      />
+    )
+
+    const trigger = screen.getByRole("button", { name: "Open navigation" })
+    fireEvent.click(trigger)
+
+    expect(document.body.style.overflow).toBe("hidden")
+    expect(screen.getByRole("dialog", { name: "Workspace navigation" }).getAttribute("data-state")).toBe("open")
+
+    fireEvent.click(screen.getByText("Reports"))
+
+    expect(onItemSelect).toHaveBeenCalledTimes(1)
+    expect(document.body.style.overflow).toBe("")
+    expect(screen.getByRole("dialog", { name: "Workspace navigation" }).getAttribute("data-state")).toBe("closed")
   })
 })

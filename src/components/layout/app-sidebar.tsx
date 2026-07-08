@@ -1,5 +1,7 @@
 import * as React from "react"
+import { MenuIcon, XIcon } from "lucide-react"
 
+import { useIsMobile } from "@/hooks/use-is-mobile"
 import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
@@ -40,10 +42,27 @@ export type AppSidebarProps = React.ComponentProps<"aside"> & {
   secondaryActions?: AppSidebarNavItem[]
   footerSecondary?: React.ReactNode
   tooltipOnCollapsed?: boolean
+  responsive?: boolean
+  mobileBreakpoint?: number
+  mobileOpen?: boolean
+  defaultMobileOpen?: boolean
+  onMobileOpenChange?: (open: boolean) => void
+  mobileTitle?: React.ReactNode
+  mobileDescription?: React.ReactNode
+  mobileToggleLabel?: string
+  mobileToggleIcon?: React.ReactNode
+  showMobileToggle?: boolean
+  closeOnSelect?: boolean
+  mobileToggleClassName?: string
+  mobilePanelClassName?: string
+  mobileOverlayClassName?: string
+  renderMobileToggle?: (state: { open: boolean; setOpen: (open: boolean) => void }) => React.ReactNode
   onItemSelect?: (item: AppSidebarNavItem) => void
   renderItem?: (item: AppSidebarNavItem, state: { collapsed: boolean }) => React.ReactNode
   renderLink?: (props: React.ComponentProps<"a"> & { item: AppSidebarNavItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
 }
+
+const DEFAULT_APP_SIDEBAR_BREAKPOINT = 1024
 
 function hasVisibleSidebarChildren(item: AppSidebarNavItem) {
   return item.items?.some((child) => !child.hidden) ?? false
@@ -52,6 +71,11 @@ function hasVisibleSidebarChildren(item: AppSidebarNavItem) {
 function isSidebarItemActive(item: AppSidebarNavItem): boolean {
   if (item.active) return true
   return item.items?.some((child) => isSidebarItemActive(child)) ?? false
+}
+
+function triggerSidebarItem(item: AppSidebarNavItem, onItemSelect?: (item: AppSidebarNavItem) => void) {
+  item.onSelect?.()
+  onItemSelect?.(item)
 }
 
 function SidebarLeafItem({
@@ -111,8 +135,7 @@ function SidebarLeafItem({
                 event.preventDefault()
                 return
               }
-              item.onSelect?.()
-              onItemSelect?.(item)
+              triggerSidebarItem(item, onItemSelect)
             },
             children: content,
           })}
@@ -129,8 +152,7 @@ function SidebarLeafItem({
             event.preventDefault()
             return
           }
-          item.onSelect?.()
-          onItemSelect?.(item)
+          triggerSidebarItem(item, onItemSelect)
         }}
       >
         {content}
@@ -148,8 +170,7 @@ function SidebarLeafItem({
           if (item.disabled) return
           const href = item.href
           if (!href) return
-          item.onSelect?.()
-          onItemSelect?.(item)
+          triggerSidebarItem(item, onItemSelect)
           if (href.startsWith("http")) {
             window.open(href, "_blank", "noopener,noreferrer")
             return
@@ -168,8 +189,8 @@ function SidebarLeafItem({
       disabled={item.disabled}
       {...commonProps}
       onClick={() => {
-        item.onSelect?.()
-        onItemSelect?.(item)
+        if (item.disabled) return
+        triggerSidebarItem(item, onItemSelect)
       }}
     >
       {content}
@@ -250,7 +271,14 @@ function SidebarTree({
             ) : null}
             {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
             {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
-            {!collapsed && <span data-slot="app-sidebar-group-chevron" className="ml-auto text-xs text-muted-foreground transition-transform group-open/app-sidebar-details:rotate-90">›</span>}
+            {!collapsed && (
+              <span
+                data-slot="app-sidebar-group-chevron"
+                className="ml-auto text-xs text-muted-foreground transition-transform group-open/app-sidebar-details:rotate-90"
+              >
+                ›
+              </span>
+            )}
           </summary>
           <div data-slot="app-sidebar-group-content" className={cn("mt-1 space-y-1", !collapsed && "pl-3")}>
             <SidebarTree
@@ -289,8 +317,7 @@ function SidebarActionButton({
       disabled={item.disabled}
       onClick={() => {
         if (item.disabled) return
-        item.onSelect?.()
-        onItemSelect?.(item)
+        triggerSidebarItem(item, onItemSelect)
       }}
     >
       {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
@@ -311,9 +338,11 @@ function SidebarActionButton({
 function SidebarFooterAccount({
   account,
   collapsed,
+  onAfterSelect,
 }: {
   account: AppSidebarFooterAccount
   collapsed: boolean
+  onAfterSelect?: () => void
 }) {
   const body = (
     <button
@@ -325,6 +354,7 @@ function SidebarFooterAccount({
       )}
       onClick={() => {
         account.onSelect?.()
+        onAfterSelect?.()
         if (!account.href) return
         if (account.href.startsWith("http")) {
           window.open(account.href, "_blank", "noopener,noreferrer")
@@ -365,7 +395,7 @@ function SidebarFooterAccount({
   )
 }
 
-function AppSidebar({
+function SidebarSurface({
   className,
   header,
   footer,
@@ -376,25 +406,70 @@ function AppSidebar({
   footerAccount,
   secondaryActions = [],
   footerSecondary,
-  tooltipOnCollapsed = true,
+  tooltipOnCollapsed,
   onItemSelect,
   renderItem,
   renderLink,
   children,
+  mobile,
+  mobileTitle,
+  mobileDescription,
+  onRequestClose,
+  closeOnSelect = true,
   ...props
-}: AppSidebarProps) {
+}: Omit<AppSidebarProps, "responsive" | "mobileBreakpoint" | "mobileOpen" | "defaultMobileOpen" | "onMobileOpenChange" | "mobileToggleLabel" | "mobileToggleIcon" | "showMobileToggle" | "mobileToggleClassName" | "mobilePanelClassName" | "mobileOverlayClassName" | "renderMobileToggle"> & {
+  mobile?: boolean
+  onRequestClose?: () => void
+}) {
   const visibleItems = items.filter((item) => !item.hidden)
   const visibleRailItems = railItems.filter((item) => !item.hidden)
   const visibleSecondaryActions = secondaryActions.filter((item) => !item.hidden)
+
+  const handleSelect = React.useCallback((item: AppSidebarNavItem) => {
+    onItemSelect?.(item)
+    if (mobile && closeOnSelect) onRequestClose?.()
+  }, [closeOnSelect, mobile, onItemSelect, onRequestClose])
+
+  const showMobileHeader = mobile && (mobileTitle || mobileDescription || onRequestClose)
 
   return (
     <aside
       data-slot="app-sidebar"
       data-collapsed={collapsed || undefined}
+      data-mobile={mobile || undefined}
       className={cn("flex h-full min-h-0 flex-col overflow-hidden", className)}
       {...props}
     >
-      {header && <div data-slot="app-sidebar-header" className="shrink-0 border-b p-3">{header}</div>}
+      {(header || showMobileHeader) && (
+        <div data-slot="app-sidebar-header" className="shrink-0 border-b p-3">
+          <div className="flex items-start gap-3">
+            <div className="min-w-0 flex-1">
+              {header ?? null}
+              {showMobileHeader ? (
+                <div className={cn(header && "mt-3")}>
+                  {mobileTitle ? (
+                    <p className="text-sm font-semibold text-foreground">{mobileTitle}</p>
+                  ) : null}
+                  {mobileDescription ? (
+                    <p className="mt-1 text-xs leading-5 text-muted-foreground">{mobileDescription}</p>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+            {mobile && onRequestClose ? (
+              <button
+                type="button"
+                aria-label="Close navigation"
+                data-slot="app-sidebar-mobile-close"
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] text-[color:var(--aui-page-foreground)] transition hover:bg-[color:var(--aui-control-bg)]"
+                onClick={onRequestClose}
+              >
+                <XIcon className="size-4" />
+              </button>
+            ) : null}
+          </div>
+        </div>
+      )}
 
       <nav data-slot="app-sidebar-nav" className="min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain p-2">
         {children ??
@@ -417,7 +492,7 @@ function AppSidebar({
             items={visibleItems}
             collapsed={collapsed}
             depth={0}
-            onItemSelect={onItemSelect}
+            onItemSelect={handleSelect}
             renderLink={renderLink}
           />
         )}
@@ -434,7 +509,7 @@ function AppSidebar({
                       key={item.key}
                       item={item}
                       collapsed
-                      onItemSelect={onItemSelect}
+                      onItemSelect={handleSelect}
                     />
                   ))}
                 </div>
@@ -444,7 +519,9 @@ function AppSidebar({
           ) : null}
           {!collapsed && footerAccount ? (
             <div data-slot="app-sidebar-account-wrap" className="mb-3">
-              <SidebarFooterAccount account={footerAccount} collapsed={false} />
+              <SidebarFooterAccount account={footerAccount} collapsed={false} onAfterSelect={() => {
+                if (mobile && closeOnSelect) onRequestClose?.()
+              }} />
             </div>
           ) : null}
           {!collapsed && visibleSecondaryActions.length > 0 ? (
@@ -454,7 +531,7 @@ function AppSidebar({
                   key={item.key}
                   item={item}
                   collapsed={false}
-                  onItemSelect={onItemSelect}
+                  onItemSelect={handleSelect}
                 />
               ))}
             </div>
@@ -466,13 +543,174 @@ function AppSidebar({
           ) : null}
           {collapsed && footerAccount ? (
             <div data-slot="app-sidebar-account-wrap">
-              <SidebarFooterAccount account={footerAccount} collapsed />
+              <SidebarFooterAccount
+                account={footerAccount}
+                collapsed
+                onAfterSelect={() => {
+                  if (mobile && closeOnSelect) onRequestClose?.()
+                }}
+              />
             </div>
           ) : null}
           {!collapsed && footer}
         </div>
       )}
     </aside>
+  )
+}
+
+function AppSidebar({
+  className,
+  header,
+  footer,
+  items = [],
+  collapsed = false,
+  collapsedRail,
+  railItems = [],
+  footerAccount,
+  secondaryActions = [],
+  footerSecondary,
+  tooltipOnCollapsed = true,
+  responsive = true,
+  mobileBreakpoint = DEFAULT_APP_SIDEBAR_BREAKPOINT,
+  mobileOpen: mobileOpenProp,
+  defaultMobileOpen = false,
+  onMobileOpenChange,
+  mobileTitle,
+  mobileDescription,
+  mobileToggleLabel = "Open navigation",
+  mobileToggleIcon,
+  showMobileToggle = true,
+  closeOnSelect = true,
+  mobileToggleClassName,
+  mobilePanelClassName,
+  mobileOverlayClassName,
+  renderMobileToggle,
+  onItemSelect,
+  renderItem,
+  renderLink,
+  children,
+  ...props
+}: AppSidebarProps) {
+  const isMobile = responsive ? useIsMobile(mobileBreakpoint) : false
+  const [uncontrolledMobileOpen, setUncontrolledMobileOpen] = React.useState(defaultMobileOpen)
+  const mobileOpen = mobileOpenProp ?? uncontrolledMobileOpen
+
+  const setMobileOpen = React.useCallback((nextOpen: boolean) => {
+    if (mobileOpenProp == null) {
+      setUncontrolledMobileOpen(nextOpen)
+    }
+    onMobileOpenChange?.(nextOpen)
+  }, [mobileOpenProp, onMobileOpenChange])
+
+  React.useEffect(() => {
+    if (!isMobile && mobileOpen) {
+      setMobileOpen(false)
+    }
+  }, [isMobile, mobileOpen, setMobileOpen])
+
+  React.useEffect(() => {
+    if (!isMobile || !mobileOpen) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false)
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [isMobile, mobileOpen, setMobileOpen])
+
+  const baseProps = {
+    className,
+    header,
+    footer,
+    items,
+    collapsed,
+    collapsedRail,
+    railItems,
+    footerAccount,
+    secondaryActions,
+    footerSecondary,
+    tooltipOnCollapsed,
+    closeOnSelect,
+    onItemSelect,
+    renderItem,
+    renderLink,
+    children,
+    ...props,
+  }
+
+  if (!responsive || !isMobile) {
+    return <SidebarSurface {...baseProps} />
+  }
+
+  const defaultTrigger = (
+    <button
+      type="button"
+      aria-label={mobileOpen ? "Close navigation" : mobileToggleLabel}
+      data-slot="app-sidebar-mobile-trigger"
+      data-state={mobileOpen ? "open" : "closed"}
+      className={cn(
+        "inline-flex min-h-10 items-center gap-2 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-3 text-sm font-medium text-[color:var(--aui-page-foreground)] shadow-sm transition hover:bg-[color:var(--aui-page-bg-alt)]",
+        mobileToggleClassName
+      )}
+      onClick={() => setMobileOpen(!mobileOpen)}
+    >
+      <span className="inline-flex size-8 items-center justify-center rounded-lg bg-[color:var(--aui-page-bg-alt)]">
+        {mobileToggleIcon ?? <MenuIcon className="size-4" />}
+      </span>
+      <span>{mobileOpen ? "Close navigation" : mobileToggleLabel}</span>
+    </button>
+  )
+
+  return (
+    <>
+      {showMobileToggle
+        ? renderMobileToggle
+          ? renderMobileToggle({ open: mobileOpen, setOpen: setMobileOpen })
+          : defaultTrigger
+        : null}
+      <div data-slot="app-sidebar-mobile-root" className="relative z-40">
+        <button
+          type="button"
+          aria-label="Dismiss navigation"
+          data-slot="app-sidebar-mobile-overlay"
+          data-state={mobileOpen ? "open" : "closed"}
+          className={cn(
+            "fixed inset-0 z-40 bg-black/45 transition-opacity duration-200",
+            mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
+            mobileOverlayClassName
+          )}
+          onClick={() => setMobileOpen(false)}
+        />
+        <SidebarSurface
+          {...baseProps}
+          mobile
+          collapsed={false}
+          mobileTitle={mobileTitle}
+          mobileDescription={mobileDescription}
+          onRequestClose={() => setMobileOpen(false)}
+          data-state={mobileOpen ? "open" : "closed"}
+          role="dialog"
+          aria-modal="true"
+          aria-label={typeof mobileTitle === "string" ? mobileTitle : "Navigation"}
+          className={cn(
+            "fixed inset-y-0 left-0 z-50 w-[min(88vw,22rem)] max-w-[22rem] border-r border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] shadow-2xl transition-transform duration-200 ease-out",
+            mobileOpen ? "translate-x-0" : "-translate-x-full",
+            mobilePanelClassName,
+            className
+          )}
+        />
+      </div>
+    </>
   )
 }
 

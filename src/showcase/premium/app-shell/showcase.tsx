@@ -69,9 +69,13 @@ export function AppShellShowcase({ mode }: ComponentDemoProps) {
 
         <div className="grid min-h-[420px] lg:grid-cols-[250px_minmax(0,1fr)_260px]">
           <AppSidebar
-            className={collapsed ? "hidden lg:block" : ""}
+            responsive
+            mobileTitle="Workspace navigation"
+            mobileDescription="Open the shell menu first, then move through app routes without squeezing the main content."
             header={<div className="px-3 py-2 text-sm font-semibold">AZA Studio</div>}
             footer={<div className="aui-text-muted px-3 py-2 text-xs">Shell footer</div>}
+            className={collapsed ? "lg:w-[92px]" : ""}
+            collapsed={collapsed}
           >
             <SidebarNav items={navItems} />
           </AppSidebar>
