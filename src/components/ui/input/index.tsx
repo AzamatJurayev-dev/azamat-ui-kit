@@ -1,6 +1,14 @@
 import * as React from "react"
 
-import { InputPrimitive, type InputPrimitiveProps } from "@/components/ui/input-primitive"
+import { InputPrimitive, type InputPrimitiveProps } from "./primitive"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "./group"
 import { InputDecorator } from "@/components/inputs/input-decorator"
 import { ClearableInput, type ClearableInputProps } from "@/components/inputs/clearable-input"
 import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
@@ -336,4 +344,12 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
 })
 Input.displayName = "Input"
 
-export { Input }
+export {
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+}

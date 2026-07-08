@@ -177,19 +177,37 @@ export async function addCommand(components: string[], options: AddCommandOption
   const dependenciesToInstall = new Set<string>();
   const copiedSources = new Set<string>();
 
-  async function copySourceWithLocalImports(source: string, targetTemplate?: string) {
-    const normalizedSource = source.replaceAll("\\", "/");
-    if (copiedSources.has(normalizedSource)) return;
+async function copySourceWithLocalImports(source: string, targetTemplate?: string) {
+  const normalizedSource = source.replaceAll("\\", "/");
+  if (copiedSources.has(normalizedSource)) return;
 
-    const sourcePath = path.join(packageRoot, normalizedSource);
-    if (!fs.existsSync(sourcePath)) {
-      logger.warn(`${normalizedSource} topilmadi. O‘tkazib yuborildi.`);
-      return;
-    }
+  const sourcePath = path.join(packageRoot, normalizedSource);
+  if (!fs.existsSync(sourcePath)) {
+    logger.warn(`${normalizedSource} topilmadi. O‘tkazib yuborildi.`);
+    return;
+  }
 
+  const sourceStat = await fs.stat(sourcePath);
+
+  if (sourceStat.isDirectory()) {
     copiedSources.add(normalizedSource);
 
-    const resolvedTarget = targetTemplate
+    const entries = await fs.readdir(sourcePath, { withFileTypes: true });
+    for (const entry of entries) {
+      const childSource = path.posix.join(normalizedSource, entry.name);
+      const childTarget = targetTemplate
+        ? path.posix.join(targetTemplate.replaceAll("\\", "/"), entry.name)
+        : undefined;
+
+      await copySourceWithLocalImports(childSource, childTarget);
+    }
+
+    return;
+  }
+
+  copiedSources.add(normalizedSource);
+
+  const resolvedTarget = targetTemplate
       ? resolveTargetPath(targetTemplate, config)
       : getLocalSourceTarget(normalizedSource, config);
 

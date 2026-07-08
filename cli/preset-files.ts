@@ -6,15 +6,15 @@ export type PresetFile = {
 export const presetFiles: Record<string, PresetFile[]> = {
   minimal: [
     { source: "src/lib/utils.ts", target: "{utils}" },
-    { source: "src/components/ui/button.tsx", target: "{ui}/button.tsx" },
-    { source: "src/components/ui/input.tsx", target: "{ui}/input.tsx" },
+    { source: "src/components/ui/button", target: "{ui}/button" },
+    { source: "src/components/ui/input", target: "{ui}/input" },
     { source: "src/components/ui/card.tsx", target: "{ui}/card.tsx" },
     { source: "src/components/ui/badge.tsx", target: "{ui}/badge.tsx" }
   ],
   dashboard: [
     { source: "src/lib/utils.ts", target: "{utils}" },
-    { source: "src/components/ui/button.tsx", target: "{ui}/button.tsx" },
-    { source: "src/components/ui/input.tsx", target: "{ui}/input.tsx" },
+    { source: "src/components/ui/button", target: "{ui}/button" },
+    { source: "src/components/ui/input", target: "{ui}/input" },
     { source: "src/components/ui/card.tsx", target: "{ui}/card.tsx" },
     { source: "src/components/ui/badge.tsx", target: "{ui}/badge.tsx" },
     { source: "src/components/ui/dropdown-menu.tsx", target: "{ui}/dropdown-menu.tsx" },

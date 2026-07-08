@@ -30,6 +30,38 @@ function resolveTarget(target: string, config: PresetInitConfig) {
   return target.replaceAll("{components}", components).replaceAll("{ui}", ui).replaceAll("{utils}", utils)
 }
 
+async function copyPresetEntry(source: string, target: string, alias: string | undefined, options: PresetCommandOptions) {
+  const sourceStat = await fs.stat(source)
+
+  if (sourceStat.isDirectory()) {
+    const entries = await fs.readdir(source, { withFileTypes: true })
+
+    for (const entry of entries) {
+      await copyPresetEntry(
+        path.join(source, entry.name),
+        path.join(target, entry.name),
+        alias,
+        options,
+      )
+    }
+
+    return
+  }
+
+  if (options.dryRun) {
+    logger.info(`[dry-run] ${source} -> ${target}`)
+    return
+  }
+  if (fs.existsSync(target) && !options.overwrite) {
+    logger.warn(`${target} allaqachon mavjud.`)
+    return
+  }
+
+  await fs.ensureDir(path.dirname(target))
+  await fs.writeFile(target, applyAlias(await fs.readFile(source, "utf8"), alias))
+  logger.success(`${target} qo‘shildi.`)
+}
+
 export async function presetCommand(name: string, options: PresetCommandOptions = {}) {
   const files = presetFiles[name]
   if (!files) {
@@ -50,16 +82,6 @@ export async function presetCommand(name: string, options: PresetCommandOptions 
   for (const item of files) {
     const source = path.join(packageRoot, item.source)
     const target = path.join(cwd, resolveTarget(item.target, config))
-    if (options.dryRun) {
-      logger.info(`[dry-run] ${item.source} -> ${path.relative(cwd, target)}`)
-      continue
-    }
-    if (fs.existsSync(target) && !options.overwrite) {
-      logger.warn(`${path.relative(cwd, target)} allaqachon mavjud.`)
-      continue
-    }
-    await fs.ensureDir(path.dirname(target))
-    await fs.writeFile(target, applyAlias(await fs.readFile(source, "utf8"), config.alias))
-    logger.success(`${path.relative(cwd, target)} qo‘shildi.`)
+    await copyPresetEntry(source, target, config.alias, options)
   }
 }
