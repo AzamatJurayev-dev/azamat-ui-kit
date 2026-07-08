@@ -11,6 +11,9 @@ export function AlertDialogShowcase({ mode }: ComponentDemoProps) {
   const [open, setOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
   const [lastResult, setLastResult] = React.useState("No action confirmed yet")
+  const [strictMode, setStrictMode] = React.useState(true)
+  const [caseSensitive, setCaseSensitive] = React.useState(true)
+  const [shouldFail, setShouldFail] = React.useState(false)
 
   return (
     <div className="space-y-5">
@@ -36,9 +39,20 @@ export function AlertDialogShowcase({ mode }: ComponentDemoProps) {
             <p className="text-sm font-medium aui-text-muted">Live destructive flow</p>
             <p className="mt-2 text-sm leading-6 aui-text-muted">Open the dialog and confirm a risky workspace action.</p>
           </div>
-          <Button variant="destructive" onClick={() => setOpen(true)}>
-            Delete workspace
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button variant={caseSensitive ? "secondary" : "outline"} onClick={() => setCaseSensitive((value) => !value)}>
+              {caseSensitive ? "Case sensitive" : "Case insensitive"}
+            </Button>
+            <Button variant={strictMode ? "secondary" : "outline"} onClick={() => setStrictMode((value) => !value)}>
+              {strictMode ? "Typed confirm on" : "Typed confirm off"}
+            </Button>
+            <Button variant={shouldFail ? "warning" : "outline"} onClick={() => setShouldFail((value) => !value)}>
+              {shouldFail ? "Failure mode on" : "Failure mode off"}
+            </Button>
+            <Button variant="destructive" onClick={() => setOpen(true)}>
+              Delete workspace
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -62,13 +76,24 @@ export function AlertDialogShowcase({ mode }: ComponentDemoProps) {
         title="Delete workspace?"
         description="This removes active billing rules, API tokens, and member access from the selected workspace."
         actionLabel="Delete workspace"
+        confirmValue={strictMode ? "DELETE" : undefined}
+        confirmCaseSensitive={caseSensitive}
+        confirmLabel="High-risk confirmation"
+        confirmDescription="Type DELETE to confirm you want to remove this workspace and its active access."
+        severityNote="Deleting a workspace clears active access, billing rules, and route-level secrets for the current team."
+        errorMessage="Workspace could not be deleted right now. Check dependent billing or retry."
         onAction={async () => {
           setLoading(true)
           await new Promise((resolve) => window.setTimeout(resolve, 450))
+          if (shouldFail) {
+            setLoading(false)
+            throw new Error("dependent billing")
+          }
           setLoading(false)
           setOpen(false)
           setLastResult("Workspace deletion confirmed")
         }}
+        onActionError={() => setLastResult("Workspace deletion failed")}
       />
 
       {mode === "playground" ? (

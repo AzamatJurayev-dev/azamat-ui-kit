@@ -16,6 +16,15 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   ariaLabel?: string
   previousLabel?: string
   nextLabel?: string
+  swipeThreshold?: number
+  autoplay?: boolean
+  autoplayInterval?: number
+  pauseOnHover?: boolean
+  stopAutoplayOnInteraction?: boolean
+  showPlaybackControl?: boolean
+  playLabel?: string
+  pauseLabel?: string
+  onAutoplayChange?: (playing: boolean) => void
 }
 
 export type CarouselItemProps = React.ComponentProps<"div">
@@ -38,23 +47,79 @@ function Carousel({
   ariaLabel = "Carousel",
   previousLabel = "Previous slide",
   nextLabel = "Next slide",
+  swipeThreshold = 44,
+  autoplay = false,
+  autoplayInterval = 4500,
+  pauseOnHover = true,
+  stopAutoplayOnInteraction = true,
+  showPlaybackControl = false,
+  playLabel = "Start autoplay",
+  pauseLabel = "Pause autoplay",
+  onAutoplayChange,
   className,
   children,
   ...props
 }: CarouselProps) {
   const items = React.Children.toArray(children)
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex)
+  const touchStartXRef = React.useRef<number | null>(null)
+  const [isHovered, setIsHovered] = React.useState(false)
+  const [autoplayStopped, setAutoplayStopped] = React.useState(false)
+  const [autoplayEnabled, setAutoplayEnabled] = React.useState(autoplay)
   const controlled = index !== undefined
   const activeIndex = clampIndex(controlled ? index : internalIndex, items.length, loop)
 
-  function setActiveIndex(nextIndex: number) {
+  React.useEffect(() => {
+    setAutoplayEnabled(autoplay)
+  }, [autoplay])
+
+  function setActiveIndex(nextIndex: number, reason: "manual" | "autoplay" = "manual") {
     const resolvedIndex = clampIndex(nextIndex, items.length, loop)
     if (!controlled) setInternalIndex(resolvedIndex)
+    if (reason === "manual" && stopAutoplayOnInteraction) {
+      setAutoplayStopped(true)
+      if (autoplayEnabled) {
+        setAutoplayEnabled(false)
+        onAutoplayChange?.(false)
+      }
+    }
     onIndexChange?.(resolvedIndex)
   }
 
   const canGoPrevious = loop || activeIndex > 0
   const canGoNext = loop || activeIndex < items.length - 1
+
+  const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = (event) => {
+    touchStartXRef.current = event.touches[0]?.clientX ?? null
+  }
+
+  const handleTouchEnd: React.TouchEventHandler<HTMLDivElement> = (event) => {
+    if (touchStartXRef.current == null || items.length <= 1) return
+    const endX = event.changedTouches[0]?.clientX ?? touchStartXRef.current
+    const deltaX = endX - touchStartXRef.current
+    touchStartXRef.current = null
+
+    if (Math.abs(deltaX) < swipeThreshold) return
+    if (deltaX > 0 && canGoPrevious) setActiveIndex(activeIndex - 1)
+    if (deltaX < 0 && canGoNext) setActiveIndex(activeIndex + 1)
+  }
+
+  React.useEffect(() => {
+    if (!autoplayEnabled || items.length <= 1 || autoplayStopped) return
+    if (pauseOnHover && isHovered) return
+
+    const timer = window.setInterval(() => {
+      if (!loop && activeIndex >= items.length - 1) {
+        setActiveIndex(0, "autoplay")
+        return
+      }
+      setActiveIndex(activeIndex + 1, "autoplay")
+    }, autoplayInterval)
+
+    return () => {
+      window.clearInterval(timer)
+    }
+  }, [activeIndex, autoplayEnabled, autoplayInterval, autoplayStopped, isHovered, items.length, loop, pauseOnHover])
 
   return (
     <div
@@ -63,6 +128,7 @@ function Carousel({
       role="region"
       aria-roledescription="carousel"
       aria-label={ariaLabel}
+      tabIndex={keyboard ? 0 : undefined}
       className={cn("grid gap-3", className)}
       onKeyDown={(event) => {
         if (!keyboard || items.length <= 1) return
@@ -75,6 +141,10 @@ function Carousel({
           setActiveIndex(activeIndex + 1)
         }
       }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       {...props}
     >
       <div className={cn(
@@ -113,7 +183,7 @@ function Carousel({
         ) : null}
       </div>
       {showDots && items.length > 1 && (
-        <div className="flex items-center justify-center gap-2" role="tablist" aria-label={`${ariaLabel} slides`}>
+        <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label={`${ariaLabel} slides`}>
           {items.map((_, itemIndex) => (
             <button
               key={itemIndex}
@@ -128,6 +198,22 @@ function Carousel({
               onClick={() => setActiveIndex(itemIndex)}
             />
           ))}
+          {showPlaybackControl ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="ml-2 rounded-full"
+              onClick={() => {
+                const nextPlaying = !autoplayEnabled
+                setAutoplayStopped(false)
+                setAutoplayEnabled(nextPlaying)
+                onAutoplayChange?.(nextPlaying)
+              }}
+            >
+              {autoplayEnabled ? pauseLabel : playLabel}
+            </Button>
+          ) : null}
         </div>
       )}
     </div>

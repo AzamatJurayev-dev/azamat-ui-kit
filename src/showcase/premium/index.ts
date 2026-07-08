@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import type { ComponentDemoBundle } from "./types"
 
 import { alertMock, AlertShowcase } from "./alert"
@@ -179,6 +177,10 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "hover-card": { mock: hoverCardMock, Showcase: HoverCardShowcase },
   "right-click-menu": { mock: rightClickMenuMock, Showcase: RightClickMenuShowcase },
   "data-table": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-column-visibility-menu": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-sortable-header": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-bulk-actions": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-view-presets": { mock: dataTableMock, Showcase: DataTableShowcase },
   "saved-filter-select": { mock: savedFilterSelectMock, Showcase: SavedFilterSelectShowcase },
   "form-field": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-field-shell": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },

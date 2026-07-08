@@ -27,8 +27,17 @@ export type CalendarDisabledReason = "disabled" | "min" | "max" | "range"
 export type CalendarLabels = {
   previousMonth?: string
   nextMonth?: string
+  today?: string
+  clear?: string
   selectDate?: (date: string) => string
   disabledDate?: (date: string, reason: CalendarDisabledReason) => string
+}
+
+export type CalendarSummaryState = {
+  mode: "single" | "range"
+  value?: string | null
+  range?: CalendarDateRange
+  locale: string
 }
 
 export type CalendarProps = React.ComponentProps<"div"> & {
@@ -47,8 +56,13 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   weekStartsOn?: 0 | 1
   numberOfMonths?: number
   showMonthHeaders?: boolean
+  showOutsideDays?: boolean
   pagedNavigation?: boolean
+  showTodayShortcut?: boolean
+  showClearShortcut?: boolean
+  showSelectionSummary?: boolean
   labels?: CalendarLabels
+  renderSelectionSummary?: (state: CalendarSummaryState) => React.ReactNode
 }
 
 function getInitialMonth(defaultMonth?: Date | string | null, value?: string | null, range?: CalendarDateRange) {
@@ -94,6 +108,12 @@ function getDateKeysBetween(from: string, to: string) {
   return keys
 }
 
+function formatCalendarSummaryDate(value: string | null | undefined, locale: string) {
+  const date = parseDateKey(value)
+  if (!date || !value) return null
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(date)
+}
+
 function Calendar({
   className,
   value,
@@ -111,11 +131,22 @@ function Calendar({
   weekStartsOn = 1,
   numberOfMonths = 1,
   showMonthHeaders,
+  showOutsideDays = true,
   pagedNavigation = false,
+  showTodayShortcut = false,
+  showClearShortcut = false,
+  showSelectionSummary = false,
   labels,
+  renderSelectionSummary,
   ...props
 }: CalendarProps) {
+  const isControlledSingle = value !== undefined
+  const isControlledRange = range !== undefined
+  const [internalValue, setInternalValue] = React.useState<string | null | undefined>(value ?? null)
+  const [internalRange, setInternalRange] = React.useState<CalendarDateRange>(range ?? {})
   const [internalMonth, setInternalMonth] = React.useState(() => getInitialMonth(defaultMonth, value, range))
+  const currentValue = isControlledSingle ? value : internalValue
+  const currentRange = isControlledRange ? range : internalRange
   const currentMonth = month ?? internalMonth
   const resolvedNumberOfMonths = Math.max(numberOfMonths, 1)
   const shouldShowMonthHeaders = showMonthHeaders ?? resolvedNumberOfMonths > 1
@@ -125,6 +156,7 @@ function Calendar({
   const weekdayLabels = React.useMemo(() => getWeekdayLabels(locale, weekStartsOn), [locale, weekStartsOn])
   const buttonRefs = React.useRef(new Map<string, HTMLButtonElement>())
   const [focusedDateKey, setFocusedDateKey] = React.useState(() => value ?? range?.from ?? todayKey)
+  const [hoveredDateKey, setHoveredDateKey] = React.useState<string | null>(null)
   const visibleMonths = React.useMemo(
     () => Array.from({ length: resolvedNumberOfMonths }, (_, index) => addMonths(currentMonth, index)),
     [currentMonth, resolvedNumberOfMonths]
@@ -161,15 +193,33 @@ function Calendar({
 
   const tabbableDateKey = React.useMemo(() => {
     const preferred = value ?? range?.from ?? todayKey
+    const selectedFrom = currentRange?.from ?? undefined
+    const selectedValue = currentValue ?? undefined
     if (visibleEnabledKeys.includes(focusedDateKey)) return focusedDateKey
-    if (visibleEnabledKeys.includes(preferred)) return preferred
+    if (visibleEnabledKeys.includes(selectedValue ?? selectedFrom ?? preferred)) return selectedValue ?? selectedFrom ?? preferred
     return visibleEnabledKeys[0]
-  }, [focusedDateKey, range?.from, todayKey, value, visibleEnabledKeys])
+  }, [currentRange?.from, currentValue, focusedDateKey, range?.from, todayKey, value, visibleEnabledKeys])
+
+  React.useEffect(() => {
+    if (isControlledSingle) {
+      setInternalValue(value ?? null)
+    }
+  }, [isControlledSingle, value])
+
+  React.useEffect(() => {
+    if (isControlledRange && range) {
+      setInternalRange(range)
+    }
+  }, [isControlledRange, range])
 
   React.useEffect(() => {
     if (!focusedDateKey) return
     buttonRefs.current.get(focusedDateKey)?.focus()
   }, [focusedDateKey])
+
+  React.useEffect(() => {
+    if (mode !== "range") setHoveredDateKey(null)
+  }, [mode])
 
   const setMonth = (nextMonth: Date) => {
     const next = startOfMonth(nextMonth)
@@ -201,26 +251,88 @@ function Calendar({
     if (isDateDisabled(dateKey)) return
 
     if (mode === "single") {
+      if (!isControlledSingle) setInternalValue(dateKey)
       onValueChange?.(dateKey)
       return
     }
 
-    const from = range?.from ?? null
-    const to = range?.to ?? null
+    const from = currentRange?.from ?? null
+    const to = currentRange?.to ?? null
 
     if (!from || (from && to) || dateKey < from) {
-      onRangeChange?.({ from: dateKey, to: null })
+      const nextRange = { from: dateKey, to: null }
+      if (!isControlledRange) setInternalRange(nextRange)
+      onRangeChange?.(nextRange)
       return
     }
 
     const rangeHasDisabledDate = getDateKeysBetween(from, dateKey).some((key) => isDateDisabled(key))
 
     if (rangeHasDisabledDate) {
-      onRangeChange?.({ from: dateKey, to: null })
+      const nextRange = { from: dateKey, to: null }
+      if (!isControlledRange) setInternalRange(nextRange)
+      onRangeChange?.(nextRange)
       return
     }
 
-    onRangeChange?.({ from, to: dateKey })
+    const nextRange = { from, to: dateKey }
+    if (!isControlledRange) setInternalRange(nextRange)
+    onRangeChange?.(nextRange)
+  }
+
+  const previewRange =
+    mode === "range" &&
+    currentRange?.from &&
+    !currentRange.to &&
+    hoveredDateKey &&
+    hoveredDateKey >= currentRange.from &&
+    !getDateKeysBetween(currentRange.from, hoveredDateKey).some((key) => isDateDisabled(key))
+      ? { from: currentRange.from, to: hoveredDateKey }
+      : null
+
+  const summaryContent = React.useMemo(() => {
+    if (!showSelectionSummary && !renderSelectionSummary) return null
+
+    if (renderSelectionSummary) {
+      return renderSelectionSummary({
+        mode,
+        value: currentValue,
+        range: currentRange,
+        locale,
+      })
+    }
+
+    if (mode === "range") {
+      const formattedFrom = formatCalendarSummaryDate(currentRange?.from, locale)
+      const formattedTo = formatCalendarSummaryDate(currentRange?.to, locale)
+      if (formattedFrom && formattedTo) return `${formattedFrom} -> ${formattedTo}`
+      if (formattedFrom) return `${formattedFrom} -> ...`
+      return "No range selected"
+    }
+
+    return formatCalendarSummaryDate(currentValue, locale) ?? "No date selected"
+  }, [currentRange, currentValue, locale, mode, renderSelectionSummary, showSelectionSummary])
+
+  const clearSelection = () => {
+    if (mode === "single") {
+      if (!isControlledSingle) setInternalValue(null)
+      onValueChange?.("")
+      return
+    }
+
+    const nextRange = { from: null, to: null }
+    if (!isControlledRange) setInternalRange(nextRange)
+    onRangeChange?.(nextRange)
+  }
+
+  const jumpToToday = () => {
+    const today = new Date()
+    const todayDateKey = toDateKey(today)
+    setMonth(today)
+    setFocusedDateKey(todayDateKey)
+    if (!isDateDisabled(todayDateKey)) {
+      handleDateSelect(todayDateKey)
+    }
   }
 
   const handleDateKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, date: Date) => {
@@ -329,8 +441,9 @@ function Calendar({
               {days.map((date) => {
                 const dateKey = toDateKey(date)
                 const outside = !isSameMonth(date, visibleMonth)
-                const selected = mode === "single" ? value === dateKey : dateKey === range?.from || dateKey === range?.to
-                const inRange = mode === "range" && isWithinRange(dateKey, range?.from, range?.to)
+                const selected = mode === "single" ? currentValue === dateKey : dateKey === currentRange?.from || dateKey === currentRange?.to
+                const inRange = mode === "range" && isWithinRange(dateKey, currentRange?.from, currentRange?.to)
+                const inPreviewRange = !inRange && mode === "range" && isWithinRange(dateKey, previewRange?.from, previewRange?.to)
                 const disabledReason = getDisabledReason(dateKey)
                 const disabled = Boolean(disabledReason)
                 const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined
@@ -352,15 +465,20 @@ function Calendar({
                     data-today={dateKey === todayKey || undefined}
                     data-outside={outside || undefined}
                     data-in-range={inRange || undefined}
+                    data-in-preview-range={inPreviewRange || undefined}
                     data-disabled-reason={disabledReason}
                     className={cn(
                       "flex h-9 items-center justify-center rounded-[var(--radius-sm)] border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-30",
-                      outside && "text-muted-foreground/34",
+                      outside && showOutsideDays ? "text-muted-foreground/34" : "text-foreground",
+                      outside && !showOutsideDays && "pointer-events-none opacity-0",
                       dateKey === todayKey && "border-border/70 bg-muted/60 text-foreground",
                       inRange && "bg-primary/10 text-foreground",
+                      inPreviewRange && "bg-primary/6 text-foreground",
                       selected && "border-primary bg-primary text-primary-foreground shadow-[0_10px_22px_color-mix(in_oklch,var(--primary),transparent_78%)] hover:bg-primary hover:text-primary-foreground"
                     )}
                     onFocus={() => setFocusedDateKey(dateKey)}
+                    onMouseEnter={() => setHoveredDateKey(dateKey)}
+                    onMouseLeave={() => setHoveredDateKey(null)}
                     onKeyDown={(event) => handleDateKeyDown(event, date)}
                     onClick={() => handleDateSelect(dateKey)}
                   >
@@ -372,6 +490,23 @@ function Calendar({
           </div>
         ))}
       </div>
+      {(showTodayShortcut || showClearShortcut || showSelectionSummary || renderSelectionSummary) ? (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[color:var(--aui-card-border,var(--border))] pt-3">
+          <div className="text-xs text-muted-foreground">{summaryContent}</div>
+          <div className="flex flex-wrap gap-2">
+            {showClearShortcut ? (
+              <Button type="button" size="sm" variant="ghost" onClick={clearSelection}>
+                {labels?.clear ?? "Clear"}
+              </Button>
+            ) : null}
+            {showTodayShortcut ? (
+              <Button type="button" size="sm" variant="outline" onClick={jumpToToday}>
+                {labels?.today ?? "Today"}
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

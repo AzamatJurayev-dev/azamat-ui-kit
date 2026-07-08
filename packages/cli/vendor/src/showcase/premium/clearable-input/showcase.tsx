@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, ClearableInput } from "@/index"
+import { Badge, Input } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -29,11 +29,14 @@ export function ClearableInputShowcase({ mode }: ComponentDemoProps) {
       </section>
 
       <section className={panelClass}>
-        <ClearableInput
+        <Input
           value={value}
           onValueChange={setValue}
           placeholder="Filter or paste value..."
+          clearable
           clearOnEscape
+          trailingAction={<span className="text-xs aui-text-muted">Live filter</span>}
+          replaceTrailingWhenClear={false}
         />
       </section>
 

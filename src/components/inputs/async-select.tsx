@@ -430,7 +430,8 @@ function AsyncSelect<
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 >(props: AsyncSelectProps<TValue, TData, TOption> | AsyncSelectMultiModeProps<TValue, TData, TOption>) {
   if ("isMulti" in props && props.isMulti) {
-    const { isMulti: _isMulti, ...multiProps } = props
+    const multiProps = { ...props }
+    delete (multiProps as { isMulti?: true }).isMulti
     return <AsyncMultiSelect {...multiProps} />
   }
 

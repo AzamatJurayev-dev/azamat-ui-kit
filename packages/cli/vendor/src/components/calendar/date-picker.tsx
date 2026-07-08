@@ -1,5 +1,5 @@
 import * as React from "react"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, XIcon } from "lucide-react"
 
 import { Calendar, type CalendarProps } from "@/components/calendar/calendar"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { parseDateKey } from "./date-utils"
 
 export type DatePickerLabels = CalendarProps["labels"] & {
   placeholder?: string
+  selected?: string
 }
 
 export type DatePickerProps = Omit<
@@ -18,6 +19,7 @@ export type DatePickerProps = Omit<
   placeholder?: string
   labels?: DatePickerLabels
   disabled?: boolean
+  clearable?: boolean
   formatValue?: (value: string) => React.ReactNode
   triggerClassName?: string
   contentClassName?: string
@@ -35,6 +37,7 @@ function DatePicker({
   placeholder,
   labels,
   disabled = false,
+  clearable = true,
   formatValue = defaultFormatValue,
   triggerClassName,
   contentClassName,
@@ -49,6 +52,17 @@ function DatePicker({
     setOpen(false)
   }
 
+  const clearValue = () => {
+    onValueChange?.("")
+    setOpen(false)
+  }
+
+  const handleClear = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    clearValue()
+  }
+
   return (
     <div data-slot="date-picker" className={cn("w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
@@ -59,17 +73,39 @@ function DatePicker({
               variant="outline"
               disabled={disabled}
               className={cn(
-                "min-h-11 w-full justify-start rounded-[var(--aui-control-radius,var(--radius-md))] border-border/80 bg-background/96 text-left font-normal shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04))]",
+                "group min-h-11 w-full justify-start gap-3 rounded-[var(--aui-control-radius,var(--radius-md))] border-border/80 bg-background/96 px-3 text-left font-normal shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04))]",
                 !hasValue && "text-muted-foreground",
                 triggerClassName
               )}
             />
           }
         >
-          <CalendarIcon data-icon="inline-start" />
-          <span className="min-w-0 flex-1 truncate">
-            {hasValue ? formatValue(String(value)) : placeholder ?? labels?.placeholder ?? "Select date"}
+          <CalendarIcon data-icon="inline-start" className={cn(hasValue && "text-primary")} />
+          <span className="grid min-w-0 flex-1 gap-0.5">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              {labels?.selected ?? "Date"}
+            </span>
+            <span className={cn("truncate text-sm", hasValue && "font-semibold text-foreground")}>
+              {hasValue ? formatValue(String(value)) : placeholder ?? labels?.placeholder ?? "Select date"}
+            </span>
           </span>
+          {clearable && hasValue ? (
+            <span
+              role="button"
+              tabIndex={0}
+              aria-label={labels?.clear ?? "Clear date"}
+              className="ml-auto inline-flex size-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground opacity-80 transition hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              onClick={handleClear}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  clearValue()
+                }
+              }}
+            >
+              <XIcon className="size-3.5" />
+            </span>
+          ) : null}
         </PopoverTrigger>
         <PopoverContent
           align="start"
@@ -78,7 +114,15 @@ function DatePicker({
             contentClassName
           )}
         >
-          <Calendar value={value} onValueChange={handleSelect} labels={labels} {...calendarProps} />
+          <Calendar
+            value={value}
+            onValueChange={handleSelect}
+            labels={labels}
+            showTodayShortcut
+            showClearShortcut={clearable}
+            showSelectionSummary
+            {...calendarProps}
+          />
         </PopoverContent>
       </Popover>
     </div>

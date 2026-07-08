@@ -5,13 +5,12 @@ import {
   Badge,
   Button,
   DataTable,
-  DataTableBulkActions,
   DataTableColumnVisibilityMenu,
   DataTableSortableHeader,
-  SearchInput,
-  createDataTableActionsColumn,
-  createDataTableSelectColumn,
+  SimpleSelect,
 } from "@/index"
+import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
+import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
 
 type DataTableDemoRow = {
   invoice: string
@@ -26,17 +25,25 @@ const rows: DataTableDemoRow[] = [
   { invoice: "INV-4821", customer: "Acme Studio", owner: "Azamat", amount: "$12,420", status: "Paid", updatedAt: "2m ago" },
   { invoice: "INV-4822", customer: "Northwind", owner: "Madina", amount: "$8,120", status: "Review", updatedAt: "10m ago" },
   { invoice: "INV-4823", customer: "Globex", owner: "Jasur", amount: "$4,880", status: "Draft", updatedAt: "22m ago" },
+  { invoice: "INV-4824", customer: "Pixel Union", owner: "Azamat", amount: "$17,300", status: "Paid", updatedAt: "44m ago" },
+  { invoice: "INV-4825", customer: "Meridian Labs", owner: "Madina", amount: "$2,180", status: "Review", updatedAt: "1h ago" },
+  { invoice: "INV-4826", customer: "Orbit Cloud", owner: "Jasur", amount: "$9,040", status: "Draft", updatedAt: "3h ago" },
 ]
 
 export function DataTableShowcase() {
   const [search, setSearch] = React.useState("")
-  const [selectedCount, setSelectedCount] = React.useState(0)
+  const [statusFilter, setStatusFilter] = React.useState("all")
+  const [ownerFilter, setOwnerFilter] = React.useState("all")
+  const [rowSelection, setRowSelection] = React.useState<Record<string, boolean>>({})
 
   const filteredRows = rows.filter((row) => {
     const normalized = search.trim().toLowerCase()
-    if (!normalized) return true
-    return `${row.invoice} ${row.customer} ${row.owner} ${row.amount}`.toLowerCase().includes(normalized)
+    const matchesSearch = !normalized || `${row.invoice} ${row.customer} ${row.owner} ${row.amount}`.toLowerCase().includes(normalized)
+    const matchesStatus = statusFilter === "all" || row.status === statusFilter
+    const matchesOwner = ownerFilter === "all" || row.owner === ownerFilter
+    return matchesSearch && matchesStatus && matchesOwner
   })
+  const selectedCount = Object.values(rowSelection).filter(Boolean).length
 
   const columns = React.useMemo<ColumnDef<DataTableDemoRow>[]>(
     () => [
@@ -94,7 +101,7 @@ export function DataTableShowcase() {
           </div>
           <div className="rounded-[18px] border border-[color:var(--aui-divider)] px-4 py-3">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] aui-text-muted">State</p>
-            <p className="mt-2 text-lg font-semibold aui-text-strong">Live</p>
+            <p className="mt-2 text-lg font-semibold aui-text-strong">{search || statusFilter !== "all" || ownerFilter !== "all" ? "Filtered" : "Live"}</p>
           </div>
         </div>
       </div>
@@ -104,24 +111,67 @@ export function DataTableShowcase() {
         data={filteredRows}
         getRowId={(row) => row.invoice}
         enableRowSelection
-        toolbarProps={(table) => ({
-          title: "Invoices",
-          description: "Compact premium preview of the real DataTable surface.",
-          search: <SearchInput value={search} onValueChange={setSearch} placeholder="Search invoice, customer..." />,
-          actions: (
-            <div className="flex items-center gap-2">
-              <DataTableColumnVisibilityMenu table={table} />
-              <DataTableBulkActions
-                rows={filteredRows.slice(0, selectedCount)}
-                actions={[{ key: "export", label: "Export selected", onSelect: () => undefined }]}
-                onClearSelection={() => setSelectedCount(0)}
-              />
-            </div>
-          ),
-        })}
+        rowSelection={rowSelection}
+        title="Invoices"
+        description="Search, filter, visibility controls, bulk actions and row actions should stay inside one install-ready table surface."
+        features={{
+          search: true,
+          columnVisibility: true,
+          bulkActions: true,
+        }}
+        search={{
+          value: search,
+          onValueChange: setSearch,
+          placeholder: "Search invoice, customer...",
+          clearable: true,
+        }}
+        filters={
+          <>
+            <SimpleSelect
+              value={statusFilter}
+              onValueChange={(value) => setStatusFilter(value ?? "all")}
+              options={[
+                { value: "all", label: "All statuses" },
+                { value: "Paid", label: "Paid" },
+                { value: "Review", label: "Review" },
+                { value: "Draft", label: "Draft" },
+              ]}
+              triggerClassName="min-w-40"
+            />
+            <SimpleSelect
+              value={ownerFilter}
+              onValueChange={(value) => setOwnerFilter(value ?? "all")}
+              options={[
+                { value: "all", label: "All owners" },
+                { value: "Azamat", label: "Azamat" },
+                { value: "Madina", label: "Madina" },
+                { value: "Jasur", label: "Jasur" },
+              ]}
+              triggerClassName="min-w-36"
+            />
+          </>
+        }
+        summary={
+          <>
+            <Badge variant="outline">{filteredRows.length} rows</Badge>
+            <Badge variant="outline">{selectedCount} selected</Badge>
+            <Badge variant="outline">
+              {search || statusFilter !== "all" || ownerFilter !== "all" ? "Filtered view" : "Live view"}
+            </Badge>
+          </>
+        }
+        toolbarActions={({ table }) => (
+          <div className="flex items-center gap-2">
+            <DataTableColumnVisibilityMenu table={table} />
+            <Button size="sm" variant="outline">Export</Button>
+          </div>
+        )}
+        bulkActions={[
+          { key: "export", label: "Export selected", onSelect: () => undefined },
+          { key: "archive", label: "Archive selected", destructive: true, onSelect: () => undefined },
+        ]}
         onRowSelectionChange={(selection) => {
-          const value = typeof selection === "function" ? selection({}) : selection
-          setSelectedCount(Object.values(value).filter(Boolean).length)
+          setRowSelection((current) => (typeof selection === "function" ? selection(current) : selection))
         }}
         onRowClick={() => undefined}
         renderMobileCard={(row) => (
@@ -139,8 +189,8 @@ export function DataTableShowcase() {
           pageIndex: 0,
           pageSize: 5,
           rowCount: filteredRows.length,
-          pageCount: 1,
-          pageSizeOptions: [5],
+          pageCount: Math.max(Math.ceil(filteredRows.length / 5), 1),
+          pageSizeOptions: [5, 10],
           onPageChange: () => undefined,
           onPageSizeChange: () => undefined,
         }}

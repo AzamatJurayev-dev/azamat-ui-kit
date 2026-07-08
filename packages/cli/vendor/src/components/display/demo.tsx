@@ -8,12 +8,8 @@ export const displayShowcaseDemoRegistry = createShowcaseDemoRegistry([
   component("status-dot", "StatusDot", "display", "Tiny live status indicator with optional pulse animation."),
   component("user-card", "UserCard", "display", "User summary row with avatar, metadata and actions."),
   component("delta-badge", "DeltaBadge", "display", "Compact positive, negative, and risk deltas for metric summaries."),
-  component("entity-header", "EntityHeader", "display", "Top summary row for a customer, invoice, or workspace."),
   component("notification-center", "NotificationCenter", "display", "Compact activity and notifications stream."),
-  component("entity-card", "EntityCard", "display", "Structured summary card with title, meta, state and actions."),
-  component("file-card", "FileCard", "display", "Compact file summary with state and actions."),
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
-  component("comparison-card", "ComparisonCard", "display", "Compare current and previous values in one compact card."),
 ])

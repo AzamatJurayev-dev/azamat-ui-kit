@@ -63,7 +63,7 @@ function createCodeSnippet(definition: ShowcaseDemoDefinition) {
 }
 
 const exactCodeSnippets: Record<string, string> = {
-  "search-input": `import { SearchInput } from "@/components/search-input"
+  "search-input": `import { SearchInput } from "tembro"
 
 export function Demo() {
   return (
@@ -76,23 +76,22 @@ export function Demo() {
     />
   )
 }`,
-  "password-input": `import { PasswordInput } from "@/components/password-input"
+  "password-input": `import { PasswordInput } from "tembro"
 
 export function Demo() {
   return <PasswordInput placeholder="Enter secure token" autoComplete="current-password" />
 }`,
-  "clearable-input": `import { ClearableInput } from "@/components/clearable-input"
+  "clearable-input": `import { Input } from "tembro"
 
 export function Demo() {
-  return <ClearableInput defaultValue="Azamat UI" placeholder="Search customer" />
+  return <Input defaultValue="Azamat UI" placeholder="Search customer" clearable />
 }`,
-  "tag-input": `import { TagInput } from "@/components/tag-input"
+  "tag-input": `import { TagInput } from "tembro"
 
 export function Demo() {
   return <TagInput defaultValue={["dashboard", "billing"]} placeholder="Add tag" />
 }`,
-  "action-menu": `import { ActionMenu } from "@/components/action-menu"
-import { Button } from "@/components/button"
+  "action-menu": `import { ActionMenu, Button } from "tembro"
 
 export function Demo() {
   return (
@@ -107,7 +106,7 @@ export function Demo() {
     />
   )
 }`,
-  "button-group": `import { ButtonGroup } from "@/components/button-group"
+  "button-group": `import { ButtonGroup } from "tembro"
 
 export function Demo() {
   return (
@@ -120,7 +119,7 @@ export function Demo() {
     />
   )
 }`,
-  "quick-action-grid": `import { QuickActionGrid } from "@/components/quick-action-grid"
+  "quick-action-grid": `import { QuickActionGrid } from "tembro"
 
 export function Demo() {
   return (
@@ -134,22 +133,23 @@ export function Demo() {
     />
   )
 }`,
-  "filter-bar": `import { FilterBar } from "@/components/filter-bar"
-import { SearchInput } from "@/components/search-input"
-import { Button } from "@/components/button"
+  "filter-bar": `import { Button, FilterBar, SearchInput } from "tembro"
 
 export function Demo() {
   return (
     <FilterBar
       search={<SearchInput value="" placeholder="Search rows..." readOnly />}
-      activeCount={2}
+      chips={[
+        { key: "status", label: "Status", value: "Active", tone: "success" },
+        { key: "owner", label: "Owner", value: "Azamat" },
+      ]}
       filters={<Button variant="outline">Status</Button>}
       actions={<Button>Export</Button>}
       onReset={() => undefined}
     />
   )
 }`,
-  "description-list": `import { DescriptionList } from "@/components/description-list"
+  "description-list": `import { DescriptionList } from "tembro"
 
 export function Demo() {
   return (
@@ -163,22 +163,7 @@ export function Demo() {
     />
   )
 }`,
-  "entity-card": `import { EntityCard } from "@/components/entity-card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-
-export function Demo() {
-  return (
-    <EntityCard
-      title="Azamat Workspace"
-      description="Admin console and live dashboard route."
-      status={<Badge variant="secondary">Live</Badge>}
-      meta="Updated 8 min ago"
-      actions={<Button size="sm" variant="outline">Open</Button>}
-    />
-  )
-}`,
-  "stat-card": `import { StatCard } from "@/components/stat-card"
+  "stat-card": `import { StatCard } from "tembro"
 
 export function Demo() {
   return (
@@ -191,12 +176,12 @@ export function Demo() {
     />
   )
 }`,
-  "pagination": `import { Pagination } from "@/components/pagination"
+  "pagination": `import { Pagination } from "tembro"
 
 export function Demo() {
   return <Pagination page={3} pageCount={9} onPageChange={(page) => console.log(page)} />
 }`,
-  "dialog-actions": `import { DialogActionButton, DialogActions } from "@/components/dialog-actions"
+  "dialog-actions": `import { DialogActionButton, DialogActions } from "tembro"
 
 export function Demo() {
   return (
@@ -207,12 +192,12 @@ export function Demo() {
     </DialogActions>
   )
 }`,
-  "file-dropzone": `import { FileDropzone } from "@/components/file-dropzone"
+  "file-dropzone": `import { FileDropzone } from "tembro"
 
 export function Demo() {
   return <FileDropzone label="Drop contract files" description="PDF, PNG or CSV up to 10MB." />
 }`,
-  "stepper": `import { Stepper } from "@/components/stepper"
+  "stepper": `import { Stepper } from "tembro"
 
 export function Demo() {
   return (
@@ -231,7 +216,7 @@ export function Demo() {
 
 function createKindSnippet(definition: ShowcaseDemoDefinition) {
   const importName = definition.importName ?? definition.component
-  const importPath = `@/components/${definition.slug}`
+  const importPath = "tembro"
 
   if (definition.kind === "data-table") {
     return `import { ${importName} } from "${importPath}"

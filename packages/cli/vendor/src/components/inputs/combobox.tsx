@@ -24,6 +24,10 @@ export type ComboboxProps<TValue extends string = string> = React.ComponentProps
   emptyLabel?: React.ReactNode
   disabled?: boolean
   invalid?: boolean
+  clearable?: boolean
+  allowDeselect?: boolean
+  showSelectedDescription?: boolean
+  onSearchChange?: (value: string) => void
   triggerClassName?: string
   contentClassName?: string
   optionClassName?: string
@@ -39,6 +43,10 @@ function Combobox<TValue extends string = string>({
   emptyLabel = "No option found",
   disabled = false,
   invalid,
+  clearable = false,
+  allowDeselect = false,
+  showSelectedDescription = true,
+  onSearchChange,
   triggerClassName,
   contentClassName,
   optionClassName,
@@ -58,7 +66,16 @@ function Combobox<TValue extends string = string>({
 
   return (
     <div data-slot="combobox" className={cn("grid w-full gap-2", className)} {...props}>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover
+        open={open}
+        onOpenChange={(nextOpen) => {
+          setOpen(nextOpen)
+          if (!nextOpen) {
+            setSearch("")
+            onSearchChange?.("")
+          }
+        }}
+      >
         <PopoverTrigger
           render={
             <Button
@@ -71,9 +88,40 @@ function Combobox<TValue extends string = string>({
             />
           }
         >
-          <span className={cn("min-w-0 flex-1 truncate font-medium", !selectedOption && "font-normal text-muted-foreground")}>
-            {selectedOption?.label ?? placeholder}
+          <span className={cn("min-w-0 flex-1", !selectedOption && "text-muted-foreground")}>
+            {selectedOption ? (
+              <span className="flex min-w-0 flex-col items-start">
+                <span className="truncate font-medium">{selectedOption.label}</span>
+                {showSelectedDescription && selectedOption.description ? (
+                  <span className="truncate text-[11px] text-muted-foreground">{selectedOption.description}</span>
+                ) : null}
+              </span>
+            ) : (
+              <span className="truncate font-normal">{placeholder}</span>
+            )}
           </span>
+          {clearable && selectedOption && !disabled ? (
+            <span
+              role="button"
+              tabIndex={0}
+              aria-label="Clear value"
+              className="inline-flex size-6 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/55 hover:text-foreground"
+              onClick={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+                onValueChange?.(undefined, undefined)
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  onValueChange?.(undefined, undefined)
+                }
+              }}
+            >
+              ×
+            </span>
+          ) : null}
           <ChevronDownIcon className="size-4 opacity-60" />
         </PopoverTrigger>
         <PopoverContent
@@ -83,7 +131,15 @@ function Combobox<TValue extends string = string>({
         >
           <div className="relative mb-2">
             <SearchIcon className="pointer-events-none absolute left-2 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input value={search} onChange={(event) => setSearch(event.target.value)} placeholder={searchPlaceholder} className={cn("h-9 pl-8", searchClassName)} />
+            <Input
+              value={search}
+              onChange={(event) => {
+                setSearch(event.target.value)
+                onSearchChange?.(event.target.value)
+              }}
+              placeholder={searchPlaceholder}
+              className={cn("h-9 pl-8", searchClassName)}
+            />
           </div>
           <div className="max-h-64 overflow-y-auto">
             {filteredOptions.length ? filteredOptions.map((option) => {
@@ -99,7 +155,8 @@ function Combobox<TValue extends string = string>({
                     optionClassName
                   )}
                   onClick={() => {
-                    onValueChange?.(option.value, option)
+                    const nextValue = allowDeselect && active ? undefined : option.value
+                    onValueChange?.(nextValue, nextValue ? option : undefined)
                     setOpen(false)
                   }}
                 >

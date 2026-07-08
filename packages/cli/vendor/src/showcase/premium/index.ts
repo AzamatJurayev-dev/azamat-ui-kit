@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import type { ComponentDemoBundle } from "./types"
 
 import { alertMock, AlertShowcase } from "./alert"
@@ -9,10 +7,11 @@ import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
 import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
 import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
-import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
+import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { avatarMock, AvatarShowcase } from "./avatar"
 import { carouselMock, CarouselShowcase } from "./carousel"
+import { clearableInputMock, ClearableInputShowcase } from "./clearable-input"
 import { jsonInputMock, JsonInputShowcase } from "./json-input"
 import { qrCodeMock, QRCodeShowcase } from "./qr-code"
 import { menubarMock, MenubarShowcase } from "./menubar"
@@ -28,25 +27,15 @@ import { cardMock, CardShowcase } from "./card"
 import { checkboxMock, CheckboxShowcase } from "./checkbox"
 import { codeBlockMock, CodeBlockShowcase } from "./code-block"
 import { dualListPickerMock, DualListPickerShowcase } from "./dual-list-picker"
-import { ClearableInputShowcase, clearableInputMock } from "./clearable-input"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
 import { commandBarMock, CommandBarShowcase } from "./command-bar"
-import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
 import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
+import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
 import { copyButtonMock, CopyButtonShowcase } from "./copy-button"
 import { copyFieldMock, CopyFieldShowcase } from "./copy-field"
 import { dataStateMock, DataStateShowcase } from "./data-state"
 import { dataTableMock, DataTableShowcase } from "./data-table"
-import {
-  DataTablePartShowcase,
-  dataTableActionsColumnMock,
-  dataTablePaginationMock,
-  dataTableRowActionsMock,
-  dataTableSavedFiltersMock,
-  dataTableSelectColumnMock,
-  dataTableToolbarMock,
-} from "./data-table-parts"
 import { dateInputMock, DateInputShowcase } from "./date-input"
 import { DatePickerShowcase, datePickerMock } from "./date-picker"
 import { DateRangeInputShowcase, dateRangeInputMock } from "./date-range-input"
@@ -56,8 +45,6 @@ import { descriptionsMock, DescriptionsShowcase } from "./descriptions"
 import { dialogMock, DialogShowcase } from "./dialog"
 import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
 import { DrawerShowcase, drawerMock } from "./drawer"
-import { emptyStateMock, EmptyStateShowcase } from "./empty-state"
-import { FormBuilderShowcase, formBuilderMock } from "./form-builder"
 import { FormWrapperShowcase, formAsyncSelectMock, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
 import { hoverCardMock, HoverCardShowcase } from "./hover-card"
 import { kanbanBoardMock, KanbanBoardShowcase } from "./kanban-board"
@@ -190,12 +177,10 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "hover-card": { mock: hoverCardMock, Showcase: HoverCardShowcase },
   "right-click-menu": { mock: rightClickMenuMock, Showcase: RightClickMenuShowcase },
   "data-table": { mock: dataTableMock, Showcase: DataTableShowcase },
-  "data-table-pagination": { mock: dataTablePaginationMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-pagination" }) },
-  "data-table-toolbar": { mock: dataTableToolbarMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-toolbar" }) },
-  "data-table-row-actions": { mock: dataTableRowActionsMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-row-actions" }) },
-  "data-table-actions-column": { mock: dataTableActionsColumnMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-actions-column" }) },
-  "data-table-select-column": { mock: dataTableSelectColumnMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-select-column" }) },
-  "data-table-saved-filters": { mock: dataTableSavedFiltersMock, Showcase: (props) => React.createElement(DataTablePartShowcase, { ...props, slug: "data-table-saved-filters" }) },
+  "data-table-column-visibility-menu": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-sortable-header": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-bulk-actions": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-view-presets": { mock: dataTableMock, Showcase: DataTableShowcase },
   "saved-filter-select": { mock: savedFilterSelectMock, Showcase: SavedFilterSelectShowcase },
   "form-field": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-field-shell": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
@@ -212,7 +197,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "form-date-range-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-builder": { mock: formBuilderMock, Showcase: FormBuilderShowcase },
   "segmented-control": { mock: segmentedControlMock, Showcase: SegmentedControlShowcase },
   skeleton: { mock: skeletonMock, Showcase: SkeletonShowcase },
   spinner: { mock: spinnerMock, Showcase: SpinnerShowcase },
@@ -233,7 +217,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   list: { mock: listMock, Showcase: ListShowcase },
   "property-grid": { mock: propertyGridMock, Showcase: PropertyGridShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
-  "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
   "data-state": { mock: dataStateMock, Showcase: DataStateShowcase },
   progress: { mock: progressMock, Showcase: ProgressShowcase },

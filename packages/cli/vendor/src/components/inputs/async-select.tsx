@@ -50,6 +50,7 @@ export type AsyncSelectStateRenderer<
 
 export type AsyncSelectLabels = {
   placeholder?: string
+  multiPlaceholder?: string
   searchPlaceholder?: string
   loading?: string
   creating?: string
@@ -61,6 +62,7 @@ export type AsyncSelectLabels = {
   minSearchLength?: (minSearchLength: number) => string
   maxSelected?: (maxSelected: number) => string
   selectedCount?: (count: number) => string
+  hiddenSelected?: (count: number) => string
 }
 
 export type AsyncSelectProps<
@@ -68,6 +70,7 @@ export type AsyncSelectProps<
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 > = Omit<React.ComponentProps<"div">, "onChange"> & {
+  isMulti?: false
   value?: TValue
   selectedOption?: TOption | null
   onValueChange?: (value: TValue | undefined, option?: TOption) => void
@@ -90,11 +93,20 @@ export type AsyncSelectProps<
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
+  showSelectedDescription?: boolean
   triggerClassName?: string
   contentClassName?: string
   searchClassName?: string
   optionClassName?: string
   invalid?: boolean
+}
+
+export type AsyncSelectMultiModeProps<
+  TValue extends string = string,
+  TData = unknown,
+  TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
+> = AsyncMultiSelectProps<TValue, TData, TOption> & {
+  isMulti: true
 }
 
 export type AsyncMultiSelectProps<
@@ -116,6 +128,7 @@ export type AsyncMultiSelectProps<
   debounceMs?: number
   minSearchLength?: number
   maxSelected?: number
+  maxVisibleTags?: number
   showSelectAll?: boolean
   labels?: AsyncSelectLabels
   renderOption?: (option: TOption, state: { selected: boolean }) => React.ReactNode
@@ -129,6 +142,7 @@ export type AsyncMultiSelectProps<
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
+  showSelectedDescription?: boolean
   triggerClassName?: string
   contentClassName?: string
   searchClassName?: string
@@ -414,7 +428,14 @@ function AsyncSelect<
   TValue extends string = string,
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
->({
+>(props: AsyncSelectProps<TValue, TData, TOption> | AsyncSelectMultiModeProps<TValue, TData, TOption>) {
+  if ("isMulti" in props && props.isMulti) {
+    const multiProps = { ...props }
+    delete (multiProps as { isMulti?: true }).isMulti
+    return <AsyncMultiSelect {...multiProps} />
+  }
+
+  const {
   className,
   value,
   selectedOption,
@@ -438,13 +459,14 @@ function AsyncSelect<
   onCreateOption,
   createOptionLabel,
   showCreateOption,
+  showSelectedDescription = true,
   triggerClassName,
   contentClassName,
   searchClassName,
   optionClassName,
   invalid,
-  ...props
-}: AsyncSelectProps<TValue, TData, TOption>) {
+  ...rootProps
+  } = props as AsyncSelectProps<TValue, TData, TOption>
   const resolvedDefaultGroups = React.useMemo(() => normalizeOptionGroups(defaultOptions), [defaultOptions])
   const defaultFlatOptions = React.useMemo(() => flattenOptionGroups(resolvedDefaultGroups), [resolvedDefaultGroups])
   const [open, setOpen] = React.useState(false)
@@ -613,7 +635,7 @@ function AsyncSelect<
   }
 
   return (
-    <div data-slot="async-select" className={cn("w-full", className)} {...props}>
+    <div data-slot="async-select" className={cn("w-full", className)} {...rootProps}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           render={
@@ -638,9 +660,11 @@ function AsyncSelect<
                 <span className="truncate font-semibold">
                   {renderValue?.(currentOption) ?? currentOption.label}
                 </span>
-                {currentOption.disabled && currentOption.disabledReason && (
-                  <span className="truncate text-xs text-muted-foreground">{currentOption.disabledReason}</span>
-                )}
+                {showSelectedDescription && (currentOption.description || (currentOption.disabled && currentOption.disabledReason)) ? (
+                  <span className="truncate text-xs text-muted-foreground">
+                    {currentOption.description ?? currentOption.disabledReason}
+                  </span>
+                ) : null}
               </span>
             ) : (
               <span className="truncate text-muted-foreground">{labels?.placeholder ?? "Select"}</span>
@@ -774,6 +798,7 @@ function AsyncMultiSelect<
   debounceMs = 250,
   minSearchLength = 0,
   maxSelected,
+  maxVisibleTags,
   showSelectAll = false,
   labels,
   renderOption,
@@ -787,6 +812,7 @@ function AsyncMultiSelect<
   onCreateOption,
   createOptionLabel,
   showCreateOption,
+  showSelectedDescription = true,
   triggerClassName,
   contentClassName,
   searchClassName,
@@ -828,6 +854,7 @@ function AsyncMultiSelect<
   const hasValue = values.length > 0
   const canClear = clearable && hasValue && !disabled
   const isMaxReached = typeof maxSelected === "number" && values.length >= maxSelected
+  const resolvedMaxVisibleTags = Math.max(maxVisibleTags ?? values.length, 1)
   const searchTooShort = searchKey.length < minSearchLength
   const canCreate =
     !searchTooShort &&
@@ -836,6 +863,8 @@ function AsyncMultiSelect<
   const visibleSelectableOptions = flatOptions.filter((option) => !option.disabled)
   const unselectedVisibleOptions = visibleSelectableOptions.filter((option) => !selectedSet.has(option.value))
   const canSelectAll = showSelectAll && unselectedVisibleOptions.length > 0 && !isMaxReached
+  const visibleTagOptions = currentOptions.slice(0, resolvedMaxVisibleTags)
+  const hiddenTagCount = Math.max(currentOptions.length - visibleTagOptions.length, 0)
 
   React.useEffect(() => {
     cacheRef.current.clear()
@@ -1052,7 +1081,8 @@ function AsyncMultiSelect<
         >
           <span className="flex min-w-0 flex-1 flex-wrap gap-1 text-left">
             {currentOptions.length > 0 ? (
-              currentOptions.map((option) => (
+              <>
+              {visibleTagOptions.map((option) => (
                 <span
                   key={option.value}
                   data-slot="async-select-tag"
@@ -1067,9 +1097,11 @@ function AsyncMultiSelect<
                         renderValue?.(option) ??
                         option.label}
                     </span>
-                    {option.disabled && option.disabledReason && (
-                      <span className="truncate text-[11px] text-muted-foreground">{option.disabledReason}</span>
-                    )}
+                    {showSelectedDescription && (option.description || (option.disabled && option.disabledReason)) ? (
+                      <span className="truncate text-[11px] text-muted-foreground">
+                        {option.description ?? option.disabledReason}
+                      </span>
+                    ) : null}
                   </span>
                   {!disabled && (
                     <span
@@ -1088,10 +1120,22 @@ function AsyncMultiSelect<
                     </span>
                   )}
                 </span>
-              ))
+              ))}
+              {hiddenTagCount > 0 ? (
+                <span
+                  data-slot="async-select-tag-overflow"
+                  className={cn(
+                    "inline-flex max-w-full items-center rounded-[var(--radius-sm)] border border-dashed border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_58%)] px-2 py-1 text-xs font-medium text-muted-foreground",
+                    tagClassName
+                  )}
+                >
+                  {labels?.hiddenSelected?.(hiddenTagCount) ?? `+${hiddenTagCount} more`}
+                </span>
+              ) : null}
+              </>
             ) : (
               <span className="truncate text-muted-foreground">
-                {labels?.placeholder ?? "Select"}
+                {labels?.multiPlaceholder ?? labels?.placeholder ?? "Select"}
               </span>
             )}
           </span>

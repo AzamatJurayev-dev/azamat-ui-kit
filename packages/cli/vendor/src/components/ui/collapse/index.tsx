@@ -7,9 +7,21 @@ export type CollapseProps = React.ComponentProps<"details"> & {
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  variant?: "default" | "soft" | "ghost"
+  size?: "sm" | "md" | "lg"
 }
 
-function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, children, ...props }: CollapseProps) {
+function Collapse({
+  open,
+  defaultOpen,
+  onOpenChange,
+  onToggle,
+  className,
+  children,
+  variant = "default",
+  size = "md",
+  ...props
+}: CollapseProps) {
   const isControlled = open !== undefined
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
   const currentOpen = isControlled ? open : internalOpen
@@ -17,8 +29,10 @@ function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, childr
   return (
     <details
       data-slot="collapse"
+      data-variant={variant}
+      data-size={size}
       className={cn(
-        "group rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card text-card-foreground shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] transition-[background-color,border-color,box-shadow] open:border-[color:var(--aui-control-hover-border,var(--ring))]",
+        "group overflow-hidden rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card text-card-foreground shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] transition-[background-color,border-color,box-shadow] hover:border-[color:var(--aui-control-hover-border,var(--ring))] open:border-[color:var(--aui-control-hover-border,var(--ring))] data-[variant=soft]:bg-[color:color-mix(in_oklch,var(--muted),transparent_58%)] data-[variant=soft]:shadow-none data-[variant=ghost]:border-transparent data-[variant=ghost]:bg-transparent data-[variant=ghost]:shadow-none",
         className
       )}
       onToggle={(event) => {
@@ -26,6 +40,8 @@ function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, childr
         const nextOpen = event.currentTarget.open
         if (!isControlled) {
           setInternalOpen(nextOpen)
+        } else if (nextOpen !== currentOpen) {
+          event.currentTarget.open = currentOpen
         }
         onOpenChange?.(nextOpen)
       }}
@@ -40,24 +56,51 @@ function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, childr
 export type CollapseTriggerProps = React.ComponentProps<"summary"> & {
   icon?: React.ReactNode
   hideIcon?: boolean
+  size?: "sm" | "md" | "lg"
+  inset?: boolean
+  indicatorPosition?: "start" | "end"
 }
 
-function CollapseTrigger({ icon, hideIcon = false, className, children, ...props }: CollapseTriggerProps) {
+function CollapseTrigger({
+  icon,
+  hideIcon = false,
+  size = "md",
+  inset = false,
+  indicatorPosition = "end",
+  className,
+  children,
+  onClick,
+  ...props
+}: CollapseTriggerProps) {
+  const indicator = !hideIcon ? (
+    <span className="shrink-0 rounded-md text-muted-foreground transition-[color,transform] group-open:rotate-180 group-open:text-foreground">
+      {icon ?? <ChevronDownIcon className="size-4" />}
+    </span>
+  ) : null
+
   return (
     <summary
       data-slot="collapse-trigger"
+      data-size={size}
+      data-inset={inset || undefined}
+      data-indicator-position={indicatorPosition}
       className={cn(
-        "flex cursor-pointer list-none items-center justify-between gap-3 rounded-[calc(var(--aui-card-radius,var(--radius-xl))-1px)] px-4 py-3 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground [&::-webkit-details-marker]:hidden",
+        "rounded-[calc(var(--aui-card-radius,var(--radius-xl))-1px)] group-open:rounded-b-none flex cursor-pointer list-none items-start gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow,border-radius] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[indicator-position=end]:justify-between data-[indicator-position=start]:justify-start data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
+        props["aria-disabled"] && "cursor-not-allowed opacity-75 hover:bg-transparent",
         className
       )}
+      onClick={(event) => {
+        if (props["aria-disabled"]) {
+          event.preventDefault()
+          return
+        }
+        onClick?.(event)
+      }}
       {...props}
     >
+      {indicatorPosition === "start" ? indicator : null}
       <span className="min-w-0 flex-1">{children}</span>
-      {!hideIcon && (
-        <span className="shrink-0 rounded-md text-muted-foreground transition-[color,transform] group-open:rotate-180 group-open:text-foreground">
-          {icon ?? <ChevronDownIcon className="size-4" />}
-        </span>
-      )}
+      {indicatorPosition === "end" ? indicator : null}
     </summary>
   )
 }
@@ -67,7 +110,7 @@ function CollapseContent({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="collapse-content"
       className={cn(
-        "border-t border-[color:var(--aui-card-border,var(--border))] px-4 py-3 text-sm leading-6 text-muted-foreground",
+        "border-t border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_70%)] px-4 py-3.5 text-sm leading-6 text-muted-foreground",
         className
       )}
       {...props}
@@ -80,7 +123,14 @@ export type CollapseItem = {
   title: React.ReactNode
   content: React.ReactNode
   description?: React.ReactNode
+  meta?: React.ReactNode
+  badge?: React.ReactNode
   disabled?: boolean
+  disabledReason?: React.ReactNode
+  icon?: React.ReactNode
+  indicatorPosition?: CollapseTriggerProps["indicatorPosition"]
+  triggerClassName?: string
+  contentClassName?: string
 }
 
 export type CollapseGroupProps = React.ComponentProps<"div"> & {
@@ -89,9 +139,21 @@ export type CollapseGroupProps = React.ComponentProps<"div"> & {
   value?: string | string[]
   defaultValue?: string | string[]
   onValueChange?: (value: string | string[]) => void
+  variant?: CollapseProps["variant"]
+  size?: CollapseTriggerProps["size"]
 }
 
-function CollapseGroup({ items, type = "multiple", value, defaultValue, onValueChange, className, ...props }: CollapseGroupProps) {
+function CollapseGroup({
+  items,
+  type = "multiple",
+  value,
+  defaultValue,
+  onValueChange,
+  variant = "default",
+  size = "md",
+  className,
+  ...props
+}: CollapseGroupProps) {
   const initialValue = React.useMemo(() => {
     if (value !== undefined) return value
     if (defaultValue !== undefined) return defaultValue
@@ -119,16 +181,35 @@ function CollapseGroup({ items, type = "multiple", value, defaultValue, onValueC
         <Collapse
           key={item.key}
           open={isOpen(item.key)}
-          onOpenChange={(open) => updateValue(item.key, open)}
+          onOpenChange={(open) => {
+            if (item.disabled) return
+            updateValue(item.key, open)
+          }}
+          variant={variant}
+          size={size}
           className={cn(item.disabled && "pointer-events-none opacity-60")}
         >
-          <CollapseTrigger>
-            <span className="grid gap-0.5">
-              <span>{item.title}</span>
+          <CollapseTrigger
+            size={size}
+            icon={item.icon}
+            indicatorPosition={item.indicatorPosition}
+            className={item.triggerClassName}
+            aria-disabled={item.disabled || undefined}
+            title={typeof item.disabledReason === "string" ? item.disabledReason : undefined}
+          >
+            <span className="grid min-w-0 gap-0.5">
+              <span className="flex min-w-0 items-center gap-2">
+                <span className="truncate">{item.title}</span>
+                {item.badge ? <span className="shrink-0">{item.badge}</span> : null}
+                {item.meta ? <span className="ml-auto shrink-0 text-[11px] font-medium text-muted-foreground">{item.meta}</span> : null}
+              </span>
               {item.description && <span className="text-xs font-normal text-muted-foreground">{item.description}</span>}
+              {item.disabled && item.disabledReason ? (
+                <span className="text-[11px] font-medium text-muted-foreground">{item.disabledReason}</span>
+              ) : null}
             </span>
           </CollapseTrigger>
-          <CollapseContent>{item.content}</CollapseContent>
+          <CollapseContent className={item.contentClassName}>{item.content}</CollapseContent>
         </Collapse>
       ))}
     </div>

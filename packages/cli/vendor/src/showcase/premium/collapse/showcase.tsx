@@ -9,6 +9,7 @@ const collapseItems = [
   {
     key: "permissions",
     title: "Permissions",
+    badge: <Badge variant="secondary">Core</Badge>,
     description: "Who can publish, archive, and rename library surfaces.",
     content: "Owners can publish. Editors can update docs. Reviewers can inspect previews and comment on API shape.",
   },
@@ -16,12 +17,15 @@ const collapseItems = [
     key: "release",
     title: "Release notes",
     description: "What changed in the current package cycle.",
+    meta: "July",
     content: "This release opened more public docs coverage for interactive form and overlay surfaces.",
   },
   {
     key: "handoff",
     title: "Handoff checklist",
     description: "What must be checked before a public release.",
+    disabled: true,
+    disabledReason: "Unlock after release branch is cut.",
     content: "Typecheck, lint, build, smoke routes, verify copy feedback, and confirm component docs route integrity.",
   },
 ] as const

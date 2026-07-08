@@ -35,6 +35,7 @@ export type SimpleSelectProps = Omit<
   loading?: boolean
   loadingLabel?: React.ReactNode
   disabled?: boolean
+  showSelectedDescription?: boolean
   triggerClassName?: string
   contentClassName?: string
   itemClassName?: string
@@ -66,12 +67,14 @@ function SimpleSelect({
   loading = false,
   loadingLabel = "Loading options...",
   disabled = false,
+  showSelectedDescription = true,
   triggerClassName,
   contentClassName,
   itemClassName,
   searchClassName,
   renderOption,
   invalid,
+  onOpenChange,
   ...props
 }: SimpleSelectProps) {
   const [search, setSearch] = React.useState("")
@@ -79,7 +82,16 @@ function SimpleSelect({
   const filteredOptions = options.filter((option) => optionMatchesSearch(option, search))
 
   return (
-    <Select value={value} onValueChange={(val) => onValueChange?.(val as string)} disabled={disabled || loading} {...props}>
+    <Select
+      value={value}
+      onValueChange={(val) => onValueChange?.(val as string)}
+      disabled={disabled || loading}
+      onOpenChange={(open, eventDetails) => {
+        if (!open) setSearch("")
+        onOpenChange?.(open, eventDetails)
+      }}
+      {...props}
+    >
       <SelectTrigger
         size={size}
         aria-invalid={invalid || undefined}
@@ -88,11 +100,21 @@ function SimpleSelect({
           triggerClassName
         )}
       >
-        <SelectValue placeholder={placeholder}>{selectedOption?.label}</SelectValue>
+        <SelectValue placeholder={placeholder}>
+          {selectedOption ? (
+            <span className="flex min-w-0 flex-col items-start">
+              <span className="truncate">{selectedOption.label}</span>
+              {showSelectedDescription && selectedOption.description ? (
+                <span className="truncate text-[11px] font-medium text-muted-foreground">{selectedOption.description}</span>
+              ) : null}
+            </span>
+          ) : null}
+        </SelectValue>
         {loading ? <LoaderCircleIcon className="size-4 animate-spin text-muted-foreground" /> : null}
         {clearable && value && !disabled && !loading ? (
-          <button
-            type="button"
+          <span
+            role="button"
+            tabIndex={0}
             aria-label={clearLabel}
             className="ml-1 rounded-[var(--radius-sm)] border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             onClick={(event) => {
@@ -102,9 +124,15 @@ function SimpleSelect({
             }}
             onMouseDown={stopInteractivePropagation}
             onDoubleClick={stopInteractivePropagation}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault()
+                onValueChange?.(undefined)
+              }
+            }}
           >
             <XIcon className="size-3.5" />
-          </button>
+          </span>
         ) : null}
       </SelectTrigger>
       <SelectContent

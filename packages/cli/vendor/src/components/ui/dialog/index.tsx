@@ -13,6 +13,7 @@ export type DialogOverlayProps = DialogPrimitive.Backdrop.Props
 export type DialogPopupProps = DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "full"
+  surface?: "default" | "plain"
 }
 export type DialogHeaderProps = React.ComponentProps<"div">
 export type DialogFooterProps = React.ComponentProps<"div"> & {
@@ -58,6 +59,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   size = "md",
+  surface = "default",
   ...props
 }: DialogPopupProps) {
   return (
@@ -66,8 +68,10 @@ function DialogContent({
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         data-size={size}
+        data-surface={surface}
+        role="dialog"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[var(--radius-3xl)] border p-6 text-sm text-popover-foreground backdrop-blur duration-100 outline-none data-[size=xs]:sm:max-w-sm data-[size=sm]:sm:max-w-md data-[size=md]:sm:max-w-lg data-[size=lg]:sm:max-w-2xl data-[size=xl]:sm:max-w-4xl data-[size=full]:h-[min(92vh,56rem)] data-[size=full]:max-w-[min(96vw,84rem)] data-[size=full]:grid-rows-[auto_1fr] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 overflow-hidden rounded-[var(--radius-3xl)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:var(--aui-overlay-surface,var(--popover))] p-6 text-sm text-popover-foreground shadow-[var(--aui-control-panel-shadow,0_24px_70px_rgba(15,23,42,0.22))] backdrop-blur duration-100 outline-none data-[surface=plain]:overflow-visible data-[surface=plain]:border-transparent data-[surface=plain]:bg-transparent data-[surface=plain]:p-0 data-[surface=plain]:shadow-none data-[size=xs]:sm:max-w-sm data-[size=sm]:sm:max-w-md data-[size=md]:sm:max-w-lg data-[size=lg]:sm:max-w-2xl data-[size=xl]:sm:max-w-4xl data-[size=full]:h-[min(92vh,56rem)] data-[size=full]:max-w-[min(96vw,84rem)] data-[size=full]:grid-rows-[auto_minmax(0,1fr)] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -77,11 +81,11 @@ function DialogContent({
           <DialogPrimitive.Close
             data-slot="dialog-close"
             render={
-        <Button
-          variant="ghost"
-          className="absolute top-3 right-3 rounded-full border border-transparent hover:border-border/50 hover:bg-muted/50"
-          size="icon-sm"
-        />
+              <Button
+                variant="ghost"
+                className="absolute top-3 right-3 rounded-full border border-transparent hover:border-border/50 hover:bg-muted/50"
+                size="icon-sm"
+              />
             }
           >
             <XIcon />
@@ -110,10 +114,10 @@ function DialogFooter({
   ...props
 }: DialogFooterProps) {
   return (
-        <div
+    <div
       data-slot="dialog-footer"
       className={cn(
-        "-mx-6 -mb-6 flex flex-col-reverse gap-2 rounded-b-[var(--radius-3xl)] border-t p-5 sm:flex-row sm:justify-end",
+        "-mx-6 -mb-6 flex flex-col-reverse gap-2 border-t border-border/70 bg-muted/20 p-5 sm:flex-row sm:justify-end",
         className
       )}
       {...props}

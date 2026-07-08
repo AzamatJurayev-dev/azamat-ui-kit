@@ -7,18 +7,43 @@ export type AlertTone = "info" | "success" | "warning" | "destructive" | "muted"
 
 export type AlertProps = React.ComponentProps<"div"> & {
   tone?: AlertTone
+  variant?: "soft" | "outline" | "solid"
+  size?: "sm" | "md"
   title?: React.ReactNode
   description?: React.ReactNode
   icon?: React.ReactNode
   action?: React.ReactNode
+  dismissible?: boolean
+  dismissLabel?: string
+  onDismiss?: () => void
 }
 
-const alertToneClassName: Record<AlertTone, string> = {
-  info: "border-primary/25 bg-primary/5 text-foreground",
-  success: "border-emerald-500/25 bg-emerald-500/10 text-foreground",
-  warning: "border-amber-500/30 bg-amber-500/10 text-foreground",
-  destructive: "border-destructive/30 bg-destructive/10 text-foreground",
-  muted: "border-border bg-muted/50 text-foreground",
+const alertToneClassName: Record<AlertTone, Record<NonNullable<AlertProps["variant"]>, string>> = {
+  info: {
+    soft: "border-primary/25 bg-primary/5 text-foreground",
+    outline: "border-primary/35 bg-background text-foreground",
+    solid: "border-primary bg-primary text-primary-foreground",
+  },
+  success: {
+    soft: "border-emerald-500/25 bg-emerald-500/10 text-foreground",
+    outline: "border-emerald-500/35 bg-background text-foreground",
+    solid: "border-emerald-600 bg-emerald-600 text-white",
+  },
+  warning: {
+    soft: "border-amber-500/30 bg-amber-500/10 text-foreground",
+    outline: "border-amber-500/35 bg-background text-foreground",
+    solid: "border-amber-500 bg-amber-500 text-amber-950",
+  },
+  destructive: {
+    soft: "border-destructive/30 bg-destructive/10 text-foreground",
+    outline: "border-destructive/35 bg-background text-foreground",
+    solid: "border-destructive bg-destructive text-destructive-foreground",
+  },
+  muted: {
+    soft: "border-border bg-muted/50 text-foreground",
+    outline: "border-border bg-background text-foreground",
+    solid: "border-border bg-foreground text-background",
+  },
 }
 
 const alertIconClassName: Record<AlertTone, string> = {
@@ -42,14 +67,29 @@ function defaultIcon(tone: AlertTone) {
   }
 }
 
-function Alert({ tone = "info", title, description, icon, action, className, children, ...props }: AlertProps) {
+function Alert({
+  tone = "info",
+  variant = "soft",
+  size = "md",
+  title,
+  description,
+  icon,
+  action,
+  dismissible = false,
+  dismissLabel = "Dismiss alert",
+  onDismiss,
+  className,
+  children,
+  ...props
+}: AlertProps) {
   return (
     <div
       data-slot="alert"
+      data-size={size}
       role={tone === "destructive" || tone === "warning" ? "alert" : "status"}
       className={cn(
-        "flex gap-3 rounded-[var(--radius-2xl)] border p-4 text-sm shadow-[0_1px_0_rgba(255,255,255,0.05)]",
-        alertToneClassName[tone],
+        "flex gap-3 rounded-[var(--aui-card-radius,var(--radius-xl))] border p-4 text-sm shadow-[var(--aui-card-shadow,var(--aui-control-shadow,0_1px_0_rgba(255,255,255,0.05)))] data-[size=sm]:p-3",
+        alertToneClassName[tone][variant],
         className
       )}
       {...props}
@@ -58,6 +98,7 @@ function Alert({ tone = "info", title, description, icon, action, className, chi
         data-slot="alert-icon"
         className={cn(
           "mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full border border-current/10 bg-background/55",
+          variant === "solid" && "bg-white/12 text-current",
           alertIconClassName[tone]
         )}
       >
@@ -66,12 +107,29 @@ function Alert({ tone = "info", title, description, icon, action, className, chi
       <div className="min-w-0 flex-1 space-y-1">
         {title && <div data-slot="alert-title" className="font-medium leading-none">{title}</div>}
         {(description || children) && (
-          <div data-slot="alert-description" className="text-muted-foreground">
+          <div data-slot="alert-description" className={cn("text-muted-foreground", variant === "solid" && "text-current/88")}>
             {description ?? children}
           </div>
         )}
       </div>
-      {action && <div data-slot="alert-action" className="shrink-0">{action}</div>}
+      {(action || dismissible) ? (
+        <div data-slot="alert-action" className="flex shrink-0 items-start gap-2">
+          {action}
+          {dismissible ? (
+            <button
+              type="button"
+              aria-label={dismissLabel}
+              className={cn(
+                "inline-flex size-8 items-center justify-center rounded-full border border-current/10 bg-background/45 text-current transition-opacity hover:opacity-90",
+                variant === "solid" && "bg-white/12"
+              )}
+              onClick={onDismiss}
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   )
 }

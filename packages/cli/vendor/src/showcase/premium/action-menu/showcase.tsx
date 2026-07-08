@@ -10,6 +10,7 @@ const panelClass =
 
 export function ActionMenuShowcase({ mode }: ComponentDemoProps) {
   const [lastAction, setLastAction] = React.useState("No action selected")
+  const [pinOpen, setPinOpen] = React.useState(false)
 
   return (
     <div className="space-y-5">
@@ -38,10 +39,11 @@ export function ActionMenuShowcase({ mode }: ComponentDemoProps) {
             </div>
             <ActionMenu
               label="Invoice actions"
+              closeOnSelect={!pinOpen}
               actions={[
-                { key: "open", label: "Open details", icon: <ExternalLinkIcon className="size-4" />, onSelect: async () => setLastAction("Opened invoice details") },
-                { key: "duplicate", label: "Duplicate", icon: <CopyIcon className="size-4" />, onSelect: async () => setLastAction("Duplicated invoice workflow") },
-                { key: "archive", label: "Archive", icon: <ArchiveIcon className="size-4" />, destructive: true, onSelect: async () => setLastAction("Archived invoice workflow") },
+                { key: "open", section: "Primary", label: "Open details", description: "Jump into the full invoice route", icon: <ExternalLinkIcon className="size-4" />, shortcut: "↵", onSelect: async () => setLastAction("Opened invoice details") },
+                { key: "duplicate", section: "Primary", label: "Duplicate", description: "Create a new workflow from this one", icon: <CopyIcon className="size-4" />, keepOpen: pinOpen, onSelect: async () => setLastAction("Duplicated invoice workflow") },
+                { key: "archive", section: "Danger zone", label: "Archive", description: "Hide it from active operational queues", icon: <ArchiveIcon className="size-4" />, destructive: true, onSelect: async () => setLastAction("Archived invoice workflow") },
               ]}
             />
           </div>
@@ -49,6 +51,13 @@ export function ActionMenuShowcase({ mode }: ComponentDemoProps) {
         <section className={panelClass}>
           <p className="text-sm font-medium aui-text-muted">Last action</p>
           <p className="mt-3 text-base font-medium aui-text-strong">{lastAction}</p>
+          <button
+            type="button"
+            className="mt-4 rounded-full border border-[color:var(--aui-divider)] px-3 py-1.5 text-xs font-medium"
+            onClick={() => setPinOpen((value) => !value)}
+          >
+            {pinOpen ? "Close on select off" : "Close on select on"}
+          </button>
         </section>
       </div>
 

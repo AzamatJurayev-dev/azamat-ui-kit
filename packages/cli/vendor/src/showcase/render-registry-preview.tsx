@@ -20,18 +20,15 @@ import {
   Button,
   ButtonGroup,
   Calendar,
-  ClearableInput,
   ColorInput,
   CommandPalette,
   DescriptionList,
   DialogActionButton,
   DialogActions,
   Drawer,
-  EntityCard,
   FileDropzone,
   FileUpload,
   FilterBar,
-  FilterChips,
   Input,
   List,
   NavTabs,
@@ -118,7 +115,7 @@ function InputPreview({
   }
 
   if (slug === "clearable-input") {
-    return <ClearableInput value={value} onValueChange={onValueChange} placeholder="Clearable input" />
+    return <Input value={value} onValueChange={onValueChange} placeholder="Clearable input" clearable />
   }
 
   if (slug === "slider") {
@@ -386,26 +383,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "entity-header") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
-            <Badge variant="outline">Customer</Badge>
-            <div>
-              <h3 className="text-xl font-semibold">Acme Holdings</h3>
-              <p className="text-sm text-[color:var(--aui-page-muted)]">Enterprise account with billing and admin ownership.</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">Archive</Button>
-            <Button size="sm">Edit</Button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   if (slug === "notification-center") {
     return (
       <List
@@ -414,18 +391,6 @@ function DisplayPreview({ slug }: { slug: string }) {
           { key: "2", title: "New comment", description: "Review requested on DataTable API.", extra: "8m" },
           { key: "3", title: "Publish reminder", description: "Package version is ready for release.", extra: "1h" },
         ]}
-      />
-    )
-  }
-
-  if (slug === "entity-card" || slug === "file-card") {
-    return (
-      <EntityCard
-        title={slug === "file-card" ? "Design-spec.pdf" : "Azamat Workspace"}
-        description={slug === "file-card" ? "Shared with 4 reviewers." : "Admin console and live dashboard route."}
-        status={<Badge variant="secondary">Live</Badge>}
-        meta={slug === "file-card" ? "2.4 MB" : "Updated 8 min ago"}
-        actions={<Button size="sm" variant="outline">Open</Button>}
       />
     )
   }
@@ -485,8 +450,12 @@ function ActionsPreview({
     return (
       <FilterBar
         search={<SearchInput value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
-        activeCount={2}
         onReset={() => setState({ textValue: "" })}
+        chips={[
+          { key: "status", label: "Status", value: "Active", tone: "success" },
+          { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
+        ]}
+        onRemoveChip={() => undefined}
         filters={<Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Status</Button>}
         actions={<Button size="sm">Export</Button>}
       />
@@ -543,28 +512,26 @@ function ActionsPreview({
     )
   }
 
-  if (slug === "filter-chips" || slug === "data-table-saved-filters") {
+  if (slug === "data-table-saved-filters") {
     return (
       <div className="grid gap-3">
-        <FilterChips
+        <FilterBar
           chips={[
             { key: "status", label: "Status", value: "Active", tone: "success" },
             { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
             { key: "region", label: "Region", value: "APAC", tone: "info" },
           ]}
-          onRemove={() => undefined}
-          onClear={() => undefined}
+          onRemoveChip={() => undefined}
+          onReset={() => undefined}
         />
-        {slug === "data-table-saved-filters" ? (
-          <ButtonGroup
-            attached={false}
-            items={[
-              { key: "default", label: "Default", variant: "secondary" },
-              { key: "billing", label: "Billing" },
-              { key: "ops", label: "Operations" },
-            ]}
-          />
-        ) : null}
+        <ButtonGroup
+          attached={false}
+          items={[
+            { key: "default", label: "Default", variant: "secondary" },
+            { key: "billing", label: "Billing" },
+            { key: "ops", label: "Operations" },
+          ]}
+        />
       </div>
     )
   }

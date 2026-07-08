@@ -16,48 +16,8 @@ function slugToExportName(slug: string) {
 
 function getLocalImportSnippet(slug: string, category: string) {
   const exportName = slugToExportName(slug)
-  const folder =
-    category === "Forms"
-      ? slug.startsWith("form-")
-        ? "form"
-        : "inputs"
-      : category === "Overlay"
-        ? "overlay"
-        : category === "Patterns"
-          ? "patterns"
-          : category === "Layout"
-            ? "layout"
-            : category === "Feedback"
-              ? "feedback"
-              : category === "Data Display"
-                ? "display"
-                : category === "Navigation"
-                  ? "navigation"
-                  : category === "Actions"
-                    ? "actions"
-                    : category === "Upload"
-                      ? "upload"
-                      : category === "Calendar"
-                        ? "calendar"
-                        : category === "Data Table"
-                          ? "data-table"
-                          : category === "Notifications"
-                            ? "notifications"
-                            : category === "Filters"
-                              ? "filters"
-                              : category === "Command"
-                                ? "command"
-                                : category === "Charts"
-                                  ? "charts"
-                                  : category === "Modern"
-                                    ? "modern"
-                                    : slug.startsWith("form-")
-                                      ? "form"
-                                      : slug.startsWith("data-table-")
-                                        ? "data-table"
-                                        : "ui"
-
-  return `import { ${exportName} } from "@/components/${folder}/${slug}"`
+  void category
+  return `import { ${exportName} } from "tembro"`
 }
 
 export const supplementalShowcaseDemoRegistry = Object.fromEntries(

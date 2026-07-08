@@ -73,6 +73,7 @@ function ActionMenu({
   const visibleActions = actions.filter((action) => !action.hidden)
   const [loadingKey, setLoadingKey] = React.useState<string | null>(null)
   const [open, setOpen] = React.useState(false)
+  const lastInvokedActionKeyRef = React.useRef<string | null>(null)
 
   const handleSelect = async (action: ActionMenuItem) => {
     if (action.disabled || action.loading || loadingKey) return
@@ -84,6 +85,17 @@ function ActionMenu({
     } finally {
       setLoadingKey(null)
     }
+  }
+
+  const triggerAction = (action: ActionMenuItem) => {
+    if (lastInvokedActionKeyRef.current === action.key) return
+    lastInvokedActionKeyRef.current = action.key
+    queueMicrotask(() => {
+      if (lastInvokedActionKeyRef.current === action.key) {
+        lastInvokedActionKeyRef.current = null
+      }
+    })
+    void handleSelect(action)
   }
 
   return (
@@ -150,7 +162,11 @@ function ActionMenu({
                     event.preventDefault()
                   }
                   stopInteractivePropagation(event)
-                  void handleSelect(action)
+                  triggerAction(action)
+                }}
+                onClick={(event) => {
+                  stopInteractivePropagation(event)
+                  triggerAction(action)
                 }}
                 onMouseDown={stopInteractivePropagation}
                 onDoubleClick={stopInteractivePropagation}

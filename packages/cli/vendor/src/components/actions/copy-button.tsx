@@ -12,6 +12,7 @@ export type CopyButtonProps = Omit<React.ComponentProps<typeof Button>, "onClick
   onCopied?: (value: string) => void
   onCopyError?: (error: unknown) => void
   showIcon?: boolean
+  copiedVariant?: React.ComponentProps<typeof Button>["variant"]
 }
 
 async function copyToClipboard(value: string) {
@@ -47,6 +48,8 @@ function CopyButton({
   onCopied,
   onCopyError,
   showIcon = true,
+  copiedVariant,
+  variant,
   disabled,
   children,
   type = "button",
@@ -84,10 +87,12 @@ function CopyButton({
       data-slot="copy-button"
       data-copied={copied || undefined}
       type={type}
+      variant={copied ? (copiedVariant ?? "secondary") : variant}
       disabled={disabled || !value}
       onClick={handleButtonClick}
       onMouseDown={stopInteractivePropagation}
       onDoubleClick={stopInteractivePropagation}
+      aria-live="polite"
       {...props}
     >
       {showIcon && (copied ? <CheckIcon data-icon="inline-start" /> : <CopyIcon data-icon="inline-start" />)}

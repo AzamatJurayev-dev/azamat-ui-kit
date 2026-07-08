@@ -124,6 +124,7 @@ describe("public API", () => {
         "DataTable",
         "DataTableBulkActions",
         "DataTableColumnVisibilityMenu",
+        "DataTablePagination",
         "DataTableSortableHeader",
         "DatePicker",
         "DateRangePicker",

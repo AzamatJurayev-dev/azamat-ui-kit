@@ -1,7 +1,11 @@
 import * as React from "react"
 import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
-import { FormFieldShell, type FormFieldShellControlProps } from "@/components/form/form-field-shell"
+import {
+  FormFieldShell,
+  type FormFieldShellControlProps,
+  resolveFormFieldIds,
+} from "@/components/form/form-field-shell"
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
 
@@ -49,21 +53,25 @@ function FormSwitch<
   ...props
 }: FormSwitchProps<TFieldValues, TName>) {
   const switchId = id ?? name
-  const labelContent = label ? (
-    <label
-      htmlFor={switchId}
-      className={cn("text-sm font-medium leading-none", disabled && "opacity-60", labelClassName)}
-    >
-      {label}
-      {required && (requiredIndicator ?? <span className="ml-1 text-destructive">*</span>)}
-    </label>
-  ) : null
 
   return (
     <Controller
       control={control}
       name={name}
       render={({ field, fieldState }) => {
+        const error = fieldState.error?.message
+        const resolvedIds = resolveFormFieldIds(switchId, { description, error })
+        const labelContent = label ? (
+          <label
+            id={resolvedIds.labelId}
+            htmlFor={switchId}
+            className={cn("text-sm font-medium leading-none", disabled && "opacity-60", labelClassName)}
+          >
+            {label}
+            {required && (requiredIndicator ?? <span className="ml-1 text-destructive">*</span>)}
+          </label>
+        ) : null
+
         const switchControl = (
           <Switch
             id={switchId}
@@ -71,6 +79,9 @@ function FormSwitch<
             checked={Boolean(field.value)}
             disabled={disabled || readOnly}
             aria-invalid={fieldState.invalid || undefined}
+            aria-labelledby={label ? resolvedIds.labelId : undefined}
+            aria-describedby={resolvedIds.describedBy}
+            aria-errormessage={error ? resolvedIds.errorId : undefined}
             className={fieldClassName}
             onBlur={field.onBlur}
             onCheckedChange={(checked) => {
@@ -86,8 +97,11 @@ function FormSwitch<
             label={label}
             description={description}
             required={required}
-            error={fieldState.error?.message}
+            error={error}
             htmlFor={switchId}
+            labelId={resolvedIds.labelId}
+            descriptionId={resolvedIds.descriptionId}
+            errorId={resolvedIds.errorId}
             className={className}
             layout={layout}
             descriptionPosition={descriptionPosition}
@@ -107,8 +121,10 @@ function FormSwitch<
           </FormFieldShell>
         ) : (
           <FormFieldShell
-            error={fieldState.error?.message}
+            error={error}
             className={className}
+            descriptionId={resolvedIds.descriptionId}
+            errorId={resolvedIds.errorId}
             errorIcon={errorIcon}
             showErrorIcon={showErrorIcon}
             disabled={disabled}
@@ -128,7 +144,10 @@ function FormSwitch<
                     </div>
                   )}
                   {description && (
-                    <p className={cn("text-xs text-muted-foreground", descriptionClassName)}>
+                    <p
+                      id={resolvedIds.descriptionId}
+                      className={cn("text-xs text-muted-foreground", descriptionClassName)}
+                    >
                       {description}
                     </p>
                   )}
