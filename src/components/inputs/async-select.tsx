@@ -314,7 +314,7 @@ function AsyncStateMessage({
     <div
       data-slot="async-select-state"
       className={cn(
-        "rounded-[min(var(--radius-xl),16px)] border px-3 py-3 text-sm text-muted-foreground",
+        "rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-3 text-sm leading-5 text-muted-foreground",
         className
       )}
     >
@@ -356,18 +356,18 @@ function AsyncOptionButton<
       data-selected={selected || undefined}
       data-disabled={option.disabled || undefined}
       className={cn(
-        "flex w-full items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] disabled:pointer-events-none disabled:opacity-50",
+        "flex w-full items-start gap-2.5 rounded-[var(--radius-md)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-[color:color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_93%)] focus-visible:border-[color:var(--aui-focus-ring,var(--ring))] focus-visible:shadow-[0_0_0_3px_var(--aui-focus-ring-soft,transparent)] data-[selected=true]:border-[color:color-mix(in_oklch,var(--primary),transparent_68%)] data-[selected=true]:bg-[color:color-mix(in_oklch,var(--primary),transparent_89%)] data-[selected=true]:text-foreground disabled:pointer-events-none disabled:opacity-50",
         optionClassName
       )}
       onClick={() => onSelect(option)}
     >
-      <span className="flex size-4 shrink-0 items-center justify-center">
-        {selected && <CheckIcon className="size-4" />}
+      <span className={cn("mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border border-border/70", selected && "border-primary bg-primary text-primary-foreground")}>
+        {selected && <CheckIcon className="size-3" />}
       </span>
       <span className="min-w-0 flex-1">
         {renderOption?.(option, { selected }) ?? (
           <span className="flex min-w-0 flex-col">
-            <span className="truncate">{option.label}</span>
+            <span className="truncate font-medium">{option.label}</span>
             {option.description && (
               <span className="truncate text-xs text-muted-foreground">{option.description}</span>
             )}
@@ -397,7 +397,7 @@ function AsyncCreateButton({
       type="button"
       disabled={isCreating}
       data-slot="async-select-create"
-      className="flex w-full items-center gap-2 rounded-[min(var(--radius-xl),16px)] border border-dashed px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] disabled:pointer-events-none disabled:opacity-50"
+      className="flex w-full items-center gap-2 rounded-[var(--radius-md)] border border-dashed border-[color:color-mix(in_oklch,var(--primary),transparent_55%)] bg-[color:color-mix(in_oklch,var(--primary),transparent_94%)] px-3 py-2.5 text-left text-sm font-medium text-foreground outline-none transition-[background-color,border-color,color,box-shadow] hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] disabled:pointer-events-none disabled:opacity-50"
       onClick={onCreate}
     >
       <span className="flex size-4 shrink-0 items-center justify-center">
@@ -625,7 +625,7 @@ function AsyncSelect<
               aria-invalid={invalid || undefined}
               data-slot="async-select-trigger"
               className={cn(
-                "min-h-11 w-full justify-between",
+                "min-h-11 w-full justify-between rounded-[var(--aui-control-radius,var(--radius-md))] px-3.5 text-left",
                 triggerClassName
               )}
               onKeyDown={handleTriggerKeyDown}
@@ -634,8 +634,8 @@ function AsyncSelect<
         >
           <span className="min-w-0 flex-1 text-left">
             {currentOption ? (
-              <span className="flex min-w-0 flex-col">
-                <span className="truncate">
+              <span className="flex min-w-0 flex-col gap-0.5">
+                <span className="truncate font-semibold">
                   {renderValue?.(currentOption) ?? currentOption.label}
                 </span>
                 {currentOption.disabled && currentOption.disabledReason && (
@@ -643,7 +643,7 @@ function AsyncSelect<
                 )}
               </span>
             ) : (
-              <span className="truncate">{labels?.placeholder ?? "Select"}</span>
+              <span className="truncate text-muted-foreground">{labels?.placeholder ?? "Select"}</span>
             )}
           </span>
           <span className="ml-2 flex shrink-0 items-center gap-1">
@@ -671,7 +671,7 @@ function AsyncSelect<
           align="start"
           data-slot="async-select-content"
           className={cn(
-            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] p-3.5",
+            "w-(--anchor-width) min-w-72 gap-3 rounded-[var(--aui-card-radius,var(--radius-lg))] border-[color:var(--aui-card-border,var(--border))] bg-popover p-3 shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))]",
             contentClassName
           )}
         >
@@ -686,7 +686,7 @@ function AsyncSelect<
             />
           </div>
 
-          <div className="max-h-64 space-y-1 overflow-y-auto pr-1">
+          <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
             {searchTooShort && flatOptions.length === 0 && (
               renderMinSearch?.(state) ?? (
                 <AsyncStateMessage>
@@ -1043,7 +1043,7 @@ function AsyncMultiSelect<
               aria-invalid={invalid || undefined}
               data-slot="async-select-trigger"
               className={cn(
-                "min-h-11 w-full justify-between",
+                "min-h-11 w-full justify-between rounded-[var(--aui-control-radius,var(--radius-md))] px-3.5 text-left",
                 triggerClassName
               )}
               onKeyDown={handleTriggerKeyDown}
@@ -1057,7 +1057,7 @@ function AsyncMultiSelect<
                   key={option.value}
                   data-slot="async-select-tag"
                   className={cn(
-                    "inline-flex max-w-full items-center gap-1 rounded-full border px-2 py-1 text-xs text-foreground",
+                    "inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-sm)] border border-[color:color-mix(in_oklch,var(--primary),transparent_70%)] bg-[color:color-mix(in_oklch,var(--primary),transparent_92%)] px-2 py-1 text-xs font-medium text-foreground",
                     tagClassName
                   )}
                 >
@@ -1076,7 +1076,7 @@ function AsyncMultiSelect<
                       role="button"
                       tabIndex={0}
                       data-slot="async-select-tag-remove"
-                      className="rounded-full text-muted-foreground transition-colors hover:text-foreground"
+                      className="rounded-full p-0.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
                       aria-label={`Remove ${getOptionLabelText(option)}`}
                       onClick={(event) => {
                         stopInteractivePropagation(event)
@@ -1101,7 +1101,7 @@ function AsyncMultiSelect<
                 role="button"
                 tabIndex={0}
                 data-slot="async-select-clear"
-                className="rounded-full border p-1 text-muted-foreground transition-colors hover:text-foreground"
+                className="rounded-full border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground"
                 aria-label={labels?.clearAll ?? labels?.clear ?? "Clear all"}
                 onClick={handleClear}
                 onKeyDown={(event) => {
@@ -1121,7 +1121,7 @@ function AsyncMultiSelect<
           align="start"
           data-slot="async-select-content"
           className={cn(
-            "w-(--anchor-width) gap-3 rounded-[var(--radius-2xl)] p-3.5",
+            "w-(--anchor-width) min-w-72 gap-3 rounded-[var(--aui-card-radius,var(--radius-lg))] border-[color:var(--aui-card-border,var(--border))] bg-popover p-3 shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))]",
             contentClassName
           )}
         >
@@ -1136,7 +1136,7 @@ function AsyncMultiSelect<
             />
           </div>
 
-          <div data-slot="async-select-meta" className="flex flex-wrap items-center justify-between gap-2 rounded-[min(var(--radius-xl),16px)] border px-3 py-2 text-xs text-muted-foreground">
+          <div data-slot="async-select-meta" className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_62%)] px-3 py-2 text-xs text-muted-foreground">
             {hasValue && labels?.selectedCount && <span>{labels.selectedCount(values.length)}</span>}
             {isMaxReached &&
               (renderMaxSelected?.(state) ?? (
@@ -1147,7 +1147,7 @@ function AsyncMultiSelect<
                 <button
                   type="button"
                   data-slot="async-select-meta-action"
-                  className="rounded-full border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
+                  className="rounded-[var(--radius-sm)] border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
                   onClick={handleSelectAllVisible}
                 >
                   {labels?.selectAll ?? "Select all"}
@@ -1157,7 +1157,7 @@ function AsyncMultiSelect<
                 <button
                   type="button"
                   data-slot="async-select-meta-action"
-                  className="rounded-full border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
+                  className="rounded-[var(--radius-sm)] border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
                   onClick={() => onValueChange?.([], [])}
                 >
                   {labels?.clearAll ?? labels?.clear ?? "Clear all"}
@@ -1166,7 +1166,7 @@ function AsyncMultiSelect<
             </div>
           </div>
 
-          <div className="max-h-64 space-y-1 overflow-y-auto pr-1">
+          <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
             {searchTooShort && flatOptions.length === 0 && (
               renderMinSearch?.(state) ?? (
                 <AsyncStateMessage>

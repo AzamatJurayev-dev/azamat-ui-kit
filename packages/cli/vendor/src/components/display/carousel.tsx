@@ -9,9 +9,11 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   defaultIndex?: number
   onIndexChange?: (index: number) => void
   loop?: boolean
+  variant?: "default" | "hero" | "minimal"
   showDots?: boolean
   showArrows?: boolean
   keyboard?: boolean
+  ariaLabel?: string
   previousLabel?: string
   nextLabel?: string
 }
@@ -29,9 +31,11 @@ function Carousel({
   defaultIndex = 0,
   onIndexChange,
   loop = false,
+  variant = "default",
   showDots = true,
   showArrows = true,
   keyboard = true,
+  ariaLabel = "Carousel",
   previousLabel = "Previous slide",
   nextLabel = "Next slide",
   className,
@@ -55,6 +59,10 @@ function Carousel({
   return (
     <div
       data-slot="carousel"
+      data-variant={variant}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={ariaLabel}
       className={cn("grid gap-3", className)}
       onKeyDown={(event) => {
         if (!keyboard || items.length <= 1) return
@@ -69,15 +77,21 @@ function Carousel({
       }}
       {...props}
     >
-      <div className="relative overflow-hidden rounded-xl border bg-card">
-        {items[activeIndex]}
+      <div className={cn(
+        "relative overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08))]",
+        variant === "hero" && "min-h-72",
+        variant === "minimal" && "rounded-[var(--radius-md)] shadow-none"
+      )}>
+        <div className="transition-transform duration-300 ease-out" aria-live="polite">
+          {items[activeIndex]}
+        </div>
         {showArrows && items.length > 1 ? (
           <>
             <Button
               type="button"
-              variant="secondary"
+              variant={variant === "hero" ? "default" : "secondary"}
               size="icon-sm"
-              className="absolute left-3 top-3"
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
               disabled={!canGoPrevious}
               aria-label={previousLabel}
               onClick={() => setActiveIndex(activeIndex - 1)}
@@ -86,9 +100,9 @@ function Carousel({
             </Button>
             <Button
               type="button"
-              variant="secondary"
+              variant={variant === "hero" ? "default" : "secondary"}
               size="icon-sm"
-              className="absolute right-3 top-3"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
               disabled={!canGoNext}
               aria-label={nextLabel}
               onClick={() => setActiveIndex(activeIndex + 1)}
@@ -99,14 +113,18 @@ function Carousel({
         ) : null}
       </div>
       {showDots && items.length > 1 && (
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-2" role="tablist" aria-label={`${ariaLabel} slides`}>
           {items.map((_, itemIndex) => (
             <button
               key={itemIndex}
               type="button"
+              role="tab"
               aria-label={`Go to slide ${itemIndex + 1}`}
-              aria-pressed={itemIndex === activeIndex}
-              className={cn("size-2.5 rounded-full bg-muted-foreground/30 transition-colors", itemIndex === activeIndex && "bg-primary")}
+              aria-selected={itemIndex === activeIndex}
+              className={cn(
+                "h-2.5 rounded-full bg-muted-foreground/30 transition-[width,background-color,opacity] hover:bg-muted-foreground/55",
+                itemIndex === activeIndex ? "w-7 bg-primary" : "w-2.5"
+              )}
               onClick={() => setActiveIndex(itemIndex)}
             />
           ))}
@@ -117,7 +135,7 @@ function Carousel({
 }
 
 function CarouselItem({ className, ...props }: CarouselItemProps) {
-  return <div data-slot="carousel-item" className={cn("p-4", className)} {...props} />
+  return <div data-slot="carousel-item" className={cn("min-h-40 p-5 sm:p-6", className)} {...props} />
 }
 
 export { Carousel, CarouselItem }
