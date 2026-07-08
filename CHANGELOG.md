@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.3 - 2026-07-08
+
+- tightened default radius and shadow tokens so controls render less pill-like out of the box
+- polished Button, Input, Select, and Calendar core surfaces for cleaner default spacing and focus states
+- added render coverage for clearable canonical Input and multi-month Calendar paging
+
 ## 2.0.2 - 2026-07-08
 
 ### Changed

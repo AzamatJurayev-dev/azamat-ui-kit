@@ -94,6 +94,26 @@ describe("Calendar and date pickers", () => {
     expect(onValueChange).toHaveBeenCalledWith({ from: "2024-06-12", to: "2024-06-18" })
   }, 20000)
 
+  it("supports multi-month paging and keeps next viewport visible", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <Calendar
+        mode="single"
+        defaultMonth="2024-06-01"
+        numberOfMonths={2}
+        pagedNavigation
+      />
+    )
+
+    expect(screen.getAllByText("June 2024").length).toBeGreaterThan(0)
+    expect(screen.getByText("July 2024")).toBeTruthy()
+
+    await user.click(screen.getByRole("button", { name: "Next month" }))
+
+    expect(screen.getAllByText("August 2024").length).toBeGreaterThan(0)
+  })
+
   it("selects a date from DatePicker and closes the popover", async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()

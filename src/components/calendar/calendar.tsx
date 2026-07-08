@@ -269,7 +269,7 @@ function Calendar({
       data-slot="calendar"
       data-months={resolvedNumberOfMonths}
       className={cn(
-        "w-fit rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-popover p-3 text-popover-foreground shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))] backdrop-blur",
+        "w-fit rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-popover p-3 text-popover-foreground shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))]",
         className
       )}
       {...props}
@@ -279,7 +279,7 @@ function Calendar({
           type="button"
           variant="outline"
           size="icon-sm"
-          className="rounded-full border-border/70 bg-background text-foreground shadow-none hover:border-border hover:bg-accent hover:text-accent-foreground"
+          className="rounded-[var(--radius-md)] border-border/70 bg-background text-foreground shadow-none hover:border-border hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.previousMonth ?? "Previous month"}
           onClick={() => setMonth(addMonths(currentMonth, -navigationStep))}
         >
@@ -293,7 +293,7 @@ function Calendar({
           type="button"
           variant="outline"
           size="icon-sm"
-          className="rounded-full border-border/70 bg-background text-foreground shadow-none hover:border-border hover:bg-accent hover:text-accent-foreground"
+          className="rounded-[var(--radius-md)] border-border/70 bg-background text-foreground shadow-none hover:border-border hover:bg-accent hover:text-accent-foreground"
           aria-label={labels?.nextMonth ?? "Next month"}
           onClick={() => setMonth(addMonths(currentMonth, navigationStep))}
         >
@@ -310,7 +310,7 @@ function Calendar({
         }
       >
         {monthDaysByMonth.map(({ month: visibleMonth, days }) => (
-          <div key={toDateKey(visibleMonth)} className="min-w-[16.5rem] rounded-[var(--radius-lg)] bg-transparent p-1">
+          <div key={toDateKey(visibleMonth)} className="min-w-[16.5rem] rounded-[var(--radius-md)] bg-transparent p-1">
             {shouldShowMonthHeaders && (
               <div className="mb-2 text-center text-sm font-semibold capitalize tracking-tight text-foreground">
                 {getMonthLabel(visibleMonth, locale)}
@@ -354,7 +354,7 @@ function Calendar({
                     data-in-range={inRange || undefined}
                     data-disabled-reason={disabledReason}
                     className={cn(
-                      "flex h-9 items-center justify-center rounded-[var(--radius-md)] border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-30",
+                      "flex h-9 items-center justify-center rounded-[var(--radius-sm)] border border-transparent text-sm font-medium outline-none transition-[background-color,color,border-color,box-shadow,transform] hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-30",
                       outside && "text-muted-foreground/34",
                       dateKey === todayKey && "border-border/70 bg-muted/60 text-foreground",
                       inRange && "bg-primary/10 text-foreground",

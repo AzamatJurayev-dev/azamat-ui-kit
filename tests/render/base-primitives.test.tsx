@@ -1,7 +1,7 @@
 import * as React from "react"
 import { render, screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import {
   Badge,
@@ -116,6 +116,26 @@ describe("base primitives", () => {
 
     await user.type(input, "team")
     expect(screen.getByText("8/20")).toBeTruthy()
+  })
+
+  it("keeps clearable input affordance singular and clears from the canonical input", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <Input
+        kind="clearable"
+        aria-label="Search docs"
+        value="Button"
+        onValueChange={onValueChange}
+      />
+    )
+
+    const clearButtons = screen.getAllByRole("button", { name: "Clear" })
+    expect(clearButtons).toHaveLength(1)
+
+    await user.click(clearButtons[0])
+    expect(onValueChange).toHaveBeenCalledWith("")
   })
 
   it("renders textarea variants and merges className", async () => {

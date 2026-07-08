@@ -83,7 +83,7 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --chart-3: oklch(0.78 0.11 165);
   --chart-4: oklch(0.72 0.15 45);
   --chart-5: oklch(0.66 0.15 15);
-  --radius: 0.75rem;
+  --radius: 0.625rem;
   --sidebar: oklch(0.982 0.006 250);
   --sidebar-foreground: oklch(0.238 0.02 255);
   --sidebar-primary: oklch(0.312 0.05 255);
@@ -101,12 +101,12 @@ export function getAzamatUiThemeCss(packageSourcePath: string) {
   --aui-danger: var(--destructive);
   --aui-danger-foreground: oklch(0.985 0.004 95);
 
-  --aui-radius-control: var(--radius-lg);
-  --aui-radius-surface: var(--radius-xl);
+  --aui-radius-control: var(--radius-md);
+  --aui-radius-surface: var(--radius-lg);
   --aui-shadow-xs: 0 1px 2px oklch(0.24 0.02 255 / 5%);
   --aui-shadow-sm: 0 1px 3px oklch(0.24 0.02 255 / 7%);
-  --aui-shadow-md: 0 10px 28px oklch(0.24 0.02 255 / 9%);
-  --aui-shadow-lg: 0 18px 44px oklch(0.24 0.02 255 / 12%);
+  --aui-shadow-md: 0 8px 24px oklch(0.24 0.02 255 / 8%);
+  --aui-shadow-lg: 0 16px 36px oklch(0.24 0.02 255 / 10%);
   --aui-surface-base: var(--background);
   --aui-surface-raised: color-mix(in oklch, var(--background), white 42%);
   --aui-surface-muted: color-mix(in oklch, var(--muted), var(--background) 52%);
