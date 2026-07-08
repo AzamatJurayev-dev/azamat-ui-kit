@@ -8,10 +8,14 @@ export type AlertTone = "info" | "success" | "warning" | "destructive" | "muted"
 export type AlertProps = React.ComponentProps<"div"> & {
   tone?: AlertTone
   variant?: "soft" | "outline" | "solid"
+  size?: "sm" | "md"
   title?: React.ReactNode
   description?: React.ReactNode
   icon?: React.ReactNode
   action?: React.ReactNode
+  dismissible?: boolean
+  dismissLabel?: string
+  onDismiss?: () => void
 }
 
 const alertToneClassName: Record<AlertTone, Record<NonNullable<AlertProps["variant"]>, string>> = {
@@ -66,10 +70,14 @@ function defaultIcon(tone: AlertTone) {
 function Alert({
   tone = "info",
   variant = "soft",
+  size = "md",
   title,
   description,
   icon,
   action,
+  dismissible = false,
+  dismissLabel = "Dismiss alert",
+  onDismiss,
   className,
   children,
   ...props
@@ -77,9 +85,10 @@ function Alert({
   return (
     <div
       data-slot="alert"
+      data-size={size}
       role={tone === "destructive" || tone === "warning" ? "alert" : "status"}
       className={cn(
-        "flex gap-3 rounded-[var(--aui-card-radius,var(--radius-xl))] border p-4 text-sm shadow-[var(--aui-card-shadow,var(--aui-control-shadow,0_1px_0_rgba(255,255,255,0.05)))]",
+        "flex gap-3 rounded-[var(--aui-card-radius,var(--radius-xl))] border p-4 text-sm shadow-[var(--aui-card-shadow,var(--aui-control-shadow,0_1px_0_rgba(255,255,255,0.05)))] data-[size=sm]:p-3",
         alertToneClassName[tone][variant],
         className
       )}
@@ -103,7 +112,24 @@ function Alert({
           </div>
         )}
       </div>
-      {action && <div data-slot="alert-action" className="shrink-0">{action}</div>}
+      {(action || dismissible) ? (
+        <div data-slot="alert-action" className="flex shrink-0 items-start gap-2">
+          {action}
+          {dismissible ? (
+            <button
+              type="button"
+              aria-label={dismissLabel}
+              className={cn(
+                "inline-flex size-8 items-center justify-center rounded-full border border-current/10 bg-background/45 text-current transition-opacity hover:opacity-90",
+                variant === "solid" && "bg-white/12"
+              )}
+              onClick={onDismiss}
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   )
 }

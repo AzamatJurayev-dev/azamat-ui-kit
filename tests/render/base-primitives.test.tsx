@@ -214,10 +214,11 @@ describe("base primitives", () => {
     )
 
     const listButton = screen.getByRole("button", { name: "List" })
-    const boardButton = screen.getByRole("button", { name: "BoardKanban" })
+    const boardButton = screen.getByRole("button", { name: "Board" })
 
     expect(listButton.getAttribute("aria-pressed")).toBe("true")
     expect(boardButton.getAttribute("aria-pressed")).toBeNull()
+    expect(boardButton.getAttribute("aria-describedby")).toBeTruthy()
 
     await user.click(boardButton)
     expect(onValueChange).toHaveBeenCalledWith("board")

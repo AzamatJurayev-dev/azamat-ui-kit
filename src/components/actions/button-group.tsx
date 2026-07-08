@@ -43,6 +43,7 @@ function ButtonGroup({
   const isControlled = value !== undefined
   const [internalValue, setInternalValue] = React.useState(defaultValue)
   const currentValue = isControlled ? value : internalValue
+  const groupId = React.useId()
 
   const updateValue = (nextValue: string) => {
     if (!isControlled) setInternalValue(nextValue)
@@ -65,15 +66,19 @@ function ButtonGroup({
       )}
       {...props}
     >
-      {items?.map(({ key, label, description, className: itemClassName, size: itemSize, variant: itemVariant, onClick, ...item }) => {
+      {items?.map(({ key, label, description, className: itemClassName, size: itemSize, variant: itemVariant, onClick, "aria-label": itemAriaLabel, ...item }) => {
         const selected = currentValue === key
+        const descriptionId = description ? `${groupId}-${key}-description` : undefined
+        const resolvedAriaLabel = itemAriaLabel ?? (description && typeof label === "string" ? label : undefined)
 
         return (
         <Button
           key={key}
           size={itemSize ?? size}
           variant={itemVariant ?? (selected ? activeVariant : variant)}
+          aria-label={resolvedAriaLabel}
           aria-pressed={selected || undefined}
+          aria-describedby={descriptionId}
           data-selected={selected || undefined}
           className={cn(
             attached &&
@@ -96,7 +101,8 @@ function ButtonGroup({
           {description ? (
             <span className="flex min-w-0 flex-col items-start text-left">
               <span>{label}</span>
-              <span className="truncate text-[11px] font-medium opacity-80">{description}</span>
+              <span aria-hidden="true" className="truncate text-[11px] font-medium opacity-80">{description}</span>
+              <span id={descriptionId} className="sr-only">{description}</span>
             </span>
           ) : (
             label

@@ -12,6 +12,7 @@ const tones = ["info", "success", "warning", "destructive"] as const
 export function AlertShowcase({ mode }: ComponentDemoProps) {
   const [toneIndex, setToneIndex] = React.useState(2)
   const [resolvedCount, setResolvedCount] = React.useState(0)
+  const [visible, setVisible] = React.useState(true)
 
   const tone = tones[toneIndex] ?? "warning"
 
@@ -33,24 +34,35 @@ export function AlertShowcase({ mode }: ComponentDemoProps) {
         </div>
       </section>
 
-      <Alert
-        tone={tone}
-        title={tone === "success" ? "Workspace synced" : tone === "destructive" ? "Action blocked" : tone === "info" ? "Heads up" : "Review needed"}
-        description={
-          tone === "success"
-            ? "Changes were saved and the team can continue safely."
-            : tone === "destructive"
-              ? "The release cannot continue until billing permissions are restored."
-              : tone === "info"
-                ? "Usage data refreshed and one metric changed since your last visit."
-                : "Billing rules changed and one approval is pending before publish."
-        }
-        action={
-          <Button size="sm" variant={tone === "destructive" ? "destructive" : "default"} onClick={() => setResolvedCount((value) => value + 1)}>
-            {tone === "success" ? "Continue" : tone === "destructive" ? "Fix access" : tone === "info" ? "Open details" : "Open review"}
+      {visible ? (
+        <Alert
+          tone={tone}
+          dismissible
+          onDismiss={() => setVisible(false)}
+          title={tone === "success" ? "Workspace synced" : tone === "destructive" ? "Action blocked" : tone === "info" ? "Heads up" : "Review needed"}
+          description={
+            tone === "success"
+              ? "Changes were saved and the team can continue safely."
+              : tone === "destructive"
+                ? "The release cannot continue until billing permissions are restored."
+                : tone === "info"
+                  ? "Usage data refreshed and one metric changed since your last visit."
+                  : "Billing rules changed and one approval is pending before publish."
+          }
+          action={
+            <Button size="sm" variant={tone === "destructive" ? "destructive" : "default"} onClick={() => setResolvedCount((value) => value + 1)}>
+              {tone === "success" ? "Continue" : tone === "destructive" ? "Fix access" : tone === "info" ? "Open details" : "Open review"}
+            </Button>
+          }
+        />
+      ) : (
+        <section className={panelClass}>
+          <p className="text-sm font-medium aui-text-muted">Alert dismissed</p>
+          <Button className="mt-4" size="sm" variant="outline" onClick={() => setVisible(true)}>
+            Restore alert
           </Button>
-        }
-      />
+        </section>
+      )}
 
       <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
         <section className={panelClass}>
@@ -82,6 +94,9 @@ export function AlertShowcase({ mode }: ComponentDemoProps) {
             ))}
             <Button size="sm" variant="outline" onClick={() => setResolvedCount(0)}>
               Reset counter
+            </Button>
+            <Button size="sm" variant="outline" onClick={() => setVisible(true)}>
+              Show alert
             </Button>
           </div>
         </section>

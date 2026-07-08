@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest"
 
 import { CommandPalette, useCommandPaletteShortcut } from "@/components/command/command-palette"
 import { AlertDialog } from "@/components/overlay/alert-dialog"
+import { Alert } from "@/components/feedback/alert"
 import { ConfirmDialog } from "@/components/overlay/confirm-dialog"
 import { Drawer } from "@/components/overlay/drawer"
 import { NavTabs } from "@/components/navigation/nav-tabs"
@@ -136,6 +137,44 @@ describe("overlay, command and navigation interactions", () => {
     expect(actionButton.getAttribute("disabled")).toBeNull()
     await user.click(actionButton)
     expect(onAction).toHaveBeenCalledTimes(1)
+  })
+
+  it("can relax confirmation case matching", async () => {
+    const user = userEvent.setup()
+    const onAction = vi.fn()
+
+    render(
+      <AlertDialog
+        open
+        onOpenChange={() => undefined}
+        title="Delete workspace"
+        confirmValue="DELETE"
+        confirmCaseSensitive={false}
+        actionLabel="Delete workspace"
+        onAction={onAction}
+      />
+    )
+
+    await user.type(screen.getByRole("textbox"), "delete")
+    await user.click(screen.getByRole("button", { name: "Delete workspace" }))
+    expect(onAction).toHaveBeenCalledTimes(1)
+  })
+
+  it("supports dismissible alerts", async () => {
+    const user = userEvent.setup()
+    const onDismiss = vi.fn()
+
+    render(
+      <Alert
+        title="Review needed"
+        description="One deployment needs approval."
+        dismissible
+        onDismiss={onDismiss}
+      />
+    )
+
+    await user.click(screen.getByLabelText("Dismiss alert"))
+    expect(onDismiss).toHaveBeenCalledTimes(1)
   })
 
   it("keeps confirm dialog interactions safe while loading", async () => {

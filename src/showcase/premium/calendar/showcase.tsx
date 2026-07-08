@@ -50,6 +50,7 @@ export function CalendarShowcase({ mode }: ComponentDemoProps) {
               pagedNavigation
               showClearShortcut
               showTodayShortcut
+              showSelectionSummary
             />
           </div>
         </section>
@@ -66,6 +67,7 @@ export function CalendarShowcase({ mode }: ComponentDemoProps) {
                 max="2026-07-31"
                 disabledDates={blockedDates}
                 showClearShortcut
+                showSelectionSummary
               />
             </div>
           </section>

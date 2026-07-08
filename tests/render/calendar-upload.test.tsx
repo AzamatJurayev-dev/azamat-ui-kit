@@ -147,6 +147,30 @@ describe("Calendar and date pickers", () => {
     expect(onRangeChange).toHaveBeenCalledWith({ from: null, to: null })
   })
 
+  it("shows preview range hover state and can hide outside days", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <Calendar
+        mode="range"
+        range={{ from: "2024-06-12", to: null }}
+        onRangeChange={() => undefined}
+        defaultMonth="2024-06-01"
+        showOutsideDays={false}
+      />
+    )
+
+    const previewTarget = screen.getByRole("button", { name: "2024-06-15" })
+    await user.hover(previewTarget)
+
+    expect(previewTarget.getAttribute("data-in-preview-range")).toBe("true")
+    const outsideDays = screen.getAllByRole("button").filter((button) => button.getAttribute("data-outside") === "true")
+    expect(outsideDays.length).toBeGreaterThan(0)
+    outsideDays.forEach((button) => {
+      expect(button.className).toContain("opacity-0")
+    })
+  })
+
   it("selects a date from DatePicker and closes the popover", async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()

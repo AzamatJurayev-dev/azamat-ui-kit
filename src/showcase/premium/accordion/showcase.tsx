@@ -113,7 +113,17 @@ export function AccordionShowcase() {
             </div>
           </div>
 
-          <Accordion className="xl:mt-8" type="multiple" variant={variant} value={multiValue} onValueChange={setMultiValue} items={[...releaseItems]} />
+          <Accordion
+            className="xl:mt-8"
+            type="multiple"
+            variant={variant}
+            value={multiValue}
+            onValueChange={setMultiValue}
+            items={releaseItems.map((item, index) => ({
+              ...item,
+              indicatorPosition: index === 0 ? "start" : "end",
+            }))}
+          />
         </div>
       </section>
     </div>

@@ -56,6 +56,7 @@ export type CollapseTriggerProps = React.ComponentProps<"summary"> & {
   hideIcon?: boolean
   size?: "sm" | "md" | "lg"
   inset?: boolean
+  indicatorPosition?: "start" | "end"
 }
 
 function CollapseTrigger({
@@ -63,27 +64,32 @@ function CollapseTrigger({
   hideIcon = false,
   size = "md",
   inset = false,
+  indicatorPosition = "end",
   className,
   children,
   ...props
 }: CollapseTriggerProps) {
+  const indicator = !hideIcon ? (
+    <span className="shrink-0 rounded-md text-muted-foreground transition-[color,transform] group-open:rotate-180 group-open:text-foreground">
+      {icon ?? <ChevronDownIcon className="size-4" />}
+    </span>
+  ) : null
+
   return (
     <summary
       data-slot="collapse-trigger"
       data-size={size}
       data-inset={inset || undefined}
+      data-indicator-position={indicatorPosition}
       className={cn(
-        "flex cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
+        "flex cursor-pointer list-none items-start gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[indicator-position=end]:justify-between data-[indicator-position=start]:justify-start data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
         className
       )}
       {...props}
     >
+      {indicatorPosition === "start" ? indicator : null}
       <span className="min-w-0 flex-1">{children}</span>
-      {!hideIcon && (
-        <span className="shrink-0 rounded-md text-muted-foreground transition-[color,transform] group-open:rotate-180 group-open:text-foreground">
-          {icon ?? <ChevronDownIcon className="size-4" />}
-        </span>
-      )}
+      {indicatorPosition === "end" ? indicator : null}
     </summary>
   )
 }
@@ -108,6 +114,7 @@ export type CollapseItem = {
   description?: React.ReactNode
   disabled?: boolean
   icon?: React.ReactNode
+  indicatorPosition?: CollapseTriggerProps["indicatorPosition"]
   triggerClassName?: string
   contentClassName?: string
 }
@@ -165,7 +172,12 @@ function CollapseGroup({
           size={size}
           className={cn(item.disabled && "pointer-events-none opacity-60")}
         >
-          <CollapseTrigger size={size} icon={item.icon} className={item.triggerClassName}>
+          <CollapseTrigger
+            size={size}
+            icon={item.icon}
+            indicatorPosition={item.indicatorPosition}
+            className={item.triggerClassName}
+          >
             <span className="grid gap-0.5">
               <span>{item.title}</span>
               {item.description && <span className="text-xs font-normal text-muted-foreground">{item.description}</span>}

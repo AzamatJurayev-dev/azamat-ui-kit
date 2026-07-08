@@ -20,12 +20,15 @@ export type AlertDialogProps = Omit<React.ComponentProps<typeof Dialog>, "childr
   cancelLabel?: React.ReactNode
   actionLabel?: React.ReactNode
   actionTone?: "default" | "destructive"
+  cancelVariant?: React.ComponentProps<typeof Button>["variant"]
   loading?: boolean
   closeOnAction?: boolean
   confirmValue?: string
   confirmLabel?: React.ReactNode
   confirmPlaceholder?: string
   confirmDescription?: React.ReactNode
+  confirmCaseSensitive?: boolean
+  severityNote?: React.ReactNode
   onAction?: () => void | Promise<void>
   children?: React.ReactNode
 }
@@ -37,12 +40,15 @@ function AlertDialog({
   cancelLabel = "Cancel",
   actionLabel = "Continue",
   actionTone = "destructive",
+  cancelVariant = "outline",
   loading = false,
   closeOnAction = true,
   confirmValue,
   confirmLabel = "Type to confirm",
   confirmPlaceholder,
   confirmDescription,
+  confirmCaseSensitive = true,
+  severityNote,
   onAction,
   children,
   onOpenChange,
@@ -52,7 +58,9 @@ function AlertDialog({
   const [confirmationInput, setConfirmationInput] = React.useState("")
   const resolvedLoading = loading || pending
   const requiresTypedConfirmation = Boolean(confirmValue?.trim())
-  const canConfirm = !requiresTypedConfirmation || confirmationInput.trim() === confirmValue?.trim()
+  const expectedConfirmation = confirmCaseSensitive ? confirmValue?.trim() : confirmValue?.trim().toLowerCase()
+  const actualConfirmation = confirmCaseSensitive ? confirmationInput.trim() : confirmationInput.trim().toLowerCase()
+  const canConfirm = !requiresTypedConfirmation || actualConfirmation === expectedConfirmation
 
   React.useEffect(() => {
     if (!props.open) {
@@ -113,9 +121,14 @@ function AlertDialog({
             />
           </div>
         ) : null}
+        {severityNote ? (
+          <div className="rounded-2xl border border-border/70 bg-muted/35 px-3.5 py-3 text-sm leading-6 text-muted-foreground">
+            {severityNote}
+          </div>
+        ) : null}
         <DialogFooter>
           <DialogClose render={() => (
-            <Button type="button" variant="outline" disabled={resolvedLoading}>
+            <Button type="button" variant={cancelVariant} disabled={resolvedLoading}>
               {cancelLabel}
             </Button>
           )} />
