@@ -1,57 +1,7 @@
 import { createGenericShowcaseDemo } from "./fallback"
 import { componentCatalog, getComponentGroup } from "./site-data"
 import type { ShowcaseDemoBundle } from "./types"
-
-const supplementalPublicDemoSlugs = [
-  "accordion",
-  "divider",
-  "segmented-control",
-  "skeleton",
-  "spinner",
-  "command-bar",
-  "quantity-stepper",
-  "inline-editable",
-  "repeater-field",
-  "empty-search-state",
-  "avatar",
-  "code-block",
-  "data-state",
-  "descriptions",
-  "keyboard-shortcut",
-  "key-value-card",
-  "kanban",
-  "list",
-  "property-grid",
-  "statistic",
-  "tag-list",
-  "tree-view",
-  "skeleton-table",
-  "skeleton-form",
-  "copy-button",
-  "copy-field",
-  "section",
-  "stack",
-  "sticky-footer-bar",
-  "affix",
-  "calendar-scheduler",
-  "dual-list-picker",
-  "menubar",
-  "navigation-menu",
-  "resizable-panel",
-  "rich-text-editor",
-  "tour",
-  "qr-code",
-  "tag",
-  "aspect-ratio",
-  "carousel",
-  "float-button",
-  "typography",
-  "watermark",
-  "cascader",
-  "json-input",
-  "mention-input",
-  "time-picker",
-] as const
+import { standalonePublicComponentSlugs } from "@/public-component-surface"
 
 const exportNameOverrides: Record<string, string> = {
   "qr-code": "QRCode",
@@ -111,7 +61,7 @@ function getLocalImportSnippet(slug: string, category: string) {
 }
 
 export const supplementalShowcaseDemoRegistry = Object.fromEntries(
-  supplementalPublicDemoSlugs.map((slug) => {
+  standalonePublicComponentSlugs.map((slug) => {
     const item = componentCatalog.find((entry) => entry.slug === slug)
     if (!item) {
       throw new Error(`Missing component catalog item for supplemental showcase slug: ${slug}`)
@@ -128,4 +78,4 @@ export const supplementalShowcaseDemoRegistry = Object.fromEntries(
   })
 ) satisfies Record<string, ShowcaseDemoBundle>
 
-export const supplementalShowcaseDemoSlugs = [...supplementalPublicDemoSlugs]
+export const supplementalShowcaseDemoSlugs = [...standalonePublicComponentSlugs]

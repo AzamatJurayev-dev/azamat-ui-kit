@@ -2,10 +2,41 @@ import { registry, registryNames } from "../registry"
 import { getRegistryStatus } from "../registry-status"
 import { getRegistryDistribution } from "../registry-distribution"
 import { getCliNpxCommand } from "../utils/cli-metadata"
+import {
+  documentedPublicRegistrySurfaceNames,
+  standalonePublicRegistrySurfaceNames,
+} from "../../src/public-component-surface"
+
+function printRegistryListSection(title: string, names: string[]) {
+  console.log(`\n${title}`)
+  names.forEach((name) => {
+    const item = registry[name]
+    const status = getRegistryStatus(name)
+    const distribution = getRegistryDistribution(name, item.category)
+    const deps = item.registryDependencies?.length
+      ? ` -> ${item.registryDependencies.join(", ")}`
+      : ""
+    console.log(`  ${name} [${status}/${distribution}]${deps}`)
+  })
+}
 
 export function listCommand() {
+  const canonicalSurfaceNames = documentedPublicRegistrySurfaceNames
+    .filter((name, index, list) => list.indexOf(name) === index)
+    .filter((name) => registry[name] && registry[name].category !== "lib")
+
+  const standaloneSurfaceNames = standalonePublicRegistrySurfaceNames
+    .filter((name, index, list) => list.indexOf(name) === index)
+    .filter((name) => registry[name] && registry[name].category !== "lib")
+
+  printRegistryListSection("Canonical surfaces", canonicalSurfaceNames)
+  printRegistryListSection("Standalone surfaces", standaloneSurfaceNames)
+
+  const surfacedNames = new Set([...canonicalSurfaceNames, ...standaloneSurfaceNames])
+
   const grouped = registryNames
     .filter((name) => registry[name].category !== "lib")
+    .filter((name) => !surfacedNames.has(name))
     .reduce<Record<string, string[]>>((acc, name) => {
       const category = registry[name].category
       acc[category] ??= []
