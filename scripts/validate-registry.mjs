@@ -7,6 +7,8 @@ const packageJsonPath = path.join(root, "package.json")
 const registryJsonPath = path.join(root, "registry.json")
 const registryTsPath = path.join(root, "cli/registry.ts")
 const registryStatusTsPath = path.join(root, "cli/registry-status.ts")
+const publicComponentSurfaceTsPath = path.join(root, "src/public-component-surface.ts")
+const showcaseRegistryJsonPath = path.join(root, "src/showcase/azix-registry.json")
 
 const failures = []
 
@@ -76,6 +78,19 @@ function extractRegistryStatuses(registryStatusTs) {
   )
 }
 
+function extractPublicSurfaceEntries(source, constName) {
+  const blockMatch = source.match(new RegExp(`export const ${constName}: readonly PublicComponentSurfaceEntry\\[] = \\[([\\s\\S]*?)\\] as const`))
+  if (!blockMatch) return []
+
+  return Array.from(
+    blockMatch[1].matchAll(/\{\s*slug:\s*"([^"]+)",\s*registryName:\s*"([^"]+)",\s*surface:\s*"([^"]+)"\s*\}/g),
+  ).map((match) => ({
+    slug: match[1],
+    registryName: match[2],
+    surface: match[3],
+  }))
+}
+
 const packageJson = readJson(packageJsonPath)
 const registryJson = readJson(registryJsonPath)
 const registryTs = readText(registryTsPath)
@@ -85,6 +100,8 @@ const registryNames = extractRegistryObjectNames(registryTs)
 const dependencyMap = extractRegistryDependencies(registryTs)
 const registryFiles = extractRegistryFiles(registryTs)
 const registryStatuses = extractRegistryStatuses(registryStatusTs)
+const publicComponentSurfaceTs = readText(publicComponentSurfaceTsPath)
+const showcaseRegistryJson = readJson(showcaseRegistryJsonPath)
 const unionNames = extractedUnionNames.length > 0 ? extractedUnionNames : registryNames
 const unionSet = new Set(unionNames)
 const registrySet = new Set(registryNames)
@@ -95,6 +112,12 @@ if (packageJson && registryJson && packageJson.version !== registryJson.version)
 
 if (registryJson) {
   const recommendedByMode = registryJson.recommendedByMode ?? {}
+  const documentedSurfaceEntries = extractPublicSurfaceEntries(publicComponentSurfaceTs, "documentedPublicComponentSurfaces")
+  const standaloneSurfaceEntries = extractPublicSurfaceEntries(publicComponentSurfaceTs, "standalonePublicComponentSurfaces")
+  const expectedPublicSurface = {
+    documented: documentedSurfaceEntries.map((entry) => entry.registryName),
+    standalone: standaloneSurfaceEntries.map((entry) => entry.registryName),
+  }
 
   for (const name of registryJson.recommended ?? []) {
     const status = registryStatuses.get(name)
@@ -112,6 +135,26 @@ if (registryJson) {
         failures.push(`registry.json recommendedByMode.${mode} includes '${name}', but cli registry status marks it as '${status}'`)
       }
     }
+  }
+
+  const actualPublicSurface = registryJson.publicSurface ?? {}
+  for (const key of ["documented", "standalone"]) {
+    const expected = expectedPublicSurface[key] ?? []
+    const actual = actualPublicSurface[key] ?? []
+
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+      failures.push(`registry.json publicSurface.${key} does not match src/public-component-surface.ts`)
+    }
+  }
+}
+
+if (registryJson && showcaseRegistryJson) {
+  if (registryJson.version !== showcaseRegistryJson.version) {
+    failures.push("src/showcase/azix-registry.json version does not match registry.json")
+  }
+
+  if (JSON.stringify(showcaseRegistryJson.publicSurface ?? {}) !== JSON.stringify(registryJson.publicSurface ?? {})) {
+    failures.push("src/showcase/azix-registry.json publicSurface does not match registry.json")
   }
 }
 

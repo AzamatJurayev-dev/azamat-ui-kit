@@ -39,7 +39,10 @@ import {
   PACKAGE_LATEST_RELEASE_DATE,
   PACKAGE_LATEST_VERSION,
 } from "./package-meta"
-import { comparePublicComponentSurfaceOrder } from "@/public-component-surface"
+import {
+  comparePublicComponentSurfaceOrder,
+  isPublicComponentSurfaceSlug,
+} from "@/public-component-surface"
 
 export type NavItem = {
   label: string
@@ -2335,6 +2338,7 @@ export function getPrimaryComponentCatalog() {
 
   return Array.from(merged.values())
     .filter((item) => !hiddenPrimaryComponentCatalogSlugs.has(item.slug))
+    .filter((item) => isPublicComponentSurfaceSlug(item.slug))
     .sort((left, right) => {
       const surfaceOrder = comparePublicComponentSurfaceOrder(left.slug, right.slug)
       if (surfaceOrder !== 0) return surfaceOrder
