@@ -11,6 +11,7 @@ export function AlertDialogShowcase({ mode }: ComponentDemoProps) {
   const [open, setOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
   const [lastResult, setLastResult] = React.useState("No action confirmed yet")
+  const [strictMode, setStrictMode] = React.useState(true)
 
   return (
     <div className="space-y-5">
@@ -36,9 +37,14 @@ export function AlertDialogShowcase({ mode }: ComponentDemoProps) {
             <p className="text-sm font-medium aui-text-muted">Live destructive flow</p>
             <p className="mt-2 text-sm leading-6 aui-text-muted">Open the dialog and confirm a risky workspace action.</p>
           </div>
-          <Button variant="destructive" onClick={() => setOpen(true)}>
-            Delete workspace
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button variant={strictMode ? "secondary" : "outline"} onClick={() => setStrictMode((value) => !value)}>
+              {strictMode ? "Typed confirm on" : "Typed confirm off"}
+            </Button>
+            <Button variant="destructive" onClick={() => setOpen(true)}>
+              Delete workspace
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -62,6 +68,9 @@ export function AlertDialogShowcase({ mode }: ComponentDemoProps) {
         title="Delete workspace?"
         description="This removes active billing rules, API tokens, and member access from the selected workspace."
         actionLabel="Delete workspace"
+        confirmValue={strictMode ? "DELETE" : undefined}
+        confirmLabel="High-risk confirmation"
+        confirmDescription="Type DELETE to confirm you want to remove this workspace and its active access."
         onAction={async () => {
           setLoading(true)
           await new Promise((resolve) => window.setTimeout(resolve, 450))

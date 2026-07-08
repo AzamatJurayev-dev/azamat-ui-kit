@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
 import { CommandPalette, useCommandPaletteShortcut } from "@/components/command/command-palette"
+import { AlertDialog } from "@/components/overlay/alert-dialog"
 import { ConfirmDialog } from "@/components/overlay/confirm-dialog"
 import { Drawer } from "@/components/overlay/drawer"
 import { NavTabs } from "@/components/navigation/nav-tabs"
@@ -105,6 +106,36 @@ describe("overlay, command and navigation interactions", () => {
     await user.click(screen.getByRole("button", { name: "Open confirm" }))
     await user.click(screen.getByRole("button", { name: "Delete now" }))
     expect(onConfirm).toHaveBeenCalledTimes(1)
+  })
+
+  it("keeps alert dialog action locked until typed confirmation matches", async () => {
+    const user = userEvent.setup()
+    const onAction = vi.fn()
+
+    render(
+      <AlertDialog
+        open
+        onOpenChange={() => undefined}
+        title="Delete workspace"
+        description="This cannot be undone."
+        confirmValue="DELETE"
+        actionLabel="Delete workspace"
+        onAction={onAction}
+      />
+    )
+
+    const actionButton = screen.getByRole("button", { name: "Delete workspace" })
+    expect(actionButton.getAttribute("disabled")).toBe("")
+
+    await user.type(screen.getByRole("textbox"), "DEL")
+    expect(actionButton.getAttribute("disabled")).toBe("")
+
+    await user.clear(screen.getByRole("textbox"))
+    await user.type(screen.getByRole("textbox"), "DELETE")
+
+    expect(actionButton.getAttribute("disabled")).toBeNull()
+    await user.click(actionButton)
+    expect(onAction).toHaveBeenCalledTimes(1)
   })
 
   it("keeps confirm dialog interactions safe while loading", async () => {

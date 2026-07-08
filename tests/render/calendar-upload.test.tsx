@@ -114,6 +114,39 @@ describe("Calendar and date pickers", () => {
     expect(screen.getAllByText("August 2024").length).toBeGreaterThan(0)
   })
 
+  it("clears single and range selection from shortcut actions", async () => {
+    const user = userEvent.setup()
+    const onSingleChange = vi.fn()
+    const onRangeChange = vi.fn()
+
+    render(
+      <>
+        <Calendar
+          mode="single"
+          value="2024-06-12"
+          onValueChange={onSingleChange}
+          defaultMonth="2024-06-01"
+          showClearShortcut
+          labels={{ clear: "Clear date" }}
+        />
+        <Calendar
+          mode="range"
+          range={{ from: "2024-06-10", to: "2024-06-14" }}
+          onRangeChange={onRangeChange}
+          defaultMonth="2024-06-01"
+          showClearShortcut
+          labels={{ clear: "Clear range" }}
+        />
+      </>
+    )
+
+    await user.click(screen.getByRole("button", { name: "Clear date" }))
+    await user.click(screen.getByRole("button", { name: "Clear range" }))
+
+    expect(onSingleChange).toHaveBeenCalledWith("")
+    expect(onRangeChange).toHaveBeenCalledWith({ from: null, to: null })
+  })
+
   it("selects a date from DatePicker and closes the popover", async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()

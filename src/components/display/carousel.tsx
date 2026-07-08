@@ -17,6 +17,10 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   previousLabel?: string
   nextLabel?: string
   swipeThreshold?: number
+  autoplay?: boolean
+  autoplayInterval?: number
+  pauseOnHover?: boolean
+  stopAutoplayOnInteraction?: boolean
 }
 
 export type CarouselItemProps = React.ComponentProps<"div">
@@ -40,6 +44,10 @@ function Carousel({
   previousLabel = "Previous slide",
   nextLabel = "Next slide",
   swipeThreshold = 44,
+  autoplay = false,
+  autoplayInterval = 4500,
+  pauseOnHover = true,
+  stopAutoplayOnInteraction = true,
   className,
   children,
   ...props
@@ -47,12 +55,17 @@ function Carousel({
   const items = React.Children.toArray(children)
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex)
   const touchStartXRef = React.useRef<number | null>(null)
+  const [isHovered, setIsHovered] = React.useState(false)
+  const [autoplayStopped, setAutoplayStopped] = React.useState(false)
   const controlled = index !== undefined
   const activeIndex = clampIndex(controlled ? index : internalIndex, items.length, loop)
 
-  function setActiveIndex(nextIndex: number) {
+  function setActiveIndex(nextIndex: number, reason: "manual" | "autoplay" = "manual") {
     const resolvedIndex = clampIndex(nextIndex, items.length, loop)
     if (!controlled) setInternalIndex(resolvedIndex)
+    if (reason === "manual" && stopAutoplayOnInteraction) {
+      setAutoplayStopped(true)
+    }
     onIndexChange?.(resolvedIndex)
   }
 
@@ -73,6 +86,23 @@ function Carousel({
     if (deltaX > 0 && canGoPrevious) setActiveIndex(activeIndex - 1)
     if (deltaX < 0 && canGoNext) setActiveIndex(activeIndex + 1)
   }
+
+  React.useEffect(() => {
+    if (!autoplay || items.length <= 1 || autoplayStopped) return
+    if (pauseOnHover && isHovered) return
+
+    const timer = window.setInterval(() => {
+      if (!loop && activeIndex >= items.length - 1) {
+        setActiveIndex(0, "autoplay")
+        return
+      }
+      setActiveIndex(activeIndex + 1, "autoplay")
+    }, autoplayInterval)
+
+    return () => {
+      window.clearInterval(timer)
+    }
+  }, [activeIndex, autoplay, autoplayInterval, autoplayStopped, isHovered, items.length, loop, pauseOnHover])
 
   return (
     <div
@@ -96,6 +126,8 @@ function Carousel({
       }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       {...props}
     >
       <div className={cn(

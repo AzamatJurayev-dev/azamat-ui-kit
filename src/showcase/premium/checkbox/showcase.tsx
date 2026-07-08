@@ -32,6 +32,7 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
         <div className="mt-6 grid gap-3 md:grid-cols-3">
           <div className={`${panelClass} flex items-start gap-3`}>
             <Checkbox
+              size="lg"
               checked={triState === "mixed" ? "indeterminate" : triState === "checked"}
               onCheckedChange={(checked) => {
                 if (checked) {
@@ -47,14 +48,14 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
             </div>
           </div>
           <div className={`${panelClass} flex items-start gap-3`}>
-            <Checkbox checked="indeterminate" />
+            <Checkbox size="lg" checked="indeterminate" />
             <div>
               <p className="text-sm font-medium aui-text-strong">Indeterminate</p>
               <p className="mt-1 text-sm aui-text-muted">Useful for parent rows and bulk selection summaries.</p>
             </div>
           </div>
           <div className={`${panelClass} flex items-start gap-3`}>
-            <Checkbox checked disabled />
+            <Checkbox size="lg" checked disabled />
             <div>
               <p className="text-sm font-medium aui-text-strong">Disabled selected</p>
               <p className="mt-1 text-sm aui-text-muted">Shows permission-locked completion without becoming clickable.</p>
@@ -69,6 +70,7 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
                 id={item.id}
                 checked={index === 0 ? state.checked : item.checked}
                 disabled={item.disabled}
+                invalid={index === 0 && triState === "unchecked"}
                 onCheckedChange={index === 0 ? (checked) => setState({ checked: Boolean(checked) }) : undefined}
                 defaultChecked={index > 0 ? item.checked : undefined}
               />

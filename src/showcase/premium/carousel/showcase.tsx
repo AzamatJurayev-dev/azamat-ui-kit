@@ -11,6 +11,7 @@ const steps = [
 export function CarouselShowcase() {
   const [showArrows, setShowArrows] = React.useState(true)
   const [showDots, setShowDots] = React.useState(true)
+  const [autoplay, setAutoplay] = React.useState(false)
   const [index, setIndex] = React.useState(0)
 
   return (
@@ -21,6 +22,9 @@ export function CarouselShowcase() {
         </Button>
         <Button size="sm" variant={showDots ? "default" : "outline"} onClick={() => setShowDots((value) => !value)}>
           {showDots ? "Hide" : "Show"} dots
+        </Button>
+        <Button size="sm" variant={autoplay ? "default" : "outline"} onClick={() => setAutoplay((value) => !value)}>
+          {autoplay ? "Stop" : "Start"} autoplay
         </Button>
       </div>
 
@@ -43,6 +47,8 @@ export function CarouselShowcase() {
         loop
         showArrows={showArrows}
         showDots={showDots}
+        autoplay={autoplay}
+        autoplayInterval={2200}
         onIndexChange={(next) => setIndex(next)}
         previousLabel="Previous slide"
         nextLabel="Next slide"

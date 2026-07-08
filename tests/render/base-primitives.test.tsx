@@ -175,6 +175,15 @@ describe("base primitives", () => {
     expect(switchControl.getAttribute("aria-checked")).toBe("true")
   })
 
+  it("keeps checkbox size and invalid metadata on the surface", () => {
+    render(<Checkbox aria-label="Terms" size="lg" invalid checked="indeterminate" />)
+
+    const checkbox = screen.getByRole("checkbox", { name: "Terms" })
+    expect(checkbox.getAttribute("data-size")).toBe("lg")
+    expect(checkbox.getAttribute("aria-invalid")).toBe("true")
+    expect(checkbox.getAttribute("aria-checked")).toBe("mixed")
+  })
+
   it("renders badge tone content without breaking inline layout", () => {
     render(
       <Badge tone="success" leftIcon={<span aria-hidden="true">+</span>} rightIcon={<span aria-hidden="true">!</span>}>

@@ -27,6 +27,8 @@ export type CalendarDisabledReason = "disabled" | "min" | "max" | "range"
 export type CalendarLabels = {
   previousMonth?: string
   nextMonth?: string
+  today?: string
+  clear?: string
   selectDate?: (date: string) => string
   disabledDate?: (date: string, reason: CalendarDisabledReason) => string
 }
@@ -48,6 +50,8 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   numberOfMonths?: number
   showMonthHeaders?: boolean
   pagedNavigation?: boolean
+  showTodayShortcut?: boolean
+  showClearShortcut?: boolean
   labels?: CalendarLabels
 }
 
@@ -112,6 +116,8 @@ function Calendar({
   numberOfMonths = 1,
   showMonthHeaders,
   pagedNavigation = false,
+  showTodayShortcut = false,
+  showClearShortcut = false,
   labels,
   ...props
 }: CalendarProps) {
@@ -248,6 +254,28 @@ function Calendar({
     const nextRange = { from, to: dateKey }
     if (!isControlledRange) setInternalRange(nextRange)
     onRangeChange?.(nextRange)
+  }
+
+  const clearSelection = () => {
+    if (mode === "single") {
+      if (!isControlledSingle) setInternalValue(null)
+      onValueChange?.("")
+      return
+    }
+
+    const nextRange = { from: null, to: null }
+    if (!isControlledRange) setInternalRange(nextRange)
+    onRangeChange?.(nextRange)
+  }
+
+  const jumpToToday = () => {
+    const today = new Date()
+    const todayDateKey = toDateKey(today)
+    setMonth(today)
+    setFocusedDateKey(todayDateKey)
+    if (!isDateDisabled(todayDateKey)) {
+      handleDateSelect(todayDateKey)
+    }
   }
 
   const handleDateKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, date: Date) => {
@@ -399,6 +427,29 @@ function Calendar({
           </div>
         ))}
       </div>
+      {(showTodayShortcut || showClearShortcut) ? (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[color:var(--aui-card-border,var(--border))] pt-3">
+          <div className="text-xs text-muted-foreground">
+            {mode === "range"
+              ? currentRange?.from
+                ? `${currentRange.from}${currentRange.to ? ` -> ${currentRange.to}` : ""}`
+                : "No range selected"
+              : currentValue || "No date selected"}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {showClearShortcut ? (
+              <Button type="button" size="sm" variant="ghost" onClick={clearSelection}>
+                {labels?.clear ?? "Clear"}
+              </Button>
+            ) : null}
+            {showTodayShortcut ? (
+              <Button type="button" size="sm" variant="outline" onClick={jumpToToday}>
+                {labels?.today ?? "Today"}
+              </Button>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

@@ -7,9 +7,21 @@ export type CollapseProps = React.ComponentProps<"details"> & {
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void
+  variant?: "default" | "soft" | "ghost"
+  size?: "sm" | "md" | "lg"
 }
 
-function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, children, ...props }: CollapseProps) {
+function Collapse({
+  open,
+  defaultOpen,
+  onOpenChange,
+  onToggle,
+  className,
+  children,
+  variant = "default",
+  size = "md",
+  ...props
+}: CollapseProps) {
   const isControlled = open !== undefined
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen ?? false)
   const currentOpen = isControlled ? open : internalOpen
@@ -17,8 +29,10 @@ function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, childr
   return (
     <details
       data-slot="collapse"
+      data-variant={variant}
+      data-size={size}
       className={cn(
-        "group overflow-hidden rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card text-card-foreground shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] transition-[background-color,border-color,box-shadow] hover:border-[color:var(--aui-control-hover-border,var(--ring))] open:border-[color:var(--aui-control-hover-border,var(--ring))]",
+        "group overflow-hidden rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card text-card-foreground shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))] transition-[background-color,border-color,box-shadow] hover:border-[color:var(--aui-control-hover-border,var(--ring))] open:border-[color:var(--aui-control-hover-border,var(--ring))] data-[variant=soft]:bg-[color:color-mix(in_oklch,var(--muted),transparent_58%)] data-[variant=soft]:shadow-none data-[variant=ghost]:border-transparent data-[variant=ghost]:bg-transparent data-[variant=ghost]:shadow-none",
         className
       )}
       onToggle={(event) => {
@@ -40,14 +54,26 @@ function Collapse({ open, defaultOpen, onOpenChange, onToggle, className, childr
 export type CollapseTriggerProps = React.ComponentProps<"summary"> & {
   icon?: React.ReactNode
   hideIcon?: boolean
+  size?: "sm" | "md" | "lg"
+  inset?: boolean
 }
 
-function CollapseTrigger({ icon, hideIcon = false, className, children, ...props }: CollapseTriggerProps) {
+function CollapseTrigger({
+  icon,
+  hideIcon = false,
+  size = "md",
+  inset = false,
+  className,
+  children,
+  ...props
+}: CollapseTriggerProps) {
   return (
     <summary
       data-slot="collapse-trigger"
+      data-size={size}
+      data-inset={inset || undefined}
       className={cn(
-        "flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground [&::-webkit-details-marker]:hidden",
+        "flex cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
         className
       )}
       {...props}
@@ -67,7 +93,7 @@ function CollapseContent({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="collapse-content"
       className={cn(
-        "border-t border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_70%)] px-4 py-3 text-sm leading-6 text-muted-foreground",
+        "border-t border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_70%)] px-4 py-3.5 text-sm leading-6 text-muted-foreground",
         className
       )}
       {...props}
@@ -81,6 +107,9 @@ export type CollapseItem = {
   content: React.ReactNode
   description?: React.ReactNode
   disabled?: boolean
+  icon?: React.ReactNode
+  triggerClassName?: string
+  contentClassName?: string
 }
 
 export type CollapseGroupProps = React.ComponentProps<"div"> & {
@@ -89,9 +118,21 @@ export type CollapseGroupProps = React.ComponentProps<"div"> & {
   value?: string | string[]
   defaultValue?: string | string[]
   onValueChange?: (value: string | string[]) => void
+  variant?: CollapseProps["variant"]
+  size?: CollapseTriggerProps["size"]
 }
 
-function CollapseGroup({ items, type = "multiple", value, defaultValue, onValueChange, className, ...props }: CollapseGroupProps) {
+function CollapseGroup({
+  items,
+  type = "multiple",
+  value,
+  defaultValue,
+  onValueChange,
+  variant = "default",
+  size = "md",
+  className,
+  ...props
+}: CollapseGroupProps) {
   const initialValue = React.useMemo(() => {
     if (value !== undefined) return value
     if (defaultValue !== undefined) return defaultValue
@@ -120,15 +161,17 @@ function CollapseGroup({ items, type = "multiple", value, defaultValue, onValueC
           key={item.key}
           open={isOpen(item.key)}
           onOpenChange={(open) => updateValue(item.key, open)}
+          variant={variant}
+          size={size}
           className={cn(item.disabled && "pointer-events-none opacity-60")}
         >
-          <CollapseTrigger>
+          <CollapseTrigger size={size} icon={item.icon} className={item.triggerClassName}>
             <span className="grid gap-0.5">
               <span>{item.title}</span>
               {item.description && <span className="text-xs font-normal text-muted-foreground">{item.description}</span>}
             </span>
           </CollapseTrigger>
-          <CollapseContent>{item.content}</CollapseContent>
+          <CollapseContent className={item.contentClassName}>{item.content}</CollapseContent>
         </Collapse>
       ))}
     </div>
