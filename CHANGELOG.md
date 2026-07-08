@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.0.2 - 2026-07-08
+
+### Changed
+
+- rebuilt `AppSidebar` into a responsive navigation surface with automatic mobile drawer behavior, overlay dismissal, escape handling, and close-on-select flow
+- refreshed the `AppSidebar` and `AppShell` showcase demos so mobile and desktop sidebar behavior are both visible from the docs surface
+- synced CLI vendor copies and added navigation render coverage for the new responsive sidebar contract
+
 ## 1.0.0 - 2026-07-08
 
 ### Changed
