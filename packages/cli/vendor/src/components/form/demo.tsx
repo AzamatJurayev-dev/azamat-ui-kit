@@ -7,5 +7,4 @@ export const formShowcaseDemoRegistry = createShowcaseDemoRegistry([
   component("form-switch", "FormSwitch", "form", "Boolean form control with shell-level label and hint handling."),
   component("form-date-picker", "FormDatePicker", "form", "Popover date picker wrapper with RHF integration."),
   component("form-date-range-picker", "FormDateRangePicker", "form", "Range date picker wrapper with RHF integration."),
-  component("repeater-field", "RepeaterField", "form", "Repeating field array surface for editable lists inside forms."),
 ])

@@ -13,8 +13,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("form-switch", "FormSwitch", "form", "Boolean form control with shell-level label and hint handling."),
   component("form-date-picker", "FormDatePicker", "form", "Popover date picker wrapper with RHF integration."),
   component("form-date-range-picker", "FormDateRangePicker", "form", "Range date picker wrapper for planning and reporting flows."),
-  component("repeater-field", "RepeaterField", "form", "Repeating row editor for dynamic field arrays."),
-
   component("dialog-actions", "DialogActions", "overlay", "Modal footer action row with cancel, secondary and primary actions."),
   component("alert-dialog", "AlertDialog", "overlay", "Destructive confirmation dialog with loading-ready action states."),
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),

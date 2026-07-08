@@ -7,15 +7,11 @@ import {
   TrendCard,
   ComparisonCard,
   DeltaBadge,
-  SkeletonTable,
-  SkeletonForm,
   EntityHeader,
   DataList,
-  KeyValueCard,
 } from "@/components/display"
 import { Accordion } from "@/components/ui/accordion"
 import { InlineEditable } from "@/components/inputs/inline-editable"
-import { RepeaterField } from "@/components/form/repeater-field"
 import { EmptySearchState } from "@/components/feedback"
 import { CommandBar } from "@/components/navigation/command-bar"
 import { SavedFilterSelect } from "@/components/filters/saved-filter-select"
@@ -73,21 +69,6 @@ describe("New components rendering tests", () => {
     expect(screen.getByText("Qualified opportunities")).toBeInTheDocument()
   })
 
-  it("renders KeyValueCard", () => {
-    render(<KeyValueCard title="Account" items={[{ key: "owner", label: "Owner", value: "Azamat" }]} />)
-
-    expect(screen.getByText("Account")).toBeInTheDocument()
-    expect(screen.getByText("Owner")).toBeInTheDocument()
-    expect(screen.getByText("Azamat")).toBeInTheDocument()
-  })
-
-  it("renders Skeleton presets", () => {
-    const { container: tableContainer } = render(<SkeletonTable rows={3} />)
-    expect(tableContainer.firstChild).toBeInTheDocument()
-    const { container: formContainer } = render(<SkeletonForm fields={3} />)
-    expect(formContainer.firstChild).toBeInTheDocument()
-  })
-
   it("handles InlineEditable", async () => {
     const onValueChange = vi.fn()
     const user = userEvent.setup()
@@ -106,31 +87,6 @@ describe("New components rendering tests", () => {
     await user.type(input, " updated")
     await user.keyboard("{Enter}")
     expect(onValueChange).toHaveBeenCalledWith("Initial text updated")
-  })
-
-  it("handles RepeaterField", async () => {
-    const user = userEvent.setup()
-    const onValueChange = vi.fn()
-    render(
-      <RepeaterField
-        value={["Item 1"]}
-        onValueChange={onValueChange}
-        createItem={() => "New Item"}
-        renderItem={(item, index, { remove, update }) => (
-          <div>
-            <span>{item}</span>
-            <button onClick={remove}>Remove</button>
-            <button onClick={() => update(item + " updated")}>Update</button>
-          </div>
-        )}
-      />
-    )
-    
-    expect(screen.getByText("Item 1")).toBeInTheDocument()
-    
-    // Add item
-    await user.click(screen.getByText("Add item"))
-    expect(onValueChange).toHaveBeenCalledWith(["Item 1", "New Item"])
   })
 
   it("renders EmptySearchState", async () => {

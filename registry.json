@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -82,8 +82,7 @@
       "form-search-input",
       "form-select",
       "form-switch",
-      "form-textarea",
-      "repeater-field"
+      "form-textarea"
     ],
     "feedback": [
       "alert",
@@ -103,8 +102,6 @@
       "entity-card",
       "file-card",
       "info-card",
-      "keyboard-shortcut",
-      "key-value-card",
       "kanban",
       "list",
       "metric-grid",
@@ -115,15 +112,12 @@
       "statistic",
       "status-dot",
       "status-legend",
-      "tag-list",
       "timeline",
       "tree-view",
       "user-card",
       "trend-card",
       "comparison-card",
       "delta-badge",
-      "skeleton-table",
-      "skeleton-form",
       "entity-header"
     ],
     "actions": [
@@ -141,7 +135,6 @@
       "section",
       "section-header",
       "sidebar-nav",
-      "stack",
       "stat-card",
       "sticky-footer-bar"
     ],
@@ -192,7 +185,6 @@
       "form-builder"
     ],
     "modern": [
-      "affix",
       "calendar-scheduler",
       "dual-list-picker",
       "menubar",
@@ -202,14 +194,9 @@
       "tour",
       "qr-code",
       "tag",
-      "aspect-ratio",
       "carousel",
-      "float-button",
       "typography",
-      "watermark",
-      "cascader",
       "json-input",
-      "mention-input",
       "time-picker"
     ],
     "hooks": [
@@ -259,7 +246,6 @@
     "stat-card",
     "activity-feed",
     "data-list",
-    "key-value-card",
     "user-card",
     "action-menu",
     "filter-bar",
@@ -351,28 +337,20 @@
       "command-bar",
       "quantity-stepper",
       "inline-editable",
-      "repeater-field",
       "empty-search-state",
       "avatar",
       "code-block",
       "data-state",
       "descriptions",
-      "keyboard-shortcut",
-      "key-value-card",
       "kanban",
       "list",
       "property-grid",
       "statistic",
-      "tag-list",
       "tree-view",
-      "skeleton-table",
-      "skeleton-form",
       "copy-button",
       "copy-field",
       "section",
-      "stack",
       "sticky-footer-bar",
-      "affix",
       "calendar-scheduler",
       "dual-list-picker",
       "menubar",
@@ -382,14 +360,9 @@
       "tour",
       "qr-code",
       "tag",
-      "aspect-ratio",
       "carousel",
-      "float-button",
       "typography",
-      "watermark",
-      "cascader",
       "json-input",
-      "mention-input",
       "time-picker"
     ]
   },
@@ -404,4 +377,3 @@
     "smart-card": "info-card"
   }
 }
-

@@ -6,8 +6,6 @@ export * from "./form-switch"
 export * from "./form-textarea"
 export * from "./form-date-picker"
 export * from "./form-date-range-picker"
-export * from "./repeater-field"
-
 // Compatibility aliases
 export * from "./form-async-select"
 export * from "./form-date-input"

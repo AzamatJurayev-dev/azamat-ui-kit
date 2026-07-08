@@ -1,9 +1,7 @@
 import {
   Accordion,
   Alert,
-  Affix,
   AnchorNav,
-  AspectRatio,
   Avatar,
   AvatarGroup,
   Badge,
@@ -12,30 +10,23 @@ import {
   CalendarScheduler,
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   Carousel,
   CarouselItem,
-  Cascader,
   CodeBlock,
   ColorInput,
   CopyButton,
   CopyField,
   DataState,
-  DescriptionList,
   Descriptions,
   Divider,
   DualListPicker,
   EmptyState,
   EntityCard,
   FilterChips,
-  FloatButton,
-  Grid,
   Heading,
   Input,
   JsonInput,
   KanbanBoard,
-  KeyboardShortcut,
   List,
   Mark,
   Menubar,
@@ -43,7 +34,6 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-  MentionInput,
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
@@ -66,12 +56,9 @@ import {
   SegmentedControl,
   Skeleton,
   SkeletonCard,
-  SkeletonForm,
-  SkeletonTable,
   SkeletonText,
   Slider,
   Spinner,
-  Stack,
   StepperTabs,
   Statistic,
   StatisticCard,
@@ -81,13 +68,11 @@ import {
   Tag,
   TagInput,
   TagGroup,
-  TagList,
   Text,
   TimePicker,
   TimeRangePicker,
   Tour,
   TreeView,
-  Watermark,
 } from "@/index"
 import { StatCard } from "@/components/layout/stat-card"
 
@@ -200,31 +185,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "affix") {
-    return (
-      <div className="grid gap-3">
-        <Affix offsetTop={0}>
-          <div className="rounded-lg border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-3 py-2 text-sm font-medium">
-            Sticky helper bar
-          </div>
-        </Affix>
-        <div className="rounded-xl border border-dashed border-[color:var(--aui-divider)] p-4 text-sm text-[color:var(--aui-page-muted)]">
-          Use `Affix` when a small control or summary should remain visible while the surrounding content scrolls.
-        </div>
-      </div>
-    )
-  }
-
-  if (item.slug === "aspect-ratio") {
-    return (
-      <AspectRatio ratio={16 / 9} className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
-        <div className="flex size-full items-center justify-center bg-[linear-gradient(135deg,color-mix(in_oklch,var(--aui-brand),transparent_88%),transparent)] text-sm font-medium text-[color:var(--aui-page-foreground)]">
-          16:9 media surface
-        </div>
-      </AspectRatio>
-    )
-  }
-
   if (item.slug === "avatar") {
     return (
       <div className="flex flex-wrap items-center gap-4">
@@ -274,18 +234,6 @@ function renderGenericPreviewSurface(
           </Card>
         </CarouselItem>
       </Carousel>
-    )
-  }
-
-  if (item.slug === "cascader") {
-    return (
-      <Cascader
-        value={["workspace", "billing", "invoices"]}
-        options={[
-          { value: "workspace", label: "Workspace", children: [{ value: "billing", label: "Billing", children: [{ value: "invoices", label: "Invoices" }, { value: "plans", label: "Plans" }] }] },
-          { value: "settings", label: "Settings", children: [{ value: "team", label: "Team" }] },
-        ]}
-      />
     )
   }
 
@@ -396,26 +344,8 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "skeleton-form") {
-    return <SkeletonForm />
-  }
-
-  if (item.slug === "skeleton-table") {
-    return <SkeletonTable rows={5} columns={4} />
-  }
-
   if (item.slug === "slider") {
     return <Slider label="Spacing scale" description="Adjust dashboard density." defaultValue={64} showValue />
-  }
-
-  if (item.slug === "stack") {
-    return (
-      <Stack gap="sm">
-        <div className="rounded-lg border p-3 text-sm">Header area</div>
-        <div className="rounded-lg border p-3 text-sm">Content area</div>
-        <div className="rounded-lg border p-3 text-sm">Footer area</div>
-      </Stack>
-    )
   }
 
   if (item.slug === "statistic") {
@@ -445,19 +375,6 @@ function renderGenericPreviewSurface(
         <Tag tone="warning">Review</Tag>
         <Tag tone="danger">Blocked</Tag>
       </TagGroup>
-    )
-  }
-
-  if (item.slug === "tag-list") {
-    return (
-      <TagList
-        removable
-        items={[
-          { key: "1", label: "Dashboard" },
-          { key: "2", label: "Billing", variant: "secondary" },
-          { key: "3", label: "Priority", variant: "outline" },
-        ]}
-      />
     )
   }
 
@@ -516,19 +433,6 @@ function renderGenericPreviewSurface(
         <blockquote className="border-l-4 pl-4 italic text-muted-foreground">Ship simple text hierarchy before adding decorative layout layers.</blockquote>
         <Text muted size="sm">Use <Mark>Mark</Mark> only for emphasis that matters.</Text>
       </div>
-    )
-  }
-
-  if (item.slug === "watermark") {
-    return (
-      <Watermark text="AZAMAT UI">
-        <Card>
-          <CardContent className="p-6">
-            <p className="text-lg font-semibold">Preview export</p>
-            <p className="mt-2 text-sm text-muted-foreground">Subtle branding surface for internal screenshots or mockups.</p>
-          </CardContent>
-        </Card>
-      </Watermark>
     )
   }
 
@@ -670,15 +574,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "float-button") {
-    return (
-      <div className="relative min-h-28 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
-        <p className="text-sm text-muted-foreground">Floating action inside a content area.</p>
-        <FloatButton className="absolute bottom-4 right-4">+</FloatButton>
-      </div>
-    )
-  }
-
   if (item.slug === "data-list" || item.slug === "list") {
     return (
       <List
@@ -688,25 +583,6 @@ function renderGenericPreviewSurface(
           { key: "3", title: "Starter plan", description: "Lightweight team setup", extra: "$49" },
         ]}
       />
-    )
-  }
-
-  if (item.slug === "key-value-card") {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Account summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <DescriptionList
-            items={[
-              { key: "owner", label: "Owner", value: "Azamat UI" },
-              { key: "plan", label: "Plan", value: "Scale" },
-              { key: "renewal", label: "Renewal", value: "July 14, 2026" },
-            ]}
-          />
-        </CardContent>
-      </Card>
     )
   }
 
@@ -830,29 +706,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "keyboard-shortcut") {
-    return (
-      <div className="flex flex-wrap gap-3">
-        <KeyboardShortcut keys={["Ctrl", "K"]} />
-        <KeyboardShortcut keys={["Shift", "Enter"]} />
-        <KeyboardShortcut keys={["Alt", "S"]} />
-      </div>
-    )
-  }
-
-  if (item.slug === "mention-input") {
-    return (
-      <MentionInput
-        defaultValue="@azamat can you review the DataTable route?"
-        options={[
-          { value: "@azamat", label: "@azamat" },
-          { value: "@team", label: "@team" },
-          { value: "@design", label: "@design" },
-        ]}
-      />
-    )
-  }
-
   if (item.slug === "menubar") {
     return (
       <Menubar>
@@ -887,11 +740,11 @@ function renderGenericPreviewSurface(
 
   if (item.slug === "overlay") {
     return (
-      <Grid columns={3} gap="sm">
+      <div className="grid gap-3 sm:grid-cols-3">
         <Card><CardContent className="p-4"><p className="font-medium">Dialog</p><p className="mt-1 text-sm text-muted-foreground">Focused confirmation and forms.</p></CardContent></Card>
         <Card><CardContent className="p-4"><p className="font-medium">Popover</p><p className="mt-1 text-sm text-muted-foreground">Compact contextual actions.</p></CardContent></Card>
         <Card><CardContent className="p-4"><p className="font-medium">Sheet</p><p className="mt-1 text-sm text-muted-foreground">Side panel workflows.</p></CardContent></Card>
-      </Grid>
+      </div>
     )
   }
 
@@ -914,20 +767,6 @@ function renderGenericPreviewSurface(
 
   if (item.slug === "quantity-stepper") {
     return <QuantityStepper defaultValue={3} min={1} max={10} />
-  }
-
-  if (item.slug === "repeater-field") {
-    return (
-      <Card>
-        <CardContent className="grid gap-3 p-5">
-          <Input placeholder="First item" defaultValue="Revenue KPI" />
-          <Input placeholder="Second item" defaultValue="Churn guardrail" />
-          <div>
-            <Button size="sm" variant="outline">Add row</Button>
-          </div>
-        </CardContent>
-      </Card>
-    )
   }
 
   if (item.slug === "resizable-panel") {

@@ -5,7 +5,6 @@ import * as kit from "@/index"
 describe("modern exports", () => {
   it("keeps the documented modern surface available from the root export", () => {
     const modernExports = [
-      "Affix",
       "CalendarScheduler",
       "DualListPicker",
       "Menubar",

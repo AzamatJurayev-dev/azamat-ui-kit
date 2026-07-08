@@ -51,7 +51,6 @@ describe("public API", () => {
       "FormSelect",
       "FormSwitch",
       "FormTextarea",
-      "RepeaterField",
       "HoverCard",
       "ImageUpload",
       "InfoCard",
@@ -167,7 +166,6 @@ describe("public API", () => {
         "RadioGroup",
         "RangeSlider",
         "Rating",
-        "RepeaterField",
         "RightClickMenu",
         "ScrollBox",
         "Section",
@@ -220,9 +218,7 @@ describe("public API", () => {
 
   it("keeps advanced input members available from the root package without relying on modern re-exports", () => {
     const advancedInputMembers = [
-      "Cascader",
       "JsonInput",
-      "MentionInput",
       "TimePicker",
     ]
 
