@@ -362,8 +362,8 @@ describe("base primitives", () => {
         <CollapseGroup
           type="single"
           items={[
-            { key: "usage", title: "Usage", content: "Usage content" },
-            { key: "api", title: "API", content: "API content" },
+            { key: "usage", title: "Usage", badge: <span>Core</span>, meta: "P1", content: "Usage content" },
+            { key: "api", title: "API", disabled: true, disabledReason: "Locked until release", content: "API content" },
           ]}
         />
       </div>
@@ -374,9 +374,15 @@ describe("base primitives", () => {
 
     await user.click(screen.getByText("Usage"))
     expect(screen.getByText("Usage content")).toBeTruthy()
+    expect(screen.getByText("Core")).toBeTruthy()
+    expect(screen.getByText("P1")).toBeTruthy()
+    expect(screen.getByText("Locked until release")).toBeTruthy()
+
+    const apiTrigger = screen.getByText("API").closest("summary")
+    expect(apiTrigger?.getAttribute("aria-disabled")).toBe("true")
 
     await user.click(screen.getByText("API"))
-    expect(screen.getByText("API content")).toBeTruthy()
+    expect(screen.getByText("API content").closest("details")?.hasAttribute("open")).toBe(false)
   })
 
   it("switches tabs and keeps selected state accessible", async () => {

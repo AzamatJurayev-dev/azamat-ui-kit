@@ -8,12 +8,14 @@ const docsItems = [
   {
     key: "tokens",
     title: "Theme tokens stay in one place",
+    meta: "P0",
     description: "Radius, color and shadow should not be redefined per route.",
     content: "Use shared CSS tokens so consumers can adapt the system without fighting deeply nested component styles.",
   },
   {
     key: "surface",
     title: "One canonical public surface",
+    badge: <Badge variant="secondary">Core</Badge>,
     description: "Teach one entry point before helper members.",
     content: "Start with Input, Select, DataTable, Card and Badge. Move aliases and advanced members lower in the docs hierarchy.",
   },
@@ -21,6 +23,7 @@ const docsItems = [
     key: "demo",
     title: "Real demos beat placeholder previews",
     description: "Each route should prove the actual component behavior.",
+    meta: "Docs",
     content: "A docs page should show the real installed component with interactive state, not a generic substitute card.",
   },
 ] as const
@@ -29,12 +32,14 @@ const releaseItems = [
   {
     key: "docs",
     title: "Docs updated",
+    badge: <Badge variant="secondary">Done</Badge>,
     description: "Public route and CLI snippet verified",
     content: "Component detail page, API notes, and install snippet were reviewed together before release.",
   },
   {
     key: "tokens",
     title: "Visual tokens synced",
+    meta: "Review",
     description: "No stray radius, border, or surface overrides",
     content: "The route uses package tokens directly so the result matches what consumers install.",
   },
@@ -42,6 +47,8 @@ const releaseItems = [
     key: "qa",
     title: "QA preview checked",
     description: "Build and interactive preview passed",
+    disabled: true,
+    disabledReason: "Blocked until release candidate is built.",
     content: "The component was verified with type-check and production build before push.",
   },
 ] as const
