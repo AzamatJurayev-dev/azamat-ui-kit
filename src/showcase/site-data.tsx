@@ -1651,6 +1651,7 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "form-textarea": "input",
   "simple-select": "select",
   "async-select": "select",
+  "async-multi-select": "select",
   combobox: "select",
   "form-select": "select",
   "form-async-select": "select",
@@ -1721,7 +1722,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "compatibility",
       title: "Compatibility aliases",
       description: "Keep older helper routes available for migration, but do not lead with them in new work.",
-      slugs: ["form-async-select"],
+      slugs: ["async-multi-select", "form-async-select"],
     },
   ],
   "date-picker": [
