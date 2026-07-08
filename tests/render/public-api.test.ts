@@ -217,4 +217,15 @@ describe("public API", () => {
       ]
     `)
   })
+
+  it("keeps advanced input members available from the root package without relying on modern re-exports", () => {
+    const advancedInputMembers = [
+      "Cascader",
+      "JsonInput",
+      "MentionInput",
+      "TimePicker",
+    ]
+
+    expect(advancedInputMembers.every((name) => name in kit)).toBe(true)
+  })
 })
