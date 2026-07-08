@@ -8,15 +8,15 @@ export const presetFiles: Record<string, PresetFile[]> = {
     { source: "src/lib/utils.ts", target: "{utils}" },
     { source: "src/components/ui/button", target: "{ui}/button" },
     { source: "src/components/ui/input", target: "{ui}/input" },
-    { source: "src/components/ui/card.tsx", target: "{ui}/card.tsx" },
-    { source: "src/components/ui/badge.tsx", target: "{ui}/badge.tsx" }
+    { source: "src/components/ui/card", target: "{ui}/card" },
+    { source: "src/components/ui/badge", target: "{ui}/badge" }
   ],
   dashboard: [
     { source: "src/lib/utils.ts", target: "{utils}" },
     { source: "src/components/ui/button", target: "{ui}/button" },
     { source: "src/components/ui/input", target: "{ui}/input" },
-    { source: "src/components/ui/card.tsx", target: "{ui}/card.tsx" },
-    { source: "src/components/ui/badge.tsx", target: "{ui}/badge.tsx" },
+    { source: "src/components/ui/card", target: "{ui}/card" },
+    { source: "src/components/ui/badge", target: "{ui}/badge" },
     { source: "src/components/ui/dropdown-menu.tsx", target: "{ui}/dropdown-menu.tsx" },
     { source: "src/components/ui/skeleton.tsx", target: "{ui}/skeleton.tsx" },
     { source: "src/components/ui/tabs.tsx", target: "{ui}/tabs.tsx" },

@@ -141,6 +141,8 @@ async function assertInitAndArtifacts(template) {
     const presetName = "minimal"
     await runCli(fixtureRoot, ["preset", presetName, "--overwrite"])
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "button", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "card", "index.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "badge", "index.tsx"))
 
     await runCli(fixtureRoot, ["add", "input", "form-select", "--overwrite", "--skip-install"])
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "index.tsx"))
