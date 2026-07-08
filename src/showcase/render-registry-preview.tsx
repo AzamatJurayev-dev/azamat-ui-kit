@@ -20,7 +20,6 @@ import {
   Button,
   ButtonGroup,
   Calendar,
-  ClearableInput,
   ColorInput,
   CommandPalette,
   DescriptionList,
@@ -116,7 +115,7 @@ function InputPreview({
   }
 
   if (slug === "clearable-input") {
-    return <ClearableInput value={value} onValueChange={onValueChange} placeholder="Clearable input" />
+    return <Input value={value} onValueChange={onValueChange} placeholder="Clearable input" clearable />
   }
 
   if (slug === "slider") {

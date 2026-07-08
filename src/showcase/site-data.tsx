@@ -1403,15 +1403,15 @@ export const componentRelations: ComponentRelationMap = {
   },
   select: {
     groupSlugs: ["inputs", "filters", "overlay"],
-    componentSlugs: ["simple-select", "async-select", "combobox"],
+    componentSlugs: ["simple-select", "async-select", "form-select"],
   },
   "simple-select": {
     groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "async-select", "combobox"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   combobox: {
     groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "simple-select", "async-select"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   "radio-group": {
     groupSlugs: ["inputs", "form"],
@@ -1419,11 +1419,11 @@ export const componentRelations: ComponentRelationMap = {
   },
   "async-select": {
     groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "simple-select", "combobox"],
+    componentSlugs: ["select", "combobox", "form-select"],
   },
   "async-multi-select": {
     groupSlugs: ["inputs", "form"],
-    componentSlugs: ["select", "async-select", "simple-select"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   "number-input": {
     groupSlugs: ["inputs", "form"],
@@ -1447,11 +1447,11 @@ export const componentRelations: ComponentRelationMap = {
   },
   "form-select": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-async-select", "select", "simple-select", "form-field-shell"],
+    componentSlugs: ["select", "async-select", "simple-select", "form-field-shell"],
   },
   "form-async-select": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-select", "async-select", "form-field-shell", "input"],
+    componentSlugs: ["form-select", "async-select", "select", "form-field-shell"],
   },
   "form-textarea": {
     groupSlugs: ["form", "inputs"],
@@ -1709,7 +1709,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "related",
       title: "Related select members",
       description: "These members add real behavior such as remote loading or keyboard-first local filtering.",
-      slugs: ["async-select", "combobox"],
+      slugs: ["simple-select", "async-select", "combobox"],
     },
     {
       key: "integrations",
@@ -1721,7 +1721,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "compatibility",
       title: "Compatibility aliases",
       description: "Keep older helper routes available for migration, but do not lead with them in new work.",
-      slugs: ["simple-select", "form-async-select"],
+      slugs: ["form-async-select"],
     },
   ],
   "date-picker": [
@@ -2057,7 +2057,12 @@ export function getPrimaryComponentMemberInventory(surfaceSlug?: string): Compon
             sectionKey: section.key,
             summary: source.description,
             useWhen: section.description,
-            maturity: section.key === "core" ? "core" : "helper",
+            maturity:
+              section.key === "core"
+                ? "core"
+                : section.key === "compatibility"
+                  ? "compatibility"
+                  : "helper",
             status: source.status,
             href: componentDocsPath(source.slug),
           })

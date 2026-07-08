@@ -81,10 +81,10 @@ export function Demo() {
 export function Demo() {
   return <PasswordInput placeholder="Enter secure token" autoComplete="current-password" />
 }`,
-  "clearable-input": `import { ClearableInput } from "@/components/clearable-input"
+  "clearable-input": `import { Input } from "@/components/input"
 
 export function Demo() {
-  return <ClearableInput defaultValue="Azamat UI" placeholder="Search customer" />
+  return <Input defaultValue="Azamat UI" placeholder="Search customer" clearable />
 }`,
   "tag-input": `import { TagInput } from "@/components/tag-input"
 
