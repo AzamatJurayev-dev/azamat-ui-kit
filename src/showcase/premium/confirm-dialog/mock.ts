@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const confirmDialogMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { Button, ConfirmDialog } from "@/index"
+import { Button, ConfirmDialog } from "tembro"
 
 export function Example() {
   const [open, setOpen] = useState(false)

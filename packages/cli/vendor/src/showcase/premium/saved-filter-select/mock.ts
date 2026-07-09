@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const savedFilterSelectMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { SavedFilterSelect } from "@/index"
+import { SavedFilterSelect } from "tembro"
 
 const filters = [
   { value: "billing", label: "Billing", description: "Invoices and payment status" },

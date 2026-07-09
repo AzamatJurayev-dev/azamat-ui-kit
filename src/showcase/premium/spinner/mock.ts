@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const spinnerMock: ComponentDemoMock = {
-  code: `import { LoadingOverlay, Spinner } from "@/index"
+  code: `import { LoadingOverlay, Spinner } from "tembro"
 
 export function Example() {
   return (

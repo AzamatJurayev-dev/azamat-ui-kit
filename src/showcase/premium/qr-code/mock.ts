@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const qrCodeMock: ComponentDemoMock = {
-  code: `import { QRCode } from "@/index"
+  code: `import { QRCode } from "tembro"
 
 export function Example() {
   return <QRCode value="https://azamat-ui.vercel.app" alt="Azamat UI" />

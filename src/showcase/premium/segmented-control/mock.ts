@@ -3,7 +3,7 @@ import type { ComponentDemoMock } from "../types"
 export const segmentedControlMock: ComponentDemoMock = {
   code: `import * as React from "react"
 import { LayoutGridIcon, Rows3Icon, Table2Icon } from "lucide-react"
-import { SegmentedControl } from "@/index"
+import { SegmentedControl } from "tembro"
 
 const options = [
   { value: "board", label: "Board", icon: <LayoutGridIcon className="size-4" /> },

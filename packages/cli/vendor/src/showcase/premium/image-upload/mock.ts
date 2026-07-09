@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const imageUploadMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { ImageUpload } from "@/index"
+import { ImageUpload } from "tembro"
 
 export function Example() {
   const [files, setFiles] = useState<File[]>([])

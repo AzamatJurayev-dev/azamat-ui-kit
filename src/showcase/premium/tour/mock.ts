@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const tourMock: ComponentDemoMock = {
-  code: `import { Button, Tour } from "@/index"
+  code: `import { Button, Tour } from "tembro"
 import { useState } from "react"
 
 export function Example() {

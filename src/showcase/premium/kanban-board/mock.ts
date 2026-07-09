@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const kanbanBoardMock: ComponentDemoMock = {
-  code: `import { KanbanBoard } from "@/index"
+  code: `import { KanbanBoard } from "tembro"
 
 export function Example() {
   return (

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const calendarSchedulerMock: ComponentDemoMock = {
-  code: `import { CalendarScheduler } from "@/index"
+  code: `import { CalendarScheduler } from "tembro"
 
 export function Example() {
   return (

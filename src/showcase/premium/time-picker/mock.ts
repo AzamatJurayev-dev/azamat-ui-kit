@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const timePickerMock: ComponentDemoMock = {
-  code: `import { DateTimePicker, TimePicker, TimeRangePicker } from "@/index"
+  code: `import { DateTimePicker, TimePicker, TimeRangePicker } from "tembro"
 
 export function Example() {
   return (

@@ -3,7 +3,7 @@ import type { ComponentDemoMock } from "../types"
 export const buttonMock: ComponentDemoMock = {
   code: `import * as React from "react"
 import { ArrowRightIcon, DownloadIcon } from "lucide-react"
-import { Button, buttonVariants } from "@/index"
+import { Button, buttonVariants } from "tembro"
 
 export function BasicExamples() {
   return (

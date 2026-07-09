@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const menubarMock: ComponentDemoMock = {
-  code: `import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/index"
+  code: `import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "tembro"
 
 export function Example() {
   return (

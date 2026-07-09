@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const jsonInputMock: ComponentDemoMock = {
-  code: `import { JsonInput } from "@/index"
+  code: `import { JsonInput } from "tembro"
 
 export function Example() {
   return <JsonInput value='{"name":"tembro"}' />

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const propertyGridMock: ComponentDemoMock = {
-  code: `import { PropertyGrid } from "@/index"
+  code: `import { PropertyGrid } from "tembro"
 
 export function Example() {
   return (

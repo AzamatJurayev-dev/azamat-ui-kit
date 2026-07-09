@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const navigationMenuMock: ComponentDemoMock = {
-  code: `import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/index"
+  code: `import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "tembro"
 
 export function Example() {
   return (

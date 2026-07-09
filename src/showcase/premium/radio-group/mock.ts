@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const radioGroupMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { RadioGroup } from "@/index"
+import { RadioGroup } from "tembro"
 
 const planOptions = [
   { value: "starter", label: "Starter", description: "Good for single workspace setup." },

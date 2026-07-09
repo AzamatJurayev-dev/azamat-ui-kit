@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const sheetShellMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { Button, SheetShell } from "@/index"
+import { Button, SheetShell } from "tembro"
 
 export function Example() {
   const [openRight, setOpenRight] = useState(false)

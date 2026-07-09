@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const copyFieldMock: ComponentDemoMock = {
-  code: `import { CopyField } from "@/index"
+  code: `import { CopyField } from "tembro"
 
 export function Example() {
   return (

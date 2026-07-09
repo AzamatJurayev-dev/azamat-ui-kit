@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const listMock: ComponentDemoMock = {
-  code: `import { Avatar, Badge, List } from "@/index"
+  code: `import { Avatar, Badge, List } from "tembro"
 
 export function Example() {
   return (

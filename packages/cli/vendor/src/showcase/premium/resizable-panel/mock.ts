@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const resizablePanelMock: ComponentDemoMock = {
-  code: `import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/index"
+  code: `import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "tembro"
 
 export function Example() {
   return (

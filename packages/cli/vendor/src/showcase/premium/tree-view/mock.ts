@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const treeViewMock: ComponentDemoMock = {
-  code: `import { TreeView } from "@/index"
+  code: `import { TreeView } from "tembro"
 
 export function Example() {
   return (

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const dividerMock: ComponentDemoMock = {
-  code: `import { Divider } from "@/index"
+  code: `import { Divider } from "tembro"
 
 export function Example() {
   return (

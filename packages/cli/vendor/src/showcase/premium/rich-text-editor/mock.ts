@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const richTextEditorMock: ComponentDemoMock = {
-  code: `import { RichTextEditor } from "@/index"
+  code: `import { RichTextEditor } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState("<p>Start writing...</p>")

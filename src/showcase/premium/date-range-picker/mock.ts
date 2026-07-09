@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const dateRangePickerMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { DateRangePicker } from "@/index"
+import { DateRangePicker } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState({ from: "2026-06-01", to: "2026-06-07" })
