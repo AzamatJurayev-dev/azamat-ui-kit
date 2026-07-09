@@ -466,7 +466,6 @@ function Calendar({
                     disabled={disabled}
                     aria-label={disabledLabel ?? labels?.selectDate?.(dateKey) ?? dateKey}
                     aria-current={dateKey === todayKey ? "date" : undefined}
-                    aria-selected={selected || inRange || inPreviewRange || undefined}
                     tabIndex={dateKey === tabbableDateKey ? 0 : -1}
                     title={disabledLabel}
                     data-selected={selected || undefined}

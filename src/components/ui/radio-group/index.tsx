@@ -126,7 +126,6 @@ function RadioGroup({
               value={option.value}
               checked={checked}
               disabled={optionDisabled}
-              aria-invalid={invalid || undefined}
               className="sr-only"
               onChange={() => setValue(option.value)}
             />
