@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 
 import { DialogActionButton, DialogActions } from "@/components/overlay/dialog-actions"

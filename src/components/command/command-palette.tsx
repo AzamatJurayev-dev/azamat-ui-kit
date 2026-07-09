@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Loader2Icon, SearchIcon } from "lucide-react"
 

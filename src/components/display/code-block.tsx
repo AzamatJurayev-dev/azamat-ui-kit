@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 
 import { CopyButton } from "@/components/actions/copy-button"

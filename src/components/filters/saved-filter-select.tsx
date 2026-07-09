@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { BookmarkIcon, SaveIcon, Trash2Icon, CheckIcon, ChevronsUpDownIcon } from "lucide-react"
 

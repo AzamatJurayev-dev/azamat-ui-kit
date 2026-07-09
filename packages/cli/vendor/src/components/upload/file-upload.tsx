@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react"
 
