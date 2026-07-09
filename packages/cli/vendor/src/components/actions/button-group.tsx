@@ -61,7 +61,6 @@ function ButtonGroup({
       data-slot="button-group"
       role="group"
       data-orientation={orientation}
-      aria-orientation={orientation}
       className={cn(
         "inline-flex",
         isVertical ? "flex-col" : "items-center",
