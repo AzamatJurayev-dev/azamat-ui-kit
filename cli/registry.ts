@@ -77,7 +77,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "tag-input": { name: "tag-input", category: "inputs", dependencies: ["lucide-react"], registryDependencies: ["badge", "input", "utils"], files: [file("src/components/inputs/tag-input.tsx", "{components}/inputs/tag-input.tsx")] },
   "simple-select": { name: "simple-select", category: "inputs", migrationAliasFor: "select" },
   "async-select": { name: "async-select", category: "inputs", dependencies: ["lucide-react"], registryDependencies: ["button", "input", "popover", "utils"], files: [file("src/components/inputs/async-select.tsx", "{components}/inputs/async-select.tsx")] },
-  inputs: { name: "inputs", category: "group", migrationAliasFor: "input", registryDependencies: ["input", "tag-input", "async-select"], files: [file("src/components/inputs/index.ts", "{components}/inputs/index.ts")] },
+  inputs: { name: "inputs", category: "group", migrationAliasFor: "input", registryDependencies: ["input", "tag-input", "async-select", "rating", "slider", "otp-input", "inline-editable"], files: [file("src/components/inputs/index.ts", "{components}/inputs/index.ts")] },
 
   "form-field-shell": { name: "form-field-shell", category: "form", migrationAliasFor: "input", registryDependencies: ["utils"], files: [file("src/components/form/form-field-shell.tsx", "{components}/form/form-field-shell.tsx")] },
   "form-input": { name: "form-input", category: "form", migrationAliasFor: "input", dependencies: ["react-hook-form"], registryDependencies: ["input", "form-field-shell"], files: [file("src/components/form/form-input.tsx", "{components}/form/form-input.tsx")] },
@@ -96,17 +96,68 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
 
   "loading-state": { name: "loading-state", category: "feedback", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/feedback/loading-state.tsx", "{components}/feedback/loading-state.tsx")] },
   "page-state": { name: "page-state", category: "feedback", registryDependencies: ["button", "utils"], files: [file("src/components/feedback/page-state.tsx", "{components}/feedback/page-state.tsx")] },
-  feedback: { name: "feedback", category: "group", registryDependencies: ["loading-state", "page-state"], files: [file("src/components/feedback/index.ts", "{components}/feedback/index.ts")] },
+  feedback: { name: "feedback", category: "group", registryDependencies: ["alert", "loading-state", "page-state", "data-state"], files: [file("src/components/feedback/index.ts", "{components}/feedback/index.ts")] },
 
   "stat-card": { name: "stat-card", category: "layout", migrationAliasFor: "metric-grid", registryDependencies: ["card", "badge", "utils"], files: [file("src/components/layout/stat-card.tsx", "{components}/layout/stat-card.tsx")] },
   sidebar: { name: "sidebar", category: "layout", dependencies: ["react"], registryDependencies: ["tooltip", "utils"], files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/app-sidebar.tsx")] },
-  layout: { name: "layout", category: "group", registryDependencies: ["sidebar", "stat-card"], files: [file("src/components/layout/index.ts", "{components}/layout/index.ts")] },
+  layout: { name: "layout", category: "group", registryDependencies: ["sidebar", "breadcrumbs", "section", "stat-card"], files: [file("src/components/layout/index.ts", "{components}/layout/index.ts")] },
   calendar: { name: "calendar", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/calendar/calendar.tsx", "{components}/calendar/calendar.tsx"), file("src/components/calendar/date-utils.ts", "{components}/calendar/date-utils.ts")] },
   "date-picker": { name: "date-picker", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["calendar", "button", "popover", "utils"], files: [file("src/components/calendar/date-picker.tsx", "{components}/calendar/date-picker.tsx")] },
   "date-range-picker": { name: "date-range-picker", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["calendar", "button", "popover", "utils"], files: [file("src/components/calendar/date-range-picker.tsx", "{components}/calendar/date-range-picker.tsx")] },
 
-  dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "feedback", "inputs", "form"] },
-  all: { name: "all", category: "group", registryDependencies: ["dashboard"] },
+  charts: {
+    name: "charts",
+    category: "charts",
+    registryDependencies: ["card", "utils"],
+    files: [
+      file("src/components/charts/charts.tsx", "{components}/charts/charts.tsx"),
+      file("src/components/charts/horizontal-bar-chart.tsx", "{components}/charts/horizontal-bar-chart.tsx"),
+      file("src/components/charts/kpi.tsx", "{components}/charts/kpi.tsx"),
+      file("src/components/charts/progress-ring.tsx", "{components}/charts/progress-ring.tsx"),
+      file("src/components/charts/index.ts", "{components}/charts/index.ts"),
+    ],
+  },
+
+  actions: { name: "actions", category: "group", registryDependencies: ["action-menu", "button-group", "copy-button", "quick-action-grid"] },
+  display: {
+    name: "display",
+    category: "group",
+    registryDependencies: [
+      "activity-feed",
+      "avatar",
+      "carousel",
+      "code-block",
+      "data-list",
+      "description-list",
+      "metric-grid",
+      "progress",
+      "result",
+      "timeline",
+      "tree-view",
+      "user-card",
+    ],
+  },
+  navigation: { name: "navigation", category: "group", registryDependencies: ["nav-tabs", "page-tabs", "pagination", "stepper-tabs"] },
+  overlay: { name: "overlay", category: "group", registryDependencies: ["alert-dialog", "confirm-dialog", "drawer", "modal-shell", "sheet-shell"] },
+  upload: { name: "upload", category: "group", registryDependencies: ["file-upload", "image-upload"] },
+  filters: { name: "filters", category: "group", registryDependencies: ["filter-bar", "saved-filter-select"] },
+
+  dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "feedback", "inputs", "form", "data-table", "charts", "calendar", "toast"] },
+  all: {
+    name: "all",
+    category: "group",
+    registryDependencies: [
+      "dashboard",
+      "actions",
+      "display",
+      "navigation",
+      "overlay",
+      "upload",
+      "stepper",
+      "wizard",
+      "filters",
+    ],
+  },
 };
 
 const generatedSourceRegistry: ComponentRegistryItem[] = [
@@ -118,7 +169,6 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "avatar", category: "display", files: [file("src/components/display/avatar.tsx", "{components}/display/avatar.tsx")] },
   { name: "breadcrumbs", category: "layout", files: [file("src/components/layout/breadcrumbs.tsx", "{components}/layout/breadcrumbs.tsx")] },
   { name: "button-group", category: "actions", files: [file("src/components/actions/button-group.tsx", "{components}/actions/button-group.tsx")] },
-  { name: "charts", category: "charts", files: [file("src/components/charts/charts.tsx", "{components}/charts/charts.tsx")] },
   { name: "code-block", category: "display", files: [file("src/components/display/code-block.tsx", "{components}/display/code-block.tsx")] },
   { name: "collapse", category: "ui", files: [file("src/components/ui/collapse", "{ui}/collapse")] },
   { name: "combobox", category: "inputs", migrationAliasFor: "select" },

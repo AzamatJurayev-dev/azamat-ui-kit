@@ -117,6 +117,44 @@ function getLocalImports(content: string, fromSource: string) {
   return [...imports];
 }
 
+const ignoredExternalPackages = new Set([
+  "react",
+  "react-dom",
+  "node:path",
+  "node:fs",
+  "node:fs/promises",
+]);
+
+function getExternalImportPackages(content: string) {
+  const packages = new Set<string>();
+  const importPattern =
+    /(?:import|export)\s+(?:type\s+)?(?:[^"']*?\s+from\s+)?["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = importPattern.exec(content))) {
+    const importPath = match[1] ?? match[2];
+
+    if (
+      !importPath ||
+      importPath.startsWith(".") ||
+      importPath.startsWith("@/") ||
+      ignoredExternalPackages.has(importPath)
+    ) {
+      continue;
+    }
+
+    if (importPath.startsWith("@")) {
+      const [scope, name] = importPath.split("/");
+      if (scope && name) packages.add(`${scope}/${name}`);
+      continue;
+    }
+
+    packages.add(importPath.split("/")[0]);
+  }
+
+  return [...packages];
+}
+
 function collectRegistryItems(componentNames: ComponentName[]) {
   const collected: ComponentRegistryItem[] = [];
   const seen = new Set<ComponentName>();
@@ -293,6 +331,10 @@ async function copySourceWithLocalImports(source: string, targetTemplate?: strin
     }
 
     const sourceContent = await fs.readFile(sourcePath, "utf8");
+    for (const externalPackage of getExternalImportPackages(sourceContent)) {
+      dependenciesToInstall.add(externalPackage);
+    }
+
     for (const importedSource of getLocalImports(sourceContent, normalizedSource)) {
       for (const candidate of getImportCandidates(importedSource)) {
         if (fs.existsSync(path.join(packageRoot, candidate))) {

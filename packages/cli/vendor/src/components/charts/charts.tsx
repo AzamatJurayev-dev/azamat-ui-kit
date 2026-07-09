@@ -41,6 +41,14 @@ function getChartColor(index: number, custom?: string) {
   return custom ?? `var(--color-chart-${(index % 5) + 1}, var(--primary))`
 }
 
+function formatChartValue(value: number, formatter?: (value: number) => React.ReactNode) {
+  return formatter ? formatter(value) : value.toLocaleString()
+}
+
+function chartLabelToTitle(label: React.ReactNode) {
+  return typeof label === "string" || typeof label === "number" ? String(label) : undefined
+}
+
 function polarToCartesian(cx: number, cy: number, radius: number, angle: number) {
   const radians = ((angle - 90) * Math.PI) / 180
   return {
@@ -123,12 +131,13 @@ export type BarChartProps = React.ComponentProps<"div"> & {
   max?: number
   showLabels?: boolean
   showValues?: boolean
+  valueFormatter?: (value: number) => React.ReactNode
   barClassName?: string
   state?: ChartState
   emptyLabel?: React.ReactNode
 }
 
-function BarChart({ data, size = "md", max, showLabels = true, showValues = true, state = "ready", emptyLabel = "No chart data.", className, barClassName, ...props }: BarChartProps) {
+function BarChart({ data, size = "md", max, showLabels = true, showValues = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", className, barClassName, ...props }: BarChartProps) {
   const values = data.map((item) => item.value)
   const absoluteMax = max ?? safeMax(values.map((value) => Math.abs(value)))
   const height = chartHeightBySize[size]
@@ -147,9 +156,10 @@ function BarChart({ data, size = "md", max, showLabels = true, showValues = true
         {data.map((item, index) => {
           const ratio = normalizeValue(Math.abs(item.value), absoluteMax)
           const negative = item.value < 0
+          const title = chartLabelToTitle(item.label)
           return (
-            <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-2">
-              {showValues && <div className="text-xs text-muted-foreground">{item.value}</div>}
+            <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-2" title={title ? `${title}: ${item.value}` : undefined}>
+              {showValues && <div className="text-xs font-medium text-muted-foreground">{formatChartValue(item.value, valueFormatter)}</div>}
               <div className="flex w-full flex-1 items-end rounded-[min(var(--radius-xl),16px)] border border-border/60 bg-muted/38 p-1">
                 <div
                   className={cn("w-full rounded-[min(var(--radius-lg),12px)] bg-primary transition-all", barClassName)}
@@ -170,15 +180,19 @@ export type LineChartProps = Omit<React.ComponentProps<"svg">, "values"> & {
   size?: ChartSize
   width?: number
   showArea?: boolean
+  showGrid?: boolean
+  labels?: ChartAxisLabel[]
+  valueFormatter?: (value: number) => React.ReactNode
   stroke?: string
   state?: ChartState
   emptyLabel?: React.ReactNode
 }
 
-function LineChart({ values, size = "md", width = 560, showArea = false, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", className, ...props }: LineChartProps) {
+function LineChart({ values, size = "md", width = 560, showArea = false, showGrid = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", className, ...props }: LineChartProps) {
   const height = chartHeightBySize[size]
   const linePath = buildLinePath(values, width, height)
   const areaPath = buildAreaPath(values, width, height)
+  const max = safeMax(values)
 
   if (state === "loading") {
     return <div className={cn("h-36 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70", className)} />
@@ -190,16 +204,37 @@ function LineChart({ values, size = "md", width = 560, showArea = false, stroke 
 
   return (
     <svg data-slot="line-chart" viewBox={`0 0 ${width} ${height}`} className={cn("h-auto w-full overflow-visible", className)} role="img" {...props}>
+      {showGrid && [0.25, 0.5, 0.75].map((position) => (
+        <line
+          key={position}
+          x1="12"
+          x2={width - 12}
+          y1={12 + position * (height - 24)}
+          y2={12 + position * (height - 24)}
+          stroke="var(--border)"
+          strokeDasharray="4 6"
+          opacity="0.7"
+        />
+      ))}
       {showArea && <path d={areaPath} fill="var(--primary)" opacity="0.12" />}
       <path d={linePath} fill="none" stroke={stroke} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       {values.map((value, index) => {
-        const max = safeMax(values)
         const x = 12 + (values.length === 1 ? (width - 24) / 2 : (index / (values.length - 1)) * (width - 24))
         const y = 12 + (1 - normalizeValue(value, max)) * (height - 24)
-        return <circle key={index} cx={x} cy={y} r="3" fill={stroke} />
+        const label = labels?.[index]
+        const title = label != null ? `${chartLabelToTitle(label) ?? "Value"}: ${value}` : `${value}`
+        return (
+          <circle key={index} cx={x} cy={y} r="3.5" fill={stroke}>
+            <title>{valueFormatter ? `${label ?? "Value"}: ${formatChartValue(value, valueFormatter)}` : title}</title>
+          </circle>
+        )
       })}
     </svg>
   )
+}
+
+function AreaChart(props: Omit<LineChartProps, "showArea">) {
+  return <LineChart showArea {...props} />
 }
 
 export type SparklineProps = Omit<LineChartProps, "size" | "showArea"> & {
@@ -262,7 +297,9 @@ function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerVal
             stroke={getChartColor(index, item.color)}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
-          />
+          >
+            <title>{`${chartLabelToTitle(item.label) ?? "Segment"}: ${item.value}`}</title>
+          </path>
         )
       })}
       {(centerValue || centerLabel) && (
@@ -326,4 +363,4 @@ function MetricTrend({ label, value, change, positive = true, values, className,
   )
 }
 
-export { BarChart, ChartFrame, ChartLegend, DonutChart, LineChart, MetricTrend, Sparkline }
+export { AreaChart, BarChart, ChartFrame, ChartLegend, DonutChart, LineChart, MetricTrend, Sparkline }

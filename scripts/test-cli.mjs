@@ -184,6 +184,13 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "layout", "index.ts"))
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "layout", "app-sidebar.tsx"))
 
+    await runCli(fixtureRoot, ["add", "charts", "--overwrite", "--skip-install"])
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "charts", "charts.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "charts", "horizontal-bar-chart.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "charts", "kpi.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "charts", "progress-ring.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "charts", "index.ts"))
+
     await runCli(fixtureRoot, ["theme", paths.cssPath])
     const themePath = path.join(fixtureRoot, paths.cssPath)
     const themeContent = await fs.readFile(themePath, "utf8")
