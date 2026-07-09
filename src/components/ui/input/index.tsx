@@ -39,6 +39,7 @@ export type InputTextProps = Omit<InputPrimitiveProps, "value"> & {
   kind?: "text"
   value?: string | number | readonly string[] | null
   onValueChange?: (value: string) => void
+  onDebouncedValueChange?: (value: string) => void
   leading?: React.ReactNode
   trailing?: React.ReactNode
   trailingAction?: React.ReactNode
@@ -57,6 +58,13 @@ export type InputTextProps = Omit<InputPrimitiveProps, "value"> & {
   helperClassName?: string
   leadingPointerEvents?: boolean
   trailingPointerEvents?: boolean
+  searchIcon?: React.ReactNode
+  loading?: boolean
+  loadingLabel?: string
+  resultCount?: number
+  shortcut?: React.ReactNode
+  debounceMs?: number
+  showMetaOnClear?: boolean
 }
 
 export type InputClearableProps = Omit<ClearableInputProps, "kind"> & {
@@ -119,6 +127,20 @@ function getInputTextLength(value: InputTextProps["value"] | InputTextProps["def
   if (typeof value === "number") return String(value).length
   if (Array.isArray(value)) return value.join("").length
   return 0
+}
+
+function shouldRenderSearchInput(props: InputTextProps) {
+  return (
+    props.type === "search" ||
+    props.searchIcon !== undefined ||
+    props.loading !== undefined ||
+    props.loadingLabel !== undefined ||
+    props.resultCount !== undefined ||
+    props.shortcut !== undefined ||
+    props.debounceMs !== undefined ||
+    props.showMetaOnClear !== undefined ||
+    props.onDebouncedValueChange !== undefined
+  )
 }
 
 const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((props, ref) => {
@@ -210,6 +232,87 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
   }
 
   const inputProps = props as Omit<InputTextProps, "kind">
+
+  if (shouldRenderSearchInput(inputProps)) {
+    const {
+      value: _value,
+      defaultValue: _defaultValue,
+      leading,
+      searchIcon,
+      type: _type,
+      helperText,
+      errorText,
+      showCharacterCount,
+      countFormatter,
+      helperClassName,
+      leadingPointerEvents: _leadingPointerEvents,
+      trailingPointerEvents: _trailingPointerEvents,
+      inputClassName,
+      ...searchInputProps
+    } = inputProps
+    const searchValue: SearchInputProps["value"] = Array.isArray(inputProps.value)
+      ? inputProps.value.join(" ")
+      : inputProps.value == null || typeof inputProps.value === "string" || typeof inputProps.value === "number"
+        ? inputProps.value
+        : String(inputProps.value)
+    const searchDefaultValue: SearchInputProps["defaultValue"] = Array.isArray(inputProps.defaultValue)
+      ? inputProps.defaultValue.join(" ")
+      : inputProps.defaultValue == null ||
+          typeof inputProps.defaultValue === "string" ||
+          typeof inputProps.defaultValue === "number"
+        ? inputProps.defaultValue
+        : String(inputProps.defaultValue)
+
+    const searchInput = (
+      <SearchInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        searchIcon={searchIcon ?? leading}
+        inputClassName={inputClassName}
+        {...searchInputProps}
+        value={searchValue}
+        defaultValue={searchDefaultValue}
+      />
+    )
+
+    if (!helperText && !errorText && !showCharacterCount) {
+      return searchInput
+    }
+
+    const currentLength = getInputTextLength(inputProps.value ?? inputProps.defaultValue)
+
+    return (
+      <div data-slot="input-field" className="grid gap-1.5">
+        {searchInput}
+        <div data-slot="input-meta" className="flex items-start justify-between gap-3 px-1">
+          <div
+            data-slot="input-helper"
+            className={cn(
+              "min-w-0 text-xs leading-5",
+              errorText ? "text-destructive" : "text-muted-foreground",
+              helperClassName
+            )}
+          >
+            {errorText ?? helperText}
+          </div>
+          {showCharacterCount ? (
+            <div
+              data-slot="input-count"
+              className={cn(
+                "shrink-0 text-[11px] font-medium tabular-nums",
+                errorText ? "text-destructive" : "text-muted-foreground"
+              )}
+            >
+              {countFormatter?.(currentLength, inputProps.maxLength) ??
+                (typeof inputProps.maxLength === "number"
+                  ? `${currentLength}/${inputProps.maxLength}`
+                  : currentLength)}
+            </div>
+          ) : null}
+        </div>
+      </div>
+    )
+  }
+
   const {
     value,
     defaultValue,

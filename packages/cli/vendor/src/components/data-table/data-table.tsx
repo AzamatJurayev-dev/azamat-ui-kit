@@ -26,8 +26,8 @@ import { type DataTableRowAction } from "@/components/data-table/data-table-row-
 import { DataTableToolbar, type DataTableToolbarProps } from "@/components/data-table/data-table-toolbar"
 import { DataState, type DataStateProps } from "@/components/display/data-state"
 import { LoadingState, type LoadingStateProps } from "@/components/feedback/loading-state"
-import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
 import { Button } from "@/components/ui/button"
+import { Input, type InputSearchProps } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -51,7 +51,7 @@ export type DataTableFeatureConfig = {
 }
 
 export type DataTableSearchConfig = Pick<
-  SearchInputProps,
+  InputSearchProps,
   | "value"
   | "onValueChange"
   | "placeholder"
@@ -324,7 +324,8 @@ function DataTable<TData, TValue = unknown>({
   )
   const shouldShowColumnVisibilityInToolbar = shouldShowColumnVisibility && hasPrimaryToolbarContent
   const defaultSearch = shouldShowSearch && search ? (
-    <SearchInput
+    <Input
+      type="search"
       value={search.value}
       onValueChange={search.onValueChange}
       placeholder={search.placeholder ?? "Search..."}

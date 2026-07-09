@@ -18,7 +18,7 @@ export type StatusLegendItem = {
   className?: string
 }
 
-export type StatusLegendProps = React.ComponentProps<typeof Card> & {
+export type StatusLegendProps = Omit<React.ComponentProps<typeof Card>, "orientation"> & {
   title?: React.ReactNode
   description?: React.ReactNode
   actions?: React.ReactNode

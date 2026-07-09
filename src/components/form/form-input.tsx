@@ -8,7 +8,7 @@ import {
   type DateRangeValue,
 } from "@/components/inputs/date-range-input"
 import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
-import { Input, type InputTextProps } from "@/components/ui/input"
+import { Input, type InputClearableProps, type InputSearchProps, type InputTextProps } from "@/components/ui/input"
 import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
 import { MoneyInput, type MoneyInputProps } from "@/components/inputs/money-input"
 import { NumberInput, type NumberInputProps } from "@/components/inputs/number-input"
@@ -18,11 +18,6 @@ import {
   type PhoneInputProps,
 } from "@/components/inputs/phone-input"
 import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
-import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
-import {
-  ClearableInput,
-  type ClearableInputProps,
-} from "@/components/inputs/clearable-input"
 import {
   FormFieldShell,
   type FormFieldShellControlProps,
@@ -76,7 +71,7 @@ export type FormTextInputProps<
 export type FormInputSearchVariantProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<SearchInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+> = Omit<InputSearchProps, "name" | "value" | "defaultValue" | "onValueChange" | "kind"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind: "search"
     onValueChange?: (value: string) => void
@@ -134,7 +129,7 @@ export type FormInputDateRangeVariantProps<
 export type FormInputClearableVariantProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<ClearableInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+> = Omit<InputClearableProps, "name" | "value" | "defaultValue" | "onValueChange" | "kind"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind: "clearable"
     emptyValue?: unknown
@@ -275,8 +270,9 @@ function FormInput<
               error={error}
               htmlFor={id ?? inputId}
             >
-              <SearchInput
-                {...searchProps}
+              <Input
+                {...(searchProps as Omit<InputSearchProps, "kind">)}
+                type="search"
                 id={id ?? inputId}
                 name={field.name}
                 ref={field.ref}
@@ -605,8 +601,9 @@ function FormInput<
               error={error}
               htmlFor={id ?? inputId}
             >
-              <ClearableInput
-                {...clearableProps}
+              <Input
+                {...(clearableProps as Omit<InputClearableProps, "kind">)}
+                clearable
                 id={id ?? inputId}
                 name={field.name}
                 ref={field.ref}

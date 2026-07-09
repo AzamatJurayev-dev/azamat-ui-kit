@@ -778,6 +778,9 @@ function AsyncSelect<
   )
 }
 
+/**
+ * @deprecated Prefer `AsyncSelect` with `isMulti` for new usage.
+ */
 function AsyncMultiSelect<
   TValue extends string = string,
   TData = unknown,

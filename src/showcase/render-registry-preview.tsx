@@ -42,7 +42,6 @@ import {
   QuickActionGrid,
   RangeSlider,
   Rating,
-  SearchInput,
   SectionHeader,
   Slider,
   StatusDot,
@@ -107,7 +106,7 @@ function InputPreview({
   const onValueChange = (nextValue: string) => setState({ textValue: nextValue })
 
   if (slug === "search-input") {
-    return <SearchInput value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
+    return <Input type="search" value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
   }
 
   if (slug === "password-input") {
@@ -163,7 +162,7 @@ function FormPreview({
       </label>
       <label className="grid gap-2">
         <span className="text-sm font-medium text-[color:var(--aui-page-foreground)]">Status</span>
-        <SearchInput value="Active customers" resultCount={7} readOnly />
+        <Input type="search" value="Active customers" resultCount={7} readOnly />
         <span className="text-xs text-emerald-500">Ready to submit</span>
       </label>
     </div>
@@ -449,7 +448,7 @@ function ActionsPreview({
   if (slug === "filter-bar") {
     return (
       <FilterBar
-        search={<SearchInput value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
+        search={<Input type="search" value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
         onReset={() => setState({ textValue: "" })}
         chips={[
           { key: "status", label: "Status", value: "Active", tone: "success" },
@@ -599,7 +598,7 @@ function DataTablePartsPreview({ slug }: { slug: string }) {
   return (
     <div className="overflow-hidden rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--aui-divider)] p-3">
-        <SearchInput value="" placeholder="Search rows..." className="max-w-xs" readOnly />
+        <Input type="search" value="" placeholder="Search rows..." className="max-w-xs" readOnly />
         <div className="flex gap-2">
           <Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Filters</Button>
           <Button size="sm">Create</Button>
@@ -702,7 +701,7 @@ function PatternsPreview({ slug }: { slug: string }) {
           <StatCard title="Health" value="94%" trend={{ value: "Stable", tone: "default" }} />
         </div>
       }
-      filters={<FilterBar search={<SearchInput value="" placeholder="Search..." readOnly />} activeCount={1} />}
+      filters={<FilterBar search={<Input type="search" value="" placeholder="Search..." readOnly />} activeCount={1} />}
     >
       <ResourcePageSection title="Recent activity">
         <Timeline

@@ -63,11 +63,12 @@ function createCodeSnippet(definition: ShowcaseDemoDefinition) {
 }
 
 const exactCodeSnippets: Record<string, string> = {
-  "search-input": `import { SearchInput } from "tembro"
+  "search-input": `import { Input } from "tembro"
 
 export function Demo() {
   return (
-    <SearchInput
+    <Input
+      type="search"
       value="invoice"
       onValueChange={(value) => console.log(value)}
       placeholder="Search invoices..."
@@ -133,12 +134,12 @@ export function Demo() {
     />
   )
 }`,
-  "filter-bar": `import { Button, FilterBar, SearchInput } from "tembro"
+  "filter-bar": `import { Button, FilterBar, Input } from "tembro"
 
 export function Demo() {
   return (
     <FilterBar
-      search={<SearchInput value="" placeholder="Search rows..." readOnly />}
+      search={<Input type="search" value="" placeholder="Search rows..." readOnly />}
       chips={[
         { key: "status", label: "Status", value: "Active", tone: "success" },
         { key: "owner", label: "Owner", value: "Azamat" },

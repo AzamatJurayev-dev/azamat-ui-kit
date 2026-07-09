@@ -25,6 +25,12 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   playLabel?: string
   pauseLabel?: string
   onAutoplayChange?: (playing: boolean) => void
+  viewportClassName?: string
+  controlsClassName?: string
+  dotsClassName?: string
+  arrowClassName?: string
+  dotClassName?: string
+  activeDotClassName?: string
 }
 
 export type CarouselItemProps = React.ComponentProps<"div">
@@ -56,6 +62,12 @@ function Carousel({
   playLabel = "Start autoplay",
   pauseLabel = "Pause autoplay",
   onAutoplayChange,
+  viewportClassName,
+  controlsClassName,
+  dotsClassName,
+  arrowClassName,
+  dotClassName,
+  activeDotClassName,
   className,
   children,
   ...props
@@ -150,7 +162,8 @@ function Carousel({
       <div className={cn(
         "relative overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08))]",
         variant === "hero" && "min-h-72",
-        variant === "minimal" && "rounded-[var(--radius-md)] shadow-none"
+        variant === "minimal" && "rounded-[var(--radius-md)] shadow-none",
+        viewportClassName
       )}>
         <div className="transition-transform duration-300 ease-out" aria-live="polite">
           {items[activeIndex]}
@@ -161,7 +174,7 @@ function Carousel({
               type="button"
               variant={variant === "hero" ? "default" : "secondary"}
               size="icon-sm"
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
+              className={cn("absolute left-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg", arrowClassName)}
               disabled={!canGoPrevious}
               aria-label={previousLabel}
               onClick={() => setActiveIndex(activeIndex - 1)}
@@ -172,7 +185,7 @@ function Carousel({
               type="button"
               variant={variant === "hero" ? "default" : "secondary"}
               size="icon-sm"
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
+              className={cn("absolute right-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg", arrowClassName)}
               disabled={!canGoNext}
               aria-label={nextLabel}
               onClick={() => setActiveIndex(activeIndex + 1)}
@@ -183,7 +196,7 @@ function Carousel({
         ) : null}
       </div>
       {showDots && items.length > 1 && (
-        <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label={`${ariaLabel} slides`}>
+        <div className={cn("flex flex-wrap items-center justify-center gap-2", dotsClassName)} role="tablist" aria-label={`${ariaLabel} slides`}>
           {items.map((_, itemIndex) => (
             <button
               key={itemIndex}
@@ -193,7 +206,7 @@ function Carousel({
               aria-selected={itemIndex === activeIndex}
               className={cn(
                 "h-2.5 rounded-full bg-muted-foreground/30 transition-[width,background-color,opacity] hover:bg-muted-foreground/55",
-                itemIndex === activeIndex ? "w-7 bg-primary" : "w-2.5"
+                itemIndex === activeIndex ? cn("w-7 bg-primary", activeDotClassName) : cn("w-2.5", dotClassName)
               )}
               onClick={() => setActiveIndex(itemIndex)}
             />
@@ -203,7 +216,7 @@ function Carousel({
               type="button"
               variant="ghost"
               size="sm"
-              className="ml-2 rounded-full"
+              className={cn("ml-2 rounded-full", controlsClassName)}
               onClick={() => {
                 const nextPlaying = !autoplayEnabled
                 setAutoplayStopped(false)

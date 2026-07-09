@@ -15,6 +15,9 @@ export type SearchInputProps = Omit<ClearableInputProps, "leadingIcon" | "type" 
   onDebouncedValueChange?: (value: string) => void
 }
 
+/**
+ * @deprecated Prefer `Input` with `type="search"` and search-related props for new usage.
+ */
 const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
   (
     {
