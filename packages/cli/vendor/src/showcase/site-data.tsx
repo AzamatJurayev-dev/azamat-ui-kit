@@ -1880,7 +1880,10 @@ for (const [group, groupSlugs] of Object.entries(kitGroups)) {
     const aliasTarget = kitMigrationAliases[slug]
     const effectiveSlug = aliasTarget ?? slug
     if (!slug || hiddenKitSlugs.has(slug) || hiddenKitSlugs.has(effectiveSlug)) continue
-    if (migrationAliasTargets.has(effectiveSlug) || migrationAliasTargets.has(slug)) continue
+    if (
+      (migrationAliasTargets.has(effectiveSlug) && !isPublicComponentSurfaceSlug(effectiveSlug)) ||
+      (migrationAliasTargets.has(slug) && !isPublicComponentSurfaceSlug(slug))
+    ) continue
     if (baseComponentSlugs.has(effectiveSlug) || generatedComponentCatalog.has(effectiveSlug)) continue
       const category = fallbackRegistryCategoryByGroup[group] ?? "Data Display"
       const icon = fallbackRegistryIconByGroup[group] ?? SparklesIcon
