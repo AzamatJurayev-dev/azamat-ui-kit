@@ -48,7 +48,7 @@ export function LoadingStateShowcase({ mode }: ComponentDemoProps) {
       ) : null}
 
       <LoadingState label={labels[index]} description={descriptions[index]} />
-      {showSecondary ? <LoadingState label={`${labels[index]} (compact)`} description="This is a second loading area inside the same page." /> : null}
+      {showSecondary ? <LoadingState variant="progress" progress={68} label={`${labels[index]} (progress)`} description="This is a second loading area inside the same page." /> : null}
     </div>
   )
 }

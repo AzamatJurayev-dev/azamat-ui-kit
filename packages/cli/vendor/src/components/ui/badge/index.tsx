@@ -17,6 +17,7 @@ const badgeVariants = cva(
           "border-[color:color-mix(in_oklch,var(--border),var(--foreground)_10%)] bg-[color:color-mix(in_oklch,var(--muted),var(--background)_8%)] text-foreground",
         destructive:
           "border-[color:color-mix(in_oklch,var(--destructive),transparent_52%)] bg-[color:color-mix(in_oklch,var(--destructive),transparent_82%)] text-[color:color-mix(in_oklch,var(--destructive),black_16%)] dark:text-[color:color-mix(in_oklch,var(--destructive),white_38%)]",
+        soft: "border-transparent bg-[color:color-mix(in_oklch,var(--muted),transparent_38%)] text-foreground shadow-none",
         outline: "bg-[color:color-mix(in_oklch,var(--background),var(--muted)_6%)] text-foreground shadow-none",
         ghost: "border-transparent bg-[color:color-mix(in_oklch,var(--muted),transparent_76%)] text-muted-foreground shadow-none",
         link: "border-transparent bg-transparent p-0 text-primary shadow-none underline-offset-4",
@@ -115,7 +116,7 @@ function Badge({
                   event.stopPropagation()
                   onRemove?.()
                 }}
-                className="inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-[color:color-mix(in_oklch,currentColor,transparent_90%)] opacity-80 transition hover:opacity-100"
+                className="inline-flex size-4 shrink-0 items-center justify-center rounded-full bg-[color:color-mix(in_oklch,currentColor,transparent_90%)] opacity-80 transition hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current/35"
               >
                 <XIcon className="size-3" />
               </button>

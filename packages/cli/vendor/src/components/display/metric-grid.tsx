@@ -16,6 +16,7 @@ export type MetricItem = {
   tone?: MetricTone
   hidden?: boolean
   className?: string
+  loading?: boolean
 }
 
 export type MetricGridProps = React.ComponentProps<"div"> & {
@@ -67,7 +68,9 @@ function MetricGrid({
           <CardHeader className={cn("flex flex-row items-start justify-between gap-3 space-y-0", compact ? "p-3 pb-1" : "pb-2")}>
             <div className="min-w-0 space-y-1">
               <CardDescription className="truncate">{item.label}</CardDescription>
-              <CardTitle className={cn("truncate", compact ? "text-xl" : "text-2xl")}>{item.value}</CardTitle>
+              <CardTitle className={cn("truncate", compact ? "text-xl" : "text-2xl")}>
+                {item.loading ? <span className="block h-8 w-24 animate-pulse rounded bg-muted" /> : item.value}
+              </CardTitle>
             </div>
             {item.icon && <div className="shrink-0 rounded-lg bg-muted p-2 text-muted-foreground [&_svg]:size-4">{item.icon}</div>}
           </CardHeader>

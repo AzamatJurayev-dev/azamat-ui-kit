@@ -2,6 +2,7 @@ import * as React from "react"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DeltaBadge } from "@/components/display/delta-badge"
+import { Sparkline } from "@/components/charts/charts"
 import { cn } from "@/lib/utils"
 
 export type TrendCardProps = React.ComponentProps<typeof Card> & {
@@ -25,45 +26,6 @@ function TrendCard({
   className,
   ...props
 }: TrendCardProps) {
-  // Simple SVG sparkline generator
-  const renderSparkline = () => {
-    if (!sparkline || sparkline.length < 2) return null
-
-    const min = Math.min(...sparkline)
-    const max = Math.max(...sparkline)
-    const range = max - min || 1
-    
-    const points = sparkline.map((val, i) => {
-      const x = (i / (sparkline.length - 1)) * 100
-      const y = 100 - ((val - min) / range) * 100
-      return `${x},${y}`
-    }).join(" ")
-
-    const strokeColor =
-      trend === "up"
-        ? "var(--aui-success,var(--primary))"
-        : trend === "down"
-          ? "var(--destructive)"
-          : "var(--muted-foreground)"
-
-    return (
-      <div className="absolute bottom-0 left-0 right-0 h-12 overflow-hidden opacity-20 pointer-events-none">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full stroke-2">
-          <polyline
-            points={points}
-            fill="none"
-            stroke={strokeColor}
-            vectorEffect="non-scaling-stroke"
-          />
-          <polygon
-            points={`0,100 ${points} 100,100`}
-            fill={`color-mix(in srgb, ${strokeColor} 20%, transparent)`}
-          />
-        </svg>
-      </div>
-    )
-  }
-
   return (
     <Card data-slot="trend-card" className={cn("relative overflow-hidden", className)} {...props}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -83,7 +45,11 @@ function TrendCard({
           </p>
         )}
       </CardContent>
-      {renderSparkline()}
+      {sparkline && sparkline.length > 1 ? (
+        <div className="px-6 pb-4">
+          <Sparkline values={sparkline} positive={trend !== "down"} />
+        </div>
+      ) : null}
     </Card>
   )
 }

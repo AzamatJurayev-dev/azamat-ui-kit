@@ -76,6 +76,7 @@ export function SegmentedControlShowcase() {
               <SegmentedControl
                 size="lg"
                 fullWidth
+                equalWidth
                 defaultValue="filters"
                 options={[
                   { value: "filters", label: "Filters", icon: <SlidersHorizontalIcon className="size-4" /> },

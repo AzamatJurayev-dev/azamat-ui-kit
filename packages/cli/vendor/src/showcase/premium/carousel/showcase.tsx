@@ -1,11 +1,12 @@
 import * as React from "react"
 
 import { Button, Carousel, CarouselItem } from "@/index"
+import { cn } from "@/lib/utils"
 
 const steps = [
-  { title: "Onboarding", text: "Guide quickly from first login.", tone: "Launch" },
-  { title: "Components", text: "Review ready-made dashboard patterns.", tone: "Library" },
-  { title: "Release", text: "Publish, test, and iterate faster.", tone: "Ship" },
+  { title: "Onboarding", text: "Guide quickly from first login.", tone: "Launch", detail: "Hero slider for product onboarding and release tours." },
+  { title: "Components", text: "Review ready-made dashboard patterns.", tone: "Library", detail: "Card rail, docs previews, and swipe-ready gallery states." },
+  { title: "Release", text: "Publish, test, and iterate faster.", tone: "Ship", detail: "Active slide details stay below the main frame for context." },
 ]
 
 export function CarouselShowcase() {
@@ -48,13 +49,28 @@ export function CarouselShowcase() {
         loop
         showArrows={showArrows}
         showDots={showDots}
+        showStatus
+        showThumbnails
         autoplay={autoplay}
         autoplayInterval={2200}
         showPlaybackControl
+        aspectRatio="16 / 9"
         onIndexChange={(next) => setIndex(next)}
         onAutoplayChange={setPlaying}
         previousLabel="Previous slide"
         nextLabel="Next slide"
+        renderThumbnail={(_, itemIndex, active) => (
+          <div className={cn("grid gap-1 p-3", active && "bg-primary/5")}>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">0{itemIndex + 1}</div>
+            <div className="text-sm font-medium text-foreground">{steps[itemIndex]?.title}</div>
+          </div>
+        )}
+        renderActiveDetail={(_, activeIndex) => (
+          <div className="rounded-[20px] border border-border/70 bg-card/80 p-4">
+            <p className="text-sm font-semibold text-foreground">{steps[activeIndex]?.title}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{steps[activeIndex]?.detail}</p>
+          </div>
+        )}
       >
         {steps.map((step, slideIndex) => (
           <CarouselItem key={step.title}>

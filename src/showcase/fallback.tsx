@@ -1,7 +1,6 @@
 import {
   Accordion,
   Alert,
-  AnchorNav,
   Avatar,
   AvatarGroup,
   Badge,
@@ -501,20 +500,6 @@ function renderGenericPreviewSurface(
           ]}
         />
       </div>
-    )
-  }
-
-  if (item.slug === "anchor-nav") {
-    return (
-      <AnchorNav
-        orientation="horizontal"
-        title="Sections"
-        items={[
-          { key: "overview", label: "Overview", href: "#overview", active: true },
-          { key: "usage", label: "Usage", href: "#usage" },
-          { key: "api", label: "API", href: "#api" },
-        ]}
-      />
     )
   }
 

@@ -31,6 +31,8 @@ function FormSwitch<
   name,
   label,
   description,
+  success,
+  loading,
   required,
   className,
   layout,
@@ -96,6 +98,8 @@ function FormSwitch<
           <FormFieldShell
             label={label}
             description={description}
+            success={success}
+            loading={loading}
             required={required}
             error={error}
             htmlFor={switchId}
@@ -122,6 +126,8 @@ function FormSwitch<
         ) : (
           <FormFieldShell
             error={error}
+            success={success}
+            loading={loading}
             className={className}
             descriptionId={resolvedIds.descriptionId}
             errorId={resolvedIds.errorId}

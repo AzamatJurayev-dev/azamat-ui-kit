@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const textareaMock: ComponentDemoMock = {
   code: `import { FormEvent, useState } from "react"
-import { Textarea } from "@/index"
+import { Textarea } from "tembro"
 
 export function Example() {
   const [note, setNote] = useState("")
@@ -15,11 +15,19 @@ export function Example() {
 
   return (
     <form onSubmit={submit} className="space-y-3">
-      <Textarea rows={6} value={note} onChange={(event) => setNote(event.target.value)} placeholder="Write your message..." />
-      <Textarea rows={4} defaultValue="Internal changelog draft..." />
+      <Textarea
+        rows={6}
+        value={note}
+        onValueChange={setNote}
+        placeholder="Write your message..."
+        helperText="Keep instructions visible below the field."
+        errorText={error ? "Please enter at least 10 characters." : undefined}
+        maxLength={240}
+        showCharacterCount
+      />
+      <Textarea rows={4} defaultValue="Internal changelog draft..." helperText="Draft copy" />
       <Textarea readOnly value="Locked review comment" rows={3} />
       <button type="submit">Submit</button>
-      {error ? <p className="text-sm text-red-600">Please enter at least 10 characters.</p> : null}
     </form>
   )
 }`,

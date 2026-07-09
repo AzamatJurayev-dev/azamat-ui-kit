@@ -15,7 +15,6 @@ import {
   ActionMenu,
   Alert,
   AlertDialog,
-  AnchorNav,
   Badge,
   Button,
   ButtonGroup,
@@ -224,20 +223,6 @@ function OverlayPreview({ slug }: { slug: string }) {
 function NavigationPreview({ slug }: { slug: string }) {
   if (slug === "pagination") {
     return <Pagination page={3} pageCount={9} onPageChange={() => undefined} />
-  }
-
-  if (slug === "anchor-nav") {
-    return (
-      <AnchorNav
-        orientation="horizontal"
-        title="Sections"
-        items={[
-          { key: "overview", label: "Overview", href: "#overview", active: true },
-          { key: "usage", label: "Usage", href: "#usage" },
-          { key: "api", label: "API", href: "#api" },
-        ]}
-      />
-    )
   }
 
   if (slug === "page-tabs") {

@@ -1,51 +1,77 @@
 import * as React from "react"
+import { PreviewCard as PreviewCardPrimitive } from "@base-ui/react/preview-card"
 
 import { cn } from "@/lib/utils"
 
-export type HoverCardProps = Omit<React.ComponentProps<"div">, "content"> & {
+export type HoverCardProps = Omit<PreviewCardPrimitive.Root.Props, "children"> &
+  Omit<React.ComponentProps<"span">, "content" | "children"> & {
   trigger: React.ReactNode
   content: React.ReactNode
-  side?: "top" | "right" | "bottom" | "left"
+  side?: PreviewCardPrimitive.Positioner.Props["side"]
+  align?: PreviewCardPrimitive.Positioner.Props["align"]
+  sideOffset?: PreviewCardPrimitive.Positioner.Props["sideOffset"]
+  alignOffset?: PreviewCardPrimitive.Positioner.Props["alignOffset"]
+  collisionPadding?: PreviewCardPrimitive.Positioner.Props["collisionPadding"]
+  delay?: PreviewCardPrimitive.Trigger.Props["delay"]
+  closeDelay?: PreviewCardPrimitive.Trigger.Props["closeDelay"]
+  disabled?: boolean
   contentClassName?: string
 }
-
-const sideClassName = {
-  top: "bottom-full left-1/2 mb-2.5 -translate-x-1/2",
-  right: "left-full top-1/2 ml-2.5 -translate-y-1/2",
-  bottom: "left-1/2 top-full mt-2.5 -translate-x-1/2",
-  left: "right-full top-1/2 mr-2.5 -translate-y-1/2",
-} as const
 
 function HoverCard({
   trigger,
   content,
   side = "bottom",
+  align = "center",
+  sideOffset = 10,
+  alignOffset = 0,
+  collisionPadding = 12,
+  delay = 450,
+  closeDelay = 180,
+  disabled = false,
   contentClassName,
   className,
-  children,
   ...props
 }: HoverCardProps) {
-  return (
-    <div
-      data-slot="hover-card"
-      className={cn("group/hover-card relative inline-flex", className)}
-      {...props}
-    >
-      <span data-slot="hover-card-trigger" className="inline-flex">
+  if (disabled) {
+    return (
+      <span data-slot="hover-card" className={cn("inline-flex", className)} {...props}>
         {trigger}
       </span>
-      <div
-        data-slot="hover-card-content"
-        className={cn(
-          "pointer-events-none absolute z-50 min-w-60 rounded-[var(--radius-2xl)] border border-border/80 bg-popover/98 p-4 text-sm text-popover-foreground opacity-0 shadow-[0_18px_42px_color-mix(in_oklch,var(--foreground),transparent_86%)] ring-1 ring-foreground/8 backdrop-blur transition duration-150 group-hover/hover-card:pointer-events-auto group-hover/hover-card:opacity-100 group-focus-within/hover-card:pointer-events-auto group-focus-within/hover-card:opacity-100",
-          sideClassName[side],
-          contentClassName
-        )}
+    )
+  }
+
+  return (
+    <PreviewCardPrimitive.Root>
+      <PreviewCardPrimitive.Trigger
+        data-slot="hover-card-trigger"
+        delay={delay}
+        closeDelay={closeDelay}
+        render={<span data-slot="hover-card" className={cn("inline-flex", className)} {...props} />}
       >
-        {content}
-      </div>
-      {children}
-    </div>
+        {trigger}
+      </PreviewCardPrimitive.Trigger>
+      <PreviewCardPrimitive.Portal>
+        <PreviewCardPrimitive.Positioner
+          className="isolate z-50"
+          side={side}
+          align={align}
+          sideOffset={sideOffset}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
+        >
+          <PreviewCardPrimitive.Popup
+            data-slot="hover-card-content"
+            className={cn(
+              "z-50 min-w-60 max-w-[min(24rem,calc(100vw-1rem))] origin-(--transform-origin) rounded-[var(--aui-card-radius,var(--radius-xl))] border border-border/80 bg-popover/98 p-4 text-sm text-popover-foreground shadow-[0_18px_42px_color-mix(in_oklch,var(--foreground),transparent_86%)] ring-1 ring-foreground/8 outline-hidden backdrop-blur duration-150 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+              contentClassName
+            )}
+          >
+            {content}
+          </PreviewCardPrimitive.Popup>
+        </PreviewCardPrimitive.Positioner>
+      </PreviewCardPrimitive.Portal>
+    </PreviewCardPrimitive.Root>
   )
 }
 

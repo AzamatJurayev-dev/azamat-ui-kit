@@ -28,6 +28,12 @@ export type PaginationProps = Omit<React.ComponentProps<"nav">, "onChange"> & {
   showEdges?: boolean
   disabled?: boolean
   labels?: PaginationLabels
+  compact?: boolean
+  totalCount?: number
+  pageSize?: number
+  pageSizeOptions?: number[]
+  onPageSizeChange?: (pageSize: number) => void
+  showSummary?: boolean
 }
 
 function range(start: number, end: number) {
@@ -74,6 +80,12 @@ function Pagination({
   showEdges = true,
   disabled = false,
   labels,
+  compact = false,
+  totalCount,
+  pageSize,
+  pageSizeOptions,
+  onPageSizeChange,
+  showSummary = false,
   ...props
 }: PaginationProps) {
   const safePageCount = Math.max(pageCount, 1)
@@ -93,16 +105,21 @@ function Pagination({
       data-slot="pagination"
       aria-label="Pagination"
       className={cn(
-        "flex items-center justify-center gap-1 rounded-full border border-border/70 bg-background/76 p-1 shadow-none backdrop-blur",
+        "flex flex-wrap items-center justify-center gap-1 rounded-full border border-border/70 bg-background/76 p-1 shadow-none backdrop-blur",
         className
       )}
       {...props}
     >
+      {showSummary && totalCount !== undefined && pageSize ? (
+        <div className="px-2 text-xs text-muted-foreground">
+          {Math.min((currentPage - 1) * pageSize + 1, totalCount)}-{Math.min(currentPage * pageSize, totalCount)} of {totalCount}
+        </div>
+      ) : null}
       {showEdges && (
         <Button
           type="button"
           variant="outline"
-          size="icon-sm"
+          size={compact ? "icon-xs" : "icon-sm"}
           disabled={disabled || currentPage <= 1}
           aria-label={labels?.first ?? "First page"}
           onClick={() => goToPage(1)}
@@ -114,7 +131,7 @@ function Pagination({
       <Button
         type="button"
         variant="outline"
-        size="icon-sm"
+        size={compact ? "icon-xs" : "icon-sm"}
         disabled={disabled || currentPage <= 1}
         aria-label={labels?.previous ?? "Previous page"}
         onClick={() => goToPage(currentPage - 1)}
@@ -141,7 +158,7 @@ function Pagination({
             key={item}
             type="button"
             variant={item === currentPage ? "default" : "outline"}
-            size="icon-sm"
+            size={compact ? "icon-xs" : "icon-sm"}
             disabled={disabled}
             aria-current={item === currentPage ? "page" : undefined}
             aria-label={labels?.page?.(item) ?? `Page ${item}`}
@@ -156,7 +173,7 @@ function Pagination({
       <Button
         type="button"
         variant="outline"
-        size="icon-sm"
+        size={compact ? "icon-xs" : "icon-sm"}
         disabled={disabled || currentPage >= safePageCount}
         aria-label={labels?.next ?? "Next page"}
         onClick={() => goToPage(currentPage + 1)}
@@ -168,7 +185,7 @@ function Pagination({
         <Button
           type="button"
           variant="outline"
-          size="icon-sm"
+          size={compact ? "icon-xs" : "icon-sm"}
           disabled={disabled || currentPage >= safePageCount}
           aria-label={labels?.last ?? "Last page"}
           onClick={() => goToPage(safePageCount)}
@@ -176,6 +193,23 @@ function Pagination({
           <ChevronLastIcon />
         </Button>
       )}
+      {pageSizeOptions && pageSize && onPageSizeChange ? (
+        <label className="ml-1 inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/90 px-3 py-1 text-xs text-muted-foreground">
+          <span>Rows</span>
+          <select
+            className="bg-transparent text-foreground outline-none"
+            value={pageSize}
+            onChange={(event) => onPageSizeChange(Number(event.target.value))}
+            disabled={disabled}
+          >
+            {pageSizeOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </label>
+      ) : null}
     </nav>
   )
 }

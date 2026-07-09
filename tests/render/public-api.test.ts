@@ -7,7 +7,6 @@ describe("public API", () => {
     const documentedCanonicalExports = [
       "ActionMenu",
       "Alert",
-      "AnchorNav",
       "AsyncMultiSelect",
       "AsyncSelect",
       "Badge",
@@ -100,7 +99,6 @@ describe("public API", () => {
       [
         "ActionMenu",
         "Alert",
-        "AnchorNav",
         "AsyncMultiSelect",
         "AsyncSelect",
         "Badge",

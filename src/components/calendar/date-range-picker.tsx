@@ -39,6 +39,7 @@ export type DateRangePickerProps = Omit<
   presets?: DateRangePickerPreset[]
   triggerClassName?: string
   contentClassName?: string
+  months?: number
 }
 
 function defaultFormatValue(value: string) {
@@ -66,6 +67,7 @@ function DateRangePicker({
   presets,
   triggerClassName,
   contentClassName,
+  months,
   numberOfMonths = 2,
   pagedNavigation = true,
   ...calendarProps
@@ -79,6 +81,7 @@ function DateRangePicker({
   const activeFrom = activeValue?.from ?? ""
   const activeTo = activeValue?.to ?? ""
   const hasDraftValue = Boolean(activeFrom || activeTo)
+  const resolvedNumberOfMonths = months ?? numberOfMonths
 
   const label = from && to
     ? `${formatValue(from)} - ${formatValue(to)}`
@@ -244,7 +247,7 @@ function DateRangePicker({
               if (fromValue) return `${fromValue} -> ...`
               return "No range selected"
             }}
-            numberOfMonths={numberOfMonths}
+            numberOfMonths={resolvedNumberOfMonths}
             pagedNavigation={pagedNavigation}
             showClearShortcut={!showFooter && clearable}
             showSelectionSummary

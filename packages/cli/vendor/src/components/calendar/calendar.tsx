@@ -54,6 +54,7 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   disabledDates?: string[]
   locale?: string
   weekStartsOn?: 0 | 1
+  months?: number
   numberOfMonths?: number
   showMonthHeaders?: boolean
   showOutsideDays?: boolean
@@ -129,6 +130,7 @@ function Calendar({
   disabledDates,
   locale = "en-US",
   weekStartsOn = 1,
+  months,
   numberOfMonths = 1,
   showMonthHeaders,
   showOutsideDays = true,
@@ -148,7 +150,7 @@ function Calendar({
   const currentValue = isControlledSingle ? value : internalValue
   const currentRange = isControlledRange ? range : internalRange
   const currentMonth = month ?? internalMonth
-  const resolvedNumberOfMonths = Math.max(numberOfMonths, 1)
+  const resolvedNumberOfMonths = Math.max(months ?? numberOfMonths, 1)
   const shouldShowMonthHeaders = showMonthHeaders ?? resolvedNumberOfMonths > 1
   const navigationStep = pagedNavigation ? resolvedNumberOfMonths : 1
   const todayKey = toDateKey(new Date())
@@ -227,13 +229,13 @@ function Calendar({
     onMonthChange?.(next)
   }
 
-  const moveFocus = (date: Date) => {
+  const moveFocus = (date: Date, step = 1) => {
     let nextDate = date
     let nextKey = toDateKey(nextDate)
     let guard = 0
 
     while (isDateDisabled(nextKey) && guard < 370) {
-      nextDate = addDays(nextDate, nextDate < date ? -1 : 1)
+      nextDate = addDays(nextDate, step)
       nextKey = toDateKey(nextDate)
       guard += 1
     }
@@ -343,35 +345,35 @@ function Calendar({
     switch (event.key) {
       case "ArrowRight":
         event.preventDefault()
-        moveFocus(addDays(date, 1))
+        moveFocus(addDays(date, 1), 1)
         break
       case "ArrowLeft":
         event.preventDefault()
-        moveFocus(addDays(date, -1))
+        moveFocus(addDays(date, -1), -1)
         break
       case "ArrowDown":
         event.preventDefault()
-        moveFocus(addDays(date, 7))
+        moveFocus(addDays(date, 7), 7)
         break
       case "ArrowUp":
         event.preventDefault()
-        moveFocus(addDays(date, -7))
+        moveFocus(addDays(date, -7), -7)
         break
       case "Home":
         event.preventDefault()
-        moveFocus(addDays(date, -columnIndex))
+        moveFocus(addDays(date, -columnIndex), -1)
         break
       case "End":
         event.preventDefault()
-        moveFocus(addDays(date, 6 - columnIndex))
+        moveFocus(addDays(date, 6 - columnIndex), 1)
         break
       case "PageUp":
         event.preventDefault()
-        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, -1)))
+        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, -1)), -1)
         break
       case "PageDown":
         event.preventDefault()
-        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, 1)))
+        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, 1)), 1)
         break
     }
   }
@@ -444,6 +446,9 @@ function Calendar({
                 const selected = mode === "single" ? currentValue === dateKey : dateKey === currentRange?.from || dateKey === currentRange?.to
                 const inRange = mode === "range" && isWithinRange(dateKey, currentRange?.from, currentRange?.to)
                 const inPreviewRange = !inRange && mode === "range" && isWithinRange(dateKey, previewRange?.from, previewRange?.to)
+                const rangeStart = mode === "range" && dateKey === currentRange?.from
+                const rangeEnd = mode === "range" && dateKey === currentRange?.to
+                const rangeMiddle = inRange && !rangeStart && !rangeEnd
                 const disabledReason = getDisabledReason(dateKey)
                 const disabled = Boolean(disabledReason)
                 const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined
@@ -459,9 +464,13 @@ function Calendar({
                     disabled={disabled}
                     aria-label={disabledLabel ?? labels?.selectDate?.(dateKey) ?? dateKey}
                     aria-current={dateKey === todayKey ? "date" : undefined}
+                    aria-selected={selected || inRange || inPreviewRange || undefined}
                     tabIndex={dateKey === tabbableDateKey ? 0 : -1}
                     title={disabledLabel}
                     data-selected={selected || undefined}
+                    data-range-start={rangeStart || undefined}
+                    data-range-end={rangeEnd || undefined}
+                    data-range-middle={rangeMiddle || undefined}
                     data-today={dateKey === todayKey || undefined}
                     data-outside={outside || undefined}
                     data-in-range={inRange || undefined}

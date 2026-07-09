@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import { ArchiveIcon, CopyIcon, PencilIcon, Trash2Icon } from "lucide-react"
+
 import { Badge, Button, RightClickMenu } from "@/index"
 
 const panelClass =
@@ -32,13 +34,14 @@ export function RightClickMenuShowcase() {
             <div className="mt-3">
               <RightClickMenu
                 items={[
-                  { label: "Rename", onSelect: () => setLastAction("Rename") },
-                  { label: "Duplicate", onSelect: () => setLastAction("Duplicate") },
-                  { label: "Archive", onSelect: () => setLastAction("Archive") },
+                  { label: "Rename", icon: <PencilIcon />, shortcut: "R", onSelect: () => setLastAction("Rename") },
+                  { label: "Duplicate", icon: <CopyIcon />, shortcut: "D", onSelect: () => setLastAction("Duplicate") },
+                  { label: "Archive", icon: <ArchiveIcon />, onSelect: () => setLastAction("Archive") },
+                  { label: "Remove", icon: <Trash2Icon />, variant: "destructive", onSelect: () => setLastAction("Remove") },
                 ]}
               >
-                <div className="rounded-[20px] border border-dashed border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-4 py-12 text-center text-sm aui-text-muted">
-                  Right click anywhere in this area
+                <div className="rounded-[20px] border border-dashed border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-4 py-12 text-center text-sm aui-text-muted" tabIndex={0}>
+                  Right click, use Shift+F10, or press the context-menu key in this area
                 </div>
               </RightClickMenu>
             </div>

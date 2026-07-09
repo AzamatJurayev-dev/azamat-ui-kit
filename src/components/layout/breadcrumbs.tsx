@@ -19,6 +19,7 @@ export type BreadcrumbsProps = React.ComponentProps<"nav"> & {
   collapseLabel?: React.ReactNode
   separator?: React.ReactNode
   wrap?: boolean
+  currentItemLabel?: React.AriaAttributes["aria-current"]
   renderLink?: (props: React.ComponentProps<"a"> & { item: BreadcrumbItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
 }
 
@@ -46,6 +47,7 @@ function Breadcrumbs({
   collapseLabel = "…",
   separator = <ChevronRightIcon className="size-3.5" />,
   wrap = false,
+  currentItemLabel,
   renderLink,
   ...props
 }: BreadcrumbsProps) {
@@ -106,7 +108,7 @@ function Breadcrumbs({
             ) : (
               <span
                 data-slot="breadcrumbs-current"
-                aria-current={isCurrent ? (item.currentLabel ?? "page") : undefined}
+                aria-current={isCurrent ? ((item.currentLabel ?? currentItemLabel ?? "page") as React.AriaAttributes["aria-current"]) : undefined}
                 className={cn(
                   "inline-flex min-w-0 items-center gap-1.5 truncate rounded-[var(--radius-sm)] px-1 py-0.5",
                   isCurrent && "bg-accent/45 font-medium text-foreground"

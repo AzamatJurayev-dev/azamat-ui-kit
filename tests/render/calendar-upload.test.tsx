@@ -127,6 +127,46 @@ describe("Calendar and date pickers", () => {
     expect(screen.getAllByText("August 2024").length).toBeGreaterThan(0)
   })
 
+  it("supports the DateRangePicker months alias for two-month layouts", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <DateRangePicker
+        value={{}}
+        onValueChange={() => undefined}
+        defaultMonth="2024-06-01"
+        numberOfMonths={1}
+        months={2}
+        labels={{ placeholder: "Choose reporting range" }}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /choose reporting range/i }))
+
+    expect(screen.getAllByText("June 2024").length).toBeGreaterThan(0)
+    expect(screen.getByText("July 2024")).toBeTruthy()
+  })
+
+  it("skips disabled dates in the requested keyboard direction", async () => {
+    render(
+      <Calendar
+        mode="single"
+        defaultMonth="2024-06-01"
+        disabledDates={["2024-06-14"]}
+      />
+    )
+
+    const start = screen.getByRole("button", { name: "2024-06-15" })
+    const expected = screen.getByRole("button", { name: "2024-06-13" })
+
+    fireEvent.focus(start)
+    fireEvent.keyDown(start, { key: "ArrowLeft" })
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(expected)
+    })
+  })
+
   it("clears single and range selection from shortcut actions", async () => {
     const user = userEvent.setup()
     const onSingleChange = vi.fn()

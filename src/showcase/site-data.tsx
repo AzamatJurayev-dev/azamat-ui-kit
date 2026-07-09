@@ -170,6 +170,8 @@ const formRHFWrapperBasePropsRows: string[][] = [
   ["required", "boolean | \"*\" | FieldError", "false", "Marks field required in shell and optional validation path."],
   ["disabled", "boolean", "false", "Disables input and blocks interaction."],
   ["readOnly", "boolean", "false", "Allows viewing without edit; value remains controlled."],
+  ["success", "ReactNode", "-", "Optional success message rendered by the shared field shell."],
+  ["loading", "boolean", "false", "Shows a consistent loading message inside the shared field shell."],
   ["error", "string | FieldError | null", "-", "Optional error override instead of default form state message."],
 ]
 
@@ -369,8 +371,8 @@ const formControlComponentSlugs = new Set([
   "quantity-input",
 ])
 const overlayComponentSlugs = new Set(["dialog", "popover", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "modal-shell", "sheet-shell", "alert-dialog", "drawer"])
-const layoutComponentSlugs = new Set(["sidebar", "app-sidebar", "app-shell", "sidebar-nav", "breadcrumbs", "page-header", "page-container", "app-header", "section-header", "sticky-footer-bar"])
-const feedbackComponentSlugs = new Set(["toast", "loading-state", "data-state", "result"])
+const layoutComponentSlugs = new Set(["sidebar", "app-sidebar", "sidebar-nav", "breadcrumbs", "page-header", "page-container", "section-header", "sticky-footer-bar"])
+const feedbackComponentSlugs = new Set(["toast", "loading-state", "page-state", "data-state", "result", "alert", "notification-center"])
 const patternComponentSlugs = new Set<string>([])
 
 const legacyComponentSlugAliases = new Map<string, string>([
@@ -1137,7 +1139,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "breadcrumbs",
     title: "Breadcrumbs",
-    description: "Navigation breadcrumbs with current context and optional custom link rendering.",
+    description: "Navigation breadcrumbs with current context, overflow collapse, and custom link rendering.",
     icon: ChevronRightIcon,
     category: "Components",
     status: "Stable",
@@ -1145,8 +1147,9 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     propsRows: [
       ["items", "BreadcrumbItem[]", "-", "Breadcrumb sequence for navigation context."],
       ["separator", "ReactNode", "-", "Custom separator between items."],
+      ["maxItems", "number", "-", "Collapses middle items when the path gets too long."],
       ["renderLink", "(props) => ReactNode", "-", "Custom link renderer for each item."],
-      ["current", "boolean", "-", "Marks current step and disables navigation for it."],
+      ["currentItemLabel", "string", "-", "Accessible label for the current page item."],
     ],
     features: ["Navigation context", "Custom separators", "Custom links", "Current state support"],
   },
@@ -1262,7 +1265,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "loading-state",
     title: "Loading State",
-    description: "Simple loading placeholder block with label and description.",
+    description: "Scoped loading block with spinner, skeleton, or progress variants for real route and panel states.",
     icon: SparklesIcon,
     category: "Data Display",
     status: "Stable",
@@ -1271,9 +1274,11 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["label", "ReactNode", "-", "Loading heading."],
       ["description", "ReactNode", "-", "Loading explanation text."],
       ["icon", "ReactNode", "-", "Optional loading icon."],
+      ["variant", "'spinner' | 'skeleton' | 'progress'", "'spinner'", "Visual loading style."],
+      ["progress", "number", "-", "Progress amount when `variant` is `progress`."],
       ["className", "string", "-", "Container class override."],
     ],
-    features: ["Skeleton alternative", "Section loading labels", "Minimal setup", "Custom icon"],
+    features: ["Spinner, skeleton and progress", "Section loading labels", "Scoped placeholders", "Custom icon"],
   },
   {
     slug: "result",
@@ -1313,7 +1318,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "toast",
     title: "Toast",
-    description: "Global transient messaging system with provider, placement and dismiss behavior.",
+    description: "Global transient messaging system with provider, stacking, promise states, placement and dismiss behavior.",
     icon: ShieldCheckIcon,
     category: "Components",
     status: "Stable",
@@ -1325,9 +1330,10 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["maxToasts", "number", "5", "Maximum number of visible toasts."],
       ["pauseOnHover", "boolean", "true", "Pause dismiss timer when hovered."],
       ["addToast", "(input) => string", "-", "API to push a toast from context."],
-      ["success/info/warning/error", "(input) => string", "-", "Tone helpers for common outcomes."],
+      ["success/info/warning/error/loading", "(input) => string", "-", "Tone helpers for common outcomes."],
+      ["promise", "(promise, messages) => Promise<T>", "-", "Tracks loading/success/error from async work."],
     ],
-    features: ["Provider setup", "Controlled duration", "Action buttons", "Placement options"],
+    features: ["Provider setup", "Stacking and duration", "Promise states", "Placement options"],
   },
   {
     slug: "table",
@@ -2098,7 +2104,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
   {
     slug: "layout",
     title: "Application layout",
-    description: "Route-level shells, sidebars and headers that support real components instead of replacing them.",
+    description: "Route-level sidebars, breadcrumbs and page framing helpers that support real reusable components instead of replacing them.",
     icon: LayoutDashboardIcon,
     category: "Layout",
     exports: ["Sidebar", "SidebarNav", "Breadcrumbs", "PageContainer", "Section", "SectionHeader", "StickyFooterBar"],
@@ -2186,24 +2192,24 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
   {
     slug: "notifications",
     title: "Notifications",
-    description: "Toast-based feedback surfaces for success, warnings and async completion states.",
+    description: "Toast and notification surfaces for transient feedback, async completion, and unread activity.",
     icon: BadgeIcon,
     category: "Overlay",
-    exports: ["Toast"],
+    exports: ["Toast", "NotificationCenter"],
     href: componentModulePath("notifications"),
     status: "Preview",
-    features: ["Toasts", "Transient feedback", "Status messaging"],
+    features: ["Toasts", "Promise feedback", "Unread activity", "Status messaging"],
   },
   {
     slug: "command",
     title: "Command",
-    description: "Command palette patterns for keyboard-driven discovery and navigation.",
+    description: "Command palette patterns for keyboard-driven discovery, search, grouped actions and async navigation.",
     icon: TerminalSquareIcon,
     category: "Workflow",
     exports: ["CommandPalette"],
     href: componentModulePath("command"),
     status: "Preview",
-    features: ["Command palette", "Keyboard discovery", "Quick navigation"],
+    features: ["Command palette", "Grouped actions", "Async search", "Keyboard discovery"],
   },
   {
     slug: "calendar",

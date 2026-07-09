@@ -10,7 +10,7 @@ export type PopoverTriggerProps = PopoverPrimitive.Trigger.Props
 export type PopoverContentProps = PopoverPrimitive.Popup.Props &
   Pick<
     PopoverPrimitive.Positioner.Props,
-    "align" | "alignOffset" | "side" | "sideOffset"
+    "align" | "alignOffset" | "collisionBoundary" | "collisionPadding" | "side" | "sideOffset"
   >
 export type PopoverHeaderProps = React.ComponentProps<"div">
 export type PopoverTitleProps = PopoverPrimitive.Title.Props
@@ -28,6 +28,7 @@ function PopoverContent({
   className,
   align = "center",
   alignOffset = 0,
+  collisionPadding = 12,
   side = "bottom",
   sideOffset = 4,
   ...props
@@ -37,6 +38,7 @@ function PopoverContent({
       <PopoverPrimitive.Positioner
         align={align}
         alignOffset={alignOffset}
+        collisionPadding={collisionPadding}
         side={side}
         sideOffset={sideOffset}
         className="isolate z-50"
@@ -44,7 +46,7 @@ function PopoverContent({
         <PopoverPrimitive.Popup
           data-slot="popover-content"
           className={cn(
-            "z-50 flex w-80 origin-(--transform-origin) flex-col gap-3 rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-[color:var(--aui-overlay-surface,var(--popover))] p-4 text-sm text-popover-foreground shadow-[var(--aui-popover-shadow,0_18px_42px_rgba(15,23,42,0.16))] outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "z-50 flex max-h-[min(var(--available-height),calc(100dvh-1rem))] w-[min(var(--anchor-width),20rem)] min-w-60 max-w-[calc(100vw-1rem)] origin-(--transform-origin) flex-col gap-3 overflow-y-auto rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-[color:var(--aui-overlay-surface,var(--popover))] p-4 text-sm text-popover-foreground shadow-[var(--aui-popover-shadow,0_18px_42px_rgba(15,23,42,0.16))] outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
             className
           )}
           {...props}

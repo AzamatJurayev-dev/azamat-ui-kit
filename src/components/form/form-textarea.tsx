@@ -30,6 +30,8 @@ function FormTextarea<
   rules,
   label,
   description,
+  success,
+  loading,
   required,
   className,
   layout,
@@ -68,6 +70,8 @@ function FormTextarea<
           <FormFieldShell
             label={label}
             description={description}
+            success={success}
+            loading={loading}
             required={required}
             error={error}
             htmlFor={textareaId}

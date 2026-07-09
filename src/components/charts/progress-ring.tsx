@@ -9,13 +9,23 @@ export type ProgressRingProps = React.ComponentProps<"svg"> & {
   strokeWidth?: number
   label?: React.ReactNode
   description?: React.ReactNode
+  tone?: "default" | "success" | "warning" | "danger"
+  loading?: boolean
 }
 
-function ProgressRing({ value, max = 100, size = 120, strokeWidth = 10, label, description, className, ...props }: ProgressRingProps) {
+function ProgressRing({ value, max = 100, size = 120, strokeWidth = 10, label, description, tone = "default", loading = false, className, ...props }: ProgressRingProps) {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   const ratio = max > 0 ? Math.min(Math.max(value / max, 0), 1) : 0
   const offset = circumference - ratio * circumference
+  const stroke =
+    tone === "success"
+      ? "var(--color-chart-3, var(--primary))"
+      : tone === "warning"
+        ? "var(--color-chart-4, var(--primary))"
+        : tone === "danger"
+          ? "var(--destructive)"
+          : "var(--primary)"
 
   return (
     <svg data-slot="progress-ring" viewBox={`0 0 ${size} ${size}`} className={cn("h-auto w-full max-w-32", className)} role="img" {...props}>
@@ -25,12 +35,13 @@ function ProgressRing({ value, max = 100, size = 120, strokeWidth = 10, label, d
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="var(--primary)"
+        stroke={stroke}
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeDasharray={circumference}
-        strokeDashoffset={offset}
+        strokeDashoffset={loading ? circumference * 0.45 : offset}
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
+        className={loading ? "animate-pulse" : undefined}
       />
       {(label || description) && (
         <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fill="var(--foreground)">

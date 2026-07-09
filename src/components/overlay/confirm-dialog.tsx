@@ -12,8 +12,10 @@ type ConfirmDialogProps = Omit<ModalShellProps, "footer"> & {
   confirmDisabled?: boolean
   cancelDisabled?: boolean
   isLoading?: boolean
+  closeOnConfirm?: boolean
+  onConfirmError?: (error: unknown) => void
   onCancel?: () => void
-  onConfirm?: () => void
+  onConfirm?: () => void | Promise<void>
 }
 
 function ConfirmDialog({
@@ -23,13 +25,18 @@ function ConfirmDialog({
   confirmDisabled = false,
   cancelDisabled = false,
   isLoading = false,
+  closeOnConfirm = true,
+  onConfirmError,
   onCancel,
   onConfirm,
   onOpenChange,
   ...props
 }: ConfirmDialogProps) {
+  const [pending, setPending] = React.useState(false)
+  const resolvedLoading = isLoading || pending
+
   const handleOpenChange = (open: boolean) => {
-    if (isLoading && open === false) {
+    if (resolvedLoading && open === false) {
       return
     }
 
@@ -38,21 +45,37 @@ function ConfirmDialog({
 
   const handleCancel = () => {
     onCancel?.()
-    if (!isLoading) {
+    if (!resolvedLoading) {
       onOpenChange?.(false)
+    }
+  }
+
+  const handleConfirm = async () => {
+    if (confirmDisabled || resolvedLoading) return
+
+    try {
+      setPending(true)
+      await onConfirm?.()
+      if (closeOnConfirm) {
+        onOpenChange?.(false)
+      }
+    } catch (error) {
+      onConfirmError?.(error)
+    } finally {
+      setPending(false)
     }
   }
 
   return (
     <ModalShell
-      showCloseButton={!isLoading}
+      showCloseButton={!resolvedLoading}
       onOpenChange={handleOpenChange}
       footer={
         <DialogActions>
           <DialogActionButton
             type="button"
             variant="outline"
-            disabled={cancelDisabled || isLoading}
+            disabled={cancelDisabled || resolvedLoading}
             onClick={handleCancel}
           >
             {cancelText}
@@ -60,9 +83,9 @@ function ConfirmDialog({
           <DialogActionButton
             type="button"
             variant={confirmVariant}
-            disabled={confirmDisabled || isLoading}
-            isLoading={isLoading}
-            onClick={onConfirm}
+            disabled={confirmDisabled || resolvedLoading}
+            isLoading={resolvedLoading}
+            onClick={() => void handleConfirm()}
           >
             {confirmText}
           </DialogActionButton>

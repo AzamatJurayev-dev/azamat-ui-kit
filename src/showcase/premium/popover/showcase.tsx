@@ -1,4 +1,4 @@
-import { Button, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "@/index"
+import { Button, Input, Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from "@/index"
 
 import { popoverDemoItems } from "./data"
 
@@ -57,16 +57,32 @@ export function PopoverShowcase() {
       </section>
 
       <section className={panelClass}>
-        <div className="border-y border-[color:var(--aui-divider)]">
-          {[
-            "Trigger text should already hint that extra context exists.",
-            "If users need multiple actions or long reading, move up to a heavier surface.",
-            "Popover body should stay compact enough to scan in one glance.",
-          ].map((item) => (
-            <div key={item} className="border-b border-[color:var(--aui-divider)] py-3 text-sm leading-6 aui-text-muted last:border-b-0">
-              {item}
-            </div>
-          ))}
+        <div className="grid gap-5 xl:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <p className="text-lg font-semibold aui-text-strong">Inline settings form</p>
+            <p className="mt-2 max-w-xl text-sm leading-6 aui-text-muted">
+              Short forms fit when they change a local view and can be dismissed without losing page context.
+            </p>
+          </div>
+          <div className="flex justify-start xl:justify-end">
+            <Popover>
+              <PopoverTrigger render={<Button variant="outline" />}>Edit workspace</PopoverTrigger>
+              <PopoverContent align="end" collisionPadding={16}>
+                <PopoverHeader>
+                  <PopoverTitle>Workspace details</PopoverTitle>
+                  <PopoverDescription>Update the label used in local navigation.</PopoverDescription>
+                </PopoverHeader>
+                <div className="grid gap-3">
+                  <Input aria-label="Workspace name" defaultValue="Growth analytics" />
+                  <Input aria-label="Workspace slug" defaultValue="growth" />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="secondary" size="sm">Cancel</Button>
+                  <Button type="button" size="sm">Save</Button>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
       </section>
     </div>

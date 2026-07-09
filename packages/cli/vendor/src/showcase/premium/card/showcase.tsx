@@ -1,4 +1,4 @@
-import { Badge, Card } from "@/index"
+import { Badge, Button, Card } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -42,8 +42,11 @@ export function CardShowcase({ state }: ComponentDemoProps) {
         <div className="grid gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
           <Card
             size={state.cardCompact ? "sm" : "default"}
+            eyebrow="Content"
             title={primaryProject.title}
             description={primaryProject.description}
+            badge={<Badge tone="success" variant="soft">Live</Badge>}
+            action={<Button type="button" size="xs" variant="outline">Open</Button>}
             content={
               <div className="grid gap-3 sm:grid-cols-3">
                 {primaryProject.metrics.map((metric) => (
@@ -58,6 +61,9 @@ export function CardShowcase({ state }: ComponentDemoProps) {
 
           <Card
             size="sm"
+            interactive
+            selected
+            eyebrow="Selectable"
             title={compactProject.title}
             description={compactProject.description}
             content={
@@ -68,6 +74,25 @@ export function CardShowcase({ state }: ComponentDemoProps) {
               </div>
             }
             footer={compactProject.footer}
+          />
+        </div>
+        <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+          <Card
+            orientation="horizontal"
+            mediaAspect="square"
+            title="Media card"
+            description="The same Card primitive owns image, copy, action and footer slots."
+            media={<div className="h-full min-h-36 bg-[linear-gradient(135deg,var(--primary),color-mix(in_oklch,var(--primary),white_42%))]" />}
+            action={<Button type="button" size="xs">View</Button>}
+            content={<p className="text-sm leading-6 aui-text-muted">Use media slots for previews, thumbnails, charts, or product visuals without creating another card component.</p>}
+          />
+          <Card
+            size="sm"
+            density="compact"
+            title="Compact action card"
+            description="Dense layouts still use the same header, content and footer anatomy."
+            content={<div className="text-sm aui-text-strong">12 files ready for review</div>}
+            footer={<Button type="button" size="xs" variant="secondary">Review files</Button>}
           />
         </div>
       </section>

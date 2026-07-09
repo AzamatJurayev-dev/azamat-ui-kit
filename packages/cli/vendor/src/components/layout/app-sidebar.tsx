@@ -59,6 +59,7 @@ export type AppSidebarProps = React.ComponentProps<"aside"> & {
   mobileToggleClassName?: string
   mobilePanelClassName?: string
   mobileOverlayClassName?: string
+  footerClassName?: string
   renderMobileToggle?: (state: { open: boolean; setOpen: (open: boolean) => void }) => React.ReactNode
   onItemSelect?: (item: AppSidebarNavItem) => void
   renderItem?: (item: AppSidebarNavItem, state: { collapsed: boolean }) => React.ReactNode
@@ -433,6 +434,7 @@ function SidebarSurface({
   footerAccount,
   secondaryActions = [],
   footerSecondary,
+  footerClassName,
   tooltipOnCollapsed,
   onItemSelect,
   renderItem,
@@ -531,7 +533,7 @@ function SidebarSurface({
       </nav>
 
       {(footerAccount || footerSecondary || footer || visibleSecondaryActions.length > 0 || (collapsed && (collapsedRail || visibleRailItems.length > 0))) && (
-        <div data-slot="app-sidebar-footer" className="shrink-0 border-t p-3">
+        <div data-slot="app-sidebar-footer" className={cn("shrink-0 border-t p-3", footerClassName)}>
           {collapsed ? (
             <>
               {visibleRailItems.length > 0 ? (

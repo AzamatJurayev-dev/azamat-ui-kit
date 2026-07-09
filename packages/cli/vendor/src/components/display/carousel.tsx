@@ -22,8 +22,15 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   pauseOnHover?: boolean
   stopAutoplayOnInteraction?: boolean
   showPlaybackControl?: boolean
+  showStatus?: boolean
+  showThumbnails?: boolean
   playLabel?: string
   pauseLabel?: string
+  statusLabel?: (index: number, total: number) => string
+  renderThumbnail?: (item: React.ReactNode, index: number, active: boolean) => React.ReactNode
+  renderActiveDetail?: (item: React.ReactNode, index: number) => React.ReactNode
+  aspectRatio?: string
+  mouseDrag?: boolean
   onAutoplayChange?: (playing: boolean) => void
   viewportClassName?: string
   controlsClassName?: string
@@ -31,6 +38,7 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   arrowClassName?: string
   dotClassName?: string
   activeDotClassName?: string
+  thumbnailsClassName?: string
 }
 
 export type CarouselItemProps = React.ComponentProps<"div">
@@ -59,8 +67,15 @@ function Carousel({
   pauseOnHover = true,
   stopAutoplayOnInteraction = true,
   showPlaybackControl = false,
+  showStatus = false,
+  showThumbnails = false,
   playLabel = "Start autoplay",
   pauseLabel = "Pause autoplay",
+  statusLabel,
+  renderThumbnail,
+  renderActiveDetail,
+  aspectRatio,
+  mouseDrag = true,
   onAutoplayChange,
   viewportClassName,
   controlsClassName,
@@ -68,6 +83,7 @@ function Carousel({
   arrowClassName,
   dotClassName,
   activeDotClassName,
+  thumbnailsClassName,
   className,
   children,
   ...props
@@ -75,11 +91,13 @@ function Carousel({
   const items = React.Children.toArray(children)
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex)
   const touchStartXRef = React.useRef<number | null>(null)
+  const pointerStartXRef = React.useRef<number | null>(null)
   const [isHovered, setIsHovered] = React.useState(false)
   const [autoplayStopped, setAutoplayStopped] = React.useState(false)
   const [autoplayEnabled, setAutoplayEnabled] = React.useState(autoplay)
   const controlled = index !== undefined
   const activeIndex = clampIndex(controlled ? index : internalIndex, items.length, loop)
+  const activeItem = items[activeIndex]
 
   React.useEffect(() => {
     setAutoplayEnabled(autoplay)
@@ -110,6 +128,21 @@ function Carousel({
     const endX = event.changedTouches[0]?.clientX ?? touchStartXRef.current
     const deltaX = endX - touchStartXRef.current
     touchStartXRef.current = null
+
+    if (Math.abs(deltaX) < swipeThreshold) return
+    if (deltaX > 0 && canGoPrevious) setActiveIndex(activeIndex - 1)
+    if (deltaX < 0 && canGoNext) setActiveIndex(activeIndex + 1)
+  }
+
+  const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
+    if (!mouseDrag || event.pointerType === "touch") return
+    pointerStartXRef.current = event.clientX
+  }
+
+  const handlePointerUp: React.PointerEventHandler<HTMLDivElement> = (event) => {
+    if (!mouseDrag || pointerStartXRef.current == null || items.length <= 1) return
+    const deltaX = event.clientX - pointerStartXRef.current
+    pointerStartXRef.current = null
 
     if (Math.abs(deltaX) < swipeThreshold) return
     if (deltaX > 0 && canGoPrevious) setActiveIndex(activeIndex - 1)
@@ -152,9 +185,19 @@ function Carousel({
           event.preventDefault()
           setActiveIndex(activeIndex + 1)
         }
+        if (event.key === "Home") {
+          event.preventDefault()
+          setActiveIndex(0)
+        }
+        if (event.key === "End") {
+          event.preventDefault()
+          setActiveIndex(items.length - 1)
+        }
       }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       {...props}
@@ -164,7 +207,16 @@ function Carousel({
         variant === "hero" && "min-h-72",
         variant === "minimal" && "rounded-[var(--radius-md)] shadow-none"
       , viewportClassName)}>
-        <div className="transition-transform duration-300 ease-out" aria-live="polite">
+        {showStatus ? (
+          <div className="pointer-events-none absolute right-3 top-3 z-10 rounded-full border border-border/70 bg-background/92 px-2.5 py-1 text-[11px] font-medium text-muted-foreground shadow-sm">
+            {statusLabel?.(activeIndex, items.length) ?? `Slide ${activeIndex + 1} / ${items.length}`}
+          </div>
+        ) : null}
+        <div
+          className="transition-transform duration-300 ease-out"
+          aria-live="polite"
+          style={aspectRatio ? { aspectRatio } : undefined}
+        >
           {items[activeIndex]}
         </div>
         {showArrows && items.length > 1 ? (
@@ -228,6 +280,35 @@ function Carousel({
           ) : null}
         </div>
       )}
+      {showThumbnails && items.length > 1 ? (
+        <div className={cn("grid grid-cols-2 gap-2 sm:grid-cols-4", thumbnailsClassName)}>
+          {items.map((item, itemIndex) => {
+            const active = itemIndex === activeIndex
+
+            return (
+              <button
+                key={itemIndex}
+                type="button"
+                aria-current={active ? "true" : undefined}
+                aria-label={`Open slide ${itemIndex + 1}`}
+                className={cn(
+                  "overflow-hidden rounded-[min(var(--radius-xl),16px)] border bg-card text-left transition hover:border-primary/35 hover:shadow-sm",
+                  active ? "border-primary/35 ring-2 ring-primary/15" : "border-border/70"
+                )}
+                onClick={() => setActiveIndex(itemIndex)}
+              >
+                {renderThumbnail
+                  ? renderThumbnail(item, itemIndex, active)
+                  : <div className="line-clamp-2 min-h-16 p-3 text-xs text-muted-foreground">Slide {itemIndex + 1}</div>}
+              </button>
+            )
+          })}
+        </div>
+      ) : null}
+      {renderActiveDetail ? renderActiveDetail(activeItem, activeIndex) : null}
+      <span className="sr-only" aria-live="polite">
+        {statusLabel?.(activeIndex, items.length) ?? `${ariaLabel}: slide ${activeIndex + 1} of ${items.length}`}
+      </span>
     </div>
   )
 }

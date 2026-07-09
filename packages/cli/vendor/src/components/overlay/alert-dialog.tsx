@@ -174,7 +174,7 @@ function AlertDialog({
             type="button"
             variant={actionTone === "destructive" ? "destructive" : "default"}
             loading={resolvedLoading}
-            disabled={!canConfirm && !resolvedLoading}
+            disabled={!canConfirm || resolvedLoading}
             onClick={() => void handleAction()}
             {...actionButtonProps}
           >

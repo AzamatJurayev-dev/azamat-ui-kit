@@ -1,37 +1,82 @@
 import * as React from "react"
+import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
 
 import { cn } from "@/lib/utils"
 
-export type TooltipProps = Omit<React.ComponentProps<"span">, "content"> & {
+export type TooltipProps = Omit<TooltipPrimitive.Root.Props, "children"> &
+  Omit<React.ComponentProps<"span">, "content" | "children"> & {
   content: React.ReactNode
-  side?: "top" | "bottom" | "left" | "right"
+  children: React.ReactNode
+  side?: TooltipPrimitive.Positioner.Props["side"]
+  align?: TooltipPrimitive.Positioner.Props["align"]
+  sideOffset?: TooltipPrimitive.Positioner.Props["sideOffset"]
+  alignOffset?: TooltipPrimitive.Positioner.Props["alignOffset"]
+  collisionPadding?: TooltipPrimitive.Positioner.Props["collisionPadding"]
+  delay?: TooltipPrimitive.Trigger.Props["delay"]
+  closeDelay?: TooltipPrimitive.Trigger.Props["closeDelay"]
   disabled?: boolean
 }
 
-const sideClassName = {
-  top: "bottom-full left-1/2 mb-2 -translate-x-1/2",
-  bottom: "left-1/2 top-full mt-2 -translate-x-1/2",
-  left: "right-full top-1/2 mr-2 -translate-y-1/2",
-  right: "left-full top-1/2 ml-2 -translate-y-1/2",
+function getPlainText(node: React.ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node)
+  if (Array.isArray(node)) return node.map(getPlainText).join("")
+  if (React.isValidElement<{ children?: React.ReactNode }>(node)) return getPlainText(node.props.children)
+  return ""
 }
 
-function Tooltip({ content, side = "top", disabled = false, className, children, ...props }: TooltipProps) {
+function Tooltip({
+  content,
+  side = "top",
+  align = "center",
+  sideOffset = 8,
+  alignOffset = 0,
+  collisionPadding = 8,
+  delay = 500,
+  closeDelay = 0,
+  disabled = false,
+  className,
+  children,
+  ...props
+}: TooltipProps) {
+  const trigger = React.isValidElement(children) ? (
+    children
+  ) : (
+    <span className="inline-flex">{children}</span>
+  )
+  const contentText = getPlainText(content)
+  const shouldRenderFallbackLabel =
+    !disabled && contentText.length > 0 && !getPlainText(children).includes(contentText)
+
   return (
-    <span data-slot="tooltip" className={cn("group/tooltip relative inline-flex", className)} {...props}>
-      {children}
-      {!disabled && (
-        <span
-          data-slot="tooltip-content"
-          role="tooltip"
-          className={cn(
-            "pointer-events-none absolute z-50 hidden max-w-64 whitespace-nowrap rounded-xl border border-border/75 bg-popover/98 px-2.5 py-1.5 text-[11px] font-medium text-popover-foreground shadow-[0_16px_42px_color-mix(in_oklch,var(--foreground),transparent_86%)] backdrop-blur group-hover/tooltip:block group-focus-within/tooltip:block",
-            sideClassName[side]
-          )}
+    <TooltipPrimitive.Root disabled={disabled}>
+      <TooltipPrimitive.Trigger
+        data-slot="tooltip-trigger"
+        delay={delay}
+        closeDelay={closeDelay}
+        disabled={disabled}
+        render={<span data-slot="tooltip" className={cn("inline-flex", className)} {...props} />}
+      >
+        {trigger}
+        {shouldRenderFallbackLabel ? <span className="sr-only">{content}</span> : null}
+      </TooltipPrimitive.Trigger>
+      <TooltipPrimitive.Portal>
+        <TooltipPrimitive.Positioner
+          className="isolate z-50"
+          side={side}
+          align={align}
+          sideOffset={sideOffset}
+          alignOffset={alignOffset}
+          collisionPadding={collisionPadding}
         >
-          {content}
-        </span>
-      )}
-    </span>
+          <TooltipPrimitive.Popup
+            data-slot="tooltip-content"
+            className="z-50 max-w-64 origin-(--transform-origin) rounded-[var(--radius-lg)] border border-border/75 bg-popover/98 px-2.5 py-1.5 text-[11px] font-medium leading-4 text-popover-foreground shadow-[0_16px_42px_color-mix(in_oklch,var(--foreground),transparent_86%)] outline-hidden backdrop-blur duration-100 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95"
+          >
+            {content}
+          </TooltipPrimitive.Popup>
+        </TooltipPrimitive.Positioner>
+      </TooltipPrimitive.Portal>
+    </TooltipPrimitive.Root>
   )
 }
 

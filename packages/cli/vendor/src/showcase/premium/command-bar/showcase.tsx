@@ -46,7 +46,7 @@ export function CommandBarShowcase() {
               </div>
             </div>
 
-            <CommandBar open={open} position={position} className="max-w-[calc(100%-2rem)]">
+            <CommandBar open={open} position={position} grouped label="Review flow" className="max-w-[calc(100%-2rem)]">
               <Kbd>G</Kbd>
               <Button size="sm" variant="ghost">
                 <MessageSquareIcon className="mr-2 size-4" />

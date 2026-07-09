@@ -5,7 +5,6 @@ import { AlertDialogShowcase, alertDialogMock } from "./alert-dialog"
 import { accordionMock, AccordionShowcase } from "./accordion"
 import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
 import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
-import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
 import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
 import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
@@ -203,7 +202,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   table: { mock: tableMock, Showcase: TableShowcase },
   sidebar: { mock: appSidebarMock, Showcase: AppSidebarShowcase },
   "app-sidebar": { mock: appSidebarMock, Showcase: AppSidebarShowcase },
-  "app-shell": { mock: appShellMock, Showcase: AppShellShowcase },
   "sidebar-nav": { mock: sidebarNavMock, Showcase: SidebarNavShowcase },
   breadcrumbs: { mock: breadcrumbsMock, Showcase: BreadcrumbsShowcase },
   "page-header": { mock: pageHeaderMock, Showcase: PageHeaderShowcase },

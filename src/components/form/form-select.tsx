@@ -67,6 +67,8 @@ function buildShellProps<
   return {
     label: props.label,
     description: props.description,
+    success: props.success,
+    loading: props.loading,
     required: props.required,
     className: props.className,
     htmlFor: props.name,

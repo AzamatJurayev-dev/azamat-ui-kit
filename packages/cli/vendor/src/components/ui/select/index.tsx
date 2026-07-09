@@ -29,14 +29,21 @@ export type SelectOption = {
   keywords?: string[]
 }
 
+export type SelectOptionGroup = {
+  label?: React.ReactNode
+  options: SelectOption[]
+}
+
 export type SelectProps = Omit<SelectRootProps, "value" | "defaultValue" | "onValueChange"> & {
   value?: string | null
   defaultValue?: string | null
   onValueChange?: (value: string | undefined) => void
   options?: SelectOption[]
+  groups?: SelectOptionGroup[]
   placeholder?: string
   searchPlaceholder?: string
   emptyLabel?: React.ReactNode
+  emptyMessage?: React.ReactNode
   clearLabel?: string
   size?: "sm" | "default" | "lg"
   clearable?: boolean
@@ -51,6 +58,7 @@ export type SelectProps = Omit<SelectRootProps, "value" | "defaultValue" | "onVa
   searchClassName?: string
   renderOption?: (option: SelectOption, state: { selected: boolean }) => React.ReactNode
   invalid?: boolean
+  onSearchChange?: (value: string) => void
 }
 
 const SelectRoot = SelectPrimitive.Root
@@ -72,9 +80,11 @@ function Select({
   defaultValue,
   onValueChange,
   options,
+  groups,
   placeholder = "Select",
   searchPlaceholder = "Search options...",
   emptyLabel = "No options found",
+  emptyMessage,
   clearLabel = "Clear selection",
   size = "default",
   clearable = false,
@@ -91,9 +101,10 @@ function Select({
   invalid,
   children,
   onOpenChange,
+  onSearchChange,
   ...props
 }: SelectProps) {
-  if (!options) {
+  if (!options && !groups) {
     return (
       <SelectRoot
         value={value ?? undefined}
@@ -109,8 +120,22 @@ function Select({
   }
 
   const [search, setSearch] = React.useState("")
-  const selectedOption = options.find((option) => option.value === value)
-  const filteredOptions = options.filter((option) => optionMatchesSearch(option, search))
+  const optionGroups = React.useMemo<SelectOptionGroup[]>(
+    () => groups ?? [{ options: options ?? [] }],
+    [groups, options]
+  )
+  const flatOptions = React.useMemo(
+    () => optionGroups.flatMap((group) => group.options),
+    [optionGroups]
+  )
+  const selectedOption = flatOptions.find((option) => option.value === value)
+  const filteredGroups = optionGroups
+    .map((group) => ({
+      ...group,
+      options: group.options.filter((option) => optionMatchesSearch(option, search)),
+    }))
+    .filter((group) => group.options.length > 0)
+  const filteredOptionsCount = filteredGroups.reduce((count, group) => count + group.options.length, 0)
 
   return (
     <SelectRoot
@@ -175,7 +200,10 @@ function Select({
             <SearchIcon className="size-4 text-muted-foreground" />
             <input
               value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => {
+                setSearch(event.target.value)
+                onSearchChange?.(event.target.value)
+              }}
               placeholder={searchPlaceholder}
               className={cn(
                 "min-w-0 flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
@@ -193,39 +221,44 @@ function Select({
             <LoaderCircleIcon className="size-4 animate-spin" />
             {loadingLabel}
           </div>
-        ) : filteredOptions.length === 0 ? (
+        ) : filteredOptionsCount === 0 ? (
           <div
             data-slot="select-state"
             className="rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-2.5 text-sm text-muted-foreground"
           >
-            {emptyLabel}
+            {emptyMessage ?? emptyLabel}
           </div>
         ) : (
-          filteredOptions.map((option) => {
-            const selected = option.value === value
-            return (
-              <SelectItem
-                key={option.value}
-                value={option.value}
-                disabled={option.disabled}
-                className={cn("rounded-[var(--radius-md)]", itemClassName)}
-              >
-                {renderOption ? (
-                  renderOption(option, { selected })
-                ) : (
-                  <span className="flex min-w-0 flex-1 flex-col">
-                    <span className="flex min-w-0 items-center gap-2">
-                      <span className="truncate">{option.label}</span>
-                      {selected ? <CheckIcon className="ml-auto size-3.5 text-primary" /> : null}
-                    </span>
-                    {option.description ? (
-                      <span className="truncate text-xs text-muted-foreground">{option.description}</span>
-                    ) : null}
-                  </span>
-                )}
-              </SelectItem>
-            )
-          })
+          filteredGroups.map((group, groupIndex) => (
+            <SelectGroup key={groupIndex}>
+              {group.label ? <SelectLabel>{group.label}</SelectLabel> : null}
+              {group.options.map((option) => {
+                const selected = option.value === value
+                return (
+                  <SelectItem
+                    key={option.value}
+                    value={option.value}
+                    disabled={option.disabled}
+                    className={cn("rounded-[var(--radius-md)]", itemClassName)}
+                  >
+                    {renderOption ? (
+                      renderOption(option, { selected })
+                    ) : (
+                      <span className="flex min-w-0 flex-1 flex-col">
+                        <span className="flex min-w-0 items-center gap-2">
+                          <span className="truncate">{option.label}</span>
+                          {selected ? <CheckIcon className="ml-auto size-3.5 text-primary" /> : null}
+                        </span>
+                        {option.description ? (
+                          <span className="truncate text-xs text-muted-foreground">{option.description}</span>
+                        ) : null}
+                      </span>
+                    )}
+                  </SelectItem>
+                )
+              })}
+            </SelectGroup>
+          ))
         )}
       </SelectContent>
     </SelectRoot>

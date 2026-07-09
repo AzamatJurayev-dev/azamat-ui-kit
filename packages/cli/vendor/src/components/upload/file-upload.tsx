@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { cn, stopInteractivePropagation } from "@/lib/utils"
 
 export type FileUploadRejectReason = "max-files" | "max-size" | "type"
+export type FileUploadItemStatus = "idle" | "uploading" | "success" | "error"
 
 export type FileUploadRejectedFile = {
   file: File
@@ -28,7 +29,9 @@ export type FileUploadRenderFileState = {
   file: File
   index: number
   progress?: number
+  status: FileUploadItemStatus
   remove: () => void
+  retry?: () => void
   removeLabel?: string
 }
 
@@ -75,6 +78,10 @@ export type FileUploadProps = NativeFileInputProps & {
   showClearButton?: boolean
   loading?: boolean
   progress?: number | Record<string, number>
+  status?: FileUploadItemStatus | Record<string, FileUploadItemStatus>
+  validateFile?: (file: File) => string | null | Promise<string | null>
+  onRetryFile?: (file: File, index: number) => void
+  fileTriggerLabel?: string
   renderFile?: (state: FileUploadRenderFileState) => React.ReactNode
   renderRejectedFile?: (state: FileUploadRenderRejectedFileState) => React.ReactNode
   renderActions?: (state: { openFileDialog: () => void; clearFiles: () => void; files: File[] }) => React.ReactNode
@@ -127,6 +134,11 @@ function getProgressForFile(progress: FileUploadProps["progress"], file: File) {
   return progress?.[getFileKey(file)] ?? progress?.[file.name]
 }
 
+function getStatusForFile(status: FileUploadProps["status"], file: File): FileUploadItemStatus {
+  if (typeof status === "string") return status
+  return status?.[getFileKey(file)] ?? status?.[file.name] ?? "idle"
+}
+
 function resolveRejectionMessage(
   reason: FileUploadRejectReason,
   context: Omit<FileUploadRejectionMessageContext, "reason">,
@@ -156,6 +168,7 @@ function validateIncomingFiles({
   maxSize,
   appendFiles,
   rejectionMessages,
+  validateFile,
 }: {
   currentFiles: File[]
   incomingFiles: File[]
@@ -164,6 +177,7 @@ function validateIncomingFiles({
   maxSize?: number
   appendFiles: boolean
   rejectionMessages?: FileUploadRejectionMessages
+  validateFile?: FileUploadProps["validateFile"]
 }) {
   const accepted: File[] = []
   const rejected: FileUploadRejectedFile[] = []
@@ -198,6 +212,16 @@ function validateIncomingFiles({
       continue
     }
 
+    const customMessage = validateFile?.(file)
+    if (typeof customMessage === "string" && customMessage) {
+      rejected.push({
+        file,
+        reason: "type",
+        message: customMessage,
+      })
+      continue
+    }
+
     accepted.push(file)
   }
 
@@ -208,14 +232,25 @@ function validateIncomingFiles({
   }
 }
 
-function defaultRenderFile({ file, progress, remove, removeLabel = "Remove file" }: FileUploadRenderFileState) {
+function defaultRenderFile({ file, progress, status, remove, retry, removeLabel = "Remove file" }: FileUploadRenderFileState) {
   return (
     <div className="flex min-w-0 items-center gap-3">
       <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-background/90 shadow-sm">
         <FileIcon className="size-4 text-muted-foreground" />
       </span>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-medium text-foreground">{file.name}</div>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="truncate text-sm font-medium text-foreground">{file.name}</div>
+          <span className={cn(
+            "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em]",
+            status === "uploading" && "bg-primary/10 text-primary",
+            status === "success" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+            status === "error" && "bg-destructive/10 text-destructive",
+            status === "idle" && "bg-muted text-muted-foreground"
+          )}>
+            {status}
+          </span>
+        </div>
         <div className="text-xs text-muted-foreground">{formatBytes(file.size)}</div>
         {typeof progress === "number" && (
           <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted/80">
@@ -226,6 +261,11 @@ function defaultRenderFile({ file, progress, remove, removeLabel = "Remove file"
           </div>
         )}
       </div>
+      {status === "error" && retry ? (
+        <Button type="button" variant="outline" size="sm" className="rounded-full" onClick={retry}>
+          Retry
+        </Button>
+      ) : null}
       <Button
         type="button"
         variant="ghost"
@@ -266,6 +306,10 @@ function FileUpload({
   showClearButton = true,
   loading = false,
   progress,
+  status,
+  validateFile,
+  onRetryFile,
+  fileTriggerLabel = "Open file picker",
   renderFile,
   renderRejectedFile,
   renderActions,
@@ -317,11 +361,20 @@ function FileUpload({
 
   const processFiles = React.useCallback(
     (incomingFiles: File[]) => {
-      const result = validateIncomingFiles({ currentFiles: files, incomingFiles, accept, maxFiles, maxSize, appendFiles, rejectionMessages })
+      const result = validateIncomingFiles({
+        currentFiles: files,
+        incomingFiles,
+        accept,
+        maxFiles,
+        maxSize,
+        appendFiles,
+        rejectionMessages,
+        validateFile,
+      })
       onFilesChange?.(result.nextFiles)
       setRejectedFiles(result.rejected)
     },
-    [accept, appendFiles, files, maxFiles, maxSize, onFilesChange, rejectionMessages, setRejectedFiles]
+    [accept, appendFiles, files, maxFiles, maxSize, onFilesChange, rejectionMessages, setRejectedFiles, validateFile]
   )
 
   const removeFile = React.useCallback(
@@ -393,7 +446,7 @@ function FileUpload({
         data-disabled={isDisabled || undefined}
         role="button"
         aria-disabled={isDisabled || undefined}
-        aria-label={dropzoneAriaLabel}
+        aria-label={dropzoneAriaLabel ?? fileTriggerLabel}
         tabIndex={isDisabled ? -1 : 0}
         className={cn(
           "grid cursor-pointer gap-4 rounded-[var(--radius-2xl)] border border-dashed border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_12%),var(--card))] p-6 text-center shadow-sm ring-1 ring-foreground/5 outline-none transition-[background-color,border-color,box-shadow,transform] hover:-translate-y-px hover:border-primary/35 hover:bg-muted/25 hover:shadow-[0_14px_36px_rgba(15,23,42,0.08)] focus-visible:ring-2 focus-visible:ring-ring data-[dragging=true]:border-primary data-[dragging=true]:bg-primary/6 data-[dragging=true]:shadow-[0_18px_50px_color-mix(in_oklch,var(--primary),transparent_84%)] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-60",
@@ -432,6 +485,7 @@ function FileUpload({
               variant="outline"
               size="sm"
               disabled={isDisabled}
+              aria-label={typeof buttonLabel === "string" ? buttonLabel : fileTriggerLabel}
               onClick={(event) => {
                 stopInteractivePropagation(event)
                 openFileDialog()
@@ -464,12 +518,21 @@ function FileUpload({
       {showFileList && files.length > 0 && (
         <div data-slot="file-upload-list" className={cn("grid gap-2", fileListClassName)}>
           {files.map((file, index) => {
-            const state = { file, index, progress: getProgressForFile(progress, file), remove: () => removeFile(index), removeLabel }
+            const state = {
+              file,
+              index,
+              progress: getProgressForFile(progress, file),
+              status: getStatusForFile(status, file),
+              remove: () => removeFile(index),
+              retry: onRetryFile ? () => onRetryFile(file, index) : undefined,
+              removeLabel,
+            }
 
             return (
               <div
                 key={`${file.name}-${file.lastModified}-${index}`}
                 data-slot="file-upload-item"
+                data-status={state.status}
                 className={cn("rounded-[min(var(--radius-xl),18px)] border border-border/80 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--card),white_10%),var(--card))] p-3.5 shadow-sm ring-1 ring-foreground/5", fileItemClassName)}
               >
                 {renderFile?.(state) ?? defaultRenderFile(state)}

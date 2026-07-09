@@ -12,6 +12,7 @@ export type PageStateProps = Omit<React.ComponentProps<"div">, "title"> & {
   description?: React.ReactNode
   icon?: React.ReactNode
   action?: React.ReactNode
+  extra?: React.ReactNode
   compact?: boolean
 }
 
@@ -30,7 +31,7 @@ function defaultPageStateIcon(tone: PageStateTone) {
   }
 }
 
-function PageState({ tone = "empty", title, description, icon, action, compact = false, className, ...props }: PageStateProps) {
+function PageState({ tone = "empty", title, description, icon, action, extra, compact = false, className, ...props }: PageStateProps) {
   return (
     <div
       data-slot="page-state"
@@ -49,7 +50,7 @@ function PageState({ tone = "empty", title, description, icon, action, compact =
         {title && <div className="text-base font-semibold tracking-tight text-foreground">{title}</div>}
         {description && <div className="max-w-md text-sm leading-6 text-muted-foreground">{description}</div>}
       </div>
-      {action && <div>{action}</div>}
+      {(action || extra) ? <div className="flex flex-wrap items-center justify-center gap-2">{action}{extra}</div> : null}
     </div>
   )
 }

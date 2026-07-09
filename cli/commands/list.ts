@@ -7,6 +7,21 @@ import {
   standalonePublicRegistrySurfaceNames,
 } from "../../src/public-component-surface"
 
+const internalRegistryNames = new Set([
+  "data-table-actions-column",
+  "data-table-bulk-actions",
+  "data-table-column-visibility-menu",
+  "data-table-pagination",
+  "data-table-row-actions",
+  "data-table-saved-filters",
+  "data-table-select-column",
+  "data-table-sortable-header",
+  "data-table-toolbar",
+  "data-table-view-presets",
+  "table-export-menu",
+  "table-import-button",
+])
+
 function printRegistryListSection(title: string, names: string[]) {
   console.log(`\n${title}`)
   names.forEach((name) => {
@@ -37,6 +52,8 @@ export function listCommand() {
   const grouped = registryNames
     .filter((name) => registry[name].category !== "lib")
     .filter((name) => !surfacedNames.has(name))
+    .filter((name) => !internalRegistryNames.has(name))
+    .filter((name) => !registry[name].migrationAliasFor)
     .reduce<Record<string, string[]>>((acc, name) => {
       const category = registry[name].category
       acc[category] ??= []

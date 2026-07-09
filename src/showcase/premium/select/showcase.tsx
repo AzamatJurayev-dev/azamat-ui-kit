@@ -13,10 +13,12 @@ type SelectMode = "plan" | "density"
 export function SelectShowcase({ state, setState }: ComponentDemoProps) {
   const planOptions = selectDemoGroups[0].options
   const compactOptions = selectDemoGroups[1].options
+  const groupedOptions = selectDemoGroups[2].options
   const selectedValue = state.selectValue ?? planOptions[0].value
   const selectedPlan = planOptions.find((option) => option.value === selectedValue) ?? planOptions[0]
   const highlightedPlan = planOptions[1] ?? planOptions[0]
   const [surface, setSurface] = React.useState<SelectMode>("plan")
+  const [workspace, setWorkspace] = React.useState("north")
 
   const summaryRows =
     selectedPlan.value === "enterprise"
@@ -55,7 +57,7 @@ export function SelectShowcase({ state, setState }: ComponentDemoProps) {
           <Button size="sm" variant={surface === "plan" ? "default" : "outline"} onClick={() => setSurface("plan")}>
             Default trigger
           </Button>
-          <Button size="sm" variant={surface === "density" ? "default" : "outline"} onClick={() => setSurface("density")}>
+              <Button size="sm" variant={surface === "density" ? "default" : "outline"} onClick={() => setSurface("density")}>
             Compact trigger
           </Button>
         </div>
@@ -89,6 +91,25 @@ export function SelectShowcase({ state, setState }: ComponentDemoProps) {
                     triggerClassName="w-full"
                   />
                 )}
+              </div>
+            </div>
+
+            <div className="rounded-[20px] border border-[color:var(--aui-divider)] p-4">
+              <p className="text-sm font-medium aui-text-muted">Grouped searchable select</p>
+              <div className="mt-3">
+                <Select
+                  value={workspace}
+                  onValueChange={(value) => setWorkspace(value ?? "north")}
+                  searchable
+                  clearable
+                  placeholder="Choose workspace"
+                  emptyMessage="No workspace matched"
+                  groups={[
+                    { label: "Regions", options: groupedOptions.slice(0, 2) },
+                    { label: "Operations", options: groupedOptions.slice(2) },
+                  ]}
+                  triggerClassName="w-full"
+                />
               </div>
             </div>
 

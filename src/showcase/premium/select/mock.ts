@@ -1,9 +1,9 @@
 import type { ComponentDemoMock } from "../types"
 
 export const selectMock: ComponentDemoMock = {
-  code: `import { Select } from "tembro"\n\nconst planOptions = [\n  { value: "starter", label: "Starter" },\n  { value: "growth", label: "Growth" },\n  { value: "enterprise", label: "Enterprise" },\n]\n\nexport function Example() {\n  return <Select defaultValue="starter" options={planOptions} />\n}`,
+  code: `import { Select } from "tembro"\n\nconst planGroups = [\n  {\n    label: "Plans",\n    options: [\n      { value: "starter", label: "Starter" },\n      { value: "growth", label: "Growth", description: "25 seats" },\n      { value: "enterprise", label: "Enterprise", description: "Priority support" },\n    ],\n  },\n]\n\nexport function Example() {\n  return (\n    <Select\n      defaultValue="starter"\n      groups={planGroups}\n      searchable\n      clearable\n      emptyMessage="No plan matched"\n    />\n  )\n}`,
   cliCommand: "npx tembro add select",
-  highlights: ["Primary selection surface", "Controlled selection", "Searchable local flow", "Compact trigger options"],
+  highlights: ["Primary selection surface", "Controlled selection", "Searchable local flow", "Grouped option support", "Compact trigger options"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "dashboard-starter"],
   scenarios: [
     { title: "Plan picker", description: "Switch between starter, growth and enterprise plans." },
@@ -13,7 +13,7 @@ export const selectMock: ComponentDemoMock = {
   ],
   capabilityNotes: [
     "Start here for most static single-choice flows before reaching for helper members.",
-    "Supports controlled and uncontrolled selected values plus searchable local filtering.",
+    "Supports controlled and uncontrolled selected values, grouped options, clearable state, and searchable local filtering.",
     "Includes trigger sizing for compact or default density layouts.",
     "AsyncSelect, AsyncMultiSelect, SimpleSelect, and Combobox should read as related members rather than separate starting points.",
   ],

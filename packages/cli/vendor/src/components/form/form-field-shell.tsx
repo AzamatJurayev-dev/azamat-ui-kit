@@ -10,6 +10,8 @@ export type FormFieldShellProps = React.ComponentProps<"div"> & {
   label?: React.ReactNode
   description?: React.ReactNode
   error?: React.ReactNode
+  success?: React.ReactNode
+  loading?: boolean
   required?: boolean
   htmlFor?: string
   labelId?: string
@@ -34,6 +36,8 @@ export type FormFieldShellControlProps = Pick<
   FormFieldShellProps,
   | "label"
   | "description"
+  | "success"
+  | "loading"
   | "required"
   | "className"
   | "htmlFor"
@@ -89,6 +93,8 @@ function FormFieldShell({
   label,
   description,
   error,
+  success,
+  loading = false,
   required = false,
   htmlFor,
   labelId,
@@ -183,11 +189,28 @@ function FormFieldShell({
     </p>
   ) : null
 
+  const successNode = success && !error ? (
+    <p
+      data-slot="form-field-success"
+      className="rounded-[min(var(--radius-xl),16px)] border border-emerald-500/18 bg-emerald-500/8 px-3 py-2 text-sm font-medium leading-6 text-emerald-700 dark:text-emerald-300"
+    >
+      {success}
+    </p>
+  ) : null
+
+  const loadingNode = loading ? (
+    <p data-slot="form-field-loading" className="text-sm leading-6 text-muted-foreground">
+      Loading...
+    </p>
+  ) : null
+
   return (
     <div
       data-slot="form-field-shell"
       data-layout={layout}
       data-invalid={Boolean(error) || undefined}
+      data-success={Boolean(success && !error) || undefined}
+      data-loading={loading || undefined}
       data-disabled={disabled || undefined}
       data-readonly={readOnly || undefined}
       aria-disabled={disabled || undefined}
@@ -202,7 +225,9 @@ function FormFieldShell({
           </div>
           <div className="grid min-w-0 gap-2">
             {content}
+            {loadingNode}
             {hasDescriptionBottom && descriptionNode}
+            {successNode}
             {errorNode}
           </div>
         </>
@@ -212,7 +237,9 @@ function FormFieldShell({
           <div className="grid min-w-0 flex-1 gap-2">
             {hasDescriptionTop && descriptionNode}
             {content}
+            {loadingNode}
             {hasDescriptionBottom && descriptionNode}
+            {successNode}
             {errorNode}
           </div>
         </>
@@ -221,7 +248,9 @@ function FormFieldShell({
           {header}
           {hasDescriptionTop && descriptionNode}
           {content}
+          {loadingNode}
           {hasDescriptionBottom && descriptionNode}
+          {successNode}
           {errorNode}
         </>
       )}

@@ -1,4 +1,5 @@
 import * as React from "react"
+import { XIcon } from "lucide-react"
 
 import { cn, stopInteractivePropagation } from "@/lib/utils"
 
@@ -11,6 +12,7 @@ export type TagProps = React.ComponentProps<"span"> & {
   removable?: boolean
   selected?: boolean
   onRemove?: () => void
+  removeLabel?: string
 }
 
 export type TagGroupProps = React.ComponentProps<"div"> & {
@@ -31,29 +33,45 @@ const sizeClassName: Record<TagSize, string> = {
   lg: "h-8 px-3 text-sm",
 }
 
-function Tag({ tone = "neutral", size = "default", removable, selected, onRemove, className, children, ...props }: TagProps) {
+function Tag({ tone = "neutral", size = "default", removable, selected, onRemove, removeLabel = "Remove tag", className, children, onKeyDown, ...props }: TagProps) {
+  const handleRemove = (event: React.SyntheticEvent) => {
+    stopInteractivePropagation(event)
+    onRemove?.()
+  }
+
   return (
     <span
       data-slot="tag"
       data-tone={tone}
       data-selected={selected ? "true" : undefined}
-      className={cn("inline-flex items-center gap-1 rounded-full border font-medium transition-colors", toneClassName[tone], sizeClassName[size], selected && "ring-2 ring-ring ring-offset-1", className)}
+      tabIndex={removable ? 0 : props.tabIndex}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/35",
+        toneClassName[tone],
+        sizeClassName[size],
+        selected && "ring-2 ring-ring ring-offset-1",
+        className
+      )}
+      onKeyDown={(event) => {
+        if (removable && (event.key === "Backspace" || event.key === "Delete")) {
+          event.preventDefault()
+          onRemove?.()
+        }
+        onKeyDown?.(event)
+      }}
       {...props}
     >
       <span>{children}</span>
       {removable && (
         <button
           type="button"
-          aria-label="Remove tag"
-          className="-mr-1 inline-flex size-4 items-center justify-center rounded-full hover:bg-black/10 dark:hover:bg-white/10"
-          onClick={(event) => {
-            stopInteractivePropagation(event)
-            onRemove?.()
-          }}
+          aria-label={removeLabel}
+          className="-mr-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-80 transition hover:bg-black/10 hover:opacity-100 focus-visible:ring-2 focus-visible:ring-current/35 dark:hover:bg-white/10"
+          onClick={handleRemove}
           onMouseDown={stopInteractivePropagation}
           onDoubleClick={stopInteractivePropagation}
         >
-          ×
+          <XIcon className="size-3" />
         </button>
       )}
     </span>

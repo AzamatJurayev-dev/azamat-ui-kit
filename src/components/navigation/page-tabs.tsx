@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
 export type PageTabItem<TValue extends string = string> = {
@@ -30,40 +31,50 @@ function PageTabs<TValue extends string = string>({
   ...props
 }: PageTabsProps<TValue>) {
   const visibleItems = items.filter((item) => !item.hidden)
+  const handleValueChange = (nextValue: unknown) => {
+    const nextItem = visibleItems.find((item) => item.value === nextValue)
+    if (nextItem) {
+      onValueChange?.(nextItem.value, nextItem)
+    }
+  }
 
   return (
-    <div
+    <Tabs
+      value={value}
+      onValueChange={handleValueChange}
       data-slot="page-tabs"
       data-variant={variant}
       className={cn(
-        "flex min-w-0 flex-wrap gap-1.5 border-b border-border/70",
-        variant === "pills" && "rounded-full border border-border/75 bg-muted/22 p-1 shadow-[0_1px_0_rgba(255,255,255,0.04)]",
-        variant === "cards" && "gap-2 border-b-0",
-        variant !== "underline" && "border-b-0",
+        "min-w-0",
         className
       )}
       {...props}
     >
+      <TabsList
+        data-slot="page-tabs-list"
+        variant={variant === "underline" ? "underline" : "pills"}
+        overflow="scroll"
+        className={cn(
+          "w-full",
+          variant === "cards" && "gap-2 border-0 bg-transparent p-0 shadow-none"
+        )}
+      >
       {visibleItems.map((item) => {
         const active = item.value === value
         return (
-          <button
+          <TabsTrigger
             key={item.value}
-            type="button"
             disabled={item.disabled}
+            value={item.value}
             data-slot="page-tab"
             data-active={active || undefined}
             className={cn(
-              "inline-flex min-w-0 items-center gap-2 rounded-full px-3 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
+              "min-w-0 px-3 disabled:pointer-events-none disabled:opacity-50",
               size === "sm" ? "h-8" : "h-10",
-              variant === "underline" && "rounded-none border-b-2 border-transparent px-1 text-muted-foreground hover:text-foreground",
-              variant === "underline" && active && "border-primary text-foreground",
-              variant === "pills" && "text-muted-foreground hover:bg-background/72 hover:text-foreground",
-              variant === "pills" && active && "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground",
+              variant === "underline" && "px-1",
               variant === "cards" && "rounded-[var(--radius-2xl)] border border-border/75 bg-card/96 text-muted-foreground shadow-sm ring-1 ring-foreground/4 hover:border-primary/28 hover:text-foreground",
               variant === "cards" && active && "border-primary/50 bg-primary/7 text-foreground"
             )}
-            onClick={() => onValueChange?.(item.value, item)}
           >
             {item.icon}
             <span className="truncate">{item.label}</span>
@@ -72,10 +83,11 @@ function PageTabs<TValue extends string = string>({
                 {item.badge}
               </Badge>
             )}
-          </button>
+          </TabsTrigger>
         )
       })}
-    </div>
+      </TabsList>
+    </Tabs>
   )
 }
 

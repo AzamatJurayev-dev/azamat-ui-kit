@@ -8,6 +8,7 @@ export type QRCodeProps = React.ComponentProps<"div"> & {
   alt?: string
   size?: number
   cells?: number
+  visualOnlyLabel?: React.ReactNode
 }
 
 function hashValue(value: string) {
@@ -53,7 +54,7 @@ function QRCodeSvg({ value, cells = 29, title }: { value: string; cells?: number
   )
 }
 
-function QRCode({ value, src, alt, size = 160, cells = 29, className, ...props }: QRCodeProps) {
+function QRCode({ value, src, alt, size = 160, cells = 29, visualOnlyLabel = "Visual preview only. Provide src from a certified QR encoder for scan-critical use.", className, ...props }: QRCodeProps) {
   return (
     <div data-slot="qr-code" className={cn("inline-flex flex-col items-center gap-2 rounded-xl border bg-background p-3", className)} {...props}>
       <div className="rounded-md bg-white p-2" style={{ width: size, height: size }}>
@@ -63,6 +64,7 @@ function QRCode({ value, src, alt, size = 160, cells = 29, className, ...props }
           <QRCodeSvg value={value} cells={cells} title={alt} />
         )}
       </div>
+      {!src && visualOnlyLabel && <div className="max-w-48 text-center text-xs text-muted-foreground">{visualOnlyLabel}</div>}
     </div>
   )
 }

@@ -11,6 +11,9 @@ import { Drawer } from "@/components/overlay/drawer"
 import { NavTabs } from "@/components/navigation/nav-tabs"
 import { PageTabs } from "@/components/navigation/page-tabs"
 import { Pagination } from "@/components/navigation/pagination"
+import { RightClickMenu } from "@/components/ui/right-click-menu"
+import { SegmentedControl } from "@/components/ui/segmented-control"
+import { Tooltip } from "@/components/ui/tooltip"
 
 function CommandShortcutHarness({
   onSelect,
@@ -63,7 +66,7 @@ function ConfirmDialogHarness({
   isLoading = false,
 }: {
   onCancel: () => void
-  onConfirm: () => void
+  onConfirm: () => void | Promise<void>
   isLoading?: boolean
 }) {
   const [open, setOpen] = React.useState(false)
@@ -107,6 +110,35 @@ describe("overlay, command and navigation interactions", () => {
     await user.click(screen.getByRole("button", { name: "Open confirm" }))
     await user.click(screen.getByRole("button", { name: "Delete now" }))
     expect(onConfirm).toHaveBeenCalledTimes(1)
+
+    await waitFor(() => {
+      expect(screen.queryByRole("heading", { name: "Delete item" })).toBeNull()
+    })
+  })
+
+  it("keeps confirm dialog open and reports async confirm errors", async () => {
+    const user = userEvent.setup()
+    const onConfirmError = vi.fn()
+
+    render(
+      <ConfirmDialog
+        open
+        onOpenChange={() => undefined}
+        title="Archive item"
+        confirmText="Archive"
+        onConfirmError={onConfirmError}
+        onConfirm={async () => {
+          throw new Error("archive failed")
+        }}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: "Archive" }))
+
+    await waitFor(() => {
+      expect(onConfirmError).toHaveBeenCalledTimes(1)
+    })
+    expect(screen.getByRole("heading", { name: "Archive item" })).toBeTruthy()
   })
 
   it("keeps alert dialog action locked until typed confirmation matches", async () => {
@@ -262,6 +294,7 @@ describe("overlay, command and navigation interactions", () => {
         trigger={<button type="button">Open drawer</button>}
         title="Filters"
         description="Tune the current view"
+        width="xl"
       >
         Drawer body
       </Drawer>
@@ -269,6 +302,7 @@ describe("overlay, command and navigation interactions", () => {
 
     await user.click(screen.getByRole("button", { name: "Open drawer" }))
     expect(screen.getByText("Drawer body")).toBeTruthy()
+    expect(screen.getByRole("dialog").getAttribute("data-width")).toBe("xl")
 
     await user.click(screen.getByRole("button", { name: "Close" }))
 
@@ -334,14 +368,80 @@ describe("overlay, command and navigation interactions", () => {
 
     await user.click(screen.getByRole("button", { name: "Next page" }))
     await user.click(screen.getByRole("button", { name: "Page 5" }))
-    await user.click(screen.getByRole("button", { name: "Components" }))
-    await user.click(screen.getByRole("button", { name: "Examples3" }))
+    await user.click(screen.getByRole("tab", { name: "Components" }))
+    await user.click(screen.getByRole("tab", { name: "Examples3" }))
 
     expect(onPageChange).toHaveBeenCalledWith(3)
     expect(onPageChange).toHaveBeenCalledWith(5)
     expect(onNavChange).toHaveBeenCalledWith("components")
     expect(onPageTabChange).toHaveBeenCalledWith("examples", expect.objectContaining({ value: "examples" }))
-    expect(screen.queryByRole("button", { name: "Hidden" })).toBeNull()
+    expect(screen.queryByRole("tab", { name: "Hidden" })).toBeNull()
+  })
+
+  it("opens right-click menus from keyboard and selects focused items", async () => {
+    const user = userEvent.setup()
+    const onRename = vi.fn()
+
+    render(
+      <RightClickMenu
+        items={[
+          { label: "Rename", shortcut: "R", onSelect: onRename },
+          { label: "Delete", disabled: true, variant: "destructive" },
+        ]}
+      >
+        <div tabIndex={0}>Project row</div>
+      </RightClickMenu>
+    )
+
+    screen.getByText("Project row").focus()
+    await user.keyboard("{Shift>}{F10}{/Shift}")
+
+    expect(screen.getByRole("menu", { name: "Context menu" })).toBeTruthy()
+    expect(screen.getByRole("menuitem", { name: "RenameR" })).toHaveFocus()
+
+    await user.keyboard("{Enter}")
+    expect(onRename).toHaveBeenCalledTimes(1)
+  })
+
+  it("keeps segmented controls controlled and keyboard navigable", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <SegmentedControl
+        value="board"
+        equalWidth
+        onValueChange={onValueChange}
+        options={[
+          { value: "board", label: "Board" },
+          { value: "list", label: "List" },
+          { value: "table", label: "Table", disabled: true },
+        ]}
+      />
+    )
+
+    const board = screen.getByRole("radio", { name: "Board" })
+    const list = screen.getByRole("radio", { name: "List" })
+
+    expect(board.getAttribute("aria-checked")).toBe("true")
+    expect(board.closest("[data-slot='segmented-control']")?.className).toContain("grid-flow-col")
+
+    board.focus()
+    await user.keyboard("{ArrowRight}")
+    expect(list).toHaveFocus()
+    await user.click(list)
+    expect(onValueChange).toHaveBeenCalledWith("list")
+  })
+
+  it("does not mount disabled tooltip content", () => {
+    render(
+      <Tooltip disabled content="Locked helper">
+        <button type="button">Locked action</button>
+      </Tooltip>
+    )
+
+    expect(screen.getByRole("button", { name: "Locked action" })).toBeTruthy()
+    expect(screen.queryByText("Locked helper")).toBeNull()
   })
 
 })

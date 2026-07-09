@@ -17,6 +17,10 @@ export type AccordionRootProps = CollapseProps
 export type AccordionTriggerProps = CollapseTriggerProps
 export type AccordionContentProps = React.ComponentProps<"div">
 
+/**
+ * Accordion is the grouped disclosure API. Use CollapseRoot/CollapseTrigger/CollapseContent
+ * for a single standalone disclosure.
+ */
 function Accordion(props: AccordionProps) {
   return <CollapseGroup data-slot="accordion" {...props} />
 }

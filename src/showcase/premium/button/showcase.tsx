@@ -31,7 +31,7 @@ function VariantRow({
       <div className="flex flex-wrap items-center gap-2">
         <Button variant={variant}>{label}</Button>
         <Button variant={variant} size="sm">Small</Button>
-        <Button variant={variant} size="icon" aria-label={`${label} icon button`}>
+        <Button variant={variant} iconOnly aria-label={`${label} icon button`}>
           <ArrowRightIcon className="size-4" />
         </Button>
       </div>
@@ -220,7 +220,7 @@ export function ButtonShowcase() {
               <Button loading loadingLabel="Publishing">
                 Publish
               </Button>
-              <Button variant="outline" size="icon" aria-label="Download">
+              <Button variant="outline" iconOnly aria-label="Download">
                 <DownloadIcon className="size-4" />
               </Button>
               <a href="#" className={buttonVariants({ variant: "link" })}>
