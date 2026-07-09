@@ -103,6 +103,11 @@
       "import": "./dist/showcase/*.js",
       "require": "./dist/showcase/*.cjs"
     },
+    "./public-component-surface": {
+      "types": "./dist/public-component-surface.d.ts",
+      "import": "./dist/public-component-surface.js",
+      "require": "./dist/public-component-surface.cjs"
+    },
     "./registry.json": "./registry.json",
     "./package.json": "./package.json"
   },
