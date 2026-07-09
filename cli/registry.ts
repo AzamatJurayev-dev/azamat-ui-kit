@@ -99,7 +99,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   feedback: { name: "feedback", category: "group", registryDependencies: ["loading-state", "page-state"], files: [file("src/components/feedback/index.ts", "{components}/feedback/index.ts")] },
 
   "stat-card": { name: "stat-card", category: "layout", registryDependencies: ["card", "badge", "utils"], files: [file("src/components/layout/stat-card.tsx", "{components}/layout/stat-card.tsx")] },
-  sidebar: { name: "sidebar", category: "layout", dependencies: ["react"], registryDependencies: ["tooltip", "utils"], files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/sidebar.tsx")] },
+  sidebar: { name: "sidebar", category: "layout", dependencies: ["react"], registryDependencies: ["tooltip", "utils"], files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/app-sidebar.tsx")] },
   layout: { name: "layout", category: "group", registryDependencies: ["sidebar", "stat-card"], files: [file("src/components/layout/index.ts", "{components}/layout/index.ts")] },
   calendar: { name: "calendar", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/calendar/calendar.tsx", "{components}/calendar/calendar.tsx"), file("src/components/calendar/date-utils.ts", "{components}/calendar/date-utils.ts")] },
   "date-picker": { name: "date-picker", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["calendar", "button", "popover", "utils"], files: [file("src/components/calendar/date-picker.tsx", "{components}/calendar/date-picker.tsx")] },

@@ -150,6 +150,10 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "primitive.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "form", "form-select.tsx"))
 
+    await runCli(fixtureRoot, ["add", "form-async-select", "--overwrite", "--skip-install"])
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "form", "deprecated-compat.tsx"))
+    assertFileExists(fixtureRoot, path.join(path.dirname(paths.utilsPath), "deprecated-warning.ts"))
+
     await runCli(fixtureRoot, ["add", "accordion", "checkbox", "dropdown-menu", "popover", "switch", "table", "tabs", "textarea", "--overwrite", "--skip-install"])
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "accordion", "index.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "checkbox", "index.tsx"))
@@ -174,6 +178,10 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "skeleton", "index.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "spinner", "index.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "tooltip", "index.tsx"))
+
+    await runCli(fixtureRoot, ["add", "layout", "--overwrite", "--skip-install"])
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "layout", "index.ts"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "layout", "app-sidebar.tsx"))
 
     await runCli(fixtureRoot, ["theme", paths.cssPath])
     const themePath = path.join(fixtureRoot, paths.cssPath)

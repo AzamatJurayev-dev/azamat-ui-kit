@@ -63,6 +63,10 @@ function getLocalSourceTarget(sourcePath: string, config: TembroConfig) {
   const normalized = sourcePath.replaceAll("\\", "/");
 
   if (normalized === "src/lib/utils.ts") return config.utilsPath ?? "src/lib/utils.ts";
+  if (normalized.startsWith("src/lib/")) {
+    const libPath = config.paths?.lib ?? path.dirname(config.utilsPath ?? "src/lib/utils.ts");
+    return path.join(libPath, normalized.replace("src/lib/", ""));
+  }
   if (normalized.startsWith("src/hooks/")) {
     return path.join(config.paths?.hooks ?? "src/hooks", normalized.replace("src/hooks/", ""));
   }
@@ -78,10 +82,14 @@ function getLocalSourceTarget(sourcePath: string, config: TembroConfig) {
   return undefined;
 }
 
-function resolveLocalImportSource(importPath: string) {
+function resolveLocalImportSource(importPath: string, fromSource?: string) {
   if (importPath === "@/lib/utils") return "src/lib/utils.ts";
+  if (importPath.startsWith("@/lib/")) return `src/lib/${importPath.replace("@/lib/", "")}`;
   if (importPath.startsWith("@/components/")) return `src/components/${importPath.replace("@/components/", "")}`;
   if (importPath.startsWith("@/hooks/")) return `src/hooks/${importPath.replace("@/hooks/", "")}`;
+  if (fromSource && importPath.startsWith(".")) {
+    return path.posix.normalize(path.posix.join(path.posix.dirname(fromSource), importPath));
+  }
   return undefined;
 }
 
@@ -94,14 +102,15 @@ function getImportCandidates(sourceWithoutExtension: string) {
   ];
 }
 
-function getLocalImports(content: string) {
+function getLocalImports(content: string, fromSource: string) {
   const imports = new Set<string>();
-  const importPattern = /from\s+["'](@\/(?:components|hooks|lib)\/[^"']+)["']|import\s*\(\s*["'](@\/(?:components|hooks|lib)\/[^"']+)["']\s*\)/g;
+  const importPattern =
+    /(?:import|export)\s+(?:type\s+)?(?:[^"']*?\s+from\s+)?["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)/g;
   let match: RegExpExecArray | null;
 
   while ((match = importPattern.exec(content))) {
     const importPath = match[1] ?? match[2];
-    const sourcePath = resolveLocalImportSource(importPath);
+    const sourcePath = resolveLocalImportSource(importPath, fromSource);
     if (sourcePath) imports.add(sourcePath);
   }
 
@@ -223,7 +232,7 @@ async function copySourceWithLocalImports(source: string, targetTemplate?: strin
     }
 
     const sourceContent = await fs.readFile(sourcePath, "utf8");
-    for (const importedSource of getLocalImports(sourceContent)) {
+    for (const importedSource of getLocalImports(sourceContent, normalizedSource)) {
       for (const candidate of getImportCandidates(importedSource)) {
         if (fs.existsSync(path.join(packageRoot, candidate))) {
           await copySourceWithLocalImports(candidate);
