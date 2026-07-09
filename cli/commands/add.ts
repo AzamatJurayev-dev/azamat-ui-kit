@@ -135,9 +135,34 @@ function collectRegistryItems(componentNames: ComponentName[]) {
   return collected;
 }
 
+const hiddenAvailableComponentNames = new Set<string>([
+  "app-header",
+  "app-shell",
+  "async-multi-select",
+  "clearable-input",
+  "copy-field",
+  "file-dropzone",
+  "form-async-select",
+  "form-field-shell",
+  "form-input",
+  "form-select",
+  "form-switch",
+  "form-textarea",
+  "hover-card",
+  "page-container",
+  "page-header",
+  "quantity-input",
+  "section-header",
+  "sidebar-nav",
+  "simple-select",
+  "stat-card",
+  "sticky-footer-bar",
+]);
+
 function formatAvailableComponents() {
   return registryNames
     .filter((name) => registry[name].category !== "lib")
+    .filter((name) => !hiddenAvailableComponentNames.has(name))
     .sort()
     .join(", ");
 }
@@ -154,7 +179,7 @@ export async function addCommand(components: string[], options: AddCommandOption
 
   if (!components.length) {
     logger.error("Component nomini kiriting:");
-    logger.info(getCliNpxCommand("add data-table async-select form-input"));
+    logger.info(getCliNpxCommand("add data-table async-select input"));
     logger.info(`Mavjud componentlar: ${formatAvailableComponents()}`);
     process.exit(1);
   }

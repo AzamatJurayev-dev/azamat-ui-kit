@@ -257,7 +257,7 @@ export const PACKAGE_IMPORT = "tembro"
 export const DOCS_APP_NAME = "azamat-ui"
 export const CLI_INIT_NEXT_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template next --defaults`
 export const CLI_INIT_VITE_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template vite --defaults`
-export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button form-input`
+export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button input`
 export const PACKAGE_INSTALL_COMMAND = `${CLI_INIT_NEXT_COMMAND}\n${CLI_ADD_COMMAND}`
 export const CLI_INSTALL_COMMAND = `npx ${CLI_PACKAGE_NAME} --help`
 export const CLI_THEME_COMMAND = `npx ${CLI_PACKAGE_NAME} theme`
@@ -1696,13 +1696,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "related",
       title: "Related input patterns",
       description: "Specialized input types for search, masking, numeric entry, and compact structured values.",
-      slugs: ["search-input", "password-input", "number-input", "phone-input", "masked-input", "money-input", "quantity-input", "tag-input", "otp-input"],
-    },
-    {
-      key: "integrations",
-      title: "Form integrations",
-      description: "Use these wrappers when the field needs to plug directly into shared form shells or React Hook Form.",
-      slugs: ["form-input", "form-textarea"],
+      slugs: ["search-input", "password-input", "number-input", "phone-input", "masked-input", "money-input", "tag-input", "otp-input"],
     },
   ],
   select: [
@@ -1716,19 +1710,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "related",
       title: "Related select members",
       description: "These members add real behavior such as remote loading or keyboard-first local filtering.",
-      slugs: ["simple-select", "async-select", "combobox"],
-    },
-    {
-      key: "integrations",
-      title: "Form integrations",
-      description: "Use wrapped selects when you need consistent form-level validation, labels, and shell behavior.",
-      slugs: ["form-select"],
-    },
-    {
-      key: "compatibility",
-      title: "Compatibility aliases",
-      description: "Keep older helper routes available for migration, but do not lead with them in new work.",
-      slugs: ["async-multi-select", "form-async-select"],
+      slugs: ["async-select", "combobox"],
     },
   ],
   "date-picker": [
@@ -1742,7 +1724,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "integrations",
       title: "Form integrations",
       description: "Use wrapped date fields when validation, labels, and form shell behavior should stay standardized.",
-      slugs: ["form-input"],
+      slugs: [],
     },
   ],
   dialog: [
@@ -1764,27 +1746,13 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "core",
       title: "Sidebar surfaces",
       description: "These pieces define the reusable sidebar surface first, then layer shell framing around it only when the route really needs it.",
-      slugs: ["sidebar", "sidebar-nav", "breadcrumbs"],
+      slugs: ["sidebar", "breadcrumbs"],
     },
     {
       key: "related",
       title: "Route-level patterns",
       description: "Use these patterns only after the sidebar and navigation contract are already clear.",
-      slugs: ["app-shell", "app-header", "page-container", "section", "toolbar", "split-layout", "sticky-footer-bar"],
-    },
-  ],
-  "page-header": [
-    {
-      key: "core",
-      title: "Page context surfaces",
-      description: "Use these pieces to establish page identity, breadcrumbs, meta, and supporting stats.",
-      slugs: ["page-header", "breadcrumbs"],
-    },
-    {
-      key: "related",
-      title: "Supporting page patterns",
-      description: "These supporting pieces sit around the page header when you need compact summary or stat context.",
-      slugs: ["stat-card"],
+      slugs: ["section", "toolbar", "split-layout"],
     },
   ],
   "data-table": [
@@ -1823,8 +1791,33 @@ const kitRecommendedSlugs = new Set((kitRegistry?.recommended ?? []).map((slug) 
 const kitMigrationAliases = kitRegistry?.migrationAliases ?? {}
 const migrationAliasTargets = new Set(Object.values(kitMigrationAliases))
 
+const internalComponentCatalogSlugs = new Set([
+  "app-header",
+  "app-shell",
+  "async-multi-select",
+  "clearable-input",
+  "copy-field",
+  "file-dropzone",
+  "form-async-select",
+  "form-field",
+  "form-field-shell",
+  "form-input",
+  "form-select",
+  "form-switch",
+  "form-textarea",
+  "hover-card",
+  "page-container",
+  "page-header",
+  "quantity-input",
+  "section-header",
+  "sidebar-nav",
+  "simple-select",
+  "stat-card",
+  "sticky-footer-bar",
+])
+
 const hiddenKitGroups = new Set(["kits"])
-const hiddenKitSlugs = new Set(["all", "dashboard", "calendar-kit", "wizard-kit"])
+const hiddenKitSlugs = new Set(["all", "dashboard", "calendar-kit", "wizard-kit", ...internalComponentCatalogSlugs])
 const skippedKitGroups = new Set(["hooks"])
 
 const fallbackRegistryCategoryByGroup: Record<string, ComponentCatalogItem["category"]> = {
@@ -1909,12 +1902,15 @@ for (const [group, groupSlugs] of Object.entries(kitGroups)) {
 }
 
 const fallbackComponentCatalog = [...generatedComponentCatalog.values()]
-export const componentCatalog: ComponentCatalogItem[] = [...baseComponentCatalog, ...fallbackComponentCatalog]
+export const componentCatalog: ComponentCatalogItem[] = [...baseComponentCatalog, ...fallbackComponentCatalog].filter(
+  (item) => !internalComponentCatalogSlugs.has(item.slug)
+)
 
 const packageDocsSurfaceCatalog: ComponentCatalogItem[] = []
 
 const packageDocsSurfaceCatalogMap = new Map(packageDocsSurfaceCatalog.map((item) => [item.slug, item] as const))
 const hiddenPrimaryComponentCatalogSlugs = new Set([
+  ...internalComponentCatalogSlugs,
   "app-sidebar",
   "app-shell",
   "app-header",
@@ -2036,7 +2032,12 @@ export function getComponentDetailSidebarSections(activeSlug?: string): Componen
 
 export function getComponentSurfaceSections(slug: string) {
   const primarySlug = getPrimaryComponentSurfaceSlug(slug)
-  return componentSurfaceSections[primarySlug] ?? []
+  return (componentSurfaceSections[primarySlug] ?? [])
+    .map((section) => ({
+      ...section,
+      slugs: section.slugs.filter((sectionSlug) => !internalComponentCatalogSlugs.has(sectionSlug)),
+    }))
+    .filter((section) => section.slugs.length > 0)
 }
 
 export function getPrimaryComponentMemberInventory(surfaceSlug?: string): ComponentSurfaceMemberInventoryItem[] {
@@ -2044,7 +2045,7 @@ export function getPrimaryComponentMemberInventory(surfaceSlug?: string): Compon
 
   return surfaceSlugs.flatMap((currentSurfaceSlug) => {
     const surface = getComponentSurfaceCatalogItem(currentSurfaceSlug)
-    const sections = componentSurfaceSections[currentSurfaceSlug] ?? []
+    const sections = getComponentSurfaceSections(currentSurfaceSlug)
 
     return sections.flatMap((section) => {
       const entries: ComponentSurfaceMemberInventoryItem[] = []

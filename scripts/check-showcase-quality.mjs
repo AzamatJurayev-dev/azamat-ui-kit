@@ -11,7 +11,6 @@ const requiredDemoSlugs = [
   "dialog",
   "data-table",
   "date-picker",
-  "form-input",
 ]
 
 const requiredApiSlugs = [
@@ -21,7 +20,6 @@ const requiredApiSlugs = [
   "dialog",
   "data-table",
   "date-picker",
-  "form-input",
 ]
 
 const requiredButtonTerms = [
