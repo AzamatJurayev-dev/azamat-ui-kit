@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { DateInput } from "@/index"
+import { Input } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -9,7 +9,8 @@ export function DateInputShowcase({ mode }: ComponentDemoProps) {
 
   return (
     <div className="space-y-4">
-      <DateInput
+      <Input
+        kind="date"
         value={value}
         onValueChange={(nextValue: string) => setValue(nextValue)}
         min="2026-06-01"

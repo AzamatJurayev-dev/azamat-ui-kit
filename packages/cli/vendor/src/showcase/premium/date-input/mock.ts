@@ -2,13 +2,14 @@ import type { ComponentDemoMock } from "../types"
 
 export const dateInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { DateInput } from "tembro"
+import { Input } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState("2026-06-19")
 
   return (
-    <DateInput
+    <Input
+      kind="date"
       value={value}
       onValueChange={setValue}
       min="2026-06-01"
@@ -18,7 +19,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="date">Date</label><input id="date" type="text" value="2026-06-19" placeholder="YYYY-MM-DD" />',
-  cliCommand: "npx tembro add date-input",
+  cliCommand: "npx tembro add input",
   highlights: ["ISO-like string format assumptions", "min/max constraints", "Controlled editing", "Clear disabled behavior"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "settings-form"],
   scenarios: [

@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "2.1.8",
+  "version": "2.1.9",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -47,7 +47,6 @@
     "inputs": [
       "async-select",
       "otp-input",
-      "quantity-stepper",
       "rating",
       "slider",
       "tag-input",
@@ -257,7 +256,6 @@
       "skeleton",
       "spinner",
       "command-bar",
-      "quantity-stepper",
       "inline-editable",
       "avatar",
       "code-block",

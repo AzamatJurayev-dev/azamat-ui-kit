@@ -30,7 +30,6 @@ export const standalonePublicComponentSurfaces: readonly PublicComponentSurfaceE
   { slug: "skeleton", registryName: "skeleton", surface: "standalone" },
   { slug: "spinner", registryName: "spinner", surface: "standalone" },
   { slug: "command-bar", registryName: "command-bar", surface: "standalone" },
-  { slug: "quantity-stepper", registryName: "quantity-stepper", surface: "standalone" },
   { slug: "inline-editable", registryName: "inline-editable", surface: "standalone" },
   { slug: "avatar", registryName: "avatar", surface: "standalone" },
   { slug: "code-block", registryName: "code-block", surface: "standalone" },

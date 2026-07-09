@@ -5,7 +5,7 @@ import {
   DateRangeInput,
   type DateRangeInputProps,
   type DateRangeValue,
-} from "@/components/inputs/date-range-input"
+} from "@/components/ui/input/date-range"
 
 export type FormDateRangeInputProps<
   TFieldValues extends FieldValues = FieldValues,

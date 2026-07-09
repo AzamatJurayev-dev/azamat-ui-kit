@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { MaskedInput } from "@/index"
+import { Input } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -9,7 +9,8 @@ export function MaskedInputShowcase({ mode }: ComponentDemoProps) {
 
   return (
     <div className="space-y-4">
-      <MaskedInput
+      <Input
+        kind="masked"
         value={value}
         onValueChange={(nextValue: string) => setValue(nextValue)}
         mask={(raw: string) => raw.toUpperCase().slice(0, 6).replace(/(.{3})(?=.)/, "$1-")}

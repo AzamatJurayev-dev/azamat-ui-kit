@@ -33,7 +33,6 @@ import {
   PageState,
   PageTabs,
   Pagination,
-  PasswordInput,
   Progress,
   ProgressCircle,
   QuickActionGrid,
@@ -253,7 +252,7 @@ function InputPreview({
   }
 
   if (slug === "password-input") {
-    return <PasswordInput value="secret-token" onValueChange={onValueChange} placeholder="Password" />
+    return <Input kind="password" value="secret-token" onValueChange={onValueChange} placeholder="Password" />
   }
 
   if (slug === "slider") {

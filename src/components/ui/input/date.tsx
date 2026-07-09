@@ -1,8 +1,8 @@
 import * as React from "react"
 import { CalendarDaysIcon } from "lucide-react"
 
-import { InputDecorator } from "@/components/inputs/input-decorator"
-import { createInputChangeHandler, getInputValue } from "@/components/inputs/input-value"
+import { InputDecorator } from "./decorator"
+import { createInputChangeHandler, getInputValue } from "./value"
 
 export type DateInputProps = Omit<
   React.ComponentProps<typeof InputDecorator>,

@@ -11,17 +11,17 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "./group"
-import { InputDecorator } from "@/components/inputs/input-decorator"
-import { ClearableInput, type ClearableInputProps } from "@/components/inputs/clearable-input"
-import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
-import { DateRangeInput, type DateRangeInputProps } from "@/components/inputs/date-range-input"
-import { MoneyInput, type MoneyInputProps } from "@/components/inputs/money-input"
-import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
-import { NumberInput, type NumberInputProps } from "@/components/inputs/number-input"
-import { PasswordInput, type PasswordInputProps } from "@/components/inputs/password-input"
-import { PhoneInput, type PhoneInputProps } from "@/components/inputs/phone-input"
-import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
-import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
+import { ClearableInput, type ClearableInputProps } from "./clearable"
+import { DateInput, type DateInputProps } from "./date"
+import { DateRangeInput, type DateRangeInputProps } from "./date-range"
+import { InputDecorator } from "./decorator"
+import { MaskedInput, type MaskedInputProps } from "./masked"
+import { MoneyInput, type MoneyInputProps } from "./money"
+import { NumberInput, type NumberInputProps } from "./number"
+import { PasswordInput, type PasswordInputProps } from "./password"
+import { PhoneInput, type PhoneInputProps } from "./phone"
+import { QuantityInput, type QuantityInputProps } from "./quantity"
+import { SearchInput, type SearchInputProps } from "./search"
 import { cn } from "@/lib/utils"
 
 export type InputKind =

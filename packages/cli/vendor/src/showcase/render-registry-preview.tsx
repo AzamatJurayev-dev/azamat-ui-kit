@@ -19,7 +19,6 @@ import {
   Button,
   ButtonGroup,
   Calendar,
-  ColorInput,
   CommandPalette,
   DescriptionList,
   DialogActionButton,
@@ -35,7 +34,6 @@ import {
   PageState,
   PageTabs,
   Pagination,
-  PasswordInput,
   Progress,
   ProgressCircle,
   QuickActionGrid,
@@ -109,7 +107,7 @@ function InputPreview({
   }
 
   if (slug === "password-input") {
-    return <PasswordInput value="secret-token" onValueChange={onValueChange} placeholder="Password" />
+    return <Input kind="password" value="secret-token" onValueChange={onValueChange} placeholder="Password" />
   }
 
   if (slug === "clearable-input") {
@@ -133,7 +131,7 @@ function InputPreview({
   }
 
   if (slug === "color-input") {
-    return <ColorInput defaultValue="#22c55e" label="Accent color" description="Theme token preview." />
+    return <Input type="color" defaultValue="#22c55e" aria-label="Accent color" />
   }
 
   if (slug === "tag-input") {

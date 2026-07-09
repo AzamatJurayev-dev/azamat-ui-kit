@@ -9,7 +9,7 @@ import { CodeBlock } from "@/components/display/code-block"
 import { KanbanBoard } from "@/components/display/kanban"
 import { TreeView } from "@/components/display/tree-view"
 import { AsyncSelect } from "@/components/inputs/async-select"
-import { Combobox } from "@/components/inputs/combobox"
+import { Select } from "@/components/ui/select"
 import { DualListPicker } from "@/components/modern/dual-list-picker"
 import { RichTextEditor } from "@/components/modern/rich-text-editor"
 import { Tour } from "@/components/modern/tour"
@@ -49,25 +49,25 @@ describe("interactive display surfaces", () => {
     expect(onAutoplayChange).toHaveBeenCalledWith(true)
   })
 
-  it("supports clearable and deselectable combobox selection", async () => {
+  it("supports clearable searchable select selection", async () => {
     const user = userEvent.setup()
 
     function Harness() {
-      const [value, setValue] = React.useState<string | undefined>("azamat")
+      const [value, setValue] = React.useState("azamat")
       return (
         <>
-          <Combobox
+          <Select
             value={value}
             options={[
               { value: "azamat", label: "Azamat", description: "Owner" },
               { value: "nodira", label: "Nodira", description: "Ops" },
             ]}
             clearable
-            allowDeselect
+            searchable
             showSelectedDescription
-            onValueChange={(next) => setValue(next)}
+            onValueChange={(next) => setValue(next ?? "")}
           />
-          <div data-testid="value">{value ?? "empty"}</div>
+          <div data-testid="value">{value || "empty"}</div>
         </>
       )
     }
@@ -75,27 +75,28 @@ describe("interactive display surfaces", () => {
     render(<Harness />)
 
     expect(screen.getByText("Owner")).toBeTruthy()
-    await user.click(screen.getByLabelText("Clear value"))
+    await user.click(screen.getByLabelText("Clear selection"))
     expect(screen.getByTestId("value").textContent).toBe("empty")
   })
 
-  it("clears combobox selection from keyboard and keeps async multi tags compact", async () => {
+  it("clears searchable select selection from keyboard and keeps async multi tags compact", async () => {
     const user = userEvent.setup()
 
     function ComboHarness() {
-      const [value, setValue] = React.useState<string | undefined>("azamat")
+      const [value, setValue] = React.useState("azamat")
       return (
         <>
-          <Combobox
+          <Select
             value={value}
             options={[
               { value: "azamat", label: "Azamat", description: "Owner" },
               { value: "nodira", label: "Nodira", description: "Ops" },
             ]}
             clearable
-            onValueChange={(next) => setValue(next)}
+            searchable
+            onValueChange={(next) => setValue(next ?? "")}
           />
-          <div data-testid="combo-value">{value ?? "empty"}</div>
+          <div data-testid="combo-value">{value || "empty"}</div>
         </>
       )
     }
@@ -123,7 +124,7 @@ describe("interactive display surfaces", () => {
       </>
     )
 
-    const clear = screen.getByLabelText("Clear value")
+    const clear = screen.getByLabelText("Clear selection")
     clear.focus()
     await user.keyboard("{Enter}")
     expect(screen.getByTestId("combo-value").textContent).toBe("empty")

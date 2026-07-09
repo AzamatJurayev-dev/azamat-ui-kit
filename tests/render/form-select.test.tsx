@@ -7,12 +7,12 @@ import { describe, expect, it, vi } from "vitest"
 import {
   FormAsyncSelect,
   FormSelect,
-  SimpleSelect,
+  Select,
   type AsyncSelectOption,
-  type SimpleSelectOption,
+  type SelectOption,
 } from "@/index"
 
-const roleOptions: SimpleSelectOption[] = [
+const roleOptions: SelectOption[] = [
   { value: "admin", label: "Admin" },
   { value: "manager", label: "Manager" },
 ]
@@ -126,7 +126,7 @@ describe("FormSelect consolidation", () => {
     const onValueChange = vi.fn()
 
     render(
-      <SimpleSelect
+      <Select
         value="admin"
         onValueChange={onValueChange}
         options={roleOptions}

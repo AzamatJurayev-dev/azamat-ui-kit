@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import { InputDecorator } from "@/components/inputs/input-decorator"
-import { getInputValue, setInputElementValue } from "@/components/inputs/input-value"
+import { InputDecorator } from "./decorator"
+import { getInputValue, setInputElementValue } from "./value"
 
 export type MaskedInputProps = Omit<
   React.ComponentProps<typeof InputDecorator>,

@@ -2,13 +2,14 @@ import type { ComponentDemoMock } from "../types"
 
 export const dateRangeInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { DateRangeInput } from "@/index"
+import { Input } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState({ from: "2026-06-01", to: "2026-06-30" })
 
   return (
-    <DateRangeInput
+    <Input
+      kind="date-range"
       value={value}
       onValueChange={(nextValue) => setValue({ from: nextValue.from ?? "", to: nextValue.to ?? "" })}
       fromInputProps={{ min: "2026-06-01" }}
@@ -18,7 +19,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="date-range">Date range</label><input id="date-range" type="text" value="2026-06-01 to 2026-06-30" />',
-  cliCommand: "npx tembro add date-range-input",
+  cliCommand: "npx tembro add input",
   highlights: ["from/to object contract", "range behavior", "min/max boundaries", "single source of truth formatting"],
   relatedBlockSlugs: ["dashboard-starter", "crm-dashboard", "users-table"],
   scenarios: [

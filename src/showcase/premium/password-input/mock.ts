@@ -2,13 +2,14 @@ import type { ComponentDemoMock } from "../types"
 
 export const passwordInputMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { PasswordInput } from "tembro"
+import { Input } from "tembro"
 
 export function Example() {
   const [value, setValue] = React.useState("")
 
   return (
-    <PasswordInput
+    <Input
+      kind="password"
       value={value}
       onValueChange={setValue}
       placeholder="Enter workspace password"

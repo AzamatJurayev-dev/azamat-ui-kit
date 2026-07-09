@@ -1,9 +1,9 @@
 import * as React from "react"
 import { MinusIcon, PlusIcon } from "lucide-react"
 
-import { InputChrome } from "@/components/inputs/input-chrome"
-import { getInputValue } from "@/components/inputs/input-value"
-import { clampNumericValue, parseDecimalInput } from "@/components/inputs/numeric-value"
+import { InputChrome } from "./chrome"
+import { getInputValue } from "./value"
+import { clampNumericValue, parseDecimalInput } from "./numeric-value"
 import { Button } from "@/components/ui/button"
 import { InputPrimitive } from "@/components/ui/input-primitive"
 import { cn } from "@/lib/utils"

@@ -3,7 +3,7 @@
 import * as React from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 
-import { InputDecorator } from "@/components/inputs/input-decorator"
+import { InputDecorator } from "./decorator"
 
 export type PasswordInputProps = Omit<
   React.ComponentProps<typeof InputDecorator>,

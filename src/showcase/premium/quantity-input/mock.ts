@@ -2,14 +2,15 @@ import type { ComponentDemoMock } from "../types"
 
 export const quantityInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { QuantityInput } from "tembro"
+import { Input } from "tembro"
 
 export function Example() {
   const [quantity, setQuantity] = useState<number | null>(3)
 
   return (
     <div className="space-y-3">
-      <QuantityInput
+      <Input
+        kind="quantity"
         value={quantity}
         onValueChange={(nextValue: number | null) => setQuantity(nextValue)}
         min={0}
@@ -30,7 +31,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<label for="qty">Quantity</label><input id="qty" type="text" inputmode="numeric" />`,
-  cliCommand: "npx tembro add quantity-input",
+  cliCommand: "npx tembro add input",
   highlights: ["Stepper controls", "min/max boundaries", "controlled usage", "compact row compatibility"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "settings-form"],
   scenarios: [

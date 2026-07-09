@@ -3,8 +3,8 @@
 import * as React from "react"
 import { XIcon } from "lucide-react"
 
-import { InputDecorator } from "@/components/inputs/input-decorator"
-import { createInputChangeHandler, getInputValue } from "@/components/inputs/input-value"
+import { InputDecorator } from "./decorator"
+import { createInputChangeHandler, getInputValue } from "./value"
 import { stopInteractivePropagation } from "@/lib/utils"
 
 export type ClearableInputProps = Omit<

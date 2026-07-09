@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { Badge, Button, SimpleSelect } from "@/index"
+import { Badge, Button, Select } from "@/index"
 import { routeSimpleSelectOptions } from "@/showcase/component-route-data"
 
 import type { ComponentDemoProps } from "../types"
@@ -24,7 +24,7 @@ export function SimpleSelectShowcase({ mode }: ComponentDemoProps) {
           <Badge variant="outline">Clearable</Badge>
         </div>
       </div>
-      <SimpleSelect
+      <Select
         value={value}
         onValueChange={(nextValue) => setValue(nextValue)}
         options={options}
@@ -47,7 +47,7 @@ export function SimpleSelectShowcase({ mode }: ComponentDemoProps) {
           <p className="mt-2 aui-text-muted">Choose this for local option lists before moving to AsyncSelect.</p>
         </div>
       </div>
-      <SimpleSelect key={uncontrolledKey} defaultValue="public" options={options} showSelectedDescription />
+      <Select key={uncontrolledKey} defaultValue="public" options={options} showSelectedDescription />
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" size="sm" onClick={() => setValue(undefined)}>
           Clear controlled

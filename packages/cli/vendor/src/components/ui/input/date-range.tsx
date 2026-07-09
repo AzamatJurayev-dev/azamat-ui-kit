@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
+import { DateInput, type DateInputProps } from "./date"
 import { cn } from "@/lib/utils"
 
 export type DateRangeValue = {

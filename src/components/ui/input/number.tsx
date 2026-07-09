@@ -1,8 +1,8 @@
 import * as React from "react"
 
-import { InputDecorator } from "@/components/inputs/input-decorator"
-import { getInputValue } from "@/components/inputs/input-value"
-import { clampNumericValue, parseDecimalInput } from "@/components/inputs/numeric-value"
+import { InputDecorator } from "./decorator"
+import { getInputValue } from "./value"
+import { clampNumericValue, parseDecimalInput } from "./numeric-value"
 
 export type NumberInputProps = Omit<
   React.ComponentProps<typeof InputDecorator>,

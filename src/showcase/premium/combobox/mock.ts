@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const comboboxMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { Button, Combobox } from "@/index"
+import { Button, Select } from "tembro"
 
 const teammateOptions = [
   { value: "azamat", label: "Azamat", description: "Design system owner" },
@@ -15,12 +15,13 @@ export function Example() {
 
   return (
     <div className="space-y-3">
-      <Combobox
+      <Select
         value={value}
         onValueChange={(nextValue) => setValue(nextValue ?? "azamat")}
         options={teammateOptions}
         placeholder="Assign owner"
         searchPlaceholder="Search teammate..."
+        searchable
       />
       <div className="rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface-muted)] px-4 py-3 text-sm aui-text-muted">
         Current owner: <strong>{value}</strong>
@@ -30,7 +31,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="combobox-trigger">Open combobox</button>`,
-  cliCommand: "npx tembro add combobox",
+  cliCommand: "npx tembro add select",
   highlights: ["Search-led selection", "Controlled value", "Description rows", "Fast reassignment flow"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

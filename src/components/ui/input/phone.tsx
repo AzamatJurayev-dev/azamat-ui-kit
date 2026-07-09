@@ -1,7 +1,7 @@
 import * as React from "react"
 import { PhoneIcon } from "lucide-react"
 
-import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
+import { MaskedInput, type MaskedInputProps } from "./masked"
 
 export type PhoneInputProps = Omit<MaskedInputProps, "mask" | "unmask" | "inputMode"> & {
   countryCode?: string

@@ -12,7 +12,6 @@ import {
   Carousel,
   CarouselItem,
   CodeBlock,
-  ColorInput,
   CopyButton,
   CopyField,
   DataState,
@@ -41,7 +40,6 @@ import {
   PropertyGrid,
   QuickActionGrid,
   QRCode,
-  QuantityStepper,
   RangeSlider,
   Rating,
   ResizableHandle,
@@ -446,7 +444,7 @@ function renderGenericPreviewSurface(
   }
 
   if (item.slug === "color-input") {
-    return <ColorInput defaultValue="#22c55e" label="Accent color" description="Theme token preview." />
+    return <Input type="color" defaultValue="#22c55e" aria-label="Accent color" />
   }
 
   if (item.slug === "tag-input") {
@@ -705,7 +703,7 @@ function renderGenericPreviewSurface(
   }
 
   if (item.slug === "quantity-stepper") {
-    return <QuantityStepper defaultValue={3} min={1} max={10} />
+    return <Input kind="quantity" value={3} min={1} max={10} showControls aria-label="Quantity" />
   }
 
   if (item.slug === "resizable-panel") {

@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const simpleSelectMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { Button, SimpleSelect } from "tembro"
+import { Button, Select } from "tembro"
 
 const selectOptions = [
   { value: "public", label: "Public", disabled: false },
@@ -16,7 +16,7 @@ export function Example() {
 
   return (
     <div className="space-y-3">
-      <SimpleSelect
+      <Select
         options={selectOptions}
         value={value}
         onValueChange={(nextValue) => setValue(nextValue ?? "private")}
@@ -31,7 +31,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<button data-slot="simple-select-trigger">Open options</button>`,
-  cliCommand: "npx tembro add simple-select",
+  cliCommand: "npx tembro add select",
   highlights: ["Controlled usage", "Static options", "Clear default value", "Disabled option handling"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

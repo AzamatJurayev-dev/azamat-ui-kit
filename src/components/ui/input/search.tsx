@@ -3,7 +3,7 @@
 import * as React from "react"
 import { LoaderCircleIcon, SearchIcon } from "lucide-react"
 
-import { ClearableInput, type ClearableInputProps } from "@/components/inputs/clearable-input"
+import { ClearableInput, type ClearableInputProps } from "./clearable"
 
 export type SearchInputProps = Omit<ClearableInputProps, "leadingIcon" | "type" | "onValueChange"> & {
   searchIcon?: React.ReactNode

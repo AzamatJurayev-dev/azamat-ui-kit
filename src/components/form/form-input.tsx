@@ -6,18 +6,18 @@ import {
   DateRangeInput,
   type DateRangeInputProps,
   type DateRangeValue,
-} from "@/components/inputs/date-range-input"
-import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
+} from "@/components/ui/input/date-range"
+import { DateInput, type DateInputProps } from "@/components/ui/input/date"
 import { Input, type InputClearableProps, type InputSearchProps, type InputTextProps } from "@/components/ui/input"
-import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
-import { MoneyInput, type MoneyInputProps } from "@/components/inputs/money-input"
-import { NumberInput, type NumberInputProps } from "@/components/inputs/number-input"
+import { MaskedInput, type MaskedInputProps } from "@/components/ui/input/masked"
+import { MoneyInput, type MoneyInputProps } from "@/components/ui/input/money"
+import { NumberInput, type NumberInputProps } from "@/components/ui/input/number"
 import {
   PhoneInput,
   formatPhoneDigits,
   type PhoneInputProps,
-} from "@/components/inputs/phone-input"
-import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
+} from "@/components/ui/input/phone"
+import { QuantityInput, type QuantityInputProps } from "@/components/ui/input/quantity"
 import {
   FormFieldShell,
   type FormFieldShellControlProps,

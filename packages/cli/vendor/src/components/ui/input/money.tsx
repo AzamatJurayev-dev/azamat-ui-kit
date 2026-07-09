@@ -1,8 +1,8 @@
 import * as React from "react"
 
-import { InputChrome } from "@/components/inputs/input-chrome"
-import { getInputValue } from "@/components/inputs/input-value"
-import { parseMoneyLikeInput } from "@/components/inputs/numeric-value"
+import { InputChrome } from "./chrome"
+import { getInputValue } from "./value"
+import { parseMoneyLikeInput } from "./numeric-value"
 import { InputPrimitive } from "@/components/ui/input-primitive"
 import { cn } from "@/lib/utils"
 
