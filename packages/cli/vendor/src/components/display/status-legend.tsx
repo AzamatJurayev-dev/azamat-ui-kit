@@ -54,6 +54,11 @@ function StatusLegend({
 }: StatusLegendProps) {
   const visibleItems = items.filter((item) => !item.hidden)
   const hasHeader = Boolean(title || description || actions)
+  const layoutClassName: Record<StatusLegendOrientation, string> = {
+    vertical: "grid",
+    horizontal: "flex flex-wrap",
+    grid: "grid sm:grid-cols-2",
+  }
 
   return (
     <Card
@@ -79,9 +84,7 @@ function StatusLegend({
       <CardContent
         className={cn(
           "gap-3",
-          orientation === "vertical" && "grid",
-          orientation === "horizontal" && "flex flex-wrap",
-          orientation === "grid" && "grid sm:grid-cols-2",
+          layoutClassName[orientation],
           compact ? "p-4 pt-2" : "pt-0",
           contentClassName
         )}
