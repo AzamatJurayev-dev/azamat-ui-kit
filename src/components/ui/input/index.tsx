@@ -235,18 +235,13 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
 
   if (shouldRenderSearchInput(inputProps)) {
     const {
-      value: _value,
-      defaultValue: _defaultValue,
       leading,
       searchIcon,
-      type: _type,
       helperText,
       errorText,
       showCharacterCount,
       countFormatter,
       helperClassName,
-      leadingPointerEvents: _leadingPointerEvents,
-      trailingPointerEvents: _trailingPointerEvents,
       inputClassName,
       ...searchInputProps
     } = inputProps

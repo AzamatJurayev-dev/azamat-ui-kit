@@ -162,9 +162,8 @@ function Carousel({
       <div className={cn(
         "relative overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08))]",
         variant === "hero" && "min-h-72",
-        variant === "minimal" && "rounded-[var(--radius-md)] shadow-none",
-        viewportClassName
-      )}>
+        variant === "minimal" && "rounded-[var(--radius-md)] shadow-none"
+      , viewportClassName)}>
         <div className="transition-transform duration-300 ease-out" aria-live="polite">
           {items[activeIndex]}
         </div>
