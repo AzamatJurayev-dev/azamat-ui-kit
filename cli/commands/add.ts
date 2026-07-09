@@ -135,13 +135,33 @@ function collectRegistryItems(componentNames: ComponentName[]) {
   return collected;
 }
 
+function resolveRequestedComponent(componentName: ComponentName) {
+  const item = registry[componentName];
+  return (item.migrationAliasFor ?? componentName) as ComponentName;
+}
+
 const hiddenAvailableComponentNames = new Set<string>([
   "app-header",
+  "app-sidebar",
   "app-shell",
   "async-multi-select",
   "clearable-input",
+  "combobox",
   "copy-field",
+  "data-table-actions-column",
+  "data-table-bulk-actions",
+  "data-table-column-visibility-menu",
+  "data-table-pagination",
+  "data-table-row-actions",
+  "data-table-saved-filters",
+  "data-table-select-column",
+  "data-table-sortable-header",
+  "data-table-toolbar",
+  "data-table-view-presets",
+  "date-input",
+  "date-range-input",
   "file-dropzone",
+  "form",
   "form-async-select",
   "form-field-shell",
   "form-input",
@@ -149,14 +169,25 @@ const hiddenAvailableComponentNames = new Set<string>([
   "form-switch",
   "form-textarea",
   "hover-card",
+  "input-decorator",
+  "input-value",
+  "inputs",
+  "masked-input",
+  "money-input",
+  "number-input",
   "page-container",
   "page-header",
+  "password-input",
+  "phone-input",
   "quantity-input",
+  "search-input",
   "section-header",
   "sidebar-nav",
   "simple-select",
   "stat-card",
   "sticky-footer-bar",
+  "table-export-menu",
+  "table-import-button",
 ]);
 
 function formatAvailableComponents() {
@@ -192,7 +223,12 @@ export async function addCommand(components: string[], options: AddCommandOption
       continue;
     }
 
-    validComponents.push(componentName);
+    const resolvedComponentName = resolveRequestedComponent(componentName);
+    if (resolvedComponentName !== componentName) {
+      logger.warn(`${componentName} legacy/helper nom. ${resolvedComponentName} o‘rnatiladi.`);
+    }
+
+    validComponents.push(resolvedComponentName);
   }
 
   if (!validComponents.length) {

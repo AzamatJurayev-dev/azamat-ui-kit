@@ -148,11 +148,12 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "index.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "group.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "primitive.tsx"))
-    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "form", "form-select.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "inputs", "clearable-input.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "inputs", "quantity-input.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "select", "index.tsx"))
 
     await runCli(fixtureRoot, ["add", "form-async-select", "--overwrite", "--skip-install"])
-    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "form", "deprecated-compat.tsx"))
-    assertFileExists(fixtureRoot, path.join(path.dirname(paths.utilsPath), "deprecated-warning.ts"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "select", "index.tsx"))
 
     await runCli(fixtureRoot, ["add", "accordion", "checkbox", "dropdown-menu", "popover", "switch", "table", "tabs", "textarea", "--overwrite", "--skip-install"])
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "accordion", "index.tsx"))
