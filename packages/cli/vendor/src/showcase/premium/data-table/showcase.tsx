@@ -7,7 +7,7 @@ import {
   DataTable,
   DataTableColumnVisibilityMenu,
   DataTableSortableHeader,
-  SimpleSelect,
+  Select,
 } from "@/index"
 import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
 import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
@@ -127,7 +127,7 @@ export function DataTableShowcase() {
         }}
         filters={
           <>
-            <SimpleSelect
+            <Select
               value={statusFilter}
               onValueChange={(value) => setStatusFilter(value ?? "all")}
               options={[
@@ -138,7 +138,7 @@ export function DataTableShowcase() {
               ]}
               triggerClassName="min-w-40"
             />
-            <SimpleSelect
+            <Select
               value={ownerFilter}
               onValueChange={(value) => setOwnerFilter(value ?? "all")}
               options={[

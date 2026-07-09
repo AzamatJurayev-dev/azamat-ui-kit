@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/index"
+import { Badge, Button, Select } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -75,27 +75,19 @@ export function SelectShowcase({ state, setState }: ComponentDemoProps) {
               <p className="text-sm font-medium aui-text-muted">{surface === "plan" ? "Workspace plan" : "Toolbar density"}</p>
               <div className="mt-3">
                 {surface === "plan" ? (
-                  <Select value={selectedValue} onValueChange={(value: string | null | undefined) => setState({ selectValue: value ?? planOptions[0].value })}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {planOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Select
+                    value={selectedValue}
+                    onValueChange={(value) => setState({ selectValue: value ?? planOptions[0].value })}
+                    options={planOptions}
+                    triggerClassName="w-full"
+                  />
                 ) : (
-                  <Select defaultValue={compactOptions[0].value}>
-                    <SelectTrigger size="sm" className="w-full">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {compactOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Select
+                    defaultValue={compactOptions[0].value}
+                    options={compactOptions}
+                    size="sm"
+                    triggerClassName="w-full"
+                  />
                 )}
               </div>
             </div>

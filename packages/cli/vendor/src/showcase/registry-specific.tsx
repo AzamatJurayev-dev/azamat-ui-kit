@@ -41,8 +41,8 @@ import {
   Rating,
   SavedFilterSelect,
   SectionHeader,
-  SimpleSelect,
   Slider,
+  Select,
   StatusDot,
   StatusLegend,
   Stepper,
@@ -279,7 +279,7 @@ function InputPreview({
   if (slug === "simple-select") {
     return (
       <div className="grid gap-4">
-        <SimpleSelect
+        <Select
           value="private"
           onValueChange={() => undefined}
           options={[

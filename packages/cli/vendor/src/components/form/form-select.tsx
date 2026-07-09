@@ -6,7 +6,7 @@ import {
   type AsyncSelectOption,
   type AsyncSelectProps,
 } from "@/components/inputs/async-select"
-import { SimpleSelect, type SimpleSelectProps } from "@/components/inputs/simple-select"
+import { Select, type SelectProps } from "@/components/ui/select"
 import {
   FormFieldShell,
   type FormFieldShellControlProps,
@@ -27,7 +27,7 @@ type FormSelectBaseProps<
 export type FormSimpleSelectProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<SimpleSelectProps, "value" | "onValueChange" | "disabled"> &
+> = Omit<SelectProps, "children" | "value" | "onValueChange" | "disabled"> &
   FormSelectBaseProps<TFieldValues, TName> & {
     kind?: "simple"
     emptyValue?: unknown
@@ -196,9 +196,9 @@ function FormSelect<
             errorId={resolvedIds.errorId}
             error={error}
           >
-            <SimpleSelect
+            <Select
               {...simpleProps}
-              value={field.value == null ? "" : String(field.value)}
+              value={field.value == null ? undefined : String(field.value)}
               disabled={disabled || readOnly}
               aria-describedby={resolvedIds.describedBy}
               aria-errormessage={error ? resolvedIds.errorId : undefined}

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const selectMock: ComponentDemoMock = {
-  code: `import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "tembro"\n\nexport function Example() {\n  return (\n    <Select defaultValue="starter">\n      <SelectTrigger><SelectValue /></SelectTrigger>\n      <SelectContent>\n        <SelectItem value="starter">Starter</SelectItem>\n      </SelectContent>\n    </Select>\n  )\n}`,
+  code: `import { Select } from "tembro"\n\nconst planOptions = [\n  { value: "starter", label: "Starter" },\n  { value: "growth", label: "Growth" },\n  { value: "enterprise", label: "Enterprise" },\n]\n\nexport function Example() {\n  return <Select defaultValue="starter" options={planOptions} />\n}`,
   cliCommand: "npx tembro add select",
   highlights: ["Primary selection surface", "Controlled selection", "Searchable local flow", "Compact trigger options"],
   relatedBlockSlugs: ["crm-dashboard", "users-table", "dashboard-starter"],
