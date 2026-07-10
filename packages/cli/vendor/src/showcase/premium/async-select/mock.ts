@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const asyncSelectMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { AsyncSelect, type AsyncSelectOption } from "@/index"
+import { AsyncSelect, type AsyncSelectOption } from "tembro"
 
 const seedOptions: AsyncSelectOption[] = [
   { value: "acme", label: "ACME", description: "Core product line" },

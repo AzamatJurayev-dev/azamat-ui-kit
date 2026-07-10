@@ -14,7 +14,6 @@ export const presetComponents: Record<string, ComponentName[]> = {
     "filter-bar",
     "property-grid",
     "info-card",
-    "entity-card",
     "data-table",
   ],
 }

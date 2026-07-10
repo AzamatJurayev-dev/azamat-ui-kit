@@ -23,6 +23,9 @@ export function ImageUploadShowcase() {
         files={files}
         onFilesChange={setFiles}
         maxFiles={3}
+        minImageWidth={1200}
+        minImageHeight={800}
+        aspectRatio={1.5}
         helperText="Upload hero illustrations or block thumbnails."
       />
 
@@ -33,7 +36,7 @@ export function ImageUploadShowcase() {
         </div>
         <div className="rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface-muted)] px-4 py-3 text-sm">
           <p className="font-medium aui-text-strong">Interaction model</p>
-          <p className="mt-2 aui-text-muted">Remove action stays separate from the parent dropzone surface.</p>
+          <p className="mt-2 aui-text-muted">Preview, remove, and ratio validation live inside the same reusable media surface.</p>
         </div>
         <div className="rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface-muted)] px-4 py-3 text-sm">
           <p className="font-medium aui-text-strong">Use case</p>

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const carouselMock: ComponentDemoMock = {
-  code: `import { Carousel, CarouselItem } from "@/index"
+  code: `import { Carousel, CarouselItem } from "tembro"
 
 export function Example() {
   return (

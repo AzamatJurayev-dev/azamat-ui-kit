@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const dataStateMock: ComponentDemoMock = {
-  code: `import { DataState } from "@/index"
+  code: `import { DataState } from "tembro"
 
 export function Example() {
   return (

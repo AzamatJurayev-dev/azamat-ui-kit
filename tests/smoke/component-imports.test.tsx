@@ -1,7 +1,5 @@
 import * as React from "react"
 import type { ColumnDef } from "@tanstack/react-table"
-import { useForm } from "react-hook-form"
-import type { FormBuilderField } from "../../src/components/patterns/form-builder"
 
 import {
   ActionMenu,
@@ -12,9 +10,9 @@ import {
   Calendar,
   Checkbox,
   CommandPalette,
+  DataState,
   DataTable,
   DatePicker,
-  EmptyState,
   FileUpload,
   InfoCard,
   Input,
@@ -24,17 +22,11 @@ import {
   Pagination,
   Rating,
   RangeSlider,
-  SearchInput,
   Slider,
   ToastProvider,
   Wizard,
 } from "../../src"
-import {
-  FormBuilder,
-  ResourceDetailPage,
-  ResourcePage,
-  ResourcePageSection,
-} from "../../src/components/patterns/public"
+import { ResourceDetailPage, ResourcePage, ResourcePageSection } from "../../src/components/patterns/public"
 
 type Product = {
   id: string
@@ -55,42 +47,14 @@ const products: Product[] = [
 
 const noop = () => undefined
 
-function FormBuilderSmokeHarness() {
-  const { control } = useForm<{ title: string }>({
-    defaultValues: { title: "" },
-  })
-
-  const fields = [
-    {
-      id: "title",
-      type: "input",
-      props: {
-        name: "title",
-        label: "Title",
-        placeholder: "Type here",
-      },
-    },
-  ] as unknown as FormBuilderField<{ title: string }>[]
-
-  return (
-    <FormBuilder
-      control={control}
-      fields={fields}
-      layout="stack"
-      submitLabel="Save"
-      resetLabel="Reset"
-    />
-  )
-}
-
 export const smokeElements = [
   <Button key="button">Save</Button>,
   <Input key="input" aria-label="Name" />,
   <Checkbox key="checkbox" aria-label="Accept" />,
-  <SearchInput key="search" value="" onValueChange={noop} />,
+  <Input key="search" kind="search" value="" onValueChange={noop} />,
   <Pagination key="pagination" page={1} pageCount={3} onPageChange={noop} />,
   <Badge key="status" tone="success" dot>Active</Badge>,
-  <EmptyState key="empty" title="No data" />,
+  <DataState key="empty" status="empty" title="No data" />,
   <LoadingState key="loading" label="Loading" />,
   <MetricGrid key="metrics" items={[{ key: "sales", label: "Sales", value: "$12k" }]} />,
   <InfoCard key="info-card" title="Info">Content</InfoCard>,
@@ -115,7 +79,6 @@ export const smokeElements = [
     sections={[{ id: "main", title: "Main", items: [{ key: "name", label: "Name", value: "Keyboard" }] }]}
   />,
   <ResourcePageSection key="resource-section" title="Section">Content</ResourcePageSection>,
-  <FormBuilderSmokeHarness key="form-builder" />,
 ]
 
 export function SmokeComponent() {

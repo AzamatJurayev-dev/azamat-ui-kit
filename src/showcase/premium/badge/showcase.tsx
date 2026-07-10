@@ -6,9 +6,10 @@ import type { ComponentDemoProps } from "../types"
 import { badgeDemoItems } from "./data"
 
 const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
+type BadgeVariant = ComponentDemoProps["state"]["badgeVariant"]
 
 export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
-  const variants = ["default", "secondary", "destructive", "outline", "ghost", "link"] as const
+  const variants: BadgeVariant[] = ["default", "secondary", "soft", "destructive", "outline", "ghost", "link"]
   const activeItem = badgeDemoItems.find((item) => item.variant === state.badgeVariant) ?? badgeDemoItems[0]
   const [chipVisible, setChipVisible] = React.useState(true)
 
@@ -47,7 +48,7 @@ export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
                 key={variant}
                 type="button"
                 size="sm"
-                variant={state.badgeVariant === variant ? "default" : "secondary"}
+                variant={state.badgeVariant === variant ? ("default" as const) : ("secondary" as const)}
                 onClick={() => setState({ badgeVariant: variant })}
               >
                 {variant}
@@ -93,6 +94,7 @@ export function BadgeShowcase({ state, setState, mode }: ComponentDemoProps) {
 
               <div className="flex flex-wrap gap-2 border-t border-[color:var(--aui-divider)] pt-4">
                 <Badge variant="secondary" label="Customers" count={18} />
+                <Badge variant="soft" tone="info" label="Synced" dot />
                 <Badge status="warning" label="Pending approval" />
                 {chipVisible ? (
                   <Badge

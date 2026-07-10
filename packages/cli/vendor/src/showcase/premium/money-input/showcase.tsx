@@ -1,13 +1,14 @@
 import { useState } from "react"
 
-import { MoneyInput } from "@/index"
+import { Input } from "@/index"
 
 export function MoneyInputShowcase() {
   const [value, setValue] = useState<number | null>(125.75)
 
   return (
     <div className="space-y-3">
-      <MoneyInput
+      <Input
+        kind="money"
         value={value}
         onValueChange={(nextValue: number | null) => setValue(nextValue)}
         prefix="$"

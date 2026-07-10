@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Loader2Icon, MoreHorizontalIcon } from "lucide-react"
 
@@ -6,8 +8,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuItemDescription,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { cn, stopInteractivePropagation } from "@/lib/utils"
@@ -42,6 +46,9 @@ export type ActionMenuProps = {
   triggerClassName?: string
   itemClassName?: string
   emptyLabel?: React.ReactNode
+  menuWidth?: number | string
+  loadingLabel?: React.ReactNode
+  persistIconSpace?: boolean
 }
 
 function ActionMenu({
@@ -60,6 +67,9 @@ function ActionMenu({
   triggerClassName,
   itemClassName,
   emptyLabel = "No actions",
+  menuWidth,
+  loadingLabel = "Working...",
+  persistIconSpace = true,
 }: ActionMenuProps) {
   const visibleActions = actions.filter((action) => !action.hidden)
   const [loadingKey, setLoadingKey] = React.useState<string | null>(null)
@@ -75,6 +85,17 @@ function ActionMenu({
     } finally {
       setLoadingKey(null)
     }
+  }
+
+  const triggerAction = (action: ActionMenuItem) => {
+    if (lastInvokedActionKeyRef.current === action.key) return
+    lastInvokedActionKeyRef.current = action.key
+    queueMicrotask(() => {
+      if (lastInvokedActionKeyRef.current === action.key) {
+        lastInvokedActionKeyRef.current = null
+      }
+    })
+    void handleSelect(action)
   }
 
   return (
@@ -114,8 +135,10 @@ function ActionMenu({
           <DropdownMenuItem disabled>{emptyLabel}</DropdownMenuItem>
         )}
 
-        {visibleActions.map((action) => {
+        {visibleActions.map((action, index) => {
           const isLoading = action.loading || loadingKey === action.key
+          const previousSection = index > 0 ? visibleActions[index - 1]?.section : undefined
+          const shouldRenderSection = Boolean(action.section && action.section !== previousSection)
 
           return (
             <DropdownMenuItem

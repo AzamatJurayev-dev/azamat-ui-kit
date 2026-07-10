@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
@@ -74,6 +76,9 @@ function ButtonGroup({
         return (
         <Button
           key={key}
+          ref={(node) => {
+            itemRefs.current[index] = node
+          }}
           size={itemSize ?? size}
           variant={itemVariant ?? (selected ? activeVariant : variant)}
           aria-label={resolvedAriaLabel}

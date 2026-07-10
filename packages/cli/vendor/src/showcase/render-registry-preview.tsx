@@ -15,23 +15,18 @@ import {
   ActionMenu,
   Alert,
   AlertDialog,
-  AnchorNav,
   Badge,
   Button,
   ButtonGroup,
   Calendar,
-  ClearableInput,
-  ColorInput,
   CommandPalette,
   DescriptionList,
   DialogActionButton,
   DialogActions,
   Drawer,
-  EntityCard,
   FileDropzone,
   FileUpload,
   FilterBar,
-  FilterChips,
   Input,
   List,
   NavTabs,
@@ -39,13 +34,11 @@ import {
   PageState,
   PageTabs,
   Pagination,
-  PasswordInput,
   Progress,
   ProgressCircle,
   QuickActionGrid,
   RangeSlider,
   Rating,
-  SearchInput,
   SectionHeader,
   Slider,
   StatusDot,
@@ -110,15 +103,15 @@ function InputPreview({
   const onValueChange = (nextValue: string) => setState({ textValue: nextValue })
 
   if (slug === "search-input") {
-    return <SearchInput value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
+    return <Input type="search" value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
   }
 
   if (slug === "password-input") {
-    return <PasswordInput value="secret-token" onValueChange={onValueChange} placeholder="Password" />
+    return <Input kind="password" value="secret-token" onValueChange={onValueChange} placeholder="Password" />
   }
 
   if (slug === "clearable-input") {
-    return <ClearableInput value={value} onValueChange={onValueChange} placeholder="Clearable input" />
+    return <Input value={value} onValueChange={onValueChange} placeholder="Clearable input" clearable />
   }
 
   if (slug === "slider") {
@@ -138,7 +131,7 @@ function InputPreview({
   }
 
   if (slug === "color-input") {
-    return <ColorInput defaultValue="#22c55e" label="Accent color" description="Theme token preview." />
+    return <Input type="color" defaultValue="#22c55e" aria-label="Accent color" />
   }
 
   if (slug === "tag-input") {
@@ -166,7 +159,7 @@ function FormPreview({
       </label>
       <label className="grid gap-2">
         <span className="text-sm font-medium text-[color:var(--aui-page-foreground)]">Status</span>
-        <SearchInput value="Active customers" resultCount={7} readOnly />
+        <Input type="search" value="Active customers" resultCount={7} readOnly />
         <span className="text-xs text-emerald-500">Ready to submit</span>
       </label>
     </div>
@@ -228,20 +221,6 @@ function OverlayPreview({ slug }: { slug: string }) {
 function NavigationPreview({ slug }: { slug: string }) {
   if (slug === "pagination") {
     return <Pagination page={3} pageCount={9} onPageChange={() => undefined} />
-  }
-
-  if (slug === "anchor-nav") {
-    return (
-      <AnchorNav
-        orientation="horizontal"
-        title="Sections"
-        items={[
-          { key: "overview", label: "Overview", href: "#overview", active: true },
-          { key: "usage", label: "Usage", href: "#usage" },
-          { key: "api", label: "API", href: "#api" },
-        ]}
-      />
-    )
   }
 
   if (slug === "page-tabs") {
@@ -386,26 +365,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "entity-header") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
-            <Badge variant="outline">Customer</Badge>
-            <div>
-              <h3 className="text-xl font-semibold">Acme Holdings</h3>
-              <p className="text-sm text-[color:var(--aui-page-muted)]">Enterprise account with billing and admin ownership.</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">Archive</Button>
-            <Button size="sm">Edit</Button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   if (slug === "notification-center") {
     return (
       <List
@@ -414,18 +373,6 @@ function DisplayPreview({ slug }: { slug: string }) {
           { key: "2", title: "New comment", description: "Review requested on DataTable API.", extra: "8m" },
           { key: "3", title: "Publish reminder", description: "Package version is ready for release.", extra: "1h" },
         ]}
-      />
-    )
-  }
-
-  if (slug === "entity-card" || slug === "file-card") {
-    return (
-      <EntityCard
-        title={slug === "file-card" ? "Design-spec.pdf" : "Azamat Workspace"}
-        description={slug === "file-card" ? "Shared with 4 reviewers." : "Admin console and live dashboard route."}
-        status={<Badge variant="secondary">Live</Badge>}
-        meta={slug === "file-card" ? "2.4 MB" : "Updated 8 min ago"}
-        actions={<Button size="sm" variant="outline">Open</Button>}
       />
     )
   }
@@ -484,9 +431,13 @@ function ActionsPreview({
   if (slug === "filter-bar") {
     return (
       <FilterBar
-        search={<SearchInput value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
-        activeCount={2}
+        search={<Input type="search" value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
         onReset={() => setState({ textValue: "" })}
+        chips={[
+          { key: "status", label: "Status", value: "Active", tone: "success" },
+          { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
+        ]}
+        onRemoveChip={() => undefined}
         filters={<Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Status</Button>}
         actions={<Button size="sm">Export</Button>}
       />
@@ -543,28 +494,26 @@ function ActionsPreview({
     )
   }
 
-  if (slug === "filter-chips" || slug === "data-table-saved-filters") {
+  if (slug === "data-table-saved-filters") {
     return (
       <div className="grid gap-3">
-        <FilterChips
+        <FilterBar
           chips={[
             { key: "status", label: "Status", value: "Active", tone: "success" },
             { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
             { key: "region", label: "Region", value: "APAC", tone: "info" },
           ]}
-          onRemove={() => undefined}
-          onClear={() => undefined}
+          onRemoveChip={() => undefined}
+          onReset={() => undefined}
         />
-        {slug === "data-table-saved-filters" ? (
-          <ButtonGroup
-            attached={false}
-            items={[
-              { key: "default", label: "Default", variant: "secondary" },
-              { key: "billing", label: "Billing" },
-              { key: "ops", label: "Operations" },
-            ]}
-          />
-        ) : null}
+        <ButtonGroup
+          attached={false}
+          items={[
+            { key: "default", label: "Default", variant: "secondary" },
+            { key: "billing", label: "Billing" },
+            { key: "ops", label: "Operations" },
+          ]}
+        />
       </div>
     )
   }
@@ -632,7 +581,7 @@ function DataTablePartsPreview({ slug }: { slug: string }) {
   return (
     <div className="overflow-hidden rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--aui-divider)] p-3">
-        <SearchInput value="" placeholder="Search rows..." className="max-w-xs" readOnly />
+        <Input type="search" value="" placeholder="Search rows..." className="max-w-xs" readOnly />
         <div className="flex gap-2">
           <Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Filters</Button>
           <Button size="sm">Create</Button>
@@ -735,7 +684,7 @@ function PatternsPreview({ slug }: { slug: string }) {
           <StatCard title="Health" value="94%" trend={{ value: "Stable", tone: "default" }} />
         </div>
       }
-      filters={<FilterBar search={<SearchInput value="" placeholder="Search..." readOnly />} activeCount={1} />}
+      filters={<FilterBar search={<Input type="search" value="" placeholder="Search..." readOnly />} activeCount={1} />}
     >
       <ResourcePageSection title="Recent activity">
         <Timeline

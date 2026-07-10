@@ -54,6 +54,7 @@ export function PageStateShowcase({ mode }: ComponentDemoProps) {
             </Button>
           )
         }
+        extra={tone === "error" ? <Button variant="ghost">Open logs</Button> : undefined}
       />
 
       {mode === "playground" ? (

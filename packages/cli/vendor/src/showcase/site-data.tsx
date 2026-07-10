@@ -170,6 +170,8 @@ const formRHFWrapperBasePropsRows: string[][] = [
   ["required", "boolean | \"*\" | FieldError", "false", "Marks field required in shell and optional validation path."],
   ["disabled", "boolean", "false", "Disables input and blocks interaction."],
   ["readOnly", "boolean", "false", "Allows viewing without edit; value remains controlled."],
+  ["success", "ReactNode", "-", "Optional success message rendered by the shared field shell."],
+  ["loading", "boolean", "false", "Shows a consistent loading message inside the shared field shell."],
   ["error", "string | FieldError | null", "-", "Optional error override instead of default form state message."],
 ]
 
@@ -255,7 +257,7 @@ export const PACKAGE_IMPORT = "tembro"
 export const DOCS_APP_NAME = "azamat-ui"
 export const CLI_INIT_NEXT_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template next --defaults`
 export const CLI_INIT_VITE_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template vite --defaults`
-export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button form-input`
+export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button input`
 export const PACKAGE_INSTALL_COMMAND = `${CLI_INIT_NEXT_COMMAND}\n${CLI_ADD_COMMAND}`
 export const CLI_INSTALL_COMMAND = `npx ${CLI_PACKAGE_NAME} --help`
 export const CLI_THEME_COMMAND = `npx ${CLI_PACKAGE_NAME} theme`
@@ -273,7 +275,7 @@ export const releaseHistory: PackageReleaseRecord[] = [
     status: "Published",
     summary: "Expanded the registry with newer dashboard, input, badge, sidebar, and notification primitives.",
     notes: [
-      "Registry truth now includes `accordion`, `sidebar`, `trend-card`, `delta-badge`, `entity-header`, `notification-center`, and `command-bar`.",
+      "Registry truth now includes `accordion`, `sidebar`, `trend-card`, `delta-badge`, `notification-center`, and `command-bar`.",
       "Component metadata was refreshed so docs can keep canonical surfaces and related helpers accurate.",
       "CLI-first local component setup remains the default path for Next.js and Vite users.",
     ],
@@ -355,8 +357,6 @@ const formControlComponentSlugs = new Set([
   "combobox",
   "radio-group",
   "number-input",
-  "date-input",
-  "date-range-input",
   "date-picker",
   "date-range-picker",
   "form-field-shell",
@@ -593,44 +593,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["allowEmpty", "boolean", "false", "Allows clearing the input without forcing zero."],
   ],
   features: ["Parsing", "min/max", "Step semantics", "Invalid number handling"],
-  },
-  {
-    slug: "date-input",
-    title: "Date Input",
-    description: "Native-like date input with ISO-style string contract, min/max constraints and clear disabled state.",
-    icon: CalendarClockIcon,
-    category: "Forms",
-    status: "Preview",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["value", "string", "-", "Controlled date value (for example `2026-06-19`)."],
-      ["defaultValue", "string", "-", "Initial uncontrolled date value."],
-      ["onValueChange", "(value) => void", "-", "Callback with string date value."],
-      ["min", "string", "-", "Minimum selectable date string."],
-      ["max", "string", "-", "Maximum selectable date string."],
-      ["disabled", "boolean", "false", "Disables input interactions."],
-      ["placeholder", "string", "-", "Optional input placeholder."],
-    ],
-    features: ["Date format contract", "min/max", "Controlled input", "Disabled state"],
-  },
-  {
-    slug: "date-range-input",
-    title: "Date Range Input",
-    description: "Date range value with `from` / `to` boundaries for filters and reporting windows.",
-    icon: CalendarClockIcon,
-    category: "Forms",
-    status: "Preview",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["value", "{ from: string; to: string }", "-", "Controlled range value."],
-      ["defaultValue", "{ from: string; to: string }", "-", "Initial uncontrolled range value."],
-      ["onValueChange", "(value) => void", "-", "Callback with normalized range value."],
-      ["min", "string", "-", "Minimum selectable date for range start."],
-      ["max", "string", "-", "Maximum selectable date for range end."],
-      ["disabled", "boolean", "false", "Disables all range controls."],
-      ["required", "boolean", "false", "Requires both bounds to be selected."],
-    ],
-    features: ["Range semantics", "String range contract", "Boundary constraints", "Filtering windows"],
   },
   {
     slug: "date-picker",
@@ -1250,7 +1212,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "breadcrumbs",
     title: "Breadcrumbs",
-    description: "Navigation breadcrumbs with current context and optional custom link rendering.",
+    description: "Navigation breadcrumbs with current context, overflow collapse, and custom link rendering.",
     icon: ChevronRightIcon,
     category: "Components",
     status: "Stable",
@@ -1258,8 +1220,9 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     propsRows: [
       ["items", "BreadcrumbItem[]", "-", "Breadcrumb sequence for navigation context."],
       ["separator", "ReactNode", "-", "Custom separator between items."],
+      ["maxItems", "number", "-", "Collapses middle items when the path gets too long."],
       ["renderLink", "(props) => ReactNode", "-", "Custom link renderer for each item."],
-      ["current", "boolean", "-", "Marks current step and disables navigation for it."],
+      ["currentItemLabel", "string", "-", "Accessible label for the current page item."],
     ],
     features: ["Navigation context", "Custom separators", "Custom links", "Current state support"],
   },
@@ -1353,27 +1316,29 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Audit timeline", "Empty state handling", "Compact mode", "Action rows"],
   },
   {
-    slug: "empty-state",
-    title: "Empty State",
-    description: "Empty data state block with optional action affordance.",
+    slug: "data-state",
+    title: "Data State",
+    description: "Unified data state block for empty, search-empty, loading, error and success surfaces.",
     icon: AlertCircleIcon,
     category: "Data Display",
     status: "Stable",
     installCommand: PACKAGE_INSTALL_COMMAND,
     propsRows: [
-      ["title", "ReactNode", "-", "Primary empty-state title."],
-      ["description", "ReactNode", "-", "Short explanation for no-content state."],
-      ["icon", "ReactNode", "-", "Optional empty-state illustration icon."],
-      ["action", "ReactNode", "-", "Action element to show as CTA."],
-      ["actionLabel", "ReactNode", "-", "Legacy action label shortcut."],
-      ["onAction", "() => void", "-", "Action callback."],
+      ["status", "\"idle\" | \"loading\" | \"empty\" | \"error\" | \"success\"", "-", "State preset that controls default copy and icon."],
+      ["title", "ReactNode", "-", "Primary state title."],
+      ["description", "ReactNode", "-", "Short explanation for the current state."],
+      ["variant", "\"card\" | \"plain\" | \"inline\"", "\"card\"", "Container style for page, table and inline usage."],
+      ["query", "ReactNode", "-", "Optional searched value for empty search results."],
+      ["actions", "ReactNode", "-", "Custom action elements."],
+      ["onRetry", "() => void", "-", "Retry callback for error/loading recovery."],
+      ["onClear", "() => void", "-", "Clear callback for search-empty states."],
     ],
-    features: ["No-content messaging", "Optional CTA", "Reusable copy", "Data placeholders"],
+    features: ["Empty/search-empty states", "Error retry", "Plain table fallback", "Inline state rows"],
   },
   {
     slug: "loading-state",
     title: "Loading State",
-    description: "Simple loading placeholder block with label and description.",
+    description: "Scoped loading block with spinner, skeleton, or progress variants for real route and panel states.",
     icon: SparklesIcon,
     category: "Data Display",
     status: "Stable",
@@ -1382,9 +1347,11 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["label", "ReactNode", "-", "Loading heading."],
       ["description", "ReactNode", "-", "Loading explanation text."],
       ["icon", "ReactNode", "-", "Optional loading icon."],
+      ["variant", "'spinner' | 'skeleton' | 'progress'", "'spinner'", "Visual loading style."],
+      ["progress", "number", "-", "Progress amount when `variant` is `progress`."],
       ["className", "string", "-", "Container class override."],
     ],
-    features: ["Skeleton alternative", "Section loading labels", "Minimal setup", "Custom icon"],
+    features: ["Spinner, skeleton and progress", "Section loading labels", "Scoped placeholders", "Custom icon"],
   },
   {
     slug: "result",
@@ -1424,7 +1391,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
   {
     slug: "toast",
     title: "Toast",
-    description: "Global transient messaging system with provider, placement and dismiss behavior.",
+    description: "Global transient messaging system with provider, stacking, promise states, placement and dismiss behavior.",
     icon: ShieldCheckIcon,
     category: "Components",
     status: "Stable",
@@ -1436,9 +1403,10 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["maxToasts", "number", "5", "Maximum number of visible toasts."],
       ["pauseOnHover", "boolean", "true", "Pause dismiss timer when hovered."],
       ["addToast", "(input) => string", "-", "API to push a toast from context."],
-      ["success/info/warning/error", "(input) => string", "-", "Tone helpers for common outcomes."],
+      ["success/info/warning/error/loading", "(input) => string", "-", "Tone helpers for common outcomes."],
+      ["promise", "(promise, messages) => Promise<T>", "-", "Tracks loading/success/error from async work."],
     ],
-    features: ["Provider setup", "Controlled duration", "Action buttons", "Placement options"],
+    features: ["Provider setup", "Stacking and duration", "Promise states", "Placement options"],
   },
   {
     slug: "table",
@@ -1492,7 +1460,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["isLoading", "boolean", "false", "Loading indicator state."],
       ["isError", "boolean", "false", "Error state flag for fallback."],
       ["loadingState", "LoadingState", "-", "Loading UI when `isLoading` is true."],
-      ["emptyState", "EmptyState", "-", "State shown when no rows are present."],
+      ["emptyState", "Omit<DataStateProps, \"status\">", "-", "State shown when no rows are present."],
       ["errorState", "ErrorState", "-", "State shown when `isError` is true."],
     ],
     features: ["Column-based API", "Sorting and pagination", "Row selection and bulk actions", "Toolbar, visibility and saved views", "Mobile cards and server mode", "Empty/loading/error states"],
@@ -1540,21 +1508,13 @@ export const componentRelations: ComponentRelationMap = {
     groupSlugs: ["inputs", "form"],
     componentSlugs: ["money-input", "quantity-input", "input"],
   },
-  "date-input": {
-    groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["date-range-input", "date-picker", "date-range-picker", "table", "select"],
-  },
-  "date-range-input": {
-    groupSlugs: ["inputs", "filters", "form"],
-    componentSlugs: ["date-input", "date-picker", "date-range-picker", "data-table"],
-  },
   "date-picker": {
     groupSlugs: ["inputs", "form", "display"],
-    componentSlugs: ["calendar", "date-input", "date-range-picker"],
+    componentSlugs: ["calendar", "date-range-picker"],
   },
   "date-range-picker": {
     groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["date-picker", "date-range-input", "calendar", "data-table"],
+    componentSlugs: ["date-picker", "calendar", "data-table"],
   },
   "form-field-shell": {
     groupSlugs: ["form"],
@@ -1702,7 +1662,7 @@ export const componentRelations: ComponentRelationMap = {
   },
   "metric-grid": {
     groupSlugs: ["display"],
-    componentSlugs: ["info-card", "activity-feed", "empty-state"],
+    componentSlugs: ["info-card", "activity-feed", "data-state"],
   },
   "info-card": {
     groupSlugs: ["display", "layout"],
@@ -1712,17 +1672,17 @@ export const componentRelations: ComponentRelationMap = {
     groupSlugs: ["display"],
     componentSlugs: ["info-card", "metric-grid", "result"],
   },
-  "empty-state": {
+  "data-state": {
     groupSlugs: ["display"],
     componentSlugs: ["loading-state", "result", "data-table"],
   },
   "loading-state": {
     groupSlugs: ["display"],
-    componentSlugs: ["empty-state", "result", "data-table"],
+    componentSlugs: ["data-state", "result", "data-table"],
   },
   result: {
     groupSlugs: ["display"],
-    componentSlugs: ["empty-state", "loading-state", "page-header"],
+    componentSlugs: ["data-state", "loading-state", "page-header"],
   },
   "scroll-box": {
     groupSlugs: ["display", "layout"],
@@ -1757,13 +1717,10 @@ const primaryComponentSurfaceSlugs = new Set([
   "metric-grid",
   "info-card",
   "activity-feed",
-  "empty-state",
   "loading-state",
   "result",
   "toast",
   "trend-card",
-  "delta-badge",
-  "entity-header",
   "notification-center",
   "command-bar",
   "progress",
@@ -1788,8 +1745,6 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   combobox: "select",
   "form-select": "select",
   calendar: "date-picker",
-  "date-input": "date-picker",
-  "date-range-input": "date-picker",
   "date-range-picker": "date-picker",
   "form-date-range-input": "date-picker",
   "form-date-picker": "date-picker",
@@ -1871,12 +1826,6 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       slugs: ["date-picker", "date-range-picker", "calendar"],
     },
     {
-      key: "related",
-      title: "Input-level patterns",
-      description: "These patterns keep the date contract explicit when your product prefers inline text/date fields.",
-      slugs: ["date-input", "date-range-input"],
-    },
-    {
       key: "integrations",
       title: "Form integrations",
       description: "Use wrapped date fields when validation, labels, and form shell behavior should stay standardized.",
@@ -1902,27 +1851,13 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "core",
       title: "Sidebar surfaces",
       description: "These pieces define the reusable sidebar surface first, then layer shell framing around it only when the route really needs it.",
-      slugs: ["sidebar", "sidebar-nav", "breadcrumbs"],
+      slugs: ["sidebar", "breadcrumbs"],
     },
     {
       key: "related",
       title: "Route-level patterns",
       description: "Use these patterns only after the sidebar and navigation contract are already clear.",
-      slugs: ["app-shell", "app-header", "page-container", "section", "toolbar", "split-layout", "sticky-footer-bar"],
-    },
-  ],
-  "page-header": [
-    {
-      key: "core",
-      title: "Page context surfaces",
-      description: "Use these pieces to establish page identity, breadcrumbs, meta, and supporting stats.",
-      slugs: ["page-header", "breadcrumbs"],
-    },
-    {
-      key: "related",
-      title: "Supporting page patterns",
-      description: "These supporting pieces sit around the page header when you need compact summary or stat context.",
-      slugs: ["stat-card"],
+      slugs: ["section", "toolbar", "split-layout"],
     },
   ],
   "data-table": [
@@ -1959,14 +1894,6 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       slugs: ["toast"],
     },
   ],
-  "form-builder": [
-    {
-      key: "core",
-      title: "Form-building surfaces",
-      description: "Use the builder when you need a repeatable form system instead of wiring every field wrapper manually.",
-      slugs: ["form-builder", "form-field-shell"],
-    },
-  ],
 }
 
 type KitRegistryFile = {
@@ -1981,8 +1908,59 @@ const kitRecommendedSlugs = new Set((kitRegistry?.recommended ?? []).map((slug) 
 const kitMigrationAliases = kitRegistry?.migrationAliases ?? {}
 const migrationAliasTargets = new Set(Object.values(kitMigrationAliases))
 
+const internalComponentCatalogSlugs = new Set([
+  "app-header",
+  "app-sidebar",
+  "app-shell",
+  "async-multi-select",
+  "clearable-input",
+  "combobox",
+  "copy-field",
+  "data-table-actions-column",
+  "data-table-bulk-actions",
+  "data-table-column-visibility-menu",
+  "data-table-pagination",
+  "data-table-row-actions",
+  "data-table-saved-filters",
+  "data-table-select-column",
+  "data-table-sortable-header",
+  "data-table-toolbar",
+  "data-table-view-presets",
+  "date-input",
+  "date-range-input",
+  "file-dropzone",
+  "form",
+  "form-async-select",
+  "form-field",
+  "form-field-shell",
+  "form-input",
+  "form-select",
+  "form-switch",
+  "form-textarea",
+  "hover-card",
+  "input-decorator",
+  "input-value",
+  "inputs",
+  "masked-input",
+  "money-input",
+  "number-input",
+  "page-container",
+  "page-header",
+  "password-input",
+  "phone-input",
+  "quantity-input",
+  "search-input",
+  "section-header",
+  "sidebar-nav",
+  "simple-select",
+  "stat-card",
+  "sticky-footer-bar",
+  "table-export-menu",
+  "table-import-button",
+])
+
 const hiddenKitGroups = new Set(["kits"])
-const hiddenKitSlugs = new Set(["all", "dashboard", "calendar-kit", "wizard-kit"])
+const hiddenKitSlugs = new Set(["all", "dashboard", "calendar-kit", "wizard-kit", ...internalComponentCatalogSlugs])
 const skippedKitGroups = new Set(["hooks"])
 
 const fallbackRegistryCategoryByGroup: Record<string, ComponentCatalogItem["category"]> = {
@@ -2045,7 +2023,10 @@ for (const [group, groupSlugs] of Object.entries(kitGroups)) {
     const aliasTarget = kitMigrationAliases[slug]
     const effectiveSlug = aliasTarget ?? slug
     if (!slug || hiddenKitSlugs.has(slug) || hiddenKitSlugs.has(effectiveSlug)) continue
-    if (migrationAliasTargets.has(effectiveSlug) || migrationAliasTargets.has(slug)) continue
+    if (
+      (migrationAliasTargets.has(effectiveSlug) && !isPublicComponentSurfaceSlug(effectiveSlug)) ||
+      (migrationAliasTargets.has(slug) && !isPublicComponentSurfaceSlug(slug))
+    ) continue
     if (baseComponentSlugs.has(effectiveSlug) || generatedComponentCatalog.has(effectiveSlug)) continue
       const category = fallbackRegistryCategoryByGroup[group] ?? "Data Display"
       const icon = fallbackRegistryIconByGroup[group] ?? SparklesIcon
@@ -2067,19 +2048,21 @@ for (const [group, groupSlugs] of Object.entries(kitGroups)) {
 }
 
 const fallbackComponentCatalog = [...generatedComponentCatalog.values()]
-export const componentCatalog: ComponentCatalogItem[] = [...baseComponentCatalog, ...fallbackComponentCatalog]
+export const componentCatalog: ComponentCatalogItem[] = [...baseComponentCatalog, ...fallbackComponentCatalog].filter(
+  (item) => !internalComponentCatalogSlugs.has(item.slug)
+)
 
 const packageDocsSurfaceCatalog: ComponentCatalogItem[] = []
 
 const packageDocsSurfaceCatalogMap = new Map(packageDocsSurfaceCatalog.map((item) => [item.slug, item] as const))
 const hiddenPrimaryComponentCatalogSlugs = new Set([
+  ...internalComponentCatalogSlugs,
   "app-sidebar",
   "app-shell",
   "app-header",
   "page-header",
   "page-container",
   "stat-card",
-  "form-builder",
   "resource-page",
   "resource-detail-page",
   "data-table-column-visibility-menu",
@@ -2195,7 +2178,12 @@ export function getComponentDetailSidebarSections(activeSlug?: string): Componen
 
 export function getComponentSurfaceSections(slug: string) {
   const primarySlug = getPrimaryComponentSurfaceSlug(slug)
-  return componentSurfaceSections[primarySlug] ?? []
+  return (componentSurfaceSections[primarySlug] ?? [])
+    .map((section) => ({
+      ...section,
+      slugs: section.slugs.filter((sectionSlug) => !internalComponentCatalogSlugs.has(sectionSlug)),
+    }))
+    .filter((section) => section.slugs.length > 0)
 }
 
 export function getPrimaryComponentMemberInventory(surfaceSlug?: string): ComponentSurfaceMemberInventoryItem[] {
@@ -2203,7 +2191,7 @@ export function getPrimaryComponentMemberInventory(surfaceSlug?: string): Compon
 
   return surfaceSlugs.flatMap((currentSurfaceSlug) => {
     const surface = getComponentSurfaceCatalogItem(currentSurfaceSlug)
-    const sections = componentSurfaceSections[currentSurfaceSlug] ?? []
+    const sections = getComponentSurfaceSections(currentSurfaceSlug)
 
     return sections.flatMap((section) => {
       const entries: ComponentSurfaceMemberInventoryItem[] = []
@@ -2223,7 +2211,12 @@ export function getPrimaryComponentMemberInventory(surfaceSlug?: string): Compon
             sectionKey: section.key,
             summary: source.description,
             useWhen: section.description,
-            maturity: section.key === "core" ? "core" : "helper",
+            maturity:
+              section.key === "core"
+                ? "core"
+                : section.key === "compatibility"
+                  ? "compatibility"
+                  : "helper",
             status: source.status,
             href: componentDocsPath(source.slug),
           })
@@ -2258,7 +2251,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
   {
     slug: "layout",
     title: "Application layout",
-    description: "Route-level shells, sidebars and headers that support real components instead of replacing them.",
+    description: "Route-level sidebars, breadcrumbs and page framing helpers that support real reusable components instead of replacing them.",
     icon: LayoutDashboardIcon,
     category: "Layout",
     exports: ["Sidebar", "SidebarNav", "Breadcrumbs", "PageContainer", "Section", "SectionHeader", "StickyFooterBar"],
@@ -2272,7 +2265,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Filter bars and chip patterns for narrowing data without leaving the current view.",
     icon: SlidersHorizontalIcon,
     category: "Data",
-    exports: ["FilterBar", "FilterChips"],
+    exports: ["FilterBar", "SavedFilterSelect"],
     href: componentModulePath("filters"),
     status: "Stable",
     features: ["Filter bars", "Chips", "Search + filter pairing"],
@@ -2346,24 +2339,24 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
   {
     slug: "notifications",
     title: "Notifications",
-    description: "Toast-based feedback surfaces for success, warnings and async completion states.",
+    description: "Toast and notification surfaces for transient feedback, async completion, and unread activity.",
     icon: BadgeIcon,
     category: "Overlay",
-    exports: ["Toast"],
+    exports: ["Toast", "NotificationCenter"],
     href: componentModulePath("notifications"),
     status: "Preview",
-    features: ["Toasts", "Transient feedback", "Status messaging"],
+    features: ["Toasts", "Promise feedback", "Unread activity", "Status messaging"],
   },
   {
     slug: "command",
     title: "Command",
-    description: "Command palette patterns for keyboard-driven discovery and navigation.",
+    description: "Command palette patterns for keyboard-driven discovery, search, grouped actions and async navigation.",
     icon: TerminalSquareIcon,
     category: "Workflow",
     exports: ["CommandPalette"],
     href: componentModulePath("command"),
     status: "Preview",
-    features: ["Command palette", "Keyboard discovery", "Quick navigation"],
+    features: ["Command palette", "Grouped actions", "Async search", "Keyboard discovery"],
   },
   {
     slug: "calendar",

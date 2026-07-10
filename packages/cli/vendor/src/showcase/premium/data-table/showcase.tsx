@@ -5,7 +5,6 @@ import {
   Badge,
   Button,
   DataTable,
-  DataTableBulkActions,
   DataTableColumnVisibilityMenu,
   DataTableSortableHeader,
   SearchInput,

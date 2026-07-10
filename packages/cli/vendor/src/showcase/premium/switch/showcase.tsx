@@ -29,12 +29,17 @@ export function SwitchShowcase({ state, setState }: ComponentDemoProps) {
 
         <div className="mt-6 grid gap-3">
           {switchDemoRows.map((row, index) => (
-            <div key={row.title} className={`${panelClass} flex items-center justify-between gap-4`}>
-              <div>
-                <p className="font-medium aui-text-strong">{row.title}</p>
-                <p className="text-sm aui-text-muted">{row.description}</p>
-              </div>
-              <Switch checked={index === 0 ? state.switchOn : row.defaultChecked} onCheckedChange={index === 0 ? (switchOn) => setState({ switchOn }) : undefined} defaultChecked={index > 0 ? row.defaultChecked : undefined} />
+            <div key={row.title} className={panelClass}>
+              <Switch
+                label={row.title}
+                description={row.description}
+                checked={index === 0 ? state.switchOn : row.defaultChecked}
+                onCheckedChange={index === 0 ? (switchOn) => setState({ switchOn }) : undefined}
+                defaultChecked={index > 0 ? row.defaultChecked : undefined}
+                size={index === 0 ? "lg" : "md"}
+                labelPlacement="start"
+                className="w-full justify-between"
+              />
             </div>
           ))}
         </div>
@@ -59,6 +64,10 @@ export function SwitchShowcase({ state, setState }: ComponentDemoProps) {
               Turn off
             </Button>
           </div>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <Switch label="Sync in progress" description="Loading disables the control until the request finishes." loading defaultChecked />
+          <Switch label="Invalid setting" description="Error state keeps the same field layout." invalid />
         </div>
       </section>
     </div>

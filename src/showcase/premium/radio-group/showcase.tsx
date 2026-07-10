@@ -8,7 +8,7 @@ const panelClass =
 const planOptions = [
   { value: "starter", label: "Starter", description: "Good for single workspace setup." },
   { value: "growth", label: "Growth", description: "Adds more seats and team workflows." },
-  { value: "enterprise", label: "Enterprise", description: "Advanced controls and support." },
+  { value: "enterprise", label: "Enterprise", description: "Advanced controls and support.", disabled: true },
 ] as const
 
 export function RadioGroupShowcase() {
@@ -60,6 +60,18 @@ export function RadioGroupShowcase() {
               </Button>
             ))}
           </div>
+        </div>
+        <div className="mt-5">
+          <RadioGroup
+            invalid
+            defaultValue="card"
+            orientation="horizontal"
+            options={[
+              { value: "card", label: "Card" },
+              { value: "bank", label: "Bank" },
+              { value: "invoice", label: "Invoice", disabled: true },
+            ]}
+          />
         </div>
       </section>
     </div>

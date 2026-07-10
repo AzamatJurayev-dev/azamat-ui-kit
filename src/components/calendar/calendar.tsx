@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
@@ -33,6 +35,13 @@ export type CalendarLabels = {
   disabledDate?: (date: string, reason: CalendarDisabledReason) => string
 }
 
+export type CalendarSummaryState = {
+  mode: "single" | "range"
+  value?: string | null
+  range?: CalendarDateRange
+  locale: string
+}
+
 export type CalendarProps = React.ComponentProps<"div"> & {
   value?: string | null
   range?: CalendarDateRange
@@ -47,6 +56,7 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   disabledDates?: string[]
   locale?: string
   weekStartsOn?: 0 | 1
+  months?: number
   numberOfMonths?: number
   showMonthHeaders?: boolean
   showOutsideDays?: boolean
@@ -55,6 +65,7 @@ export type CalendarProps = React.ComponentProps<"div"> & {
   showClearShortcut?: boolean
   showSelectionSummary?: boolean
   labels?: CalendarLabels
+  renderSelectionSummary?: (state: CalendarSummaryState) => React.ReactNode
 }
 
 function getInitialMonth(defaultMonth?: Date | string | null, value?: string | null, range?: CalendarDateRange) {
@@ -100,6 +111,12 @@ function getDateKeysBetween(from: string, to: string) {
   return keys
 }
 
+function formatCalendarSummaryDate(value: string | null | undefined, locale: string) {
+  const date = parseDateKey(value)
+  if (!date || !value) return null
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(date)
+}
+
 function Calendar({
   className,
   value,
@@ -115,6 +132,7 @@ function Calendar({
   disabledDates,
   locale = "en-US",
   weekStartsOn = 1,
+  months,
   numberOfMonths = 1,
   showMonthHeaders,
   showOutsideDays = true,
@@ -123,6 +141,7 @@ function Calendar({
   showClearShortcut = false,
   showSelectionSummary = false,
   labels,
+  renderSelectionSummary,
   ...props
 }: CalendarProps) {
   const isControlledSingle = value !== undefined
@@ -133,7 +152,7 @@ function Calendar({
   const currentValue = isControlledSingle ? value : internalValue
   const currentRange = isControlledRange ? range : internalRange
   const currentMonth = month ?? internalMonth
-  const resolvedNumberOfMonths = Math.max(numberOfMonths, 1)
+  const resolvedNumberOfMonths = Math.max(months ?? numberOfMonths, 1)
   const shouldShowMonthHeaders = showMonthHeaders ?? resolvedNumberOfMonths > 1
   const navigationStep = pagedNavigation ? resolvedNumberOfMonths : 1
   const todayKey = toDateKey(new Date())
@@ -176,6 +195,33 @@ function Calendar({
     [allMonthDays, isDateDisabled]
   )
 
+  const summaryContent = React.useMemo(() => {
+    if (renderSelectionSummary) {
+      return renderSelectionSummary({
+        mode,
+        value: currentValue ?? undefined,
+        range: currentRange,
+        locale,
+      })
+    }
+
+    if (!showSelectionSummary) {
+      return null
+    }
+
+    if (mode === "range") {
+      const from = formatCalendarSummaryDate(currentRange?.from, locale)
+      const to = formatCalendarSummaryDate(currentRange?.to, locale)
+
+      if (from && to) return `Selected range: ${from} - ${to}`
+      if (from) return `Selected range starts ${from}`
+      return "No range selected"
+    }
+
+    const selected = formatCalendarSummaryDate(currentValue, locale)
+    return selected ? `Selected date: ${selected}` : "No date selected"
+  }, [currentRange, currentValue, locale, mode, renderSelectionSummary, showSelectionSummary])
+
   const tabbableDateKey = React.useMemo(() => {
     const preferred = value ?? range?.from ?? todayKey
     const selectedFrom = currentRange?.from ?? undefined
@@ -212,13 +258,13 @@ function Calendar({
     onMonthChange?.(next)
   }
 
-  const moveFocus = (date: Date) => {
+  const moveFocus = (date: Date, step = 1) => {
     let nextDate = date
     let nextKey = toDateKey(nextDate)
     let guard = 0
 
     while (isDateDisabled(nextKey) && guard < 370) {
-      nextDate = addDays(nextDate, nextDate < date ? -1 : 1)
+      nextDate = addDays(nextDate, step)
       nextKey = toDateKey(nextDate)
       guard += 1
     }
@@ -303,35 +349,35 @@ function Calendar({
     switch (event.key) {
       case "ArrowRight":
         event.preventDefault()
-        moveFocus(addDays(date, 1))
+        moveFocus(addDays(date, 1), 1)
         break
       case "ArrowLeft":
         event.preventDefault()
-        moveFocus(addDays(date, -1))
+        moveFocus(addDays(date, -1), -1)
         break
       case "ArrowDown":
         event.preventDefault()
-        moveFocus(addDays(date, 7))
+        moveFocus(addDays(date, 7), 7)
         break
       case "ArrowUp":
         event.preventDefault()
-        moveFocus(addDays(date, -7))
+        moveFocus(addDays(date, -7), -7)
         break
       case "Home":
         event.preventDefault()
-        moveFocus(addDays(date, -columnIndex))
+        moveFocus(addDays(date, -columnIndex), -1)
         break
       case "End":
         event.preventDefault()
-        moveFocus(addDays(date, 6 - columnIndex))
+        moveFocus(addDays(date, 6 - columnIndex), 1)
         break
       case "PageUp":
         event.preventDefault()
-        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, -1)))
+        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, -1)), -1)
         break
       case "PageDown":
         event.preventDefault()
-        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, 1)))
+        moveFocus(getDateAtSameDayInMonth(date, addMonths(date, 1)), 1)
         break
     }
   }
@@ -404,6 +450,9 @@ function Calendar({
                 const selected = mode === "single" ? currentValue === dateKey : dateKey === currentRange?.from || dateKey === currentRange?.to
                 const inRange = mode === "range" && isWithinRange(dateKey, currentRange?.from, currentRange?.to)
                 const inPreviewRange = !inRange && mode === "range" && isWithinRange(dateKey, previewRange?.from, previewRange?.to)
+                const rangeStart = mode === "range" && dateKey === currentRange?.from
+                const rangeEnd = mode === "range" && dateKey === currentRange?.to
+                const rangeMiddle = inRange && !rangeStart && !rangeEnd
                 const disabledReason = getDisabledReason(dateKey)
                 const disabled = Boolean(disabledReason)
                 const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined
@@ -422,6 +471,9 @@ function Calendar({
                     tabIndex={dateKey === tabbableDateKey ? 0 : -1}
                     title={disabledLabel}
                     data-selected={selected || undefined}
+                    data-range-start={rangeStart || undefined}
+                    data-range-end={rangeEnd || undefined}
+                    data-range-middle={rangeMiddle || undefined}
                     data-today={dateKey === todayKey || undefined}
                     data-outside={outside || undefined}
                     data-in-range={inRange || undefined}
@@ -450,15 +502,9 @@ function Calendar({
           </div>
         ))}
       </div>
-      {(showTodayShortcut || showClearShortcut || showSelectionSummary) ? (
+      {(showTodayShortcut || showClearShortcut || showSelectionSummary || renderSelectionSummary) ? (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[color:var(--aui-card-border,var(--border))] pt-3">
-          <div className="text-xs text-muted-foreground">
-            {mode === "range"
-              ? currentRange?.from
-                ? `${currentRange.from}${currentRange.to ? ` -> ${currentRange.to}` : ""}`
-                : "No range selected"
-              : currentValue || "No date selected"}
-          </div>
+          <div className="text-xs text-muted-foreground">{summaryContent}</div>
           <div className="flex flex-wrap gap-2">
             {showClearShortcut ? (
               <Button type="button" size="sm" variant="ghost" onClick={clearSelection}>

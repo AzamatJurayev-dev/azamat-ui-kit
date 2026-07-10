@@ -108,6 +108,11 @@
       "import": "./dist/showcase/*.js",
       "require": "./dist/showcase/*.cjs"
     },
+    "./public-component-surface": {
+      "types": "./dist/public-component-surface.d.ts",
+      "import": "./dist/public-component-surface.js",
+      "require": "./dist/public-component-surface.cjs"
+    },
     "./registry.json": "./registry.json",
     "./package.json": "./package.json"
   },
@@ -124,8 +129,8 @@
   "scripts": {
     "prepublishOnly": "npm run release:gate",
     "clean": "node scripts/clean-dist.mjs",
-    "build": "npm run clean && vite build && tsc -p tsconfig.build.json && npm run test:build-output",
-    "build:lib": "vite build && tsc -p tsconfig.build.json",
+    "build": "npm run clean && npm run build:lib && npm run test:build-output",
+    "build:lib": "vite build && node scripts/normalize-build-output.mjs && tsc -p tsconfig.build.json",
     "build:cli": "npm run build --workspace tembro-cli-internal",
     "build:all": "npm run build && npm run build:cli",
     "prepack": "node scripts/prepack-root.mjs",

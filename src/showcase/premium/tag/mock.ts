@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const tagMock: ComponentDemoMock = {
-  code: `import { Tag } from "@/index"
+  code: `import { Tag } from "tembro"
 
 export function Example() {
   return (

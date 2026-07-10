@@ -136,4 +136,48 @@ describe("navigation contracts", () => {
     expect(document.body.style.overflow).toBe("")
     expect(screen.getByRole("dialog", { name: "Workspace navigation" }).getAttribute("data-state")).toBe("closed")
   })
+
+  it("supports explicit desktop and mobile sidebar widths", () => {
+    mockMatchMedia(false)
+
+    const { rerender, unmount } = render(
+      <Sidebar
+        width="20rem"
+        collapsedWidth="5rem"
+        items={[{ key: "dashboard", label: "Dashboard", onSelect: () => undefined }]}
+      />
+    )
+
+    const desktopSidebar = screen.getByText("Dashboard").closest('[data-slot="app-sidebar"]') as HTMLElement
+    expect(desktopSidebar.style.width).toBe("20rem")
+    expect(desktopSidebar.style.minWidth).toBe("20rem")
+
+    rerender(
+      <Sidebar
+        collapsed
+        width="20rem"
+        collapsedWidth="5rem"
+        items={[{ key: "dashboard", label: "Dashboard", tooltip: "Dashboard", onSelect: () => undefined }]}
+      />
+    )
+
+    expect((screen.getByText("Dashboard").closest('[data-slot="app-sidebar"]') as HTMLElement | null)?.style.width).toBe("5rem")
+
+    unmount()
+    mockMatchMedia(true)
+
+    render(
+      <Sidebar
+        responsive
+        mobileTitle="Workspace navigation"
+        mobileWidth="19rem"
+        items={[{ key: "dashboard", label: "Dashboard", onSelect: () => undefined }]}
+      />
+    )
+
+    fireEvent.click(screen.getByRole("button", { name: "Open navigation" }))
+    const mobileSidebar = screen.getByRole("dialog", { name: "Workspace navigation" })
+    expect((mobileSidebar as HTMLElement).style.width).toBe("19rem")
+    expect((mobileSidebar as HTMLElement).style.minWidth).toBe("19rem")
+  })
 })

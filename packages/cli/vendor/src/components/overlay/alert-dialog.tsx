@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { AlertTriangleIcon } from "lucide-react"
 
@@ -31,6 +33,9 @@ export type AlertDialogProps = Omit<React.ComponentProps<typeof Dialog>, "childr
   severityNote?: React.ReactNode
   onAction?: () => void | Promise<void>
   children?: React.ReactNode
+  preventCloseWhileLoading?: boolean
+  actionButtonProps?: Omit<React.ComponentProps<typeof Button>, "type" | "variant" | "loading" | "disabled" | "onClick" | "children">
+  cancelButtonProps?: Omit<React.ComponentProps<typeof Button>, "type" | "variant" | "disabled" | "children">
 }
 
 function AlertDialog({

@@ -2,13 +2,14 @@ import type { ComponentDemoMock } from "../types"
 
 export const maskedInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { MaskedInput } from "@/index"
+import { Input } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState("AA-123")
 
   return (
-    <MaskedInput
+    <Input
+      kind="masked"
       value={value}
       onValueChange={(nextValue) => setValue(nextValue)}
       mask={(raw: string) => raw.toUpperCase().slice(0, 6).replace(/(.{3})(?=.)/, "$1-")}
@@ -18,7 +19,7 @@ export function Example() {
 }
 `,
   htmlCode: '<label for="masked">Referral code</label><input id="masked" type="text" value="AA-123" placeholder="AA-123" />',
-  cliCommand: "npx tembro add masked-input",
+  cliCommand: "npx tembro add input",
   highlights: [
     "Mask callback runs on each edit",
     "Uppercase and slicing are explicit formatting assumptions",

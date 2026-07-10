@@ -26,6 +26,8 @@ import {
   TabsTrigger,
   Textarea,
   Switch,
+  RadioGroup,
+  Tag,
 } from "@/index"
 
 describe("base primitives", () => {
@@ -183,6 +185,25 @@ describe("base primitives", () => {
     expect(switchControl.getAttribute("aria-checked")).toBe("true")
   })
 
+  it("renders switch field label, loading and invalid metadata", () => {
+    render(
+      <Switch
+        label="Email alerts"
+        description="Send every billing update."
+        loading
+        invalid
+        size="lg"
+      />
+    )
+
+    const switchControl = screen.getByRole("switch", { name: /Email alerts/i })
+    expect(switchControl.getAttribute("data-size")).toBe("lg")
+    expect(switchControl.getAttribute("aria-busy")).toBe("true")
+    expect(switchControl.getAttribute("aria-invalid")).toBe("true")
+    expect(switchControl.getAttribute("disabled")).toBe("")
+    expect(screen.getByText("Send every billing update.")).toBeTruthy()
+  })
+
   it("keeps checkbox size and invalid metadata on the surface", () => {
     render(<Checkbox aria-label="Terms" size="lg" invalid checked="indeterminate" />)
 
@@ -221,6 +242,61 @@ describe("base primitives", () => {
     expect((badge as HTMLElement).querySelectorAll("[data-slot='badge-icon']")).toHaveLength(2)
   })
 
+  it("keeps badge soft/removable API and tag keyboard remove behavior", async () => {
+    const user = userEvent.setup()
+    const onBadgeRemove = vi.fn()
+    const onTagRemove = vi.fn()
+
+    render(
+      <div>
+        <Badge variant="soft" removable onRemove={onBadgeRemove}>
+          Beta
+        </Badge>
+        <Tag removable onRemove={onTagRemove}>
+          Priority
+        </Tag>
+      </div>
+    )
+
+    const badge = screen.getByText("Beta").closest("[data-slot='badge']")
+    expect(badge?.getAttribute("data-variant")).toBe("soft")
+
+    await user.click(screen.getByRole("button", { name: "Remove badge" }))
+    expect(onBadgeRemove).toHaveBeenCalledTimes(1)
+
+    const tag = screen.getByText("Priority").closest("[data-slot='tag']") as HTMLElement
+    tag.focus()
+    await user.keyboard("{Delete}")
+    expect(onTagRemove).toHaveBeenCalledTimes(1)
+  })
+
+  it("moves radio group focus and value with roving keyboard keys", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <RadioGroup
+        defaultValue="basic"
+        onValueChange={onValueChange}
+        options={[
+          { label: "Basic", value: "basic" },
+          { label: "Pro", value: "pro" },
+          { label: "Enterprise", value: "enterprise", disabled: true },
+        ]}
+      />
+    )
+
+    const basic = screen.getByRole("radio", { name: "Basic" })
+    const pro = screen.getByRole("radio", { name: "Pro" })
+
+    basic.focus()
+    await user.keyboard("{ArrowRight}")
+
+    expect(pro).toHaveFocus()
+    expect(pro).toBeChecked()
+    expect(onValueChange).toHaveBeenCalledWith("pro")
+  })
+
   it("updates controlled button group value and pressed state", async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
@@ -245,6 +321,38 @@ describe("base primitives", () => {
 
     await user.click(boardButton)
     expect(onValueChange).toHaveBeenCalledWith("board")
+  })
+
+  it("supports button group deselect and keyboard focus movement", async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+
+    render(
+      <ButtonGroup
+        value="comfortable"
+        allowDeselect
+        onValueChange={onValueChange}
+        items={[
+          { key: "comfortable", label: "Comfortable" },
+          { key: "compact", label: "Compact" },
+          { key: "dense", label: "Dense" },
+        ]}
+      />
+    )
+
+    const comfortable = screen.getByRole("button", { name: "Comfortable" })
+    const compact = screen.getByRole("button", { name: "Compact" })
+    const dense = screen.getByRole("button", { name: "Dense" })
+
+    comfortable.focus()
+    await user.keyboard("{ArrowRight}")
+    expect(compact).toHaveFocus()
+
+    await user.keyboard("{End}")
+    expect(dense).toHaveFocus()
+
+    await user.click(comfortable)
+    expect(onValueChange).toHaveBeenCalledWith("")
   })
 
   it("keeps badge metadata contract for dot, variant and size", () => {
@@ -330,8 +438,8 @@ describe("base primitives", () => {
         <CollapseGroup
           type="single"
           items={[
-            { key: "usage", title: "Usage", content: "Usage content" },
-            { key: "api", title: "API", content: "API content" },
+            { key: "usage", title: "Usage", badge: <span>Core</span>, meta: "P1", content: "Usage content" },
+            { key: "api", title: "API", disabled: true, disabledReason: "Locked until release", content: "API content" },
           ]}
         />
       </div>
@@ -342,9 +450,15 @@ describe("base primitives", () => {
 
     await user.click(screen.getByText("Usage"))
     expect(screen.getByText("Usage content")).toBeTruthy()
+    expect(screen.getByText("Core")).toBeTruthy()
+    expect(screen.getByText("P1")).toBeTruthy()
+    expect(screen.getByText("Locked until release")).toBeTruthy()
+
+    const apiTrigger = screen.getByText("API").closest("summary")
+    expect(apiTrigger?.getAttribute("aria-disabled")).toBe("true")
 
     await user.click(screen.getByText("API"))
-    expect(screen.getByText("API content")).toBeTruthy()
+    expect(screen.getByText("API content").closest("details")?.hasAttribute("open")).toBe(false)
   })
 
   it("switches tabs and keeps selected state accessible", async () => {
@@ -352,9 +466,9 @@ describe("base primitives", () => {
 
     render(
       <Tabs defaultValue="details">
-        <TabsList aria-label="Profile tabs">
-          <TabsTrigger value="details">Details</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+        <TabsList aria-label="Profile tabs" variant="underline" overflow="scroll">
+          <TabsTrigger value="details" variant="underline">Details</TabsTrigger>
+          <TabsTrigger value="history" variant="underline">History</TabsTrigger>
         </TabsList>
         <TabsContent value="details">Details panel</TabsContent>
         <TabsContent value="history">History panel</TabsContent>
@@ -367,5 +481,6 @@ describe("base primitives", () => {
     await user.click(screen.getByRole("tab", { name: "History" }))
 
     expect(screen.getByRole("tab", { name: "History", selected: true })).toBeTruthy()
+    expect(screen.getByRole("tablist").getAttribute("data-overflow")).toBe("scroll")
   })
 })

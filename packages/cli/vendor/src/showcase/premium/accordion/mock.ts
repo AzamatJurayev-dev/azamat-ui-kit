@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const accordionMock: ComponentDemoMock = {
-  code: `import { Accordion } from "@/index"
+  code: `import { Accordion } from "tembro"
 
 const items = [
   {

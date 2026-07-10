@@ -5,11 +5,9 @@ import {
   Badge,
   Button,
   DataTable,
-  DataTableBulkActions,
   DataTableColumnVisibilityMenu,
   DataTableSortableHeader,
-  SearchInput,
-  SimpleSelect,
+  Select,
 } from "@/index"
 import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
 import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
@@ -114,47 +112,64 @@ export function DataTableShowcase() {
         getRowId={(row) => row.invoice}
         enableRowSelection
         rowSelection={rowSelection}
-        toolbarProps={(table) => ({
-          title: "Invoices",
-          description: "Search, filter, column controls, bulk actions and row actions should work together in one predictable surface.",
-          search: <SearchInput value={search} onValueChange={setSearch} placeholder="Search invoice, customer..." />,
-          filters: (
-            <div className="flex min-w-0 flex-col gap-2 lg:flex-row lg:flex-wrap">
-              <SimpleSelect
-                value={statusFilter}
-                onValueChange={(value) => setStatusFilter(value ?? "all")}
-                options={[
-                  { value: "all", label: "All statuses" },
-                  { value: "Paid", label: "Paid" },
-                  { value: "Review", label: "Review" },
-                  { value: "Draft", label: "Draft" },
-                ]}
-                triggerClassName="min-w-40"
-              />
-              <SimpleSelect
-                value={ownerFilter}
-                onValueChange={(value) => setOwnerFilter(value ?? "all")}
-                options={[
-                  { value: "all", label: "All owners" },
-                  { value: "Azamat", label: "Azamat" },
-                  { value: "Madina", label: "Madina" },
-                  { value: "Jasur", label: "Jasur" },
-                ]}
-                triggerClassName="min-w-36"
-              />
-            </div>
-          ),
-          actions: (
-            <div className="flex items-center gap-2">
-              <DataTableColumnVisibilityMenu table={table} />
-              <DataTableBulkActions
-                rows={table.getSelectedRowModel().rows.map((row) => row.original)}
-                actions={[{ key: "export", label: "Export selected", onSelect: () => undefined }]}
-                onClearSelection={() => setRowSelection({})}
-              />
-            </div>
-          ),
-        })}
+        title="Invoices"
+        description="Search, filter, visibility controls, bulk actions and row actions should stay inside one install-ready table surface."
+        features={{
+          search: true,
+          columnVisibility: true,
+          bulkActions: true,
+        }}
+        search={{
+          value: search,
+          onValueChange: setSearch,
+          placeholder: "Search invoice, customer...",
+          clearable: true,
+        }}
+        filters={
+          <>
+            <Select
+              value={statusFilter}
+              onValueChange={(value) => setStatusFilter(value ?? "all")}
+              options={[
+                { value: "all", label: "All statuses" },
+                { value: "Paid", label: "Paid" },
+                { value: "Review", label: "Review" },
+                { value: "Draft", label: "Draft" },
+              ]}
+              triggerClassName="min-w-40"
+            />
+            <Select
+              value={ownerFilter}
+              onValueChange={(value) => setOwnerFilter(value ?? "all")}
+              options={[
+                { value: "all", label: "All owners" },
+                { value: "Azamat", label: "Azamat" },
+                { value: "Madina", label: "Madina" },
+                { value: "Jasur", label: "Jasur" },
+              ]}
+              triggerClassName="min-w-36"
+            />
+          </>
+        }
+        summary={
+          <>
+            <Badge variant="outline">{filteredRows.length} rows</Badge>
+            <Badge variant="outline">{selectedCount} selected</Badge>
+            <Badge variant="outline">
+              {search || statusFilter !== "all" || ownerFilter !== "all" ? "Filtered view" : "Live view"}
+            </Badge>
+          </>
+        }
+        toolbarActions={({ table }) => (
+          <div className="flex items-center gap-2">
+            <DataTableColumnVisibilityMenu table={table} />
+            <Button size="sm" variant="outline">Export</Button>
+          </div>
+        )}
+        bulkActions={[
+          { key: "export", label: "Export selected", onSelect: () => undefined },
+          { key: "archive", label: "Archive selected", destructive: true, onSelect: () => undefined },
+        ]}
         onRowSelectionChange={(selection) => {
           setRowSelection((current) => (typeof selection === "function" ? selection(current) : selection))
         }}

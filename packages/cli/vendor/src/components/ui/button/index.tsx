@@ -62,15 +62,18 @@ function Button({
   fullWidth = false,
   pressed = false,
   children,
+  "aria-label": ariaLabel,
   ...props
 }: ButtonProps) {
   const isDisabled = disabled || loading
+  const resolvedSize = iconOnly && (size === "default" || size === "md") ? "icon" : size
 
   return (
     <ButtonPrimitive
       data-slot="button"
       data-variant={variant ?? "default"}
-      data-size={size ?? "default"}
+      data-size={resolvedSize ?? "default"}
+      data-icon-only={iconOnly || undefined}
       data-loading={loading || undefined}
       data-pressed={pressed || undefined}
       disabled={isDisabled}

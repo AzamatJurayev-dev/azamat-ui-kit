@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const modalShellMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { Badge, Button, Input, ModalShell } from "@/index"
+import { Badge, Button, Input, ModalShell } from "tembro"
 
 export function Example() {
   const [open, setOpen] = useState(false)

@@ -2,15 +2,16 @@ import * as React from "react"
 import { render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { useForm, useWatch } from "react-hook-form"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import {
   FormSelect,
+  Select,
   type AsyncSelectOption,
-  type SimpleSelectOption,
+  type SelectOption,
 } from "@/index"
 
-const roleOptions: SimpleSelectOption[] = [
+const roleOptions: SelectOption[] = [
   { value: "admin", label: "Admin" },
   { value: "manager", label: "Manager" },
 ]

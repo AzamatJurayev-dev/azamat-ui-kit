@@ -8,6 +8,8 @@ const pages = [
   { key: "home", label: "Home", href: "/" },
   { key: "apps", label: "Apps", href: "/apps" },
   { key: "workspace", label: "Workspace", href: "/apps/workspace" },
+  { key: "team", label: "Team settings", href: "/apps/workspace/team" },
+  { key: "security", label: "Security", href: "/apps/workspace/team/security" },
   { key: "overview", label: "Overview", current: true },
 ]
 
@@ -52,7 +54,7 @@ export function BreadcrumbsShowcase({ mode }: ComponentDemoProps) {
       ) : null}
 
       <div className="rounded-[22px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface-muted)] px-4 py-3">
-        <Breadcrumbs items={selectedItems} separator={separator} />
+        <Breadcrumbs items={selectedItems} separator={separator} maxItems={activeMode === "full" ? 4 : undefined} />
       </div>
     </div>
   )

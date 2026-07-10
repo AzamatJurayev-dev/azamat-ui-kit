@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { CheckIcon, ChevronsUpDownIcon, Loader2Icon, PlusIcon, SearchIcon, XIcon } from "lucide-react"
 
@@ -62,6 +64,7 @@ export type AsyncSelectLabels = {
   minSearchLength?: (minSearchLength: number) => string
   maxSelected?: (maxSelected: number) => string
   selectedCount?: (count: number) => string
+  hiddenSelected?: (count: number) => string
 }
 
 export type AsyncSelectProps<
@@ -127,6 +130,7 @@ export type AsyncMultiSelectProps<
   debounceMs?: number
   minSearchLength?: number
   maxSelected?: number
+  maxVisibleTags?: number
   showSelectAll?: boolean
   labels?: AsyncSelectLabels
   renderOption?: (option: TOption, state: { selected: boolean }) => React.ReactNode
@@ -770,6 +774,9 @@ function AsyncSingleSelect<
   )
 }
 
+/**
+ * @deprecated Prefer `AsyncSelect` with `isMulti` for new usage.
+ */
 function AsyncMultiSelect<
   TValue extends string = string,
   TData = unknown,
@@ -790,6 +797,7 @@ function AsyncMultiSelect<
   debounceMs = 250,
   minSearchLength = 0,
   maxSelected,
+  maxVisibleTags,
   showSelectAll = false,
   labels,
   renderOption,
@@ -845,6 +853,7 @@ function AsyncMultiSelect<
   const hasValue = values.length > 0
   const canClear = clearable && hasValue && !disabled
   const isMaxReached = typeof maxSelected === "number" && values.length >= maxSelected
+  const resolvedMaxVisibleTags = Math.max(maxVisibleTags ?? values.length, 1)
   const searchTooShort = searchKey.length < minSearchLength
   const canCreate =
     !searchTooShort &&
@@ -853,6 +862,8 @@ function AsyncMultiSelect<
   const visibleSelectableOptions = flatOptions.filter((option) => !option.disabled)
   const unselectedVisibleOptions = visibleSelectableOptions.filter((option) => !selectedSet.has(option.value))
   const canSelectAll = showSelectAll && unselectedVisibleOptions.length > 0 && !isMaxReached
+  const visibleTagOptions = currentOptions.slice(0, resolvedMaxVisibleTags)
+  const hiddenTagCount = Math.max(currentOptions.length - visibleTagOptions.length, 0)
 
   React.useEffect(() => {
     cacheRef.current.clear()
@@ -1069,7 +1080,8 @@ function AsyncMultiSelect<
         >
           <span className="flex min-w-0 flex-1 flex-wrap gap-1 text-left">
             {currentOptions.length > 0 ? (
-              currentOptions.map((option) => (
+              <>
+              {visibleTagOptions.map((option) => (
                 <span
                   key={option.value}
                   data-slot="async-select-tag"
@@ -1107,7 +1119,19 @@ function AsyncMultiSelect<
                     </span>
                   )}
                 </span>
-              ))
+              ))}
+              {hiddenTagCount > 0 ? (
+                <span
+                  data-slot="async-select-tag-overflow"
+                  className={cn(
+                    "inline-flex max-w-full items-center rounded-[var(--radius-sm)] border border-dashed border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_58%)] px-2 py-1 text-xs font-medium text-muted-foreground",
+                    tagClassName
+                  )}
+                >
+                  {labels?.hiddenSelected?.(hiddenTagCount) ?? `+${hiddenTagCount} more`}
+                </span>
+              ) : null}
+              </>
             ) : (
               <span className="truncate text-muted-foreground">
                 {labels?.multiPlaceholder ?? labels?.placeholder ?? "Select"}

@@ -165,7 +165,12 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "index.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "group.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "primitive.tsx"))
-    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "form", "form-select.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "clearable.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "quantity.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "select", "index.tsx"))
+
+    await runCli(fixtureRoot, ["add", "form-async-select", "--overwrite", "--skip-install"])
+    assertFileExists(fixtureRoot, path.join(paths.uiPath, "select", "index.tsx"))
 
     await runCli(fixtureRoot, ["add", "accordion", "checkbox", "dropdown-menu", "popover", "switch", "table", "tabs", "textarea", "--overwrite", "--skip-install"])
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "accordion", "index.tsx"))

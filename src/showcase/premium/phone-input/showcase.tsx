@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { PhoneInput } from "@/index"
+import { Input } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -9,9 +9,10 @@ export function PhoneInputShowcase({ mode }: ComponentDemoProps) {
 
   return (
     <div className="space-y-4">
-      <PhoneInput
+      <Input
+        kind="phone"
         value={value}
-        onValueChange={(maskedValue) => setValue(maskedValue)}
+        onValueChange={(maskedValue: string) => setValue(maskedValue)}
         countryCode="+998"
         placeholder="+998 90 123 45 67"
       />

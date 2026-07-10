@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
@@ -22,9 +24,23 @@ export type CarouselProps = React.ComponentProps<"div"> & {
   pauseOnHover?: boolean
   stopAutoplayOnInteraction?: boolean
   showPlaybackControl?: boolean
+  showStatus?: boolean
+  showThumbnails?: boolean
   playLabel?: string
   pauseLabel?: string
+  statusLabel?: (index: number, total: number) => string
+  renderThumbnail?: (item: React.ReactNode, index: number, active: boolean) => React.ReactNode
+  renderActiveDetail?: (item: React.ReactNode, index: number) => React.ReactNode
+  aspectRatio?: string
+  mouseDrag?: boolean
   onAutoplayChange?: (playing: boolean) => void
+  viewportClassName?: string
+  controlsClassName?: string
+  dotsClassName?: string
+  arrowClassName?: string
+  dotClassName?: string
+  activeDotClassName?: string
+  thumbnailsClassName?: string
 }
 
 export type CarouselItemProps = React.ComponentProps<"div">
@@ -53,9 +69,23 @@ function Carousel({
   pauseOnHover = true,
   stopAutoplayOnInteraction = true,
   showPlaybackControl = false,
+  showStatus = false,
+  showThumbnails = false,
   playLabel = "Start autoplay",
   pauseLabel = "Pause autoplay",
+  statusLabel,
+  renderThumbnail,
+  renderActiveDetail,
+  aspectRatio,
+  mouseDrag = true,
   onAutoplayChange,
+  viewportClassName,
+  controlsClassName,
+  dotsClassName,
+  arrowClassName,
+  dotClassName,
+  activeDotClassName,
+  thumbnailsClassName,
   className,
   children,
   ...props
@@ -63,11 +93,13 @@ function Carousel({
   const items = React.Children.toArray(children)
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex)
   const touchStartXRef = React.useRef<number | null>(null)
+  const pointerStartXRef = React.useRef<number | null>(null)
   const [isHovered, setIsHovered] = React.useState(false)
   const [autoplayStopped, setAutoplayStopped] = React.useState(false)
   const [autoplayEnabled, setAutoplayEnabled] = React.useState(autoplay)
   const controlled = index !== undefined
   const activeIndex = clampIndex(controlled ? index : internalIndex, items.length, loop)
+  const activeItem = items[activeIndex]
 
   React.useEffect(() => {
     setAutoplayEnabled(autoplay)
@@ -115,6 +147,21 @@ function Carousel({
     if (deltaX < 0 && canGoNext) setActiveIndex(activeIndex + 1)
   }
 
+  const handlePointerDown: React.PointerEventHandler<HTMLDivElement> = (event) => {
+    if (!mouseDrag || event.pointerType === "touch") return
+    pointerStartXRef.current = event.clientX
+  }
+
+  const handlePointerUp: React.PointerEventHandler<HTMLDivElement> = (event) => {
+    if (!mouseDrag || pointerStartXRef.current == null || items.length <= 1) return
+    const deltaX = event.clientX - pointerStartXRef.current
+    pointerStartXRef.current = null
+
+    if (Math.abs(deltaX) < swipeThreshold) return
+    if (deltaX > 0 && canGoPrevious) setActiveIndex(activeIndex - 1)
+    if (deltaX < 0 && canGoNext) setActiveIndex(activeIndex + 1)
+  }
+
   React.useEffect(() => {
     if (!autoplayEnabled || items.length <= 1 || autoplayStopped) return
     if (pauseOnHover && isHovered) return
@@ -151,9 +198,19 @@ function Carousel({
           event.preventDefault()
           setActiveIndex(activeIndex + 1)
         }
+        if (event.key === "Home") {
+          event.preventDefault()
+          setActiveIndex(0)
+        }
+        if (event.key === "End") {
+          event.preventDefault()
+          setActiveIndex(items.length - 1)
+        }
       }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       {...props}
@@ -162,8 +219,17 @@ function Carousel({
         "relative overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08))]",
         variant === "hero" && "min-h-72",
         variant === "minimal" && "rounded-[var(--radius-md)] shadow-none"
-      )}>
-        <div className="transition-transform duration-300 ease-out" aria-live="polite">
+      , viewportClassName)}>
+        {showStatus ? (
+          <div className="pointer-events-none absolute right-3 top-3 z-10 rounded-full border border-border/70 bg-background/92 px-2.5 py-1 text-[11px] font-medium text-muted-foreground shadow-sm">
+            {statusLabel?.(activeIndex, items.length) ?? `Slide ${activeIndex + 1} / ${items.length}`}
+          </div>
+        ) : null}
+        <div
+          className="transition-transform duration-300 ease-out"
+          aria-live="polite"
+          style={aspectRatio ? { aspectRatio } : undefined}
+        >
           {items[activeIndex]}
         </div>
         {showArrows && items.length > 1 ? (
@@ -172,7 +238,7 @@ function Carousel({
               type="button"
               variant={variant === "hero" ? "default" : "secondary"}
               size="icon-sm"
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
+              className={cn("absolute left-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg", arrowClassName)}
               disabled={!canGoPrevious}
               aria-label={previousLabel}
               onClick={() => setActiveIndex(activeIndex - 1)}
@@ -183,7 +249,7 @@ function Carousel({
               type="button"
               variant={variant === "hero" ? "default" : "secondary"}
               size="icon-sm"
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg"
+              className={cn("absolute right-3 top-1/2 -translate-y-1/2 rounded-full shadow-lg", arrowClassName)}
               disabled={!canGoNext}
               aria-label={nextLabel}
               onClick={() => setActiveIndex(activeIndex + 1)}
@@ -194,7 +260,7 @@ function Carousel({
         ) : null}
       </div>
       {showDots && items.length > 1 && (
-        <div className="flex flex-wrap items-center justify-center gap-2" role="tablist" aria-label={`${ariaLabel} slides`}>
+        <div className={cn("flex flex-wrap items-center justify-center gap-2", dotsClassName)} role="tablist" aria-label={`${ariaLabel} slides`}>
           {items.map((_, itemIndex) => (
             <button
               key={itemIndex}
@@ -204,7 +270,7 @@ function Carousel({
               aria-selected={itemIndex === activeIndex}
               className={cn(
                 "h-2.5 rounded-full bg-muted-foreground/30 transition-[width,background-color,opacity] hover:bg-muted-foreground/55",
-                itemIndex === activeIndex ? "w-7 bg-primary" : "w-2.5"
+                itemIndex === activeIndex ? cn("w-7 bg-primary", activeDotClassName) : cn("w-2.5", dotClassName)
               )}
               onClick={() => setActiveIndex(itemIndex)}
             />
@@ -214,7 +280,7 @@ function Carousel({
               type="button"
               variant="ghost"
               size="sm"
-              className="ml-2 rounded-full"
+              className={cn("ml-2 rounded-full", controlsClassName)}
               onClick={() => {
                 const nextPlaying = !autoplayEnabled
                 setAutoplayStopped(false)
@@ -227,6 +293,35 @@ function Carousel({
           ) : null}
         </div>
       )}
+      {showThumbnails && items.length > 1 ? (
+        <div className={cn("grid grid-cols-2 gap-2 sm:grid-cols-4", thumbnailsClassName)}>
+          {items.map((item, itemIndex) => {
+            const active = itemIndex === activeIndex
+
+            return (
+              <button
+                key={itemIndex}
+                type="button"
+                aria-current={active ? "true" : undefined}
+                aria-label={`Open slide ${itemIndex + 1}`}
+                className={cn(
+                  "overflow-hidden rounded-[min(var(--radius-xl),16px)] border bg-card text-left transition hover:border-primary/35 hover:shadow-sm",
+                  active ? "border-primary/35 ring-2 ring-primary/15" : "border-border/70"
+                )}
+                onClick={() => setActiveIndex(itemIndex)}
+              >
+                {renderThumbnail
+                  ? renderThumbnail(item, itemIndex, active)
+                  : <div className="line-clamp-2 min-h-16 p-3 text-xs text-muted-foreground">Slide {itemIndex + 1}</div>}
+              </button>
+            )
+          })}
+        </div>
+      ) : null}
+      {renderActiveDetail ? renderActiveDetail(activeItem, activeIndex) : null}
+      <span className="sr-only" aria-live="polite">
+        {statusLabel?.(activeIndex, items.length) ?? `${ariaLabel}: slide ${activeIndex + 1} of ${items.length}`}
+      </span>
     </div>
   )
 }

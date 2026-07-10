@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { AlertCircleIcon, CheckCircle2Icon, InfoIcon, Loader2Icon, TriangleAlertIcon, XIcon } from "lucide-react"
 
@@ -14,6 +16,7 @@ export type ToastItem = {
   action?: React.ReactNode
   duration?: number
   dismissible?: boolean
+  group?: React.ReactNode
 }
 
 export type CreateToastInput = Omit<ToastItem, "id"> & {
@@ -232,6 +235,7 @@ function ToastCard({
     >
       <div className="mt-0.5 shrink-0">{toneIcon[tone]}</div>
       <div className="min-w-0 flex-1 space-y-1">
+        {toast.group ? <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{toast.group}</div> : null}
         {toast.title && <div className="text-sm font-medium leading-none">{toast.title}</div>}
         {toast.description && <div className="text-sm text-muted-foreground">{toast.description}</div>}
         {toast.action && <div className="pt-1">{toast.action}</div>}

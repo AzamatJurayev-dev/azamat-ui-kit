@@ -1,6 +1,6 @@
 import { useForm, useWatch } from "react-hook-form"
 
-import { Badge, Button, FormFieldShell, FormInput, FormSelect, FormSwitch, FormTextarea } from "@/index"
+import { Badge, Button, FormInput, FormSelect, FormSwitch, FormTextarea } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -10,6 +10,15 @@ type DemoValues = {
   budget: number | null
   notes: string
   active: boolean
+  query: string
+  password: string
+  dueDate: string
+  period: {
+    from: string
+    to: string
+  }
+  periodFrom: string
+  periodTo: string
   status: string
   ownerId: string
 }
@@ -48,6 +57,15 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
       budget: 120,
       notes: "RHF wrapper coverage for control, name, and validation.",
       active: true,
+      query: "billing",
+      password: "",
+      dueDate: "2026-07-18",
+      period: {
+        from: "2026-07-01",
+        to: "2026-07-14",
+      },
+      periodFrom: "2026-07-01",
+      periodTo: "2026-07-14",
       status: "review",
       ownerId: "workspace-alpha",
     },
@@ -56,7 +74,7 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
   const activeValue = useWatch({ control: form.control, name: "active" })
   const slug = typeof window === "undefined" ? undefined : window.location.pathname.split("/").filter(Boolean).at(-1)
 
-  if (slug === "form-select") {
+  if (slug === "form-select" || slug === "form-async-select") {
     return (
       <div className="grid gap-4 xl:grid-cols-2">
         <FormSelect control={form.control} name="status" label="Release status" options={[...statusOptions]} />
@@ -76,9 +94,13 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
   return (
     <form className="space-y-5">
       <div className="grid gap-4 xl:grid-cols-2">
-        <FormFieldShell label="Workspace setup" description="Shared shell for required marker, error flow and spacing." required>
-          <FormInput control={form.control} name="name" label="Workspace name" required />
-        </FormFieldShell>
+        <FormInput
+          control={form.control}
+          name="name"
+          label="Workspace name"
+          description="Shared shell keeps required marker, helper text and error spacing aligned."
+          required
+        />
 
         <FormInput control={form.control} name="ownerPhone" kind="phone" label="Owner phone" />
         <FormInput control={form.control} name="budget" kind="number" label="Budget" min={0} max={999999} />

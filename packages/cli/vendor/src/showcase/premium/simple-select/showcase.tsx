@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { Badge, Button, SimpleSelect } from "@/index"
+import { Badge, Button, Select } from "@/index"
 import { routeSimpleSelectOptions } from "@/showcase/component-route-data"
 
 import type { ComponentDemoProps } from "../types"
@@ -24,7 +24,7 @@ export function SimpleSelectShowcase({ mode }: ComponentDemoProps) {
           <Badge variant="outline">Clearable</Badge>
         </div>
       </div>
-      <SimpleSelect
+      <Select
         value={value}
         onValueChange={(nextValue) => setValue(nextValue)}
         options={options}

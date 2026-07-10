@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const formRHFWrapperMock: ComponentDemoMock = {
   code: `import { useForm } from "react-hook-form"
-import { Button, FormFieldShell, FormInput, FormSwitch, FormTextarea } from "@/index"
+import { Button, FormInput, FormSwitch, FormTextarea } from "tembro"
 
 type DemoValues = {
   name: string
@@ -29,19 +29,17 @@ export function Example() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <FormFieldShell label="Workspace name" required>
-        <FormInput
-          control={form.control}
-          name="name"
-          label="Workspace name"
-          required
-          placeholder="Write a workspace title"
-          rules={{
-            required: "Workspace name is required",
-            minLength: { value: 3, message: "At least 3 characters" },
-          }}
-        />
-      </FormFieldShell>
+      <FormInput
+        control={form.control}
+        name="name"
+        label="Workspace name"
+        required
+        placeholder="Write a workspace title"
+        rules={{
+          required: "Workspace name is required",
+          minLength: { value: 3, message: "At least 3 characters" },
+        }}
+      />
 
       <FormInput
         control={form.control}
@@ -78,7 +76,7 @@ export function Example() {
   )`
 ,
   htmlCode: '<form><label for="workspace">Workspace</label><input id="workspace" value="Azamat UI" /></form>',
-  cliCommand: "npx tembro add form-wrapper",
+  cliCommand: "npx tembro add form-input form-textarea form-switch",
   highlights: ["control + name contract", "Universal `kind` variants", "Error display and required markers", "Consistent wrapper shell behavior"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],
   scenarios: [
@@ -105,6 +103,20 @@ const statusOptions = [
   { label: "Review", value: "review" },
   { label: "Live", value: "live" },
 ]
+
+const workspaceOptions = [
+  { value: "workspace-alpha", label: "Workspace Alpha", description: "Core design system route" },
+  { value: "workspace-beta", label: "Workspace Beta", description: "CRM rollout workspace" },
+]
+
+async function loadWorkspaces(search: string) {
+  const query = search.trim().toLowerCase()
+  return workspaceOptions.filter((option) => !query || option.label.toLowerCase().includes(query))
+}
+
+async function loadWorkspace(value: string) {
+  return workspaceOptions.find((option) => option.value === value) ?? null
+}
 
 export function Example() {
   const form = useForm({

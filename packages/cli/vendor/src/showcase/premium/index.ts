@@ -5,11 +5,12 @@ import { AlertDialogShowcase, alertDialogMock } from "./alert-dialog"
 import { accordionMock, AccordionShowcase } from "./accordion"
 import { activityFeedMock, ActivityFeedShowcase } from "./activity-feed"
 import { ActionMenuShowcase, actionMenuMock } from "./action-menu"
-import { appShellMock, AppShellShowcase } from "./app-shell"
 import { appSidebarMock, AppSidebarShowcase } from "./app-sidebar"
 import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
+import { asyncMultiSelectMock, AsyncMultiSelectShowcase } from "./async-multi-select"
 import { avatarMock, AvatarShowcase } from "./avatar"
 import { carouselMock, CarouselShowcase } from "./carousel"
+import { clearableInputMock, ClearableInputShowcase } from "./clearable-input"
 import { jsonInputMock, JsonInputShowcase } from "./json-input"
 import { badgeMock, BadgeShowcase } from "./badge"
 import { dividerMock, DividerShowcase } from "./divider"
@@ -38,8 +39,6 @@ import { descriptionsMock, DescriptionsShowcase } from "./descriptions"
 import { dialogMock, DialogShowcase } from "./dialog"
 import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
 import { DrawerShowcase, drawerMock } from "./drawer"
-import { emptyStateMock, EmptyStateShowcase } from "./empty-state"
-import { FormBuilderShowcase, formBuilderMock } from "./form-builder"
 import { FormWrapperShowcase, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
 import { hoverCardMock, HoverCardShowcase } from "./hover-card"
 import { kanbanBoardMock, KanbanBoardShowcase } from "./kanban-board"
@@ -80,6 +79,7 @@ import { segmentedControlMock, SegmentedControlShowcase } from "./segmented-cont
 import { selectMock, SelectShowcase } from "./select"
 import { sheetShellMock, SheetShellShowcase } from "./sheet-shell"
 import { sidebarNavMock, SidebarNavShowcase } from "./sidebar-nav"
+import { appShellMock, AppShellShowcase } from "./app-shell"
 import { simpleSelectMock, SimpleSelectShowcase } from "./simple-select"
 import { sliderMock, SliderShowcase } from "./slider"
 import { skeletonMock, SkeletonShowcase } from "./skeleton"
@@ -181,7 +181,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "form-date-range-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-builder": { mock: formBuilderMock, Showcase: FormBuilderShowcase },
   "segmented-control": { mock: segmentedControlMock, Showcase: SegmentedControlShowcase },
   skeleton: { mock: skeletonMock, Showcase: SkeletonShowcase },
   spinner: { mock: spinnerMock, Showcase: SpinnerShowcase },
@@ -201,7 +200,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   list: { mock: listMock, Showcase: ListShowcase },
   "property-grid": { mock: propertyGridMock, Showcase: PropertyGridShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
-  "empty-state": { mock: emptyStateMock, Showcase: EmptyStateShowcase },
   "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
   "data-state": { mock: dataStateMock, Showcase: DataStateShowcase },
   progress: { mock: progressMock, Showcase: ProgressShowcase },

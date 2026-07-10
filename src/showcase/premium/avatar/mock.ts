@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const avatarMock: ComponentDemoMock = {
-  code: `import { Avatar, AvatarGroup } from "@/index"
+  code: `import { Avatar, AvatarGroup } from "tembro"
 
 export function Example() {
   return (

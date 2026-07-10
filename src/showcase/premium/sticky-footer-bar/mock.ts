@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const stickyFooterBarMock: ComponentDemoMock = {
-  code: `import { Button, StickyFooterBar } from "@/index"
+  code: `import { Button, StickyFooterBar } from "tembro"
 
 export function Example() {
   return (

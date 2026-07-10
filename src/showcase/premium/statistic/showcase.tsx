@@ -1,4 +1,4 @@
-import { Badge, Statistic, StatisticCard, StatisticGrid } from "@/index"
+import { Badge, ProgressRing, Statistic, StatisticCard, StatisticGrid, TrendCard } from "@/index"
 
 const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
 
@@ -40,6 +40,15 @@ export function StatisticShowcase() {
               <p>Keep labels short and units clear. Users should understand the value before reading the description.</p>
               <p>Trend color should reinforce meaning, not carry the whole message alone.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={panelClass}>
+        <div className="grid gap-6 xl:grid-cols-[1fr_240px]">
+          <TrendCard title="Release velocity" value="24" change="+3" trend="up" description="completed this sprint" sparkline={[8, 10, 9, 14, 18, 19, 24]} />
+          <div className="rounded-xl border border-[color:var(--aui-divider)] p-4">
+            <ProgressRing value={76} label="76%" description="coverage" tone="success" />
           </div>
         </div>
       </section>

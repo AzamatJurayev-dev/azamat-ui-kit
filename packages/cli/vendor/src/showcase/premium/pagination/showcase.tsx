@@ -11,6 +11,7 @@ export function PaginationShowcase({ mode }: ComponentDemoProps) {
   const [page, setPage] = React.useState(6)
   const [pageCount, setPageCount] = React.useState(18)
   const [showEdges, setShowEdges] = React.useState(true)
+  const [pageSize, setPageSize] = React.useState(20)
 
   return (
     <div className="space-y-5">
@@ -36,7 +37,17 @@ export function PaginationShowcase({ mode }: ComponentDemoProps) {
             <p className="text-sm font-medium aui-text-muted">Review queue pages</p>
             <p className="mt-2 text-sm leading-6 aui-text-muted">Showing page <span className="font-medium aui-text-strong">{page}</span> of <span className="font-medium aui-text-strong">{pageCount}</span>.</p>
           </div>
-          <Pagination page={page} pageCount={pageCount} onPageChange={setPage} showEdges={showEdges} />
+          <Pagination
+            page={page}
+            pageCount={pageCount}
+            onPageChange={setPage}
+            showEdges={showEdges}
+            totalCount={pageCount * pageSize}
+            pageSize={pageSize}
+            pageSizeOptions={[10, 20, 50]}
+            onPageSizeChange={setPageSize}
+            showSummary
+          />
         </div>
       </section>
 
@@ -53,6 +64,7 @@ export function PaginationShowcase({ mode }: ComponentDemoProps) {
           <div className="mt-4 space-y-2 text-sm leading-6 aui-text-muted">
             <p>Page: <span className="font-medium aui-text-strong">{page}</span></p>
             <p>Total pages: <span className="font-medium aui-text-strong">{pageCount}</span></p>
+            <p>Page size: <span className="font-medium aui-text-strong">{pageSize}</span></p>
             <p>Edges: <span className="font-medium aui-text-strong">{showEdges ? "visible" : "hidden"}</span></p>
           </div>
         </section>

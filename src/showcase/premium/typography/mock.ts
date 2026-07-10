@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const typographyMock: ComponentDemoMock = {
-  code: `import { Blockquote, Heading, Mark, Text } from "@/index"
+  code: `import { Blockquote, Heading, Mark, Text } from "tembro"
 
 export function Example() {
   return (

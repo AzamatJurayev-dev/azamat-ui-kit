@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs"
+import { readdirSync, readFileSync, statSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
 
@@ -11,7 +11,6 @@ const requiredDemoSlugs = [
   "dialog",
   "data-table",
   "date-picker",
-  "form-input",
 ]
 
 const requiredApiSlugs = [
@@ -21,7 +20,6 @@ const requiredApiSlugs = [
   "dialog",
   "data-table",
   "date-picker",
-  "form-input",
 ]
 
 const requiredButtonTerms = [
@@ -35,6 +33,24 @@ const requiredButtonTerms = [
 
 function readProjectFile(path) {
   return readFileSync(join(rootDir, path), "utf8")
+}
+
+function collectFiles(dir, predicate, output = []) {
+  for (const entry of readdirSync(dir)) {
+    const path = join(dir, entry)
+    const stat = statSync(path)
+
+    if (stat.isDirectory()) {
+      collectFiles(path, predicate, output)
+      continue
+    }
+
+    if (predicate(path)) {
+      output.push(path)
+    }
+  }
+
+  return output
 }
 
 function assertIncludes(source, value, label) {
@@ -69,6 +85,18 @@ function run() {
       assertIncludes(apiSchema, term, "button API state metadata")
     } catch (error) {
       failures.push(error.message)
+    }
+  }
+
+  const mockFiles = collectFiles(
+    join(rootDir, "src/showcase/premium"),
+    (path) => path.endsWith("mock.ts")
+  )
+
+  for (const file of mockFiles) {
+    const source = readFileSync(file, "utf8")
+    if (source.includes('from "@/index"') || source.includes("from '@/index'")) {
+      failures.push(`${file.replace(`${rootDir}\\`, "")} exposes internal @/index import in public demo code`)
     }
   }
 

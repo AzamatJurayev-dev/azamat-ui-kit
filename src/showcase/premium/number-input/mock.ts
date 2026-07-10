@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const numberInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { NumberInput, parseNumberInput } from "@/index"
+import { Input } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState<number | null>(14)
@@ -10,16 +10,14 @@ export function Example() {
 
   return (
     <div className="space-y-3">
-      <NumberInput
+      <Input
+        kind="number"
         value={value}
         onNumberChange={(nextValue) => {
           setValue(nextValue)
           setRaw(String(nextValue ?? ""))
         }}
-        onChange={(event) => {
-          const candidate = parseNumberInput(event.target.value)
-          if (candidate === null) setRaw(event.target.value)
-        }}
+        onChange={(event) => setRaw(event.target.value)}
         min={0}
         max={100}
         step={5}
@@ -36,7 +34,7 @@ export function Example() {
   )
 }`,
   htmlCode: `<label for="example-number">Amount</label><input id="example-number" inputmode="decimal" type="text" />`,
-  cliCommand: "npx tembro add number-input",
+  cliCommand: "npx tembro add input",
   highlights: ["Numeric parsing", "Min/max constraints", "Decimal steps", "allowEmpty fallback"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

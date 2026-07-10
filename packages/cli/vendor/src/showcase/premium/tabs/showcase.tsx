@@ -1,3 +1,5 @@
+import { ActivityIcon, BellIcon, FileTextIcon, SettingsIcon, ShieldIcon, UsersIcon } from "lucide-react"
+
 import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
@@ -38,7 +40,7 @@ export function TabsShowcase({ state, setState }: ComponentDemoProps) {
 
       <div className={panelClass}>
         <Tabs value={state.activeTab} onValueChange={(value: string) => setState({ activeTab: value as ComponentDemoProps["state"]["activeTab"] })}>
-          <TabsList>
+          <TabsList overflow="scroll">
             {tabsDemoPanels.map((panel) => (
               <TabsTrigger key={panel.value} value={panel.value}>{panel.label}</TabsTrigger>
             ))}
@@ -50,6 +52,51 @@ export function TabsShowcase({ state, setState }: ComponentDemoProps) {
           ))}
         </Tabs>
       </div>
+
+      <section className={panelClass}>
+        <div className="grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+          <div>
+            <p className="text-lg font-semibold aui-text-strong">Variants and overflow</p>
+            <p className="mt-2 max-w-xl text-sm leading-6 aui-text-muted">
+              The same primitive covers underline navigation, compact density, icon labels, and long mobile tab rows.
+            </p>
+          </div>
+          <div className="grid gap-4">
+            <Tabs defaultValue="activity">
+              <TabsList variant="underline" overflow="scroll">
+                <TabsTrigger variant="underline" value="activity"><ActivityIcon />Activity</TabsTrigger>
+                <TabsTrigger variant="underline" value="files"><FileTextIcon />Files</TabsTrigger>
+                <TabsTrigger variant="underline" value="members"><UsersIcon />Members</TabsTrigger>
+                <TabsTrigger variant="underline" value="security"><ShieldIcon />Security</TabsTrigger>
+                <TabsTrigger variant="underline" value="settings"><SettingsIcon />Settings</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <Tabs defaultValue="compact">
+              <TabsList variant="compact" overflow="wrap">
+                <TabsTrigger variant="compact" value="compact">Compact</TabsTrigger>
+                <TabsTrigger variant="compact" value="alerts"><BellIcon />Alerts</TabsTrigger>
+                <TabsTrigger variant="compact" value="audit">Audit</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <Tabs defaultValue="vertical" orientation="vertical" className="grid gap-3 sm:grid-cols-[180px_1fr]">
+              <TabsList variant="pills" overflow="wrap" className="grid">
+                <TabsTrigger variant="pills" value="vertical">Vertical</TabsTrigger>
+                <TabsTrigger variant="pills" value="pills">Pills</TabsTrigger>
+                <TabsTrigger variant="pills" value="overflow">Overflow</TabsTrigger>
+              </TabsList>
+              <TabsContent value="vertical" className="mt-0 rounded-xl border border-[color:var(--aui-divider)] p-4 text-sm leading-6 aui-text-muted">
+                Vertical tabs keep local settings readable when each panel has a larger form.
+              </TabsContent>
+              <TabsContent value="pills" className="mt-0 rounded-xl border border-[color:var(--aui-divider)] p-4 text-sm leading-6 aui-text-muted">
+                Pill tabs carry a stronger selected state for dense dashboards.
+              </TabsContent>
+              <TabsContent value="overflow" className="mt-0 rounded-xl border border-[color:var(--aui-divider)] p-4 text-sm leading-6 aui-text-muted">
+                Scroll overflow keeps long labels accessible on small screens.
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </section>
 
       <section className={panelClass}>
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">

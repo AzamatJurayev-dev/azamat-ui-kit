@@ -65,14 +65,28 @@ type CardSurfaceSlots = {
   media?: React.ReactNode
   content?: React.ReactNode
   footer?: React.ReactNode
+  mediaClassName?: string
+  bodyClassName?: string
   headerClassName?: string
+  eyebrowClassName?: string
   titleClassName?: string
   descriptionClassName?: string
   contentClassName?: string
   footerClassName?: string
 }
 
-export type CardProps = Omit<React.ComponentProps<"div">, keyof CardSurfaceSlots> & VariantProps<typeof cardVariants> & CardSurfaceSlots
+export type CardOrientation = "vertical" | "horizontal"
+export type CardMediaAspect = "auto" | "square" | "video" | "poster" | "wide"
+export type CardPadding = "none" | "sm" | "default" | "lg"
+
+export type CardProps = Omit<React.ComponentProps<"div">, keyof CardSurfaceSlots> &
+  VariantProps<typeof cardVariants> &
+  CardSurfaceSlots & {
+    orientation?: CardOrientation
+    mediaPosition?: "start" | "end"
+    mediaAspect?: CardMediaAspect
+    padding?: CardPadding
+  }
 
 function hasSurfaceContent(props: CardSurfaceSlots) {
   return (
@@ -96,6 +110,10 @@ function Card({
   interactive,
   selected,
   disabled,
+  orientation = "vertical",
+  mediaPosition = "start",
+  mediaAspect = "auto",
+  padding = "default",
   tabIndex,
   eyebrow,
   title,
@@ -105,7 +123,10 @@ function Card({
   media,
   content,
   footer,
+  mediaClassName,
+  bodyClassName,
   headerClassName,
+  eyebrowClassName,
   titleClassName,
   descriptionClassName,
   contentClassName,
@@ -126,6 +147,36 @@ function Card({
   const resolvedContent = content ?? children
   const hasHeader = eyebrow != null || title != null || description != null || badge != null || action != null
   const hasFooter = footer != null
+  const mediaNode = media ? (
+    <div
+      data-slot="card-media"
+      data-media-position={mediaPosition}
+      data-media-aspect={mediaAspect}
+      className={cn(
+        "overflow-hidden",
+        orientation === "horizontal" ? "shrink-0 self-stretch" : "",
+        mediaAspect === "square" && (orientation === "horizontal" ? "w-40" : "aspect-square"),
+        mediaAspect === "video" && (orientation === "horizontal" ? "w-56" : "aspect-video"),
+        mediaAspect === "poster" && (orientation === "horizontal" ? "w-36" : "aspect-[3/4]"),
+        mediaAspect === "wide" && (orientation === "horizontal" ? "w-72" : "aspect-[16/7]"),
+        mediaClassName
+      )}
+    >
+      {media}
+    </div>
+  ) : null
+  const surfacePaddingClassName = {
+    none: "",
+    sm: "px-4",
+    default: "px-(--card-spacing)",
+    lg: "px-6",
+  } satisfies Record<CardPadding, string>
+  const bodyPaddingClassName = {
+    none: "",
+    sm: "pb-4",
+    default: "",
+    lg: "pb-6",
+  } satisfies Record<CardPadding, string>
 
   return (
     <div
@@ -139,37 +190,56 @@ function Card({
       data-selected={selected || undefined}
       data-disabled={disabled || undefined}
       data-has-footer={hasFooter || undefined}
+      data-orientation={orientation}
+      data-padding={padding}
       aria-disabled={disabled || undefined}
       tabIndex={interactive && !disabled ? tabIndex ?? 0 : tabIndex}
-      className={cn(cardVariants({ variant, size, density, tone, interactive, selected, disabled }), className)}
+      className={cn(
+        cardVariants({ variant, size, density, tone, interactive, selected, disabled }),
+        orientation === "horizontal" && "flex-row py-0",
+        interactive && "hover:border-[color:var(--aui-control-hover-border,var(--ring))] hover:shadow-[var(--aui-card-shadow-hover,var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08)))]",
+        selected && "border-[color:var(--aui-control-border-strong,var(--ring))] shadow-[var(--aui-card-shadow-hover,var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08)))]",
+        className
+      )}
       {...props}
     >
       {surfaceMode ? (
         <>
-          {media}
-          {hasHeader ? (
-            <CardHeader className={headerClassName}>
-              <div className="min-w-0 space-y-1">
-                {eyebrow != null ? (
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80">
-                    {eyebrow}
-                  </div>
+          {mediaPosition === "start" ? mediaNode : null}
+          <div
+            data-slot="card-body"
+            className={cn(
+              "flex min-w-0 flex-1 flex-col",
+              orientation === "horizontal" ? "py-(--card-spacing)" : "",
+              bodyPaddingClassName[padding],
+              bodyClassName
+            )}
+          >
+            {hasHeader ? (
+              <CardHeader className={cn(surfacePaddingClassName[padding], headerClassName)}>
+                <div className="min-w-0 space-y-1">
+                  {eyebrow != null ? (
+                    <div className={cn("text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80", eyebrowClassName)}>
+                      {eyebrow}
+                    </div>
+                  ) : null}
+                  {title != null ? <CardTitle className={titleClassName}>{title}</CardTitle> : null}
+                  {description != null ? (
+                    <CardDescription className={descriptionClassName}>{description}</CardDescription>
+                  ) : null}
+                </div>
+                {badge != null || action != null ? (
+                  <CardAction className="flex items-center gap-2">
+                    {badge}
+                    {action}
+                  </CardAction>
                 ) : null}
-                {title != null ? <CardTitle className={titleClassName}>{title}</CardTitle> : null}
-                {description != null ? (
-                  <CardDescription className={descriptionClassName}>{description}</CardDescription>
-                ) : null}
-              </div>
-              {badge != null || action != null ? (
-                <CardAction className="flex items-center gap-2">
-                  {badge}
-                  {action}
-                </CardAction>
-              ) : null}
-            </CardHeader>
-          ) : null}
-          {resolvedContent != null ? <CardContent className={contentClassName}>{resolvedContent}</CardContent> : null}
-          {hasFooter ? <CardFooter className={footerClassName}>{footer}</CardFooter> : null}
+              </CardHeader>
+            ) : null}
+            {resolvedContent != null ? <CardContent className={cn(surfacePaddingClassName[padding], contentClassName)}>{resolvedContent}</CardContent> : null}
+            {hasFooter ? <CardFooter className={cn(surfacePaddingClassName[padding], footerClassName)}>{footer}</CardFooter> : null}
+          </div>
+          {mediaPosition === "end" ? mediaNode : null}
         </>
       ) : (
         children

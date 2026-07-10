@@ -7,11 +7,15 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuItemDescription,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/index"
 
@@ -22,6 +26,8 @@ const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
 export function DropdownMenuShowcase({ mode }: ComponentDemoProps) {
   const [status, setStatus] = React.useState("private")
   const [notifications, setNotifications] = React.useState(true)
+  const [compact, setCompact] = React.useState(false)
+  const [keepOpen, setKeepOpen] = React.useState(false)
 
   return (
     <div className="space-y-0">
@@ -46,6 +52,10 @@ export function DropdownMenuShowcase({ mode }: ComponentDemoProps) {
               <p className="text-xs font-semibold uppercase tracking-[0.22em] aui-text-muted">Route</p>
               <p className="mt-2 text-lg font-semibold aui-text-strong">{mode === "playground" ? "Interactive" : "Docs"}</p>
             </div>
+            <div className="rounded-[18px] border border-[color:var(--aui-divider)] px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] aui-text-muted">Menu close</p>
+              <p className="mt-2 text-lg font-semibold aui-text-strong">{keepOpen ? "Pinned open" : "Auto close"}</p>
+            </div>
           </div>
         </div>
       </section>
@@ -63,12 +73,45 @@ export function DropdownMenuShowcase({ mode }: ComponentDemoProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Workspace actions</DropdownMenuLabel>
-              <DropdownMenuItem>Open workspace</DropdownMenuItem>
-              <DropdownMenuItem disabled>Delete from archive</DropdownMenuItem>
+              <DropdownMenuItem>
+                <span className="grid gap-0.5">
+                  <span>Open workspace</span>
+                  <DropdownMenuItemDescription>Go to the main dashboard route</DropdownMenuItemDescription>
+                </span>
+                <DropdownMenuShortcut>↵</DropdownMenuShortcut>
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled>
+                <span className="grid gap-0.5">
+                  <span>Delete from archive</span>
+                  <DropdownMenuItemDescription>Locked until retention expires</DropdownMenuItemDescription>
+                </span>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem checked={notifications} onCheckedChange={(value) => setNotifications(Boolean(value))}>
+              <DropdownMenuCheckboxItem
+                checked={notifications}
+                closeOnSelect={!keepOpen}
+                onCheckedChange={(value) => setNotifications(Boolean(value))}
+              >
                 Notification access
               </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={compact}
+                closeOnSelect={!keepOpen}
+                onCheckedChange={(value) => setCompact(Boolean(value))}
+              >
+                Compact density
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem checked={keepOpen} closeOnSelect={false} onCheckedChange={(value) => setKeepOpen(Boolean(value))}>
+                Keep menu open
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>Export</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>CSV</DropdownMenuItem>
+                  <DropdownMenuItem>PDF summary</DropdownMenuItem>
+                  <DropdownMenuItem>JSON payload</DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
               <DropdownMenuGroup>
                 <DropdownMenuRadioGroup value={status} onValueChange={(value) => setStatus(value)}>
                   <DropdownMenuRadioItem value="public">Public</DropdownMenuRadioItem>

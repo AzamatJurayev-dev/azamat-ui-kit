@@ -1,9 +1,10 @@
 import * as React from "react"
 import { ArrowDownIcon, ArrowUpIcon, MinusIcon } from "lucide-react"
 
+import { Badge, type BadgeProps } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 
-export type DeltaBadgeProps = React.ComponentProps<"span"> & {
+export type DeltaBadgeProps = Omit<BadgeProps, "children" | "label" | "tone" | "status" | "leftIcon" | "variant" | "size"> & {
   value: React.ReactNode
   trend?: "up" | "down" | "neutral"
   size?: "sm" | "default"
@@ -19,23 +20,22 @@ function DeltaBadge({
   ...props
 }: DeltaBadgeProps) {
   const TrendIcon = trend === "up" ? ArrowUpIcon : trend === "down" ? ArrowDownIcon : MinusIcon
+  const tone = trend === "up" ? "success" : trend === "down" ? "danger" : "muted"
 
   return (
-    <span
+    <Badge
       data-slot="delta-badge"
+      variant="soft"
+      tone={tone}
+      size={size}
+      leftIcon={icon ? <TrendIcon className={cn("shrink-0", size === "sm" ? "size-2.5" : "size-3")} /> : undefined}
+      label={value}
       className={cn(
-        "inline-flex items-center justify-center font-medium",
-        size === "sm" ? "gap-0.5 rounded px-1 py-0.5 text-[10px]" : "gap-1 rounded-full px-1.5 py-0.5 text-xs",
-        trend === "up" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-        trend === "down" && "bg-destructive/10 text-destructive",
-        trend === "neutral" && "bg-muted text-muted-foreground",
+        size === "sm" && "min-h-5 px-1.5 text-[10px]",
         className
       )}
       {...props}
-    >
-      {icon && <TrendIcon className={cn("shrink-0", size === "sm" ? "size-2.5" : "size-3")} />}
-      {value}
-    </span>
+    />
   )
 }
 

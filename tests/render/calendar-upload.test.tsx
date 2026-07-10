@@ -94,6 +94,19 @@ describe("Calendar and date pickers", () => {
     expect(onValueChange).toHaveBeenCalledWith({ from: "2024-06-12", to: "2024-06-18" })
   }, 20000)
 
+  it("renders formatted calendar summary content", () => {
+    render(
+      <Calendar
+        mode="range"
+        range={{ from: "2024-06-12", to: "2024-06-18" }}
+        defaultMonth="2024-06-01"
+        showSelectionSummary
+      />
+    )
+
+    expect(screen.getByText("Jun 12, 2024 -> Jun 18, 2024")).toBeTruthy()
+  })
+
   it("supports multi-month paging and keeps next viewport visible", async () => {
     const user = userEvent.setup()
 
@@ -112,6 +125,46 @@ describe("Calendar and date pickers", () => {
     await user.click(screen.getByRole("button", { name: "Next month" }))
 
     expect(screen.getAllByText("August 2024").length).toBeGreaterThan(0)
+  })
+
+  it("supports the DateRangePicker months alias for two-month layouts", async () => {
+    const user = userEvent.setup()
+
+    render(
+      <DateRangePicker
+        value={{}}
+        onValueChange={() => undefined}
+        defaultMonth="2024-06-01"
+        numberOfMonths={1}
+        months={2}
+        labels={{ placeholder: "Choose reporting range" }}
+      />
+    )
+
+    await user.click(screen.getByRole("button", { name: /choose reporting range/i }))
+
+    expect(screen.getAllByText("June 2024").length).toBeGreaterThan(0)
+    expect(screen.getByText("July 2024")).toBeTruthy()
+  })
+
+  it("skips disabled dates in the requested keyboard direction", async () => {
+    render(
+      <Calendar
+        mode="single"
+        defaultMonth="2024-06-01"
+        disabledDates={["2024-06-14"]}
+      />
+    )
+
+    const start = screen.getByRole("button", { name: "2024-06-15" })
+    const expected = screen.getByRole("button", { name: "2024-06-13" })
+
+    fireEvent.focus(start)
+    fireEvent.keyDown(start, { key: "ArrowLeft" })
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(expected)
+    })
   })
 
   it("clears single and range selection from shortcut actions", async () => {

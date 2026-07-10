@@ -42,7 +42,7 @@ export function ComboboxShowcase({ state, setState }: ComponentDemoProps) {
           <div className={panelClass}>
             <p className="text-sm font-medium aui-text-muted">Assign component owner</p>
             <div className="mt-3">
-              <Combobox
+              <Select
                 value={currentValue}
                 options={teammateOptions.map((option) => ({ ...option }))}
                 onValueChange={(value) => setState({ selectValue: value ?? "azamat" })}

@@ -7,15 +7,16 @@ import {
   TrendCard,
   ComparisonCard,
   DeltaBadge,
-  EntityHeader,
+  DataState,
   DataList,
+  InfoCard,
 } from "@/components/display"
 import { Accordion } from "@/components/ui/accordion"
 import { InlineEditable } from "@/components/inputs/inline-editable"
-import { EmptySearchState } from "@/components/feedback"
 import { CommandBar } from "@/components/navigation/command-bar"
 import { SavedFilterSelect } from "@/components/filters/saved-filter-select"
 import { NotificationCenter } from "@/components/notifications/notification-center"
+import { Badge } from "@/components/ui/badge"
 
 describe("New components rendering tests", () => {
   it("renders TrendCard with sparkline", () => {
@@ -47,8 +48,8 @@ describe("New components rendering tests", () => {
     expect(screen.getByText("-3.5%")).toBeInTheDocument()
   })
 
-  it("renders EntityHeader", () => {
-    render(<EntityHeader title="Acme Corp" description="Enterprise Customer" />)
+  it("renders InfoCard as the universal summary card", () => {
+    render(<InfoCard title="Acme Corp" description="Enterprise Customer" />)
     expect(screen.getByText("Acme Corp")).toBeInTheDocument()
     expect(screen.getByText("Enterprise Customer")).toBeInTheDocument()
   })
@@ -89,14 +90,30 @@ describe("New components rendering tests", () => {
     expect(onValueChange).toHaveBeenCalledWith("Initial text updated")
   })
 
-  it("renders EmptySearchState", async () => {
+  it("renders searchable empty DataState", async () => {
     const onClear = vi.fn()
     const user = userEvent.setup()
-    render(<EmptySearchState query="foo" onClear={onClear} />)
+    render(<DataState status="empty" title="No results found" query="foo" clearLabel="Clear search" onClear={onClear} />)
     
-    expect(screen.getByText("No results found for \"foo\"")).toBeInTheDocument()
+    expect(screen.getByText("No results found")).toBeInTheDocument()
+    expect(screen.getByText("foo")).toBeInTheDocument()
     await user.click(screen.getByRole("button", { name: "Clear search" }))
     expect(onClear).toHaveBeenCalled()
+  })
+
+  it("renders DataState badge and footer content", () => {
+    render(
+      <DataState
+        status="success"
+        title="Workspace ready"
+        badge={<Badge variant="secondary">Live</Badge>}
+        footer={<div>Footer details</div>}
+      />
+    )
+
+    expect(screen.getByText("Workspace ready")).toBeInTheDocument()
+    expect(screen.getByText("Live")).toBeInTheDocument()
+    expect(screen.getByText("Footer details")).toBeInTheDocument()
   })
 
   it("renders CommandBar", () => {

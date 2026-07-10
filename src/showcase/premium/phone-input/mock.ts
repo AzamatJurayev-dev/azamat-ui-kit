@@ -2,23 +2,24 @@ import type { ComponentDemoMock } from "../types"
 
 export const phoneInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { PhoneInput } from "@/index"
+import { Input } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState("+998 90 123 45 67")
 
   return (
-    <PhoneInput
+    <Input
+      kind="phone"
       value={value}
       onValueChange={setValue}
-      defaultCountry="UZ"
+      countryCode="+998"
       placeholder="+998 90 123 45 67"
     />
   )
 }
 `,
   htmlCode: '<label for="phone">Phone</label><input id="phone" type="tel" inputmode="tel" placeholder="+998 90 123 45 67" />',
-  cliCommand: "npx tembro add phone-input",
+  cliCommand: "npx tembro add input",
   highlights: ["Phone formatting assumptions", "Locale/defaultCountry behavior", "Controlled value contract", "Raw vs displayed phone forms"],
   relatedBlockSlugs: ["users-table", "settings-form", "pricing-section"],
   scenarios: [

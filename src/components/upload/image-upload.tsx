@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { ImageIcon, XIcon } from "lucide-react"
 
@@ -16,7 +18,27 @@ export type ImageUploadProps = Omit<FileUploadProps, "accept" | "renderFile"> & 
   preview?: boolean
   previewClassName?: string
   imageClassName?: string
+  minImageWidth?: number
+  minImageHeight?: number
+  aspectRatio?: number
+  aspectRatioTolerance?: number
   renderImageFile?: (state: FileUploadRenderFileState & { previewUrl?: string }) => React.ReactNode
+}
+
+function readImageMeta(file: File) {
+  return new Promise<{ width: number; height: number }>((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const image = new Image()
+    image.onload = () => {
+      resolve({ width: image.width, height: image.height })
+      URL.revokeObjectURL(url)
+    }
+    image.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error("Image metadata could not be read"))
+    }
+    image.src = url
+  })
 }
 
 function useImagePreviewUrls(files: File[], enabled = true) {
@@ -107,6 +129,10 @@ function ImageUpload({
   previewClassName,
   imageClassName,
   files = [],
+  minImageWidth,
+  minImageHeight,
+  aspectRatio,
+  aspectRatioTolerance = 0.04,
   renderImageFile,
   ...props
 }: ImageUploadProps) {
@@ -118,6 +144,29 @@ function ImageUpload({
       buttonLabel={buttonLabel}
       dropzoneLabel={dropzoneLabel}
       files={files}
+      validateFile={async (file) => {
+        if (!file.type.startsWith("image/")) return "Only image files are allowed."
+        if (!minImageWidth && !minImageHeight && !aspectRatio) return null
+
+        const { width, height } = await readImageMeta(file)
+
+        if (minImageWidth && width < minImageWidth) {
+          return `Image width must be at least ${minImageWidth}px.`
+        }
+
+        if (minImageHeight && height < minImageHeight) {
+          return `Image height must be at least ${minImageHeight}px.`
+        }
+
+        if (aspectRatio) {
+          const ratio = width / height
+          if (Math.abs(ratio - aspectRatio) > aspectRatioTolerance) {
+            return `Image ratio must be close to ${aspectRatio.toFixed(2)}:1.`
+          }
+        }
+
+        return null
+      }}
       renderFile={(state) => {
         const previewUrl = previewUrls[getFileKey(state.file)]
 

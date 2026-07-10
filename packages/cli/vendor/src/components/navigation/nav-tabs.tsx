@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
 
 export type NavTabItem = {
@@ -26,7 +27,14 @@ const sizeClassName = {
 
 function NavTabs({ items, value, onValueChange, size = "default", fullWidth = false, className, ...props }: NavTabsProps) {
   return (
-    <div data-slot="nav-tabs" className={cn("inline-flex rounded-[var(--radius-xl)] border border-border/80 bg-muted/45 p-1", fullWidth && "w-full", className)} {...props}>
+    <Tabs
+      value={value}
+      onValueChange={(nextValue) => onValueChange?.(String(nextValue))}
+      data-slot="nav-tabs"
+      className={cn("min-w-0", fullWidth && "w-full", className)}
+      {...props}
+    >
+      <TabsList data-slot="nav-tabs-list" variant="pills" overflow="scroll" className={cn(fullWidth && "w-full")}>
       {items.map((item) => {
         const active = item.value === value
         const content = (
@@ -37,23 +45,24 @@ function NavTabs({ items, value, onValueChange, size = "default", fullWidth = fa
         )
 
         const itemClassName = cn(
-          "inline-flex items-center justify-center gap-2 rounded-[calc(var(--radius-xl)-4px)] font-medium text-muted-foreground transition hover:text-foreground disabled:pointer-events-none disabled:opacity-50",
+          "min-w-0 disabled:pointer-events-none disabled:opacity-50",
           sizeClassName[size],
           fullWidth && "flex-1",
           active && "bg-background text-foreground shadow-sm"
         )
 
         return item.href ? (
-          <a key={item.value} href={item.href} aria-current={active ? "page" : undefined} className={itemClassName}>
+          <TabsTrigger key={item.value} value={item.value} render={<a href={item.href} aria-current={active ? "page" : undefined} className={itemClassName} />}>
             {content}
-          </a>
+          </TabsTrigger>
         ) : (
-          <button key={item.value} type="button" disabled={item.disabled} className={itemClassName} onClick={() => onValueChange?.(item.value)}>
+          <TabsTrigger key={item.value} value={item.value} disabled={item.disabled} className={itemClassName} onClick={() => onValueChange?.(item.value)}>
             {content}
-          </button>
+          </TabsTrigger>
         )
       })}
-    </div>
+      </TabsList>
+    </Tabs>
   )
 }
 

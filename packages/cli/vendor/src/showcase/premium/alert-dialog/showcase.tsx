@@ -80,10 +80,15 @@ export function AlertDialogShowcase({ mode }: ComponentDemoProps) {
         onAction={async () => {
           setLoading(true)
           await new Promise((resolve) => window.setTimeout(resolve, 450))
+          if (shouldFail) {
+            setLoading(false)
+            throw new Error("dependent billing")
+          }
           setLoading(false)
           setOpen(false)
           setLastResult("Workspace deletion confirmed")
         }}
+        onActionError={() => setLastResult("Workspace deletion failed")}
       />
 
       {mode === "playground" ? (

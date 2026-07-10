@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { SimpleSelect } from "@/components/inputs/simple-select"
+import { Select } from "@/components/ui/select"
 import { Pagination, type PaginationLabels } from "@/components/navigation/pagination"
 import { cn } from "@/lib/utils"
 
@@ -63,7 +63,7 @@ function DataTablePagination({
         {showPageSize && onPageSizeChange && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>{labels?.rowsPerPage ?? "Rows per page"}</span>
-            <SimpleSelect
+            <Select
               value={String(pageSize)}
               onValueChange={(value) => onPageSizeChange(Number(value))}
               options={pageSizeOptions.map((option) => ({

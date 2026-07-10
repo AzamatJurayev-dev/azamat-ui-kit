@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, Button, Combobox } from "@/index"
+import { Badge, Button, Select } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -42,14 +42,14 @@ export function ComboboxShowcase({ state, setState }: ComponentDemoProps) {
           <div className={panelClass}>
             <p className="text-sm font-medium aui-text-muted">Assign component owner</p>
             <div className="mt-3">
-              <Combobox
+              <Select
                 value={currentValue}
                 options={teammateOptions.map((option) => ({ ...option }))}
                 onValueChange={(value) => setState({ selectValue: value ?? "azamat" })}
                 placeholder="Choose teammate"
                 searchPlaceholder="Search teammate..."
+                searchable
                 clearable
-                allowDeselect
                 showSelectedDescription
                 onSearchChange={setSearchValue}
               />

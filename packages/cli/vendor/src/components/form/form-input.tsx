@@ -5,26 +5,22 @@ import {
   DateRangeInput,
   type DateRangeInputProps,
   type DateRangeValue,
-} from "@/components/inputs/date-range-input"
-import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
-import { Input, type InputTextProps } from "@/components/ui/input"
-import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
-import { MoneyInput, type MoneyInputProps } from "@/components/inputs/money-input"
-import { NumberInput, type NumberInputProps } from "@/components/inputs/number-input"
+} from "@/components/ui/input/date-range"
+import { DateInput, type DateInputProps } from "@/components/ui/input/date"
+import { Input, type InputClearableProps, type InputSearchProps, type InputTextProps } from "@/components/ui/input"
+import { MaskedInput, type MaskedInputProps } from "@/components/ui/input/masked"
+import { MoneyInput, type MoneyInputProps } from "@/components/ui/input/money"
+import { NumberInput, type NumberInputProps } from "@/components/ui/input/number"
 import {
   PhoneInput,
   formatPhoneDigits,
   type PhoneInputProps,
-} from "@/components/inputs/phone-input"
-import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
-import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
-import {
-  ClearableInput,
-  type ClearableInputProps,
-} from "@/components/inputs/clearable-input"
+} from "@/components/ui/input/phone"
+import { QuantityInput, type QuantityInputProps } from "@/components/ui/input/quantity"
 import {
   FormFieldShell,
   type FormFieldShellControlProps,
+  resolveFormFieldIds,
 } from "@/components/form/form-field-shell"
 
 export type FormInputKind =
@@ -74,7 +70,7 @@ export type FormTextInputProps<
 export type FormInputSearchVariantProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<SearchInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+> = Omit<InputSearchProps, "name" | "value" | "defaultValue" | "onValueChange" | "kind"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind: "search"
     onValueChange?: (value: string) => void
@@ -132,7 +128,7 @@ export type FormInputDateRangeVariantProps<
 export type FormInputClearableVariantProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<ClearableInputProps, "name" | "value" | "defaultValue" | "onValueChange"> &
+> = Omit<InputClearableProps, "name" | "value" | "defaultValue" | "onValueChange" | "kind"> &
   FormControlledFieldProps<TFieldValues, TName> & {
     kind: "clearable"
     emptyValue?: unknown
@@ -195,8 +191,11 @@ function buildShellProps<
   return {
     label: props.label,
     description: props.description,
+    success: props.success,
+    loading: props.loading,
     required: props.required,
     className: props.className,
+    htmlFor: props.id ?? props.name,
     layout: props.layout,
     descriptionPosition: props.descriptionPosition,
     labelAction: props.labelAction,
@@ -229,6 +228,10 @@ function FormInput<
       rules={props.rules}
       render={({ field, fieldState }) => {
         const error = fieldState.error?.message
+        const resolvedIds = resolveFormFieldIds(inputId, {
+          description: props.description,
+          error,
+        })
 
         if (kind === "search") {
           const {
@@ -260,9 +263,17 @@ function FormInput<
           } = props as FormInputSearchVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
-              <SearchInput
-                {...searchProps}
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
+              <Input
+                {...(searchProps as Omit<InputSearchProps, "kind">)}
+                type="search"
                 id={id ?? inputId}
                 name={field.name}
                 ref={field.ref}
@@ -271,6 +282,8 @@ function FormInput<
                 readOnly={props.readOnly}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -314,7 +327,14 @@ function FormInput<
               } = props as FormInputPasswordVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <Input
                 {...(passwordProps as Omit<InputTextInputProps, "kind">)}
                 type="password"
@@ -325,6 +345,8 @@ function FormInput<
                 disabled={disabled}
                 readOnly={props.readOnly}
                 inputClassName={fieldClassName ?? resolvedFieldClassName}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -371,7 +393,14 @@ function FormInput<
           } = props as FormInputNumberVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <NumberInput
                 {...numberProps}
                 id={id ?? inputId}
@@ -382,6 +411,8 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -432,7 +463,14 @@ function FormInput<
             valueMode === "raw" ? formatPhoneDigits(fieldValue, countryCode, maxDigits) : fieldValue
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <PhoneInput
                 {...phoneProps}
                 id={id ?? inputId}
@@ -445,6 +483,8 @@ function FormInput<
                 maxDigits={maxDigits}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -490,7 +530,14 @@ function FormInput<
           } = props as FormInputDateVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <DateInput
                 {...dateProps}
                 id={id ?? inputId}
@@ -501,6 +548,8 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -545,9 +594,17 @@ function FormInput<
           } = props as FormInputClearableVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
-              <ClearableInput
-                {...clearableProps}
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
+              <Input
+                {...(clearableProps as Omit<InputClearableProps, "kind">)}
+                clearable
                 id={id ?? inputId}
                 name={field.name}
                 ref={field.ref}
@@ -556,6 +613,8 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -600,7 +659,14 @@ function FormInput<
           } = props as FormInputMaskedVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <MaskedInput
                 {...maskedProps}
                 id={id ?? inputId}
@@ -611,6 +677,8 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -656,7 +724,14 @@ function FormInput<
           } = props as FormInputMoneyVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <MoneyInput
                 {...moneyProps}
                 id={id ?? inputId}
@@ -667,6 +742,8 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -711,7 +788,14 @@ function FormInput<
           } = props as FormInputQuantityVariantProps<TFieldValues, TName>
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <QuantityInput
                 {...quantityProps}
                 id={id ?? inputId}
@@ -722,6 +806,8 @@ function FormInput<
                 readOnly={props.readOnly}
                 className={fieldClassName ?? resolvedFieldClassName}
                 aria-invalid={fieldState.invalid || undefined}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
                   field.onBlur()
                   onBlur?.(event)
@@ -766,7 +852,14 @@ function FormInput<
           const currentValue = field.value as DateRangeValue | undefined
 
           return (
-            <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+              htmlFor={id ?? inputId}
+            >
               <DateRangeInput
                 {...rangeProps}
                 id={id ?? inputId}
@@ -780,11 +873,15 @@ function FormInput<
                   ...(rangeProps.fromInputProps ?? {}),
                   disabled,
                   readOnly: props.readOnly,
+                  "aria-describedby": resolvedIds.describedBy,
+                  "aria-errormessage": error ? resolvedIds.errorId : undefined,
                 }}
                 toInputProps={{
                   ...(rangeProps.toInputProps ?? {}),
                   disabled,
                   readOnly: props.readOnly,
+                  "aria-describedby": resolvedIds.describedBy,
+                  "aria-errormessage": error ? resolvedIds.errorId : undefined,
                 }}
                 onValueChange={(value) => {
                   field.onChange(value)
@@ -831,7 +928,14 @@ function FormInput<
         } = props as FormTextInputProps<TFieldValues, TName>
 
         return (
-          <FormFieldShell {...shellProps} error={error} htmlFor={id ?? inputId}>
+          <FormFieldShell
+            {...shellProps}
+            labelId={resolvedIds.labelId}
+            descriptionId={resolvedIds.descriptionId}
+            errorId={resolvedIds.errorId}
+            error={error}
+            htmlFor={id ?? inputId}
+          >
             <Input
               {...(inputProps as Omit<InputTextInputProps, "kind">)}
               id={id ?? inputId}
@@ -852,6 +956,8 @@ function FormInput<
                 onChange?.(event)
               }}
               aria-invalid={fieldState.invalid || undefined}
+              aria-describedby={resolvedIds.describedBy}
+              aria-errormessage={error ? resolvedIds.errorId : undefined}
               className={fieldClassName ?? resolvedFieldClassName}
             />
           </FormFieldShell>

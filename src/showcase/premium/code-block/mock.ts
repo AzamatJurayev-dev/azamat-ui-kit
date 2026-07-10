@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const codeBlockMock: ComponentDemoMock = {
-  code: `import { CodeBlock } from "@/index"
+  code: `import { CodeBlock } from "tembro"
 
 const snippet = \`npx tembro add button select\`
 

@@ -8,9 +8,9 @@ const panelClass =
   "rounded-[22px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5"
 
 const seedItems = [
-  { id: "1", title: "Invoice paid", description: "Acme Growth settled invoice #2048.", time: "2m ago", read: false },
-  { id: "2", title: "Deployment ready", description: "Release candidate passed checks and waits for promotion.", time: "12m ago", read: false },
-  { id: "3", title: "Member invited", description: "Operations workspace access was sent to Dilshod.", time: "1h ago", read: true },
+  { id: "1", title: "Invoice paid", description: "Acme Growth settled invoice #2048.", time: "2m ago", read: false, group: "Today" },
+  { id: "2", title: "Deployment ready", description: "Release candidate passed checks and waits for promotion.", time: "12m ago", read: false, group: "Today" },
+  { id: "3", title: "Member invited", description: "Operations workspace access was sent to Dilshod.", time: "1h ago", read: true, group: "Earlier" },
 ]
 
 export function NotificationCenterShowcase({ mode }: ComponentDemoProps) {
@@ -44,6 +44,7 @@ export function NotificationCenterShowcase({ mode }: ComponentDemoProps) {
           <NotificationCenter
             notifications={items}
             onMarkAllRead={() => setItems((current) => current.map((item) => ({ ...item, read: true })))}
+            onClearAll={() => setItems([])}
             onNotificationClick={(notification) =>
               setItems((current) => current.map((item) => (item.id === notification.id ? { ...item, read: true } : item)))
             }

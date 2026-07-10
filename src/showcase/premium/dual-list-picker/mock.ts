@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const dualListPickerMock: ComponentDemoMock = {
-  code: `import { DualListPicker } from "@/index"
+  code: `import { DualListPicker } from "tembro"
 
 const items = [
   { label: "Analytics", value: "analytics" },

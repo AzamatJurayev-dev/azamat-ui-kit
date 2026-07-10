@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import {
   flexRender,
@@ -25,10 +27,10 @@ import { DataTableColumnVisibilityMenu } from "@/components/data-table/data-tabl
 import { DataTablePagination, type DataTablePaginationProps } from "@/components/data-table/data-table-pagination"
 import { type DataTableRowAction } from "@/components/data-table/data-table-row-actions"
 import { DataTableToolbar, type DataTableToolbarProps } from "@/components/data-table/data-table-toolbar"
-import { EmptyState, type EmptyStateProps } from "@/components/feedback/empty-state"
+import { DataState, type DataStateProps } from "@/components/display/data-state"
 import { LoadingState, type LoadingStateProps } from "@/components/feedback/loading-state"
-import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
 import { Button } from "@/components/ui/button"
+import { Input, type InputSearchProps } from "@/components/ui/input"
 import {
   Table,
   TableBody,
@@ -66,7 +68,7 @@ export type DataTableFeatureConfig = {
 }
 
 export type DataTableSearchConfig = Pick<
-  SearchInputProps,
+  InputSearchProps,
   | "value"
   | "onValueChange"
   | "placeholder"
@@ -112,6 +114,8 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   description?: React.ReactNode
   features?: DataTableFeatureConfig
   search?: DataTableSearchConfig
+  filters?: React.ReactNode | ((context: DataTableActionContext<TData>) => React.ReactNode)
+  summary?: React.ReactNode | ((context: DataTableActionContext<TData>) => React.ReactNode)
   toolbarActions?: React.ReactNode | ((context: DataTableActionContext<TData>) => React.ReactNode)
   rowActions?: (row: Row<TData>, original: TData) => DataTableRowAction<TData>[]
   bulkActions?: DataTableBulkAction<TData>[]
@@ -122,8 +126,8 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string
   isLoading?: boolean
   isError?: boolean
-  emptyState?: EmptyStateProps
-  errorState?: EmptyStateProps
+  emptyState?: Omit<DataStateProps, "status">
+  errorState?: Omit<DataStateProps, "status">
   loadingState?: LoadingStateProps
   loadingVariant?: DataTableLoadingVariant
   toolbar?: React.ReactNode | ((table: TanStackTable<TData>) => React.ReactNode)
@@ -208,6 +212,8 @@ function DataTable<TData, TValue = unknown>({
   description,
   features,
   search,
+  filters,
+  summary,
   toolbarActions,
   rowActions,
   bulkActions,
@@ -278,7 +284,6 @@ function DataTable<TData, TValue = unknown>({
     : undefined
   const manualPagination = Boolean(paginationConfig && paginationConfig.manual !== false)
   const resolvedRowSelection = rowSelection ?? {}
-  const selectedRowCount = Object.keys(resolvedRowSelection).length
 
   // TanStack Table returns imperative helpers that React Compiler flags by design.
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -364,6 +369,7 @@ function DataTable<TData, TValue = unknown>({
       )
     : 0
   const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original)
+  const selectedRowCount = selectedRows.length
   const actionContext = React.useMemo<DataTableActionContext<TData>>(
     () => ({ table, data, selectedRows }),
     [data, selectedRows, table]
@@ -372,6 +378,8 @@ function DataTable<TData, TValue = unknown>({
   const visibleColumnCount = Math.max(visibleColumns.length, 1)
   const resolvedToolbar = typeof toolbar === "function" ? toolbar(table) : toolbar
   const resolvedToolbarProps = typeof toolbarProps === "function" ? toolbarProps(table) : toolbarProps
+  const resolvedFilters = typeof filters === "function" ? filters(actionContext) : filters
+  const resolvedSummary = typeof summary === "function" ? summary(actionContext) : summary
   const shouldShowSearch = Boolean(search && features?.search !== false)
   const shouldShowColumnVisibility = Boolean(features?.columnVisibility && table.getAllLeafColumns().some((column) => column.getCanHide()))
   const shouldShowRefresh = Boolean(features?.refresh && onRefresh)
@@ -381,13 +389,16 @@ function DataTable<TData, TValue = unknown>({
     title ||
       description ||
       search ||
+      resolvedFilters ||
+      resolvedSummary ||
       toolbarActions ||
       shouldShowRefresh ||
       shouldShowExport
   )
   const shouldShowColumnVisibilityInToolbar = shouldShowColumnVisibility && hasPrimaryToolbarContent
   const defaultSearch = shouldShowSearch && search ? (
-    <SearchInput
+    <Input
+      type="search"
       value={search.value}
       onValueChange={search.onValueChange}
       placeholder={search.placeholder ?? "Search..."}
@@ -429,6 +440,8 @@ function DataTable<TData, TValue = unknown>({
     title ||
       description ||
       defaultSearch ||
+      resolvedFilters ||
+      resolvedSummary ||
       toolbarActions ||
       shouldShowColumnVisibilityInToolbar ||
       shouldShowRefresh ||
@@ -485,9 +498,9 @@ function DataTable<TData, TValue = unknown>({
   const stateContent = shouldRenderSkeleton ? null : isLoading ? (
     <LoadingState label="Loading data..." {...loadingState} />
   ) : isError ? (
-    <EmptyState title="Could not load data" description="Please try again." {...errorState} />
+    <DataState status="error" title="Could not load data" description="Please try again." variant="plain" {...errorState} />
   ) : rows.length === 0 ? (
-    <EmptyState {...emptyState} />
+    <DataState status="empty" variant="plain" {...emptyState} />
   ) : null
 
   const renderDataRow = (row: Row<TData>, rowIndex: number, virtualRow?: VirtualItem) => {
@@ -563,6 +576,8 @@ function DataTable<TData, TValue = unknown>({
             title={title}
             description={description}
             search={defaultSearch}
+            filters={resolvedFilters}
+            summary={resolvedSummary}
             actions={defaultActions}
             selectionActions={defaultSelectionActions}
             selectedCount={selectedRowCount}

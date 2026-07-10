@@ -11,11 +11,13 @@ export type NotificationItem = {
   description?: React.ReactNode
   time?: React.ReactNode
   read?: boolean
+  group?: React.ReactNode
 }
 
 export type NotificationCenterProps = React.ComponentProps<"div"> & {
   notifications: NotificationItem[]
   onMarkAllRead?: () => void
+  onClearAll?: () => void
   onNotificationClick?: (notification: NotificationItem) => void
   emptyLabel?: React.ReactNode
   title?: React.ReactNode
@@ -24,6 +26,7 @@ export type NotificationCenterProps = React.ComponentProps<"div"> & {
 function NotificationCenter({
   notifications,
   onMarkAllRead,
+  onClearAll,
   onNotificationClick,
   emptyLabel = "No new notifications",
   title = "Notifications",
@@ -31,6 +34,11 @@ function NotificationCenter({
   ...props
 }: NotificationCenterProps) {
   const unreadCount = notifications.filter((n) => !n.read).length
+  const groupedNotifications = notifications.reduce<Record<string, NotificationItem[]>>((accumulator, notification) => {
+    const key = String(notification.group ?? "Recent")
+    accumulator[key] = [...(accumulator[key] ?? []), notification]
+    return accumulator
+  }, {})
 
   return (
     <div data-slot="notification-center" className={className} {...props}>
@@ -60,16 +68,28 @@ function NotificationCenter({
                 {unreadCount > 0 ? `${unreadCount} unread update${unreadCount > 1 ? "s" : ""}` : "You're all caught up"}
               </span>
             </div>
-            {unreadCount > 0 && onMarkAllRead && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 rounded-full border border-[color:var(--aui-surface-border)] px-3 text-xs font-semibold text-muted-foreground hover:bg-[color:var(--aui-page-bg)] hover:text-foreground"
-                onClick={onMarkAllRead}
-              >
-                Mark all read
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              {unreadCount > 0 && onMarkAllRead ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 rounded-full border border-[color:var(--aui-surface-border)] px-3 text-xs font-semibold text-muted-foreground hover:bg-[color:var(--aui-page-bg)] hover:text-foreground"
+                  onClick={onMarkAllRead}
+                >
+                  Mark all read
+                </Button>
+              ) : null}
+              {notifications.length > 0 && onClearAll ? (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 rounded-full border border-[color:var(--aui-surface-border)] px-3 text-xs font-semibold text-muted-foreground hover:bg-[color:var(--aui-page-bg)] hover:text-foreground"
+                  onClick={onClearAll}
+                >
+                  Clear all
+                </Button>
+              ) : null}
+            </div>
           </div>
           <div className="max-h-[400px] overflow-y-auto bg-[color:var(--aui-page-bg)] p-2">
             {notifications.length === 0 ? (
@@ -77,35 +97,40 @@ function NotificationCenter({
                 {emptyLabel}
               </div>
             ) : (
-              <div className="flex flex-col">
-                {notifications.map((notification) => (
-                  <button
-                    key={notification.id}
-                    className={cn(
-                      "flex flex-col gap-1 rounded-2xl border border-transparent px-4 py-3 text-left transition hover:border-[color:var(--aui-surface-border)] hover:bg-[color:var(--aui-control-bg)]",
-                      !notification.read && "border-[color:color-mix(in_srgb,var(--aui-brand-strong)_16%,var(--aui-surface-border))] bg-[color:color-mix(in_srgb,var(--aui-brand-strong)_8%,var(--aui-control-bg))]"
-                    )}
-                    onClick={() => onNotificationClick?.(notification)}
-                  >
-                    <div className="flex w-full items-start justify-between gap-2">
-                      <span className="text-sm font-semibold leading-tight text-foreground">
-                        {notification.title}
-                      </span>
-                      {!notification.read && (
-                        <span className="mt-1 flex size-2 shrink-0 rounded-full bg-[color:var(--aui-brand-strong)] shadow-[0_0_0_4px_color-mix(in_srgb,var(--aui-brand-strong)_14%,transparent)]" />
-                      )}
-                    </div>
-                    {notification.description && (
-                      <span className="line-clamp-2 text-xs leading-5 text-muted-foreground">
-                        {notification.description}
-                      </span>
-                    )}
-                    {notification.time && (
-                      <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">
-                        {notification.time}
-                      </span>
-                    )}
-                  </button>
+              <div className="flex flex-col gap-3">
+                {Object.entries(groupedNotifications).map(([group, groupItems]) => (
+                  <div key={group} className="grid gap-2">
+                    <div className="px-2 pt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">{group}</div>
+                    {groupItems.map((notification) => (
+                      <button
+                        key={notification.id}
+                        className={cn(
+                          "flex flex-col gap-1 rounded-2xl border border-transparent px-4 py-3 text-left transition hover:border-[color:var(--aui-surface-border)] hover:bg-[color:var(--aui-control-bg)]",
+                          !notification.read && "border-[color:color-mix(in_srgb,var(--aui-brand-strong)_16%,var(--aui-surface-border))] bg-[color:color-mix(in_srgb,var(--aui-brand-strong)_8%,var(--aui-control-bg))]"
+                        )}
+                        onClick={() => onNotificationClick?.(notification)}
+                      >
+                        <div className="flex w-full items-start justify-between gap-2">
+                          <span className="text-sm font-semibold leading-tight text-foreground">
+                            {notification.title}
+                          </span>
+                          {!notification.read && (
+                            <span className="mt-1 flex size-2 shrink-0 rounded-full bg-[color:var(--aui-brand-strong)] shadow-[0_0_0_4px_color-mix(in_srgb,var(--aui-brand-strong)_14%,transparent)]" />
+                          )}
+                        </div>
+                        {notification.description && (
+                          <span className="line-clamp-2 text-xs leading-5 text-muted-foreground">
+                            {notification.description}
+                          </span>
+                        )}
+                        {notification.time && (
+                          <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground/80">
+                            {notification.time}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
                 ))}
               </div>
             )}

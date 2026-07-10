@@ -79,6 +79,10 @@ function getLocalSourceTarget(sourcePath: string, config: TembroConfig) {
   const normalized = sourcePath.replaceAll("\\", "/");
 
   if (normalized === "src/lib/utils.ts") return config.utilsPath ?? "src/lib/utils.ts";
+  if (normalized.startsWith("src/lib/")) {
+    const libPath = config.paths?.lib ?? path.dirname(config.utilsPath ?? "src/lib/utils.ts");
+    return path.join(libPath, normalized.replace("src/lib/", ""));
+  }
   if (normalized.startsWith("src/hooks/")) {
     return path.join(config.paths?.hooks ?? "src/hooks", normalized.replace("src/hooks/", ""));
   }
@@ -94,10 +98,14 @@ function getLocalSourceTarget(sourcePath: string, config: TembroConfig) {
   return undefined;
 }
 
-function resolveLocalImportSource(importPath: string) {
+function resolveLocalImportSource(importPath: string, fromSource?: string) {
   if (importPath === "@/lib/utils") return "src/lib/utils.ts";
+  if (importPath.startsWith("@/lib/")) return `src/lib/${importPath.replace("@/lib/", "")}`;
   if (importPath.startsWith("@/components/")) return `src/components/${importPath.replace("@/components/", "")}`;
   if (importPath.startsWith("@/hooks/")) return `src/hooks/${importPath.replace("@/hooks/", "")}`;
+  if (fromSource && importPath.startsWith(".")) {
+    return path.posix.normalize(path.posix.join(path.posix.dirname(fromSource), importPath));
+  }
   return undefined;
 }
 
@@ -110,18 +118,57 @@ function getImportCandidates(sourceWithoutExtension: string) {
   ];
 }
 
-function getLocalImports(content: string) {
+function getLocalImports(content: string, fromSource: string) {
   const imports = new Set<string>();
-  const importPattern = /from\s+["'](@\/(?:components|hooks|lib)\/[^"']+)["']|import\s*\(\s*["'](@\/(?:components|hooks|lib)\/[^"']+)["']\s*\)/g;
+  const importPattern =
+    /(?:import|export)\s+(?:type\s+)?(?:[^"']*?\s+from\s+)?["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)/g;
   let match: RegExpExecArray | null;
 
   while ((match = importPattern.exec(content))) {
     const importPath = match[1] ?? match[2];
-    const sourcePath = resolveLocalImportSource(importPath);
+    const sourcePath = resolveLocalImportSource(importPath, fromSource);
     if (sourcePath) imports.add(sourcePath);
   }
 
   return [...imports];
+}
+
+const ignoredExternalPackages = new Set([
+  "react",
+  "react-dom",
+  "node:path",
+  "node:fs",
+  "node:fs/promises",
+]);
+
+function getExternalImportPackages(content: string) {
+  const packages = new Set<string>();
+  const importPattern =
+    /(?:import|export)\s+(?:type\s+)?(?:[^"']*?\s+from\s+)?["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)/g;
+  let match: RegExpExecArray | null;
+
+  while ((match = importPattern.exec(content))) {
+    const importPath = match[1] ?? match[2];
+
+    if (
+      !importPath ||
+      importPath.startsWith(".") ||
+      importPath.startsWith("@/") ||
+      ignoredExternalPackages.has(importPath)
+    ) {
+      continue;
+    }
+
+    if (importPath.startsWith("@")) {
+      const [scope, name] = importPath.split("/");
+      if (scope && name) packages.add(`${scope}/${name}`);
+      continue;
+    }
+
+    packages.add(importPath.split("/")[0]);
+  }
+
+  return [...packages];
 }
 
 function collectRegistryItems(componentNames: ComponentName[]) {
@@ -142,6 +189,61 @@ function collectRegistryItems(componentNames: ComponentName[]) {
   return collected;
 }
 
+function resolveRequestedComponent(componentName: ComponentName) {
+  const item = registry[componentName];
+  return (item.migrationAliasFor ?? componentName) as ComponentName;
+}
+
+const hiddenAvailableComponentNames = new Set<string>([
+  "app-header",
+  "app-sidebar",
+  "app-shell",
+  "async-multi-select",
+  "clearable-input",
+  "combobox",
+  "copy-field",
+  "data-table-actions-column",
+  "data-table-bulk-actions",
+  "data-table-column-visibility-menu",
+  "data-table-pagination",
+  "data-table-row-actions",
+  "data-table-saved-filters",
+  "data-table-select-column",
+  "data-table-sortable-header",
+  "data-table-toolbar",
+  "data-table-view-presets",
+  "date-input",
+  "date-range-input",
+  "file-dropzone",
+  "form",
+  "form-async-select",
+  "form-field-shell",
+  "form-input",
+  "form-select",
+  "form-switch",
+  "form-textarea",
+  "hover-card",
+  "input-decorator",
+  "input-value",
+  "inputs",
+  "masked-input",
+  "money-input",
+  "number-input",
+  "page-container",
+  "page-header",
+  "password-input",
+  "phone-input",
+  "quantity-input",
+  "search-input",
+  "section-header",
+  "sidebar-nav",
+  "simple-select",
+  "stat-card",
+  "sticky-footer-bar",
+  "table-export-menu",
+  "table-import-button",
+]);
+
 function formatAvailableComponents() {
   return registryNames
     .filter((name) => registry[name].category !== "lib" && !registry[name].migrationAliasFor)
@@ -161,7 +263,7 @@ export async function addCommand(components: string[], options: AddCommandOption
 
   if (!components.length) {
     logger.error("Component nomini kiriting:");
-    logger.info(getCliNpxCommand("add data-table async-select form-input"));
+    logger.info(getCliNpxCommand("add data-table async-select input"));
     logger.info(`Mavjud componentlar: ${formatAvailableComponents()}`);
     process.exit(1);
   }
@@ -246,7 +348,11 @@ async function copySourceWithLocalImports(source: string, targetTemplate?: strin
     }
 
     const sourceContent = await fs.readFile(sourcePath, "utf8");
-    for (const importedSource of getLocalImports(sourceContent)) {
+    for (const externalPackage of getExternalImportPackages(sourceContent)) {
+      dependenciesToInstall.add(externalPackage);
+    }
+
+    for (const importedSource of getLocalImports(sourceContent, normalizedSource)) {
       for (const candidate of getImportCandidates(importedSource)) {
         if (fs.existsSync(path.join(packageRoot, candidate))) {
           await copySourceWithLocalImports(candidate);

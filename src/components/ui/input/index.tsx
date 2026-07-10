@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 
 import { InputPrimitive, type InputPrimitiveProps } from "./primitive"
@@ -9,17 +11,17 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "./group"
-import { InputDecorator } from "@/components/inputs/input-decorator"
-import { ClearableInput, type ClearableInputProps } from "@/components/inputs/clearable-input"
-import { DateInput, type DateInputProps } from "@/components/inputs/date-input"
-import { DateRangeInput, type DateRangeInputProps } from "@/components/inputs/date-range-input"
-import { MoneyInput, type MoneyInputProps } from "@/components/inputs/money-input"
-import { MaskedInput, type MaskedInputProps } from "@/components/inputs/masked-input"
-import { NumberInput, type NumberInputProps } from "@/components/inputs/number-input"
-import { PasswordInput, type PasswordInputProps } from "@/components/inputs/password-input"
-import { PhoneInput, type PhoneInputProps } from "@/components/inputs/phone-input"
-import { QuantityInput, type QuantityInputProps } from "@/components/inputs/quantity-input"
-import { SearchInput, type SearchInputProps } from "@/components/inputs/search-input"
+import { ClearableInput, type ClearableInputProps } from "./clearable"
+import { DateInput, type DateInputProps } from "./date"
+import { DateRangeInput, type DateRangeInputProps } from "./date-range"
+import { InputDecorator } from "./decorator"
+import { MaskedInput, type MaskedInputProps } from "./masked"
+import { MoneyInput, type MoneyInputProps } from "./money"
+import { NumberInput, type NumberInputProps } from "./number"
+import { PasswordInput, type PasswordInputProps } from "./password"
+import { PhoneInput, type PhoneInputProps } from "./phone"
+import { QuantityInput, type QuantityInputProps } from "./quantity"
+import { SearchInput, type SearchInputProps } from "./search"
 import { cn } from "@/lib/utils"
 
 export type InputKind =
@@ -39,6 +41,7 @@ export type InputTextProps = Omit<InputPrimitiveProps, "value"> & {
   kind?: "text"
   value?: string | number | readonly string[] | null
   onValueChange?: (value: string) => void
+  onDebouncedValueChange?: (value: string) => void
   leading?: React.ReactNode
   trailing?: React.ReactNode
   trailingAction?: React.ReactNode
@@ -57,6 +60,13 @@ export type InputTextProps = Omit<InputPrimitiveProps, "value"> & {
   helperClassName?: string
   leadingPointerEvents?: boolean
   trailingPointerEvents?: boolean
+  searchIcon?: React.ReactNode
+  loading?: boolean
+  loadingLabel?: string
+  resultCount?: number
+  shortcut?: React.ReactNode
+  debounceMs?: number
+  showMetaOnClear?: boolean
 }
 
 export type InputClearableProps = Omit<ClearableInputProps, "kind"> & {
@@ -119,6 +129,20 @@ function getInputTextLength(value: InputTextProps["value"] | InputTextProps["def
   if (typeof value === "number") return String(value).length
   if (Array.isArray(value)) return value.join("").length
   return 0
+}
+
+function shouldRenderSearchInput(props: InputTextProps) {
+  return (
+    props.type === "search" ||
+    props.searchIcon !== undefined ||
+    props.loading !== undefined ||
+    props.loadingLabel !== undefined ||
+    props.resultCount !== undefined ||
+    props.shortcut !== undefined ||
+    props.debounceMs !== undefined ||
+    props.showMetaOnClear !== undefined ||
+    props.onDebouncedValueChange !== undefined
+  )
 }
 
 const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((props, ref) => {
@@ -212,6 +236,82 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
   }
 
   const inputProps = props as Omit<InputTextProps, "kind">
+
+  if (shouldRenderSearchInput(inputProps)) {
+    const {
+      leading,
+      searchIcon,
+      helperText,
+      errorText,
+      showCharacterCount,
+      countFormatter,
+      helperClassName,
+      inputClassName,
+      ...searchInputProps
+    } = inputProps
+    const searchValue: SearchInputProps["value"] = Array.isArray(inputProps.value)
+      ? inputProps.value.join(" ")
+      : inputProps.value == null || typeof inputProps.value === "string" || typeof inputProps.value === "number"
+        ? inputProps.value
+        : String(inputProps.value)
+    const searchDefaultValue: SearchInputProps["defaultValue"] = Array.isArray(inputProps.defaultValue)
+      ? inputProps.defaultValue.join(" ")
+      : inputProps.defaultValue == null ||
+          typeof inputProps.defaultValue === "string" ||
+          typeof inputProps.defaultValue === "number"
+        ? inputProps.defaultValue
+        : String(inputProps.defaultValue)
+
+    const searchInput = (
+      <SearchInput
+        ref={ref as React.ForwardedRef<HTMLInputElement>}
+        searchIcon={searchIcon ?? leading}
+        inputClassName={inputClassName}
+        {...searchInputProps}
+        value={searchValue}
+        defaultValue={searchDefaultValue}
+      />
+    )
+
+    if (!helperText && !errorText && !showCharacterCount) {
+      return searchInput
+    }
+
+    const currentLength = getInputTextLength(inputProps.value ?? inputProps.defaultValue)
+
+    return (
+      <div data-slot="input-field" className="grid gap-1.5">
+        {searchInput}
+        <div data-slot="input-meta" className="flex items-start justify-between gap-3 px-1">
+          <div
+            data-slot="input-helper"
+            className={cn(
+              "min-w-0 text-xs leading-5",
+              errorText ? "text-destructive" : "text-muted-foreground",
+              helperClassName
+            )}
+          >
+            {errorText ?? helperText}
+          </div>
+          {showCharacterCount ? (
+            <div
+              data-slot="input-count"
+              className={cn(
+                "shrink-0 text-[11px] font-medium tabular-nums",
+                errorText ? "text-destructive" : "text-muted-foreground"
+              )}
+            >
+              {countFormatter?.(currentLength, inputProps.maxLength) ??
+                (typeof inputProps.maxLength === "number"
+                  ? `${currentLength}/${inputProps.maxLength}`
+                  : currentLength)}
+            </div>
+          ) : null}
+        </div>
+      </div>
+    )
+  }
+
   const {
     value,
     defaultValue,

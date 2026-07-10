@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { ChevronDownIcon } from "lucide-react"
 
@@ -40,6 +42,8 @@ function Collapse({
         const nextOpen = event.currentTarget.open
         if (!isControlled) {
           setInternalOpen(nextOpen)
+        } else if (nextOpen !== currentOpen) {
+          event.currentTarget.open = currentOpen
         }
         onOpenChange?.(nextOpen)
       }}
@@ -85,6 +89,13 @@ function CollapseTrigger({
         "flex cursor-pointer list-none items-start gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[indicator-position=end]:justify-between data-[indicator-position=start]:justify-start data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
         className
       )}
+      onClick={(event) => {
+        if (props["aria-disabled"]) {
+          event.preventDefault()
+          return
+        }
+        onClick?.(event)
+      }}
       {...props}
     >
       {indicatorPosition === "start" ? indicator : null}
@@ -112,6 +123,8 @@ export type CollapseItem = {
   title: React.ReactNode
   content: React.ReactNode
   description?: React.ReactNode
+  meta?: React.ReactNode
+  badge?: React.ReactNode
   disabled?: boolean
   icon?: React.ReactNode
   indicatorPosition?: CollapseTriggerProps["indicatorPosition"]
@@ -181,6 +194,9 @@ function CollapseGroup({
             <span className="grid gap-0.5">
               <span>{item.title}</span>
               {item.description && <span className="text-xs font-normal text-muted-foreground">{item.description}</span>}
+              {item.disabled && item.disabledReason ? (
+                <span className="text-[11px] font-medium text-muted-foreground">{item.disabledReason}</span>
+              ) : null}
             </span>
           </CollapseTrigger>
           <CollapseContent className={item.contentClassName}>{item.content}</CollapseContent>

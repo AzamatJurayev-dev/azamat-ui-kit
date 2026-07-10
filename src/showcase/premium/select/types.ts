@@ -1,6 +1,9 @@
 export type SelectDemoOption = {
   value: string
   label: string
+  description?: string
+  disabled?: boolean
+  keywords?: string[]
 }
 
 export type SelectDemoGroup = {

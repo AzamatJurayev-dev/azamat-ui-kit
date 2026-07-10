@@ -1,21 +1,24 @@
 import type { ComponentDemoMock } from "../types"
 
 export const dataTableMock: ComponentDemoMock = {
-  code: `import {
-  DataTable,
-  DataTableBulkActions,
-  DataTableColumnVisibilityMenu,
-  DataTableSortableHeader,
-  createDataTableActionsColumn,
-  createDataTableSelectColumn,
-} from "tembro"
+  code: `import { DataTable } from "tembro"
 
 export function Example() {
   return (
     <DataTable
       columns={columns}
       data={rows}
-      enableRowSelection
+      title="Customers"
+      description="Search, filter, select, and act on operational rows."
+      search={{ value: query, onValueChange: setQuery, placeholder: "Search rows..." }}
+      filters={<StatusFilter value={status} onValueChange={setStatus} />}
+      toolbarActions={<ExportButton rows={rows} />}
+      features={{ columnVisibility: true, rowActions: true, bulkActions: true }}
+      rowSelection={rowSelection}
+      onRowSelectionChange={setRowSelection}
+      rowActions={(row) => getActions(row.original)}
+      bulkActions={bulkActions}
+      pagination={{ pageIndex, pageSize, pageCount, totalRows: rows.length, onPageChange: setPageIndex }}
       density="comfortable"
       striped
       bordered

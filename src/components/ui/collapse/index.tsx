@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { ChevronDownIcon } from "lucide-react"
 
@@ -40,6 +42,8 @@ function Collapse({
         const nextOpen = event.currentTarget.open
         if (!isControlled) {
           setInternalOpen(nextOpen)
+        } else if (nextOpen !== currentOpen) {
+          event.currentTarget.open = currentOpen
         }
         onOpenChange?.(nextOpen)
       }}
@@ -67,6 +71,7 @@ function CollapseTrigger({
   indicatorPosition = "end",
   className,
   children,
+  onClick,
   ...props
 }: CollapseTriggerProps) {
   const indicator = !hideIcon ? (
@@ -82,9 +87,17 @@ function CollapseTrigger({
       data-inset={inset || undefined}
       data-indicator-position={indicatorPosition}
       className={cn(
-        "flex cursor-pointer list-none items-start gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[indicator-position=end]:justify-between data-[indicator-position=start]:justify-start data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
+        "rounded-[calc(var(--aui-card-radius,var(--radius-xl))-1px)] group-open:rounded-b-none flex cursor-pointer list-none items-start gap-3 px-4 text-sm font-semibold outline-none transition-[background-color,color,box-shadow,border-radius] hover:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:bg-[color:var(--aui-control-surface-hover,var(--muted))] focus-visible:shadow-[0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_5px_var(--aui-focus-ring-soft,transparent)] group-open:text-foreground data-[indicator-position=end]:justify-between data-[indicator-position=start]:justify-start data-[size=sm]:py-2.5 data-[size=md]:py-3.5 data-[size=lg]:py-4.5 data-[inset=true]:px-5 [&::-webkit-details-marker]:hidden",
+        props["aria-disabled"] && "cursor-not-allowed opacity-75 hover:bg-transparent",
         className
       )}
+      onClick={(event) => {
+        if (props["aria-disabled"]) {
+          event.preventDefault()
+          return
+        }
+        onClick?.(event)
+      }}
       {...props}
     >
       {indicatorPosition === "start" ? indicator : null}
@@ -112,7 +125,10 @@ export type CollapseItem = {
   title: React.ReactNode
   content: React.ReactNode
   description?: React.ReactNode
+  meta?: React.ReactNode
+  badge?: React.ReactNode
   disabled?: boolean
+  disabledReason?: React.ReactNode
   icon?: React.ReactNode
   indicatorPosition?: CollapseTriggerProps["indicatorPosition"]
   triggerClassName?: string
@@ -167,7 +183,10 @@ function CollapseGroup({
         <Collapse
           key={item.key}
           open={isOpen(item.key)}
-          onOpenChange={(open) => updateValue(item.key, open)}
+          onOpenChange={(open) => {
+            if (item.disabled) return
+            updateValue(item.key, open)
+          }}
           variant={variant}
           size={size}
           className={cn(item.disabled && "pointer-events-none opacity-60")}
@@ -177,10 +196,19 @@ function CollapseGroup({
             icon={item.icon}
             indicatorPosition={item.indicatorPosition}
             className={item.triggerClassName}
+            aria-disabled={item.disabled || undefined}
+            title={typeof item.disabledReason === "string" ? item.disabledReason : undefined}
           >
-            <span className="grid gap-0.5">
-              <span>{item.title}</span>
+            <span className="grid min-w-0 gap-0.5">
+              <span className="flex min-w-0 items-center gap-2">
+                <span className="truncate">{item.title}</span>
+                {item.badge ? <span className="shrink-0">{item.badge}</span> : null}
+                {item.meta ? <span className="ml-auto shrink-0 text-[11px] font-medium text-muted-foreground">{item.meta}</span> : null}
+              </span>
               {item.description && <span className="text-xs font-normal text-muted-foreground">{item.description}</span>}
+              {item.disabled && item.disabledReason ? (
+                <span className="text-[11px] font-medium text-muted-foreground">{item.disabledReason}</span>
+              ) : null}
             </span>
           </CollapseTrigger>
           <CollapseContent className={item.contentClassName}>{item.content}</CollapseContent>

@@ -9,7 +9,7 @@ const panelClass =
 
 function ToastPlayground({ mode }: { mode: ComponentDemoProps["mode"] }) {
   const [seed, setSeed] = React.useState(0)
-  const { addToast, success, warning, error, clearToasts, toasts, dismissToast } = useToast()
+  const { addToast, success, warning, error, promise, clearToasts, toasts, dismissToast } = useToast()
 
   const addSimple = () => {
     setSeed((value) => value + 1)
@@ -37,6 +37,19 @@ function ToastPlayground({ mode }: { mode: ComponentDemoProps["mode"] }) {
   const addError = () => {
     setSeed((value) => value + 1)
     error({ title: "Request failed", description: `Failure occurred while saving item #${seed + 1}` })
+  }
+
+  const runPromiseToast = () => {
+    void promise(
+      new Promise<string>((resolve) => {
+        window.setTimeout(() => resolve("Export ready"), 1200)
+      }),
+      {
+        loading: { title: "Preparing export", description: "Building CSV package.", group: "Export" },
+        success: (message) => ({ title: message, description: "Download can start now.", group: "Export" }),
+        error: () => ({ title: "Export failed", description: "Retry after refreshing.", group: "Export" }),
+      }
+    )
   }
 
   return (
@@ -69,6 +82,9 @@ function ToastPlayground({ mode }: { mode: ComponentDemoProps["mode"] }) {
           </Button>
           <Button size="sm" variant="outline" onClick={addError}>
             Error
+          </Button>
+          <Button size="sm" variant="outline" onClick={runPromiseToast}>
+            Promise
           </Button>
           <Button size="sm" variant="outline" onClick={clearToasts}>
             Clear all

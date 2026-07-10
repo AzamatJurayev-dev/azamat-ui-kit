@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const dialogMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/index"
+import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "tembro"
 
 export function Example() {
   const [open, setOpen] = React.useState(false)

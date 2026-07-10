@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, Kbd, SearchInput } from "@/index"
+import { Badge, Input, Kbd } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -45,7 +45,8 @@ export function SearchInputShowcase({ mode }: ComponentDemoProps) {
       </section>
 
       <section className={panelClass}>
-        <SearchInput
+        <Input
+          kind="search"
           value={value}
           onValueChange={setValue}
           onDebouncedValueChange={setDebouncedValue}

@@ -13,7 +13,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("form-switch", "FormSwitch", "form", "Boolean form control with shell-level label and hint handling."),
   component("form-date-picker", "FormDatePicker", "form", "Popover date picker wrapper with RHF integration."),
   component("form-date-range-picker", "FormDateRangePicker", "form", "Range date picker wrapper for planning and reporting flows."),
-  component("dialog-actions", "DialogActions", "overlay", "Modal footer action row with cancel, secondary and primary actions."),
   component("alert-dialog", "AlertDialog", "overlay", "Destructive confirmation dialog with loading-ready action states."),
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),
 
@@ -26,8 +25,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("number-input", "NumberInput", "inputs", "Numeric entry for counts, thresholds, and reporting controls."),
   component("phone-input", "PhoneInput", "inputs", "Phone input with stable raw and masked value handling."),
   component("money-input", "MoneyInput", "inputs", "Currency entry for billing, finance and KPI editing flows."),
-  component("date-input", "DateInput", "inputs", "Single-date field for compact forms and filter bars."),
-  component("date-range-input", "DateRangeInput", "inputs", "Date range surface for reporting and booking windows."),
   component("simple-select", "SimpleSelect", "inputs", "Static local-option select for dashboards and settings forms."),
   component("async-select", "AsyncSelect", "inputs", "Remote-loaded select for large server-backed option sets."),
   component("combobox", "Combobox", "inputs", "Searchable local choice input for reassignment and command-like selection."),
@@ -38,17 +35,12 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("inline-editable", "InlineEditable", "inputs", "Inline editing primitive for dense tables and configuration rows."),
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
 
-  component("description-list", "DescriptionList", "display", "Structured key-value details for entity, invoice and profile pages."),
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
   component("progress-circle", "ProgressCircle", "display", "Compact circular progress for sidebars and status cards."),
   component("timeline", "Timeline", "display", "Vertical or horizontal event stream for workflow history."),
   component("status-dot", "StatusDot", "display", "Tiny live status indicator with optional pulse animation."),
   component("user-card", "UserCard", "display", "User summary row with avatar, metadata and actions."),
-  component("delta-badge", "DeltaBadge", "display", "Compact positive, negative, and risk deltas for metric summaries."),
-  component("entity-header", "EntityHeader", "display", "Top summary row for a customer, invoice, or workspace."),
   component("notification-center", "NotificationCenter", "display", "Compact activity and notifications stream."),
-  component("entity-card", "EntityCard", "display", "Structured summary card with title, meta, state and actions."),
-  component("file-card", "FileCard", "display", "Compact file summary with state and actions."),
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
@@ -60,6 +52,7 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
 
   component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
+  component("app-shell", "AppShell", "layout", "Responsive application shell with sidebar, header and content regions."),
   component("section-header", "SectionHeader", "layout", "Reusable section title block with actions and metadata."),
   component("stat-card", "StatCard", "layout", "Dashboard stat card for KPI, trend and helper text."),
 

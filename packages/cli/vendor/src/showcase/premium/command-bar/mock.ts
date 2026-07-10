@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const commandBarMock: ComponentDemoMock = {
-  code: `import { CommandBar, Kbd, Button } from "@/index"
+  code: `import { CommandBar, Kbd, Button } from "tembro"
 
 export function Example() {
   return (

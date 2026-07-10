@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { move } from "@dnd-kit/helpers"
 import {
@@ -40,6 +42,7 @@ export type KanbanCard = {
   description?: React.ReactNode
   meta?: React.ReactNode
   extra?: React.ReactNode
+  actions?: React.ReactNode
   disabled?: boolean
 }
 

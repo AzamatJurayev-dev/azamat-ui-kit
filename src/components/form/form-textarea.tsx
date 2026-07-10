@@ -1,7 +1,11 @@
 import * as React from "react"
 import { Controller, type Control, type FieldPath, type FieldValues, type RegisterOptions } from "react-hook-form"
 
-import { FormFieldShell, type FormFieldShellControlProps } from "@/components/form/form-field-shell"
+import {
+  FormFieldShell,
+  type FormFieldShellControlProps,
+  resolveFormFieldIds,
+} from "@/components/form/form-field-shell"
 import { Textarea } from "@/components/ui/textarea"
 
 export type FormTextareaProps<
@@ -26,6 +30,8 @@ function FormTextarea<
   rules,
   label,
   description,
+  success,
+  loading,
   required,
   className,
   layout,
@@ -56,49 +62,61 @@ function FormTextarea<
       control={control}
       name={name}
       rules={rules}
-      render={({ field, fieldState }) => (
-        <FormFieldShell
-          label={label}
-          description={description}
-          required={required}
-          error={fieldState.error?.message}
-          htmlFor={textareaId}
-          className={className}
-          layout={layout}
-          descriptionPosition={descriptionPosition}
-          labelAction={labelAction}
-          requiredIndicator={requiredIndicator}
-          errorIcon={errorIcon}
-          showErrorIcon={showErrorIcon}
-          disabled={disabled}
-          readOnly={readOnly}
-          labelClassName={labelClassName}
-          labelRowClassName={labelRowClassName}
-          descriptionClassName={descriptionClassName}
-          errorClassName={errorClassName}
-          contentClassName={contentClassName}
-        >
-          <Textarea
-            id={textareaId}
-            ref={field.ref}
-            name={field.name}
-            value={transformIn ? transformIn(field.value) : field.value ?? ""}
+      render={({ field, fieldState }) => {
+        const error = fieldState.error?.message
+        const resolvedIds = resolveFormFieldIds(textareaId, { description, error })
+
+        return (
+          <FormFieldShell
+            label={label}
+            description={description}
+            success={success}
+            loading={loading}
+            required={required}
+            error={error}
+            htmlFor={textareaId}
+            labelId={resolvedIds.labelId}
+            descriptionId={resolvedIds.descriptionId}
+            errorId={resolvedIds.errorId}
+            className={className}
+            layout={layout}
+            descriptionPosition={descriptionPosition}
+            labelAction={labelAction}
+            requiredIndicator={requiredIndicator}
+            errorIcon={errorIcon}
+            showErrorIcon={showErrorIcon}
             disabled={disabled}
             readOnly={readOnly}
-            onBlur={(event) => {
-              field.onBlur()
-              onBlur?.(event)
-            }}
-            onChange={(event) => {
-              field.onChange(transformOut ? transformOut(event) : event)
-              onChange?.(event)
-            }}
-            aria-invalid={fieldState.invalid || undefined}
-            className={fieldClassName}
-            {...props}
-          />
-        </FormFieldShell>
-      )}
+            labelClassName={labelClassName}
+            labelRowClassName={labelRowClassName}
+            descriptionClassName={descriptionClassName}
+            errorClassName={errorClassName}
+            contentClassName={contentClassName}
+          >
+            <Textarea
+              id={textareaId}
+              ref={field.ref}
+              name={field.name}
+              value={transformIn ? transformIn(field.value) : field.value ?? ""}
+              disabled={disabled}
+              readOnly={readOnly}
+              onBlur={(event) => {
+                field.onBlur()
+                onBlur?.(event)
+              }}
+              onChange={(event) => {
+                field.onChange(transformOut ? transformOut(event) : event)
+                onChange?.(event)
+              }}
+              aria-invalid={fieldState.invalid || undefined}
+              aria-describedby={resolvedIds.describedBy}
+              aria-errormessage={error ? resolvedIds.errorId : undefined}
+              className={fieldClassName}
+              {...props}
+            />
+          </FormFieldShell>
+        )
+      }}
     />
   )
 }

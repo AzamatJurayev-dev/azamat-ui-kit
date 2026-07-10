@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { AsyncMultiSelect, type AsyncSelectOption } from "@/index"
+import { AsyncSelect, type AsyncSelectOption } from "@/index"
 
 const moduleOptions: AsyncSelectOption[] = [
   { value: "inbox", label: "Inbox" },
@@ -21,12 +21,13 @@ export function AsyncMultiSelectShowcase() {
   return (
     <div className="space-y-4">
       <div className="rounded-[20px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] p-4">
-        <p className="text-sm font-medium aui-text-strong">AsyncMultiSelect is the multi-value remote member</p>
+        <p className="text-sm font-medium aui-text-strong">Use AsyncSelect with isMulti for remote multi-value flows</p>
         <p className="mt-2 text-sm leading-6 aui-text-muted">
-          Reach for it only when one Select surface must support remote search, visible tags, and multiple chosen values together.
+          Keep the Select family centered on one remote surface. This route documents the multi-value mode, but new code should stay on AsyncSelect.
         </p>
       </div>
-      <AsyncMultiSelect
+      <AsyncSelect
+        isMulti
         value={selected}
         onValueChange={(values) => setSelected(values)}
         loadOptions={loadModules}

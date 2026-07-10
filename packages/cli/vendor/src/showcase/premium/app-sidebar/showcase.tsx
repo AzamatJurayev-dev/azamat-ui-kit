@@ -82,6 +82,7 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
             mobileToggleLabel="Open workspace menu"
             header={<div className="px-3 py-2 text-sm font-semibold">Azamat Workspace</div>}
             footer={<div className="aui-text-muted px-3 py-2 text-xs">Starter plan • 3 editors</div>}
+            footerClassName="bg-[color:var(--aui-page-bg-alt)]/55"
             className="min-h-[440px] rounded-[22px] border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface)]"
           />
         </section>

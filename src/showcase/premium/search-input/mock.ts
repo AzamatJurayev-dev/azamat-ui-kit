@@ -2,13 +2,14 @@ import type { ComponentDemoMock } from "../types"
 
 export const searchInputMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Kbd, SearchInput } from "tembro"
+import { Input, Kbd } from "tembro"
 
 export function Example() {
   const [value, setValue] = React.useState("")
 
   return (
-    <SearchInput
+    <Input
+      kind="search"
       value={value}
       onValueChange={setValue}
       placeholder="Search customers, invoices, or routes..."

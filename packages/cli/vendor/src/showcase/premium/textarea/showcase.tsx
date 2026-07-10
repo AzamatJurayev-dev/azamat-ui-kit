@@ -39,6 +39,9 @@ export function TextareaShowcase({ state, setState }: ComponentDemoProps) {
                 rows={textareaDemoFields[0].rows}
                 className={`${textareaDemoFields[0].minHeight} resize-y`}
                 placeholder={textareaDemoFields[0].placeholder}
+                helperText="Visible helper copy keeps instructions outside the placeholder."
+                maxLength={240}
+                showCharacterCount
               />
             </div>
           </div>
@@ -83,6 +86,7 @@ export function TextareaShowcase({ state, setState }: ComponentDemoProps) {
               defaultValue={textareaDemoFields[1].defaultValue}
               rows={textareaDemoFields[1].rows}
               className={`${textareaDemoFields[1].minHeight} resize-none`}
+              helperText="Uncontrolled draft with stable helper spacing."
             />
           </div>
         </section>
@@ -95,6 +99,7 @@ export function TextareaShowcase({ state, setState }: ComponentDemoProps) {
               readOnly={textareaDemoFields[2].readOnly}
               rows={textareaDemoFields[2].rows}
               className={`${textareaDemoFields[2].minHeight} resize-none opacity-70`}
+              errorText={state.textareaValue.trim().length > 0 && state.textareaValue.trim().length < 10 ? "Draft needs at least 10 characters." : undefined}
             />
             <p className="text-sm leading-6 aui-text-muted">
               Read-only textareas should still be easy to scan and copy without looking like disabled, broken, or low-priority content.

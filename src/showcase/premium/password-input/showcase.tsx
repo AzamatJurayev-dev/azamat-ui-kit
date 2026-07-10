@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, PasswordInput } from "@/index"
+import { Badge, Input } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -36,7 +36,8 @@ export function PasswordInputShowcase({ mode }: ComponentDemoProps) {
       </section>
 
       <section className={panelClass}>
-        <PasswordInput
+        <Input
+          kind="password"
           value={password}
           onValueChange={setPassword}
           visible={visible}

@@ -23,12 +23,10 @@ import {
   DialogActions,
   DescriptionList,
   Drawer,
-  EntityCard,
   FileDropzone,
   FileUpload,
   ImageUpload,
   FilterBar,
-  FilterChips,
   InfoCard,
   Input,
   List,
@@ -37,17 +35,15 @@ import {
   PageState,
   PageTabs,
   Pagination,
-  PasswordInput,
   Progress,
   ProgressCircle,
   QuickActionGrid,
   RangeSlider,
   Rating,
   SavedFilterSelect,
-  SearchInput,
   SectionHeader,
-  SimpleSelect,
   Slider,
+  Select,
   StatusDot,
   StatusLegend,
   Stepper,
@@ -91,7 +87,6 @@ type RegistryDemoDefinition = {
 }
 
 const registryDemoDefinitions = [
-  component("dialog-actions", "DialogActions", "overlay", "Modal footer action row with cancel, secondary and primary actions."),
   component("alert-dialog", "AlertDialog", "overlay", "Destructive confirmation dialog with loading-ready action states."),
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),
   component("pagination", "Pagination", "navigation", "Controlled page navigation with edge buttons and active state."),
@@ -103,17 +98,12 @@ const registryDemoDefinitions = [
   component("rating", "Rating", "inputs", "Compact score input for feedback and review flows."),
   component("otp-input", "OtpInput", "inputs", "One-time code entry with fixed-length slots."),
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
-  component("description-list", "DescriptionList", "display", "Structured key-value details for entity, invoice and profile pages."),
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
   component("progress-circle", "ProgressCircle", "display", "Compact circular progress for sidebars and status cards."),
   component("timeline", "Timeline", "display", "Vertical or horizontal event stream for workflow history."),
   component("status-dot", "StatusDot", "display", "Tiny live status indicator with optional pulse animation."),
   component("user-card", "UserCard", "display", "User summary row with avatar, metadata and actions."),
-  component("delta-badge", "DeltaBadge", "display", "Compact positive, negative, and risk deltas for metric summaries."),
-  component("entity-header", "EntityHeader", "display", "Top summary row for a customer, invoice, or workspace."),
   component("notification-center", "NotificationCenter", "display", "Compact activity and notifications stream."),
-  component("entity-card", "EntityCard", "display", "Structured summary card with title, meta, state and actions."),
-  component("file-card", "FileCard", "display", "Compact file summary with state and actions."),
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
@@ -195,7 +185,7 @@ function createMock(definition: RegistryDemoDefinition): ComponentDemoMock {
     scenarios: definition.scenarios,
     capabilityNotes: [
       `Add ${definition.slug} into your local source with the CLI.`,
-      `Import from your configured components alias after the file is copied.`,
+      "Import the public component surface from `tembro` in app code.",
     ],
   }
 }
@@ -203,7 +193,7 @@ function createMock(definition: RegistryDemoDefinition): ComponentDemoMock {
 function createCodeSnippet(definition: RegistryDemoDefinition) {
   const importName = definition.importName ?? definition.component
 
-  return `import { ${importName} } from "@/components/${definition.slug}"\n\nexport function Demo() {\n  return <${importName} />\n}`
+  return `import { ${importName} } from "tembro"\n\nexport function Demo() {\n  return <${importName} />\n}`
 }
 
 function RegistrySpecificShowcase({
@@ -265,7 +255,7 @@ function InputPreview({
   const onValueChange = (nextValue: string) => setState({ textValue: nextValue })
 
   if (slug === "search-input") {
-    return <SearchInput value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
+    return <Input type="search" value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
   }
 
   if (slug === "password-input") {
@@ -295,7 +285,7 @@ function InputPreview({
   if (slug === "simple-select") {
     return (
       <div className="grid gap-4">
-        <SimpleSelect
+        <Select
           value="private"
           onValueChange={() => undefined}
           options={[
@@ -365,7 +355,7 @@ function FormPreview({
       </label>
       <label className="grid gap-2">
         <span className="text-sm font-medium aui-text-strong">Status</span>
-        <SearchInput value="Active customers" resultCount={7} readOnly />
+        <Input type="search" value="Active customers" resultCount={7} readOnly />
         <span className="text-xs text-emerald-500">Ready to submit</span>
       </label>
     </div>
@@ -373,18 +363,6 @@ function FormPreview({
 }
 
 function OverlayPreview({ slug }: { slug: string }) {
-  if (slug === "dialog-actions") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
-        <DialogActions align="end">
-          <DialogActionButton variant="ghost">Cancel</DialogActionButton>
-          <DialogActionButton variant="outline">Save draft</DialogActionButton>
-          <DialogActionButton>Publish</DialogActionButton>
-        </DialogActions>
-      </div>
-    )
-  }
-
   if (slug === "alert-dialog") {
     return (
       <AlertDialog
@@ -495,21 +473,6 @@ function FeedbackPreview({ slug }: { slug?: string }) {
 }
 
 function DisplayPreview({ slug }: { slug: string }) {
-  if (slug === "description-list") {
-    return (
-      <DescriptionList
-        title="Invoice details"
-        description="Structured facts with responsive columns."
-        items={[
-          { key: "id", label: "Invoice", value: "#4821" },
-          { key: "amount", label: "Amount", value: "$12,420" },
-          { key: "status", label: "Status", value: <DemoStatusBadge tone="success">Paid</DemoStatusBadge> },
-          { key: "owner", label: "Owner", value: "Finance team" },
-        ]}
-      />
-    )
-  }
-
   if (slug === "progress") {
     return <Progress label="Migration progress" description="Production rollout" value={68} tone="success" showValue />
   }
@@ -546,35 +509,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "delta-badge") {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <Badge variant="secondary">+12.4%</Badge>
-        <Badge variant="outline">-3.1%</Badge>
-        <Badge variant="destructive">Risk</Badge>
-      </div>
-    )
-  }
-
-  if (slug === "entity-header") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-2">
-            <Badge variant="outline">Customer</Badge>
-            <div>
-              <h3 className="text-xl font-semibold">Acme Holdings</h3>
-              <p className="text-sm text-muted-foreground">Enterprise account with billing and admin ownership.</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">Archive</Button>
-            <Button size="sm">Edit</Button>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   if (slug === "notification-center") {
     return (
@@ -588,17 +522,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "entity-card" || slug === "file-card") {
-    return (
-      <EntityCard
-        title={slug === "file-card" ? "Design-spec.pdf" : "Azamat Workspace"}
-        description={slug === "file-card" ? "Shared with 4 reviewers." : "Admin console and live dashboard route."}
-        status={<Badge variant="secondary">Live</Badge>}
-        meta={slug === "file-card" ? "2.4 MB" : "Updated 8 min ago"}
-        actions={<Button size="sm" variant="outline">Open</Button>}
-      />
-    )
-  }
 
   if (slug === "data-list") {
     return (
@@ -667,7 +590,7 @@ function ActionsPreview({
   if (slug === "filter-bar") {
     return (
       <FilterBar
-        search={<SearchInput value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
+        search={<Input type="search" value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
         activeCount={2}
         onReset={() => setState({ textValue: "" })}
         filters={<Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Status</Button>}
@@ -798,7 +721,7 @@ function DataTablePartsPreview({ slug }: { slug: string }) {
   return (
     <div className="overflow-hidden rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color:var(--aui-divider)] p-3">
-        <SearchInput value="" placeholder="Search rows..." className="max-w-xs" readOnly />
+        <Input type="search" value="" placeholder="Search rows..." className="max-w-xs" readOnly />
         <div className="flex gap-2">
           <Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Filters</Button>
           <Button size="sm">Create</Button>
@@ -918,7 +841,7 @@ function PatternsPreview({ slug }: { slug: string }) {
       description="ResourcePage combines header, stats, filters and sections."
       actions={<Button size="sm">New customer</Button>}
       stats={<div className="grid gap-3 sm:grid-cols-2"><StatCard title="Active" value="2,418" trend={{ value: "+8%", tone: "success" }} /><StatCard title="Health" value="94%" trend={{ value: "Stable", tone: "info" }} /></div>}
-      filters={<FilterBar search={<SearchInput value="" placeholder="Search..." readOnly />} activeCount={1} />}
+      filters={<FilterBar search={<Input type="search" value="" placeholder="Search..." readOnly />} activeCount={1} />}
     >
       <ResourcePageSection title="Recent activity">
         <Timeline

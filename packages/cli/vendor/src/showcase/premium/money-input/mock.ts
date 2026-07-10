@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const moneyInputMock: ComponentDemoMock = {
   code: `import { useState } from "react"
-import { MoneyInput } from "@/index"
+import { Input } from "tembro"
 
 export function Example() {
   const [value, setValue] = useState<number | null>(2990.5)
@@ -10,7 +10,8 @@ export function Example() {
 
   return (
     <div className="space-y-3">
-      <MoneyInput
+      <Input
+        kind="money"
         value={value}
         onValueChange={(nextValue, rawValue) => {
           setValue(nextValue)
@@ -29,7 +30,7 @@ export function Example() {
   )
 }`,
   htmlCode: '<label for="money">Budget</label><div>$<input id="money" inputmode="decimal" type="text" /></div>',
-  cliCommand: "npx tembro add money-input",
+  cliCommand: "npx tembro add input",
   highlights: ["Currency prefix/suffix", "Numeric payload", "Invalid text handling", "Custom keyboard mode"],
   relatedBlockSlugs: ["settings-form", "users-table", "crm-dashboard"],
   scenarios: [

@@ -28,6 +28,7 @@ export type DataTableToolbarProps = React.ComponentProps<"div"> &
     description?: React.ReactNode
     search?: React.ReactNode
     filters?: React.ReactNode
+    summary?: React.ReactNode
     actions?: React.ReactNode
     selectionActions?: React.ReactNode
     selectedCount?: number
@@ -35,6 +36,9 @@ export type DataTableToolbarProps = React.ComponentProps<"div"> &
     selectedLabel?: (selectedCount: number, totalCount?: number) => React.ReactNode
     titleClassName?: string
     descriptionClassName?: string
+    searchClassName?: string
+    filtersClassName?: string
+    summaryClassName?: string
     actionsClassName?: string
   }
 
@@ -46,6 +50,7 @@ function DataTableToolbar({
   description,
   search,
   filters,
+  summary,
   actions,
   selectionActions,
   selectedCount = 0,
@@ -54,12 +59,16 @@ function DataTableToolbar({
     total === undefined ? `${selected} selected` : `${selected} of ${total} selected`,
   titleClassName,
   descriptionClassName,
+  searchClassName,
+  filtersClassName,
+  summaryClassName,
   actionsClassName,
   children,
   ...props
 }: DataTableToolbarProps) {
   const hasHeading = Boolean(title || description)
   const hasSelection = selectedCount > 0 && Boolean(selectionActions)
+  const hasMainControls = Boolean(search || filters || children)
 
   return (
     <div

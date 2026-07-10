@@ -147,7 +147,7 @@ export function DataTablePartShowcase({
               size="sm"
             />
             <div className="w-full max-w-[320px]">
-              <SearchInput value={search} onValueChange={setSearch} placeholder="Search invoice, customer..." />
+              <Input type="search" value={search} onValueChange={setSearch} placeholder="Search invoice, customer..." />
             </div>
           </div>
         </div>
@@ -168,7 +168,7 @@ export function DataTablePartShowcase({
         toolbarProps={(table) => ({
           title: "Invoices",
           description: "Premium subroute preview for reusable DataTable parts.",
-          search: <SearchInput value={search} onValueChange={setSearch} placeholder="Search rows..." />,
+          search: <Input type="search" value={search} onValueChange={setSearch} placeholder="Search rows..." />,
           actions: (
             <div className="flex items-center gap-2">
               <DataTableColumnVisibilityMenu table={table} />

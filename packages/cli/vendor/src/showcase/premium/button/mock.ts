@@ -3,7 +3,7 @@ import type { ComponentDemoMock } from "../types"
 export const buttonMock: ComponentDemoMock = {
   code: `import * as React from "react"
 import { ArrowRightIcon, DownloadIcon } from "lucide-react"
-import { Button, buttonVariants } from "@/index"
+import { Button, buttonVariants } from "tembro"
 
 export function BasicExamples() {
   return (
@@ -17,7 +17,7 @@ export function BasicExamples() {
 
       <div className="flex flex-wrap gap-3">
         <Button size="sm">Small</Button>
-        <Button size="icon" aria-label="Download">
+        <Button iconOnly aria-label="Download">
           <DownloadIcon className="size-4" />
         </Button>
         <Button>
@@ -36,9 +36,6 @@ export function BasicExamples() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <Button asChild>
-          <a href="/docs">Open docs</a>
-        </Button>
         <a className={buttonVariants({ variant: "outline", size: "sm" })} href="/components">
           Link styled as button
         </a>

@@ -20,6 +20,7 @@ export type ChartSeries = {
 export type ChartAxisLabel = string | number | React.ReactNode
 
 export type ChartSize = "sm" | "md" | "lg"
+export type ChartState = "ready" | "loading" | "empty"
 
 const chartHeightBySize: Record<ChartSize, number> = {
   sm: 120,
@@ -34,6 +35,18 @@ function safeMax(values: number[], fallback = 1) {
 function normalizeValue(value: number, max: number) {
   if (!Number.isFinite(value) || max <= 0) return 0
   return Math.max(0, Math.min(value / max, 1))
+}
+
+function getChartColor(index: number, custom?: string) {
+  return custom ?? `var(--color-chart-${(index % 5) + 1}, var(--primary))`
+}
+
+function formatChartValue(value: number, formatter?: (value: number) => React.ReactNode) {
+  return formatter ? formatter(value) : value.toLocaleString()
+}
+
+function chartLabelToTitle(label: React.ReactNode) {
+  return typeof label === "string" || typeof label === "number" ? String(label) : undefined
 }
 
 function polarToCartesian(cx: number, cy: number, radius: number, angle: number) {
@@ -83,9 +96,11 @@ export type ChartFrameProps = React.ComponentProps<typeof Card> & {
   title?: React.ReactNode
   description?: React.ReactNode
   action?: React.ReactNode
+  state?: ChartState
+  emptyLabel?: React.ReactNode
 }
 
-function ChartFrame({ title, description, action, className, children, ...props }: ChartFrameProps) {
+function ChartFrame({ title, description, action, state = "ready", emptyLabel = "No data available.", className, children, ...props }: ChartFrameProps) {
   return (
     <Card
       data-slot="chart-frame"
@@ -101,7 +116,11 @@ function ChartFrame({ title, description, action, className, children, ...props 
           {action}
         </CardHeader>
       )}
-      <CardContent>{children}</CardContent>
+      <CardContent>
+        {state === "loading" ? <div className="grid gap-3"><div className="h-4 w-24 animate-pulse rounded bg-muted" /><div className="h-36 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70" /></div> : null}
+        {state === "empty" ? <div className="rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/70 px-4 py-10 text-center text-sm text-muted-foreground">{emptyLabel}</div> : null}
+        {state === "ready" ? children : null}
+      </CardContent>
     </Card>
   )
 }
@@ -112,25 +131,39 @@ export type BarChartProps = React.ComponentProps<"div"> & {
   max?: number
   showLabels?: boolean
   showValues?: boolean
+  valueFormatter?: (value: number) => React.ReactNode
   barClassName?: string
+  state?: ChartState
+  emptyLabel?: React.ReactNode
 }
 
-function BarChart({ data, size = "md", max, showLabels = true, showValues = true, className, barClassName, ...props }: BarChartProps) {
-  const resolvedMax = max ?? safeMax(data.map((item) => item.value))
+function BarChart({ data, size = "md", max, showLabels = true, showValues = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", className, barClassName, ...props }: BarChartProps) {
+  const values = data.map((item) => item.value)
+  const absoluteMax = max ?? safeMax(values.map((value) => Math.abs(value)))
   const height = chartHeightBySize[size]
+
+  if (state === "loading") {
+    return <div data-slot="bar-chart" className={cn("grid gap-3", className)} {...props}><div className="h-40 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70" /></div>
+  }
+
+  if (state === "empty" || data.length === 0) {
+    return <div data-slot="bar-chart" className={cn("rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/70 px-4 py-10 text-center text-sm text-muted-foreground", className)} {...props}>{emptyLabel}</div>
+  }
 
   return (
     <div data-slot="bar-chart" className={cn("grid gap-3", className)} {...props}>
       <div className="flex items-end gap-2" style={{ height }}>
         {data.map((item, index) => {
-          const ratio = normalizeValue(item.value, resolvedMax)
+          const ratio = normalizeValue(Math.abs(item.value), absoluteMax)
+          const negative = item.value < 0
+          const title = chartLabelToTitle(item.label)
           return (
-            <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-2">
-              {showValues && <div className="text-xs text-muted-foreground">{item.value}</div>}
+            <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-2" title={title ? `${title}: ${item.value}` : undefined}>
+              {showValues && <div className="text-xs font-medium text-muted-foreground">{formatChartValue(item.value, valueFormatter)}</div>}
               <div className="flex w-full flex-1 items-end rounded-[min(var(--radius-xl),16px)] border border-border/60 bg-muted/38 p-1">
                 <div
                   className={cn("w-full rounded-[min(var(--radius-lg),12px)] bg-primary transition-all", barClassName)}
-                  style={{ height: `${Math.max(ratio * 100, item.value > 0 ? 3 : 0)}%`, background: item.color }}
+                  style={{ height: `${Math.max(ratio * 100, Math.abs(item.value) > 0 ? 3 : 0)}%`, background: getChartColor(index, item.color), opacity: negative ? 0.72 : 1 }}
                 />
               </div>
               {showLabels && <div className="max-w-full truncate text-xs text-muted-foreground">{item.label}</div>}
@@ -147,26 +180,61 @@ export type LineChartProps = Omit<React.ComponentProps<"svg">, "values"> & {
   size?: ChartSize
   width?: number
   showArea?: boolean
+  showGrid?: boolean
+  labels?: ChartAxisLabel[]
+  valueFormatter?: (value: number) => React.ReactNode
   stroke?: string
+  state?: ChartState
+  emptyLabel?: React.ReactNode
 }
 
-function LineChart({ values, size = "md", width = 560, showArea = false, stroke = "var(--primary)", className, ...props }: LineChartProps) {
+function LineChart({ values, size = "md", width = 560, showArea = false, showGrid = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", className, ...props }: LineChartProps) {
   const height = chartHeightBySize[size]
   const linePath = buildLinePath(values, width, height)
   const areaPath = buildAreaPath(values, width, height)
+  const max = safeMax(values)
+
+  if (state === "loading") {
+    return <div className={cn("h-36 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70", className)} />
+  }
+
+  if (state === "empty" || values.length === 0) {
+    return <div className={cn("rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/70 px-4 py-10 text-center text-sm text-muted-foreground", className)}>{emptyLabel}</div>
+  }
 
   return (
     <svg data-slot="line-chart" viewBox={`0 0 ${width} ${height}`} className={cn("h-auto w-full overflow-visible", className)} role="img" {...props}>
+      {showGrid && [0.25, 0.5, 0.75].map((position) => (
+        <line
+          key={position}
+          x1="12"
+          x2={width - 12}
+          y1={12 + position * (height - 24)}
+          y2={12 + position * (height - 24)}
+          stroke="var(--border)"
+          strokeDasharray="4 6"
+          opacity="0.7"
+        />
+      ))}
       {showArea && <path d={areaPath} fill="var(--primary)" opacity="0.12" />}
       <path d={linePath} fill="none" stroke={stroke} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       {values.map((value, index) => {
-        const max = safeMax(values)
         const x = 12 + (values.length === 1 ? (width - 24) / 2 : (index / (values.length - 1)) * (width - 24))
         const y = 12 + (1 - normalizeValue(value, max)) * (height - 24)
-        return <circle key={index} cx={x} cy={y} r="3" fill={stroke} />
+        const label = labels?.[index]
+        const title = label != null ? `${chartLabelToTitle(label) ?? "Value"}: ${value}` : `${value}`
+        return (
+          <circle key={index} cx={x} cy={y} r="3.5" fill={stroke}>
+            <title>{valueFormatter ? `${label ?? "Value"}: ${formatChartValue(value, valueFormatter)}` : title}</title>
+          </circle>
+        )
       })}
     </svg>
   )
+}
+
+function AreaChart(props: Omit<LineChartProps, "showArea">) {
+  return <LineChart showArea {...props} />
 }
 
 export type SparklineProps = Omit<LineChartProps, "size" | "showArea"> & {
@@ -194,9 +262,11 @@ export type DonutChartProps = React.ComponentProps<"svg"> & {
   strokeWidth?: number
   centerLabel?: React.ReactNode
   centerValue?: React.ReactNode
+  state?: ChartState
+  emptyLabel?: React.ReactNode
 }
 
-function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerValue, className, ...props }: DonutChartProps) {
+function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerValue, state = "ready", emptyLabel = "No distribution data.", className, ...props }: DonutChartProps) {
   const total = data.reduce((sum, item) => sum + Math.max(item.value, 0), 0)
   const radius = size / 2 - strokeWidth
   const segments = data.map((item, index) => {
@@ -207,6 +277,14 @@ function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerVal
     return { item, start, end }
   })
 
+  if (state === "loading") {
+    return <div className={cn("h-44 w-full max-w-48 animate-pulse rounded-full bg-muted/70", className)} />
+  }
+
+  if (state === "empty" || data.length === 0 || total <= 0) {
+    return <div className={cn("flex h-44 w-full max-w-48 items-center justify-center rounded-full border border-dashed border-border/70 px-4 text-center text-sm text-muted-foreground", className)}>{emptyLabel}</div>
+  }
+
   return (
     <svg data-slot="donut-chart" viewBox={`0 0 ${size} ${size}`} className={cn("h-auto w-full max-w-48", className)} role="img" {...props}>
       <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--muted)" strokeWidth={strokeWidth} />
@@ -216,10 +294,12 @@ function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerVal
             key={index}
             d={describeArc(size / 2, size / 2, radius, start, end)}
             fill="none"
-            stroke={item.color ?? "var(--primary)"}
+            stroke={getChartColor(index, item.color)}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
-          />
+          >
+            <title>{`${chartLabelToTitle(item.label) ?? "Segment"}: ${item.value}`}</title>
+          </path>
         )
       })}
       {(centerValue || centerLabel) && (
@@ -241,7 +321,7 @@ function ChartLegend({ data, className, ...props }: ChartLegendProps) {
     <div data-slot="chart-legend" className={cn("flex flex-wrap gap-3 text-xs text-muted-foreground", className)} {...props}>
       {data.map((item, index) => (
         <div key={index} className="inline-flex items-center gap-1.5">
-          <span className="size-2 rounded-full bg-primary" style={{ background: item.color }} />
+          <span className="size-2 rounded-full bg-primary" style={{ background: getChartColor(index, item.color) }} />
           <span>{item.label}</span>
         </div>
       ))}
@@ -283,4 +363,4 @@ function MetricTrend({ label, value, change, positive = true, values, className,
   )
 }
 
-export { BarChart, ChartFrame, ChartLegend, DonutChart, LineChart, MetricTrend, Sparkline }
+export { AreaChart, BarChart, ChartFrame, ChartLegend, DonutChart, LineChart, MetricTrend, Sparkline }

@@ -38,7 +38,7 @@ export type InfoCardRenderContext = {
   footer?: React.ReactNode
 }
 
-export type InfoCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "content" | "size"> & InfoCardRenderContext & {
+export type InfoCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "content" | "size" | "orientation"> & InfoCardRenderContext & {
   orientation?: InfoCardOrientation
   variant?: InfoCardVariant
   size?: InfoCardSize

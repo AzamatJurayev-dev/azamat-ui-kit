@@ -5,10 +5,11 @@ import {
   type AsyncSelectOption,
   type AsyncSelectProps,
 } from "@/components/inputs/async-select"
-import { SimpleSelect, type SimpleSelectProps } from "@/components/inputs/simple-select"
+import { Select, type SelectProps } from "@/components/ui/select"
 import {
   FormFieldShell,
   type FormFieldShellControlProps,
+  resolveFormFieldIds,
 } from "@/components/form/form-field-shell"
 
 export type FormSelectKind = "simple" | "async"
@@ -25,7 +26,7 @@ type FormSelectBaseProps<
 export type FormSimpleSelectProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<SimpleSelectProps, "value" | "onValueChange" | "disabled"> &
+> = Omit<SelectProps, "children" | "value" | "onValueChange" | "disabled"> &
   FormSelectBaseProps<TFieldValues, TName> & {
     kind?: "simple"
     emptyValue?: unknown
@@ -65,8 +66,11 @@ function buildShellProps<
   return {
     label: props.label,
     description: props.description,
+    success: props.success,
+    loading: props.loading,
     required: props.required,
     className: props.className,
+    htmlFor: props.name,
     layout: props.layout,
     descriptionPosition: props.descriptionPosition,
     labelAction: props.labelAction,
@@ -100,6 +104,11 @@ function FormSelect<
       name={props.name}
       render={({ field, fieldState }) => {
         const error = fieldState.error?.message
+        const controlId = `${props.name}`
+        const resolvedIds = resolveFormFieldIds(controlId, {
+          description: props.description,
+          error,
+        })
 
         if (kind === "async") {
           const {
@@ -130,11 +139,19 @@ function FormSelect<
           } = props as FormSelectAsyncVariantProps<TFieldValues, TName, TValue, TData, TOption>
 
           return (
-            <FormFieldShell {...shellProps} error={error}>
-            <AsyncSelect<TValue, TData, TOption>
+            <FormFieldShell
+              {...shellProps}
+              labelId={resolvedIds.labelId}
+              descriptionId={resolvedIds.descriptionId}
+              errorId={resolvedIds.errorId}
+              error={error}
+            >
+              <AsyncSelect<TValue, TData, TOption>
                 {...asyncProps}
                 value={field.value == null || field.value === "" ? undefined : (String(field.value) as TValue)}
                 disabled={disabled || readOnly}
+                aria-describedby={resolvedIds.describedBy}
+                aria-errormessage={error ? resolvedIds.errorId : undefined}
                 onValueChange={(nextValue, option) => {
                   field.onChange(nextValue ?? emptyValue)
                   onValueChange?.(nextValue, option)
@@ -173,11 +190,19 @@ function FormSelect<
         } = props as FormSimpleSelectProps<TFieldValues, TName>
 
         return (
-          <FormFieldShell {...shellProps} error={error}>
-            <SimpleSelect
+          <FormFieldShell
+            {...shellProps}
+            labelId={resolvedIds.labelId}
+            descriptionId={resolvedIds.descriptionId}
+            errorId={resolvedIds.errorId}
+            error={error}
+          >
+            <Select
               {...simpleProps}
-              value={field.value == null ? "" : String(field.value)}
+              value={field.value == null ? undefined : String(field.value)}
               disabled={disabled || readOnly}
+              aria-describedby={resolvedIds.describedBy}
+              aria-errormessage={error ? resolvedIds.errorId : undefined}
               onValueChange={(nextValue) => {
                 field.onChange(nextValue || emptyValue)
                 onValueChange?.(nextValue as string)

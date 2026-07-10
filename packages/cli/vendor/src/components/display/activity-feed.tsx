@@ -59,6 +59,7 @@ function ActivityFeed({
 }: ActivityFeedProps) {
   const visibleItems = items.filter((item) => !item.hidden)
   const hasHeader = Boolean(title || description || actions)
+  const isCompact = density ? density === "compact" : compact
 
   return (
     <Card data-slot="activity-feed" className={cn("min-w-0", className)} {...props}>
@@ -109,7 +110,7 @@ function ActivityFeed({
             <div
               key={item.id}
               data-slot="activity-feed-item"
-              className={cn("relative flex gap-3 pb-4 last:pb-0", compact && "gap-2 pb-3", itemClassName, item.className)}
+              className={cn("relative flex gap-3 pb-4 last:pb-0", isCompact && "gap-2 pb-3", itemClassName, item.className)}
             >
               {showConnector && index < visibleItems.length - 1 && <div className="absolute left-3 top-7 h-[calc(100%-1.75rem)] w-px bg-border" />}
               {item.href ? (

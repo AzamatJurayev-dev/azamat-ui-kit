@@ -1,5 +1,6 @@
 import type { ShowcaseDemoBundle, ShowcaseDemoDefinition, ShowcaseDemoMock, ShowcaseDemoProps } from "./types"
 import { renderShowcasePreview } from "./render-registry-preview"
+import { demoCodeSnippets } from "./demo-snippets"
 
 export function component(
   slug: string,
@@ -58,180 +59,13 @@ function createMock(definition: ShowcaseDemoDefinition): ShowcaseDemoMock {
 }
 
 function createCodeSnippet(definition: ShowcaseDemoDefinition) {
-  return exactCodeSnippets[definition.slug]
+  return demoCodeSnippets[definition.slug]
     ?? createKindSnippet(definition)
-}
-
-const exactCodeSnippets: Record<string, string> = {
-  "search-input": `import { SearchInput } from "@/components/search-input"
-
-export function Demo() {
-  return (
-    <SearchInput
-      value="invoice"
-      onValueChange={(value) => console.log(value)}
-      placeholder="Search invoices..."
-      resultCount={12}
-      shortcut="Ctrl K"
-    />
-  )
-}`,
-  "password-input": `import { PasswordInput } from "@/components/password-input"
-
-export function Demo() {
-  return <PasswordInput placeholder="Enter secure token" autoComplete="current-password" />
-}`,
-  "clearable-input": `import { ClearableInput } from "@/components/clearable-input"
-
-export function Demo() {
-  return <ClearableInput defaultValue="Azamat UI" placeholder="Search customer" />
-}`,
-  "tag-input": `import { TagInput } from "@/components/tag-input"
-
-export function Demo() {
-  return <TagInput defaultValue={["dashboard", "billing"]} placeholder="Add tag" />
-}`,
-  "action-menu": `import { ActionMenu } from "@/components/action-menu"
-import { Button } from "@/components/button"
-
-export function Demo() {
-  return (
-    <ActionMenu
-      label="Row actions"
-      actions={[
-        { key: "open", label: "Open" },
-        { key: "duplicate", label: "Duplicate" },
-        { key: "archive", label: "Archive", destructive: true },
-      ]}
-      trigger={<Button variant="outline">Actions</Button>}
-    />
-  )
-}`,
-  "button-group": `import { ButtonGroup } from "@/components/button-group"
-
-export function Demo() {
-  return (
-    <ButtonGroup
-      items={[
-        { key: "day", label: "Day" },
-        { key: "week", label: "Week" },
-        { key: "month", label: "Month" },
-      ]}
-    />
-  )
-}`,
-  "quick-action-grid": `import { QuickActionGrid } from "@/components/quick-action-grid"
-
-export function Demo() {
-  return (
-    <QuickActionGrid
-      columns={3}
-      items={[
-        { key: "new", label: "New invoice", description: "Create a billing row." },
-        { key: "import", label: "Import CSV", description: "Upload operational data." },
-        { key: "share", label: "Share", description: "Invite a teammate." },
-      ]}
-    />
-  )
-}`,
-  "filter-bar": `import { FilterBar } from "@/components/filter-bar"
-import { SearchInput } from "@/components/search-input"
-import { Button } from "@/components/button"
-
-export function Demo() {
-  return (
-    <FilterBar
-      search={<SearchInput value="" placeholder="Search rows..." readOnly />}
-      activeCount={2}
-      filters={<Button variant="outline">Status</Button>}
-      actions={<Button>Export</Button>}
-      onReset={() => undefined}
-    />
-  )
-}`,
-  "description-list": `import { DescriptionList } from "@/components/description-list"
-
-export function Demo() {
-  return (
-    <DescriptionList
-      title="Invoice details"
-      items={[
-        { key: "id", label: "Invoice", value: "#4821" },
-        { key: "amount", label: "Amount", value: "$12,420" },
-        { key: "status", label: "Status", value: "Paid" },
-      ]}
-    />
-  )
-}`,
-  "entity-card": `import { EntityCard } from "@/components/entity-card"
-import { Badge } from "@/components/badge"
-import { Button } from "@/components/button"
-
-export function Demo() {
-  return (
-    <EntityCard
-      title="Azamat Workspace"
-      description="Admin console and live dashboard route."
-      status={<Badge variant="secondary">Live</Badge>}
-      meta="Updated 8 min ago"
-      actions={<Button size="sm" variant="outline">Open</Button>}
-    />
-  )
-}`,
-  "stat-card": `import { StatCard } from "@/components/stat-card"
-
-export function Demo() {
-  return (
-    <StatCard
-      title="Revenue"
-      value="$84.2k"
-      description="Compared with last month"
-      trend={{ value: "+12.4%", tone: "success" }}
-      helperText="Updated just now"
-    />
-  )
-}`,
-  "pagination": `import { Pagination } from "@/components/pagination"
-
-export function Demo() {
-  return <Pagination page={3} pageCount={9} onPageChange={(page) => console.log(page)} />
-}`,
-  "dialog-actions": `import { DialogActionButton, DialogActions } from "@/components/dialog-actions"
-
-export function Demo() {
-  return (
-    <DialogActions align="end">
-      <DialogActionButton variant="ghost">Cancel</DialogActionButton>
-      <DialogActionButton variant="outline">Save draft</DialogActionButton>
-      <DialogActionButton>Publish</DialogActionButton>
-    </DialogActions>
-  )
-}`,
-  "file-dropzone": `import { FileDropzone } from "@/components/file-dropzone"
-
-export function Demo() {
-  return <FileDropzone label="Drop contract files" description="PDF, PNG or CSV up to 10MB." />
-}`,
-  "stepper": `import { Stepper } from "@/components/stepper"
-
-export function Demo() {
-  return (
-    <Stepper
-      currentStep="billing"
-      steps={[
-        { id: "profile", title: "Profile", completed: true },
-        { id: "billing", title: "Billing" },
-        { id: "review", title: "Review" },
-      ]}
-      onStepChange={() => undefined}
-    />
-  )
-}`,
 }
 
 function createKindSnippet(definition: ShowcaseDemoDefinition) {
   const importName = definition.importName ?? definition.component
-  const importPath = `@/components/${definition.slug}`
+  const importPath = "tembro"
 
   if (definition.kind === "data-table") {
     return `import { ${importName} } from "${importPath}"

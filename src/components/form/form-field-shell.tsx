@@ -10,8 +10,13 @@ export type FormFieldShellProps = React.ComponentProps<"div"> & {
   label?: React.ReactNode
   description?: React.ReactNode
   error?: React.ReactNode
+  success?: React.ReactNode
+  loading?: boolean
   required?: boolean
   htmlFor?: string
+  labelId?: string
+  descriptionId?: string
+  errorId?: string
   layout?: FormFieldLayout
   descriptionPosition?: FormFieldDescriptionPosition
   labelAction?: React.ReactNode
@@ -31,8 +36,14 @@ export type FormFieldShellControlProps = Pick<
   FormFieldShellProps,
   | "label"
   | "description"
+  | "success"
+  | "loading"
   | "required"
   | "className"
+  | "htmlFor"
+  | "labelId"
+  | "descriptionId"
+  | "errorId"
   | "layout"
   | "descriptionPosition"
   | "labelAction"
@@ -48,6 +59,29 @@ export type FormFieldShellControlProps = Pick<
   | "contentClassName"
 >
 
+export type FormFieldMessageState = {
+  description?: React.ReactNode
+  error?: React.ReactNode
+}
+
+export type FormFieldResolvedIds = {
+  labelId: string
+  descriptionId: string
+  errorId: string
+  describedBy?: string
+}
+
+function resolveFormFieldIds(id: string, state: FormFieldMessageState = {}): FormFieldResolvedIds {
+  const labelId = `${id}-label`
+  const descriptionId = `${id}-description`
+  const errorId = `${id}-error`
+  const describedBy = [state.description ? descriptionId : null, state.error ? errorId : null]
+    .filter(Boolean)
+    .join(" ") || undefined
+
+  return { labelId, descriptionId, errorId, describedBy }
+}
+
 const layoutClassName: Record<FormFieldLayout, string> = {
   vertical: "grid gap-2",
   horizontal: "grid gap-2 sm:grid-cols-[minmax(0,12rem)_1fr] sm:items-start sm:gap-5",
@@ -59,8 +93,13 @@ function FormFieldShell({
   label,
   description,
   error,
+  success,
+  loading = false,
   required = false,
   htmlFor,
+  labelId,
+  descriptionId,
+  errorId,
   layout = "vertical",
   descriptionPosition = "top",
   labelAction,
@@ -95,6 +134,7 @@ function FormFieldShell({
         <label
           data-slot="form-field-label"
           htmlFor={htmlFor}
+          id={labelId}
           className={cn(
             "min-w-0 text-sm font-semibold leading-none tracking-tight text-foreground",
             disabled && "cursor-not-allowed opacity-60",
@@ -120,6 +160,7 @@ function FormFieldShell({
   const descriptionNode = description ? (
     <p
       data-slot="form-field-description"
+      id={descriptionId}
       className={cn("text-sm leading-6 text-muted-foreground", disabled && "opacity-60", descriptionClassName)}
     >
       {description}
@@ -135,6 +176,9 @@ function FormFieldShell({
   const errorNode = error ? (
     <p
       data-slot="form-field-error"
+      id={errorId}
+      role="alert"
+      aria-live="polite"
       className={cn(
         "flex items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-destructive/18 bg-destructive/8 px-3 py-2 text-sm font-medium leading-6 text-destructive",
         errorClassName
@@ -145,11 +189,28 @@ function FormFieldShell({
     </p>
   ) : null
 
+  const successNode = success && !error ? (
+    <p
+      data-slot="form-field-success"
+      className="rounded-[min(var(--radius-xl),16px)] border border-emerald-500/18 bg-emerald-500/8 px-3 py-2 text-sm font-medium leading-6 text-emerald-700 dark:text-emerald-300"
+    >
+      {success}
+    </p>
+  ) : null
+
+  const loadingNode = loading ? (
+    <p data-slot="form-field-loading" className="text-sm leading-6 text-muted-foreground">
+      Loading...
+    </p>
+  ) : null
+
   return (
     <div
       data-slot="form-field-shell"
       data-layout={layout}
       data-invalid={Boolean(error) || undefined}
+      data-success={Boolean(success && !error) || undefined}
+      data-loading={loading || undefined}
       data-disabled={disabled || undefined}
       data-readonly={readOnly || undefined}
       aria-disabled={disabled || undefined}
@@ -164,7 +225,9 @@ function FormFieldShell({
           </div>
           <div className="grid min-w-0 gap-2">
             {content}
+            {loadingNode}
             {hasDescriptionBottom && descriptionNode}
+            {successNode}
             {errorNode}
           </div>
         </>
@@ -174,7 +237,9 @@ function FormFieldShell({
           <div className="grid min-w-0 flex-1 gap-2">
             {hasDescriptionTop && descriptionNode}
             {content}
+            {loadingNode}
             {hasDescriptionBottom && descriptionNode}
+            {successNode}
             {errorNode}
           </div>
         </>
@@ -183,7 +248,9 @@ function FormFieldShell({
           {header}
           {hasDescriptionTop && descriptionNode}
           {content}
+          {loadingNode}
           {hasDescriptionBottom && descriptionNode}
+          {successNode}
           {errorNode}
         </>
       )}
@@ -191,4 +258,4 @@ function FormFieldShell({
   )
 }
 
-export { FormFieldShell }
+export { FormFieldShell, resolveFormFieldIds }

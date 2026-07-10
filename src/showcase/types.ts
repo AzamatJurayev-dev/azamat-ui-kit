@@ -6,7 +6,7 @@ export type ShowcaseDemoState = {
   checked: boolean
   switchOn: boolean
   selectValue: string
-  badgeVariant: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link"
+  badgeVariant: "default" | "secondary" | "soft" | "destructive" | "outline" | "ghost" | "link"
   cardCompact: boolean
   activeTab: "overview" | "activity" | "settings"
 }
