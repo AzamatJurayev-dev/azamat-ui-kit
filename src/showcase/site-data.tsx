@@ -362,21 +362,29 @@ const formControlComponentSlugs = new Set([
   "form-field-shell",
   "form-input",
   "form-select",
-  "form-async-select",
   "form-textarea",
   "form-switch",
+  "form-date-range-input",
+  "form-date-picker",
+  "form-date-range-picker",
   "phone-input",
   "masked-input",
   "money-input",
   "quantity-input",
 ])
 const overlayComponentSlugs = new Set(["dialog", "popover", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "modal-shell", "sheet-shell", "alert-dialog", "drawer"])
-const layoutComponentSlugs = new Set(["sidebar", "app-sidebar", "sidebar-nav", "breadcrumbs", "page-header", "page-container", "section-header", "sticky-footer-bar"])
-const feedbackComponentSlugs = new Set(["toast", "loading-state", "page-state", "data-state", "result", "alert", "notification-center"])
-const patternComponentSlugs = new Set<string>([])
+const layoutComponentSlugs = new Set(["sidebar", "app-shell", "sidebar-nav", "breadcrumbs", "page-header", "page-container", "app-header", "section-header", "sticky-footer-bar"])
+const feedbackComponentSlugs = new Set(["toast", "loading-state", "empty-state", "result"])
+const patternComponentSlugs = new Set(["form-builder"])
 
 const legacyComponentSlugAliases = new Map<string, string>([
   ["app-sidebar", "sidebar"],
+  ["form-async-select", "form-select"],
+  ["form-search-input", "form-input"],
+  ["form-password-input", "form-input"],
+  ["form-number-input", "form-input"],
+  ["form-phone-input", "form-input"],
+  ["form-date-input", "form-input"],
   ["confirm-action", "confirm-dialog"],
   ["file-dropzone", "upload"],
   ["hover-card", "tooltip"],
@@ -684,23 +692,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: [...formRHFWrapperCommonFeatures, "Simple + async under one API", "Form-driven value control", "Clear/empty handling"],
   },
   {
-    slug: "form-async-select",
-    title: "Form Async Select",
-    description: "Compatibility alias for the async `FormSelect` variant. Keep it for migration, but prefer `FormSelect kind=\"async\"` in new code.",
-    icon: ComponentIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ...formRHFWrapperBasePropsRows,
-      ["loadOptions", "(search: string) => Promise<AsyncSelectOption[]>", "-", "Search-driven option loader."],
-      ["loadSelectedOption", "(value: string) => Promise<AsyncSelectOption | null>", "-", "Hydrates selected option for controlled edit mode."],
-      ["selectedOption", "AsyncSelectOption", "-", "Hydrated selected option."],
-      ["defaultOptions", "AsyncSelectOption[]", "-", "Initial loaded options."],
-    ],
-    features: [...formRHFWrapperCommonFeatures, "Compatibility alias", "Remote options", "Hydration support"],
-  },
-  {
     slug: "form-textarea",
     title: "Form Textarea",
     description: "RHF textarea wrapper with shell-level validation messages and descriptions.",
@@ -732,6 +723,88 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onCheckedChange", "(value: boolean) => void", "-", "Boolean callback from switch state change."],
     ],
     features: [...formRHFWrapperCommonFeatures, "Boolean value contract", "Readable shell errors", "Disabled states"],
+  },
+  {
+    slug: "form-date-range-input",
+    title: "Form Date Range Input",
+    description: "RHF range input wrapper supporting from/to bounds and required range validation.",
+    icon: CalendarClockIcon,
+    category: "Forms",
+    status: "Preview",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ...formRHFWrapperBasePropsRows,
+      ["value", "{ from: string; to: string }", "-", "RHF controlled date range value."],
+      ["min", "string", "-", "Earliest valid date for start boundary."],
+      ["max", "string", "-", "Latest valid date for end boundary."],
+      ["required", "boolean | { from: boolean; to: boolean }", "false", "Require one or both bounds."],
+      ["onValueChange", "(value: { from: string; to: string }) => void", "-", "Range update callback."],
+    ],
+    features: [...formRHFWrapperCommonFeatures, "Range required validation", "from/to coordination", "Filter-ready contract"],
+  },
+  {
+    slug: "form-date-picker",
+    title: "Form Date Picker",
+    description: "RHF popover date picker wrapper with shared validation and controlled submit flow.",
+    icon: CalendarClockIcon,
+    category: "Forms",
+    status: "Preview",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ...formRHFWrapperBasePropsRows,
+      ["value", "string", "-", "Controlled popover date value."],
+      ["disabledDates", "string[]", "-", "Calendar date blacklist."],
+      ["min", "string", "-", "Earliest selectable date string."],
+      ["max", "string", "-", "Latest selectable date string."],
+      ["onValueChange", "(value: string | null) => void", "-", "Normalized picker value callback."],
+    ],
+    features: [...formRHFWrapperCommonFeatures, "Popover interaction", "Range of disabled dates", "Controlled popover state"],
+  },
+  {
+    slug: "form-date-range-picker",
+    title: "Form Date Range Picker",
+    description: "RHF wrapper over popover date-range picker with required range and block-out support.",
+    icon: CalendarClockIcon,
+    category: "Forms",
+    status: "Preview",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ...formRHFWrapperBasePropsRows,
+      ["value", "{ from: string; to: string }", "-", "Controlled range value object."],
+      ["fromLabel", "string", "\"From\"", "Label text for start field."],
+      ["toLabel", "string", "\"To\"", "Label text for end field."],
+      ["disabledDates", "string[]", "-", "Date literals blocked from selection."],
+      ["onValueChange", "(value: { from: string; to: string }) => void", "-", "Range callback for form state updates."],
+    ],
+    features: [...formRHFWrapperCommonFeatures, "Range-specific validation", "Date range constraints", "Accessible error mapping"],
+  },
+  {
+    slug: "form-builder",
+    title: "Form Builder",
+    description: "RHF section builder for schema-driven forms with submit/reset and disabled/read-only modes.",
+    icon: FileTextIcon,
+    category: "Forms",
+    status: "Stable",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ["control", "Control<TFieldValues>", "-", "RHF control passed to all generated sections."],
+      ["fields", "FormBuilderField<TFieldValues, string>[]", "-", "Explicit field descriptors for full control."],
+      ["sections", "FormBuilderSection<TFieldValues>[]", "-", "Form section descriptors with grouped presets."],
+      ["submitLabel", "string", "\"Save\"", "Submit button text."],
+      ["resetLabel", "string", "\"Reset\"", "Reset button text."],
+      ["disabled", "boolean", "false", "Disables all controls and actions in builder."],
+      ["readOnly", "boolean", "false", "Read-only state for generated field controls."],
+      ["columns", "1 | 2 | 3", "1", "Grid column count for generated sections."],
+      ["onSubmit", "(values) => Promise<void> | void", "-", "Submit handler for generated `<form>` events."],
+    ],
+    features: [
+      "Field schema",
+      "Section composition",
+      "Custom render hooks",
+      "Submit and reset control",
+      "Disabled/readOnly pass-through",
+      "Preset factories (inputField, phoneField, ...)",
+    ],
   },
   {
     slug: "radio-group",
@@ -1449,15 +1522,11 @@ export const componentRelations: ComponentRelationMap = {
   },
   "form-input": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-field-shell", "input", "search-input", "number-input", "phone-input", "date-picker"],
+    componentSlugs: ["form-field-shell", "form-textarea", "input", "password-input", "phone-input", "number-input"],
   },
   "form-select": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["select", "async-select", "simple-select", "form-field-shell"],
-  },
-  "form-async-select": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-select", "async-select", "select", "form-field-shell"],
+    componentSlugs: ["async-select", "select", "simple-select", "form-field-shell"],
   },
   "form-textarea": {
     groupSlugs: ["form", "inputs"],
@@ -1465,7 +1534,23 @@ export const componentRelations: ComponentRelationMap = {
   },
   "form-switch": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-field-shell", "switch", "checkbox", "form-input"],
+    componentSlugs: ["form-field-shell", "switch", "checkbox", "form-builder"],
+  },
+  "form-date-range-input": {
+    groupSlugs: ["form", "filters"],
+    componentSlugs: ["date-range-input", "date-range-picker", "form-date-range-picker", "form-field-shell"],
+  },
+  "form-date-picker": {
+    groupSlugs: ["form", "inputs"],
+    componentSlugs: ["date-picker", "date-input", "calendar", "form-field-shell"],
+  },
+  "form-date-range-picker": {
+    groupSlugs: ["form", "filters"],
+    componentSlugs: ["date-range-picker", "form-date-range-input", "calendar", "form-field-shell"],
+  },
+  "form-builder": {
+    groupSlugs: ["patterns", "form"],
+    componentSlugs: ["form-field-shell", "form-input", "form-switch", "form-textarea", "form-select"],
   },
   "phone-input": {
     groupSlugs: ["inputs", "form"],
@@ -1660,9 +1745,11 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "async-multi-select": "select",
   combobox: "select",
   "form-select": "select",
-  "form-async-select": "select",
   calendar: "date-picker",
   "date-range-picker": "date-picker",
+  "form-date-range-input": "date-picker",
+  "form-date-picker": "date-picker",
+  "form-date-range-picker": "date-picker",
   "confirm-dialog": "dialog",
   "modal-shell": "dialog",
   "sheet-shell": "dialog",
@@ -1696,7 +1783,13 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "related",
       title: "Related input patterns",
       description: "Specialized input types for search, masking, numeric entry, and compact structured values.",
-      slugs: ["search-input", "password-input", "number-input", "phone-input", "masked-input", "money-input", "tag-input", "otp-input"],
+      slugs: ["search-input", "password-input", "number-input", "phone-input", "masked-input", "money-input", "quantity-input", "tag-input", "otp-input"],
+    },
+    {
+      key: "integrations",
+      title: "Form integrations",
+      description: "Use these wrappers when the field needs to plug directly into shared form shells or React Hook Form.",
+      slugs: ["form-input", "form-textarea"],
     },
   ],
   select: [
@@ -1712,6 +1805,18 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       description: "These members add real behavior such as remote loading or keyboard-first local filtering.",
       slugs: ["async-select", "combobox"],
     },
+    {
+      key: "integrations",
+      title: "Form integrations",
+      description: "Use wrapped selects when you need consistent form-level validation, labels, and shell behavior.",
+      slugs: ["form-select"],
+    },
+    {
+      key: "compatibility",
+      title: "Supporting select surface",
+      description: "Use SimpleSelect when source-copy code needs a compact controlled selector.",
+      slugs: ["simple-select"],
+    },
   ],
   "date-picker": [
     {
@@ -1724,7 +1829,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "integrations",
       title: "Form integrations",
       description: "Use wrapped date fields when validation, labels, and form shell behavior should stay standardized.",
-      slugs: [],
+      slugs: ["form-input", "form-date-range-input", "form-date-picker", "form-date-range-picker"],
     },
   ],
   dialog: [

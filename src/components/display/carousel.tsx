@@ -105,7 +105,7 @@ function Carousel({
     setAutoplayEnabled(autoplay)
   }, [autoplay])
 
-  function setActiveIndex(nextIndex: number, reason: "manual" | "autoplay" = "manual") {
+  const setActiveIndex = React.useCallback((nextIndex: number, reason: "manual" | "autoplay" = "manual") => {
     const resolvedIndex = clampIndex(nextIndex, items.length, loop)
     if (!controlled) setInternalIndex(resolvedIndex)
     if (reason === "manual" && stopAutoplayOnInteraction) {
@@ -116,7 +116,18 @@ function Carousel({
       }
     }
     onIndexChange?.(resolvedIndex)
-  }
+  }, [
+    autoplayEnabled,
+    controlled,
+    items.length,
+    loop,
+    onAutoplayChange,
+    onIndexChange,
+    setAutoplayEnabled,
+    setAutoplayStopped,
+    setInternalIndex,
+    stopAutoplayOnInteraction,
+  ])
 
   const canGoPrevious = loop || activeIndex > 0
   const canGoNext = loop || activeIndex < items.length - 1
@@ -166,7 +177,7 @@ function Carousel({
     return () => {
       window.clearInterval(timer)
     }
-  }, [activeIndex, autoplayEnabled, autoplayInterval, autoplayStopped, isHovered, items.length, loop, pauseOnHover])
+  }, [activeIndex, autoplayEnabled, autoplayInterval, autoplayStopped, isHovered, items.length, loop, pauseOnHover, setActiveIndex])
 
   return (
     <div

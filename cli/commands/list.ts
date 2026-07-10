@@ -50,7 +50,7 @@ export function listCommand() {
   const surfacedNames = new Set([...canonicalSurfaceNames, ...standaloneSurfaceNames])
 
   const grouped = registryNames
-    .filter((name) => registry[name].category !== "lib")
+    .filter((name) => registry[name].category !== "lib" && !registry[name].migrationAliasFor)
     .filter((name) => !surfacedNames.has(name))
     .filter((name) => !internalRegistryNames.has(name))
     .filter((name) => !registry[name].migrationAliasFor)

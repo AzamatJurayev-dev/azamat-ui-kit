@@ -9,7 +9,7 @@ import {
   DataTableColumnVisibilityMenu,
   DataTableSortableHeader,
   DataTableViewPresets,
-  Input,
+  SearchInput,
 } from "@/index"
 import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
 import { DataTableSavedFilters } from "@/components/data-table/data-table-saved-filters"

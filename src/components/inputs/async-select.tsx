@@ -426,17 +426,11 @@ function AsyncCreateButton({
   )
 }
 
-function AsyncSelect<
+function AsyncSingleSelect<
   TValue extends string = string,
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
->(props: AsyncSelectProps<TValue, TData, TOption> | AsyncSelectMultiModeProps<TValue, TData, TOption>) {
-  if ("isMulti" in props && props.isMulti) {
-    const multiProps = { ...props }
-    delete (multiProps as { isMulti?: true }).isMulti
-    return <AsyncMultiSelect {...multiProps} />
-  }
-
+>(props: AsyncSelectProps<TValue, TData, TOption>) {
   const {
   className,
   value,
@@ -468,7 +462,7 @@ function AsyncSelect<
   optionClassName,
   invalid,
   ...rootProps
-  } = props as AsyncSelectProps<TValue, TData, TOption>
+  } = props
   const resolvedDefaultGroups = React.useMemo(() => normalizeOptionGroups(defaultOptions), [defaultOptions])
   const defaultFlatOptions = React.useMemo(() => flattenOptionGroups(resolvedDefaultGroups), [resolvedDefaultGroups])
   const [open, setOpen] = React.useState(false)
@@ -1281,6 +1275,18 @@ function AsyncMultiSelect<
       </Popover>
     </div>
   )
+}
+
+function AsyncSelect<
+  TValue extends string = string,
+  TData = unknown,
+  TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
+>(props: AsyncSelectProps<TValue, TData, TOption> | AsyncSelectMultiModeProps<TValue, TData, TOption>) {
+  if (props.isMulti) {
+    return <AsyncMultiSelect {...props} />
+  }
+
+  return <AsyncSingleSelect {...props} />
 }
 
 export { AsyncSelect, AsyncMultiSelect }

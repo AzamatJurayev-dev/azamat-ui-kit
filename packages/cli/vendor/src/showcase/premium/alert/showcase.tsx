@@ -39,7 +39,6 @@ export function AlertShowcase({ mode }: ComponentDemoProps) {
           tone={tone}
           dismissible
           onDismiss={() => setVisible(false)}
-          actionsAlign={tone === "destructive" ? "start" : "end"}
           title={tone === "success" ? "Workspace synced" : tone === "destructive" ? "Action blocked" : tone === "info" ? "Heads up" : "Review needed"}
           description={
             tone === "success"

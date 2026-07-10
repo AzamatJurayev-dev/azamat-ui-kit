@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from "react"
 import { Controller, type Control, type FieldPath, type FieldValues, type RegisterOptions } from "react-hook-form"
 
@@ -182,7 +181,7 @@ export type FormInputProps<
   | FormInputMoneyVariantProps<TFieldValues, TName>
   | FormInputQuantityVariantProps<TFieldValues, TName>
 
-type FormPasswordInputElement = React.ChangeEvent<HTMLInputElement>
+type PasswordInputChangeEvent = React.ChangeEvent<HTMLInputElement>
 
 type InputTextInputProps = Omit<InputTextProps, "kind">
 function buildShellProps<
@@ -352,7 +351,7 @@ function FormInput<
                   field.onBlur()
                   onBlur?.(event)
                 }}
-                onChange={(event: FormPasswordInputElement) => {
+                onChange={(event: PasswordInputChangeEvent) => {
                   const nextValue = event.currentTarget.value
                   field.onChange(nextValue)
                   onValueChange?.(nextValue)
@@ -864,6 +863,7 @@ function FormInput<
               <DateRangeInput
                 {...rangeProps}
                 id={id ?? inputId}
+                className={fieldClassName ?? resolvedFieldClassName}
                 value={
                   currentValue && typeof currentValue === "object"
                     ? { from: currentValue.from, to: currentValue.to }

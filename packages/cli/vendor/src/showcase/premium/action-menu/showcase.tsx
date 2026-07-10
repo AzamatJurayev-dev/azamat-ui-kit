@@ -41,9 +41,9 @@ export function ActionMenuShowcase({ mode }: ComponentDemoProps) {
               label="Invoice actions"
               closeOnSelect={!pinOpen}
               actions={[
-                { key: "open", section: "Primary", label: "Open details", description: "Jump into the full invoice route", icon: <ExternalLinkIcon className="size-4" />, shortcut: "↵", onSelect: async () => setLastAction("Opened invoice details") },
-                { key: "duplicate", section: "Primary", label: "Duplicate", description: "Create a new workflow from this one", icon: <CopyIcon className="size-4" />, keepOpen: pinOpen, onSelect: async () => setLastAction("Duplicated invoice workflow") },
-                { key: "archive", section: "Danger zone", label: "Archive", description: "Hide it from active operational queues", icon: <ArchiveIcon className="size-4" />, destructive: true, onSelect: async () => setLastAction("Archived invoice workflow") },
+                { key: "open", label: "Open details", description: "Jump into the full invoice route", icon: <ExternalLinkIcon className="size-4" />, shortcut: "↵", onSelect: async () => setLastAction("Opened invoice details") },
+                { key: "duplicate", label: "Duplicate", description: "Create a new workflow from this one", icon: <CopyIcon className="size-4" />, keepOpen: pinOpen, onSelect: async () => setLastAction("Duplicated invoice workflow") },
+                { key: "archive", label: "Archive", description: "Hide it from active operational queues", icon: <ArchiveIcon className="size-4" />, destructive: true, onSelect: async () => setLastAction("Archived invoice workflow") },
               ]}
             />
           </div>

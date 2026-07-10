@@ -66,18 +66,6 @@ function DateHarness() {
   )
 }
 
-function SearchAliasHarness() {
-  const { control } = useForm({ defaultValues: { search: "" } })
-  const search = useWatch({ control, name: "search" })
-
-  return (
-    <>
-      <FormInput control={control} name="search" kind="search" label="Search" />
-      <output data-testid="search-value">{search}</output>
-    </>
-  )
-}
-
 describe("FormInput consolidation", () => {
   it("keeps the default text input behavior", async () => {
     const user = userEvent.setup()
@@ -98,16 +86,6 @@ describe("FormInput consolidation", () => {
     await user.type(field, "Button")
 
     expect(screen.getByTestId("query-value").textContent).toBe("Button")
-  })
-
-  it("uses the universal search variant instead of a wrapper alias", async () => {
-    const user = userEvent.setup()
-
-    render(<SearchAliasHarness />)
-
-    await user.type(screen.getByRole("searchbox", { name: "Search" }), "Palette")
-
-    expect(screen.getByTestId("search-value").textContent).toBe("Palette")
   })
 
   it("stores numeric values through the number variant", async () => {

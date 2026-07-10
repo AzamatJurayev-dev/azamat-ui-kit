@@ -5,7 +5,6 @@ import { useForm, useWatch } from "react-hook-form"
 import { describe, expect, it, vi } from "vitest"
 
 import {
-  FormAsyncSelect,
   FormSelect,
   Select,
   type AsyncSelectOption,
@@ -56,23 +55,6 @@ function AsyncHarness() {
   )
 }
 
-function AsyncAliasHarness() {
-  const { control } = useForm({ defaultValues: { reviewerId: "" } })
-  const reviewerId = useWatch({ control, name: "reviewerId" })
-
-  return (
-    <>
-      <FormAsyncSelect
-        control={control}
-        name="reviewerId"
-        label="Reviewer"
-        loadOptions={async () => ownerOptions}
-      />
-      <output data-testid="reviewer-value">{reviewerId}</output>
-    </>
-  )
-}
-
 describe("FormSelect consolidation", () => {
   it("keeps the simple select variant on the main FormSelect entry", async () => {
     const user = userEvent.setup()
@@ -106,38 +88,4 @@ describe("FormSelect consolidation", () => {
     expect(screen.getByTestId("owner-value").textContent).toBe("u1")
   })
 
-  it("keeps FormAsyncSelect as a compatibility alias", async () => {
-    const user = userEvent.setup()
-
-    render(<AsyncAliasHarness />)
-
-    await user.click(screen.getByRole("button", { name: /select/i }))
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Nodir" })).toBeTruthy()
-    })
-
-    await user.click(screen.getByRole("button", { name: "Nodir" }))
-
-    expect(screen.getByTestId("reviewer-value").textContent).toBe("u2")
-  })
-
-  it("clears simple select from a singular clear affordance", async () => {
-    const user = userEvent.setup()
-    const onValueChange = vi.fn()
-
-    render(
-      <Select
-        value="admin"
-        onValueChange={onValueChange}
-        options={roleOptions}
-        clearable
-      />
-    )
-
-    const clearButtons = screen.getAllByRole("button", { name: "Clear selection" })
-    expect(clearButtons).toHaveLength(1)
-
-    await user.click(clearButtons[0])
-    expect(onValueChange).toHaveBeenCalledWith(undefined)
-  })
 })

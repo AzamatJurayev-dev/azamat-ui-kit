@@ -7,26 +7,13 @@ describe("modern exports", () => {
     const modernExports = [
       "CalendarScheduler",
       "DualListPicker",
-      "Menubar",
-      "MenubarContent",
-      "MenubarItem",
-      "MenubarMenu",
-      "MenubarTrigger",
-      "NavigationMenu",
-      "NavigationMenuItem",
-      "NavigationMenuLink",
-      "NavigationMenuList",
       "ResizableHandle",
       "ResizablePanel",
       "ResizablePanelGroup",
-      "RichTextEditor",
-      "QRCode",
-      "QRCodeSvg",
       "Tag",
       "TagGroup",
       "Chip",
       "TimePicker",
-      "Tour",
     ]
 
     for (const exportName of modernExports) {

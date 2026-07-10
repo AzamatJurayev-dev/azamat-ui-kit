@@ -142,8 +142,11 @@ async function main() {
   FormInput,
   InfoCard,
   CommandPalette,
+  KanbanBoard,
   ProgressCard,
   RightClickMenu,
+  SortableList,
+  VirtualList,
 } from "tembro"
 
 const value = [
@@ -156,8 +159,11 @@ const value = [
   FormInput,
   InfoCard,
   CommandPalette,
+  KanbanBoard,
   ProgressCard,
   RightClickMenu,
+  SortableList,
+  VirtualList,
 ]
 
 export default value
@@ -172,8 +178,11 @@ export default value
   FormInput,
   InfoCard,
   CommandPalette,
+  KanbanBoard,
   ProgressCard,
   RightClickMenu,
+  SortableList,
+  VirtualList,
 } from "tembro"
 
 const required = [
@@ -186,8 +195,11 @@ const required = [
   FormInput,
   InfoCard,
   CommandPalette,
+  KanbanBoard,
   ProgressCard,
   RightClickMenu,
+  SortableList,
+  VirtualList,
 ]
 
 if (required.some((entry) => typeof entry !== "function" && typeof entry !== "object")) {
@@ -230,14 +242,17 @@ import {
   CommandPalette,
   Input,
   InfoCard,
+  KanbanBoard,
   ProgressCard,
+  SortableList,
+  VirtualList,
   Calendar,
   DatePicker,
   DateRangePicker,
-  DataTablePagination,
   useSessionStorageState,
   useToast,
 } from "tembro"
+import { DataTablePagination } from "tembro/data-table/data-table-pagination"
 
 function DemoToastButton() {
   const { addToast } = useToast()
@@ -262,6 +277,13 @@ export default function Page() {
       <Input placeholder="Search" value={value} onChange={() => setValue("changed")} />
       <InfoCard title="Demo card" description="Root exports from package only." />
       <ProgressCard title="Load" value={70} />
+      <SortableList
+        items={[{ id: "one", label: "One" }]}
+        getItemId={(item) => item.id}
+        renderItem={(item) => item.label}
+      />
+      <VirtualList items={["One", "Two"]} renderItem={(item) => item} height={120} />
+      <KanbanBoard defaultColumns={[{ key: "todo", title: "Todo", cards: [] }]} />
       <Calendar />
       <DatePicker value="2026-01-01" onValueChange={() => {}} />
       <DateRangePicker value={{ from: new Date(), to: new Date() }} onValueChange={() => {}} />
@@ -282,21 +304,27 @@ export default function Page() {
   CommandPalette,
   Input,
   InfoCard,
+  KanbanBoard,
   ProgressCard,
+  SortableList,
+  VirtualList,
   Calendar,
   DatePicker,
   DateRangePicker,
-  DataTablePagination,
   useSessionStorageState,
   useToast,
 } from "tembro"
+import { DataTablePagination } from "tembro/data-table/data-table-pagination"
 
 const required = [
   Button,
   CommandPalette,
   Input,
   InfoCard,
+  KanbanBoard,
   ProgressCard,
+  SortableList,
+  VirtualList,
   Calendar,
   DatePicker,
   DateRangePicker,
@@ -323,4 +351,3 @@ if (required.some((entry) => typeof entry !== "function" && typeof entry !== "ob
 }
 
 await main()
-

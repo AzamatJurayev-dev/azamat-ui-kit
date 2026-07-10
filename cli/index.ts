@@ -10,7 +10,7 @@ const program = new Command()
 program
   .name("tembro")
   .description("Tembro source-copy CLI")
-  .version("3.0.0")
+  .version("3.1.0")
 
 program
   .command("init")
@@ -50,4 +50,3 @@ program
   .action(themeCommand)
 
 program.parse()
-

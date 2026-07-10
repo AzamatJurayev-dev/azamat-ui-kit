@@ -195,6 +195,33 @@ function Calendar({
     [allMonthDays, isDateDisabled]
   )
 
+  const summaryContent = React.useMemo(() => {
+    if (renderSelectionSummary) {
+      return renderSelectionSummary({
+        mode,
+        value: currentValue ?? undefined,
+        range: currentRange,
+        locale,
+      })
+    }
+
+    if (!showSelectionSummary) {
+      return null
+    }
+
+    if (mode === "range") {
+      const from = formatCalendarSummaryDate(currentRange?.from, locale)
+      const to = formatCalendarSummaryDate(currentRange?.to, locale)
+
+      if (from && to) return `Selected range: ${from} - ${to}`
+      if (from) return `Selected range starts ${from}`
+      return "No range selected"
+    }
+
+    const selected = formatCalendarSummaryDate(currentValue, locale)
+    return selected ? `Selected date: ${selected}` : "No date selected"
+  }, [currentRange, currentValue, locale, mode, renderSelectionSummary, showSelectionSummary])
+
   const tabbableDateKey = React.useMemo(() => {
     const preferred = value ?? range?.from ?? todayKey
     const selectedFrom = currentRange?.from ?? undefined
@@ -284,38 +311,13 @@ function Calendar({
     onRangeChange?.(nextRange)
   }
 
-  const previewRange =
-    mode === "range" &&
-    currentRange?.from &&
-    !currentRange.to &&
-    hoveredDateKey &&
-    hoveredDateKey >= currentRange.from &&
-    !getDateKeysBetween(currentRange.from, hoveredDateKey).some((key) => isDateDisabled(key))
-      ? { from: currentRange.from, to: hoveredDateKey }
-      : null
-
-  const summaryContent = React.useMemo(() => {
-    if (!showSelectionSummary && !renderSelectionSummary) return null
-
-    if (renderSelectionSummary) {
-      return renderSelectionSummary({
-        mode,
-        value: currentValue,
-        range: currentRange,
-        locale,
-      })
-    }
-
-    if (mode === "range") {
-      const formattedFrom = formatCalendarSummaryDate(currentRange?.from, locale)
-      const formattedTo = formatCalendarSummaryDate(currentRange?.to, locale)
-      if (formattedFrom && formattedTo) return `${formattedFrom} -> ${formattedTo}`
-      if (formattedFrom) return `${formattedFrom} -> ...`
-      return "No range selected"
-    }
-
-    return formatCalendarSummaryDate(currentValue, locale) ?? "No date selected"
-  }, [currentRange, currentValue, locale, mode, renderSelectionSummary, showSelectionSummary])
+  const previewRange = (() => {
+    if (mode !== "range") return null
+    if (!currentRange?.from || currentRange?.to || !hoveredDateKey || hoveredDateKey < currentRange.from) return null
+    const rangeIncludesDisabledDate = getDateKeysBetween(currentRange.from, hoveredDateKey).some((key) => isDateDisabled(key))
+    if (rangeIncludesDisabledDate) return null
+    return { from: currentRange.from, to: hoveredDateKey }
+  })()
 
   const clearSelection = () => {
     if (mode === "single") {
@@ -448,9 +450,6 @@ function Calendar({
                 const selected = mode === "single" ? currentValue === dateKey : dateKey === currentRange?.from || dateKey === currentRange?.to
                 const inRange = mode === "range" && isWithinRange(dateKey, currentRange?.from, currentRange?.to)
                 const inPreviewRange = !inRange && mode === "range" && isWithinRange(dateKey, previewRange?.from, previewRange?.to)
-                const rangeStart = mode === "range" && dateKey === currentRange?.from
-                const rangeEnd = mode === "range" && dateKey === currentRange?.to
-                const rangeMiddle = inRange && !rangeStart && !rangeEnd
                 const disabledReason = getDisabledReason(dateKey)
                 const disabled = Boolean(disabledReason)
                 const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined
@@ -500,9 +499,15 @@ function Calendar({
           </div>
         ))}
       </div>
-      {(showTodayShortcut || showClearShortcut || showSelectionSummary || renderSelectionSummary) ? (
+      {(showTodayShortcut || showClearShortcut || showSelectionSummary) ? (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[color:var(--aui-card-border,var(--border))] pt-3">
-          <div className="text-xs text-muted-foreground">{summaryContent}</div>
+          <div className="text-xs text-muted-foreground">
+            {mode === "range"
+              ? currentRange?.from
+                ? `${currentRange.from}${currentRange.to ? ` -> ${currentRange.to}` : ""}`
+                : "No range selected"
+              : currentValue || "No date selected"}
+          </div>
           <div className="flex flex-wrap gap-2">
             {showClearShortcut ? (
               <Button type="button" size="sm" variant="ghost" onClick={clearSelection}>

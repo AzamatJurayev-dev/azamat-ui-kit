@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -52,7 +52,16 @@
       "tag-input",
       "inline-editable"
     ],
-    "form": [],
+    "form": [
+      "form-date-picker",
+      "form-date-range-input",
+      "form-date-range-picker",
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-switch",
+      "form-textarea"
+    ],
     "feedback": [
       "alert",
       "loading-state",
@@ -67,6 +76,7 @@
       "data-state",
       "info-card",
       "kanban",
+      "virtual-list",
       "list",
       "metric-grid",
       "progress",
@@ -86,6 +96,9 @@
       "button-group",
       "copy-button",
       "quick-action-grid"
+    ],
+    "dnd": [
+      "sortable-list"
     ],
     "layout": [
       "sidebar",
@@ -124,12 +137,7 @@
     "modern": [
       "calendar-scheduler",
       "dual-list-picker",
-      "menubar",
-      "navigation-menu",
       "resizable-panel",
-      "rich-text-editor",
-      "tour",
-      "qr-code",
       "tag",
       "carousel",
       "typography",
@@ -223,7 +231,9 @@
       "data-table",
       "trend-card",
       "notification-center",
-      "command-bar"
+      "command-bar",
+      "sortable-list",
+      "virtual-list"
     ],
     "system": [
       "data-table",
@@ -269,17 +279,14 @@
       "section",
       "calendar-scheduler",
       "dual-list-picker",
-      "menubar",
-      "navigation-menu",
       "resizable-panel",
-      "rich-text-editor",
-      "tour",
-      "qr-code",
       "tag",
       "carousel",
       "typography",
       "json-input",
-      "time-picker"
+      "time-picker",
+      "sortable-list",
+      "virtual-list"
     ]
   },
   "migrationAliases": {
@@ -295,22 +302,11 @@
     "date-range-input": "input",
     "simple-select": "select",
     "combobox": "select",
-    "async-multi-select": "async-select",
-    "form-async-select": "select",
+    "form-async-select": "form-select",
     "app-sidebar": "sidebar",
     "smart-card": "info-card",
-    "app-header": "sidebar",
-    "app-shell": "sidebar",
-    "copy-field": "copy-button",
     "file-dropzone": "file-upload",
-    "form-field-shell": "input",
-    "form-input": "input",
-    "form-select": "select",
-    "form-switch": "switch",
-    "form-textarea": "textarea",
-    "hover-card": "tooltip",
     "page-container": "sidebar",
-    "page-header": "breadcrumbs",
     "section-header": "section",
     "sidebar-nav": "sidebar",
     "stat-card": "metric-grid",
@@ -318,7 +314,6 @@
     "input-decorator": "input",
     "input-value": "input",
     "inputs": "input",
-    "form": "input",
     "data-table-actions-column": "data-table",
     "data-table-bulk-actions": "data-table",
     "data-table-column-visibility-menu": "data-table",

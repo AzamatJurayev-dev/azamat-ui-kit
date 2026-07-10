@@ -28,11 +28,7 @@ describe("public API", () => {
       "DataTable",
       "DataTableBulkActions",
       "DataTableColumnVisibilityMenu",
-      "DataTablePagination",
-      "DataTableRowActions",
       "DataTableSortableHeader",
-      "DataTableToolbar",
-      "DataState",
       "DatePicker",
       "DateRangePicker",
       "Dialog",
@@ -41,7 +37,8 @@ describe("public API", () => {
       "DonutChart",
       "DropdownMenu",
       "FileUpload",
-      "FormAsyncSelect",
+      "FormDatePicker",
+      "FormDateRangePicker",
       "FormFieldShell",
       "FormInput",
       "FormSelect",
@@ -120,7 +117,6 @@ describe("public API", () => {
         "DataTable",
         "DataTableBulkActions",
         "DataTableColumnVisibilityMenu",
-        "DataTablePagination",
         "DataTableSortableHeader",
         "DatePicker",
         "DateRangePicker",
@@ -130,7 +126,8 @@ describe("public API", () => {
         "DonutChart",
         "DropdownMenu",
         "FileUpload",
-        "FormAsyncSelect",
+        "FormDatePicker",
+        "FormDateRangePicker",
         "FormFieldShell",
         "FormInput",
         "FormSelect",
@@ -184,16 +181,24 @@ describe("public API", () => {
     `)
   })
 
-  it("keeps migration aliases explicit while canonical names stay preferred", () => {
+  it("does not leak removed migration component aliases", () => {
     const migrationAliases = [
+      "FormAsyncSelect",
+      "FormDateInput",
+      "FormNumberInput",
+      "FormPasswordInput",
+      "FormPhoneInput",
+      "FormSearchInput",
       "AppSidebar",
+      "SmartCard",
+      "QRCode",
+      "RichTextEditor",
+      "Menubar",
+      "NavigationMenu",
+      "Tour",
     ].filter((name) => name in kit)
 
-    expect(migrationAliases.sort()).toMatchInlineSnapshot(`
-      [
-        "AppSidebar",
-      ]
-    `)
+    expect(migrationAliases).toEqual([])
   })
 
   it("keeps advanced input members available from the root package without relying on modern re-exports", () => {

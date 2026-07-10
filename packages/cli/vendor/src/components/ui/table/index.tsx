@@ -4,16 +4,20 @@ import { cn } from "@/lib/utils"
 
 type TableProps = React.ComponentProps<"table"> & {
   containerClassName?: string
+  containerRef?: React.Ref<HTMLDivElement>
+  containerStyle?: React.CSSProperties
 }
 
-function Table({ className, containerClassName, ...props }: TableProps) {
+function Table({ className, containerClassName, containerRef, containerStyle, ...props }: TableProps) {
   return (
     <div
+      ref={containerRef}
       data-slot="table-container"
       className={cn(
         "relative w-full overflow-x-auto rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-[color:var(--aui-table-container-surface,var(--card))] shadow-[var(--aui-card-shadow,0_12px_30px_rgba(15,23,42,0.08))]",
         containerClassName
       )}
+      style={containerStyle}
     >
       <table
         data-slot="table"
@@ -57,9 +61,13 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   )
 }
 
-function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+const TableRow = React.forwardRef<
+  HTMLTableRowElement,
+  React.ComponentPropsWithoutRef<"tr">
+>(function TableRow({ className, ...props }, ref) {
   return (
     <tr
+      ref={ref}
       data-slot="table-row"
       className={cn(
         "border-b border-[color:var(--aui-card-border,var(--border))] transition-colors hover:bg-[color:color-mix(in_oklch,var(--muted),var(--background)_14%)] data-[state=selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] data-[striped=true]:bg-[color:color-mix(in_oklch,var(--muted),transparent_68%)]",
@@ -68,7 +76,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
       {...props}
     />
   )
-}
+})
 
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
   return (

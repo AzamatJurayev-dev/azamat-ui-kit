@@ -147,6 +147,8 @@ function shouldRenderSearchInput(props: InputTextProps) {
 
 const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((props, ref) => {
   const kind = props.kind ?? "text"
+  const textDefaultValue = (props as InputTextProps).defaultValue
+  const [uncontrolledLength, setUncontrolledLength] = React.useState(() => getInputTextLength(textDefaultValue))
 
   if (kind === "search") {
     return (
@@ -338,7 +340,6 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
     ...restInputProps
   } = inputProps
   const isControlled = value !== undefined
-  const [uncontrolledLength, setUncontrolledLength] = React.useState(() => getInputTextLength(defaultValue))
   const currentLength = isControlled ? getInputTextLength(value) : uncontrolledLength
   const helperMessage = errorText ?? helperText
   const helperTone = errorText ? "text-destructive" : "text-muted-foreground"

@@ -11,6 +11,7 @@ export type ComponentCategory =
   | "form"
   | "feedback"
   | "display"
+  | "dnd"
   | "actions"
   | "layout"
   | "filters"
@@ -22,6 +23,7 @@ export type ComponentCategory =
   | "notifications"
   | "command"
   | "patterns"
+  | "modern"
   | "hooks"
   | "group";
 
@@ -41,7 +43,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   utils: { name: "utils", category: "lib", dependencies: ["clsx", "tailwind-merge"], files: [file("src/lib/utils.ts", "{utils}")] },
 
   button: { name: "button", category: "ui", dependencies: ["@base-ui/react", "class-variance-authority"], registryDependencies: ["utils"], files: [file("src/components/ui/button", "{ui}/button"), file("src/components/ui/button.tsx", "{ui}/button.tsx")] },
-  input: { name: "input", category: "ui", dependencies: ["@base-ui/react", "class-variance-authority", "lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/ui/input", "{ui}/input"), file("src/components/ui/input.tsx", "{ui}/input.tsx")] },
+  input: { name: "input", category: "ui", dependencies: ["@base-ui/react", "lucide-react"], registryDependencies: ["utils"], files: [file("src/components/ui/input", "{ui}/input"), file("src/components/ui/input.tsx", "{ui}/input.tsx")] },
   textarea: { name: "textarea", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/textarea", "{ui}/textarea")] },
   checkbox: { name: "checkbox", category: "ui", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/ui/checkbox", "{ui}/checkbox")] },
   switch: { name: "switch", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/switch", "{ui}/switch")] },
@@ -79,13 +81,21 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "async-select": { name: "async-select", category: "inputs", dependencies: ["lucide-react"], registryDependencies: ["button", "input", "popover", "utils"], files: [file("src/components/inputs/async-select.tsx", "{components}/inputs/async-select.tsx")] },
   inputs: { name: "inputs", category: "group", migrationAliasFor: "input", registryDependencies: ["input", "tag-input", "async-select", "rating", "slider", "otp-input", "inline-editable"], files: [file("src/components/inputs/index.ts", "{components}/inputs/index.ts")] },
 
-  "form-field-shell": { name: "form-field-shell", category: "form", migrationAliasFor: "input", registryDependencies: ["utils"], files: [file("src/components/form/form-field-shell.tsx", "{components}/form/form-field-shell.tsx")] },
-  "form-input": { name: "form-input", category: "form", migrationAliasFor: "input", dependencies: ["react-hook-form"], registryDependencies: ["input", "form-field-shell"], files: [file("src/components/form/form-input.tsx", "{components}/form/form-input.tsx")] },
-  "form-select": { name: "form-select", category: "form", migrationAliasFor: "select", dependencies: ["react-hook-form"], registryDependencies: ["select", "async-select", "form-field-shell"], files: [file("src/components/form/form-select.tsx", "{components}/form/form-select.tsx")] },
-  "form-async-select": { name: "form-async-select", category: "form", migrationAliasFor: "select", dependencies: ["react-hook-form"], registryDependencies: ["async-select", "form-field-shell"], files: [file("src/components/form/form-async-select.tsx", "{components}/form/form-async-select.tsx")] },
-  "form-textarea": { name: "form-textarea", category: "form", migrationAliasFor: "textarea", dependencies: ["react-hook-form"], registryDependencies: ["textarea", "form-field-shell"], files: [file("src/components/form/form-textarea.tsx", "{components}/form/form-textarea.tsx")] },
-  "form-switch": { name: "form-switch", category: "form", migrationAliasFor: "switch", dependencies: ["react-hook-form"], registryDependencies: ["switch", "form-field-shell", "utils"], files: [file("src/components/form/form-switch.tsx", "{components}/form/form-switch.tsx")] },
-  form: { name: "form", category: "group", registryDependencies: ["form-field-shell", "form-input", "form-select", "form-async-select", "form-textarea", "form-switch"], files: [file("src/components/form/index.ts", "{components}/form/index.ts")] },
+  "form-field-shell": { name: "form-field-shell", category: "form", registryDependencies: ["utils"], files: [file("src/components/form/form-field-shell.tsx", "{components}/form/form-field-shell.tsx")] },
+  "form-input": { name: "form-input", category: "form", dependencies: ["react-hook-form"], registryDependencies: ["input", "search-input", "password-input", "number-input", "phone-input", "date-input", "form-field-shell"], files: [file("src/components/form/form-input.tsx", "{components}/form/form-input.tsx")] },
+  "form-select": { name: "form-select", category: "form", dependencies: ["react-hook-form"], registryDependencies: ["simple-select", "async-select", "form-field-shell"], files: [file("src/components/form/form-select.tsx", "{components}/form/form-select.tsx")] },
+  "form-async-select": { name: "form-async-select", category: "form", migrationAliasFor: "form-select" },
+  "form-textarea": { name: "form-textarea", category: "form", dependencies: ["react-hook-form"], registryDependencies: ["textarea", "form-field-shell"], files: [file("src/components/form/form-textarea.tsx", "{components}/form/form-textarea.tsx")] },
+  "form-switch": { name: "form-switch", category: "form", dependencies: ["react-hook-form"], registryDependencies: ["switch", "form-field-shell", "utils"], files: [file("src/components/form/form-switch.tsx", "{components}/form/form-switch.tsx")] },
+  "form-search-input": { name: "form-search-input", category: "form", migrationAliasFor: "form-input" },
+  "form-password-input": { name: "form-password-input", category: "form", migrationAliasFor: "form-input" },
+  "form-number-input": { name: "form-number-input", category: "form", migrationAliasFor: "form-input" },
+  "form-phone-input": { name: "form-phone-input", category: "form", migrationAliasFor: "form-input" },
+  "form-date-input": { name: "form-date-input", category: "form", migrationAliasFor: "form-input" },
+  "form-date-range-input": { name: "form-date-range-input", category: "form", dependencies: ["react-hook-form"], registryDependencies: ["date-range-input", "form-field-shell"], files: [file("src/components/form/form-date-range-input.tsx", "{components}/form/form-date-range-input.tsx")] },
+  "form-date-picker": { name: "form-date-picker", category: "form", dependencies: ["react-hook-form"], registryDependencies: ["date-picker", "form-field-shell"], files: [file("src/components/form/form-date-picker.tsx", "{components}/form/form-date-picker.tsx")] },
+  "form-date-range-picker": { name: "form-date-range-picker", category: "form", dependencies: ["react-hook-form"], registryDependencies: ["date-range-picker", "form-field-shell"], files: [file("src/components/form/form-date-range-picker.tsx", "{components}/form/form-date-range-picker.tsx")] },
+  form: { name: "form", category: "group", registryDependencies: ["form-field-shell", "form-input", "form-select", "form-textarea", "form-switch", "form-date-range-input", "form-date-picker", "form-date-range-picker"], files: [file("src/components/form/index.ts", "{components}/form/index.ts")] },
 
   "dialog-actions": { name: "dialog-actions", category: "overlay", dependencies: ["lucide-react"], registryDependencies: ["button", "dialog"], files: [file("src/components/overlay/dialog-actions.tsx", "{components}/overlay/dialog-actions.tsx")] },
   "modal-shell": { name: "modal-shell", category: "overlay", dependencies: ["@base-ui/react"], registryDependencies: ["button", "dialog"], files: [file("src/components/overlay/modal-shell.tsx", "{components}/overlay/modal-shell.tsx")] },
@@ -105,67 +115,19 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "date-picker": { name: "date-picker", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["calendar", "button", "popover", "utils"], files: [file("src/components/calendar/date-picker.tsx", "{components}/calendar/date-picker.tsx")] },
   "date-range-picker": { name: "date-range-picker", category: "calendar", dependencies: ["lucide-react"], registryDependencies: ["calendar", "button", "popover", "utils"], files: [file("src/components/calendar/date-range-picker.tsx", "{components}/calendar/date-range-picker.tsx")] },
 
-  charts: {
-    name: "charts",
-    category: "charts",
-    registryDependencies: ["card", "utils"],
-    files: [
-      file("src/components/charts/charts.tsx", "{components}/charts/charts.tsx"),
-      file("src/components/charts/horizontal-bar-chart.tsx", "{components}/charts/horizontal-bar-chart.tsx"),
-      file("src/components/charts/kpi.tsx", "{components}/charts/kpi.tsx"),
-      file("src/components/charts/progress-ring.tsx", "{components}/charts/progress-ring.tsx"),
-      file("src/components/charts/index.ts", "{components}/charts/index.ts"),
-    ],
-  },
-
-  actions: { name: "actions", category: "group", registryDependencies: ["action-menu", "button-group", "copy-button", "quick-action-grid"] },
-  display: {
-    name: "display",
-    category: "group",
-    registryDependencies: [
-      "activity-feed",
-      "avatar",
-      "carousel",
-      "code-block",
-      "data-list",
-      "description-list",
-      "metric-grid",
-      "progress",
-      "result",
-      "timeline",
-      "tree-view",
-      "user-card",
-    ],
-  },
-  navigation: { name: "navigation", category: "group", registryDependencies: ["nav-tabs", "page-tabs", "pagination", "stepper-tabs"] },
-  overlay: { name: "overlay", category: "group", registryDependencies: ["alert-dialog", "confirm-dialog", "drawer", "modal-shell", "sheet-shell"] },
-  upload: { name: "upload", category: "group", registryDependencies: ["file-upload", "image-upload"] },
-  filters: { name: "filters", category: "group", registryDependencies: ["filter-bar", "saved-filter-select"] },
-
-  dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "feedback", "inputs", "form", "data-table", "charts", "calendar", "toast"] },
-  all: {
-    name: "all",
-    category: "group",
-    registryDependencies: [
-      "dashboard",
-      "actions",
-      "display",
-      "navigation",
-      "overlay",
-      "upload",
-      "stepper",
-      "wizard",
-      "filters",
-    ],
-  },
+  dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "feedback", "inputs", "form"] },
+  "calendar-kit": { name: "calendar-kit", category: "group", registryDependencies: ["calendar", "date-picker", "date-range-picker"] },
+  "wizard-kit": { name: "wizard-kit", category: "group", registryDependencies: ["stepper", "wizard"] },
+  dnd: { name: "dnd", category: "group", registryDependencies: ["sortable-list"], files: [file("src/components/dnd/index.ts", "{components}/dnd/index.ts")] },
+  all: { name: "all", category: "group", registryDependencies: ["dashboard"] },
 };
 
 const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "action-menu", category: "actions", files: [file("src/components/actions/action-menu.tsx", "{components}/actions/action-menu.tsx")] },
   { name: "activity-feed", category: "display", files: [file("src/components/display/activity-feed.tsx", "{components}/display/activity-feed.tsx")] },
   { name: "alert", category: "feedback", files: [file("src/components/feedback/alert.tsx", "{components}/feedback/alert.tsx")] },
-  { name: "app-header", category: "layout", migrationAliasFor: "sidebar", files: [file("src/components/layout/app-header.tsx", "{components}/layout/app-header.tsx")] },
-  { name: "app-sidebar", category: "layout", migrationAliasFor: "sidebar", files: [file("src/components/layout/app-sidebar.tsx", "{components}/layout/app-sidebar.tsx")] },
+  { name: "app-header", category: "layout", files: [file("src/components/layout/app-header.tsx", "{components}/layout/app-header.tsx")] },
+  { name: "app-sidebar", category: "layout", migrationAliasFor: "sidebar" },
   { name: "avatar", category: "display", files: [file("src/components/display/avatar.tsx", "{components}/display/avatar.tsx")] },
   { name: "breadcrumbs", category: "layout", files: [file("src/components/layout/breadcrumbs.tsx", "{components}/layout/breadcrumbs.tsx")] },
   { name: "button-group", category: "actions", files: [file("src/components/actions/button-group.tsx", "{components}/actions/button-group.tsx")] },
@@ -173,6 +135,8 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "collapse", category: "ui", files: [file("src/components/ui/collapse", "{ui}/collapse")] },
   { name: "combobox", category: "inputs", migrationAliasFor: "select" },
   { name: "carousel", category: "display", files: [file("src/components/display/carousel.tsx", "{components}/display/carousel.tsx")] },
+  { name: "tag", category: "modern", registryDependencies: ["utils"], files: [file("src/components/display/tag.tsx", "{components}/display/tag.tsx")] },
+  { name: "typography", category: "modern", registryDependencies: ["utils"], files: [file("src/components/display/typography.tsx", "{components}/display/typography.tsx")] },
   { name: "command", category: "ui", files: [file("src/components/ui/command", "{ui}/command")] },
   { name: "copy-button", category: "actions", files: [file("src/components/actions/copy-button.tsx", "{components}/actions/copy-button.tsx")] },
   { name: "data-state", category: "display", files: [file("src/components/display/data-state.tsx", "{components}/display/data-state.tsx")] },
@@ -180,7 +144,7 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   {
     name: "data-table",
     category: "data-table",
-    dependencies: ["@tanstack/react-table", "lucide-react"],
+    dependencies: ["@tanstack/react-table", "@tanstack/react-virtual", "lucide-react"],
     registryDependencies: [
       "button",
       "checkbox",
@@ -223,12 +187,13 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "file-dropzone", category: "upload", migrationAliasFor: "file-upload", files: [file("src/components/upload/file-dropzone.tsx", "{components}/upload/file-dropzone.tsx")] },
   { name: "file-upload", category: "upload", files: [file("src/components/upload/file-upload.tsx", "{components}/upload/file-upload.tsx")] },
   { name: "filter-bar", category: "filters", files: [file("src/components/filters/filter-bar.tsx", "{components}/filters/filter-bar.tsx")] },
+  { name: "form-builder", category: "patterns", dependencies: ["react-hook-form"], registryDependencies: ["button", "form-input", "form-select", "form-textarea", "form-switch", "form-date-range-input", "utils"], files: [file("src/components/patterns/form-builder.tsx", "{components}/patterns/form-builder.tsx")] },
   { name: "horizontal-bar-chart", category: "charts", files: [file("src/components/charts/horizontal-bar-chart.tsx", "{components}/charts/horizontal-bar-chart.tsx")] },
   { name: "image-upload", category: "upload", files: [file("src/components/upload/image-upload.tsx", "{components}/upload/image-upload.tsx")] },
   { name: "input-chrome", category: "inputs", migrationAliasFor: "input" },
   { name: "input-group", category: "ui", files: [file("src/components/ui/input-group", "{ui}/input-group")] },
   { name: "input-primitive", category: "ui", files: [file("src/components/ui/input-primitive", "{ui}/input-primitive")] },
-  { name: "kanban", category: "display", files: [file("src/components/display/kanban.tsx", "{components}/display/kanban.tsx")] },
+  { name: "kanban", category: "display", dependencies: ["@dnd-kit/helpers", "@dnd-kit/react", "lucide-react"], registryDependencies: ["card", "utils"], files: [file("src/components/display/kanban.tsx", "{components}/display/kanban.tsx")] },
   { name: "kpi", category: "charts", files: [file("src/components/charts/kpi.tsx", "{components}/charts/kpi.tsx")] },
   { name: "list", category: "display", files: [file("src/components/display/list.tsx", "{components}/display/list.tsx")] },
   { name: "metric-grid", category: "display", files: [file("src/components/display/metric-grid.tsx", "{components}/display/metric-grid.tsx")] },
@@ -246,13 +211,14 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "quick-action-grid", category: "actions", files: [file("src/components/actions/quick-action-grid.tsx", "{components}/actions/quick-action-grid.tsx")] },
   { name: "rating", category: "inputs", files: [file("src/components/inputs/rating.tsx", "{components}/inputs/rating.tsx")] },
   { name: "resource-detail-page", category: "patterns", files: [file("src/components/patterns/resource-detail-page.tsx", "{components}/patterns/resource-detail-page.tsx")] },
-  { name: "resource-page", category: "patterns", files: [file("src/components/patterns/resource-page.tsx", "{components}/patterns/resource-page.tsx")] },
+  { name: "resource-page", category: "patterns", registryDependencies: ["data-table", "utils"], files: [file("src/components/patterns/resource-page.tsx", "{components}/patterns/resource-page.tsx")] },
   { name: "result", category: "display", files: [file("src/components/display/result.tsx", "{components}/display/result.tsx")] },
   { name: "section", category: "layout", files: [file("src/components/layout/section.tsx", "{components}/layout/section.tsx")] },
   { name: "section-header", category: "layout", migrationAliasFor: "section", files: [file("src/components/layout/section-header.tsx", "{components}/layout/section-header.tsx")] },
   { name: "sidebar-nav", category: "layout", migrationAliasFor: "sidebar", files: [file("src/components/layout/sidebar-nav.tsx", "{components}/layout/sidebar-nav.tsx")] },
   { name: "slider", category: "inputs", files: [file("src/components/inputs/slider.tsx", "{components}/inputs/slider.tsx")] },
-  { name: "info-card", category: "display", files: [file("src/components/display/smart-card.tsx", "{components}/display/smart-card.tsx")] },
+  { name: "info-card", category: "display", registryDependencies: ["card", "skeleton", "utils"], files: [file("src/components/display/info-card.tsx", "{components}/display/info-card.tsx")] },
+  { name: "smart-card", category: "display", migrationAliasFor: "info-card" },
   { name: "spinner", category: "ui", files: [file("src/components/ui/spinner", "{ui}/spinner")] },
   { name: "statistic", category: "display", files: [file("src/components/display/statistic.tsx", "{components}/display/statistic.tsx")] },
   { name: "status-dot", category: "display", files: [file("src/components/display/status-dot.tsx", "{components}/display/status-dot.tsx")] },
@@ -280,6 +246,13 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "command-bar", category: "navigation", files: [file("src/components/navigation/command-bar.tsx", "{components}/navigation/command-bar.tsx")] },
   { name: "saved-filter-select", category: "filters", files: [file("src/components/filters/saved-filter-select.tsx", "{components}/filters/saved-filter-select.tsx")] },
   { name: "notification-center", category: "notifications", files: [file("src/components/notifications/notification-center.tsx", "{components}/notifications/notification-center.tsx")] },
+  { name: "calendar-scheduler", category: "modern", registryDependencies: ["utils"], files: [file("src/components/modern/calendar-scheduler.tsx", "{components}/modern/calendar-scheduler.tsx")] },
+  { name: "dual-list-picker", category: "modern", registryDependencies: ["utils"], files: [file("src/components/modern/dual-list-picker.tsx", "{components}/modern/dual-list-picker.tsx")] },
+  { name: "resizable-panel", category: "modern", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/modern/resizable-panel.tsx", "{components}/modern/resizable-panel.tsx")] },
+  { name: "json-input", category: "modern", registryDependencies: ["utils"], files: [file("src/components/inputs/json-input.tsx", "{components}/inputs/json-input.tsx")] },
+  { name: "time-picker", category: "modern", registryDependencies: ["utils"], files: [file("src/components/inputs/time-picker.tsx", "{components}/inputs/time-picker.tsx")] },
+  { name: "sortable-list", category: "dnd", dependencies: ["@dnd-kit/helpers", "@dnd-kit/react", "lucide-react"], registryDependencies: ["utils"], files: [file("src/components/dnd/sortable-list.tsx", "{components}/dnd/sortable-list.tsx")] },
+  { name: "virtual-list", category: "display", dependencies: ["@tanstack/react-virtual"], registryDependencies: ["utils"], files: [file("src/components/display/virtual-list.tsx", "{components}/display/virtual-list.tsx")] },
 ];
 
 for (const item of generatedSourceRegistry) {

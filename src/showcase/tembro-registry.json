@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -48,9 +48,19 @@
       "async-select",
       "otp-input",
       "rating",
-      "slider",
-      "tag-input",
-      "inline-editable"
+      "quantity-stepper",
+      "inline-editable",
+      "simple-select"
+    ],
+    "form": [
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-textarea",
+      "form-switch",
+      "form-date-picker",
+      "form-date-range-picker",
+      "form-date-range-input"
     ],
     "form": [],
     "feedback": [
@@ -67,6 +77,7 @@
       "data-state",
       "info-card",
       "kanban",
+      "virtual-list",
       "list",
       "metric-grid",
       "progress",
@@ -86,6 +97,9 @@
       "button-group",
       "copy-button",
       "quick-action-grid"
+    ],
+    "dnd": [
+      "sortable-list"
     ],
     "layout": [
       "sidebar",
@@ -115,6 +129,8 @@
     "notifications": [
       "toast",
       "notification-center"
+      ,"sortable-list"
+      ,"virtual-list"
     ],
     "command": [],
     "patterns": [
@@ -124,17 +140,14 @@
     "modern": [
       "calendar-scheduler",
       "dual-list-picker",
-      "menubar",
-      "navigation-menu",
       "resizable-panel",
-      "rich-text-editor",
-      "tour",
-      "qr-code",
       "tag",
       "carousel",
       "typography",
       "json-input",
       "time-picker"
+      ,"sortable-list"
+      ,"virtual-list"
     ],
     "hooks": [
       "use-session-storage-state",
@@ -223,7 +236,9 @@
       "data-table",
       "trend-card",
       "notification-center",
-      "command-bar"
+      "command-bar",
+      "sortable-list",
+      "virtual-list"
     ],
     "system": [
       "data-table",
@@ -269,17 +284,14 @@
       "section",
       "calendar-scheduler",
       "dual-list-picker",
-      "menubar",
-      "navigation-menu",
       "resizable-panel",
-      "rich-text-editor",
-      "tour",
-      "qr-code",
       "tag",
       "carousel",
       "typography",
       "json-input",
-      "time-picker"
+      "time-picker",
+      "sortable-list",
+      "virtual-list"
     ]
   },
   "migrationAliases": {

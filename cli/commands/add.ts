@@ -30,6 +30,22 @@ function isComponentName(value: string): value is ComponentName {
   return value in registry;
 }
 
+function resolveCanonicalComponentName(componentName: ComponentName) {
+  const visited = new Set<ComponentName>()
+  let current = componentName
+
+  while (registry[current].migrationAliasFor) {
+    if (visited.has(current)) {
+      throw new Error(`Registry migration alias cycle detected at ${current}`)
+    }
+
+    visited.add(current)
+    current = registry[current].migrationAliasFor as ComponentName
+  }
+
+  return current
+}
+
 function getComponentsRoot(config: TembroConfig) {
   if (config.paths?.components) return config.paths.components;
 
@@ -230,8 +246,7 @@ const hiddenAvailableComponentNames = new Set<string>([
 
 function formatAvailableComponents() {
   return registryNames
-    .filter((name) => registry[name].category !== "lib")
-    .filter((name) => !hiddenAvailableComponentNames.has(name))
+    .filter((name) => registry[name].category !== "lib" && !registry[name].migrationAliasFor)
     .sort()
     .join(", ");
 }
@@ -261,12 +276,14 @@ export async function addCommand(components: string[], options: AddCommandOption
       continue;
     }
 
-    const resolvedComponentName = resolveRequestedComponent(componentName);
-    if (resolvedComponentName !== componentName) {
-      logger.warn(`${componentName} legacy/helper nom. ${resolvedComponentName} o‘rnatiladi.`);
+    const canonicalName = resolveCanonicalComponentName(componentName)
+    if (canonicalName !== componentName) {
+      logger.warn(`${componentName} deprecated. ${canonicalName} ishlatiladi.`)
     }
 
-    validComponents.push(resolvedComponentName);
+    if (!validComponents.includes(canonicalName)) {
+      validComponents.push(canonicalName)
+    }
   }
 
   if (!validComponents.length) {

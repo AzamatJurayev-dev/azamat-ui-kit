@@ -21,21 +21,5 @@ export * from "./user-card"
 export * from "./trend-card"
 export * from "./comparison-card"
 export * from "./delta-badge"
-export {
-  SmartCard as InfoCard,
-  SmartCard,
-  type SmartCardClassNames,
-  type SmartCardClassNames as InfoCardClassNames,
-  type SmartCardDensity,
-  type SmartCardDensity as InfoCardDensity,
-  type SmartCardOrientation,
-  type SmartCardOrientation as InfoCardOrientation,
-  type SmartCardProps,
-  type SmartCardProps as InfoCardProps,
-  type SmartCardRenderContext,
-  type SmartCardRenderContext as InfoCardRenderContext,
-  type SmartCardSize,
-  type SmartCardSize as InfoCardSize,
-  type SmartCardVariant,
-  type SmartCardVariant as InfoCardVariant,
-} from "./smart-card"
+export * from "./info-card"
+export * from "./virtual-list"

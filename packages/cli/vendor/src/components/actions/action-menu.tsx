@@ -19,7 +19,6 @@ import { cn, stopInteractivePropagation } from "@/lib/utils"
 export type ActionMenuItem = {
   key: string
   label: React.ReactNode
-  section?: React.ReactNode
   description?: React.ReactNode
   icon?: React.ReactNode
   shortcut?: React.ReactNode
@@ -75,7 +74,6 @@ function ActionMenu({
   const visibleActions = actions.filter((action) => !action.hidden)
   const [loadingKey, setLoadingKey] = React.useState<string | null>(null)
   const [open, setOpen] = React.useState(false)
-  const lastInvokedActionKeyRef = React.useRef<string | null>(null)
 
   const handleSelect = async (action: ActionMenuItem) => {
     if (action.disabled || action.loading || loadingKey) return
@@ -129,7 +127,6 @@ function ActionMenu({
         side={side}
         sideOffset={sideOffset}
         className={cn("min-w-48 rounded-[var(--aui-card-radius,var(--radius-lg))]", contentClassName)}
-        style={menuWidth ? { width: typeof menuWidth === "number" ? `${menuWidth}px` : menuWidth } : undefined}
       >
         {label && <DropdownMenuLabel>{label}</DropdownMenuLabel>}
         {label && visibleActions.length > 0 && <DropdownMenuSeparator />}
@@ -144,51 +141,32 @@ function ActionMenu({
           const shouldRenderSection = Boolean(action.section && action.section !== previousSection)
 
           return (
-            <React.Fragment key={action.key}>
-              {shouldRenderSection ? (
-                <>
-                  {index > 0 ? <DropdownMenuSeparator /> : null}
-                  <DropdownMenuLabel>{action.section}</DropdownMenuLabel>
-                </>
-              ) : null}
-              <DropdownMenuItem
-                disabled={action.disabled || isLoading}
-                variant={action.destructive ? "destructive" : "default"}
-                closeOnSelect={closeOnSelect && !action.keepOpen}
-                className={cn(
-                  "min-h-11 items-start gap-3 rounded-[calc(var(--radius-md)+1px)] border border-transparent py-2.5 transition-[background-color,color,border-color,box-shadow] data-[highlighted]:shadow-[inset_0_0_0_1px_color-mix(in_oklch,var(--primary),transparent_76%)] data-[disabled]:opacity-45",
-                  itemClassName
-                )}
-                onSelect={(event) => {
-                  if (action.keepOpen || !closeOnSelect) {
-                    event.preventDefault()
-                  }
-                  stopInteractivePropagation(event)
-                  triggerAction(action)
-                }}
-                onClick={(event) => {
-                  stopInteractivePropagation(event)
-                  triggerAction(action)
-                }}
-                onMouseDown={stopInteractivePropagation}
-                onDoubleClick={stopInteractivePropagation}
-              >
-                <span className={cn("mt-0.5 flex size-5 shrink-0 items-center justify-center text-muted-foreground", !persistIconSpace && !isLoading && !action.icon && "hidden")}>
-                  {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : action.icon}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate">{action.label}</span>
-                  {action.description ? (
-                    <DropdownMenuItemDescription className="mt-0.5 truncate">
-                      {isLoading ? loadingLabel : action.description}
-                    </DropdownMenuItemDescription>
-                  ) : null}
-                </span>
-                {action.shortcut && (
-                  <DropdownMenuShortcut>{action.shortcut}</DropdownMenuShortcut>
-                )}
-              </DropdownMenuItem>
-            </React.Fragment>
+            <DropdownMenuItem
+              key={action.key}
+              disabled={action.disabled || isLoading}
+              variant={action.destructive ? "destructive" : "default"}
+              className={cn(
+                "transition-[background-color,color,border-color] hover:bg-accent hover:text-accent-foreground data-[disabled]:opacity-45",
+                itemClassName
+              )}
+              onClick={(event) => {
+                stopInteractivePropagation(event)
+                void handleSelect(action)
+              }}
+              onMouseDown={stopInteractivePropagation}
+              onDoubleClick={stopInteractivePropagation}
+            >
+              {isLoading ? <Loader2Icon className="animate-spin" /> : action.icon}
+              <span className="min-w-0 flex-1">
+                <span className="block truncate">{action.label}</span>
+                {action.description ? (
+                  <span className="block truncate text-[11px] font-normal text-muted-foreground">{action.description}</span>
+                ) : null}
+              </span>
+              {action.shortcut && (
+                <span className="ml-auto pl-3 text-[11px] tracking-[0.14em] text-muted-foreground">{action.shortcut}</span>
+              )}
+            </DropdownMenuItem>
           )
         })}
       </DropdownMenuContent>

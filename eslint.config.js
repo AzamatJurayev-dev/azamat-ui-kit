@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', '**/dist/**']),
+  globalIgnores(['dist', '**/dist/**', 'packages/cli/vendor/**']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -17,10 +17,19 @@ export default defineConfig([
     ],
     rules: {
       "react-refresh/only-export-components": "off",
-      "react-hooks/exhaustive-deps": "off",
-      "react-hooks/rules-of-hooks": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
+      // These compiler-era rules need a dedicated migration pass. Core hook
+      // ordering and dependency checks remain enabled through the recommended preset.
       "react-hooks/set-state-in-effect": "off",
-      "react-hooks/refs": "off"
+      "react-hooks/refs": "off",
     },
     languageOptions: {
       globals: globals.browser,

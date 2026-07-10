@@ -16,7 +16,6 @@ export type AlertProps = React.ComponentProps<"div"> & {
   dismissible?: boolean
   dismissLabel?: string
   onDismiss?: () => void
-  actionsAlign?: "start" | "end"
 }
 
 const alertToneClassName: Record<AlertTone, Record<NonNullable<AlertProps["variant"]>, string>> = {
@@ -79,7 +78,6 @@ function Alert({
   dismissible = false,
   dismissLabel = "Dismiss alert",
   onDismiss,
-  actionsAlign = "end",
   className,
   children,
   ...props
@@ -115,7 +113,7 @@ function Alert({
         )}
       </div>
       {(action || dismissible) ? (
-        <div data-slot="alert-action" className={cn("flex shrink-0 items-start gap-2", actionsAlign === "start" && "order-[-1] mr-2")}>
+        <div data-slot="alert-action" className="flex shrink-0 items-start gap-2">
           {action}
           {dismissible ? (
             <button

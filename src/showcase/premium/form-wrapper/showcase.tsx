@@ -1,16 +1,6 @@
-import * as React from "react"
 import { useForm, useWatch } from "react-hook-form"
 
-import {
-  Badge,
-  Button,
-  FormInput,
-  FormSelect,
-  FormSwitch,
-  FormTextarea,
-} from "@/index"
-import { FormDatePicker } from "@/components/form/form-date-picker"
-import { FormDateRangePicker } from "@/components/form/form-date-range-picker"
+import { Badge, Button, FormInput, FormSelect, FormSwitch, FormTextarea } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -60,12 +50,6 @@ function loadSelectedWorkspace(value: string) {
 }
 
 export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
-  const [pathname, setPathname] = React.useState("")
-
-  React.useEffect(() => {
-    setPathname(window.location.pathname)
-  }, [])
-
   const form = useForm<DemoValues>({
     defaultValues: {
       name: "Azamat UI",
@@ -88,7 +72,7 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
   })
 
   const activeValue = useWatch({ control: form.control, name: "active" })
-  const slug = pathname.split("/").filter(Boolean).at(-1)
+  const slug = typeof window === "undefined" ? undefined : window.location.pathname.split("/").filter(Boolean).at(-1)
 
   if (slug === "form-select" || slug === "form-async-select") {
     return (
@@ -104,105 +88,6 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
           loadSelectedOption={loadSelectedWorkspace}
         />
       </div>
-    )
-  }
-
-  if (slug === "form-search-input") {
-    return (
-      <FormInput
-        control={form.control}
-        name="query"
-        kind="search"
-        label="Search query"
-        description="Search wrapper should keep label, hint and result-ready spacing together."
-        placeholder="Search workspaces"
-      />
-    )
-  }
-
-  if (slug === "form-password-input") {
-    return (
-      <FormInput
-        control={form.control}
-        name="password"
-        kind="password"
-        label="Workspace password"
-        description="Password wrapper keeps toggle behavior inside the same form shell."
-        placeholder="Enter secure password"
-      />
-    )
-  }
-
-  if (slug === "form-number-input") {
-    return (
-      <FormInput
-        control={form.control}
-        name="budget"
-        kind="number"
-        label="Budget"
-        description="Numeric wrapper keeps parsed value handling inside the field contract."
-        min={0}
-        max={999999}
-      />
-    )
-  }
-
-  if (slug === "form-phone-input") {
-    return (
-      <FormInput
-        control={form.control}
-        name="ownerPhone"
-        kind="phone"
-        label="Owner phone"
-        description="Phone wrapper preserves stable raw value while showing a formatted UI."
-      />
-    )
-  }
-
-  if (slug === "form-date-input") {
-    return (
-      <FormInput
-        control={form.control}
-        name="dueDate"
-        kind="date"
-        label="Due date"
-        description="Use the lightweight date input wrapper when string date entry is enough."
-      />
-    )
-  }
-
-  if (slug === "form-date-range-input") {
-    return (
-      <FormInput
-        control={form.control}
-        name="period"
-        kind="date-range"
-        label="Reporting period"
-        description="Range input wrapper keeps from/to fields under one shell."
-      />
-    )
-  }
-
-  if (slug === "form-date-picker") {
-    return (
-      <FormDatePicker
-        control={form.control}
-        name="dueDate"
-        label="Launch date"
-        description="Use the picker wrapper when calendar selection matters more than raw typing."
-      />
-    )
-  }
-
-  if (slug === "form-date-range-picker") {
-    return (
-      <FormDateRangePicker
-        control={form.control}
-        fromName="periodFrom"
-        toName="periodTo"
-        label="Launch window"
-        description="Popover range picker keeps both fields synchronized inside one wrapper."
-      />
     )
   }
 

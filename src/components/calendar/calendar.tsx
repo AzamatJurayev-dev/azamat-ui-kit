@@ -195,6 +195,33 @@ function Calendar({
     [allMonthDays, isDateDisabled]
   )
 
+  const summaryContent = React.useMemo(() => {
+    if (renderSelectionSummary) {
+      return renderSelectionSummary({
+        mode,
+        value: currentValue ?? undefined,
+        range: currentRange,
+        locale,
+      })
+    }
+
+    if (!showSelectionSummary) {
+      return null
+    }
+
+    if (mode === "range") {
+      const from = formatCalendarSummaryDate(currentRange?.from, locale)
+      const to = formatCalendarSummaryDate(currentRange?.to, locale)
+
+      if (from && to) return `Selected range: ${from} - ${to}`
+      if (from) return `Selected range starts ${from}`
+      return "No range selected"
+    }
+
+    const selected = formatCalendarSummaryDate(currentValue, locale)
+    return selected ? `Selected date: ${selected}` : "No date selected"
+  }, [currentRange, currentValue, locale, mode, renderSelectionSummary, showSelectionSummary])
+
   const tabbableDateKey = React.useMemo(() => {
     const preferred = value ?? range?.from ?? todayKey
     const selectedFrom = currentRange?.from ?? undefined
@@ -284,38 +311,13 @@ function Calendar({
     onRangeChange?.(nextRange)
   }
 
-  const previewRange =
-    mode === "range" &&
-    currentRange?.from &&
-    !currentRange.to &&
-    hoveredDateKey &&
-    hoveredDateKey >= currentRange.from &&
-    !getDateKeysBetween(currentRange.from, hoveredDateKey).some((key) => isDateDisabled(key))
-      ? { from: currentRange.from, to: hoveredDateKey }
-      : null
-
-  const summaryContent = React.useMemo(() => {
-    if (!showSelectionSummary && !renderSelectionSummary) return null
-
-    if (renderSelectionSummary) {
-      return renderSelectionSummary({
-        mode,
-        value: currentValue,
-        range: currentRange,
-        locale,
-      })
-    }
-
-    if (mode === "range") {
-      const formattedFrom = formatCalendarSummaryDate(currentRange?.from, locale)
-      const formattedTo = formatCalendarSummaryDate(currentRange?.to, locale)
-      if (formattedFrom && formattedTo) return `${formattedFrom} -> ${formattedTo}`
-      if (formattedFrom) return `${formattedFrom} -> ...`
-      return "No range selected"
-    }
-
-    return formatCalendarSummaryDate(currentValue, locale) ?? "No date selected"
-  }, [currentRange, currentValue, locale, mode, renderSelectionSummary, showSelectionSummary])
+  const previewRange = (() => {
+    if (mode !== "range") return null
+    if (!currentRange?.from || currentRange?.to || !hoveredDateKey || hoveredDateKey < currentRange.from) return null
+    const rangeIncludesDisabledDate = getDateKeysBetween(currentRange.from, hoveredDateKey).some((key) => isDateDisabled(key))
+    if (rangeIncludesDisabledDate) return null
+    return { from: currentRange.from, to: hoveredDateKey }
+  })()
 
   const clearSelection = () => {
     if (mode === "single") {

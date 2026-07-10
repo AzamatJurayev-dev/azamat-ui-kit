@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Controller, type Control, type FieldPath, type FieldValues } from "react-hook-form"
 
 import {

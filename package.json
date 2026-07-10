@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -13,13 +13,13 @@
     "registry",
     "cli"
   ],
-  "homepage": "https://github.com/AzamatJurayev-dev/tembro#readme",
+  "homepage": "https://github.com/AzamatJurayev-dev/azamat-ui-kit#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AzamatJurayev-dev/tembro.git"
+    "url": "git+https://github.com/AzamatJurayev-dev/azamat-ui-kit.git"
   },
   "bugs": {
-    "url": "https://github.com/AzamatJurayev-dev/tembro/issues"
+    "url": "https://github.com/AzamatJurayev-dev/azamat-ui-kit/issues"
   },
   "license": "MIT",
   "author": "Azamat Jurayev",
@@ -93,6 +93,11 @@
       "import": "./dist/components/data-table/*.js",
       "require": "./dist/components/data-table/*.cjs"
     },
+    "./dnd/*": {
+      "types": "./dist/components/dnd/*.d.ts",
+      "import": "./dist/components/dnd/*.js",
+      "require": "./dist/components/dnd/*.cjs"
+    },
     "./showcase": {
       "types": "./dist/showcase/index.d.ts",
       "import": "./dist/showcase/index.js",
@@ -124,8 +129,8 @@
   "scripts": {
     "prepublishOnly": "npm run release:gate",
     "clean": "node scripts/clean-dist.mjs",
-    "build": "npm run clean && vite build && tsc -p tsconfig.build.json && npm run test:build-output",
-    "build:lib": "vite build && tsc -p tsconfig.build.json",
+    "build": "npm run clean && npm run build:lib && npm run test:build-output",
+    "build:lib": "vite build && node scripts/normalize-build-output.mjs && tsc -p tsconfig.build.json",
     "build:cli": "npm run build --workspace tembro-cli-internal",
     "build:all": "npm run build && npm run build:cli",
     "prepack": "node scripts/prepack-root.mjs",
@@ -153,7 +158,10 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
+    "@dnd-kit/helpers": "^0.5.0",
+    "@dnd-kit/react": "^0.5.0",
     "@tanstack/react-table": "^8.21.3",
+    "@tanstack/react-virtual": "^3.14.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",

@@ -43,17 +43,14 @@ export const standalonePublicComponentSurfaces: readonly PublicComponentSurfaceE
   { slug: "section", registryName: "section", surface: "standalone" },
   { slug: "calendar-scheduler", registryName: "calendar-scheduler", surface: "standalone" },
   { slug: "dual-list-picker", registryName: "dual-list-picker", surface: "standalone" },
-  { slug: "menubar", registryName: "menubar", surface: "standalone" },
-  { slug: "navigation-menu", registryName: "navigation-menu", surface: "standalone" },
   { slug: "resizable-panel", registryName: "resizable-panel", surface: "standalone" },
-  { slug: "rich-text-editor", registryName: "rich-text-editor", surface: "standalone" },
-  { slug: "tour", registryName: "tour", surface: "standalone" },
-  { slug: "qr-code", registryName: "qr-code", surface: "standalone" },
   { slug: "tag", registryName: "tag", surface: "standalone" },
   { slug: "carousel", registryName: "carousel", surface: "standalone" },
   { slug: "typography", registryName: "typography", surface: "standalone" },
   { slug: "json-input", registryName: "json-input", surface: "standalone" },
   { slug: "time-picker", registryName: "time-picker", surface: "standalone" },
+  { slug: "sortable-list", registryName: "sortable-list", surface: "standalone" },
+  { slug: "virtual-list", registryName: "virtual-list", surface: "standalone" },
 ] as const
 
 export const publicComponentSurfaceEntries = [
