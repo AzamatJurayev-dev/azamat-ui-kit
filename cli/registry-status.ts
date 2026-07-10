@@ -138,6 +138,9 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   typography: "preview",
   "json-input": "preview",
   "time-picker": "preview",
+  "sortable-list": "preview",
+  "virtual-list": "preview",
+  dnd: "preview",
 }
 
 export function getRegistryStatus(name: ComponentName): ComponentStatus {

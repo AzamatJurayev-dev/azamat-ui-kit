@@ -60,6 +60,19 @@ Replace compatibility component imports with the canonical API:
 
 The CLI still accepts old component names and redirects them to canonical source-copy entries. Removed incomplete components do not have drop-in replacements; use a production-grade implementation only when the application actually needs that interaction.
 
+## Production interaction components
+
+Install the new drag-and-drop and virtualization surfaces through the CLI:
+
+```bash
+npx tembro add sortable-list kanban virtual-list data-table
+```
+
+- `SortableList` supports pointer, touch, and keyboard reordering with controlled or uncontrolled state.
+- `KanbanBoard` moves cards within and across columns, including empty columns and canceled operations.
+- `VirtualList` keeps large collections responsive by mounting only the visible window.
+- `DataTable` enables row virtualization with `virtualization={{ height: 480 }}`.
+
 ## Current direction
 
 The docs layer is being rebuilt from scratch around:

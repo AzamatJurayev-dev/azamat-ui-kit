@@ -11,6 +11,7 @@ export type ComponentCategory =
   | "form"
   | "feedback"
   | "display"
+  | "dnd"
   | "actions"
   | "layout"
   | "filters"
@@ -118,6 +119,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   dashboard: { name: "dashboard", category: "group", registryDependencies: ["layout", "feedback", "inputs", "form"] },
   "calendar-kit": { name: "calendar-kit", category: "group", registryDependencies: ["calendar", "date-picker", "date-range-picker"] },
   "wizard-kit": { name: "wizard-kit", category: "group", registryDependencies: ["stepper", "wizard"] },
+  dnd: { name: "dnd", category: "group", registryDependencies: ["sortable-list"], files: [file("src/components/dnd/index.ts", "{components}/dnd/index.ts")] },
   all: { name: "all", category: "group", registryDependencies: ["dashboard"] },
 };
 
@@ -144,7 +146,7 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   {
     name: "data-table",
     category: "data-table",
-    dependencies: ["@tanstack/react-table", "lucide-react"],
+    dependencies: ["@tanstack/react-table", "@tanstack/react-virtual", "lucide-react"],
     registryDependencies: [
       "data-table-actions-column",
       "data-table-bulk-actions",
@@ -184,7 +186,7 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "input-chrome", category: "inputs", files: [file("src/components/inputs/input-chrome.tsx", "{components}/inputs/input-chrome.tsx")] },
   { name: "input-group", category: "ui", files: [file("src/components/ui/input-group", "{ui}/input-group")] },
   { name: "input-primitive", category: "ui", files: [file("src/components/ui/input-primitive", "{ui}/input-primitive")] },
-  { name: "kanban", category: "display", files: [file("src/components/display/kanban.tsx", "{components}/display/kanban.tsx")] },
+  { name: "kanban", category: "display", dependencies: ["@dnd-kit/helpers", "@dnd-kit/react", "lucide-react"], registryDependencies: ["card", "utils"], files: [file("src/components/display/kanban.tsx", "{components}/display/kanban.tsx")] },
   { name: "kpi", category: "charts", files: [file("src/components/charts/kpi.tsx", "{components}/charts/kpi.tsx")] },
   { name: "list", category: "display", files: [file("src/components/display/list.tsx", "{components}/display/list.tsx")] },
   { name: "metric-grid", category: "display", files: [file("src/components/display/metric-grid.tsx", "{components}/display/metric-grid.tsx")] },
@@ -244,6 +246,8 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "resizable-panel", category: "modern", dependencies: ["lucide-react"], registryDependencies: ["utils"], files: [file("src/components/modern/resizable-panel.tsx", "{components}/modern/resizable-panel.tsx")] },
   { name: "json-input", category: "modern", registryDependencies: ["utils"], files: [file("src/components/inputs/json-input.tsx", "{components}/inputs/json-input.tsx")] },
   { name: "time-picker", category: "modern", registryDependencies: ["utils"], files: [file("src/components/inputs/time-picker.tsx", "{components}/inputs/time-picker.tsx")] },
+  { name: "sortable-list", category: "dnd", dependencies: ["@dnd-kit/helpers", "@dnd-kit/react", "lucide-react"], registryDependencies: ["utils"], files: [file("src/components/dnd/sortable-list.tsx", "{components}/dnd/sortable-list.tsx")] },
+  { name: "virtual-list", category: "display", dependencies: ["@tanstack/react-virtual"], registryDependencies: ["utils"], files: [file("src/components/display/virtual-list.tsx", "{components}/display/virtual-list.tsx")] },
 ];
 
 for (const item of generatedSourceRegistry) {
