@@ -17,6 +17,7 @@ import {
   type ColumnPinningState,
   getExpandedRowModel,
 } from "@tanstack/react-table"
+import { useVirtualizer, type VirtualItem } from "@tanstack/react-virtual"
 
 import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
 import { DataTableBulkActions, type DataTableBulkAction } from "@/components/data-table/data-table-bulk-actions"
@@ -40,6 +41,20 @@ import { cn } from "@/lib/utils"
 
 export type DataTableDensity = "compact" | "default" | "comfortable"
 export type DataTableLoadingVariant = "skeleton" | "state"
+
+export type DataTableVirtualizationRange = {
+  startIndex: number
+  endIndex: number
+}
+
+export type DataTableVirtualizationConfig = {
+  enabled?: boolean
+  height?: number | string
+  estimateRowHeight?: number
+  overscan?: number
+  measureRows?: boolean
+  onRangeChange?: (range: DataTableVirtualizationRange) => void
+}
 
 export type DataTableFeatureConfig = {
   search?: boolean
@@ -143,6 +158,7 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   getRowCanExpand?: (row: Row<TData>) => boolean
   columnPinning?: ColumnPinningState
   onColumnPinningChange?: OnChangeFn<ColumnPinningState>
+  virtualization?: DataTableVirtualizationConfig | false
 }
 
 const densityHeadClassName: Record<DataTableDensity, string> = {
@@ -238,6 +254,7 @@ function DataTable<TData, TValue = unknown>({
   getRowCanExpand,
   columnPinning,
   onColumnPinningChange,
+  virtualization,
   ...props
 }: DataTableProps<TData, TValue>) {
   const resolvedColumns = React.useMemo<ColumnDef<TData, unknown>[]>(() => {
@@ -292,6 +309,60 @@ function DataTable<TData, TValue = unknown>({
   })
 
   const rows = table.getRowModel().rows
+  const tableScrollRef = React.useRef<HTMLDivElement>(null)
+  const virtualizationConfig = virtualization === false ? undefined : virtualization
+  const virtualizationEnabled = Boolean(
+    virtualizationConfig && virtualizationConfig.enabled !== false && rows.length > 0
+  )
+  const virtualizationHeight = virtualizationConfig?.height ?? 480
+  const onVirtualRangeChange = virtualizationConfig?.onRangeChange
+  const rowVirtualizer = useVirtualizer({
+    count: virtualizationEnabled ? rows.length : 0,
+    getScrollElement: () => tableScrollRef.current,
+    estimateSize: () => virtualizationConfig?.estimateRowHeight ?? 48,
+    getItemKey: (index) => rows[index]?.id ?? index,
+    overscan: virtualizationConfig?.overscan ?? 8,
+    initialRect: {
+      width: 0,
+      height: typeof virtualizationHeight === "number" ? virtualizationHeight : 480,
+    },
+    onChange(instance) {
+      if (!onVirtualRangeChange) return
+      const virtualItems = instance.getVirtualItems()
+      onVirtualRangeChange({
+        startIndex: virtualItems[0]?.index ?? -1,
+        endIndex: virtualItems.at(-1)?.index ?? -1,
+      })
+    },
+  })
+  const virtualRows = virtualizationEnabled ? rowVirtualizer.getVirtualItems() : []
+  const estimatedRowHeight = virtualizationConfig?.estimateRowHeight ?? 48
+  const initialVirtualRowCount = virtualizationEnabled
+    ? Math.min(
+        rows.length,
+        Math.ceil(
+          (typeof virtualizationHeight === "number" ? virtualizationHeight : 480) /
+            estimatedRowHeight
+        ) + (virtualizationConfig?.overscan ?? 8)
+      )
+    : 0
+  const renderedVirtualRows = virtualRows.length > 0
+    ? virtualRows
+    : Array.from({ length: initialVirtualRowCount }, (_, index): VirtualItem => ({
+        key: rows[index]?.id ?? index,
+        index,
+        start: index * estimatedRowHeight,
+        end: (index + 1) * estimatedRowHeight,
+        size: estimatedRowHeight,
+        lane: 0,
+      }))
+  const virtualPaddingTop = renderedVirtualRows[0]?.start ?? 0
+  const virtualPaddingBottom = renderedVirtualRows.length
+    ? Math.max(
+        rowVirtualizer.getTotalSize() - renderedVirtualRows[renderedVirtualRows.length - 1].end,
+        0
+      )
+    : 0
   const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original)
   const actionContext = React.useMemo<DataTableActionContext<TData>>(
     () => ({ table, data, selectedRows }),
@@ -368,6 +439,17 @@ function DataTable<TData, TValue = unknown>({
   const showPagination = Boolean(paginationConfig && !paginationConfig.hidden)
   const shouldRenderSkeleton = isLoading && loadingVariant === "skeleton"
 
+  const renderVirtualSpacer = (key: string, height: number) =>
+    height > 0 ? (
+      <TableRow key={key} aria-hidden="true" className="pointer-events-none border-0 hover:bg-transparent">
+        <TableCell
+          colSpan={visibleColumnCount}
+          className="border-0 p-0"
+          style={{ height }}
+        />
+      </TableRow>
+    ) : null
+
   const renderStateRow = (children: React.ReactNode) => (
     <TableRow>
       <TableCell colSpan={visibleColumnCount} className="p-0">
@@ -408,6 +490,71 @@ function DataTable<TData, TValue = unknown>({
     <EmptyState {...emptyState} />
   ) : null
 
+  const renderDataRow = (row: Row<TData>, rowIndex: number, virtualRow?: VirtualItem) => {
+    const rowDisabled = getRowDisabled?.(row) ?? false
+
+    return (
+      <React.Fragment key={row.id}>
+        <TableRow
+          ref={
+            virtualRow && virtualizationConfig?.measureRows !== false
+              ? rowVirtualizer.measureElement
+              : undefined
+          }
+          data-index={virtualRow?.index}
+          data-state={row.getIsSelected() ? "selected" : undefined}
+          data-striped={striped && rowIndex % 2 === 1 ? "true" : undefined}
+          data-disabled={rowDisabled || undefined}
+          className={cn(
+            onRowClick && !rowDisabled && "cursor-pointer",
+            !rowDisabled && "transition-colors hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_96%)] data-[state=selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)]",
+            rowDisabled && "pointer-events-none opacity-55",
+            getRowClassName(row, rowClassName)
+          )}
+          onClick={() => {
+            if (!rowDisabled) onRowClick?.(row)
+          }}
+          onDoubleClick={() => {
+            if (!rowDisabled) onRowDoubleClick?.(row)
+          }}
+        >
+          {row.getVisibleCells().map((cell) => {
+            const renderedCell = flexRender(cell.column.columnDef.cell, cell.getContext())
+
+            return (
+              <TableCell
+                key={cell.id}
+                style={{
+                  ...(cell.column.getIsPinned() === "left"
+                    ? { left: `${cell.column.getStart("left")}px`, position: "sticky", zIndex: 10 }
+                    : {}),
+                  ...(cell.column.getIsPinned() === "right"
+                    ? { right: `${cell.column.getAfter("right")}px`, position: "sticky", zIndex: 10 }
+                    : {}),
+                }}
+                className={cn(
+                  densityCellClassName[density],
+                  cell.column.getIsPinned() && "bg-card shadow-[1px_0_0_var(--border)]",
+                  bordered && "border-r last:border-r-0",
+                  getCellClassName(cell, cellClassName)
+                )}
+              >
+                {isEmptyCellContent(renderedCell) ? cellFallback : renderedCell}
+              </TableCell>
+            )
+          })}
+        </TableRow>
+        {row.getIsExpanded() && renderExpandedRow ? (
+          <TableRow className="bg-muted/50 hover:bg-muted/50">
+            <TableCell colSpan={row.getVisibleCells().length}>
+              {renderExpandedRow(row)}
+            </TableCell>
+          </TableRow>
+        ) : null}
+      </React.Fragment>
+    )
+  }
+
   return (
     <div data-slot="data-table" className={cn("grid gap-3", className)} {...props}>
       {hasToolbar &&
@@ -441,6 +588,7 @@ function DataTable<TData, TValue = unknown>({
         data-density={density}
         data-striped={striped || undefined}
         data-bordered={bordered || undefined}
+        data-virtualized={virtualizationEnabled || undefined}
         className={cn(
           "overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_10px_24px_rgba(15,23,42,0.07))] backdrop-blur",
           renderMobileCard && "hidden md:block",
@@ -448,11 +596,23 @@ function DataTable<TData, TValue = unknown>({
         )}
       >
         <Table
-          containerClassName="rounded-none border-0 bg-transparent shadow-none ring-0"
+          containerRef={tableScrollRef}
+          containerStyle={
+            virtualizationEnabled
+              ? { height: virtualizationHeight, overscrollBehavior: "contain" }
+              : undefined
+          }
+          containerClassName={cn(
+            "rounded-none border-0 bg-transparent shadow-none ring-0",
+            virtualizationEnabled && "overflow-auto"
+          )}
           className={cn("text-[0.95rem]", tableClassName)}
+          aria-rowcount={rows.length}
         >
           <TableHeader
-            className={cn(stickyHeader && "sticky top-0 z-10 shadow-sm backdrop-blur")}
+            className={cn(
+              (stickyHeader || virtualizationEnabled) && "sticky top-0 z-10 shadow-sm backdrop-blur"
+            )}
           >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -471,7 +631,7 @@ function DataTable<TData, TValue = unknown>({
                       className={cn(
                         densityHeadClassName[density],
                         "bg-[color:color-mix(in_oklch,var(--card),var(--background)_10%)] text-muted-foreground",
-                        stickyHeader && "bg-[color:color-mix(in_oklch,var(--card),transparent_12%)] backdrop-blur",
+                        (stickyHeader || virtualizationEnabled) && "bg-[color:color-mix(in_oklch,var(--card),transparent_12%)] backdrop-blur",
                         header.column.getIsPinned() && "bg-card shadow-[1px_0_0_var(--border)]",
                         bordered && "border-r last:border-r-0",
                         getHeaderCellClassName(header, headerCellClassName)
@@ -490,64 +650,15 @@ function DataTable<TData, TValue = unknown>({
               ? renderStateRow(stateContent)
               : shouldRenderSkeleton
                 ? renderSkeletonRows()
-                : rows.map((row, rowIndex) => {
-                    const rowDisabled = getRowDisabled?.(row) ?? false
-
-                    return (
-                      <React.Fragment key={row.id}>
-                        <TableRow
-                          data-state={row.getIsSelected() ? "selected" : undefined}
-                        data-striped={striped && rowIndex % 2 === 1 ? "true" : undefined}
-                        data-disabled={rowDisabled || undefined}
-                        className={cn(
-                          onRowClick && !rowDisabled && "cursor-pointer",
-                          !rowDisabled && "transition-colors hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_96%)] data-[state=selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)]",
-                          rowDisabled && "pointer-events-none opacity-55",
-                          getRowClassName(row, rowClassName)
-                        )}
-                        onClick={() => {
-                          if (!rowDisabled) onRowClick?.(row)
-                        }}
-                        onDoubleClick={() => {
-                          if (!rowDisabled) onRowDoubleClick?.(row)
-                        }}
-                      >
-                        {row.getVisibleCells().map((cell) => {
-                          const renderedCell = flexRender(cell.column.columnDef.cell, cell.getContext())
-
-                          return (
-                            <TableCell
-                              key={cell.id}
-                              style={{
-                                ...(cell.column.getIsPinned() === "left"
-                                  ? { left: `${cell.column.getStart("left")}px`, position: "sticky", zIndex: 10 }
-                                  : {}),
-                                ...(cell.column.getIsPinned() === "right"
-                                  ? { right: `${cell.column.getAfter("right")}px`, position: "sticky", zIndex: 10 }
-                                  : {}),
-                              }}
-                              className={cn(
-                                densityCellClassName[density],
-                                cell.column.getIsPinned() && "bg-card shadow-[1px_0_0_var(--border)]",
-                                bordered && "border-r last:border-r-0",
-                                getCellClassName(cell, cellClassName)
-                              )}
-                            >
-                              {isEmptyCellContent(renderedCell) ? cellFallback : renderedCell}
-                            </TableCell>
-                          )
-                        })}
-                      </TableRow>
-                      {row.getIsExpanded() && renderExpandedRow && (
-                        <TableRow className="bg-muted/50 hover:bg-muted/50">
-                          <TableCell colSpan={row.getVisibleCells().length}>
-                            {renderExpandedRow(row)}
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </React.Fragment>
-                  )
-                })}
+                : virtualizationEnabled
+                  ? [
+                      renderVirtualSpacer("virtual-top", virtualPaddingTop),
+                      ...renderedVirtualRows.map((virtualRow) =>
+                        renderDataRow(rows[virtualRow.index], virtualRow.index, virtualRow)
+                      ),
+                      renderVirtualSpacer("virtual-bottom", virtualPaddingBottom),
+                    ]
+                  : rows.map((row, rowIndex) => renderDataRow(row, rowIndex))}
       </TableBody>
         </Table>
 

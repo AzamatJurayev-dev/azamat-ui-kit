@@ -12,6 +12,7 @@ const categoryDistribution: Record<ComponentCategory, RegistryDistribution> = {
   form: "source-copy",
   feedback: "source-copy",
   display: "source-copy",
+  dnd: "source-copy",
   actions: "source-copy",
   layout: "source-copy",
   filters: "source-copy",

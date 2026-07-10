@@ -20,12 +20,13 @@ export function Example() {
       striped
       bordered
       stickyHeader
+      virtualization={{ height: 480, estimateRowHeight: 52 }}
       rowActions={(row) => getActions(row.original)}
       bulkActions={bulkActions}
     />
   )
 }`,
-  highlights: ["Toolbar actions", "Bulk actions", "Row click", "Visibility menu", "Density", "Preset-driven views", "Mobile strategy", "Pagination"],
+  highlights: ["Toolbar actions", "Bulk actions", "Row click", "Visibility menu", "Density", "Virtualized rows", "Preset-driven views", "Mobile strategy", "Pagination"],
   scenarios: [
     { title: "Finance operations", description: "Filter, sort and paginate transactional rows with export-ready actions." },
     { title: "Mobile fallback", description: "Collapse rows into cards while preserving click and selection behaviors." },
@@ -33,5 +34,4 @@ export function Example() {
     { title: "Bulk handling", description: "Run row group actions with selection state and clear behavior." },
   ],
 }
-
 
