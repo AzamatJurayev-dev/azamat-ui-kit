@@ -1,6 +1,6 @@
 {
   "name": "tembro-cli-internal",
-  "version": "2.1.13",
+  "version": "3.0.0",
   "private": true,
   "description": "CLI for Tembro source-copy, presets, and theme setup.",
   "license": "MIT",
