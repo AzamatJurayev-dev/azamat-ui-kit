@@ -7,6 +7,7 @@ const packageJsonPath = path.join(root, "package.json")
 const registryJsonPath = path.join(root, "registry.json")
 const registryTsPath = path.join(root, "cli/registry.ts")
 const registryStatusTsPath = path.join(root, "cli/registry-status.ts")
+const presetComponentsTsPath = path.join(root, "cli/preset-files.ts")
 const publicComponentSurfaceTsPath = path.join(root, "src/public-component-surface.ts")
 const showcaseRegistryJsonPath = path.join(root, "src/showcase/tembro-registry.json")
 
@@ -69,6 +70,15 @@ function extractRegistryFiles(registryTs) {
   }))
 }
 
+function extractRegistryAliases(registryTs) {
+  return new Map(
+    Array.from(
+      registryTs.matchAll(/name:\s*"([^"]+)"[^}\n]*migrationAliasFor:\s*"([^"]+)"/g),
+      (match) => [match[1], match[2]],
+    ),
+  )
+}
+
 function extractRegistryStatuses(registryStatusTs) {
   return new Map(
     Array.from(registryStatusTs.matchAll(/["']([a-z0-9-]+)["']\s*:\s*["'](stable|preview|experimental|internal)["']/g)).map((match) => [
@@ -76,6 +86,11 @@ function extractRegistryStatuses(registryStatusTs) {
       match[2],
     ]),
   )
+}
+
+function extractPresetComponents(source) {
+  return Array.from(source.matchAll(/(?:minimal|dashboard):\s*\[([\s\S]*?)\]/g))
+    .flatMap((match) => Array.from(match[1].matchAll(/"([^"]+)"/g), (item) => item[1]))
 }
 
 function extractPublicSurfaceEntries(source, constName) {
@@ -95,11 +110,14 @@ const packageJson = readJson(packageJsonPath)
 const registryJson = readJson(registryJsonPath)
 const registryTs = readText(registryTsPath)
 const registryStatusTs = readText(registryStatusTsPath)
+const presetComponentsTs = readText(presetComponentsTsPath)
 const extractedUnionNames = extractComponentNameUnion(registryTs)
 const registryNames = extractRegistryObjectNames(registryTs)
 const dependencyMap = extractRegistryDependencies(registryTs)
 const registryFiles = extractRegistryFiles(registryTs)
+const registryAliases = extractRegistryAliases(registryTs)
 const registryStatuses = extractRegistryStatuses(registryStatusTs)
+const presetComponents = extractPresetComponents(presetComponentsTs)
 const publicComponentSurfaceTs = readText(publicComponentSurfaceTsPath)
 const showcaseRegistryJson = readJson(showcaseRegistryJsonPath)
 const unionNames = extractedUnionNames.length > 0 ? extractedUnionNames : registryNames
@@ -134,6 +152,31 @@ if (registryJson) {
       if (status === "experimental" || status === "internal") {
         failures.push(`registry.json recommendedByMode.${mode} includes '${name}', but cli registry status marks it as '${status}'`)
       }
+    }
+  }
+
+  for (const [group, names] of Object.entries(registryJson.groups ?? {})) {
+    for (const name of names) {
+      if (!registrySet.has(name)) {
+        failures.push(`registry.json groups.${group} includes '${name}', but cli registry does not define it`)
+      }
+    }
+  }
+
+  for (const [alias, canonicalName] of Object.entries(registryJson.migrationAliases ?? {})) {
+    const cliAliasTarget = registryAliases.get(alias)
+
+    if (!cliAliasTarget) {
+      failures.push(`registry.json migration alias '${alias}' is missing from cli registry`)
+      continue
+    }
+
+    if (cliAliasTarget !== canonicalName) {
+      failures.push(`registry.json migration alias '${alias}' does not match cli target '${cliAliasTarget}'`)
+    }
+
+    if (!registrySet.has(canonicalName)) {
+      failures.push(`registry.json migration alias '${alias}' targets missing component '${canonicalName}'`)
     }
   }
 
@@ -177,6 +220,12 @@ for (const [name, dependencies] of dependencyMap.entries()) {
     }
 
     seen.add(dependency)
+  }
+}
+
+for (const name of presetComponents) {
+  if (!registrySet.has(name)) {
+    failures.push(`cli preset references '${name}', but cli registry does not define it`)
   }
 }
 

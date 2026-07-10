@@ -50,7 +50,6 @@ export const publicComponentApiDocs = [
       "AsyncMultiSelect",
       "FormSelect",
       "SimpleSelect",
-      "FormAsyncSelect",
     ],
     props: [
       ["value", "string | string[]", "Controlled selected value."],
@@ -80,7 +79,6 @@ export const publicComponentApiDocs = [
       "FormDatePicker",
       "FormDateRangePicker",
       "FormDateRangeInput",
-      "FormAsyncSelect",
     ],
     props: [
       ["label", "ReactNode", "Primary field label content."],
@@ -98,7 +96,7 @@ export const publicComponentApiDocs = [
     useWhen: [
       "You need one neutral container before committing to a specialized card preset.",
       "The screen needs a reusable display card with consistent spacing and hierarchy.",
-      "InfoCard should stay the public display-card name, while SmartCard remains migration-only.",
+      "InfoCard is the single public display-card name.",
     ],
     related: [
       "InfoCard",

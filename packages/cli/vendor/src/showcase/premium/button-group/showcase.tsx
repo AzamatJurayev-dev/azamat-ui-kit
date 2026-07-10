@@ -9,6 +9,7 @@ const panelClass =
 
 export function ButtonGroupShowcase({ mode }: ComponentDemoProps) {
   const [view, setView] = React.useState<"list" | "board" | "timeline">("list")
+  const [density, setDensity] = React.useState<"compact" | "comfortable">("comfortable")
 
   return (
     <div className="space-y-5">
@@ -31,16 +32,31 @@ export function ButtonGroupShowcase({ mode }: ComponentDemoProps) {
       <div className="grid gap-4 xl:grid-cols-2">
         <section className={panelClass}>
           <ButtonGroup
+            value={view}
+            onValueChange={(next) => setView(next as typeof view)}
             items={[
-              { key: "list", label: "List", variant: view === "list" ? "default" : "outline", onClick: () => setView("list") },
-              { key: "board", label: "Board", variant: view === "board" ? "default" : "outline", onClick: () => setView("board") },
-              { key: "timeline", label: "Timeline", variant: view === "timeline" ? "default" : "outline", onClick: () => setView("timeline") },
+              { key: "list", label: "List", description: "Rows first" },
+              { key: "board", label: "Board", description: "Kanban view" },
+              { key: "timeline", label: "Timeline", description: "Chronology" },
             ]}
           />
+          <div className="mt-4">
+            <ButtonGroup
+              value={density}
+              onValueChange={(next) => setDensity(next as typeof density)}
+              size="xs"
+              activeVariant="secondary"
+              items={[
+                { key: "comfortable", label: "Comfortable" },
+                { key: "compact", label: "Compact" },
+              ]}
+            />
+          </div>
         </section>
         <section className={panelClass}>
           <p className="text-sm font-medium aui-text-muted">Selected view</p>
           <p className="mt-3 text-base font-medium aui-text-strong">{view}</p>
+          <p className="mt-2 text-sm aui-text-muted">Density: {density}</p>
         </section>
       </div>
 

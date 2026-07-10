@@ -3,12 +3,8 @@ import { componentCatalog, getComponentGroup } from "./site-data"
 import type { ShowcaseDemoBundle } from "./types"
 import { standalonePublicComponentSlugs } from "@/public-component-surface"
 
-const exportNameOverrides: Record<string, string> = {
-  "qr-code": "QRCode",
-}
-
 function slugToExportName(slug: string) {
-  return exportNameOverrides[slug] ?? slug
+  return slug
     .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join("")

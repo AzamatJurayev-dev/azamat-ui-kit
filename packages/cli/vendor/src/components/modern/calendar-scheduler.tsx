@@ -13,6 +13,7 @@ export type CalendarSchedulerEvent = {
 export type CalendarSchedulerProps = React.ComponentProps<"div"> & {
   events: CalendarSchedulerEvent[]
   days?: string[]
+  empty?: React.ReactNode
 }
 
 const toneClassName = {
@@ -22,24 +23,61 @@ const toneClassName = {
   danger: "border-red-200 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-300",
 }
 
-function CalendarScheduler({ events, days, className, ...props }: CalendarSchedulerProps) {
-  const visibleDays = days ?? Array.from(new Set(events.map((event) => event.date)))
+function CalendarScheduler({ events, days, empty = "No events scheduled.", className, ...props }: CalendarSchedulerProps) {
+  const eventsByDate = new Map<string, CalendarSchedulerEvent[]>()
+
+  for (const event of events) {
+    const dayEvents = eventsByDate.get(event.date)
+    if (dayEvents) {
+      dayEvents.push(event)
+    } else {
+      eventsByDate.set(event.date, [event])
+    }
+  }
+
+  const visibleDays = days ?? Array.from(eventsByDate.keys())
+
+  if (visibleDays.length === 0) {
+    return (
+      <div
+        data-slot="calendar-scheduler"
+        data-empty="true"
+        className={cn("rounded-[var(--aui-card-radius,var(--radius-xl))] border border-dashed border-[color:var(--aui-card-border,var(--border))] bg-card px-4 py-8 text-center text-sm text-muted-foreground", className)}
+        {...props}
+      >
+        {empty}
+      </div>
+    )
+  }
 
   return (
     <div data-slot="calendar-scheduler" className={cn("grid gap-3", className)} {...props}>
-      {visibleDays.map((day) => (
-        <section key={day} className="rounded-xl border bg-card p-3">
-          <div className="mb-2 text-sm font-semibold">{day}</div>
+      {visibleDays.map((day) => {
+        const dayEvents = eventsByDate.get(day) ?? []
+
+        return (
+          <section key={day} className="rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card p-4 shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))]">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div className="text-sm font-semibold text-foreground">{day}</div>
+            <div className="text-xs text-muted-foreground">{dayEvents.length} items</div>
+          </div>
           <div className="grid gap-2">
-            {events.filter((event) => event.date === day).map((event) => (
-              <div key={event.id} className={cn("rounded-md border px-3 py-2 text-sm", toneClassName[event.tone ?? "default"])}>
-                <div className="font-medium">{event.title}</div>
-                {event.time && <div className="text-xs opacity-70">{event.time}</div>}
+            {dayEvents.length === 0 ? (
+              <div className="rounded-[var(--radius-md)] border border-dashed border-[color:var(--aui-card-border,var(--border))] px-3 py-4 text-sm text-muted-foreground">
+                {empty}
               </div>
-            ))}
+            ) : (
+              dayEvents.map((event) => (
+                <div key={event.id} className={cn("rounded-[var(--radius-md)] border px-3 py-2.5 text-sm shadow-sm", toneClassName[event.tone ?? "default"])}>
+                  <div className="font-medium">{event.title}</div>
+                  {event.time && <div className="mt-1 text-xs opacity-70">{event.time}</div>}
+                </div>
+              ))
+            )}
           </div>
         </section>
-      ))}
+        )
+      })}
     </div>
   )
 }

@@ -8,6 +8,8 @@ const panelClass =
   "rounded-[22px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5"
 
 export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
+  const triState = state.checked ? "checked" : state.textValue === "mixed" ? "mixed" : "unchecked"
+
   return (
     <div className="space-y-5">
       <section className="rounded-[24px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-5 sm:p-6">
@@ -27,13 +29,51 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-3">
+        <div className="mt-6 grid gap-3 md:grid-cols-3">
+          <div className={`${panelClass} flex items-start gap-3`}>
+            <Checkbox
+              size="lg"
+              allowIndeterminate
+              checked={triState === "mixed" ? "indeterminate" : triState === "checked"}
+              onCheckedStateChange={(checked) => {
+                if (checked === "indeterminate") {
+                  setState({ checked: false, textValue: "mixed" })
+                } else if (checked) {
+                  setState({ checked: true, textValue: "checked" })
+                } else {
+                  setState({ checked: false, textValue: "unchecked" })
+                }
+              }}
+            />
+            <div>
+              <p className="text-sm font-medium aui-text-strong">Approval state</p>
+              <p className="mt-1 text-sm aui-text-muted">Use `indeterminate` when not all child tasks are complete.</p>
+            </div>
+          </div>
+          <div className={`${panelClass} flex items-start gap-3`}>
+            <Checkbox size="lg" checked="indeterminate" />
+            <div>
+              <p className="text-sm font-medium aui-text-strong">Indeterminate</p>
+              <p className="mt-1 text-sm aui-text-muted">Useful for parent rows and bulk selection summaries.</p>
+            </div>
+          </div>
+          <div className={`${panelClass} flex items-start gap-3`}>
+            <Checkbox size="lg" checked disabled />
+            <div>
+              <p className="text-sm font-medium aui-text-strong">Disabled selected</p>
+              <p className="mt-1 text-sm aui-text-muted">Shows permission-locked completion without becoming clickable.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-3 grid gap-3">
           {checkboxDemoItems.map((item, index) => (
             <label key={item.label} htmlFor={item.id} className={`${panelClass} flex items-start gap-3`}>
               <Checkbox
                 id={item.id}
                 checked={index === 0 ? state.checked : item.checked}
                 disabled={item.disabled}
+                invalid={index === 0 && triState === "unchecked"}
                 onCheckedChange={index === 0 ? (checked) => setState({ checked: Boolean(checked) }) : undefined}
                 defaultChecked={index > 0 ? item.checked : undefined}
               />
@@ -51,10 +91,10 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] aui-text-muted">Live state</p>
             <h4 className="mt-2 text-lg font-semibold aui-text-strong">
-              Release checklist is {state.checked ? "enabled" : "disabled"}
+              Release checklist is {triState}
             </h4>
             <p className="mt-2 text-sm leading-6 aui-text-muted">
-              Toggle the first row or use these actions to verify controlled checkbox behavior.
+              Toggle the first row or use these actions to verify controlled tri-state checkbox behavior.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -63,6 +103,9 @@ export function CheckboxShowcase({ state, setState }: ComponentDemoProps) {
             </Button>
             <Button type="button" size="sm" variant="secondary" onClick={() => setState({ checked: false })}>
               Disable
+            </Button>
+            <Button type="button" size="sm" variant="outline" onClick={() => setState({ checked: false, textValue: "mixed" })}>
+              Set mixed
             </Button>
           </div>
         </div>

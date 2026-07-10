@@ -7,7 +7,6 @@ import {
   FilterIcon,
   LayoutDashboardIcon,
   MoreHorizontalIcon,
-  SearchIcon,
   UploadCloudIcon,
 } from "lucide-react"
 
@@ -15,15 +14,11 @@ import {
   ActionMenu,
   AlertDialog,
   Alert,
-  AnchorNav,
   AsyncSelect,
   Badge,
   Button,
   ButtonGroup,
   Calendar,
-  ClearableInput,
-  ColorInput,
-  CommandPalette,
   DialogActionButton,
   DialogActions,
   DescriptionList,
@@ -101,14 +96,12 @@ const registryDemoDefinitions = [
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),
   component("pagination", "Pagination", "navigation", "Controlled page navigation with edge buttons and active state."),
   component("nav-tabs", "NavTabs", "navigation", "Navigation tabs for switching related document sections."),
-  component("clearable-input", "ClearableInput", "inputs", "Input with clear action, Escape handling and focus restore."),
   component("search-input", "SearchInput", "inputs", "Search field with icon, count, shortcut and debounce-friendly value handling."),
   component("password-input", "PasswordInput", "inputs", "Password field with visibility toggle and secure autocomplete defaults."),
   component("slider", "Slider", "inputs", "Single value range control for density, threshold, and score tuning."),
   component("range-slider", "RangeSlider", "inputs", "Two-handle slider for min/max filtering."),
   component("rating", "Rating", "inputs", "Compact score input for feedback and review flows."),
   component("otp-input", "OtpInput", "inputs", "One-time code entry with fixed-length slots."),
-  component("color-input", "ColorInput", "inputs", "Theme and accent color field with native color selection."),
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
   component("description-list", "DescriptionList", "display", "Structured key-value details for entity, invoice and profile pages."),
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
@@ -124,28 +117,20 @@ const registryDemoDefinitions = [
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
-  component("comparison-card", "ComparisonCard", "display", "Compare current and previous values in one compact card."),
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
   component("filter-chips", "FilterChips", "actions", "Inline active filter summaries with clear and remove actions."),
-  component("data-table-saved-filters", "SavedFilterSelect", "actions", "Saved filter chips and quick view controls."),
   component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
   component("section-header", "SectionHeader", "layout", "Reusable section title block with actions and metadata."),
   component("stat-card", "StatCard", "layout", "Dashboard stat card for KPI, trend and helper text."),
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
-  component("anchor-nav", "AnchorNav", "navigation", "Section jump navigation for long detail pages."),
   component("page-tabs", "PageTabs", "navigation", "Top-level page tab strip for route-sized sections."),
   component("stepper-tabs", "StepperTabs", "navigation", "Step-like tabs for setup and onboarding progress."),
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
-  component("data-table-pagination", "DataTablePagination", "data-table", "Pagination control used by DataTable pages."),
-  component("data-table-toolbar", "DataTableToolbar", "data-table", "Toolbar surface for DataTable search, filters and actions."),
   component("data-table-column-visibility-menu", "DataTableColumnVisibilityMenu", "data-table", "Column visibility menu pattern for table views."),
-  component("data-table-select-column", "DataTableSelectColumn", "data-table", "Selection column pattern for bulk table workflows."),
   component("data-table-sortable-header", "DataTableSortableHeader", "data-table", "Sortable header trigger with clear visual state."),
-  component("data-table-row-actions", "DataTableRowActions", "data-table", "Row action menu for inspect, duplicate and archive operations."),
-  component("data-table-actions-column", "DataTableActionsColumn", "data-table", "Reusable actions column for DataTable definitions."),
   component("data-table-bulk-actions", "DataTableBulkActions", "data-table", "Bulk action bar for selected rows."),
   component("data-table-view-presets", "DataTableViewPresets", "data-table", "Saved table view presets for operational dashboards."),
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
@@ -154,7 +139,6 @@ const registryDemoDefinitions = [
   component("file-dropzone", "FileDropzone", "upload", "Lightweight file dropzone primitive for custom upload flows."),
   component("stepper", "Stepper", "wizard", "Clickable step navigation for multi-step forms."),
   component("wizard", "Wizard", "wizard", "Stepper, content and footer controls combined into one workflow."),
-  component("command-palette", "CommandPalette", "actions", "Keyboard command surface for global navigation and actions."),
   component("resource-page", "ResourcePage", "patterns", "Full resource index page shell for admin dashboards."),
   component("resource-detail-page", "ResourceDetailPage", "patterns", "Detail page shell with title, metadata and sections."),
 ] satisfies RegistryDemoDefinition[]
@@ -288,10 +272,6 @@ function InputPreview({
     return <PasswordInput value="secret-token" onValueChange={onValueChange} placeholder="Password" />
   }
 
-  if (slug === "clearable-input") {
-    return <ClearableInput value={value} onValueChange={onValueChange} placeholder="Clearable input" />
-  }
-
   if (slug === "slider") {
     return <Slider label="Density" description="Tune content density." defaultValue={64} showValue />
   }
@@ -306,10 +286,6 @@ function InputPreview({
 
   if (slug === "otp-input") {
     return <OtpInput value={value.replace(/\D/g, "").slice(0, 6)} onValueChange={onValueChange} />
-  }
-
-  if (slug === "color-input") {
-    return <ColorInput defaultValue="#22c55e" label="Accent color" description="Theme token preview." />
   }
 
   if (slug === "tag-input") {
@@ -451,20 +427,6 @@ function OverlayPreview({ slug }: { slug: string }) {
 function NavigationPreview({ slug }: { slug: string }) {
   if (slug === "pagination") {
     return <Pagination page={3} pageCount={9} onPageChange={() => undefined} />
-  }
-
-  if (slug === "anchor-nav") {
-    return (
-      <AnchorNav
-        orientation="horizontal"
-        title="Sections"
-        items={[
-          { key: "overview", label: "Overview", href: "#overview", active: true },
-          { key: "usage", label: "Usage", href: "#usage" },
-          { key: "api", label: "API", href: "#api" },
-        ]}
-      />
-    )
   }
 
   if (slug === "page-tabs") {
@@ -665,7 +627,7 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "trend-card" || slug === "comparison-card") {
+  if (slug === "trend-card") {
     return <StatCard title={slug === "trend-card" ? "Weekly revenue" : "Current vs previous"} value="$84.2k" description="Compared with last month" trend={{ value: "+12.4%", tone: "success" }} icon={<LayoutDashboardIcon />} />
   }
 
@@ -714,31 +676,6 @@ function ActionsPreview({
     )
   }
 
-  if (slug === "command-palette") {
-    return (
-      <div className="grid gap-3">
-        <div className="flex items-center gap-2 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-3 py-2">
-          <SearchIcon className="size-4 aui-text-muted" />
-          <span className="text-sm aui-text-muted">Command palette preview: search routes, components and actions.</span>
-        </div>
-        <CommandPalette
-          open={false}
-          onOpenChange={() => undefined}
-          groups={[
-            {
-              id: "navigation",
-              label: "Navigation",
-              items: [
-                { id: "docs", label: "Open docs", icon: <SearchIcon className="size-4" /> },
-                { id: "components", label: "Browse components", icon: <LayoutDashboardIcon className="size-4" /> },
-              ],
-            },
-          ]}
-        />
-      </div>
-    )
-  }
-
   if (slug === "button-group") {
     return (
       <ButtonGroup
@@ -764,7 +701,7 @@ function ActionsPreview({
     )
   }
 
-  if (slug === "filter-chips" || slug === "data-table-saved-filters") {
+  if (slug === "filter-chips") {
     return (
       <div className="grid gap-3">
         <FilterChips
@@ -776,16 +713,6 @@ function ActionsPreview({
           onRemove={() => undefined}
           onClear={() => undefined}
         />
-        {slug === "data-table-saved-filters" ? (
-          <ButtonGroup
-            attached={false}
-            items={[
-              { key: "default", label: "Default", variant: "secondary" },
-              { key: "billing", label: "Billing" },
-              { key: "ops", label: "Operations" },
-            ]}
-          />
-        ) : null}
       </div>
     )
   }
@@ -862,13 +789,8 @@ function LayoutPreview({ slug }: { slug: string }) {
 
 function DataTablePartsPreview({ slug }: { slug: string }) {
   const labels: Record<string, string> = {
-    "data-table-pagination": "Pagination footer",
-    "data-table-toolbar": "Search and filter toolbar",
     "data-table-column-visibility-menu": "Column visibility",
-    "data-table-select-column": "Row selection",
     "data-table-sortable-header": "Sortable header",
-    "data-table-row-actions": "Row actions",
-    "data-table-actions-column": "Actions column",
     "data-table-bulk-actions": "Bulk action bar",
     "data-table-view-presets": "Saved view presets",
   }

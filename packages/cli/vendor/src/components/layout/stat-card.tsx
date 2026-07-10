@@ -26,6 +26,13 @@ export type StatCardProps = React.ComponentProps<typeof Card> & {
   trend?: StatCardTrend
   footer?: React.ReactNode
   helperText?: React.ReactNode
+  comparisonItems?: Array<{
+    label: React.ReactNode
+    value: React.ReactNode
+    change?: React.ReactNode
+    trend?: StatCardTrend["tone"] | "neutral"
+  }>
+  comparisonColumns?: 2 | 3 | 4
   loading?: boolean
   valuePrefix?: React.ReactNode
   valueSuffix?: React.ReactNode
@@ -63,6 +70,8 @@ function StatCard({
   trend,
   footer,
   helperText,
+  comparisonItems,
+  comparisonColumns = 2,
   loading = false,
   valuePrefix,
   valueSuffix,
@@ -99,7 +108,7 @@ function StatCard({
             </div>
           </CardHeader>
 
-          {(description || trend || helperText || footer) && (
+          {(description || trend || helperText || footer || comparisonItems?.length) && (
             <CardContent className={cn("space-y-2", contentClassName)}>
               {(description || trend) && (
                 <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -112,6 +121,37 @@ function StatCard({
                   {description && <span className="text-muted-foreground">{description}</span>}
                 </div>
               )}
+              {comparisonItems?.length ? (
+                <div
+                  data-slot="stat-card-comparison"
+                  className={cn(
+                    "grid gap-3 pt-1",
+                    comparisonColumns === 2 && "grid-cols-2",
+                    comparisonColumns === 3 && "grid-cols-3",
+                    comparisonColumns === 4 && "grid-cols-2 sm:grid-cols-4"
+                  )}
+                >
+                  {comparisonItems.map((item, index) => (
+                    <div key={index} className="min-w-0 space-y-1">
+                      <p className="truncate text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+                        {item.label}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-base font-semibold text-foreground">{item.value}</span>
+                        {item.change ? (
+                          <Badge
+                            variant="ghost"
+                            tone={item.trend === "neutral" ? "neutral" : item.trend === "default" ? "neutral" : item.trend}
+                            size="sm"
+                          >
+                            {item.change}
+                          </Badge>
+                        ) : null}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
               {helperText ? <p className="text-xs leading-5 text-muted-foreground">{helperText}</p> : null}
               {footer}
             </CardContent>

@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import type { ComponentDemoBundle } from "./types"
 
 import { alertMock, AlertShowcase } from "./alert"
@@ -13,9 +11,6 @@ import { asyncSelectMock, AsyncSelectShowcase } from "./async-select"
 import { avatarMock, AvatarShowcase } from "./avatar"
 import { carouselMock, CarouselShowcase } from "./carousel"
 import { jsonInputMock, JsonInputShowcase } from "./json-input"
-import { qrCodeMock, QRCodeShowcase } from "./qr-code"
-import { menubarMock, MenubarShowcase } from "./menubar"
-import { navigationMenuMock, NavigationMenuShowcase } from "./navigation-menu"
 import { badgeMock, BadgeShowcase } from "./badge"
 import { dividerMock, DividerShowcase } from "./divider"
 import { breadcrumbsMock, BreadcrumbsShowcase } from "./breadcrumbs"
@@ -45,7 +40,7 @@ import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
 import { DrawerShowcase, drawerMock } from "./drawer"
 import { emptyStateMock, EmptyStateShowcase } from "./empty-state"
 import { FormBuilderShowcase, formBuilderMock } from "./form-builder"
-import { FormWrapperShowcase, formAsyncSelectMock, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
+import { FormWrapperShowcase, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
 import { hoverCardMock, HoverCardShowcase } from "./hover-card"
 import { kanbanBoardMock, KanbanBoardShowcase } from "./kanban-board"
 import { infoCardMock, InfoCardShowcase } from "./info-card"
@@ -53,9 +48,7 @@ import { inputMock, InputShowcase } from "./input"
 import { kbdMock, KbdShowcase } from "./kbd"
 import { listMock, ListShowcase } from "./list"
 import { loadingStateMock, LoadingStateShowcase } from "./loading-state"
-import { richTextEditorMock, RichTextEditorShowcase } from "./rich-text-editor"
 import { timePickerMock, TimePickerShowcase } from "./time-picker"
-import { tourMock, TourShowcase } from "./tour"
 import { stickyFooterBarMock, StickyFooterBarShowcase } from "./sticky-footer-bar"
 import { maskedInputMock, MaskedInputShowcase } from "./masked-input"
 import { metricGridMock, MetricGridShowcase } from "./metric-grid"
@@ -147,8 +140,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   drawer: { mock: drawerMock, Showcase: DrawerShowcase },
   "json-input": { mock: jsonInputMock, Showcase: JsonInputShowcase },
   kanban: { mock: kanbanBoardMock, Showcase: KanbanBoardShowcase },
-  "menubar": { mock: menubarMock, Showcase: MenubarShowcase },
-  "navigation-menu": { mock: navigationMenuMock, Showcase: NavigationMenuShowcase },
   "otp-input": { mock: otpInputMock, Showcase: OtpInputShowcase },
   "quantity-input": { mock: quantityInputMock, Showcase: QuantityInputShowcase },
   rating: { mock: ratingMock, Showcase: RatingShowcase },
@@ -182,14 +173,8 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "form-field-shell": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-select": { mock: formSelectMock, Showcase: FormWrapperShowcase },
-  "form-async-select": { mock: formAsyncSelectMock, Showcase: FormWrapperShowcase },
   "form-textarea": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-switch": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-search-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-password-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-number-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-phone-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
-  "form-date-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
@@ -199,7 +184,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   spinner: { mock: spinnerMock, Showcase: SpinnerShowcase },
   table: { mock: tableMock, Showcase: TableShowcase },
   sidebar: { mock: appSidebarMock, Showcase: AppSidebarShowcase },
-  "app-sidebar": { mock: appSidebarMock, Showcase: AppSidebarShowcase },
   "app-shell": { mock: appShellMock, Showcase: AppShellShowcase },
   "sidebar-nav": { mock: sidebarNavMock, Showcase: SidebarNavShowcase },
   breadcrumbs: { mock: breadcrumbsMock, Showcase: BreadcrumbsShowcase },
@@ -223,9 +207,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   section: { mock: sectionMock, Showcase: SectionShowcase },
   statistic: { mock: statisticMock, Showcase: StatisticShowcase },
   "sticky-footer-bar": { mock: stickyFooterBarMock, Showcase: StickyFooterBarShowcase },
-  "rich-text-editor": { mock: richTextEditorMock, Showcase: RichTextEditorShowcase },
-  tour: { mock: tourMock, Showcase: TourShowcase },
-  "qr-code": { mock: qrCodeMock, Showcase: QRCodeShowcase },
   tag: { mock: tagMock, Showcase: TagShowcase },
   typography: { mock: typographyMock, Showcase: TypographyShowcase },
   "tree-view": { mock: treeViewMock, Showcase: TreeViewShowcase },

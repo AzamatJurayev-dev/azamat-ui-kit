@@ -35,7 +35,7 @@ export function listCommand() {
   const surfacedNames = new Set([...canonicalSurfaceNames, ...standaloneSurfaceNames])
 
   const grouped = registryNames
-    .filter((name) => registry[name].category !== "lib")
+    .filter((name) => registry[name].category !== "lib" && !registry[name].migrationAliasFor)
     .filter((name) => !surfacedNames.has(name))
     .reduce<Record<string, string[]>>((acc, name) => {
       const category = registry[name].category

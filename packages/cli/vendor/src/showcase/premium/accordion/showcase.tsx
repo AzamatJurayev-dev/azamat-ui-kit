@@ -49,6 +49,7 @@ const releaseItems = [
 export function AccordionShowcase() {
   const [singleValue, setSingleValue] = React.useState<string | string[]>("surface")
   const [multiValue, setMultiValue] = React.useState<string | string[]>(["docs"])
+  const [variant, setVariant] = React.useState<"default" | "soft" | "ghost">("soft")
 
   return (
     <div className="space-y-0">
@@ -61,13 +62,25 @@ export function AccordionShowcase() {
       </section>
 
       <section className={panelClass}>
+        <div className="mb-5 flex flex-wrap gap-2">
+          {(["soft", "default", "ghost"] as const).map((item) => (
+            <button
+              key={item}
+              type="button"
+              className={`rounded-full border px-3 py-1.5 text-xs font-medium ${variant === item ? "border-primary bg-primary/10 text-foreground" : "border-[color:var(--aui-divider)] text-muted-foreground"}`}
+              onClick={() => setVariant(item)}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
         <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
           <div>
             <p className="text-lg font-semibold aui-text-strong">Documentation flow</p>
             <p className="mt-2 max-w-xl text-sm leading-6 aui-text-muted">
               Single-open mode keeps the user focused on one explanation at a time.
             </p>
-            <Accordion className="mt-5" type="single" value={singleValue} onValueChange={setSingleValue} items={[...docsItems]} />
+            <Accordion className="mt-5" type="single" variant={variant} size="lg" value={singleValue} onValueChange={setSingleValue} items={[...docsItems]} />
           </div>
 
           <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] p-4">
@@ -100,7 +113,17 @@ export function AccordionShowcase() {
             </div>
           </div>
 
-          <Accordion className="xl:mt-8" type="multiple" value={multiValue} onValueChange={setMultiValue} items={[...releaseItems]} />
+          <Accordion
+            className="xl:mt-8"
+            type="multiple"
+            variant={variant}
+            value={multiValue}
+            onValueChange={setMultiValue}
+            items={releaseItems.map((item, index) => ({
+              ...item,
+              indicatorPosition: index === 0 ? "start" : "end",
+            }))}
+          />
         </div>
       </section>
     </div>

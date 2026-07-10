@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "2.0.4",
+  "version": "3.0.0",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -13,13 +13,13 @@
     "registry",
     "cli"
   ],
-  "homepage": "https://github.com/AzamatJurayev-dev/tembro#readme",
+  "homepage": "https://github.com/AzamatJurayev-dev/azamat-ui-kit#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AzamatJurayev-dev/tembro.git"
+    "url": "git+https://github.com/AzamatJurayev-dev/azamat-ui-kit.git"
   },
   "bugs": {
-    "url": "https://github.com/AzamatJurayev-dev/tembro/issues"
+    "url": "https://github.com/AzamatJurayev-dev/azamat-ui-kit/issues"
   },
   "license": "MIT",
   "author": "Azamat Jurayev",

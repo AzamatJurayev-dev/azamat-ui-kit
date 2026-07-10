@@ -1,7 +1,7 @@
 import * as React from "react"
 import { BarChart3Icon, CreditCardIcon, FolderIcon, HomeIcon, SettingsIcon } from "lucide-react"
 
-import { AppSidebar, Badge, Button } from "@/index"
+import { Badge, Button, Sidebar } from "@/index"
 import { cn } from "@/lib/utils"
 
 import type { ComponentDemoProps } from "../types"
@@ -72,7 +72,7 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
 
       <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)]">
         <section className={cn(panelClass, mobilePreview && "mx-auto w-full max-w-[420px]")}>
-          <AppSidebar
+          <Sidebar
             collapsed={collapsed}
             items={items}
             responsive

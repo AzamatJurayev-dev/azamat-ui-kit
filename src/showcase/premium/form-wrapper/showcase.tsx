@@ -1,7 +1,6 @@
-import * as React from "react"
 import { useForm, useWatch } from "react-hook-form"
 
-import { Badge, Button, FormAsyncSelect, FormFieldShell, FormInput, FormSelect, FormSwitch, FormTextarea } from "@/index"
+import { Badge, Button, FormFieldShell, FormInput, FormSelect, FormSwitch, FormTextarea } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -42,12 +41,6 @@ function loadSelectedWorkspace(value: string) {
 }
 
 export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
-  const [pathname, setPathname] = React.useState("")
-
-  React.useEffect(() => {
-    setPathname(window.location.pathname)
-  }, [])
-
   const form = useForm<DemoValues>({
     defaultValues: {
       name: "Azamat UI",
@@ -61,7 +54,7 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
   })
 
   const activeValue = useWatch({ control: form.control, name: "active" })
-  const slug = pathname.split("/").filter(Boolean).at(-1)
+  const slug = typeof window === "undefined" ? undefined : window.location.pathname.split("/").filter(Boolean).at(-1)
 
   if (slug === "form-select") {
     return (
@@ -77,19 +70,6 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
           loadSelectedOption={loadSelectedWorkspace}
         />
       </div>
-    )
-  }
-
-  if (slug === "form-async-select") {
-    return (
-      <FormAsyncSelect
-        control={form.control}
-        name="ownerId"
-        label="Linked workspace"
-        defaultOptions={workspaceOptions.map((option) => ({ ...option }))}
-        loadOptions={loadWorkspaceOptions}
-        loadSelectedOption={loadSelectedWorkspace}
-      />
     )
   }
 

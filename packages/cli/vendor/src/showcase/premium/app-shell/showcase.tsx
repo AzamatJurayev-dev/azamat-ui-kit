@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { Badge, Breadcrumbs, Button, InfoCard, MetricGrid, PageContainer, SidebarNav } from "@/index"
 import { AppHeader } from "@/components/layout/app-header"
-import { AppSidebar } from "@/components/layout/app-sidebar"
+import { Sidebar } from "@/components/layout/app-sidebar"
 import { PageHeader } from "@/components/layout/page-header"
 
 import type { ComponentDemoProps } from "../types"
@@ -68,7 +68,7 @@ export function AppShellShowcase({ mode }: ComponentDemoProps) {
         />
 
         <div className="grid min-h-[420px] lg:grid-cols-[250px_minmax(0,1fr)_260px]">
-          <AppSidebar
+          <Sidebar
             responsive
             mobileTitle="Workspace navigation"
             mobileDescription="Open the shell menu first, then move through app routes without squeezing the main content."
@@ -78,7 +78,7 @@ export function AppShellShowcase({ mode }: ComponentDemoProps) {
             collapsed={collapsed}
           >
             <SidebarNav items={navItems} />
-          </AppSidebar>
+          </Sidebar>
 
           <div className="min-w-0 border-x border-[color:var(--aui-divider)] p-4">
             <PageContainer size="lg">

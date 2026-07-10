@@ -265,13 +265,13 @@ function Calendar({
     onRangeChange?.(nextRange)
   }
 
-  const previewRange = React.useMemo(() => {
+  const previewRange = (() => {
     if (mode !== "range") return null
     if (!currentRange?.from || currentRange?.to || !hoveredDateKey || hoveredDateKey < currentRange.from) return null
     const rangeIncludesDisabledDate = getDateKeysBetween(currentRange.from, hoveredDateKey).some((key) => isDateDisabled(key))
     if (rangeIncludesDisabledDate) return null
     return { from: currentRange.from, to: hoveredDateKey }
-  }, [currentRange?.from, currentRange?.to, hoveredDateKey, isDateDisabled, mode])
+  })()
 
   const clearSelection = () => {
     if (mode === "single") {

@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { ColumnDef, RowSelectionState } from "@tanstack/react-table"
+import type { ColumnDef, Row, RowSelectionState } from "@tanstack/react-table"
 
 import {
   Badge,
@@ -7,13 +7,13 @@ import {
   DataTable,
   DataTableBulkActions,
   DataTableColumnVisibilityMenu,
-  DataTableSavedFilters,
   DataTableSortableHeader,
   DataTableViewPresets,
   SearchInput,
-  createDataTableActionsColumn,
-  createDataTableSelectColumn,
 } from "@/index"
+import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
+import { DataTableSavedFilters } from "@/components/data-table/data-table-saved-filters"
+import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
 
 import { buildDataTableDemoRows, dataTableDemoPresets, type DataTableDemoRow } from "./data"
 
@@ -40,9 +40,9 @@ function buildColumns(setNotes: (value: string) => void): ColumnDef<DataTableDem
       accessorKey: "customer",
       header: ({ column }) => <DataTableSortableHeader column={column}>Customer</DataTableSortableHeader>,
     },
-    {
-      accessorKey: "status",
-      header: "Status",
+      {
+        accessorKey: "status",
+        header: "Status",
       cell: ({ row }) => (
         <Badge variant={row.original.status === "Paid" ? "secondary" : row.original.status === "Review" ? "outline" : "destructive"}>
           {row.original.status}
@@ -54,7 +54,7 @@ function buildColumns(setNotes: (value: string) => void): ColumnDef<DataTableDem
       header: ({ column }) => <DataTableSortableHeader column={column}>Amount</DataTableSortableHeader>,
     },
     createDataTableActionsColumn<DataTableDemoRow>({
-      getActions: (_row, original) => [
+      getActions: (_row: Row<DataTableDemoRow>, original: DataTableDemoRow) => [
         { key: "open", label: "Open detail", onSelect: () => setNotes(`${original.invoice} opened from row action`) },
         { key: "archive", label: "Archive", destructive: true, onSelect: () => setNotes(`${original.invoice} sent to archive`) },
       ],
@@ -129,9 +129,9 @@ export function DataTablePartShowcase({
               { id: "risk", name: "At risk", filters: {} },
             ]}
             activeFilterId={view === "all" ? "all" : view === "finance" ? "finance" : "risk"}
-            onSelectFilter={(id) => setView(id === "finance" ? "finance" : id === "risk" ? "at-risk" : "all")}
-            onSaveFilter={(name) => setNotes(`Saved filter created: ${name}`)}
-            onDeleteFilter={(id) => setNotes(`Saved filter deleted: ${id}`)}
+            onSelectFilter={(id: string) => setView(id === "finance" ? "finance" : id === "risk" ? "at-risk" : "all")}
+            onSaveFilter={(name: string) => setNotes(`Saved filter created: ${name}`)}
+            onDeleteFilter={(id: string) => setNotes(`Saved filter deleted: ${id}`)}
             onClearFilters={() => setView("all")}
           />
         </div>

@@ -138,11 +138,28 @@ async function assertInitAndArtifacts(template) {
       throw new Error(`list output missing status metadata for ${template}`)
     }
 
+    const aliasResult = await runCli(fixtureRoot, ["add", "form-number-input", "--overwrite", "--skip-install"])
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "form", "form-input.tsx"))
+    if (fsExtra.existsSync(path.join(fixtureRoot, paths.componentsPath, "form", "form-number-input.tsx"))) {
+      throw new Error(`deprecated form-number-input source should not be copied for ${template}`)
+    }
+    if (!`${aliasResult.stdout}\n${aliasResult.stderr}`.includes("form-input")) {
+      throw new Error(`migration alias output should name form-input for ${template}`)
+    }
+
     const presetName = "minimal"
     await runCli(fixtureRoot, ["preset", presetName, "--overwrite"])
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "button", "index.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "card", "index.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "badge", "index.tsx"))
+
+    await runCli(fixtureRoot, ["preset", "dashboard", "--overwrite", "--skip-install"])
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "data-table", "data-table.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "data-table", "data-table-pagination.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "display", "info-card.tsx"))
+    if (fsExtra.existsSync(path.join(fixtureRoot, paths.componentsPath, "display", "smart-card.tsx"))) {
+      throw new Error(`dashboard preset should not copy the removed smart-card alias for ${template}`)
+    }
 
     await runCli(fixtureRoot, ["add", "input", "form-select", "--overwrite", "--skip-install"])
     assertFileExists(fixtureRoot, path.join(paths.uiPath, "input", "index.tsx"))

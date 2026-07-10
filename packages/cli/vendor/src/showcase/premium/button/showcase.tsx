@@ -55,11 +55,12 @@ function StateButton({
   }
 
   return (
-    <Button
-      variant={variant}
-      disabled={state === "Disabled"}
-      className={state === "Focus" ? "ring-2 ring-[color:var(--aui-ring)] ring-offset-2 ring-offset-[color:var(--aui-page-bg)]" : undefined}
-    >
+        <Button
+          variant={variant}
+          pressed={state === "Focus"}
+          disabled={state === "Disabled"}
+          className={state === "Focus" ? "ring-2 ring-[color:var(--aui-ring)] ring-offset-2 ring-offset-[color:var(--aui-page-bg)]" : undefined}
+        >
       {state}
     </Button>
   )
@@ -127,6 +128,7 @@ export function ButtonShowcase() {
               <Button variant="outline">Preview</Button>
               <Button
                 variant={selectedVariant}
+                fullWidth
                 loading={approvalState === "saving"}
                 loadingLabel="Approving"
                 onClick={approveInvoice}
@@ -134,6 +136,25 @@ export function ButtonShowcase() {
                 {approvalState === "done" ? "Approved" : "Approve invoice"}
               </Button>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-3 md:grid-cols-4">
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Primary</p>
+            <p className="mt-2 leading-6 aui-text-muted">Main action with filled emphasis.</p>
+          </div>
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Secondary</p>
+            <p className="mt-2 leading-6 aui-text-muted">Alternative action without stealing focus.</p>
+          </div>
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Outline</p>
+            <p className="mt-2 leading-6 aui-text-muted">Low-emphasis action for previews and neutral workflows.</p>
+          </div>
+          <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
+            <p className="font-medium aui-text-strong">Destructive</p>
+            <p className="mt-2 leading-6 aui-text-muted">Reserved for archive, delete, or dangerous transitions.</p>
           </div>
         </div>
       </section>

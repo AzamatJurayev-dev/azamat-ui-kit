@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "2.0.4",
+  "version": "3.0.0",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -39,7 +39,6 @@
       "sheet-shell"
     ],
     "navigation": [
-      "anchor-nav",
       "nav-tabs",
       "page-tabs",
       "pagination",
@@ -54,7 +53,6 @@
       "phone-input",
       "async-select",
       "combobox",
-      "clearable-input",
       "search-input",
       "password-input",
       "masked-input",
@@ -63,7 +61,6 @@
       "otp-input",
       "slider",
       "rating",
-      "color-input",
       "quantity-stepper",
       "inline-editable",
       "simple-select"
@@ -76,13 +73,7 @@
       "form-switch",
       "form-date-picker",
       "form-date-range-picker",
-      "form-async-select",
-      "form-date-input",
-      "form-date-range-input",
-      "form-number-input",
-      "form-password-input",
-      "form-phone-input",
-      "form-search-input"
+      "form-date-range-input"
     ],
     "feedback": [
       "alert",
@@ -116,7 +107,6 @@
       "tree-view",
       "user-card",
       "trend-card",
-      "comparison-card",
       "delta-badge",
       "entity-header"
     ],
@@ -124,7 +114,6 @@
       "action-menu",
       "button-group",
       "copy-button",
-      "copy-field",
       "quick-action-grid"
     ],
     "layout": [
@@ -145,16 +134,10 @@
     ],
     "data-table": [
       "data-table",
-      "data-table-toolbar",
-      "data-table-pagination",
-      "data-table-row-actions",
       "data-table-bulk-actions",
       "data-table-view-presets",
-      "data-table-saved-filters",
       "data-table-column-visibility-menu",
-      "data-table-select-column",
-      "data-table-sortable-header",
-      "data-table-actions-column"
+      "data-table-sortable-header"
     ],
     "calendar": [
       "calendar",
@@ -176,9 +159,7 @@
       "toast",
       "notification-center"
     ],
-    "command": [
-      "command-palette"
-    ],
+    "command": [],
     "patterns": [
       "resource-page",
       "resource-detail-page",
@@ -187,12 +168,7 @@
     "modern": [
       "calendar-scheduler",
       "dual-list-picker",
-      "menubar",
-      "navigation-menu",
       "resizable-panel",
-      "rich-text-editor",
-      "tour",
-      "qr-code",
       "tag",
       "carousel",
       "typography",
@@ -245,8 +221,7 @@
     "action-menu",
     "date-picker",
     "data-table",
-    "notification-center",
-    "command-palette"
+    "notification-center"
   ],
   "recommendedByMode": {
     "foundation": [
@@ -281,7 +256,6 @@
       "date-range-picker",
       "file-upload",
       "file-dropzone",
-      "command-palette",
       "use-data-table-view-state",
       "data-table",
       "form-input",
@@ -335,17 +309,11 @@
       "statistic",
       "tree-view",
       "copy-button",
-      "copy-field",
       "section",
       "sticky-footer-bar",
       "calendar-scheduler",
       "dual-list-picker",
-      "menubar",
-      "navigation-menu",
       "resizable-panel",
-      "rich-text-editor",
-      "tour",
-      "qr-code",
       "tag",
       "carousel",
       "typography",

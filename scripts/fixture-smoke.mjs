@@ -234,10 +234,10 @@ import {
   Calendar,
   DatePicker,
   DateRangePicker,
-  DataTablePagination,
   useSessionStorageState,
   useToast,
 } from "tembro"
+import { DataTablePagination } from "tembro/data-table/data-table-pagination"
 
 function DemoToastButton() {
   const { addToast } = useToast()
@@ -286,10 +286,10 @@ export default function Page() {
   Calendar,
   DatePicker,
   DateRangePicker,
-  DataTablePagination,
   useSessionStorageState,
   useToast,
 } from "tembro"
+import { DataTablePagination } from "tembro/data-table/data-table-pagination"
 
 const required = [
   Button,
@@ -323,4 +323,3 @@ if (required.some((entry) => typeof entry !== "function" && typeof entry !== "ob
 }
 
 await main()
-

@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const appSidebarMock: ComponentDemoMock = {
-  code: `import { AppSidebar } from "@/components/layout/app-sidebar"
+  code: `import { Sidebar } from "@/components/layout/app-sidebar"
 
 const items = [
   { key: "overview", label: "Overview", href: "/overview", active: true },
@@ -12,7 +12,7 @@ const items = [
 
 export function Example() {
   return (
-    <AppSidebar
+    <Sidebar
       items={items}
       header={<div className="px-3 py-2 text-sm font-semibold">Azamat Workspace</div>}
       footer={<div className="px-3 py-2 text-xs text-muted-foreground">Starter plan</div>}
@@ -29,6 +29,6 @@ export function Example() {
     "Keep one items array as the source of truth for label, badge, disabled and active route state.",
     "Use the header slot for workspace identity, not for unrelated page actions.",
     "Collapsed mode works best when icons stay distinctive and current route is still obvious.",
-    "Prefer AppSidebar for reusable nav chrome; move to AppShell only when the full page frame is also shared.",
+    "Prefer Sidebar for reusable nav chrome; move to AppShell only when the full page frame is also shared.",
   ],
 }

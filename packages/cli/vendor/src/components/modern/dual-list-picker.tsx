@@ -11,18 +11,22 @@ export type DualListItem = {
 export type DualListPickerProps = React.ComponentProps<"div"> & {
   items: DualListItem[]
   picked?: string[]
+  defaultPicked?: string[]
   onPickedChange?: (value: string[]) => void
   availableTitle?: React.ReactNode
   pickedTitle?: React.ReactNode
 }
 
-function DualListPicker({ items, picked = [], onPickedChange, availableTitle = "Available", pickedTitle = "Selected", className, ...props }: DualListPickerProps) {
-  const pickedSet = new Set(picked)
+function DualListPicker({ items, picked, defaultPicked = [], onPickedChange, availableTitle = "Available", pickedTitle = "Selected", className, ...props }: DualListPickerProps) {
+  const [internalPicked, setInternalPicked] = React.useState(defaultPicked)
+  const currentPicked = picked ?? internalPicked
+  const pickedSet = new Set(currentPicked)
   const availableItems = items.filter((item) => !pickedSet.has(item.value))
   const pickedItems = items.filter((item) => pickedSet.has(item.value))
 
   function toggle(value: string) {
-    const next = pickedSet.has(value) ? picked.filter((item) => item !== value) : [...picked, value]
+    const next = pickedSet.has(value) ? currentPicked.filter((item) => item !== value) : [...currentPicked, value]
+    if (picked === undefined) setInternalPicked(next)
     onPickedChange?.(next)
   }
 
@@ -31,7 +35,7 @@ function DualListPicker({ items, picked = [], onPickedChange, availableTitle = "
       <div className="border-b px-3 py-2 text-sm font-medium">{title}</div>
       <div className="grid gap-1 p-2">
         {columnItems.map((item) => (
-          <button key={item.value} type="button" disabled={item.disabled} className="flex items-center justify-between rounded-md px-2 py-1.5 text-left text-sm hover:bg-muted disabled:opacity-50" onClick={() => toggle(item.value)}>
+          <button key={item.value} type="button" disabled={item.disabled} aria-pressed={pickedSet.has(item.value)} className="flex items-center justify-between rounded-md px-2 py-1.5 text-left text-sm hover:bg-muted disabled:opacity-50" onClick={() => toggle(item.value)}>
             <span>{item.label}</span>
             <span className="text-muted-foreground">{pickedSet.has(item.value) ? "−" : "+"}</span>
           </button>

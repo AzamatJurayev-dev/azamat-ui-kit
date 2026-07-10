@@ -19,7 +19,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
 
   component("pagination", "Pagination", "navigation", "Controlled page navigation with edge buttons and active state."),
   component("nav-tabs", "NavTabs", "navigation", "Navigation tabs for switching related document sections."),
-  component("anchor-nav", "AnchorNav", "navigation", "Section jump navigation for long detail pages."),
   component("page-tabs", "PageTabs", "navigation", "Top-level page tab strip for route-sized sections."),
   component("stepper-tabs", "StepperTabs", "navigation", "Step-like tabs for setup and onboarding progress."),
 
@@ -36,7 +35,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("range-slider", "RangeSlider", "inputs", "Two-handle slider for min/max filtering."),
   component("rating", "Rating", "inputs", "Compact score input for feedback and review flows."),
   component("otp-input", "OtpInput", "inputs", "One-time code entry with fixed-length slots."),
-  component("color-input", "ColorInput", "inputs", "Theme and accent color field with native color selection."),
   component("inline-editable", "InlineEditable", "inputs", "Inline editing primitive for dense tables and configuration rows."),
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
 
@@ -54,15 +52,12 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
   component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
-  component("comparison-card", "ComparisonCard", "display", "Compare current and previous values in one compact card."),
 
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
   component("filter-chips", "FilterChips", "actions", "Inline active filter summaries with clear and remove actions."),
-  component("data-table-saved-filters", "SavedFilterSelect", "actions", "Saved filter chips and quick view controls."),
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
-  component("command-palette", "CommandPalette", "actions", "Keyboard command surface for global navigation and actions."),
 
   component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
   component("section-header", "SectionHeader", "layout", "Reusable section title block with actions and metadata."),
@@ -71,13 +66,8 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
 
-  component("data-table-pagination", "DataTablePagination", "data-table", "Pagination control used by DataTable pages."),
-  component("data-table-toolbar", "DataTableToolbar", "data-table", "Toolbar surface for DataTable search, filters and actions."),
   component("data-table-column-visibility-menu", "DataTableColumnVisibilityMenu", "data-table", "Column visibility menu pattern for table views."),
-  component("data-table-select-column", "DataTableSelectColumn", "data-table", "Selection column pattern for bulk table workflows."),
   component("data-table-sortable-header", "DataTableSortableHeader", "data-table", "Sortable header trigger with clear visual state."),
-  component("data-table-row-actions", "DataTableRowActions", "data-table", "Row action menu for inspect, duplicate and archive operations."),
-  component("data-table-actions-column", "DataTableActionsColumn", "data-table", "Reusable actions column for DataTable definitions."),
   component("data-table-bulk-actions", "DataTableBulkActions", "data-table", "Bulk action bar for selected rows."),
   component("data-table-view-presets", "DataTableViewPresets", "data-table", "Saved table view presets for operational dashboards."),
 
