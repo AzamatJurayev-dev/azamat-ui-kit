@@ -14,6 +14,12 @@ const baseColumns = [
     ],
   },
   {
+    key: "done",
+    title: "Done",
+    description: "Completed work",
+    cards: [],
+  },
+  {
     key: "inProgress",
     title: "In progress",
     description: "Current sprint",
@@ -34,19 +40,16 @@ export function KanbanBoardShowcase() {
       </div>
       <KanbanBoard
         columns={columns}
+        onColumnsChange={setColumns}
         onCardClick={(card) => setSelected(String(card.key))}
-        renderCard={(card) => (
+        renderCard={(card, _column, { handle }) => (
           <div
-            key={card.key}
             className="rounded-lg border bg-card p-3"
-            role="button"
-            tabIndex={0}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") setSelected(card.key)
-            }}
-            onClick={() => setSelected(card.key)}
           >
-            <div className="font-medium text-sm">{card.title}</div>
+            <div className="flex items-start justify-between gap-2">
+              <div className="font-medium text-sm">{card.title}</div>
+              {handle}
+            </div>
             <div className="mt-1 text-xs text-muted-foreground">{card.description}</div>
             {card.meta && <div className="mt-2 text-xs text-foreground/80">{card.meta}</div>}
           </div>

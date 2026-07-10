@@ -74,6 +74,7 @@ import { resultMock, ResultShowcase } from "./result"
 import { rightClickMenuMock, RightClickMenuShowcase } from "./right-click-menu"
 import { scrollBoxMock, ScrollBoxShowcase } from "./scroll-box"
 import { savedFilterSelectMock, SavedFilterSelectShowcase } from "./saved-filter-select"
+import { sortableListMock, SortableListShowcase } from "./sortable-list"
 import { searchInputMock, SearchInputShowcase } from "./search-input"
 import { segmentedControlMock, SegmentedControlShowcase } from "./segmented-control"
 import { selectMock, SelectShowcase } from "./select"
@@ -99,6 +100,7 @@ import { fileUploadMock, FileUploadShowcase } from "./file-upload"
 import { imageUploadMock, ImageUploadShowcase } from "./image-upload"
 import { passwordInputMock, PasswordInputShowcase } from "./password-input"
 import { ratingMock, RatingShowcase } from "./rating"
+import { virtualListMock, VirtualListShowcase } from "./virtual-list"
 
 export { defaultComponentDemoState } from "./types"
 export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, ComponentDemoState } from "./types"
@@ -169,6 +171,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "right-click-menu": { mock: rightClickMenuMock, Showcase: RightClickMenuShowcase },
   "data-table": { mock: dataTableMock, Showcase: DataTableShowcase },
   "saved-filter-select": { mock: savedFilterSelectMock, Showcase: SavedFilterSelectShowcase },
+  "sortable-list": { mock: sortableListMock, Showcase: SortableListShowcase },
   "form-field": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-field-shell": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-input": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
@@ -215,4 +218,5 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "scroll-box": { mock: scrollBoxMock, Showcase: ScrollBoxShowcase },
   timeline: { mock: timelineMock, Showcase: TimelineShowcase },
   toast: { mock: toastMock, Showcase: ToastShowcase },
+  "virtual-list": { mock: virtualListMock, Showcase: VirtualListShowcase },
 }

@@ -51,6 +51,8 @@ export const standalonePublicComponentSurfaces: readonly PublicComponentSurfaceE
   { slug: "typography", registryName: "typography", surface: "standalone" },
   { slug: "json-input", registryName: "json-input", surface: "standalone" },
   { slug: "time-picker", registryName: "time-picker", surface: "standalone" },
+  { slug: "sortable-list", registryName: "sortable-list", surface: "standalone" },
+  { slug: "virtual-list", registryName: "virtual-list", surface: "standalone" },
 ] as const
 
 export const publicComponentSurfaceEntries = [
