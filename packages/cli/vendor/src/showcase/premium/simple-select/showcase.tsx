@@ -31,6 +31,7 @@ export function SimpleSelectShowcase({ mode }: ComponentDemoProps) {
         placeholder="Visibility"
         searchable
         clearable
+        showSelectedDescription
       />
       <div className="grid gap-3 md:grid-cols-3">
         <div className="rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-surface-muted)] px-4 py-3 text-sm">
@@ -46,7 +47,7 @@ export function SimpleSelectShowcase({ mode }: ComponentDemoProps) {
           <p className="mt-2 aui-text-muted">Choose this for local option lists before moving to AsyncSelect.</p>
         </div>
       </div>
-      <SimpleSelect key={uncontrolledKey} defaultValue="public" options={options} />
+      <SimpleSelect key={uncontrolledKey} defaultValue="public" options={options} showSelectedDescription />
       <div className="flex flex-wrap gap-2">
         <Button variant="outline" size="sm" onClick={() => setValue(undefined)}>
           Clear controlled

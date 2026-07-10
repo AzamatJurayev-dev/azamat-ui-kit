@@ -34,12 +34,12 @@ for (const source of new Set(rootSources)) {
   }
 }
 
-if (/export\s+\*\s+from\s+["']\.\/smart-card["']/.test(displayIndex)) {
-  failures.push("src/components/display/index.ts should not wildcard-export './smart-card'; use canonical InfoCard alias export instead")
+if (/smart-card/.test(displayIndex)) {
+  failures.push("src/components/display/index.ts must not expose the removed SmartCard compatibility surface")
 }
 
-if (!/SmartCard\s+as\s+InfoCard/.test(displayIndex)) {
-  failures.push("src/components/display/index.ts must expose InfoCard as the canonical smart-card export")
+if (!/export\s+\*\s+from\s+["']\.\/info-card["']/.test(displayIndex)) {
+  failures.push("src/components/display/index.ts must expose the canonical './info-card' module")
 }
 
 for (const source of forbiddenRootBarrels) {

@@ -11,7 +11,15 @@ export type ActivityFeedItem = {
   icon?: React.ReactNode
   tone?: "default" | "success" | "warning" | "danger" | "info" | "muted"
   actions?: React.ReactNode
+  meta?: React.ReactNode
+  badge?: React.ReactNode
+  unread?: boolean
   hidden?: boolean
+  interactive?: boolean
+  href?: string
+  target?: React.ComponentProps<"a">["target"]
+  rel?: React.ComponentProps<"a">["rel"]
+  onSelect?: () => void
   className?: string
 }
 
@@ -22,6 +30,7 @@ export type ActivityFeedProps = React.ComponentProps<typeof Card> & {
   items: ActivityFeedItem[]
   empty?: React.ReactNode
   compact?: boolean
+  showConnector?: boolean
   contentClassName?: string
   itemClassName?: string
 }
@@ -43,6 +52,7 @@ function ActivityFeed({
   items,
   empty = "No activity yet.",
   compact = false,
+  showConnector = true,
   contentClassName,
   itemClassName,
   ...props
@@ -68,26 +78,67 @@ function ActivityFeed({
         {visibleItems.length === 0 ? (
           <div className="rounded-lg border border-dashed p-4 text-center text-sm text-muted-foreground">{empty}</div>
         ) : (
-          visibleItems.map((item, index) => (
+          visibleItems.map((item, index) => {
+            const isInteractive = item.interactive ?? Boolean(item.href || item.onSelect)
+            const content = (
+              <>
+                <div className={cn(
+                  "relative z-10 mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border bg-background",
+                  item.unread && "border-primary/45 bg-primary/8 shadow-[0_0_0_3px_color-mix(in_oklch,var(--primary),transparent_88%)]"
+                )}>
+                  {item.icon ?? <span className={cn("size-2 rounded-full", toneDotClassName[item.tone ?? "default"])} />}
+                </div>
+                <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex min-w-0 items-start justify-between gap-2">
+                    <div className="min-w-0 space-y-1">
+                      <div className="min-w-0 text-sm font-medium leading-5 text-foreground">{item.title}</div>
+                      {item.meta && <div className="text-xs text-muted-foreground">{item.meta}</div>}
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2">
+                      {item.badge}
+                      {item.time && <div className="text-xs text-muted-foreground">{item.time}</div>}
+                    </div>
+                  </div>
+                  {item.description && <div className="text-sm leading-5 text-muted-foreground">{item.description}</div>}
+                  {item.actions && <div className="pt-1">{item.actions}</div>}
+                </div>
+              </>
+            )
+
+            return (
             <div
               key={item.id}
               data-slot="activity-feed-item"
               className={cn("relative flex gap-3 pb-4 last:pb-0", compact && "gap-2 pb-3", itemClassName, item.className)}
             >
-              {index < visibleItems.length - 1 && <div className="absolute left-3 top-7 h-[calc(100%-1.75rem)] w-px bg-border" />}
-              <div className="relative z-10 mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border bg-background">
-                {item.icon ?? <span className={cn("size-2 rounded-full", toneDotClassName[item.tone ?? "default"])} />}
-              </div>
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex min-w-0 items-start justify-between gap-2">
-                  <div className="min-w-0 text-sm font-medium leading-5 text-foreground">{item.title}</div>
-                  {item.time && <div className="shrink-0 text-xs text-muted-foreground">{item.time}</div>}
+              {showConnector && index < visibleItems.length - 1 && <div className="absolute left-3 top-7 h-[calc(100%-1.75rem)] w-px bg-border" />}
+              {item.href ? (
+                <a
+                  href={item.href}
+                  target={item.target}
+                  rel={item.rel}
+                  className={cn(
+                    "flex min-w-0 flex-1 gap-3 rounded-[var(--radius-md)] px-1.5 py-1 transition-colors",
+                    isInteractive && "hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                  )}
+                >
+                  {content}
+                </a>
+              ) : isInteractive ? (
+                <button
+                  type="button"
+                  className="flex min-w-0 flex-1 gap-3 rounded-[var(--radius-md)] px-1.5 py-1 text-left transition-colors hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                  onClick={item.onSelect}
+                >
+                  {content}
+                </button>
+              ) : (
+                <div className="flex min-w-0 flex-1 gap-3 px-1.5 py-1">
+                  {content}
                 </div>
-                {item.description && <div className="text-sm leading-5 text-muted-foreground">{item.description}</div>}
-                {item.actions && <div className="pt-1">{item.actions}</div>}
-              </div>
+              )}
             </div>
-          ))
+          )})
         )}
       </CardContent>
     </Card>

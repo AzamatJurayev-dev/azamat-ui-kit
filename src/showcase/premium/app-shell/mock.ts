@@ -1,7 +1,7 @@
 import type { ComponentDemoMock } from "../types"
 
 export const appShellMock: ComponentDemoMock = {
-  code: `import { AppHeader, AppSidebar, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, SidebarNav, Button } from "tembro"
+  code: `import { AppHeader, AppShell, Breadcrumbs, InfoCard, MetricGrid, PageContainer, PageHeader, Sidebar, SidebarNav, Button } from "tembro"
 
 const navItems = [
   { key: "overview", label: "Overview", href: "/overview", active: true },
@@ -21,12 +21,12 @@ export function Example() {
       sidebarWidth="default"
       mainClassName="p-4"
       sidebar={
-        <AppSidebar
+        <Sidebar
           header={<div className="px-3 py-2 text-sm font-semibold">Azamat Workspace</div>}
           footer={<div className="px-3 py-2 text-xs aui-text-muted">v1.2.0</div>}
         >
           <SidebarNav items={navItems} />
-        </AppSidebar>
+        </Sidebar>
       }
       header={<AppHeader left="Admin Console" right={<Button variant="outline">Open command</Button>} />}
       aside={<InfoCard title="Workspace" description="Metrics, alerts, and quick access cards." compact>Aside slot keeps secondary context near main content.</InfoCard>}
@@ -64,4 +64,3 @@ export function Example() {
     "Avoid overloading the aside region in mobile contexts; hide non-essential context when needed.",
   ],
 }
-

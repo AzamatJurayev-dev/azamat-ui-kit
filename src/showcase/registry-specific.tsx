@@ -7,7 +7,6 @@ import {
   FilterIcon,
   LayoutDashboardIcon,
   MoreHorizontalIcon,
-  SearchIcon,
   UploadCloudIcon,
 } from "lucide-react"
 

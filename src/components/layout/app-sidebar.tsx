@@ -5,7 +5,7 @@ import { useIsMobile } from "@/hooks/use-is-mobile"
 import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
-export type AppSidebarNavItem = {
+type AppSidebarNavItem = {
   key: string
   label: React.ReactNode
   icon?: React.ReactNode
@@ -22,7 +22,7 @@ export type AppSidebarNavItem = {
   onSelect?: () => void
 }
 
-export type AppSidebarFooterAccount = {
+type AppSidebarFooterAccount = {
   label: React.ReactNode
   description?: React.ReactNode
   avatar?: React.ReactNode
@@ -31,7 +31,7 @@ export type AppSidebarFooterAccount = {
   onSelect?: () => void
 }
 
-export type AppSidebarProps = React.ComponentProps<"aside"> & {
+type AppSidebarProps = React.ComponentProps<"aside"> & {
   header?: React.ReactNode
   footer?: React.ReactNode
   items?: AppSidebarNavItem[]
@@ -559,7 +559,7 @@ function SidebarSurface({
   )
 }
 
-function AppSidebar({
+function Sidebar({
   className,
   header,
   footer,
@@ -592,7 +592,8 @@ function AppSidebar({
   children,
   ...props
 }: AppSidebarProps) {
-  const isMobile = responsive ? useIsMobile(mobileBreakpoint) : false
+  const matchesMobileBreakpoint = useIsMobile(mobileBreakpoint)
+  const isMobile = responsive && matchesMobileBreakpoint
   const [uncontrolledMobileOpen, setUncontrolledMobileOpen] = React.useState(defaultMobileOpen)
   const mobileOpen = mobileOpenProp ?? uncontrolledMobileOpen
 
@@ -714,15 +715,7 @@ function AppSidebar({
   )
 }
 
-/**
- * Canonical sidebar surface for new usage.
- */
-const Sidebar = AppSidebar
-
-/**
- * @deprecated Use {@link Sidebar} instead. `AppSidebar` remains as a compatibility alias.
- */
-export { AppSidebar, Sidebar }
+export { Sidebar }
 export type {
   AppSidebarFooterAccount as SidebarFooterAccount,
   AppSidebarNavItem as SidebarItem,

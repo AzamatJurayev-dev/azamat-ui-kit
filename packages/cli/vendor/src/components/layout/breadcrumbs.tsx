@@ -18,6 +18,7 @@ export type BreadcrumbsProps = React.ComponentProps<"nav"> & {
   maxItems?: number
   collapseLabel?: React.ReactNode
   separator?: React.ReactNode
+  wrap?: boolean
   renderLink?: (props: React.ComponentProps<"a"> & { item: BreadcrumbItem; [key: `data-${string}`]: string | boolean | undefined }) => React.ReactNode
 }
 
@@ -44,6 +45,7 @@ function Breadcrumbs({
   maxItems,
   collapseLabel = "…",
   separator = <ChevronRightIcon className="size-3.5" />,
+  wrap = false,
   renderLink,
   ...props
 }: BreadcrumbsProps) {
@@ -56,7 +58,11 @@ function Breadcrumbs({
     <nav
       data-slot="breadcrumbs"
       aria-label="Breadcrumb"
-      className={cn("flex min-w-0 items-center gap-1 text-sm text-muted-foreground", className)}
+      className={cn(
+        "flex min-w-0 items-center gap-1 overflow-x-auto text-sm text-muted-foreground",
+        wrap ? "flex-wrap" : "whitespace-nowrap",
+        className
+      )}
       {...props}
     >
       {resolvedItems.map((item, index) => {
@@ -76,7 +82,7 @@ function Breadcrumbs({
                 item,
                 href: item.href,
                 "data-slot": "breadcrumbs-link",
-                className: "truncate transition-colors hover:text-foreground",
+                className: "truncate rounded-[var(--radius-sm)] px-1 py-0.5 transition-colors hover:bg-accent/55 hover:text-foreground",
                 onClick: () => item.onSelect?.(),
                 children: (
                   <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -88,7 +94,7 @@ function Breadcrumbs({
                 <a
                   href={item.href}
                   data-slot="breadcrumbs-link"
-                  className="truncate transition-colors hover:text-foreground"
+                  className="truncate rounded-[var(--radius-sm)] px-1 py-0.5 transition-colors hover:bg-accent/55 hover:text-foreground"
                   onClick={() => item.onSelect?.()}
                 >
                   <span className="inline-flex min-w-0 items-center gap-1.5">
@@ -101,7 +107,10 @@ function Breadcrumbs({
               <span
                 data-slot="breadcrumbs-current"
                 aria-current={isCurrent ? (item.currentLabel ?? "page") : undefined}
-                className={cn("inline-flex min-w-0 items-center gap-1.5 truncate", isCurrent && "font-medium text-foreground")}
+                className={cn(
+                  "inline-flex min-w-0 items-center gap-1.5 truncate rounded-[var(--radius-sm)] px-1 py-0.5",
+                  isCurrent && "bg-accent/45 font-medium text-foreground"
+                )}
               >
                 {item.icon ? <span className="shrink-0">{item.icon}</span> : null}
                 <span className="truncate">{item.label}</span>

@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.0.0 - 2026-07-10
+
+### Breaking changes
+
+- removed the deprecated `FormAsyncSelect`, `FormDateInput`, `FormNumberInput`, `FormPasswordInput`, `FormPhoneInput`, and `FormSearchInput` component exports; use `FormSelect kind="async"` or the matching `FormInput kind` instead
+- removed the deprecated `AppSidebar` and `SmartCard` exports; use `Sidebar` and `InfoCard`
+- removed `QRCode`, which rendered a QR-like image that was not scannable
+- removed the incomplete `RichTextEditor`, `Menubar`, `NavigationMenu`, and `Tour` surfaces instead of presenting partial interaction contracts as production components
+
+### Changed
+
+- made CLI migration aliases resolve to canonical components without copying deprecated source files
+- fixed conditional React hook usage in `Input`, `AsyncSelect`, and `Sidebar`, and restored core hooks lint rules
+- renamed the implementation module from `smart-card.tsx` to `info-card.tsx`
+- made `JsonInput` and `DualListPicker` work in both controlled and uncontrolled modes
+- improved `CalendarScheduler` empty states and reduced repeated event filtering
+- tightened registry validation so every advertised group member and migration alias must exist in the CLI registry
+- added component-quality regression coverage and corrected repository metadata
+
 ## 2.0.3 - 2026-07-08
 
 - tightened default radius and shadow tokens so controls render less pill-like out of the box

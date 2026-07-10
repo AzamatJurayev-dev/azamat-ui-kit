@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { ActivityFeed } from "@/index"
+import { ActivityFeed, Badge, Button } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -18,6 +18,7 @@ type ToneFilter = (typeof toneFilters)[number]
 export function ActivityFeedShowcase({ mode }: ComponentDemoProps) {
   const [compact, setCompact] = React.useState(mode === "playground")
   const [filter, setFilter] = React.useState<ToneFilter>("all")
+  const [selectedId, setSelectedId] = React.useState<string | null>(null)
 
   const visibleItems = React.useMemo(() => {
     if (filter === "all") {
@@ -55,10 +56,22 @@ export function ActivityFeedShowcase({ mode }: ComponentDemoProps) {
       <ActivityFeed
         title="Recent activity"
         description="System and team events are grouped into one lightweight feed."
-        items={visibleItems}
+        items={visibleItems.map((item, index) => ({
+          ...item,
+          unread: index === 0,
+          badge: index === 0 ? <Badge variant="secondary">Unread</Badge> : undefined,
+          interactive: true,
+          onSelect: () => setSelectedId(item.id),
+          actions: (
+            <Button size="xs" variant="ghost" onClick={() => setSelectedId(item.id)}>
+              Review
+            </Button>
+          ),
+        }))}
         compact={compact}
         empty={<span className="aui-text-muted text-sm">No matching activity for selected tone.</span>}
       />
+      <div className="aui-text-muted text-sm">Selected item: {selectedId ?? "none"}</div>
     </div>
   )
 }

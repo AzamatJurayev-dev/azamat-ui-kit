@@ -50,6 +50,7 @@ export type AsyncSelectStateRenderer<
 
 export type AsyncSelectLabels = {
   placeholder?: string
+  multiPlaceholder?: string
   searchPlaceholder?: string
   loading?: string
   creating?: string
@@ -68,6 +69,7 @@ export type AsyncSelectProps<
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 > = Omit<React.ComponentProps<"div">, "onChange"> & {
+  isMulti?: false
   value?: TValue
   selectedOption?: TOption | null
   onValueChange?: (value: TValue | undefined, option?: TOption) => void
@@ -90,11 +92,20 @@ export type AsyncSelectProps<
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
+  showSelectedDescription?: boolean
   triggerClassName?: string
   contentClassName?: string
   searchClassName?: string
   optionClassName?: string
   invalid?: boolean
+}
+
+export type AsyncSelectMultiModeProps<
+  TValue extends string = string,
+  TData = unknown,
+  TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
+> = AsyncMultiSelectProps<TValue, TData, TOption> & {
+  isMulti: true
 }
 
 export type AsyncMultiSelectProps<
@@ -129,6 +140,7 @@ export type AsyncMultiSelectProps<
   onCreateOption?: (search: string) => Promise<TOption> | TOption
   createOptionLabel?: (search: string) => React.ReactNode
   showCreateOption?: (search: string, options: TOption[]) => boolean
+  showSelectedDescription?: boolean
   triggerClassName?: string
   contentClassName?: string
   searchClassName?: string
@@ -410,11 +422,12 @@ function AsyncCreateButton({
   )
 }
 
-function AsyncSelect<
+function AsyncSingleSelect<
   TValue extends string = string,
   TData = unknown,
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
->({
+>(props: AsyncSelectProps<TValue, TData, TOption>) {
+  const {
   className,
   value,
   selectedOption,
@@ -438,13 +451,14 @@ function AsyncSelect<
   onCreateOption,
   createOptionLabel,
   showCreateOption,
+  showSelectedDescription = true,
   triggerClassName,
   contentClassName,
   searchClassName,
   optionClassName,
   invalid,
-  ...props
-}: AsyncSelectProps<TValue, TData, TOption>) {
+  ...rootProps
+  } = props
   const resolvedDefaultGroups = React.useMemo(() => normalizeOptionGroups(defaultOptions), [defaultOptions])
   const defaultFlatOptions = React.useMemo(() => flattenOptionGroups(resolvedDefaultGroups), [resolvedDefaultGroups])
   const [open, setOpen] = React.useState(false)
@@ -613,7 +627,7 @@ function AsyncSelect<
   }
 
   return (
-    <div data-slot="async-select" className={cn("w-full", className)} {...props}>
+    <div data-slot="async-select" className={cn("w-full", className)} {...rootProps}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           render={
@@ -638,9 +652,11 @@ function AsyncSelect<
                 <span className="truncate font-semibold">
                   {renderValue?.(currentOption) ?? currentOption.label}
                 </span>
-                {currentOption.disabled && currentOption.disabledReason && (
-                  <span className="truncate text-xs text-muted-foreground">{currentOption.disabledReason}</span>
-                )}
+                {showSelectedDescription && (currentOption.description || (currentOption.disabled && currentOption.disabledReason)) ? (
+                  <span className="truncate text-xs text-muted-foreground">
+                    {currentOption.description ?? currentOption.disabledReason}
+                  </span>
+                ) : null}
               </span>
             ) : (
               <span className="truncate text-muted-foreground">{labels?.placeholder ?? "Select"}</span>
@@ -787,6 +803,7 @@ function AsyncMultiSelect<
   onCreateOption,
   createOptionLabel,
   showCreateOption,
+  showSelectedDescription = true,
   triggerClassName,
   contentClassName,
   searchClassName,
@@ -1067,9 +1084,11 @@ function AsyncMultiSelect<
                         renderValue?.(option) ??
                         option.label}
                     </span>
-                    {option.disabled && option.disabledReason && (
-                      <span className="truncate text-[11px] text-muted-foreground">{option.disabledReason}</span>
-                    )}
+                    {showSelectedDescription && (option.description || (option.disabled && option.disabledReason)) ? (
+                      <span className="truncate text-[11px] text-muted-foreground">
+                        {option.description ?? option.disabledReason}
+                      </span>
+                    ) : null}
                   </span>
                   {!disabled && (
                     <span
@@ -1091,7 +1110,7 @@ function AsyncMultiSelect<
               ))
             ) : (
               <span className="truncate text-muted-foreground">
-                {labels?.placeholder ?? "Select"}
+                {labels?.multiPlaceholder ?? labels?.placeholder ?? "Select"}
               </span>
             )}
           </span>
@@ -1232,6 +1251,18 @@ function AsyncMultiSelect<
       </Popover>
     </div>
   )
+}
+
+function AsyncSelect<
+  TValue extends string = string,
+  TData = unknown,
+  TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
+>(props: AsyncSelectProps<TValue, TData, TOption> | AsyncSelectMultiModeProps<TValue, TData, TOption>) {
+  if (props.isMulti) {
+    return <AsyncMultiSelect {...props} />
+  }
+
+  return <AsyncSingleSelect {...props} />
 }
 
 export { AsyncSelect, AsyncMultiSelect }

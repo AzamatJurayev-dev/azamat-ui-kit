@@ -2,14 +2,20 @@ import * as React from "react"
 import type { Control, FieldPath, FieldValues } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
-import { FormInput, type FormInputProps } from "@/components/form/form-input"
+import {
+  FormInput,
+  type FormInputDateVariantProps,
+  type FormInputNumberVariantProps,
+  type FormInputPhoneVariantProps,
+  type FormInputProps,
+} from "@/components/form/form-input"
 import { FormTextarea, type FormTextareaProps } from "@/components/form/form-textarea"
-import { FormSelect, type FormSelectProps } from "@/components/form/form-select"
-import { FormAsyncSelect, type FormAsyncSelectProps } from "@/components/form/form-async-select"
+import {
+  FormSelect,
+  type FormSelectAsyncVariantProps,
+  type FormSelectProps,
+} from "@/components/form/form-select"
 import { FormSwitch, type FormSwitchProps } from "@/components/form/form-switch"
-import { FormNumberInput, type FormNumberInputProps } from "@/components/form/form-number-input"
-import { FormPhoneInput, type FormPhoneInputProps } from "@/components/form/form-phone-input"
-import { FormDateInput, type FormDateInputProps } from "@/components/form/form-date-input"
 import {
   FormDateRangeInput,
   type FormDateRangeInputProps,
@@ -66,7 +72,7 @@ export type FormBuilderAsyncSelectField<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseFormBuilderField & {
   type: "async-select"
-  props: Omit<FormAsyncSelectProps<TFieldValues, TName>, "control">
+  props: Omit<FormSelectAsyncVariantProps<TFieldValues, TName>, "control" | "kind">
 }
 
 export type FormBuilderSwitchField<
@@ -82,7 +88,7 @@ export type FormBuilderNumberField<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseFormBuilderField & {
   type: "number"
-  props: Omit<FormNumberInputProps<TFieldValues, TName>, "control">
+  props: Omit<FormInputNumberVariantProps<TFieldValues, TName>, "control" | "kind">
 }
 
 export type FormBuilderPhoneField<
@@ -90,7 +96,7 @@ export type FormBuilderPhoneField<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseFormBuilderField & {
   type: "phone"
-  props: Omit<FormPhoneInputProps<TFieldValues, TName>, "control">
+  props: Omit<FormInputPhoneVariantProps<TFieldValues, TName>, "control" | "kind">
 }
 
 export type FormBuilderDateField<
@@ -98,7 +104,7 @@ export type FormBuilderDateField<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseFormBuilderField & {
   type: "date"
-  props: Omit<FormDateInputProps<TFieldValues, TName>, "control">
+  props: Omit<FormInputDateVariantProps<TFieldValues, TName>, "control" | "kind">
 }
 
 export type FormBuilderDateRangeField<
@@ -296,15 +302,38 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
         ...(field.props as Omit<FormSelectProps<TFieldValues, FieldPath<TFieldValues>>, "control">),
       })
     case "async-select":
-      return <FormAsyncSelect control={context.control} disabled={context.disabled} {...field.props} />
+      return React.createElement(FormSelectComponent, {
+        control: context.control,
+        disabled: context.disabled,
+        kind: "async",
+        ...field.props,
+      })
     case "switch":
       return <FormSwitch control={context.control} disabled={context.disabled} {...field.props} />
     case "number":
-      return <FormNumberInput control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
+      return React.createElement(FormInputComponent, {
+        control: context.control,
+        disabled: context.disabled,
+        readOnly: context.readOnly,
+        kind: "number",
+        ...field.props,
+      })
     case "phone":
-      return <FormPhoneInput control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
+      return React.createElement(FormInputComponent, {
+        control: context.control,
+        disabled: context.disabled,
+        readOnly: context.readOnly,
+        kind: "phone",
+        ...field.props,
+      })
     case "date":
-      return <FormDateInput control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
+      return React.createElement(FormInputComponent, {
+        control: context.control,
+        disabled: context.disabled,
+        readOnly: context.readOnly,
+        kind: "date",
+        ...field.props,
+      })
     case "date-range":
       return (
         <FormDateRangeInput

@@ -40,6 +40,26 @@ import { Input } from "@/components/ui/input"
 
 Every public surface is a component. Repeated behavior should be handled with props, hooks, helpers, and local source files, not separate family abstractions.
 
+## Migrating to 3.0
+
+Replace compatibility component imports with the canonical API:
+
+```tsx
+// before
+<FormNumberInput control={control} name="price" />
+<FormAsyncSelect control={control} name="ownerId" loadOptions={loadOwners} />
+<AppSidebar items={items} />
+<SmartCard title="Account" />
+
+// after
+<FormInput control={control} name="price" kind="number" />
+<FormSelect control={control} name="ownerId" kind="async" loadOptions={loadOwners} />
+<Sidebar items={items} />
+<InfoCard title="Account" />
+```
+
+The CLI still accepts old component names and redirects them to canonical source-copy entries. Removed incomplete components do not have drop-in replacements; use a production-grade implementation only when the application actually needs that interaction.
+
 ## Current direction
 
 The docs layer is being rebuilt from scratch around:

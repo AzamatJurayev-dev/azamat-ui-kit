@@ -362,14 +362,8 @@ const formControlComponentSlugs = new Set([
   "form-field-shell",
   "form-input",
   "form-select",
-  "form-async-select",
   "form-textarea",
   "form-switch",
-  "form-search-input",
-  "form-password-input",
-  "form-number-input",
-  "form-phone-input",
-  "form-date-input",
   "form-date-range-input",
   "form-date-picker",
   "form-date-range-picker",
@@ -379,12 +373,18 @@ const formControlComponentSlugs = new Set([
   "quantity-input",
 ])
 const overlayComponentSlugs = new Set(["dialog", "popover", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "modal-shell", "sheet-shell", "alert-dialog", "drawer"])
-const layoutComponentSlugs = new Set(["sidebar", "app-sidebar", "app-shell", "sidebar-nav", "breadcrumbs", "page-header", "page-container", "app-header", "section-header", "sticky-footer-bar"])
+const layoutComponentSlugs = new Set(["sidebar", "app-shell", "sidebar-nav", "breadcrumbs", "page-header", "page-container", "app-header", "section-header", "sticky-footer-bar"])
 const feedbackComponentSlugs = new Set(["toast", "loading-state", "empty-state", "result"])
 const patternComponentSlugs = new Set(["form-builder"])
 
 const legacyComponentSlugAliases = new Map<string, string>([
   ["app-sidebar", "sidebar"],
+  ["form-async-select", "form-select"],
+  ["form-search-input", "form-input"],
+  ["form-password-input", "form-input"],
+  ["form-number-input", "form-input"],
+  ["form-phone-input", "form-input"],
+  ["form-date-input", "form-input"],
   ["confirm-action", "confirm-dialog"],
   ["file-dropzone", "upload"],
   ["hover-card", "tooltip"],
@@ -730,23 +730,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: [...formRHFWrapperCommonFeatures, "Simple + async under one API", "Form-driven value control", "Clear/empty handling"],
   },
   {
-    slug: "form-async-select",
-    title: "Form Async Select",
-    description: "Compatibility alias for the async `FormSelect` variant. Keep it for migration, but prefer `FormSelect kind=\"async\"` in new code.",
-    icon: ComponentIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ...formRHFWrapperBasePropsRows,
-      ["loadOptions", "(search: string) => Promise<AsyncSelectOption[]>", "-", "Search-driven option loader."],
-      ["loadSelectedOption", "(value: string) => Promise<AsyncSelectOption | null>", "-", "Hydrates selected option for controlled edit mode."],
-      ["selectedOption", "AsyncSelectOption", "-", "Hydrated selected option."],
-      ["defaultOptions", "AsyncSelectOption[]", "-", "Initial loaded options."],
-    ],
-    features: [...formRHFWrapperCommonFeatures, "Compatibility alias", "Remote options", "Hydration support"],
-  },
-  {
     slug: "form-textarea",
     title: "Form Textarea",
     description: "RHF textarea wrapper with shell-level validation messages and descriptions.",
@@ -778,92 +761,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onCheckedChange", "(value: boolean) => void", "-", "Boolean callback from switch state change."],
     ],
     features: [...formRHFWrapperCommonFeatures, "Boolean value contract", "Readable shell errors", "Disabled states"],
-  },
-  {
-    slug: "form-search-input",
-    title: "Form Search Input",
-    description: "Compatibility alias for `FormInput kind=\"search\"`. Keep existing routes stable while new work adopts the universal wrapper.",
-    icon: ComponentIcon,
-    category: "Forms",
-    status: "Preview",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ...formRHFWrapperBasePropsRows,
-      ["clearLabel", "string", "\"Clear\"", "Clear action label for search mode."],
-      ["showClearButton", "boolean", "true", "Whether clear action is visible."],
-      ["searchMode", "boolean", "true", "Enables search UX conventions."],
-      ["onValueChange", "(value: string) => void", "-", "Normalized value callback for external query sync."],
-    ],
-    features: [...formRHFWrapperCommonFeatures, "Compatibility alias", "Clear action", "Query-driven usage"],
-  },
-  {
-    slug: "form-password-input",
-    title: "Form Password Input",
-    description: "Compatibility alias for `FormInput kind=\"password\"` so migration does not break existing imports.",
-    icon: FormInputIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ...formRHFWrapperBasePropsRows,
-      ["showToggle", "boolean", "true", "Show/hide toggle for masked text."],
-      ["minLength", "number", "-", "Client validation hint for minimum length."],
-      ["onValueChange", "(value: string) => void", "-", "Password value callback."],
-    ],
-    features: [...formRHFWrapperCommonFeatures, "Compatibility alias", "Password masking", "Validation-first UX"],
-  },
-  {
-    slug: "form-number-input",
-    title: "Form Number Input",
-    description: "Compatibility alias for `FormInput kind=\"number\"`. Prefer the universal wrapper for new numeric fields.",
-    icon: ToggleLeftIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ...formRHFWrapperBasePropsRows,
-      ["min", "number", "-", "Minimum allowed number."],
-      ["max", "number", "-", "Maximum allowed number."],
-      ["step", "number", "1", "Increment/decrement step."],
-      ["allowEmpty", "boolean", "false", "Allows empty input state while editing."],
-      ["onValueChange", "(value: number | null) => void", "-", "Parsed numeric callback."],
-    ],
-    features: [...formRHFWrapperCommonFeatures, "Compatibility alias", "Numeric parser contract", "Boundary states"],
-  },
-  {
-    slug: "form-phone-input",
-    title: "Form Phone Input",
-    description: "Compatibility alias for `FormInput kind=\"phone\"` with the same shell contract and phone formatting behavior.",
-    icon: SmartphoneIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ...formRHFWrapperBasePropsRows,
-      ["defaultCountry", "string", "\"UZ\"", "Country context for formatting fallback."],
-      ["placeholder", "string", "\"+998 (__) ___-__-__\"", "Input placeholder and hint."],
-      ["separator", "string", "\" \"", "Separator used in grouped display."],
-      ["onValueChange", "(value: string) => void", "-", "Emitted canonical phone value."],
-    ],
-    features: [...formRHFWrapperCommonFeatures, "Compatibility alias", "Phone formatting", "Validation integration"],
-  },
-  {
-    slug: "form-date-input",
-    title: "Form Date Input",
-    description: "Compatibility alias for `FormInput kind=\"date\"`. Use it only while older forms migrate to the universal wrapper.",
-    icon: CalendarClockIcon,
-    category: "Forms",
-    status: "Preview",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ...formRHFWrapperBasePropsRows,
-      ["value", "string", "-", "Controlled date value in date string format."],
-      ["defaultValue", "string", "-", "Uncontrolled initial date."],
-      ["min", "string", "-", "Minimum date constraint."],
-      ["max", "string", "-", "Maximum date constraint."],
-      ["onValueChange", "(value: string | null) => void", "-", "Normalized date callback."],
-    ],
-    features: [...formRHFWrapperCommonFeatures, "Compatibility alias", "Date contract clarity", "Submit-safe string values"],
   },
   {
     slug: "form-date-range-input",
@@ -1665,15 +1562,11 @@ export const componentRelations: ComponentRelationMap = {
   },
   "form-input": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-field-shell", "form-textarea", "form-number-input", "form-password-input", "input", "password", "phone-input"],
+    componentSlugs: ["form-field-shell", "form-textarea", "input", "password-input", "phone-input", "number-input"],
   },
   "form-select": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-async-select", "select", "simple-select", "form-field-shell"],
-  },
-  "form-async-select": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-select", "async-select", "form-field-shell", "input"],
+    componentSlugs: ["async-select", "select", "simple-select", "form-field-shell"],
   },
   "form-textarea": {
     groupSlugs: ["form", "inputs"],
@@ -1683,33 +1576,13 @@ export const componentRelations: ComponentRelationMap = {
     groupSlugs: ["form", "inputs"],
     componentSlugs: ["form-field-shell", "switch", "checkbox", "form-builder"],
   },
-  "form-search-input": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-input", "input", "form-field-shell"],
-  },
-  "form-password-input": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-input", "input", "form-field-shell"],
-  },
-  "form-number-input": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["number-input", "money-input", "quantity-input", "form-field-shell", "form-input"],
-  },
-  "form-phone-input": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["phone-input", "form-input", "masked-input", "form-field-shell"],
-  },
-  "form-date-input": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["date-input", "date-picker", "form-field-shell", "form-date-picker"],
-  },
   "form-date-range-input": {
     groupSlugs: ["form", "filters"],
     componentSlugs: ["date-range-input", "date-range-picker", "form-date-range-picker", "form-field-shell"],
   },
   "form-date-picker": {
     groupSlugs: ["form", "inputs"],
-    componentSlugs: ["date-picker", "form-date-input", "calendar", "form-field-shell"],
+    componentSlugs: ["date-picker", "date-input", "calendar", "form-field-shell"],
   },
   "form-date-range-picker": {
     groupSlugs: ["form", "filters"],
@@ -1717,7 +1590,7 @@ export const componentRelations: ComponentRelationMap = {
   },
   "form-builder": {
     groupSlugs: ["patterns", "form"],
-    componentSlugs: ["form-field-shell", "form-input", "form-switch", "form-textarea", "form-async-select"],
+    componentSlugs: ["form-field-shell", "form-input", "form-switch", "form-textarea", "form-select"],
   },
   "phone-input": {
     groupSlugs: ["inputs", "form"],
@@ -1910,19 +1783,14 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "otp-input": "input",
   "form-input": "input",
   "form-textarea": "input",
-  "form-password-input": "input",
-  "form-number-input": "input",
-  "form-phone-input": "input",
   "simple-select": "select",
   "async-select": "select",
   combobox: "select",
   "form-select": "select",
-  "form-async-select": "select",
   calendar: "date-picker",
   "date-input": "date-picker",
   "date-range-input": "date-picker",
   "date-range-picker": "date-picker",
-  "form-date-input": "date-picker",
   "form-date-range-input": "date-picker",
   "form-date-picker": "date-picker",
   "form-date-range-picker": "date-picker",
@@ -1966,7 +1834,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "integrations",
       title: "Form integrations",
       description: "Use these wrappers when the field needs to plug directly into shared form shells or React Hook Form.",
-      slugs: ["form-input", "form-textarea", "form-password-input", "form-number-input", "form-phone-input"],
+      slugs: ["form-input", "form-textarea"],
     },
   ],
   select: [
@@ -1990,9 +1858,9 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
     },
     {
       key: "compatibility",
-      title: "Compatibility aliases",
-      description: "Keep older helper routes available for migration, but do not lead with them in new work.",
-      slugs: ["simple-select", "form-async-select"],
+      title: "Supporting select surface",
+      description: "Use SimpleSelect when source-copy code needs a compact controlled selector.",
+      slugs: ["simple-select"],
     },
   ],
   "date-picker": [
@@ -2012,7 +1880,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "integrations",
       title: "Form integrations",
       description: "Use wrapped date fields when validation, labels, and form shell behavior should stay standardized.",
-      slugs: ["form-date-input", "form-date-range-input", "form-date-picker", "form-date-range-picker"],
+      slugs: ["form-input", "form-date-range-input", "form-date-picker", "form-date-range-picker"],
     },
   ],
   dialog: [
@@ -2954,4 +2822,3 @@ export const globalSearchItems: GlobalSearchItem[] = [
     }))
   ),
 ]
-

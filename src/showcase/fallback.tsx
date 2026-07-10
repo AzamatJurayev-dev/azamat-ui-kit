@@ -29,28 +29,17 @@ import {
   KanbanBoard,
   List,
   Mark,
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
   OtpInput,
   PageState,
   PageTabs,
   PropertyGrid,
   QuickActionGrid,
-  QRCode,
   QuantityStepper,
   RangeSlider,
   Rating,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-  RichTextEditor,
   SavedFilterSelect,
   Section,
   SegmentedControl,
@@ -71,7 +60,6 @@ import {
   Text,
   TimePicker,
   TimeRangePicker,
-  Tour,
   TreeView,
 } from "@/index"
 import { StatCard } from "@/components/layout/stat-card"
@@ -387,19 +375,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "tour") {
-    return (
-      <Tour
-        index={1}
-        steps={[
-          { title: "Workspace setup", description: "Initialize theme tokens first." },
-          { title: "Component add", description: "Copy only the component you need." },
-          { title: "Detail route", description: "Open docs, API and preview together." },
-        ]}
-      />
-    )
-  }
-
   if (item.slug === "tree-view") {
     return (
       <TreeView
@@ -706,38 +681,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "menubar") {
-    return (
-      <Menubar>
-        <MenubarMenu>
-          <MenubarTrigger>File</MenubarTrigger>
-          <MenubarContent className="relative mt-2">
-            <MenubarItem>New page</MenubarItem>
-            <MenubarItem>Duplicate</MenubarItem>
-          </MenubarContent>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>Edit</MenubarTrigger>
-        </MenubarMenu>
-        <MenubarMenu>
-          <MenubarTrigger>View</MenubarTrigger>
-        </MenubarMenu>
-      </Menubar>
-    )
-  }
-
-  if (item.slug === "navigation-menu") {
-    return (
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem><NavigationMenuLink href="#" active>Overview</NavigationMenuLink></NavigationMenuItem>
-          <NavigationMenuItem><NavigationMenuLink href="#">Components</NavigationMenuLink></NavigationMenuItem>
-          <NavigationMenuItem><NavigationMenuLink href="#">Docs</NavigationMenuLink></NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    )
-  }
-
   if (item.slug === "overlay") {
     return (
       <div className="grid gap-3 sm:grid-cols-3">
@@ -761,10 +704,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "qr-code") {
-    return <QRCode value="https://azamat-ui.vercel.app" alt="Azamat UI" />
-  }
-
   if (item.slug === "quantity-stepper") {
     return <QuantityStepper defaultValue={3} min={1} max={10} />
   }
@@ -783,10 +722,6 @@ function renderGenericPreviewSurface(
         </ResizablePanel>
       </ResizablePanelGroup>
     )
-  }
-
-  if (item.slug === "rich-text-editor") {
-    return <RichTextEditor value="<p><strong>Release note</strong> with product details.</p>" onValueChange={() => undefined} />
   }
 
   if (item.slug === "saved-filter-select") {
@@ -870,4 +805,3 @@ function renderGenericPreviewSurface(
     </div>
   )
 }
-

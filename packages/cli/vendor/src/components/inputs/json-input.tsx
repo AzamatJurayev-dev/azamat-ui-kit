@@ -2,8 +2,9 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-export type JsonInputProps = React.ComponentProps<"textarea"> & {
+export type JsonInputProps = Omit<React.ComponentProps<"textarea">, "value" | "defaultValue"> & {
   value?: string
+  defaultValue?: string
   onValueChange?: (value: string, parsed: unknown | null, valid: boolean) => void
   invalidText?: React.ReactNode
 }
@@ -18,25 +19,30 @@ function parseJson(value: string) {
   }
 }
 
-function JsonInput({ value = "", onValueChange, invalidText = "Invalid JSON", className, onChange, ...props }: JsonInputProps) {
-  const [valid, setValid] = React.useState(true)
-
-  React.useEffect(() => {
-    setValid(parseJson(value).valid)
-  }, [value])
+function JsonInput({ value: valueProp, defaultValue = "", onValueChange, invalidText = "Invalid JSON", className, onChange, ...props }: JsonInputProps) {
+  const [internalValue, setInternalValue] = React.useState(defaultValue)
+  const value = valueProp ?? internalValue
+  const valid = parseJson(value).valid
 
   function handleChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
     const nextValue = event.target.value
     const result = parseJson(nextValue)
-    setValid(result.valid)
+    if (valueProp === undefined) setInternalValue(nextValue)
     onValueChange?.(nextValue, result.parsed, result.valid)
     onChange?.(event)
   }
 
   return (
     <div data-slot="json-input" className="grid gap-1.5">
-      <textarea value={value} spellCheck={false} className={cn("min-h-32 rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring", !valid && "border-destructive", className)} onChange={handleChange} {...props} />
-      {!valid && <p className="text-sm text-destructive">{invalidText}</p>}
+      <textarea
+        value={value}
+        spellCheck={false}
+        aria-invalid={valid ? undefined : true}
+        className={cn("min-h-32 rounded-md border bg-background p-3 font-mono text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring", !valid && "border-destructive", className)}
+        onChange={handleChange}
+        {...props}
+      />
+      {!valid && <p role="alert" className="text-sm text-destructive">{invalidText}</p>}
     </div>
   )
 }

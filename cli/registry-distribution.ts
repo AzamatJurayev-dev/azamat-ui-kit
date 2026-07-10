@@ -22,6 +22,7 @@ const categoryDistribution: Record<ComponentCategory, RegistryDistribution> = {
   notifications: "source-copy",
   command: "source-copy",
   patterns: "system",
+  modern: "source-copy",
   group: "system",
 }
 
