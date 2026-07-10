@@ -48,7 +48,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
-  component("filter-chips", "FilterChips", "actions", "Inline active filter summaries with clear and remove actions."),
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
 
   component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
@@ -58,11 +57,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
 
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
-
-  component("data-table-column-visibility-menu", "DataTableColumnVisibilityMenu", "data-table", "Column visibility menu pattern for table views."),
-  component("data-table-sortable-header", "DataTableSortableHeader", "data-table", "Sortable header trigger with clear visual state."),
-  component("data-table-bulk-actions", "DataTableBulkActions", "data-table", "Bulk action bar for selected rows."),
-  component("data-table-view-presets", "DataTableViewPresets", "data-table", "Saved table view presets for operational dashboards."),
 
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
 

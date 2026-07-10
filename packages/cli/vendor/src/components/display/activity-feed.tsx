@@ -30,7 +30,9 @@ export type ActivityFeedProps = React.ComponentProps<typeof Card> & {
   items: ActivityFeedItem[]
   empty?: React.ReactNode
   compact?: boolean
+  density?: "comfortable" | "compact"
   showConnector?: boolean
+  connectorClassName?: string
   contentClassName?: string
   itemClassName?: string
 }
@@ -52,7 +54,9 @@ function ActivityFeed({
   items,
   empty = "No activity yet.",
   compact = false,
+  density,
   showConnector = true,
+  connectorClassName,
   contentClassName,
   itemClassName,
   ...props
@@ -112,14 +116,16 @@ function ActivityFeed({
               data-slot="activity-feed-item"
               className={cn("relative flex gap-3 pb-4 last:pb-0", isCompact && "gap-2 pb-3", itemClassName, item.className)}
             >
-              {showConnector && index < visibleItems.length - 1 && <div className="absolute left-3 top-7 h-[calc(100%-1.75rem)] w-px bg-border" />}
+              {showConnector && index < visibleItems.length - 1 && (
+                <div className={cn("absolute left-3 top-7 h-[calc(100%-1.75rem)] w-px bg-border", connectorClassName)} />
+              )}
               {item.href ? (
                 <a
                   href={item.href}
                   target={item.target}
                   rel={item.rel}
                   className={cn(
-                    "flex min-w-0 flex-1 gap-3 rounded-[var(--radius-md)] px-1.5 py-1 transition-colors",
+                    "flex min-w-0 flex-1 gap-3 rounded-[var(--radius-lg)] px-2 py-1.5 transition-[background-color,border-color,box-shadow]",
                     isInteractive && "hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
                   )}
                 >
@@ -128,13 +134,13 @@ function ActivityFeed({
               ) : isInteractive ? (
                 <button
                   type="button"
-                  className="flex min-w-0 flex-1 gap-3 rounded-[var(--radius-md)] px-1.5 py-1 text-left transition-colors hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                  className="flex min-w-0 flex-1 gap-3 rounded-[var(--radius-lg)] px-2 py-1.5 text-left transition-[background-color,border-color,box-shadow] hover:bg-muted/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
                   onClick={item.onSelect}
                 >
                   {content}
                 </button>
               ) : (
-                <div className="flex min-w-0 flex-1 gap-3 px-1.5 py-1">
+                <div className="flex min-w-0 flex-1 gap-3 px-2 py-1.5">
                   {content}
                 </div>
               )}

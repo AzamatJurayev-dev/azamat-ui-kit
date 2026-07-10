@@ -12,6 +12,7 @@ export type CodeBlockProps = React.ComponentProps<"div"> & {
   showCopy?: boolean
   wrap?: boolean
   lineNumbers?: boolean
+  highlightLines?: number[] | readonly number[]
   maxHeight?: number | string
 }
 
@@ -22,11 +23,13 @@ function CodeBlock({
   showCopy = true,
   wrap = false,
   lineNumbers = false,
+  highlightLines = [],
   maxHeight,
   className,
   ...props
 }: CodeBlockProps) {
   const lines = React.useMemo(() => code.split("\n"), [code])
+  const highlightedLineSet = React.useMemo(() => new Set(highlightLines), [highlightLines])
 
   return (
     <div
@@ -50,14 +53,31 @@ function CodeBlock({
         {lineNumbers ? (
           <code className="grid">
             {lines.map((line, index) => (
-              <span key={`${index}-${line}`} className="grid grid-cols-[auto_1fr] gap-4">
+              <span
+                key={`${index}-${line}`}
+                data-highlighted={highlightedLineSet.has(index + 1) || undefined}
+                className={cn(
+                  "grid grid-cols-[auto_1fr] gap-4 rounded px-1",
+                  highlightedLineSet.has(index + 1) && "bg-primary/10 text-foreground"
+                )}
+              >
                 <span className="select-none text-right text-xs text-muted-foreground/75">{index + 1}</span>
                 <span>{line || " "}</span>
               </span>
             ))}
           </code>
         ) : (
-          <code>{code}</code>
+          <code>
+            {lines.map((line, index) => (
+              <span
+                key={`${index}-${line}`}
+                data-highlighted={highlightedLineSet.has(index + 1) || undefined}
+                className={cn("block rounded px-1", highlightedLineSet.has(index + 1) && "bg-primary/10 text-foreground")}
+              >
+                {line || " "}
+              </span>
+            ))}
+          </code>
         )}
       </pre>
     </div>

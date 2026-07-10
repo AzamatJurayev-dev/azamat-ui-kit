@@ -46,6 +46,7 @@ export function ButtonGroupShowcase({ mode }: ComponentDemoProps) {
               onValueChange={(next) => setDensity(next as typeof density)}
               size="xs"
               activeVariant="secondary"
+              allowDeselect
               items={[
                 { key: "comfortable", label: "Comfortable" },
                 { key: "compact", label: "Compact" },
@@ -56,7 +57,7 @@ export function ButtonGroupShowcase({ mode }: ComponentDemoProps) {
         <section className={panelClass}>
           <p className="text-sm font-medium aui-text-muted">Selected view</p>
           <p className="mt-3 text-base font-medium aui-text-strong">{view}</p>
-          <p className="mt-2 text-sm aui-text-muted">Density: {density}</p>
+          <p className="mt-2 text-sm aui-text-muted">Density: {density || "none"}</p>
         </section>
       </div>
 

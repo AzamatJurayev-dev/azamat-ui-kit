@@ -192,7 +192,7 @@ describe("interactive display surfaces", () => {
       />
     )
 
-    const card = screen.getByRole("button", { name: /Draft contract/ })
+    const card = screen.getByRole("button", { name: "Draft contract" })
     card.focus()
     await user.keyboard("{Enter}")
     expect(onCardClick).toHaveBeenCalledTimes(1)
@@ -235,7 +235,7 @@ describe("interactive display surfaces", () => {
       </>
     )
 
-    await user.type(screen.getByText("", { selector: "[contenteditable='true']" }), "Hello")
+    await user.type(screen.getByPlaceholderText("Write"), "Hello")
     expect(onValueChange).toHaveBeenLastCalledWith("Hello")
     await user.click(screen.getByRole("button", { name: "Done" }))
     expect(onFinish).toHaveBeenCalledTimes(1)

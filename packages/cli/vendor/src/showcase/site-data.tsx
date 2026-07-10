@@ -1482,15 +1482,15 @@ export const componentRelations: ComponentRelationMap = {
   },
   select: {
     groupSlugs: ["inputs", "filters", "overlay"],
-    componentSlugs: ["simple-select", "async-select", "combobox"],
+    componentSlugs: ["simple-select", "async-select", "form-select"],
   },
   "simple-select": {
     groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "async-select", "combobox"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   combobox: {
     groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "simple-select", "async-select"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   "radio-group": {
     groupSlugs: ["inputs", "form"],
@@ -1498,11 +1498,11 @@ export const componentRelations: ComponentRelationMap = {
   },
   "async-select": {
     groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "simple-select", "combobox"],
+    componentSlugs: ["select", "combobox", "form-select"],
   },
   "async-multi-select": {
     groupSlugs: ["inputs", "form"],
-    componentSlugs: ["select", "async-select", "simple-select"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   "number-input": {
     groupSlugs: ["inputs", "form"],
@@ -1742,6 +1742,7 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "form-textarea": "input",
   "simple-select": "select",
   "async-select": "select",
+  "async-multi-select": "select",
   combobox: "select",
   "form-select": "select",
   calendar: "date-picker",
@@ -1762,7 +1763,6 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "sticky-footer-bar": "sidebar",
   "page-header": "breadcrumbs",
   "stat-card": "metric-grid",
-  "form-builder": "form-field-shell",
   "data-table-column-visibility-menu": "data-table",
   "data-table-sortable-header": "data-table",
   "data-table-bulk-actions": "data-table",
@@ -1869,20 +1869,8 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
     },
     {
       key: "related",
-      title: "Core companions",
-      description: "These are the most common helpers teams install next to the main grid.",
-      slugs: ["data-table-column-visibility-menu", "data-table-bulk-actions", "data-table-view-presets"],
-    },
-    {
-      key: "advanced",
-      title: "Composable helpers",
-      description: "Factories and low-level pieces belong after the main grid contract is already clear.",
-      slugs: ["data-table-column-visibility-menu", "data-table-sortable-header"],
-    },
-    {
-      key: "related",
-      title: "Low-level primitive",
-      description: "Use the semantic table primitive only for lightweight markup. It is not the main reusable data-grid surface.",
+      title: "Supporting primitive",
+      description: "Drop down to the semantic table primitive only when you do not need the full DataTable workflow.",
       slugs: ["table"],
     },
   ],

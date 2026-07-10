@@ -293,7 +293,8 @@ function KanbanColumnView({
       <div className="grid min-h-16 content-start gap-2">
         {column.cards.length === 0 ? (
           <div className="grid min-h-20 place-items-center rounded-lg border border-dashed p-3 text-center text-xs text-muted-foreground">
-            {emptyColumn}
+            <span>{emptyColumn}</span>
+            <span className="sr-only">No cards yet.</span>
           </div>
         ) : (
           column.cards.map((card, index) => (

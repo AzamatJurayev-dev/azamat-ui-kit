@@ -26,8 +26,10 @@ import { dualListPickerMock, DualListPickerShowcase } from "./dual-list-picker"
 import { collapseMock, CollapseShowcase } from "./collapse"
 import { comboboxMock, ComboboxShowcase } from "./combobox"
 import { commandBarMock, CommandBarShowcase } from "./command-bar"
+import { commandPaletteMock, CommandPaletteShowcase } from "./command-palette"
 import { ConfirmDialogShowcase, confirmDialogMock } from "./confirm-dialog"
 import { copyButtonMock, CopyButtonShowcase } from "./copy-button"
+import { copyFieldMock, CopyFieldShowcase } from "./copy-field"
 import { dataStateMock, DataStateShowcase } from "./data-state"
 import { dataTableMock, DataTableShowcase } from "./data-table"
 import { dateInputMock, DateInputShowcase } from "./date-input"
@@ -170,6 +172,10 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "hover-card": { mock: hoverCardMock, Showcase: HoverCardShowcase },
   "right-click-menu": { mock: rightClickMenuMock, Showcase: RightClickMenuShowcase },
   "data-table": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-column-visibility-menu": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-sortable-header": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-bulk-actions": { mock: dataTableMock, Showcase: DataTableShowcase },
+  "data-table-view-presets": { mock: dataTableMock, Showcase: DataTableShowcase },
   "saved-filter-select": { mock: savedFilterSelectMock, Showcase: SavedFilterSelectShowcase },
   "sortable-list": { mock: sortableListMock, Showcase: SortableListShowcase },
   "form-field": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },

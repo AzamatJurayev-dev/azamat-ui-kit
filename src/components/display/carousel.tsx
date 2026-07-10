@@ -98,7 +98,8 @@ function Carousel({
   const [autoplayStopped, setAutoplayStopped] = React.useState(false)
   const [autoplayEnabled, setAutoplayEnabled] = React.useState(autoplay)
   const controlled = index !== undefined
-  const activeIndex = clampIndex(controlled ? index : internalIndex, items.length, loop)
+  const itemCount = items.length
+  const activeIndex = clampIndex(controlled ? index : internalIndex, itemCount, loop)
   const activeItem = items[activeIndex]
 
   React.useEffect(() => {
@@ -106,7 +107,7 @@ function Carousel({
   }, [autoplay])
 
   const setActiveIndex = React.useCallback((nextIndex: number, reason: "manual" | "autoplay" = "manual") => {
-    const resolvedIndex = clampIndex(nextIndex, items.length, loop)
+    const resolvedIndex = clampIndex(nextIndex, itemCount, loop)
     if (!controlled) setInternalIndex(resolvedIndex)
     if (reason === "manual" && stopAutoplayOnInteraction) {
       setAutoplayStopped(true)
@@ -119,18 +120,15 @@ function Carousel({
   }, [
     autoplayEnabled,
     controlled,
-    items.length,
+    itemCount,
     loop,
     onAutoplayChange,
     onIndexChange,
-    setAutoplayEnabled,
-    setAutoplayStopped,
-    setInternalIndex,
     stopAutoplayOnInteraction,
   ])
 
   const canGoPrevious = loop || activeIndex > 0
-  const canGoNext = loop || activeIndex < items.length - 1
+  const canGoNext = loop || activeIndex < itemCount - 1
 
   const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = (event) => {
     touchStartXRef.current = event.touches[0]?.clientX ?? null
@@ -163,11 +161,11 @@ function Carousel({
   }
 
   React.useEffect(() => {
-    if (!autoplayEnabled || items.length <= 1 || autoplayStopped) return
+    if (!autoplayEnabled || itemCount <= 1 || autoplayStopped) return
     if (pauseOnHover && isHovered) return
 
     const timer = window.setInterval(() => {
-      if (!loop && activeIndex >= items.length - 1) {
+      if (!loop && activeIndex >= itemCount - 1) {
         setActiveIndex(0, "autoplay")
         return
       }
@@ -177,7 +175,7 @@ function Carousel({
     return () => {
       window.clearInterval(timer)
     }
-  }, [activeIndex, autoplayEnabled, autoplayInterval, autoplayStopped, isHovered, items.length, loop, pauseOnHover, setActiveIndex])
+  }, [activeIndex, autoplayEnabled, autoplayInterval, autoplayStopped, isHovered, itemCount, loop, pauseOnHover, setActiveIndex])
 
   return (
     <div
@@ -189,7 +187,7 @@ function Carousel({
       tabIndex={keyboard ? 0 : undefined}
       className={cn("grid gap-3", className)}
       onKeyDown={(event) => {
-        if (!keyboard || items.length <= 1) return
+        if (!keyboard || itemCount <= 1) return
         if (event.key === "ArrowLeft" && canGoPrevious) {
           event.preventDefault()
           setActiveIndex(activeIndex - 1)
@@ -204,7 +202,7 @@ function Carousel({
         }
         if (event.key === "End") {
           event.preventDefault()
-          setActiveIndex(items.length - 1)
+          setActiveIndex(itemCount - 1)
         }
       }}
       onTouchStart={handleTouchStart}

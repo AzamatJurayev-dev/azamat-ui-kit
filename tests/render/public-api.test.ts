@@ -113,7 +113,6 @@ describe("public API", () => {
         "ConfirmDialog",
         "CopyButton",
         "CopyField",
-        "DataState",
         "DataTable",
         "DataTableBulkActions",
         "DataTableColumnVisibilityMenu",

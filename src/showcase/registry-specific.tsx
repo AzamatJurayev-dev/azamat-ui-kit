@@ -53,8 +53,10 @@ import {
 } from "@/index"
 import { AppHeader } from "@/components/layout/app-header"
 import { StatCard } from "@/components/layout/stat-card"
+import { FormBuilder, customField, formSection } from "@/components/patterns/form-builder"
 import { ResourceDetailPage } from "@/components/patterns/resource-detail-page"
 import { ResourcePage, ResourcePageSection } from "@/components/patterns/resource-page"
+import { useForm } from "react-hook-form"
 
 import type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps } from "./premium/types"
 
@@ -116,6 +118,7 @@ const registryDemoDefinitions = [
   component("stepper-tabs", "StepperTabs", "navigation", "Step-like tabs for setup and onboarding progress."),
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
+  component("form-builder", "FormBuilder", "patterns", "Declarative form scaffold with sections and reusable field presets."),
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
   component("file-upload", "FileUpload", "upload", "Full file upload surface with dropzone, action button and helper text."),
   component("image-upload", "ImageUpload", "upload", "Image upload pattern with preview-oriented copy.", "ImageUpload"),
@@ -124,6 +127,7 @@ const registryDemoDefinitions = [
   component("wizard", "Wizard", "wizard", "Stepper, content and footer controls combined into one workflow."),
   component("resource-page", "ResourcePage", "patterns", "Full resource index page shell for admin dashboards."),
   component("resource-detail-page", "ResourceDetailPage", "patterns", "Detail page shell with title, metadata and sections."),
+  component("quantity-stepper", "Input", "inputs", "Bounded quantity input with +/- controls and fast editing."),
 ] satisfies RegistryDemoDefinition[]
 
 export const registrySpecificDemoRegistry: Record<string, ComponentDemoBundle> = Object.fromEntries(
@@ -269,6 +273,10 @@ function InputPreview({
 
   if (slug === "otp-input") {
     return <OtpInput value={value.replace(/\D/g, "").slice(0, 6)} onValueChange={onValueChange} />
+  }
+
+  if (slug === "quantity-stepper") {
+    return <Input kind="quantity" value={3} min={1} max={10} showControls aria-label="Quantity" />
   }
 
   if (slug === "tag-input") {
@@ -794,6 +802,10 @@ function WizardPreview({ slug }: { slug: string }) {
 }
 
 function PatternsPreview({ slug }: { slug: string }) {
+  if (slug === "form-builder") {
+    return <FormBuilderPreview />
+  }
+
   if (slug === "resource-detail-page") {
     return (
       <ResourceDetailPage
@@ -830,6 +842,62 @@ function PatternsPreview({ slug }: { slug: string }) {
         />
       </ResourcePageSection>
     </ResourcePage>
+  )
+}
+
+function FormBuilderPreview() {
+  type FormBuilderDemoValues = {
+    name: string
+    email: string
+    notes: string
+    marketing: boolean
+  }
+
+  const form = useForm<FormBuilderDemoValues>({
+    defaultValues: {
+      name: "Azamat Jurayev",
+      email: "azamat@example.com",
+      notes: "Release gate is ready.",
+      marketing: true,
+    },
+  })
+
+  const sections = [
+    formSection<FormBuilderDemoValues>({
+      id: "profile",
+      title: "Profile",
+      description: "Core account and contact fields.",
+      fields: [
+        customField<FormBuilderDemoValues>({
+          id: "profile-summary",
+          colSpan: "full",
+          render: () => (
+            <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
+              <p className="text-sm font-semibold text-[color:var(--aui-page-foreground)]">Reusable section shell</p>
+              <p className="mt-1 text-sm text-[color:var(--aui-page-muted)]">
+                FormBuilder groups controls, helper copy and actions without scattering layout logic.
+              </p>
+            </div>
+          ),
+        }),
+      ],
+    }),
+  ]
+
+  return (
+    <FormBuilder<FormBuilderDemoValues>
+      control={form.control}
+      sections={sections}
+      columns={1}
+      submitLabel="Save changes"
+      resetLabel="Reset"
+      onResetClick={() => form.reset()}
+      footer={
+        <div className="rounded-2xl border border-dashed border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm text-[color:var(--aui-page-muted)]">
+          Use the builder for real form routes, then replace this preview with your own field presets.
+        </div>
+      }
+    />
   )
 }
 

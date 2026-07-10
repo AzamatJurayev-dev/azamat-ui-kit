@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MenuIcon, XIcon } from "lucide-react"
+import { ChevronRightIcon, MenuIcon, XIcon } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-is-mobile"
 import { Tooltip } from "@/components/ui/tooltip"
@@ -81,9 +81,10 @@ function getSidebarInteractiveClassName({
   disabled?: boolean
 }) {
   return cn(
-    "border-[color:transparent] text-foreground/80 hover:border-[color:var(--aui-divider)] hover:bg-[color:color-mix(in_oklch,var(--card),var(--primary)_4%)] hover:text-foreground focus-visible:border-[color:var(--aui-control-border-strong,var(--border))] focus-visible:bg-[color:color-mix(in_oklch,var(--card),var(--primary)_6%)] focus-visible:text-foreground focus-visible:shadow-[0_0_0_3px_color-mix(in_oklch,var(--primary),transparent_86%)]",
-    active && "border-[color:color-mix(in_oklch,var(--primary),transparent_76%)] bg-[color:color-mix(in_oklch,var(--primary),transparent_91%)] text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
-    disabled && "hover:border-transparent hover:bg-transparent hover:text-foreground/80"
+    "border border-transparent bg-transparent text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_18%)] hover:border-[color:var(--aui-sidebar-item-active-border)] hover:bg-[color:var(--aui-sidebar-item-hover-bg)] hover:text-[color:var(--sidebar-foreground)] focus-visible:border-[color:var(--sidebar-ring)] focus-visible:bg-[color:var(--aui-sidebar-item-hover-bg)] focus-visible:text-[color:var(--sidebar-foreground)] focus-visible:shadow-[0_0_0_3px_color-mix(in_oklch,var(--sidebar-ring),transparent_82%)]",
+    active &&
+      "border-[color:var(--aui-sidebar-item-active-border)] bg-[color:var(--aui-sidebar-item-active-bg)] text-[color:var(--aui-sidebar-item-active-fg)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_color-mix(in_oklch,var(--sidebar-primary),transparent_88%)]",
+    disabled && "hover:border-transparent hover:bg-transparent hover:text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_18%)]"
   )
 }
 
@@ -297,12 +298,10 @@ function SidebarTree({
             {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
             {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
             {!collapsed && (
-              <span
+              <ChevronRightIcon
                 data-slot="app-sidebar-group-chevron"
-                className="ml-auto text-xs text-muted-foreground transition-transform group-open/app-sidebar-details:rotate-90"
-              >
-                ›
-              </span>
+                className="ml-auto size-3.5 shrink-0 text-muted-foreground transition-transform group-open/app-sidebar-details:rotate-90"
+              />
             )}
           </summary>
           <div data-slot="app-sidebar-group-content" className={cn("mt-1 space-y-1", !collapsed && "pl-3")}>

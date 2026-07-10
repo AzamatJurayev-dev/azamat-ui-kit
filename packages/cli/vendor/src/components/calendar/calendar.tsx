@@ -213,8 +213,8 @@ function Calendar({
       const from = formatCalendarSummaryDate(currentRange?.from, locale)
       const to = formatCalendarSummaryDate(currentRange?.to, locale)
 
-      if (from && to) return `Selected range: ${from} - ${to}`
-      if (from) return `Selected range starts ${from}`
+      if (from && to) return `${from} -> ${to}`
+      if (from) return `${from} -> ...`
       return "No range selected"
     }
 
@@ -450,6 +450,9 @@ function Calendar({
                 const selected = mode === "single" ? currentValue === dateKey : dateKey === currentRange?.from || dateKey === currentRange?.to
                 const inRange = mode === "range" && isWithinRange(dateKey, currentRange?.from, currentRange?.to)
                 const inPreviewRange = !inRange && mode === "range" && isWithinRange(dateKey, previewRange?.from, previewRange?.to)
+                const rangeStart = mode === "range" && dateKey === currentRange?.from
+                const rangeEnd = mode === "range" && dateKey === currentRange?.to
+                const rangeMiddle = inRange && !rangeStart && !rangeEnd
                 const disabledReason = getDisabledReason(dateKey)
                 const disabled = Boolean(disabledReason)
                 const disabledLabel = disabledReason ? labels?.disabledDate?.(dateKey, disabledReason) : undefined
@@ -499,15 +502,9 @@ function Calendar({
           </div>
         ))}
       </div>
-      {(showTodayShortcut || showClearShortcut || showSelectionSummary) ? (
+      {(showTodayShortcut || showClearShortcut || showSelectionSummary || renderSelectionSummary) ? (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-[color:var(--aui-card-border,var(--border))] pt-3">
-          <div className="text-xs text-muted-foreground">
-            {mode === "range"
-              ? currentRange?.from
-                ? `${currentRange.from}${currentRange.to ? ` -> ${currentRange.to}` : ""}`
-                : "No range selected"
-              : currentValue || "No date selected"}
-          </div>
+          <div className="text-xs text-muted-foreground">{summaryContent}</div>
           <div className="flex flex-wrap gap-2">
             {showClearShortcut ? (
               <Button type="button" size="sm" variant="ghost" onClick={clearSelection}>

@@ -104,25 +104,11 @@ function Select({
   onSearchChange,
   ...props
 }: SelectProps) {
-  if (!options && !groups) {
-    return (
-      <SelectRoot
-        value={value ?? undefined}
-        defaultValue={defaultValue ?? undefined}
-        onValueChange={(nextValue) => onValueChange?.((nextValue as string | null | undefined) ?? undefined)}
-        onOpenChange={onOpenChange}
-        disabled={disabled}
-        {...props}
-      >
-        {children}
-      </SelectRoot>
-    )
-  }
-
+  const hasCustomOptions = Boolean(options || groups)
   const [search, setSearch] = React.useState("")
   const optionGroups = React.useMemo<SelectOptionGroup[]>(
-    () => groups ?? [{ options: options ?? [] }],
-    [groups, options]
+    () => (hasCustomOptions ? groups ?? [{ options: options ?? [] }] : []),
+    [groups, hasCustomOptions, options]
   )
   const flatOptions = React.useMemo(
     () => optionGroups.flatMap((group) => group.options),
@@ -136,6 +122,21 @@ function Select({
     }))
     .filter((group) => group.options.length > 0)
   const filteredOptionsCount = filteredGroups.reduce((count, group) => count + group.options.length, 0)
+
+  if (!hasCustomOptions) {
+    return (
+      <SelectRoot
+        value={value ?? undefined}
+        defaultValue={defaultValue ?? undefined}
+        onValueChange={(nextValue) => onValueChange?.((nextValue as string | null | undefined) ?? undefined)}
+        onOpenChange={onOpenChange}
+        disabled={disabled}
+        {...props}
+      >
+        {children}
+      </SelectRoot>
+    )
+  }
 
   return (
     <SelectRoot
@@ -302,7 +303,13 @@ function SelectTrigger({
       {...props}
     >
       {children}
-      <SelectPrimitive.Icon render={<ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />} />
+      <SelectPrimitive.Icon
+        render={
+          <span className="inline-flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+            <ChevronDownIcon className="size-4" />
+          </span>
+        }
+      />
     </SelectPrimitive.Trigger>
   )
 }

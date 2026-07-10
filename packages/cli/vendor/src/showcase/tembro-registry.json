@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -46,12 +46,6 @@
     ],
     "inputs": [
       "async-select",
-      "combobox",
-      "search-input",
-      "password-input",
-      "masked-input",
-      "quantity-input",
-      "tag-input",
       "otp-input",
       "rating",
       "quantity-stepper",
@@ -96,9 +90,7 @@
       "timeline",
       "tree-view",
       "user-card",
-      "trend-card",
-      "delta-badge",
-      "entity-header"
+      "trend-card"
     ],
     "actions": [
       "action-menu",
@@ -119,11 +111,7 @@
       "saved-filter-select"
     ],
     "data-table": [
-      "data-table",
-      "data-table-bulk-actions",
-      "data-table-view-presets",
-      "data-table-column-visibility-menu",
-      "data-table-sortable-header"
+      "data-table"
     ],
     "calendar": [
       "calendar",
@@ -207,9 +195,10 @@
     "data-list",
     "user-card",
     "action-menu",
-    "date-picker",
-    "data-table",
-    "notification-center"
+    "filter-bar",
+    "trend-card",
+    "notification-center",
+    "command-bar"
   ],
   "recommendedByMode": {
     "foundation": [
@@ -243,7 +232,6 @@
       "date-picker",
       "date-range-picker",
       "file-upload",
-      "file-dropzone",
       "use-data-table-view-state",
       "data-table",
       "trend-card",

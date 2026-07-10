@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, Button, Combobox } from "@/index"
+import { Badge, Button, Select } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -48,8 +48,8 @@ export function ComboboxShowcase({ state, setState }: ComponentDemoProps) {
                 onValueChange={(value) => setState({ selectValue: value ?? "azamat" })}
                 placeholder="Choose teammate"
                 searchPlaceholder="Search teammate..."
+                searchable
                 clearable
-                allowDeselect
                 showSelectedDescription
                 onSearchChange={setSearchValue}
               />
