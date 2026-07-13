@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.4 - 2026-07-13
+
+### Changed
+
+- consolidated Input, Sidebar, Statistic, PageState, and FileUpload documentation around their canonical public APIs with interactive states and production-oriented code samples
+- expanded Sidebar documentation with nested routes, React Router rendering, density controls, active indicators, collapsed rail actions, mobile navigation, and account interaction
+- expanded FileUpload documentation with controlled progress, retry, validation, rejection messages, sample files, remove, and clear flows
+- added compact InlineState coverage and interactive route-level PageState outcomes
+- moved Statistic, PageState, and FileUpload visual states into the shared init-managed theme through semantic data slots and light/dark tokens
+- improved loading, status, and upload rejection accessibility semantics
+
+### Removed
+
+- removed deprecated duplicate registry aliases and stale showcase routes in favor of the canonical component surfaces
+
 ## 3.1.0 - 2026-07-10
 
 ### Added

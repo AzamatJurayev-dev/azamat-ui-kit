@@ -1,5 +1,4 @@
 import {
-  Accordion,
   Alert,
   Avatar,
   AvatarGroup,
@@ -9,26 +8,18 @@ import {
   CalendarScheduler,
   Card,
   CardContent,
-  Carousel,
-  CarouselItem,
   CodeBlock,
   CopyButton,
-  CopyField,
   DataState,
-  Descriptions,
   Divider,
   DualListPicker,
   FilterBar,
-  Heading,
   Input,
   JsonInput,
   KanbanBoard,
   List,
-  Mark,
   OtpInput,
   PageState,
-  PageTabs,
-  PropertyGrid,
   QuickActionGrid,
   RangeSlider,
   Rating,
@@ -43,21 +34,18 @@ import {
   SkeletonText,
   Slider,
   Spinner,
-  StepperTabs,
   Statistic,
   StatisticCard,
   StatisticGrid,
-  StickyFooterBar,
   StatusLegend,
-  Tag,
   TagInput,
-  TagGroup,
-  Text,
   TimePicker,
   TimeRangePicker,
   TreeView,
 } from "@/index"
-import { StatCard } from "@/components/layout/stat-card"
+import { Carousel, CarouselItem } from "@/components/display/carousel"
+import { Tag, TagGroup } from "@/components/display/tag"
+import { Heading, Mark, Text } from "@/components/display/typography"
 
 import type { ShowcaseDemoBundle, ShowcaseDemoProps } from "./types"
 
@@ -155,19 +143,6 @@ function renderGenericPreviewSurface(
   setState: ShowcaseDemoProps["setState"],
   mode: ShowcaseDemoProps["mode"]
 ) {
-  if (item.slug === "accordion") {
-    return (
-      <Accordion
-        type="single"
-        defaultValue="api"
-        items={[
-          { key: "api", title: "Single open section", description: "Open one section at a time.", content: "Use one expanded panel when the page needs compact disclosure." },
-          { key: "states", title: "State handling", description: "Controlled or uncontrolled usage.", content: "Use one expanded section for FAQs, settings clusters, and compact disclosure flows." },
-        ]}
-      />
-    )
-  }
-
   if (item.slug === "avatar") {
     return (
       <div className="flex flex-wrap items-center gap-4">
@@ -234,16 +209,6 @@ function renderGenericPreviewSurface(
     return <CopyButton value="npx tembro add button">Copy command</CopyButton>
   }
 
-  if (item.slug === "copy-field") {
-    return (
-      <CopyField
-        label="CLI command"
-        description="Quick source-copy command"
-        value="npx tembro add input"
-      />
-    )
-  }
-
   if (item.slug === "data-state") {
     return (
       <DataState
@@ -251,20 +216,6 @@ function renderGenericPreviewSurface(
         title="No matching rows"
         description="Try another filter or import the first record."
         actions={<Button size="sm">Import CSV</Button>}
-      />
-    )
-  }
-
-  if (item.slug === "descriptions") {
-    return (
-      <Descriptions
-        title="Workspace details"
-        columns={3}
-        items={[
-          { key: "owner", label: "Owner", value: "Azamat UI" },
-          { key: "plan", label: "Plan", value: "Scale" },
-          { key: "renewal", label: "Renewal", value: "Jul 14, 2026" },
-        ]}
       />
     )
   }
@@ -338,15 +289,6 @@ function renderGenericPreviewSurface(
         <Statistic label="MRR" value="$7.0k" change="+3.1%" trend="up" description="Live subscriptions" />
         <Statistic label="Churn" value="1.9%" change="-0.4%" trend="down" description="Healthy range" />
       </StatisticGrid>
-    )
-  }
-
-  if (item.slug === "sticky-footer-bar") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
-        <div className="p-4 text-sm text-muted-foreground">Scrollable page content</div>
-        <StickyFooterBar start={<div className="text-sm font-medium">2 unsaved changes</div>} end={<><Button size="sm" variant="outline">Discard</Button><Button size="sm">Save</Button></>} />
-      </div>
     )
   }
 
@@ -438,11 +380,10 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "quick-action-grid" || item.slug === "command-bar") {
+  if (item.slug === "quick-action-grid") {
     return (
       <QuickActionGrid
-        columns={item.slug === "command-bar" ? 4 : 3}
-        compact={item.slug === "command-bar"}
+        columns={3}
         items={[
           { key: "new", label: "New invoice", description: "Create a fresh billing row.", badge: "N" },
           { key: "import", label: "Import CSV", description: "Bring finance data into the table.", badge: "I" },
@@ -476,33 +417,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "page-tabs") {
-    return (
-      <PageTabs
-        value="overview"
-        variant="pills"
-        items={[
-          { value: "overview", label: "Overview" },
-          { value: "usage", label: "Usage" },
-          { value: "api", label: "API", badge: "3" },
-        ]}
-      />
-    )
-  }
-
-  if (item.slug === "stepper-tabs") {
-    return (
-      <StepperTabs
-        value="billing"
-        items={[
-          { value: "profile", label: "Profile", description: "Team and owner details", completed: true },
-          { value: "billing", label: "Billing", description: "Payment and invoices" },
-          { value: "review", label: "Review", description: "Confirm release" },
-        ]}
-      />
-    )
-  }
-
   if (item.slug === "alert") {
     return <Alert tone="warning" title="Review needed" description="Billing rules changed and one approval is pending." action={<Button size="sm">Open</Button>} />
   }
@@ -518,7 +432,7 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "data-list" || item.slug === "list") {
+  if (item.slug === "list") {
     return (
       <List
         items={[
@@ -540,20 +454,6 @@ function renderGenericPreviewSurface(
           { key: "blocked", label: "Blocked", description: "Needs engineering action", tone: "danger", count: 1 },
         ]}
       />
-    )
-  }
-
-  if (item.slug === "trend-card" || item.slug === "comparison-card") {
-    return <StatCard title={item.slug === "trend-card" ? "Weekly revenue" : "Current vs previous"} value="$84.2k" description="Compared with last month" trend={{ value: "+12.4%", tone: "success" }} />
-  }
-
-  if (item.slug === "delta-badge") {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <Badge variant="secondary">+12.4%</Badge>
-        <Badge variant="outline">-3.1%</Badge>
-        <Badge variant="destructive">Risk</Badge>
-      </div>
     )
   }
 
@@ -626,23 +526,6 @@ function renderGenericPreviewSurface(
         <Card><CardContent className="p-4"><p className="font-medium">Sheet</p><p className="mt-1 text-sm text-muted-foreground">Side panel workflows.</p></CardContent></Card>
       </div>
     )
-  }
-
-  if (item.slug === "property-grid") {
-    return (
-      <PropertyGrid
-        columns={3}
-        items={[
-          { key: "framework", label: "Framework", value: "Next.js", description: "App Router setup" },
-          { key: "theme", label: "Theme", value: "Light / Dark", description: "CSS tokens ready" },
-          { key: "mode", label: "Mode", value: "Source-copy", description: "Editable local files" },
-        ]}
-      />
-    )
-  }
-
-  if (item.slug === "quantity-stepper") {
-    return <Input kind="quantity" value={3} min={1} max={10} showControls aria-label="Quantity" />
   }
 
   if (item.slug === "resizable-panel") {

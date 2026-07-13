@@ -35,7 +35,11 @@ function PageState({ tone = "empty", title, description, icon, action, extra, co
   return (
     <div
       data-slot="page-state"
+      data-tone={tone}
+      data-compact={compact || undefined}
       role={tone === "error" ? "alert" : "status"}
+      aria-live={tone === "error" ? "assertive" : "polite"}
+      aria-busy={tone === "loading" || undefined}
       className={cn(
         "flex flex-col items-center justify-center rounded-[var(--radius-3xl)] border border-border/75 bg-card/96 text-center shadow-sm ring-1 ring-foreground/4",
         compact ? "gap-2 p-6" : "min-h-72 gap-4 p-10",
@@ -43,14 +47,14 @@ function PageState({ tone = "empty", title, description, icon, action, extra, co
       )}
       {...props}
     >
-      <div className="flex size-14 items-center justify-center rounded-full border border-border/70 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)]">
+      <div data-slot="page-state-icon" className="flex size-14 items-center justify-center rounded-full border border-border/70 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)]">
         {icon ?? defaultPageStateIcon(tone)}
       </div>
-      <div className="grid gap-1">
-        {title && <div className="text-base font-semibold tracking-tight text-foreground">{title}</div>}
-        {description && <div className="max-w-md text-sm leading-6 text-muted-foreground">{description}</div>}
+      <div data-slot="page-state-content" className="grid gap-1">
+        {title && <div data-slot="page-state-title" className="text-base font-semibold tracking-tight text-foreground">{title}</div>}
+        {description && <div data-slot="page-state-description" className="max-w-md text-sm leading-6 text-muted-foreground">{description}</div>}
       </div>
-      {(action || extra) ? <div className="flex flex-wrap items-center justify-center gap-2">{action}{extra}</div> : null}
+      {(action || extra) ? <div data-slot="page-state-actions" className="flex flex-wrap items-center justify-center gap-2">{action}{extra}</div> : null}
     </div>
   )
 }

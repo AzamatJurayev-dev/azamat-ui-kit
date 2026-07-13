@@ -74,6 +74,17 @@ function ResourceDetailPage({
 }: ResourceDetailPageProps) {
   const visibleSections = sections?.filter((section) => !section.hidden) ?? []
   const hasHeader = Boolean(title || description || eyebrow || actions || onBack)
+  const headerActions = onBack || actions ? (
+    <>
+      {onBack && (
+        <Button type="button" variant="outline" onClick={onBack}>
+          {backLabel}
+        </Button>
+      )}
+      {actions}
+    </>
+  ) : undefined
+  const hasMainContent = Boolean(children || visibleSections.length > 0)
 
   return (
     <div
@@ -90,16 +101,7 @@ function ResourceDetailPage({
           eyebrow={eyebrow}
           title={title}
           description={description}
-          actions={
-            <>
-              {onBack && (
-                <Button type="button" variant="outline" onClick={onBack}>
-                  {backLabel}
-                </Button>
-              )}
-              {actions}
-            </>
-          }
+          actions={headerActions}
           className={pageHeaderClassName}
           {...headerProps}
         />
@@ -115,42 +117,44 @@ function ResourceDetailPage({
         </div>
       )}
 
-      <div
-        data-slot="resource-detail-page-content"
-        className={cn("grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]", contentClassName)}
-      >
-        <div data-slot="resource-detail-page-main" className="grid min-w-0 gap-4">
-          {children}
+      {(hasMainContent || aside) && (
+        <div
+          data-slot="resource-detail-page-content"
+          className={cn("grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]", contentClassName)}
+        >
+          <div data-slot="resource-detail-page-main" className="grid min-w-0 gap-4">
+            {children}
 
-          {visibleSections.map((section) => (
-            <section
-              key={section.id}
-              data-slot="resource-detail-page-section"
-              className={cn("rounded-xl border bg-card text-card-foreground shadow-sm", section.className, sectionClassName)}
-            >
-              {(section.title || section.description || section.actions) && (
-                <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0 space-y-1">
-                    {section.title && <h2 className="text-base font-semibold leading-none tracking-tight">{section.title}</h2>}
-                    {section.description && <p className="text-sm text-muted-foreground">{section.description}</p>}
+            {visibleSections.map((section) => (
+              <section
+                key={section.id}
+                data-slot="resource-detail-page-section"
+                className={cn("rounded-xl border bg-card text-card-foreground shadow-sm", section.className, sectionClassName)}
+              >
+                {(section.title || section.description || section.actions) && (
+                  <div className="flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="min-w-0 space-y-1">
+                      {section.title && <h2 className="text-base font-semibold leading-none tracking-tight">{section.title}</h2>}
+                      {section.description && <p className="text-sm text-muted-foreground">{section.description}</p>}
+                    </div>
+                    {section.actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{section.actions}</div>}
                   </div>
-                  {section.actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{section.actions}</div>}
+                )}
+
+                <div className={cn("p-4", section.bodyClassName)}>
+                  {section.children ?? (section.items ? <DescriptionList items={section.items} /> : null)}
                 </div>
-              )}
+              </section>
+            ))}
+          </div>
 
-              <div className={cn("p-4", section.bodyClassName)}>
-                {section.children ?? (section.items ? <DescriptionList items={section.items} /> : null)}
-              </div>
-            </section>
-          ))}
+          {aside && (
+            <aside data-slot="resource-detail-page-aside" className={cn("min-w-0", asideClassName)}>
+              {aside}
+            </aside>
+          )}
         </div>
-
-        {aside && (
-          <aside data-slot="resource-detail-page-aside" className={cn("min-w-0", asideClassName)}>
-            {aside}
-          </aside>
-        )}
-      </div>
+      )}
 
       {footer && <div data-slot="resource-detail-page-footer">{footer}</div>}
     </div>

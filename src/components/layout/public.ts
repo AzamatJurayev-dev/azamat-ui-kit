@@ -1,7 +1,3 @@
 export * from "./app-sidebar"
 export * from "./breadcrumbs"
-export * from "./page-container"
 export * from "./section"
-export * from "./section-header"
-export * from "./sidebar-nav"
-export * from "./sticky-footer-bar"

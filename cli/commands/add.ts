@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
+import prompts from "prompts";
 import { logger } from "../utils/logger";
 import { registry, registryNames, type ComponentName, type ComponentRegistryItem } from "../registry";
 import { detectPackageManager } from "../utils/detect-package-manager";
@@ -111,10 +112,10 @@ function resolveLocalImportSource(importPath: string, fromSource?: string) {
 
 function getImportCandidates(sourceWithoutExtension: string) {
   return [
+    path.join(sourceWithoutExtension, "index.tsx").replaceAll("\\", "/"),
+    path.join(sourceWithoutExtension, "index.ts").replaceAll("\\", "/"),
     `${sourceWithoutExtension}.tsx`,
     `${sourceWithoutExtension}.ts`,
-    path.join(sourceWithoutExtension, "index.ts").replaceAll("\\", "/"),
-    path.join(sourceWithoutExtension, "index.tsx").replaceAll("\\", "/"),
   ];
 }
 
@@ -242,6 +243,34 @@ export async function addCommand(components: string[], options: AddCommandOption
   const items = collectRegistryItems(validComponents);
   const dependenciesToInstall = new Set<string>();
   const copiedSources = new Set<string>();
+  let overwriteConflicts = options.overwrite === true ? true : undefined;
+  let addedFiles = 0;
+  let overwrittenFiles = 0;
+  let skippedFiles = 0;
+
+  async function shouldOverwriteConflict(relativeTarget: string) {
+    if (overwriteConflicts !== undefined) return overwriteConflicts;
+
+    const isInteractive = Boolean(process.stdin.isTTY && process.stdout.isTTY && !process.env.CI);
+    if (!isInteractive) {
+      overwriteConflicts = false;
+      logger.warn(`Mavjud fayllar o‘zgartirilmadi. Majburiy yozish uchun --overwrite ishlating.`);
+      return false;
+    }
+
+    const answer = await prompts({
+      type: "confirm",
+      name: "overwrite",
+      message: `${relativeTarget} allaqachon mavjud. Barcha conflict fayllarni overwrite qilasizmi?`,
+      initial: false,
+    });
+
+    overwriteConflicts = answer.overwrite === true;
+    if (!overwriteConflicts) {
+      logger.info("Mavjud fayllar saqlanadi; faqat yetishmayotgan fayllar qo‘shiladi.");
+    }
+    return overwriteConflicts;
+  }
 
 async function copySourceWithLocalImports(source: string, targetTemplate?: string) {
   const normalizedSource = source.replaceAll("\\", "/");
@@ -281,15 +310,26 @@ async function copySourceWithLocalImports(source: string, targetTemplate?: strin
 
     const targetPath = path.join(cwd, resolvedTarget);
 
+    const relativeTarget = path.relative(cwd, targetPath);
+    const targetExists = fs.existsSync(targetPath);
+
     if (options.dryRun) {
-      logger.info(`[dry-run] ${normalizedSource} -> ${path.relative(cwd, targetPath)}`);
-    } else if (fs.existsSync(targetPath) && !options.overwrite) {
-      logger.warn(`${path.relative(cwd, targetPath)} allaqachon mavjud. O‘tkazib yuborildi.`);
+      const operation = targetExists ? "conflict" : "add";
+      logger.info(`[dry-run:${operation}] ${normalizedSource} -> ${relativeTarget}`);
+    } else if (targetExists && !(await shouldOverwriteConflict(relativeTarget))) {
+      skippedFiles += 1;
+      logger.warn(`${relativeTarget} allaqachon mavjud. O‘tkazib yuborildi.`);
     } else {
       await fs.ensureDir(path.dirname(targetPath));
       const sourceContent = await fs.readFile(sourcePath, "utf8");
       await fs.writeFile(targetPath, applyAlias(sourceContent, config.alias));
-      logger.success(`${path.relative(cwd, targetPath)} qo‘shildi.`);
+      if (targetExists) {
+        overwrittenFiles += 1;
+        logger.success(`${relativeTarget} yangilandi.`);
+      } else {
+        addedFiles += 1;
+        logger.success(`${relativeTarget} qo‘shildi.`);
+      }
     }
 
     const sourceContent = await fs.readFile(sourcePath, "utf8");
@@ -315,7 +355,9 @@ async function copySourceWithLocalImports(source: string, targetTemplate?: strin
     }
   }
 
-  if (!options.skipInstall && dependenciesToInstall.size > 0 && !options.dryRun) {
+  const changedFiles = addedFiles + overwrittenFiles;
+
+  if (!options.skipInstall && dependenciesToInstall.size > 0 && !options.dryRun && changedFiles > 0) {
     await installPackages({
       cwd,
       packageManager,
@@ -323,5 +365,13 @@ async function copySourceWithLocalImports(source: string, targetTemplate?: strin
     });
   }
 
-  logger.success("Componentlar muvaffaqiyatli qo‘shildi.");
+  if (options.dryRun) {
+    logger.info("Dry run tugadi. Hech qanday fayl o‘zgartirilmadi.");
+  } else if (changedFiles === 0) {
+    logger.warn(`O‘zgarish yo‘q. ${skippedFiles} ta mavjud fayl saqlandi.`);
+  } else {
+    logger.success(
+      `Tayyor: ${addedFiles} ta qo‘shildi, ${overwrittenFiles} ta yangilandi, ${skippedFiles} ta saqlandi.`
+    );
+  }
 }

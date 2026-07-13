@@ -1,19 +1,22 @@
 import type { ComponentDemoMock } from "../types"
 
 export const pageStateMock: ComponentDemoMock = {
-  code: `import { Button, PageState } from "tembro"
+  code: `import { Button, InlineState, PageState } from "tembro"
 
 export function Example() {
   return (
-    <PageState
-      tone="error"
-      title="Connection failed"
-      description="We could not sync workspace usage. Retry after restoring the API token."
-      action={<Button variant="outline">Retry sync</Button>}
-    />
+    <>
+      <PageState
+        tone="error"
+        title="Connection failed"
+        description="We could not sync workspace usage. Retry after restoring the API token."
+        action={<Button variant="outline">Retry sync</Button>}
+      />
+      <InlineState tone="empty" title="No comments" onRetry={() => refetch()} />
+    </>
   )
 }`,
-  highlights: ["Full-page status surface", "Built for empty, loading, success, info, and error flows", "Single decisive CTA", "Works as route-level fallback or section state"],
+  highlights: ["Full-page and compact inline surfaces", "Empty, loading, success, info, and error flows", "Retry and custom action support", "Accessible status and alert roles"],
   scenarios: [
     { title: "No data yet", description: "Guide the first useful action when a route has no content." },
     { title: "Load failed", description: "Keep retry and explanation visible without dropping the user into confusion." },

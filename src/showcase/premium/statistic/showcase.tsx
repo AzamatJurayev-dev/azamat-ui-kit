@@ -1,8 +1,13 @@
-import { Badge, ProgressRing, Statistic, StatisticCard, StatisticGrid, TrendCard } from "@/index"
+import * as React from "react"
+
+import { Badge, Button, ProgressCircle, Statistic, StatisticCard, StatisticGrid } from "@/index"
 
 const panelClass = "border-t border-[color:var(--aui-divider)] py-6"
 
 export function StatisticShowcase() {
+  const [loading, setLoading] = React.useState(false)
+  const [columns, setColumns] = React.useState<1 | 2 | 3 | 4>(3)
+
   return (
     <div className="space-y-0">
       <section className="pb-6">
@@ -14,10 +19,20 @@ export function StatisticShowcase() {
       </section>
 
       <section className={panelClass}>
-        <StatisticGrid columns={3}>
-          <StatisticCard label="Revenue" value="$24.8k" change="+12.4%" trend="up" description="vs last 30 days" />
-          <StatisticCard label="Errors" value="14" change="-3.1%" trend="down" description="production incidents" />
-          <StatisticCard label="Adoption" value="86%" description="workspace activation rate" action={<Badge variant="secondary">Live</Badge>} />
+        <div className="mb-4 flex flex-wrap gap-2">
+          <Button size="sm" variant={loading ? "default" : "outline"} onClick={() => setLoading((value) => !value)}>
+            {loading ? "Resolve data" : "Show loading"}
+          </Button>
+          {([1, 2, 3, 4] as const).map((value) => (
+            <Button key={value} size="sm" variant={columns === value ? "default" : "outline"} onClick={() => setColumns(value)}>
+              {value} column{value > 1 ? "s" : ""}
+            </Button>
+          ))}
+        </div>
+        <StatisticGrid columns={columns}>
+          <StatisticCard loading={loading} label="Revenue" prefix="$" value="24.8k" change="+12.4%" trend="up" description="vs last 30 days" />
+          <StatisticCard loading={loading} label="Errors" value="14" change="-3.1%" trend="down" description="production incidents" />
+          <StatisticCard loading={loading} label="Adoption" value="86" suffix="%" change="No change" trend="neutral" description="workspace activation rate" action={<Badge variant="secondary">Live</Badge>} />
         </StatisticGrid>
       </section>
 
@@ -46,9 +61,9 @@ export function StatisticShowcase() {
 
       <section className={panelClass}>
         <div className="grid gap-6 xl:grid-cols-[1fr_240px]">
-          <TrendCard title="Release velocity" value="24" change="+3" trend="up" description="completed this sprint" sparkline={[8, 10, 9, 14, 18, 19, 24]} />
+          <StatisticCard label="Release velocity" value="24" change="+3" trend="up" description="completed this sprint" />
           <div className="rounded-xl border border-[color:var(--aui-divider)] p-4">
-            <ProgressRing value={76} label="76%" description="coverage" tone="success" />
+            <ProgressCircle value={76} label="76%" description="coverage" tone="success" />
           </div>
         </div>
       </section>

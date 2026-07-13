@@ -1,4 +1,4 @@
-import { Blockquote, Heading, Mark, Spoiler, SpoilerSummary, Text } from "@/index"
+import { Blockquote, Heading, Mark, Spoiler, SpoilerSummary, Text } from "@/components/display/typography"
 
 export function TypographyShowcase() {
   return (

@@ -229,6 +229,29 @@ describe("base primitives", () => {
     expect(onCheckedStateChange).toHaveBeenNthCalledWith(3, false)
   })
 
+  it("submits checkbox value through the native form contract", async () => {
+    const user = userEvent.setup()
+    const submittedValue = vi.fn()
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      submittedValue(new FormData(event.currentTarget).get("terms"))
+    }
+
+    render(
+      <form onSubmit={handleSubmit}>
+        <Checkbox aria-label="Accept terms" name="terms" value="accepted" />
+        <Button type="submit">Submit</Button>
+      </form>
+    )
+
+    await user.click(screen.getByRole("button", { name: "Submit" }))
+    expect(submittedValue).toHaveBeenLastCalledWith(null)
+
+    await user.click(screen.getByRole("checkbox", { name: "Accept terms" }))
+    await user.click(screen.getByRole("button", { name: "Submit" }))
+    expect(submittedValue).toHaveBeenLastCalledWith("accepted")
+  })
+
   it("renders badge tone content without breaking inline layout", () => {
     render(
       <Badge tone="success" leftIcon={<span aria-hidden="true">+</span>} rightIcon={<span aria-hidden="true">!</span>}>
@@ -265,6 +288,7 @@ describe("base primitives", () => {
     expect(onBadgeRemove).toHaveBeenCalledTimes(1)
 
     const tag = screen.getByText("Priority").closest("[data-slot='tag']") as HTMLElement
+    expect(tag.getAttribute("data-removable")).toBe("true")
     tag.focus()
     await user.keyboard("{Delete}")
     expect(onTagRemove).toHaveBeenCalledTimes(1)

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { BarChart3Icon, CreditCardIcon, FolderIcon, HomeIcon, SettingsIcon } from "lucide-react"
+import { BarChart3Icon, CreditCardIcon, FolderIcon, HomeIcon, LifeBuoyIcon, SettingsIcon, UsersIcon } from "lucide-react"
 
 import { Badge, Button, Sidebar } from "@/index"
 import { cn } from "@/lib/utils"
@@ -7,9 +7,19 @@ import { cn } from "@/lib/utils"
 import type { ComponentDemoProps } from "../types"
 
 const navItems = [
-  { key: "overview", label: "Overview", href: "/overview", icon: <HomeIcon className="size-4" /> },
-  { key: "projects", label: "Projects", href: "/projects", icon: <FolderIcon className="size-4" />, badge: "8" },
-  { key: "reports", label: "Reports", href: "/reports", icon: <BarChart3Icon className="size-4" /> },
+  { key: "overview", label: "Overview", href: "/overview", icon: <HomeIcon className="size-4" />, sectionLabel: "Core" },
+  {
+    key: "projects",
+    label: "Projects",
+    icon: <FolderIcon className="size-4" />,
+    badge: "8",
+    defaultExpanded: true,
+    items: [
+      { key: "active-projects", label: "Active projects", href: "/components/app-sidebar?view=active" },
+      { key: "archived-projects", label: "Archived", href: "/components/app-sidebar?view=archived", badge: "3" },
+    ],
+  },
+  { key: "reports", label: "Reports", href: "/reports", icon: <BarChart3Icon className="size-4" />, sectionLabel: "Insights" },
   { key: "billing", label: "Billing", href: "/billing", icon: <CreditCardIcon className="size-4" />, badge: "2" },
   { key: "settings", label: "Settings", href: "/settings", icon: <SettingsIcon className="size-4" />, disabled: true },
 ]
@@ -20,6 +30,10 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
   const [activeKey, setActiveKey] = React.useState("overview")
   const [collapsed, setCollapsed] = React.useState(mode === "playground")
   const [previewSurface, setPreviewSurface] = React.useState<"desktop" | "mobile">("desktop")
+  const [showSections, setShowSections] = React.useState(true)
+  const [itemSize, setItemSize] = React.useState<"sm" | "md" | "lg">("md")
+  const [activeIndicator, setActiveIndicator] = React.useState<"bar" | "pill" | "none">("bar")
+  const [accountClicks, setAccountClicks] = React.useState(0)
 
   const items = React.useMemo(
     () =>
@@ -75,6 +89,22 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
           <Sidebar
             collapsed={collapsed}
             items={items}
+            showSectionLabels={showSections}
+            itemSize={itemSize}
+            activeIndicator={activeIndicator}
+            renderLink={({ item: _item, href = "/components/app-sidebar", ...linkProps }) => (
+              <a {...linkProps} href={href} />
+            )}
+            secondaryActions={[
+              { key: "support", label: "Support", icon: <LifeBuoyIcon className="size-4" />, onSelect: () => setActiveKey("reports") },
+            ]}
+            railItems={[{ key: "members", label: "Members", icon: <UsersIcon className="size-4" />, onSelect: () => setActiveKey("projects") }]}
+            footerAccount={{
+              label: "Azamat Workspace",
+              description: accountClicks ? `Account opened ${accountClicks}x` : "Starter plan",
+              avatar: "AW",
+              onSelect: () => setAccountClicks((value) => value + 1),
+            }}
             responsive
             mobileBreakpoint={mobilePreview ? 10000 : 0}
             mobileTitle="Workspace navigation"
@@ -108,6 +138,19 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
               <p className="mt-2 text-lg font-semibold aui-text-strong">1 route</p>
             </div>
           </div>
+          {mode === "playground" ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Button size="sm" variant={showSections ? "default" : "outline"} onClick={() => setShowSections((value) => !value)}>
+                {showSections ? "Hide section labels" : "Show section labels"}
+              </Button>
+              <Button size="sm" variant={itemSize === "sm" ? "default" : "outline"} onClick={() => setItemSize("sm")}>Compact</Button>
+              <Button size="sm" variant={itemSize === "md" ? "default" : "outline"} onClick={() => setItemSize("md")}>Default</Button>
+              <Button size="sm" variant={itemSize === "lg" ? "default" : "outline"} onClick={() => setItemSize("lg")}>Comfortable</Button>
+              <Button size="sm" variant={activeIndicator === "bar" ? "default" : "outline"} onClick={() => setActiveIndicator("bar")}>Bar active</Button>
+              <Button size="sm" variant={activeIndicator === "pill" ? "default" : "outline"} onClick={() => setActiveIndicator("pill")}>Pill active</Button>
+              <Button size="sm" variant={activeIndicator === "none" ? "default" : "outline"} onClick={() => setActiveIndicator("none")}>Minimal active</Button>
+            </div>
+          ) : null}
         </section>
       </div>
     </div>

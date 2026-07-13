@@ -100,7 +100,7 @@ function ResourcePage<TData, TValue = unknown>({
   ...props
 }: ResourcePageProps<TData, TValue>) {
   const hasHeader = Boolean(title || description || eyebrow || actions)
-  const hasToolbar = Boolean(breadcrumbs || filters || tabs)
+  const hasToolbar = Boolean(filters || tabs)
   const hasMainContent = Boolean(children || table)
 
   return (

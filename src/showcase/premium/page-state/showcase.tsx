@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Badge, Button, PageState } from "@/index"
+import { Badge, Button, InlineState, PageState } from "@/index"
 
 import type { ComponentDemoProps } from "../types"
 
@@ -11,6 +11,8 @@ const tones = ["empty", "loading", "error", "success", "info"] as const
 
 export function PageStateShowcase({ mode }: ComponentDemoProps) {
   const [toneIndex, setToneIndex] = React.useState(2)
+  const [actionMessage, setActionMessage] = React.useState("No action triggered yet")
+  const [retryCount, setRetryCount] = React.useState(0)
   const tone = tones[toneIndex] ?? "error"
 
   return (
@@ -49,13 +51,32 @@ export function PageStateShowcase({ mode }: ComponentDemoProps) {
         }
         action={
           tone === "loading" ? undefined : (
-            <Button variant={tone === "error" ? "outline" : "default"}>
+            <Button variant={tone === "error" ? "outline" : "default"} onClick={() => setActionMessage(`${tone} action completed`)}>
               {tone === "empty" ? "Create invoice" : tone === "error" ? "Retry sync" : tone === "success" ? "Open dashboard" : "View progress"}
             </Button>
           )
         }
-        extra={tone === "error" ? <Button variant="ghost">Open logs</Button> : undefined}
+        extra={tone === "error" ? <Button variant="ghost" onClick={() => setActionMessage("Logs opened")}>Open logs</Button> : undefined}
       />
+
+      <section className={panelClass}>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <InlineState
+            tone="error"
+            title="Widget unavailable"
+            description={`Compact retry state. Attempts: ${retryCount}`}
+            retryLabel="Retry widget"
+            onRetry={() => setRetryCount((value) => value + 1)}
+          />
+          <InlineState
+            tone="success"
+            title="Changes published"
+            description="Use the compact surface inside a section without replacing the whole route."
+            action={<Button size="sm" onClick={() => setActionMessage("Published changes opened")}>View changes</Button>}
+          />
+        </div>
+        <p aria-live="polite" className="mt-4 text-sm aui-text-muted">{actionMessage}</p>
+      </section>
 
       {mode === "playground" ? (
         <section className={panelClass}>

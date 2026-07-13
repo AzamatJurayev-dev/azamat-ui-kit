@@ -4,70 +4,20 @@ import { render, screen } from "@testing-library/react"
 import { userEvent } from "@testing-library/user-event"
 
 import {
-  TrendCard,
-  ComparisonCard,
-  DeltaBadge,
   DataState,
-  DataList,
   InfoCard,
 } from "@/components/display"
-import { Accordion } from "@/components/ui/accordion"
 import { InlineEditable } from "@/components/inputs/inline-editable"
-import { CommandBar } from "@/components/navigation/command-bar"
+import { CommandPalette } from "@/components/command/command-palette"
 import { SavedFilterSelect } from "@/components/filters/saved-filter-select"
 import { NotificationCenter } from "@/components/notifications/notification-center"
 import { Badge } from "@/components/ui/badge"
 
 describe("New components rendering tests", () => {
-  it("renders TrendCard with sparkline", () => {
-    render(<TrendCard title="Revenue" value="$12,345" change="+12%" trend="up" sparkline={[10, 20, 15, 30]} />)
-    expect(screen.getByText("Revenue")).toBeInTheDocument()
-    expect(screen.getByText("$12,345")).toBeInTheDocument()
-    expect(screen.getByText("+12%")).toBeInTheDocument()
-  })
-
-  it("renders ComparisonCard", () => {
-    render(
-      <ComparisonCard
-        title="Comparison"
-        items={[
-          { label: "Metric 1", value: "100" },
-          { label: "Metric 2", value: "200" },
-        ]}
-      />
-    )
-    expect(screen.getByText("Comparison")).toBeInTheDocument()
-    expect(screen.getByText("Metric 1")).toBeInTheDocument()
-    expect(screen.getByText("100")).toBeInTheDocument()
-    expect(screen.getByText("Metric 2")).toBeInTheDocument()
-    expect(screen.getByText("200")).toBeInTheDocument()
-  })
-
-  it("renders DeltaBadge", () => {
-    render(<DeltaBadge value="-3.5%" trend="down" />)
-    expect(screen.getByText("-3.5%")).toBeInTheDocument()
-  })
-
   it("renders InfoCard as the universal summary card", () => {
     render(<InfoCard title="Acme Corp" description="Enterprise Customer" />)
     expect(screen.getByText("Acme Corp")).toBeInTheDocument()
     expect(screen.getByText("Enterprise Customer")).toBeInTheDocument()
-  })
-
-  it("renders Accordion", async () => {
-    const user = userEvent.setup()
-    render(<Accordion type="single" items={[{ key: "one", title: "Question", content: "Answer" }]} />)
-
-    await user.click(screen.getByText("Question"))
-    expect(screen.getByText("Answer")).toBeInTheDocument()
-  })
-
-  it("renders DataList", () => {
-    render(<DataList items={[{ key: "one", label: "Pipeline", value: "$24k", description: "Qualified opportunities" }]} />)
-
-    expect(screen.getByText("Pipeline")).toBeInTheDocument()
-    expect(screen.getByText("$24k")).toBeInTheDocument()
-    expect(screen.getByText("Qualified opportunities")).toBeInTheDocument()
   })
 
   it("handles InlineEditable", async () => {
@@ -116,11 +66,13 @@ describe("New components rendering tests", () => {
     expect(screen.getByText("Footer details")).toBeInTheDocument()
   })
 
-  it("renders CommandBar", () => {
+  it("renders CommandPalette", () => {
     render(
-      <CommandBar open={true}>
-        <button>Action</button>
-      </CommandBar>
+      <CommandPalette
+        open
+        onOpenChange={() => undefined}
+        groups={[{ id: "actions", label: "Actions", items: [{ id: "action", label: "Action" }] }]}
+      />
     )
     expect(screen.getByText("Action")).toBeInTheDocument()
   })

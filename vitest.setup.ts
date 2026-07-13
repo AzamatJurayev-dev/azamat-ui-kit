@@ -46,6 +46,22 @@ if (typeof document.getAnimations !== "function") {
   document.getAnimations = () => []
 }
 
+if (typeof document.elementFromPoint !== "function") {
+  document.elementFromPoint = () => null
+}
+
+if (typeof Range.prototype.getBoundingClientRect !== "function") {
+  Range.prototype.getBoundingClientRect = () => new DOMRect(0, 0, 0, 0)
+}
+
+if (typeof Range.prototype.getClientRects !== "function") {
+  Range.prototype.getClientRects = () => ({
+    length: 0,
+    item: () => null,
+    [Symbol.iterator]: function* () {},
+  }) as DOMRectList
+}
+
 if (typeof Element.prototype.getAnimations !== "function") {
   Element.prototype.getAnimations = () => []
 }

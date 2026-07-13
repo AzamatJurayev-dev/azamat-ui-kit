@@ -196,7 +196,7 @@ function Select({
         {searchable ? (
           <div
             data-slot="select-search"
-            className="sticky top-0 z-10 mb-1 flex items-center gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-popover px-2.5 py-2 text-sm"
+            className="sticky top-0 flex items-center gap-2"
           >
             <SearchIcon className="size-4 text-muted-foreground" />
             <input
@@ -217,7 +217,7 @@ function Select({
         {loading ? (
           <div
             data-slot="select-state"
-            className="flex items-center gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-2.5 text-sm text-muted-foreground"
+            className="flex items-center gap-2"
           >
             <LoaderCircleIcon className="size-4 animate-spin" />
             {loadingLabel}
@@ -225,7 +225,6 @@ function Select({
         ) : filteredOptionsCount === 0 ? (
           <div
             data-slot="select-state"
-            className="rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-2.5 text-sm text-muted-foreground"
           >
             {emptyMessage ?? emptyLabel}
           </div>
@@ -297,7 +296,7 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex w-full min-w-0 items-center justify-between gap-2 rounded-[var(--aui-control-radius,var(--radius-md))] border border-[color:var(--aui-control-border-strong,var(--input))] bg-[color:var(--aui-control-surface,var(--background))] pr-3 pl-3 text-sm whitespace-nowrap text-foreground shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04))] transition-[background-color,border-color,box-shadow,color] outline-none select-none hover:border-[color:var(--aui-control-hover-border,var(--ring))] hover:bg-[color:var(--aui-control-surface-hover,var(--background))] hover:shadow-[var(--aui-control-shadow-hover,0_2px_6px_rgba(15,23,42,0.06))] focus-visible:border-[color:var(--ring)] focus-visible:ring-0 focus-visible:shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04)),0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_4px_var(--aui-focus-ring-soft,transparent)] disabled:cursor-not-allowed disabled:border-[color:color-mix(in_oklch,var(--border),transparent_18%)] disabled:bg-[color:var(--aui-control-surface-disabled,var(--muted))] disabled:text-muted-foreground disabled:opacity-100 aria-invalid:border-destructive aria-invalid:shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04)),0_0_0_1px_var(--aui-danger-ring,var(--destructive)),0_0_0_4px_var(--aui-danger-ring-soft,transparent)] data-placeholder:text-muted-foreground/74 data-[size=default]:h-11 data-[size=lg]:h-12 data-[size=sm]:h-9 data-[size=sm]:rounded-[var(--radius-sm)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "flex w-full min-w-0 items-center justify-between gap-2 whitespace-nowrap outline-none select-none disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -305,8 +304,8 @@ function SelectTrigger({
       {children}
       <SelectPrimitive.Icon
         render={
-          <span className="inline-flex size-4 shrink-0 items-center justify-center text-muted-foreground">
-            <ChevronDownIcon className="size-4" />
+          <span data-slot="select-icon" className="inline-flex shrink-0 items-center justify-center">
+            <ChevronDownIcon data-icon="chevron" />
           </span>
         }
       />
@@ -338,7 +337,7 @@ function SelectContent({
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={cn(
-            "relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-popover p-1.5 text-popover-foreground shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))] backdrop-blur duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "relative isolate max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto",
             className
           )}
           {...props}
@@ -356,10 +355,7 @@ function SelectLabel({ className, ...props }: SelectLabelProps) {
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
-      className={cn(
-        "px-2 py-1.5 text-[11px] font-semibold tracking-[0.14em] uppercase text-muted-foreground/90",
-        className
-      )}
+      className={className}
       {...props}
     />
   )
@@ -370,7 +366,7 @@ function SelectItem({ className, children, ...props }: SelectItemProps) {
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex w-full cursor-default items-center gap-2 rounded-[var(--radius-md)] border border-transparent py-2.5 pr-9 pl-3 text-sm text-[color:var(--aui-page-muted-strong,var(--foreground))] outline-hidden select-none transition-[background-color,border-color,color,box-shadow,transform] data-[highlighted]:border-[color:color-mix(in_oklch,var(--primary),transparent_72%)] data-[highlighted]:bg-[color:color-mix(in_oklch,var(--primary),transparent_92%)] data-[highlighted]:text-foreground data-[selected]:border-[color:color-mix(in_oklch,var(--primary),transparent_70%)] data-[selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] data-[selected]:font-semibold data-[selected]:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:min-w-0 *:[span]:last:items-center *:[span]:last:gap-2",
+        "relative flex w-full cursor-default items-center gap-2 outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -391,7 +387,7 @@ function SelectSeparator({ className, ...props }: SelectSeparatorProps) {
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn("pointer-events-none -mx-1 my-1.5 h-px bg-border/80", className)}
+      className={cn("pointer-events-none", className)}
       {...props}
     />
   )

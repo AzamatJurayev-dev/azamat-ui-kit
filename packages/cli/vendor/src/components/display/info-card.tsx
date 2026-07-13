@@ -56,22 +56,22 @@ export type InfoCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "c
 }
 
 const variantClassName: Record<InfoCardVariant, string> = {
-  default: "border border-border/70 bg-card/96 shadow-sm ring-1 ring-foreground/4",
-  outline: "border border-border/75 bg-card/96 shadow-sm ring-1 ring-foreground/4",
-  elevated: "border border-border/75 bg-card/98 shadow-[0_24px_80px_rgba(15,23,42,0.12)] ring-1 ring-foreground/4",
-  ghost: "border-transparent bg-transparent shadow-none",
+  default: "",
+  outline: "",
+  elevated: "",
+  ghost: "",
 }
 
 const densityClassName: Record<InfoCardDensity, string> = {
-  compact: "p-3",
-  default: "p-4",
-  comfortable: "p-5",
+  compact: "",
+  default: "",
+  comfortable: "",
 }
 
 const titleClassName: Record<InfoCardSize, string> = {
-  sm: "text-sm",
-  md: "text-base",
-  lg: "text-lg",
+  sm: "",
+  md: "",
+  lg: "",
 }
 
 function InfoCard({
@@ -114,10 +114,19 @@ function InfoCard({
       data-selected={selected || undefined}
       data-disabled={disabled || undefined}
       data-loading={loading || undefined}
+      data-info-variant={variant}
+      data-info-size={size}
+      data-info-density={resolvedDensity}
+      data-orientation={orientation}
+      variant={variant}
+      size={size === "md" ? "default" : size}
+      density={resolvedDensity}
+      interactive={clickable}
+      selected={selected}
+      disabled={disabled}
       className={cn(
-        "overflow-hidden transition-colors data-[selected=true]:border-primary data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-55",
+        "overflow-hidden",
         variantClassName[variant],
-        clickable && "cursor-pointer hover:bg-muted/35",
         orientation === "horizontal" && "flex",
         className,
         classNames?.root
@@ -126,7 +135,7 @@ function InfoCard({
       {...props}
     >
       {loading ? (
-        <div className={cn("grid gap-3", densityClassName[resolvedDensity])}>
+        <div data-slot="info-card-loading" className="grid gap-3">
           <Skeleton className="h-5 w-1/2" />
           <SkeletonText rows={3} />
         </div>
@@ -137,8 +146,7 @@ function InfoCard({
               <div
                 data-slot="info-card-media"
                 className={cn(
-                  "bg-muted/50",
-                  orientation === "horizontal" ? "w-40 shrink-0 border-r border-border/70" : "aspect-video border-b border-border/70",
+                  orientation === "horizontal" ? "w-40 shrink-0" : "aspect-video",
                   classNames?.media
                 )}
               >
@@ -153,7 +161,7 @@ function InfoCard({
                     <div
                       data-slot="info-card-icon"
                       className={cn(
-                        "flex size-9 shrink-0 items-center justify-center rounded-[min(var(--radius-xl),16px)] border border-border/70 bg-muted/45 text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.05)]",
+                        "flex shrink-0 items-center justify-center",
                         classNames?.icon
                       )}
                     >
@@ -161,12 +169,12 @@ function InfoCard({
                     </div>
                   )}
                   <div className="grid min-w-0 gap-1">
-                    {eyebrow && <div data-slot="info-card-eyebrow" className={cn("text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground", classNames?.eyebrow)}>{eyebrow}</div>}
+                    {eyebrow && <div data-slot="info-card-eyebrow" className={classNames?.eyebrow}>{eyebrow}</div>}
                     <div className="flex flex-wrap items-center gap-2">
-                      {title && <div data-slot="info-card-title" className={cn("truncate font-semibold tracking-tight text-foreground", titleClassName[size], classNames?.title)}>{title}</div>}
+                      {title && <div data-slot="info-card-title" className={cn("truncate", titleClassName[size], classNames?.title)}>{title}</div>}
                       {status && <div data-slot="info-card-status" className={classNames?.status}>{status}</div>}
                     </div>
-                    {description && <div data-slot="info-card-description" className={cn("line-clamp-2 text-sm text-muted-foreground", classNames?.description)}>{description}</div>}
+                    {description && <div data-slot="info-card-description" className={cn("line-clamp-2", classNames?.description)}>{description}</div>}
                   </div>
                 </div>
                 {actions && (
@@ -182,9 +190,9 @@ function InfoCard({
                 )}
               </div>
             )}
-            {meta && <div data-slot="info-card-meta" className={cn("text-xs text-muted-foreground", classNames?.meta)}>{meta}</div>}
+            {meta && <div data-slot="info-card-meta" className={classNames?.meta}>{meta}</div>}
             {(content || children) && (renderContent?.(ctx) ?? <div data-slot="info-card-content" className={classNames?.content}>{content ?? children}</div>)}
-            {footer && (renderFooter?.(ctx) ?? <div data-slot="info-card-footer" className={cn("border-t pt-3 text-sm text-muted-foreground", classNames?.footer)}>{footer}</div>)}
+            {footer && (renderFooter?.(ctx) ?? <div data-slot="info-card-footer" className={classNames?.footer}>{footer}</div>)}
           </div>
         </>
       )}

@@ -6,9 +6,9 @@ export const statisticMock: ComponentDemoMock = {
 export function Example() {
   return (
     <StatisticGrid columns={3}>
-      <StatisticCard label="Revenue" value="$24.8k" change="+12.4%" trend="up" />
+      <StatisticCard label="Revenue" prefix="$" value="24.8k" change="+12.4%" trend="up" />
       <StatisticCard label="Errors" value="14" change="-3.1%" trend="down" />
-      <StatisticCard label="Conversion" value="6.3%" description="vs last 30 days" />
+      <StatisticCard label="Conversion" value="6.3" suffix="%" loading={false} description="vs last 30 days" />
     </StatisticGrid>
   )
 }`,

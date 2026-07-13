@@ -12,7 +12,7 @@ export const presetComponents: Record<string, ComponentName[]> = {
     "tabs",
     "page-state",
     "filter-bar",
-    "property-grid",
+    "description-list",
     "info-card",
     "data-table",
   ],

@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "3.1.1",
+  "version": "3.1.4",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -33,36 +33,33 @@
     "overlay": [
       "alert-dialog",
       "confirm-dialog",
-      "drawer",
-      "modal-shell",
-      "sheet-shell"
+      "drawer"
     ],
     "navigation": [
-      "nav-tabs",
-      "page-tabs",
-      "pagination",
-      "stepper-tabs",
-      "command-bar"
+      "pagination"
     ],
     "inputs": [
       "async-select",
       "otp-input",
       "rating",
-      "quantity-stepper",
+      "slider",
+      "tag-input",
       "inline-editable",
-      "simple-select"
+      "color-picker",
+      "signature-pad",
+      "json-input",
+      "time-picker"
     ],
     "form": [
+      "form-date-picker",
+      "form-date-range-input",
+      "form-date-range-picker",
       "form-field-shell",
       "form-input",
       "form-select",
-      "form-textarea",
       "form-switch",
-      "form-date-picker",
-      "form-date-range-picker",
-      "form-date-range-input"
+      "form-textarea"
     ],
-    "form": [],
     "feedback": [
       "alert",
       "loading-state",
@@ -73,24 +70,23 @@
       "activity-feed",
       "avatar",
       "code-block",
-      "data-list",
+      "description-list",
       "data-state",
       "info-card",
       "kanban",
+      "qr-code",
       "virtual-list",
       "list",
-      "metric-grid",
       "progress",
       "progress-circle",
-      "property-grid",
-      "result",
       "statistic",
       "status-dot",
       "status-legend",
       "timeline",
       "tree-view",
-      "user-card",
-      "trend-card"
+      "carousel",
+      "tag",
+      "typography"
     ],
     "actions": [
       "action-menu",
@@ -129,25 +125,27 @@
     "notifications": [
       "toast",
       "notification-center"
-      ,"sortable-list"
-      ,"virtual-list"
     ],
-    "command": [],
+    "command": [
+      "command-palette"
+    ],
     "patterns": [
+      "form-builder",
       "resource-page",
-      "resource-detail-page"
+      "resource-detail-page",
+      "empty-state",
+      "page-toolbar",
+      "bulk-action-bar",
+      "detail-layout",
+      "settings-page",
+      "data-view"
     ],
     "modern": [
       "calendar-scheduler",
       "dual-list-picker",
       "resizable-panel",
-      "tag",
-      "carousel",
-      "typography",
-      "json-input",
-      "time-picker"
-      ,"sortable-list"
-      ,"virtual-list"
+      "rich-text-editor",
+      "image-cropper"
     ],
     "hooks": [
       "use-session-storage-state",
@@ -162,7 +160,8 @@
       "calendar-kit",
       "wizard-kit",
       "all"
-    ]
+    ],
+    "charts": []
   },
   "recommended": [
     "button",
@@ -190,15 +189,14 @@
     "loading-state",
     "progress",
     "progress-circle",
-    "metric-grid",
     "activity-feed",
-    "data-list",
-    "user-card",
     "action-menu",
     "filter-bar",
-    "trend-card",
     "notification-center",
-    "command-bar"
+    "command-palette",
+    "list",
+    "empty-state",
+    "page-toolbar"
   ],
   "recommendedByMode": {
     "foundation": [
@@ -224,9 +222,7 @@
       "data-state",
       "loading-state",
       "progress-circle",
-      "metric-grid",
       "activity-feed",
-      "user-card",
       "action-menu",
       "filter-bar",
       "date-picker",
@@ -234,11 +230,18 @@
       "file-upload",
       "use-data-table-view-state",
       "data-table",
-      "trend-card",
       "notification-center",
-      "command-bar",
       "sortable-list",
-      "virtual-list"
+      "virtual-list",
+      "color-picker",
+      "signature-pad",
+      "qr-code",
+      "rich-text-editor",
+      "image-cropper",
+      "command-palette",
+      "empty-state",
+      "page-toolbar",
+      "data-view"
     ],
     "system": [
       "data-table",
@@ -270,18 +273,27 @@
       "segmented-control",
       "skeleton",
       "spinner",
-      "command-bar",
+      "command-palette",
       "inline-editable",
       "avatar",
       "code-block",
       "data-state",
       "kanban",
       "list",
-      "property-grid",
+      "description-list",
       "statistic",
       "tree-view",
       "copy-button",
       "section",
+      "form-builder",
+      "empty-state",
+      "page-toolbar",
+      "bulk-action-bar",
+      "detail-layout",
+      "settings-page",
+      "data-view",
+      "resource-page",
+      "resource-detail-page",
       "calendar-scheduler",
       "dual-list-picker",
       "resizable-panel",
@@ -291,7 +303,12 @@
       "json-input",
       "time-picker",
       "sortable-list",
-      "virtual-list"
+      "virtual-list",
+      "color-picker",
+      "signature-pad",
+      "qr-code",
+      "rich-text-editor",
+      "image-cropper"
     ]
   },
   "migrationAliases": {
@@ -307,30 +324,24 @@
     "date-range-input": "input",
     "simple-select": "select",
     "combobox": "select",
-    "async-multi-select": "async-select",
-    "form-async-select": "select",
+    "hover-card": "popover",
+    "copy-field": "copy-button",
+    "comparison-card": "card",
+    "delta-badge": "badge",
+    "trend-card": "statistic",
+    "user-card": "avatar",
+    "form-async-select": "form-select",
     "app-sidebar": "sidebar",
     "smart-card": "info-card",
-    "app-header": "sidebar",
-    "app-shell": "sidebar",
-    "copy-field": "copy-button",
     "file-dropzone": "file-upload",
-    "form-field-shell": "input",
-    "form-input": "input",
-    "form-select": "select",
-    "form-switch": "switch",
-    "form-textarea": "textarea",
-    "hover-card": "tooltip",
     "page-container": "sidebar",
-    "page-header": "breadcrumbs",
     "section-header": "section",
     "sidebar-nav": "sidebar",
-    "stat-card": "metric-grid",
+    "stat-card": "statistic",
     "sticky-footer-bar": "sidebar",
     "input-decorator": "input",
     "input-value": "input",
     "inputs": "input",
-    "form": "input",
     "data-table-actions-column": "data-table",
     "data-table-bulk-actions": "data-table",
     "data-table-column-visibility-menu": "data-table",
@@ -342,6 +353,21 @@
     "data-table-toolbar": "data-table",
     "data-table-view-presets": "data-table",
     "table-export-menu": "data-table",
-    "table-import-button": "data-table"
+    "table-import-button": "data-table",
+    "sheet-shell": "drawer",
+    "nav-tabs": "tabs",
+    "page-tabs": "tabs",
+    "stepper-tabs": "stepper",
+    "command-bar": "command-palette",
+    "data-list": "list",
+    "property-grid": "description-list",
+    "result": "page-state",
+    "app-header": "sidebar",
+    "page-header": "section",
+    "kpi": "statistic",
+    "progress-ring": "progress-circle",
+    "dialog-actions": "dialog",
+    "modal-shell": "dialog",
+    "horizontal-bar-chart": "data-view"
   }
 }

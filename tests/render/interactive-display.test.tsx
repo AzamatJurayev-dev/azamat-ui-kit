@@ -12,7 +12,6 @@ import { AsyncSelect } from "@/components/inputs/async-select"
 import { Select } from "@/components/ui/select"
 import { DualListPicker } from "@/components/modern/dual-list-picker"
 import { RichTextEditor } from "@/components/modern/rich-text-editor"
-import { Tour } from "@/components/modern/tour"
 
 describe("interactive display surfaces", () => {
   it("supports interactive activity feed rows", async () => {
@@ -222,23 +221,13 @@ describe("interactive display surfaces", () => {
     expect(screen.queryByText("North")).toBeNull()
   })
 
-  it("supports rich text text output and tour finish callbacks", async () => {
+  it("supports rich text text output", async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
-    const onFinish = vi.fn()
-    const onClose = vi.fn()
 
-    render(
-      <>
-        <RichTextEditor output="text" onValueChange={onValueChange} placeholder="Write" />
-        <Tour steps={[{ title: "Intro" }]} onFinish={onFinish} onClose={onClose} />
-      </>
-    )
+    render(<RichTextEditor output="text" onValueChange={onValueChange} placeholder="Write" />)
 
-    await user.type(screen.getByPlaceholderText("Write"), "Hello")
+    await user.type(screen.getByRole("textbox", { name: "Rich text editor" }), "Hello")
     expect(onValueChange).toHaveBeenLastCalledWith("Hello")
-    await user.click(screen.getByRole("button", { name: "Done" }))
-    expect(onFinish).toHaveBeenCalledTimes(1)
-    expect(onClose).toHaveBeenCalledTimes(1)
   })
 })

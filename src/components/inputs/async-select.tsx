@@ -329,10 +329,7 @@ function AsyncStateMessage({
   return (
     <div
       data-slot="async-select-state"
-      className={cn(
-        "rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-3 text-sm leading-5 text-muted-foreground",
-        className
-      )}
+      className={className}
     >
       {children}
     </div>
@@ -372,13 +369,13 @@ function AsyncOptionButton<
       data-selected={selected || undefined}
       data-disabled={option.disabled || undefined}
       className={cn(
-        "flex w-full items-start gap-2.5 rounded-[var(--radius-md)] border border-transparent px-3 py-2.5 text-left text-sm outline-none transition-[background-color,border-color,color,box-shadow] hover:border-[color:color-mix(in_oklch,var(--primary),transparent_76%)] hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_93%)] focus-visible:border-[color:var(--aui-focus-ring,var(--ring))] focus-visible:shadow-[0_0_0_3px_var(--aui-focus-ring-soft,transparent)] data-[selected=true]:border-[color:color-mix(in_oklch,var(--primary),transparent_68%)] data-[selected=true]:bg-[color:color-mix(in_oklch,var(--primary),transparent_89%)] data-[selected=true]:text-foreground disabled:pointer-events-none disabled:opacity-50",
+        "flex w-full items-start gap-2.5 text-left outline-none disabled:pointer-events-none",
         optionClassName
       )}
       onClick={() => onSelect(option)}
     >
-      <span className={cn("mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full border border-border/70", selected && "border-primary bg-primary text-primary-foreground")}>
-        {selected && <CheckIcon className="size-3" />}
+      <span data-slot="async-select-option-indicator" data-selected={selected || undefined} className="mt-0.5 shrink-0">
+        {selected && <CheckIcon data-icon="selected" />}
       </span>
       <span className="min-w-0 flex-1">
         {renderOption?.(option, { selected }) ?? (
@@ -413,7 +410,7 @@ function AsyncCreateButton({
       type="button"
       disabled={isCreating}
       data-slot="async-select-create"
-      className="flex w-full items-center gap-2 rounded-[var(--radius-md)] border border-dashed border-[color:color-mix(in_oklch,var(--primary),transparent_55%)] bg-[color:color-mix(in_oklch,var(--primary),transparent_94%)] px-3 py-2.5 text-left text-sm font-medium text-foreground outline-none transition-[background-color,border-color,color,box-shadow] hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] disabled:pointer-events-none disabled:opacity-50"
+      className="flex w-full items-center gap-2 text-left outline-none disabled:pointer-events-none"
       onClick={onCreate}
     >
       <span className="flex size-4 shrink-0 items-center justify-center">
@@ -642,10 +639,7 @@ function AsyncSingleSelect<
               aria-expanded={open}
               aria-invalid={invalid || undefined}
               data-slot="async-select-trigger"
-              className={cn(
-                "min-h-11 w-full justify-between rounded-[var(--aui-control-radius,var(--radius-md))] px-3.5 text-left",
-                triggerClassName
-              )}
+              className={cn("w-full justify-between text-left", triggerClassName)}
               onKeyDown={handleTriggerKeyDown}
             />
           }
@@ -671,7 +665,7 @@ function AsyncSingleSelect<
               <span
                 role="button"
                 tabIndex={0}
-                className="rounded-full border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground"
+                data-slot="async-select-clear"
                 aria-label={labels?.clear ?? "Clear"}
                 onClick={handleClear}
                 onKeyDown={(event) => {
@@ -681,7 +675,7 @@ function AsyncSingleSelect<
                   clearSelection()
                 }}
               >
-                <XIcon className="size-3.5" />
+                <XIcon data-icon="clear" />
               </span>
             )}
             <ChevronsUpDownIcon className="size-4 opacity-60" />
@@ -690,13 +684,10 @@ function AsyncSingleSelect<
         <PopoverContent
           align="start"
           data-slot="async-select-content"
-          className={cn(
-            "w-(--anchor-width) min-w-72 gap-3 rounded-[var(--aui-card-radius,var(--radius-lg))] border-[color:var(--aui-card-border,var(--border))] bg-popover p-3 shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))]",
-            contentClassName
-          )}
+          className={cn("w-(--anchor-width) min-w-72 gap-3", contentClassName)}
         >
           <div data-slot="async-select-search-wrap" className="relative">
-            <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <SearchIcon data-slot="async-select-search-icon" />
             <Input
               data-slot="async-select-search"
               value={search}
@@ -706,7 +697,7 @@ function AsyncSingleSelect<
             />
           </div>
 
-          <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
+          <div className="flex max-h-72 flex-col gap-1 overflow-y-auto pr-1">
             {searchTooShort && flatOptions.length === 0 && (
               renderMinSearch?.(state) ?? (
                 <AsyncStateMessage>
@@ -727,7 +718,7 @@ function AsyncSingleSelect<
 
             {!isLoading && hasError &&
               (renderError?.(state) ?? (
-                <AsyncStateMessage className="text-destructive">
+                <AsyncStateMessage data-tone="danger">
                   {labels?.error ?? "Could not load options"}
                 </AsyncStateMessage>
               ))}
@@ -751,9 +742,7 @@ function AsyncSingleSelect<
               optionGroups.map((group, groupIndex) => (
                 <div key={groupIndex}>
                   {group.label && (
-                    <div className="sticky top-0 z-10 bg-popover px-2 py-1 text-xs font-medium text-muted-foreground">
-                      {group.label}
-                    </div>
+                    <div data-slot="async-select-group-label" className="sticky top-0">{group.label}</div>
                   )}
                   {group.options.map((option) => (
                     <AsyncOptionButton
@@ -1070,10 +1059,7 @@ function AsyncMultiSelect<
               aria-expanded={open}
               aria-invalid={invalid || undefined}
               data-slot="async-select-trigger"
-              className={cn(
-                "min-h-11 w-full justify-between rounded-[var(--aui-control-radius,var(--radius-md))] px-3.5 text-left",
-                triggerClassName
-              )}
+              className={cn("w-full justify-between text-left", triggerClassName)}
               onKeyDown={handleTriggerKeyDown}
             />
           }
@@ -1085,10 +1071,7 @@ function AsyncMultiSelect<
                 <span
                   key={option.value}
                   data-slot="async-select-tag"
-                  className={cn(
-                    "inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-sm)] border border-[color:color-mix(in_oklch,var(--primary),transparent_70%)] bg-[color:color-mix(in_oklch,var(--primary),transparent_92%)] px-2 py-1 text-xs font-medium text-foreground",
-                    tagClassName
-                  )}
+                  className={cn("inline-flex max-w-full items-center gap-1.5", tagClassName)}
                 >
                   <span className="flex min-w-0 flex-col">
                     <span className="truncate">
@@ -1107,7 +1090,6 @@ function AsyncMultiSelect<
                       role="button"
                       tabIndex={0}
                       data-slot="async-select-tag-remove"
-                      className="rounded-full p-0.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
                       aria-label={`Remove ${getOptionLabelText(option)}`}
                       onClick={(event) => {
                         stopInteractivePropagation(event)
@@ -1115,7 +1097,7 @@ function AsyncMultiSelect<
                       }}
                       onKeyDown={(event) => handleTagRemoveKeyDown(event, option)}
                     >
-                      <XIcon className="size-3" />
+                      <XIcon data-icon="remove" />
                     </span>
                   )}
                 </span>
@@ -1123,10 +1105,7 @@ function AsyncMultiSelect<
               {hiddenTagCount > 0 ? (
                 <span
                   data-slot="async-select-tag-overflow"
-                  className={cn(
-                    "inline-flex max-w-full items-center rounded-[var(--radius-sm)] border border-dashed border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_58%)] px-2 py-1 text-xs font-medium text-muted-foreground",
-                    tagClassName
-                  )}
+                  className={cn("inline-flex max-w-full items-center", tagClassName)}
                 >
                   {labels?.hiddenSelected?.(hiddenTagCount) ?? `+${hiddenTagCount} more`}
                 </span>
@@ -1143,8 +1122,7 @@ function AsyncMultiSelect<
               <span
                 role="button"
                 tabIndex={0}
-                data-slot="async-select-clear"
-                className="rounded-full border border-border/65 p-1 text-muted-foreground transition-colors hover:border-border hover:bg-muted/55 hover:text-foreground"
+              data-slot="async-select-clear"
                 aria-label={labels?.clearAll ?? labels?.clear ?? "Clear all"}
                 onClick={handleClear}
                 onKeyDown={(event) => {
@@ -1154,7 +1132,7 @@ function AsyncMultiSelect<
                   clearAllSelection()
                 }}
               >
-                <XIcon className="size-3.5" />
+              <XIcon data-icon="clear" />
               </span>
             )}
             <ChevronsUpDownIcon className="size-4 opacity-60" />
@@ -1163,13 +1141,10 @@ function AsyncMultiSelect<
         <PopoverContent
           align="start"
           data-slot="async-select-content"
-          className={cn(
-            "w-(--anchor-width) min-w-72 gap-3 rounded-[var(--aui-card-radius,var(--radius-lg))] border-[color:var(--aui-card-border,var(--border))] bg-popover p-3 shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))]",
-            contentClassName
-          )}
+          className={cn("w-(--anchor-width) min-w-72 gap-3", contentClassName)}
         >
           <div data-slot="async-select-search-wrap" className="relative">
-            <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <SearchIcon data-slot="async-select-search-icon" />
             <Input
               data-slot="async-select-search"
               value={search}
@@ -1179,7 +1154,7 @@ function AsyncMultiSelect<
             />
           </div>
 
-          <div data-slot="async-select-meta" className="flex flex-wrap items-center justify-between gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_62%)] px-3 py-2 text-xs text-muted-foreground">
+          <div data-slot="async-select-meta" className="flex flex-wrap items-center justify-between gap-2">
             {hasValue && labels?.selectedCount && <span>{labels.selectedCount(values.length)}</span>}
             {isMaxReached &&
               (renderMaxSelected?.(state) ?? (
@@ -1190,7 +1165,6 @@ function AsyncMultiSelect<
                 <button
                   type="button"
                   data-slot="async-select-meta-action"
-                  className="rounded-[var(--radius-sm)] border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
                   onClick={handleSelectAllVisible}
                 >
                   {labels?.selectAll ?? "Select all"}
@@ -1200,7 +1174,6 @@ function AsyncMultiSelect<
                 <button
                   type="button"
                   data-slot="async-select-meta-action"
-                  className="rounded-[var(--radius-sm)] border border-border/75 px-2.5 py-1 font-medium text-foreground transition-colors hover:bg-background"
                   onClick={() => onValueChange?.([], [])}
                 >
                   {labels?.clearAll ?? labels?.clear ?? "Clear all"}
@@ -1209,7 +1182,7 @@ function AsyncMultiSelect<
             </div>
           </div>
 
-          <div className="max-h-72 space-y-1 overflow-y-auto pr-1">
+          <div className="flex max-h-72 flex-col gap-1 overflow-y-auto pr-1">
             {searchTooShort && flatOptions.length === 0 && (
               renderMinSearch?.(state) ?? (
                 <AsyncStateMessage>
@@ -1230,7 +1203,7 @@ function AsyncMultiSelect<
 
             {!isLoading && hasError &&
               (renderError?.(state) ?? (
-                <AsyncStateMessage className="text-destructive">
+                <AsyncStateMessage data-tone="danger">
                   {labels?.error ?? "Could not load options"}
                 </AsyncStateMessage>
               ))}
@@ -1283,7 +1256,8 @@ function AsyncSelect<
   TOption extends AsyncSelectOption<TValue, TData> = AsyncSelectOption<TValue, TData>,
 >(props: AsyncSelectProps<TValue, TData, TOption> | AsyncSelectMultiModeProps<TValue, TData, TOption>) {
   if (props.isMulti) {
-    return <AsyncMultiSelect {...props} />
+    const { isMulti, ...multiProps } = props
+    return <AsyncMultiSelect data-multi={isMulti} {...multiProps} />
   }
 
   return <AsyncSingleSelect {...props} />

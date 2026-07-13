@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 
 import {
@@ -9,37 +11,17 @@ import {
   type CollapseItem,
   type CollapseProps,
   type CollapseTriggerProps,
-} from "../collapse"
+} from "@/components/ui/collapse"
 
-export type AccordionItem = CollapseItem
 export type AccordionProps = CollapseGroupProps
+export type AccordionItem = CollapseItem
 export type AccordionRootProps = CollapseProps
 export type AccordionTriggerProps = CollapseTriggerProps
-export type AccordionContentProps = React.ComponentProps<"div">
+export type AccordionContentProps = React.ComponentProps<typeof CollapseContent>
 
-/**
- * Accordion is the grouped disclosure API. Use CollapseRoot/CollapseTrigger/CollapseContent
- * for a single standalone disclosure.
- */
-function Accordion(props: AccordionProps) {
-  return <CollapseGroup data-slot="accordion" {...props} />
-}
+const Accordion = CollapseGroup
+const AccordionRoot = Collapse
+const AccordionTrigger = CollapseTrigger
+const AccordionContent = CollapseContent
 
-function AccordionRoot(props: AccordionRootProps) {
-  return <Collapse data-slot="accordion-root" {...props} />
-}
-
-function AccordionTrigger(props: AccordionTriggerProps) {
-  return <CollapseTrigger data-slot="accordion-trigger" {...props} />
-}
-
-function AccordionContent(props: AccordionContentProps) {
-  return <CollapseContent data-slot="accordion-content" {...props} />
-}
-
-export {
-  Accordion,
-  AccordionContent,
-  AccordionRoot,
-  AccordionTrigger,
-}
+export { Accordion, AccordionContent, AccordionRoot, AccordionTrigger }

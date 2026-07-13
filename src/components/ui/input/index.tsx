@@ -285,9 +285,9 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
         <div data-slot="input-meta" className="flex items-start justify-between gap-3 px-1">
           <div
             data-slot="input-helper"
+            data-invalid={Boolean(errorText) || undefined}
             className={cn(
-              "min-w-0 text-xs leading-5",
-              errorText ? "text-destructive" : "text-muted-foreground",
+              "min-w-0",
               helperClassName
             )}
           >
@@ -296,10 +296,8 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
           {showCharacterCount ? (
             <div
               data-slot="input-count"
-              className={cn(
-                "shrink-0 text-[11px] font-medium tabular-nums",
-                errorText ? "text-destructive" : "text-muted-foreground"
-              )}
+              data-invalid={Boolean(errorText) || undefined}
+              className="shrink-0 tabular-nums"
             >
               {countFormatter?.(currentLength, inputProps.maxLength) ??
                 (typeof inputProps.maxLength === "number"
@@ -342,7 +340,6 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
   const isControlled = value !== undefined
   const currentLength = isControlled ? getInputTextLength(value) : uncontrolledLength
   const helperMessage = errorText ?? helperText
-  const helperTone = errorText ? "text-destructive" : "text-muted-foreground"
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!isControlled) {
@@ -423,17 +420,16 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
       >
         <div
           data-slot="input-helper"
-          className={cn("min-w-0 text-xs leading-5", helperTone, helperClassName)}
+          data-invalid={Boolean(errorText) || undefined}
+          className={cn("min-w-0", helperClassName)}
         >
           {helperMessage}
         </div>
         {showCharacterCount ? (
           <div
             data-slot="input-count"
-            className={cn(
-              "shrink-0 text-[11px] font-medium tabular-nums",
-              errorText ? "text-destructive" : "text-muted-foreground"
-            )}
+            data-invalid={Boolean(errorText) || undefined}
+            className="shrink-0 tabular-nums"
           >
             {countFormatter?.(currentLength, maxLength) ??
               (typeof maxLength === "number" ? `${currentLength}/${maxLength}` : currentLength)}

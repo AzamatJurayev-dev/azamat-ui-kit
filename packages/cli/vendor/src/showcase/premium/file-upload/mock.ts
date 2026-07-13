@@ -6,6 +6,7 @@ import { FileUpload } from "tembro"
 
 export function Example() {
   const [files, setFiles] = useState<File[]>([])
+  const [progress, setProgress] = useState<Record<string, number>>({})
 
   return (
     <FileUpload
@@ -14,7 +15,11 @@ export function Example() {
       accept=".pdf,.docx,.png"
       maxFiles={4}
       maxSize={4 * 1024 * 1024}
+      progress={progress}
+      status={files.length ? "uploading" : "idle"}
       helperText="Supports PDF, DOCX and PNG up to 4 MB."
+      validateFile={(file) => file.name.includes("private") ? "Private files are not allowed." : null}
+      onRetryFile={(file) => setProgress((value) => ({ ...value, [file.name]: 0 }))}
     />
   )
 }`,
@@ -23,7 +28,8 @@ export function Example() {
     "Reusable dropzone and file list",
     "Rejected state support",
     "Nested clear/remove interactions",
-    "Controlled file array API",
+    "Controlled files, progress and status API",
+    "Custom validation and rejection messages",
   ],
   scenarios: [
     { title: "Admin attachments", description: "Upload contracts, invoices and internal release assets." },

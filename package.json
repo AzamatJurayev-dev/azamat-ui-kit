@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "3.1.1",
+  "version": "3.1.4",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -138,6 +138,7 @@
     "check-version-sync": "node scripts/check-version-sync.mjs",
     "check-neutral-palette": "node scripts/check-neutral-palette.mjs",
     "check:showcase-quality": "node scripts/check-showcase-quality.mjs",
+    "sync:site": "node scripts/sync-public-site.mjs",
     "test:cli": "node scripts/test-cli.mjs",
     "lint": "eslint .",
     "test:types": "tsc -p tsconfig.test.json --noEmit",
@@ -162,10 +163,18 @@
     "@dnd-kit/react": "^0.5.0",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.14.5",
+    "@tiptap/extension-link": "^3.27.3",
+    "@tiptap/extension-placeholder": "^3.27.3",
+    "@tiptap/pm": "^3.27.3",
+    "@tiptap/react": "^3.27.3",
+    "@tiptap/starter-kit": "^3.27.3",
+    "@types/qrcode": "^1.5.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "lucide-react": "^1.17.0",
+    "qrcode": "^1.5.4",
+    "react-easy-crop": "^6.2.2",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
@@ -196,7 +205,7 @@
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12",
+    "vite": "8.0.16",
     "vitest": "^3.2.6"
   }
 }

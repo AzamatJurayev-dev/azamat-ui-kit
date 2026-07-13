@@ -21,37 +21,32 @@ import {
   Calendar,
   CommandPalette,
   DescriptionList,
-  DialogActionButton,
-  DialogActions,
   Drawer,
-  FileDropzone,
   FileUpload,
   FilterBar,
+  InfoCard,
   Input,
   List,
-  NavTabs,
   OtpInput,
   PageState,
-  PageTabs,
   Pagination,
   Progress,
-  ProgressCircle,
   QuickActionGrid,
   RangeSlider,
   Rating,
-  SectionHeader,
   Slider,
   StatusDot,
   StatusLegend,
   Stepper,
-  StepperTabs,
   TagInput,
+  Tabs,
+  TabsList,
+  TabsTrigger,
   Timeline,
-  UserCard,
   Wizard,
+  Avatar,
 } from "@/index"
-import { AppHeader } from "@/components/layout/app-header"
-import { StatCard } from "@/components/layout/stat-card"
+import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
 import { ResourceDetailPage } from "@/components/patterns/resource-detail-page"
 import { ResourcePage, ResourcePageSection } from "@/components/patterns/resource-page"
 
@@ -101,18 +96,6 @@ function InputPreview({
 }) {
   const value = state.textValue
   const onValueChange = (nextValue: string) => setState({ textValue: nextValue })
-
-  if (slug === "search-input") {
-    return <Input type="search" value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
-  }
-
-  if (slug === "password-input") {
-    return <Input kind="password" value="secret-token" onValueChange={onValueChange} placeholder="Password" />
-  }
-
-  if (slug === "clearable-input") {
-    return <Input value={value} onValueChange={onValueChange} placeholder="Clearable input" clearable />
-  }
 
   if (slug === "slider") {
     return <Slider label="Density" description="Tune content density." defaultValue={64} showValue />
@@ -170,11 +153,11 @@ function OverlayPreview({ slug }: { slug: string }) {
   if (slug === "dialog-actions") {
     return (
       <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
-        <DialogActions align="end">
-          <DialogActionButton variant="ghost">Cancel</DialogActionButton>
-          <DialogActionButton variant="outline">Save draft</DialogActionButton>
-          <DialogActionButton>Publish</DialogActionButton>
-        </DialogActions>
+        <ButtonGroup attached={false}>
+          <Button variant="ghost">Cancel</Button>
+          <Button variant="outline">Save draft</Button>
+          <Button>Publish</Button>
+        </ButtonGroup>
       </div>
     )
   }
@@ -223,42 +206,14 @@ function NavigationPreview({ slug }: { slug: string }) {
     return <Pagination page={3} pageCount={9} onPageChange={() => undefined} />
   }
 
-  if (slug === "page-tabs") {
-    return (
-      <PageTabs
-        value="overview"
-        variant="pills"
-        items={[
-          { value: "overview", label: "Overview" },
-          { value: "usage", label: "Usage" },
-          { value: "api", label: "API", badge: "3" },
-        ]}
-      />
-    )
-  }
-
-  if (slug === "stepper-tabs") {
-    return (
-      <StepperTabs
-        value="billing"
-        items={[
-          { value: "profile", label: "Profile", description: "Team and owner details", completed: true },
-          { value: "billing", label: "Billing", description: "Payment and invoices" },
-          { value: "review", label: "Review", description: "Confirm release" },
-        ]}
-      />
-    )
-  }
-
   return (
-    <NavTabs
-      value="overview"
-      items={[
-        { value: "overview", label: "Overview" },
-        { value: "usage", label: "Usage" },
-        { value: "api", label: "API" },
-      ]}
-    />
+    <Tabs defaultValue="overview">
+      <TabsList variant="pills" overflow="wrap">
+        <TabsTrigger value="overview" variant="pills">Overview</TabsTrigger>
+        <TabsTrigger value="usage" variant="pills">Usage</TabsTrigger>
+        <TabsTrigger value="api" variant="pills">API</TabsTrigger>
+      </TabsList>
+    </Tabs>
   )
 }
 
@@ -315,10 +270,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     return <Progress label="Migration progress" description="Production rollout" value={68} tone="success" showValue />
   }
 
-  if (slug === "progress-circle") {
-    return <ProgressCircle value={72} label="Profile completed" />
-  }
-
   if (slug === "timeline") {
     return (
       <Timeline
@@ -355,16 +306,6 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "delta-badge") {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <Badge variant="secondary">+12.4%</Badge>
-        <Badge variant="outline">-3.1%</Badge>
-        <Badge variant="destructive">Risk</Badge>
-      </div>
-    )
-  }
-
   if (slug === "notification-center") {
     return (
       <List
@@ -372,18 +313,6 @@ function DisplayPreview({ slug }: { slug: string }) {
           { key: "1", title: "Build completed", description: "Dashboard docs deployment is live.", extra: "Now" },
           { key: "2", title: "New comment", description: "Review requested on DataTable API.", extra: "8m" },
           { key: "3", title: "Publish reminder", description: "Package version is ready for release.", extra: "1h" },
-        ]}
-      />
-    )
-  }
-
-  if (slug === "data-list") {
-    return (
-      <List
-        items={[
-          { key: "1", title: "Enterprise plan", description: "Priority support and SSO", extra: "$499" },
-          { key: "2", title: "Growth plan", description: "Most used by product teams", extra: "$199" },
-          { key: "3", title: "Starter plan", description: "Lightweight team setup", extra: "$49" },
         ]}
       />
     )
@@ -404,19 +333,14 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "trend-card" || slug === "comparison-card") {
-    return (
-      <StatCard
-        title={slug === "trend-card" ? "Weekly revenue" : "Current vs previous"}
-        value="$84.2k"
-        description="Compared with last month"
-        trend={{ value: "+12.4%", tone: "success" }}
-        icon={<LayoutDashboardIcon />}
-      />
-    )
-  }
-
-  return <UserCard name="Azamat Jurayev" description="Product designer and maintainer" meta="Admin workspace" actions={<Button size="sm">Invite</Button>} />
+  return (
+    <InfoCard
+      title="Azamat Jurayev"
+      description="Product designer and maintainer"
+      media={<Avatar name="Azamat Jurayev" />}
+      actions={<Button size="sm">Invite</Button>}
+    />
+  )
 }
 
 function ActionsPreview({
@@ -540,18 +464,18 @@ function ActionsPreview({
 function LayoutPreview({ slug }: { slug: string }) {
   if (slug === "app-header") {
     return (
-      <AppHeader
-        sticky={false}
-        left={<><LayoutDashboardIcon className="size-4" /><span className="font-medium">Dashboard</span></>}
-        center={<Badge variant="secondary">Preview</Badge>}
-        right={<><Button variant="ghost" size="icon-sm" aria-label="Notifications"><BellIcon /></Button><Button size="sm">Deploy</Button></>}
-        className="rounded-xl border border-[color:var(--aui-divider)]"
-      />
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-3">
+        <div className="flex items-center gap-2">
+          <LayoutDashboardIcon className="size-4" />
+          <span className="font-medium">Dashboard</span>
+        </div>
+        <Badge variant="secondary">Preview</Badge>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon-sm" aria-label="Notifications"><BellIcon /></Button>
+          <Button size="sm">Deploy</Button>
+        </div>
+      </div>
     )
-  }
-
-  if (slug === "section-header") {
-    return <SectionHeader eyebrow="Components" title="Production-ready surfaces" description="SectionHeader keeps copy, metadata and actions aligned." actions={<Button size="sm">Add component</Button>} />
   }
 
   return (
@@ -614,10 +538,6 @@ function CalendarPreview() {
 }
 
 function UploadPreview({ slug }: { slug: string }) {
-  if (slug === "file-dropzone") {
-    return <FileDropzone label="Drop contract files" description="PDF, PNG or CSV up to 10MB." />
-  }
-
   if (slug === "file-upload") {
     return <FileUpload dropzoneLabel="Upload documents" dropzoneDescription="Drag files here or choose from your device." buttonLabel="Choose files" helperText="Supports PDF, CSV and images." />
   }

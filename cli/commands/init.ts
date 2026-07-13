@@ -32,6 +32,21 @@ type InitCommandOptions = {
   defaults?: boolean
 }
 
+type TembroConfig = {
+  style?: string
+  alias?: string
+  componentsPath?: string
+  utilsPath?: string
+  cssPath?: string
+  globalCssPath?: string
+  paths?: {
+    components?: string
+    ui?: string
+    hooks?: string
+    lib?: string
+  }
+}
+
 type InitResponse = {
   installDeps: boolean
   installTailwindDeps: boolean
@@ -93,7 +108,6 @@ async function ensureTsconfigAlias({
   }
 
   tsconfig.compilerOptions ??= {}
-  tsconfig.compilerOptions.baseUrl = "."
 
   const paths = ((tsconfig.compilerOptions.paths ?? {}) as Record<string, string[]>)
   paths[`${alias}/*`] = [getAliasTargetPath(template, componentsPath, hooksPath, utilsPath)]
@@ -114,21 +128,44 @@ async function ensureViteAlias({
 
   const currentContent = await fs.readFile(viteConfigPath, "utf8")
   const importLine = `import path from 'node:path'`
+  const tailwindImportLine = `import tailwindcss from '@tailwindcss/vite'`
   const resolveBlock = `  resolve: {\n    alias: {\n      '${alias}': path.resolve(process.cwd(), 'src'),\n    },\n  },`
+  const aliasEntry = `      '${alias}': path.resolve(process.cwd(), 'src'),`
 
   let nextContent = currentContent
 
-  if (!nextContent.includes(importLine)) {
+  if (!/import\s+path\s+from\s+["']node:path["']/.test(nextContent)) {
     nextContent = `${importLine}\n${nextContent}`
   }
 
-  if (!nextContent.includes("resolve: {") && nextContent.includes("export default defineConfig({")) {
-    nextContent = nextContent.replace("export default defineConfig({", `export default defineConfig({\n${resolveBlock}`)
+  if (!/from\s+["']@tailwindcss\/vite["']/.test(nextContent)) {
+    nextContent = `${tailwindImportLine}\n${nextContent}`
   }
 
-  if (!nextContent.includes(`'${alias}': path.resolve(process.cwd(), 'src')`)) {
-    await fs.writeFile(viteConfigPath, nextContent)
-  } else if (nextContent !== currentContent) {
+  if (!/plugins\s*:\s*\[[\s\S]*?tailwindcss\s*\(/.test(nextContent)) {
+    if (/plugins\s*:\s*\[/.test(nextContent)) {
+      nextContent = nextContent.replace(/plugins\s*:\s*\[/, (match) => `${match}tailwindcss(), `)
+    } else if (nextContent.includes("export default defineConfig({")) {
+      nextContent = nextContent.replace("export default defineConfig({", "export default defineConfig({\n  plugins: [tailwindcss()],")
+    }
+  }
+
+  if (nextContent.includes(`'${alias}': path.resolve(process.cwd(), 'src')`) || nextContent.includes(`"${alias}": path.resolve(process.cwd(), "src")`)) {
+    if (nextContent !== currentContent) await fs.writeFile(viteConfigPath, nextContent)
+    return
+  }
+
+  if (/alias\s*:\s*\{/.test(nextContent)) {
+    nextContent = nextContent.replace(/alias\s*:\s*\{/, (match) => `${match}\n${aliasEntry}`)
+  } else if (/resolve\s*:\s*\{/.test(nextContent)) {
+    nextContent = nextContent.replace(/resolve\s*:\s*\{/, (match) => `${match}\n    alias: {\n${aliasEntry}\n    },`)
+  } else if (nextContent.includes("export default defineConfig({")) {
+    nextContent = nextContent.replace("export default defineConfig({", `export default defineConfig({\n${resolveBlock}`)
+  } else {
+    logger.warn("vite.config.ts ichida defineConfig topilmadi; alias faqat tsconfigga yozildi.")
+  }
+
+  if (nextContent !== currentContent) {
     await fs.writeFile(viteConfigPath, nextContent)
   }
 }
@@ -172,6 +209,35 @@ function getTemplateDefaults(cwd: string, template: InitTemplate): Omit<InitResp
   }
 }
 
+function getConfiguredDefaults(
+  defaults: Omit<InitResponse, "installDeps" | "writeThemeCss">,
+  config?: TembroConfig,
+): Omit<InitResponse, "installDeps" | "writeThemeCss"> {
+  if (!config) return defaults
+
+  return {
+    ...defaults,
+    alias: config.alias ?? defaults.alias,
+    componentsPath: config.paths?.components ?? config.componentsPath ?? defaults.componentsPath,
+    uiPath: config.paths?.ui ?? defaults.uiPath,
+    hooksPath: config.paths?.hooks ?? defaults.hooksPath,
+    utilsPath: config.utilsPath ?? defaults.utilsPath,
+    globalCssPath: config.globalCssPath ?? config.cssPath ?? defaults.globalCssPath,
+  }
+}
+
+function assertProjectPath(cwd: string, value: string, label: string) {
+  if (path.isAbsolute(value)) {
+    throw new Error(`${label} project ichidagi relative path bo‘lishi kerak: ${value}`)
+  }
+
+  const resolved = path.resolve(cwd, value)
+  const relative = path.relative(cwd, resolved)
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(`${label} project tashqarisiga chiqmasligi kerak: ${value}`)
+  }
+}
+
 function resolveTemplate(value?: string): InitTemplate {
   if (value === "next" || value === "vite") return value
 
@@ -202,7 +268,11 @@ export async function initCommand(options: InitCommandOptions = {}) {
   }
 
   const template = resolveTemplate(options.template)
-  const defaults = getTemplateDefaults(cwd, template)
+  const existingConfigPath = path.join(cwd, "tembro.json")
+  const existingConfig = fs.existsSync(existingConfigPath)
+    ? ((await fs.readJson(existingConfigPath)) as TembroConfig)
+    : undefined
+  const defaults = getConfiguredDefaults(getTemplateDefaults(cwd, template), existingConfig)
   const installedPackages = getInstalledPackages(cwd)
   const missingTailwindDependencies = templateTailwindDependencies[template].filter((pkg) => !installedPackages.has(pkg))
 
@@ -302,8 +372,18 @@ export async function initCommand(options: InitCommandOptions = {}) {
   const hooksPath = response.hooksPath || defaults.hooksPath
   const globalCssPath = response.globalCssPath || defaults.globalCssPath
 
+  for (const [label, value] of [
+    ["componentsPath", componentsPath],
+    ["uiPath", uiPath],
+    ["hooksPath", hooksPath],
+    ["utilsPath", utilsPath],
+    ["globalCssPath", globalCssPath],
+  ] as const) {
+    assertProjectPath(cwd, value, label)
+  }
+
   const config = {
-    style: "default",
+    style: existingConfig?.style ?? "default",
     alias: response.alias || defaults.alias,
     componentsPath,
     utilsPath,
@@ -375,6 +455,7 @@ export function cn(...inputs: ClassValue[]) {
     const cssTarget = await upsertThemeCss({
       cwd,
       cssPath: globalCssPath,
+      componentsPath,
     })
 
     logger.success(`Theme CSS yozildi / written: ${cssTarget}`)

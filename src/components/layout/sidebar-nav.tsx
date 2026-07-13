@@ -1,8 +1,11 @@
+"use client"
+
 import * as React from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { ControllableDetails } from "./controllable-details"
 
 export type SidebarNavItem = {
   key: string
@@ -17,6 +20,8 @@ export type SidebarNavItem = {
   hidden?: boolean
   sectionLabel?: React.ReactNode
   defaultExpanded?: boolean
+  expanded?: boolean
+  onExpandedChange?: (expanded: boolean) => void
   tooltip?: React.ReactNode
   onSelect?: () => void
 }
@@ -26,6 +31,9 @@ export type SidebarNavProps = React.ComponentProps<"nav"> & {
   collapsed?: boolean
   scrollable?: boolean
   tooltipOnCollapsed?: boolean
+  showSectionLabels?: boolean
+  itemSize?: "sm" | "md" | "lg"
+  activeIndicator?: "none" | "bar" | "pill"
   itemClassName?: string
   activeItemClassName?: string
   renderItem?: (item: SidebarNavItem, element: React.ReactNode) => React.ReactNode
@@ -45,6 +53,8 @@ function SidebarLeaf({
   item,
   collapsed,
   depth,
+  itemSize,
+  activeIndicator,
   itemClassName,
   activeItemClassName,
   renderLink,
@@ -52,6 +62,8 @@ function SidebarLeaf({
   item: SidebarNavItem
   collapsed: boolean
   depth: number
+  itemSize: NonNullable<SidebarNavProps["itemSize"]>
+  activeIndicator: NonNullable<SidebarNavProps["activeIndicator"]>
   itemClassName?: string
   activeItemClassName?: string
   renderLink?: SidebarNavProps["renderLink"]
@@ -70,7 +82,7 @@ function SidebarLeaf({
   )
 
   const commonClassName = cn(
-    "group flex min-h-9 items-center gap-2 rounded-xl border border-transparent px-2.5 text-sm font-medium text-[color:var(--aui-page-muted-strong,var(--muted-foreground))] transition-[background-color,border-color,color,box-shadow] hover:border-[color:var(--aui-divider)] hover:bg-[color:var(--aui-page-bg-alt)] hover:text-[color:var(--aui-page-foreground)] data-[active=true]:border-[color:var(--aui-surface-border-strong,var(--ring))] data-[active=true]:bg-[color:var(--aui-control-bg)] data-[active=true]:text-[color:var(--aui-page-foreground)] data-[active=true]:shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+    "group flex items-center gap-2 border border-transparent text-sm font-medium transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
     collapsed && "justify-center px-0",
     depth > 0 && !collapsed && "pl-3",
     itemClassName,
@@ -98,6 +110,8 @@ function SidebarLeaf({
           "data-depth": String(depth),
           "data-active": item.active || undefined,
           "data-disabled": item.disabled || undefined,
+          "data-size": itemSize,
+          "data-active-indicator": activeIndicator,
           "aria-current": currentValue,
           className: commonClassName,
           onClick: (event) => {
@@ -119,6 +133,8 @@ function SidebarLeaf({
         data-depth={depth}
         data-active={item.active || undefined}
         data-disabled={item.disabled || undefined}
+        data-size={itemSize}
+        data-active-indicator={activeIndicator}
         aria-current={currentValue}
         className={commonClassName}
         onClick={(event) => {
@@ -142,6 +158,8 @@ function SidebarLeaf({
         data-depth={depth}
         data-active={item.active || undefined}
         data-disabled={item.disabled || undefined}
+        data-size={itemSize}
+        data-active-indicator={activeIndicator}
         aria-current={currentValue}
         className={cn("w-full text-left", commonClassName)}
         onClick={() => {
@@ -168,6 +186,8 @@ function SidebarLeaf({
       data-depth={depth}
       data-active={item.active || undefined}
       data-disabled={item.disabled || undefined}
+      data-size={itemSize}
+      data-active-indicator={activeIndicator}
       aria-current={currentValue}
       disabled={item.disabled}
       className={cn("w-full text-left", commonClassName)}
@@ -182,6 +202,9 @@ function SidebarTree({
   items,
   collapsed,
   depth,
+  showSectionLabels,
+  itemSize,
+  activeIndicator,
   itemClassName,
   activeItemClassName,
   renderItem,
@@ -190,6 +213,9 @@ function SidebarTree({
   items: SidebarNavItem[]
   collapsed: boolean
   depth: number
+  showSectionLabels: boolean
+  itemSize: NonNullable<SidebarNavProps["itemSize"]>
+  activeIndicator: NonNullable<SidebarNavProps["activeIndicator"]>
   itemClassName?: string
   activeItemClassName?: string
   renderItem?: SidebarNavProps["renderItem"]
@@ -198,7 +224,7 @@ function SidebarTree({
   return items.map((item) => {
     if (item.hidden) return null
 
-    const showSectionLabel = !collapsed && depth === 0 && item.sectionLabel
+    const showSectionLabel = showSectionLabels && !collapsed && depth === 0 && item.sectionLabel
     const hasChildren = hasVisibleChildren(item)
 
     if (!hasChildren) {
@@ -207,6 +233,8 @@ function SidebarTree({
           item={item}
           collapsed={collapsed}
           depth={depth}
+          itemSize={itemSize}
+          activeIndicator={activeIndicator}
           itemClassName={itemClassName}
           activeItemClassName={activeItemClassName}
           renderLink={renderLink}
@@ -273,10 +301,12 @@ function SidebarTree({
             {item.sectionLabel}
           </div>
         ) : null}
-        <details
+        <ControllableDetails
           data-slot="sidebar-nav-group-details"
-          open={isExpanded}
+          open={item.expanded}
+          defaultOpen={isExpanded}
           className="group/sidebar-nav-details"
+          onOpenChange={item.onExpandedChange}
         >
           {trigger}
           <div
@@ -287,13 +317,16 @@ function SidebarTree({
               items={item.items ?? []}
               collapsed={collapsed}
               depth={depth + 1}
+              showSectionLabels={showSectionLabels}
+              itemSize={itemSize}
+              activeIndicator={activeIndicator}
               itemClassName={itemClassName}
               activeItemClassName={activeItemClassName}
               renderItem={renderItem}
               renderLink={renderLink}
             />
           </div>
-        </details>
+        </ControllableDetails>
       </div>
     )
 
@@ -306,6 +339,9 @@ function SidebarNav({
   items,
   collapsed = false,
   scrollable = true,
+  showSectionLabels = true,
+  itemSize = "md",
+  activeIndicator = "bar",
   itemClassName,
   activeItemClassName,
   renderItem,
@@ -316,6 +352,7 @@ function SidebarNav({
 
   return (
     <nav
+      aria-label="Primary navigation"
       data-slot="sidebar-nav"
       data-collapsed={collapsed || undefined}
       className={cn("grid min-h-0 gap-1", scrollable ? "overflow-y-auto overscroll-contain" : null, className)}
@@ -325,6 +362,9 @@ function SidebarNav({
         items={visibleItems}
         collapsed={collapsed}
         depth={0}
+        showSectionLabels={showSectionLabels}
+        itemSize={itemSize}
+        activeIndicator={activeIndicator}
         itemClassName={itemClassName}
         activeItemClassName={activeItemClassName}
         renderItem={renderItem}

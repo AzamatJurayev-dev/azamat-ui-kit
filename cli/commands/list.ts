@@ -7,20 +7,7 @@ import {
   standalonePublicRegistrySurfaceNames,
 } from "../../src/public-component-surface"
 
-const internalRegistryNames = new Set([
-  "data-table-actions-column",
-  "data-table-bulk-actions",
-  "data-table-column-visibility-menu",
-  "data-table-pagination",
-  "data-table-row-actions",
-  "data-table-saved-filters",
-  "data-table-select-column",
-  "data-table-sortable-header",
-  "data-table-toolbar",
-  "data-table-view-presets",
-  "table-export-menu",
-  "table-import-button",
-])
+const internalRegistryNames = new Set<string>()
 
 function printRegistryListSection(title: string, names: string[]) {
   console.log(`\n${title}`)

@@ -29,6 +29,30 @@ const sources = [
     },
   },
   {
+    name: "showcase registry",
+    path: path.join(root, "src", "showcase", "tembro-registry.json"),
+    getVersion: (content) => {
+      const parsed = JSON.parse(content)
+      return parsed.version
+    },
+  },
+  {
+    name: "showcase package metadata",
+    path: path.join(root, "src", "showcase", "package-meta.ts"),
+    getVersion: (content) => {
+      const match = content.match(/PACKAGE_LATEST_VERSION\s*=\s*["']([^"']+)["']/)
+      return match?.[1] ?? ""
+    },
+  },
+  {
+    name: "package lock",
+    path: path.join(root, "package-lock.json"),
+    getVersion: (content) => {
+      const parsed = JSON.parse(content)
+      return parsed.packages?.[""]?.version ?? parsed.version
+    },
+  },
+  {
     name: "CLI runtime",
     path: path.join(root, "cli", "index.ts"),
     getVersion: (content) => {

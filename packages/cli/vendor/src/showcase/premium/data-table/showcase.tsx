@@ -5,11 +5,11 @@ import {
   Badge,
   Button,
   DataTable,
-  DataTableColumnVisibilityMenu,
-  DataTableSortableHeader,
   Select,
 } from "@/index"
 import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
+import { DataTableColumnVisibilityMenu } from "@/components/data-table/data-table-column-visibility-menu"
+import { DataTableSortableHeader } from "@/components/data-table/data-table-sortable-header"
 import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
 
 type DataTableDemoRow = {

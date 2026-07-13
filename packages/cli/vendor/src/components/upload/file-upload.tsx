@@ -236,14 +236,14 @@ function validateIncomingFiles({
 
 function defaultRenderFile({ file, progress, status, remove, retry, removeLabel = "Remove file" }: FileUploadRenderFileState) {
   return (
-    <div className="flex min-w-0 items-center gap-3">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-background/90 shadow-sm">
+    <div data-slot="file-upload-file-content" className="flex min-w-0 items-center gap-3">
+      <span data-slot="file-upload-file-icon" className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/70 bg-background/90 shadow-sm">
         <FileIcon className="size-4 text-muted-foreground" />
       </span>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="truncate text-sm font-medium text-foreground">{file.name}</div>
-          <span className={cn(
+          <div data-slot="file-upload-file-name" className="truncate text-sm font-medium text-foreground">{file.name}</div>
+          <span data-slot="file-upload-file-status" data-status={status} className={cn(
             "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em]",
             status === "uploading" && "bg-primary/10 text-primary",
             status === "success" && "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
@@ -253,10 +253,11 @@ function defaultRenderFile({ file, progress, status, remove, retry, removeLabel 
             {status}
           </span>
         </div>
-        <div className="text-xs text-muted-foreground">{formatBytes(file.size)}</div>
+        <div data-slot="file-upload-file-size" className="text-xs text-muted-foreground">{formatBytes(file.size)}</div>
         {typeof progress === "number" && (
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted/80">
+          <div data-slot="file-upload-progress" className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted/80">
             <div
+              data-slot="file-upload-progress-bar"
               className="h-full rounded-full bg-primary shadow-[0_8px_18px_color-mix(in_oklch,var(--primary),transparent_82%)]"
               style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }}
             />
@@ -467,21 +468,21 @@ function FileUpload({
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        <div className="mx-auto flex size-13 items-center justify-center rounded-full border border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_14%),var(--background))] text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.12),0_10px_24px_rgba(15,23,42,0.06)]">
+        <div data-slot="file-upload-dropzone-icon" className="mx-auto flex size-13 items-center justify-center rounded-full border border-border/75 bg-[linear-gradient(180deg,color-mix(in_oklch,var(--background),white_14%),var(--background))] text-muted-foreground shadow-[0_1px_0_rgba(255,255,255,0.12),0_10px_24px_rgba(15,23,42,0.06)]">
           <UploadCloudIcon className="size-5" />
         </div>
-        <div className="grid gap-1">
-          <div className="text-sm font-semibold text-foreground">{isDragging ? dragActiveLabel : dropzoneLabel}</div>
-          {dropzoneDescription && <div className="text-sm leading-6 text-muted-foreground">{dropzoneDescription}</div>}
+        <div data-slot="file-upload-dropzone-content" className="grid gap-1">
+          <div data-slot="file-upload-dropzone-label" className="text-sm font-semibold text-foreground">{isDragging ? dragActiveLabel : dropzoneLabel}</div>
+          {dropzoneDescription && <div data-slot="file-upload-dropzone-description" className="text-sm leading-6 text-muted-foreground">{dropzoneDescription}</div>}
           {(accept || maxSize || maxFiles || helperText) && (
-            <div className="text-xs leading-5 text-muted-foreground">
+            <div data-slot="file-upload-helper" className="text-xs leading-5 text-muted-foreground">
               {helperText ?? [accept ? `Types: ${accept}` : null, maxSize ? `Max size: ${formatBytes(maxSize)}` : null, maxFiles ? `Max files: ${maxFiles}` : null].filter(Boolean).join(" • ")}
             </div>
           )}
         </div>
 
         {renderActions?.({ openFileDialog, clearFiles, files }) ?? (
-          <div className="flex justify-center gap-2">
+          <div data-slot="file-upload-actions" className="flex justify-center gap-2">
             <Button
               type="button"
               variant="outline"
@@ -518,7 +519,7 @@ function FileUpload({
       </div>
 
       {showFileList && files.length > 0 && (
-        <div data-slot="file-upload-list" className={cn("grid gap-2", fileListClassName)}>
+        <div data-slot="file-upload-list" aria-live="polite" className={cn("grid gap-2", fileListClassName)}>
           {files.map((file, index) => {
             const state = {
               file,
@@ -545,10 +546,11 @@ function FileUpload({
       )}
 
       {resolvedRejectedFiles.length > 0 && (
-        <div data-slot="file-upload-rejected-list" className={cn("grid gap-2", rejectedListClassName)}>
+        <div data-slot="file-upload-rejected-list" role="alert" aria-live="assertive" className={cn("grid gap-2", rejectedListClassName)}>
           {resolvedRejectedFiles.map((rejectedFile, index) => (
             <div
               key={`${rejectedFile.file.name}-${index}`}
+              data-slot="file-upload-rejected-item"
               className="rounded-[min(var(--radius-lg),12px)] border border-destructive/22 bg-destructive/8 px-3 py-2.5 text-xs leading-5 text-destructive shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
             >
               {renderRejectedFile?.({ rejectedFile, index }) ?? <span>{rejectedFile.file.name}: {rejectedFile.message}</span>}

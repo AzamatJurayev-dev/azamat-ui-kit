@@ -160,7 +160,6 @@ export const publicComponentApiDocs = [
       "AlertDialog",
       "ConfirmDialog",
       "ModalShell",
-      "SheetShell",
       "Drawer",
       "DialogActions",
     ],
@@ -248,9 +247,9 @@ export const publicComponentApiDocs = [
     useWhen: [
       "A screen needs one consistent progress surface before introducing separate members.",
       "Completion should be represented through a single component in list and wizard-like flows.",
-      "ProgressCircle should be used when compact visual indication is required.",
+      "ProgressRing should be used when compact visual indication is required.",
     ],
-    related: ["ProgressCircle"],
+    related: ["ProgressRing"],
     props: [
       ["value", "number", "Current completion value."],
       ["min", "number", "Lower bound for the progress scale."],
@@ -275,7 +274,7 @@ export const publicComponentApiDocs = [
       "The product needs one chart-led entry point before exposing legends, frames, or micro-trend helpers.",
       "Metric companions should stay related to the chart mental model instead of feeling like duplicate first-level exports.",
     ],
-    related: ["LineChart", "DonutChart", "MetricGrid", "ChartFrame", "ChartLegend", "Sparkline", "MetricTrend", "Statistic", "StatisticGrid", "StatisticCard"],
+    related: ["LineChart", "DonutChart", "ChartFrame", "ChartLegend", "Sparkline", "MetricTrend", "Statistic", "StatisticGrid", "StatisticCard"],
     props: [
       ["data", "Array<{ label: string; value: number }>", "Visible chart values."],
       ["size", "'sm' | 'md' | 'lg'", "Controls chart density."],
@@ -294,7 +293,7 @@ export const publicComponentApiDocs = [
       "Page framing, tabs, pagination, breadcrumbs, and guided flows should read as related navigation surfaces.",
       "Teams want one layout-led route before exploring smaller structural helpers.",
     ],
-    related: ["PageContainer", "Tabs", "Pagination", "Breadcrumbs", "Wizard", "Section", "AnchorNav", "Stepper", "StepperTabs", "SegmentedControl"],
+    related: ["Tabs", "Pagination", "Breadcrumbs", "Wizard", "Section", "AnchorNav", "Stepper", "SegmentedControl"],
     props: [
       ["items", "SidebarItem[]", "Primary navigation items."],
       ["collapsed", "boolean", "Controls the compact rail state when supported."],
@@ -332,7 +331,7 @@ export const publicComponentApiDocs = [
       "Single-choice, boolean toggle, table, and disclosure primitives should stay related instead of crowding the main catalog independently.",
       "Teams need one primitive-led route before reaching for supporting layout helpers like Divider or ScrollBox.",
     ],
-    related: ["RadioGroup", "Switch", "Table", "Accordion", "Collapse", "Calendar", "Divider", "Kbd", "ScrollBox"],
+    related: ["RadioGroup", "Switch", "Table", "Collapse", "Calendar", "Divider", "Kbd", "ScrollBox"],
     props: [
       ["checked", "boolean | 'indeterminate'", "Controlled checked state."],
       ["defaultChecked", "boolean | 'indeterminate'", "Uncontrolled initial checked state."],
