@@ -141,6 +141,7 @@ function ConfirmDialog({
             variant={confirmVariant}
             disabled={confirmDisabled || resolvedLoading}
             loading={resolvedLoading}
+            loadingLabel={typeof confirmText === "string" ? confirmText : "Loading"}
             onClick={() => void handleConfirm()}
           >
             {confirmText}

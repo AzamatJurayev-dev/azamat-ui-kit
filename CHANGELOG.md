@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.5 - 2026-07-13
+
+### Changed
+
+- published the consolidated canonical component surface, reusable showcase architecture, centralized theme styling, and expanded interactive documentation
+- synchronized package, CLI, registry, showcase metadata, build output, and npm release versions
+
 ## 3.1.4 - 2026-07-13
 
 ### Changed
