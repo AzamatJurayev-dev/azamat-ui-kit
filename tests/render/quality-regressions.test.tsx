@@ -68,6 +68,34 @@ describe("component quality regressions", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("Invalid JSON")
   })
 
+  it("supports rich agenda events and selection without rendering hidden events", async () => {
+    const user = userEvent.setup()
+    const onSelectedEventChange = vi.fn()
+
+    const { container } = render(
+      <CalendarScheduler
+        variant="agenda"
+        density="compact"
+        title="Clinical schedule"
+        defaultSelectedEventId="review"
+        onSelectedEventChange={onSelectedEventChange}
+        events={[
+          { id: "review", date: "Today", time: "09:00", title: "Patient review", description: "Cardiology", badge: <span>Urgent</span> },
+          { id: "hidden", date: "Today", title: "Hidden event", hidden: true },
+          { id: "disabled", date: "Today", title: "Unavailable", disabled: true },
+        ]}
+      />
+    )
+
+    expect(container.querySelector("[data-slot='calendar-scheduler']")).toHaveAttribute("data-variant", "agenda")
+    expect(screen.getByRole("button", { name: /Patient review/ })).toHaveAttribute("data-selected", "true")
+    expect(screen.queryByText("Hidden event")).toBeNull()
+
+    await user.click(screen.getByRole("button", { name: /Patient review/ }))
+    expect(onSelectedEventChange).toHaveBeenCalledWith("review", expect.objectContaining({ title: "Patient review" }))
+    expect(screen.getByRole("button", { name: /Unavailable/ })).toBeDisabled()
+  })
+
   it("does not render empty pattern chrome when optional regions are absent", () => {
     const { container, rerender } = render(
       <ResourcePage title="Customers" breadcrumbs={<nav aria-label="Breadcrumbs">Customers</nav>} />

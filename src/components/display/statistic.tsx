@@ -60,16 +60,17 @@ function Statistic({ label, value, prefix, suffix, description, trend = "neutral
 
 export type StatisticCardProps = React.ComponentProps<typeof Card> & StatisticProps & {
   action?: React.ReactNode
+  density?: "compact" | "default"
 }
 
-function StatisticCard({ action, label, value, prefix, suffix, description, trend, change, loading, className, ...props }: StatisticCardProps) {
+function StatisticCard({ action, density = "default", label, value, prefix, suffix, description, trend, change, loading, className, ...props }: StatisticCardProps) {
   return (
-    <Card data-slot="statistic-card" className={className} {...props}>
-      <CardHeader data-slot="statistic-card-header" className="flex flex-row items-center justify-between gap-3 pb-2">
+    <Card data-slot="statistic-card" data-density={density} className={className} {...props}>
+      <CardHeader data-slot="statistic-card-header" className={cn("flex flex-row items-center justify-between gap-3 pb-2", density === "compact" && "px-4 pt-4 pb-1")}>
         <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
         {action ? <div data-slot="statistic-card-action">{action}</div> : null}
       </CardHeader>
-      <CardContent>
+      <CardContent className={cn(density === "compact" && "px-4 pb-4")}>
         <Statistic
           label={<span className="sr-only">{label}</span>}
           value={value}
@@ -87,14 +88,18 @@ function StatisticCard({ action, label, value, prefix, suffix, description, tren
 
 export type StatisticGridProps = React.ComponentProps<"div"> & {
   columns?: 1 | 2 | 3 | 4
+  gap?: "sm" | "default" | "lg"
 }
 
-function StatisticGrid({ columns = 4, className, ...props }: StatisticGridProps) {
+function StatisticGrid({ columns = 4, gap = "default", className, ...props }: StatisticGridProps) {
   return (
     <div
       data-slot="statistic-grid"
       className={cn(
-        "grid gap-4",
+        "grid",
+        gap === "sm" && "gap-3",
+        gap === "default" && "gap-4",
+        gap === "lg" && "gap-6",
         columns === 1 && "grid-cols-1",
         columns === 2 && "grid-cols-1 sm:grid-cols-2",
         columns === 3 && "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3",

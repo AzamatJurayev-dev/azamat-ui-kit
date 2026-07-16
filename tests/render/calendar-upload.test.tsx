@@ -30,6 +30,14 @@ function ControlledFileUpload(props: React.ComponentProps<typeof FileUpload>) {
 }
 
 describe("Calendar and date pickers", () => {
+  it("renders the compact DatePicker trigger without the stacked label", () => {
+    const { container } = render(<DatePicker value="2024-06-15" triggerVariant="compact" />)
+
+    expect(container.querySelector("[data-slot='date-picker']")).toHaveAttribute("data-trigger-variant", "compact")
+    expect(screen.queryByText("Date")).toBeNull()
+    expect(screen.getByRole("button", { name: /Jun 15, 2024/ })).toBeInTheDocument()
+  })
+
   it("supports single selection and respects min/max/disabled dates", async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()

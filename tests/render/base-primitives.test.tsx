@@ -28,9 +28,22 @@ import {
   Switch,
   RadioGroup,
   Tag,
+  StatisticCard,
+  StatisticGrid,
 } from "@/index"
 
 describe("base primitives", () => {
+  it("supports compact statistic cards and configurable grid gaps", () => {
+    const { container } = render(
+      <StatisticGrid gap="sm">
+        <StatisticCard density="compact" label="Revenue" value="$42k" change="+8%" trend="up" />
+      </StatisticGrid>
+    )
+
+    expect(container.querySelector("[data-slot='statistic-grid']")).toHaveClass("gap-3")
+    expect(container.querySelector("[data-slot='statistic-card']")).toHaveAttribute("data-density", "compact")
+  })
+
   it("renders button content, icons and loading state", () => {
     render(
       <Button leftIcon={<span aria-hidden="true">L</span>} rightIcon={<span aria-hidden="true">R</span>}>

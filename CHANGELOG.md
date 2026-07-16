@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.17 - 2026-07-16
+
+- Added production-ready `agenda` and `board` variants, density controls, rich event metadata, selection state, hidden/disabled events, custom rendering, and formatted day labels to `CalendarScheduler`.
+- Added a compact trigger variant to `DatePicker` for dense filters, headers, and scheduling toolbars.
+- Added compact density to `StatisticCard` and configurable gaps to `StatisticGrid`.
+- Added `labelClassName` and a stable inline-flex label layout to `Button`, fixing complex icon/value/action labels that previously stacked vertically.
+- Updated the CalendarScheduler showcase and regression coverage for the expanded API.
+
 ## 3.1.16 - 2026-07-16
 
 - Fixed composed Card surfaces so `StatisticCard`, `InfoCard`, `ActivityFeed`, and other Card-based components retain base border, background, radius, and variant styling.
