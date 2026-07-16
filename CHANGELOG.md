@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.15 - 2026-07-16
+
+- Fixed `NotificationCenter` to use solid, fallback-safe popover surfaces when host apps do not define optional `--aui-*` theme tokens.
+- Synced the notification fix into the vendored CLI source used by generated projects.
+
 ## 3.1.14 - 2026-07-16
 
 - Fixed Kanban drag-and-drop by adding a native drag/drop fallback while preserving the existing `@dnd-kit` integration.

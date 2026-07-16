@@ -47,21 +47,21 @@ function NotificationCenter({
           render={<PopoverTrigger />}
           variant="ghost"
           size="icon"
-          className="relative rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] text-foreground shadow-sm hover:bg-[color:color-mix(in_srgb,var(--aui-control-bg)_82%,white_18%)]"
+          className="relative rounded-full border bg-white text-foreground shadow-sm hover:bg-muted dark:bg-neutral-950"
         >
           <BellIcon className="size-5" />
           {unreadCount > 0 && (
-            <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-[color:var(--aui-brand-strong)] px-1.5 py-0.5 text-[10px] font-bold leading-none text-white shadow-[0_8px_20px_rgba(16,185,129,0.35)]">
+            <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-primary px-1.5 py-0.5 text-[10px] font-bold leading-none text-primary-foreground shadow-[0_8px_20px_rgba(16,185,129,0.24)]">
               {unreadCount}
               <span className="sr-only">{unreadCount} unread notifications</span>
             </span>
           )}
         </Button>
         <PopoverContent
-          className="w-[24rem] overflow-hidden rounded-3xl border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] p-0 shadow-[0_24px_60px_rgba(15,23,42,0.18)]"
+          className="isolate w-[24rem] overflow-hidden rounded-3xl border bg-white p-0 text-popover-foreground opacity-100 shadow-[0_24px_60px_rgba(15,23,42,0.18)] dark:bg-neutral-950"
           align="end"
         >
-          <div className="flex items-center justify-between border-b border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] px-5 py-4">
+          <div className="flex items-center justify-between border-b bg-white px-5 py-4 dark:bg-neutral-950">
             <div className="grid gap-0.5">
               <h4 className="font-semibold tracking-tight text-foreground">{title}</h4>
               <span className="text-xs text-muted-foreground">
@@ -73,7 +73,7 @@ function NotificationCenter({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 rounded-full border border-[color:var(--aui-surface-border)] px-3 text-xs font-semibold text-muted-foreground hover:bg-[color:var(--aui-page-bg)] hover:text-foreground"
+                  className="h-8 rounded-full border px-3 text-xs font-semibold text-muted-foreground hover:bg-background hover:text-foreground"
                   onClick={onMarkAllRead}
                 >
                   Mark all read
@@ -83,7 +83,7 @@ function NotificationCenter({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 rounded-full border border-[color:var(--aui-surface-border)] px-3 text-xs font-semibold text-muted-foreground hover:bg-[color:var(--aui-page-bg)] hover:text-foreground"
+                  className="h-8 rounded-full border px-3 text-xs font-semibold text-muted-foreground hover:bg-background hover:text-foreground"
                   onClick={onClearAll}
                 >
                   Clear all
@@ -91,9 +91,9 @@ function NotificationCenter({
               ) : null}
             </div>
           </div>
-          <div className="max-h-[400px] overflow-y-auto bg-[color:var(--aui-page-bg)] p-2">
+          <div className="max-h-[400px] overflow-y-auto bg-white p-2 dark:bg-neutral-950">
             {notifications.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-[color:var(--aui-surface-border)] px-6 py-10 text-center text-sm text-muted-foreground">
+              <div className="rounded-2xl border border-dashed px-6 py-10 text-center text-sm text-muted-foreground">
                 {emptyLabel}
               </div>
             ) : (
@@ -105,8 +105,8 @@ function NotificationCenter({
                       <button
                         key={notification.id}
                         className={cn(
-                          "flex flex-col gap-1 rounded-2xl border border-transparent px-4 py-3 text-left transition hover:border-[color:var(--aui-surface-border)] hover:bg-[color:var(--aui-control-bg)]",
-                          !notification.read && "border-[color:color-mix(in_srgb,var(--aui-brand-strong)_16%,var(--aui-surface-border))] bg-[color:color-mix(in_srgb,var(--aui-brand-strong)_8%,var(--aui-control-bg))]"
+                          "flex flex-col gap-1 rounded-2xl border border-transparent bg-white px-4 py-3 text-left transition hover:border-border hover:bg-muted dark:bg-neutral-950 dark:hover:bg-neutral-900",
+                          !notification.read && "border-primary/20 bg-slate-50 dark:bg-neutral-900"
                         )}
                         onClick={() => onNotificationClick?.(notification)}
                       >
@@ -115,7 +115,7 @@ function NotificationCenter({
                             {notification.title}
                           </span>
                           {!notification.read && (
-                            <span className="mt-1 flex size-2 shrink-0 rounded-full bg-[color:var(--aui-brand-strong)] shadow-[0_0_0_4px_color-mix(in_srgb,var(--aui-brand-strong)_14%,transparent)]" />
+                            <span className="mt-1 flex size-2 shrink-0 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_14%,transparent)]" />
                           )}
                         </div>
                         {notification.description && (

@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "3.1.14",
+  "version": "3.1.15",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
