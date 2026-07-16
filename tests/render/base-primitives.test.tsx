@@ -435,6 +435,18 @@ describe("base primitives", () => {
     expect(card?.getAttribute("aria-disabled")).toBe("true")
   })
 
+  it("keeps the base card surface marker when a composed component owns data-slot", () => {
+    render(
+      <Card data-slot="statistic-card">
+        <CardContent>Composed card</CardContent>
+      </Card>
+    )
+
+    const card = screen.getByText("Composed card").closest("[data-slot='statistic-card']")
+    expect(card).toBeTruthy()
+    expect(card?.hasAttribute("data-card")).toBe(true)
+  })
+
   it("keeps nested cards visually downgraded without breaking content structure", () => {
     render(
       <Card>

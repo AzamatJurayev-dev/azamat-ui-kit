@@ -55,7 +55,7 @@ function DetailLayout({
       {hasContent && (
         <div
           data-slot="detail-layout-content"
-          className={cn("grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]", contentClassName)}
+          className={cn("grid min-w-0 gap-4", aside && "xl:grid-cols-[minmax(0,1fr)_20rem]", contentClassName)}
         >
           <main data-slot="detail-layout-main" className="min-w-0">
             {children}

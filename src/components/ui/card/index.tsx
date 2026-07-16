@@ -181,6 +181,7 @@ function Card({
   return (
     <div
       data-slot="card"
+      data-card=""
       data-surface={surfaceMode || undefined}
       data-size={size ?? "default"}
       data-variant={variant ?? "default"}

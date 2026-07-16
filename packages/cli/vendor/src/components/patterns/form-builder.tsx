@@ -25,6 +25,8 @@ import { cn } from "@/lib/utils"
 export type FormBuilderLayout = "grid" | "stack"
 export type FormBuilderDensity = "compact" | "default" | "comfortable"
 
+type DistributiveOmit<T, TKey extends PropertyKey> = T extends unknown ? Omit<T, TKey> : never
+
 export type FormBuilderFieldRenderContext<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>
   disabled?: boolean
@@ -48,7 +50,7 @@ export type FormBuilderInputField<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseFormBuilderField & {
   type: "input"
-  props: Omit<FormInputProps<TFieldValues, TName>, "control">
+  props: DistributiveOmit<FormInputProps<TFieldValues, TName>, "control">
 }
 
 export type FormBuilderTextareaField<
@@ -64,7 +66,7 @@ export type FormBuilderSelectField<
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = BaseFormBuilderField & {
   type: "select"
-  props: Omit<FormSelectProps<TFieldValues, TName>, "control">
+  props: DistributiveOmit<FormSelectProps<TFieldValues, TName>, "control">
 }
 
 export type FormBuilderAsyncSelectField<
@@ -116,17 +118,14 @@ export type FormBuilderDateRangeField<
   props: Omit<FormDateRangeInputProps<TFieldValues, TFromName, TToName>, "control">
 }
 
+type FormBuilderStoredField = BaseFormBuilderField & {
+  type: "input" | "textarea" | "select" | "async-select" | "switch" | "number" | "phone" | "date" | "date-range"
+  props: object
+}
+
 export type FormBuilderField<TFieldValues extends FieldValues> =
   | FormBuilderCustomField<TFieldValues>
-  | FormBuilderInputField<TFieldValues>
-  | FormBuilderTextareaField<TFieldValues>
-  | FormBuilderSelectField<TFieldValues>
-  | FormBuilderAsyncSelectField<TFieldValues>
-  | FormBuilderSwitchField<TFieldValues>
-  | FormBuilderNumberField<TFieldValues>
-  | FormBuilderPhoneField<TFieldValues>
-  | FormBuilderDateField<TFieldValues>
-  | FormBuilderDateRangeField<TFieldValues>
+  | FormBuilderStoredField
 
 export type FormBuilderSection<TFieldValues extends FieldValues> = {
   id: string
@@ -282,6 +281,9 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
 ) {
   const FormInputComponent = FormInput as unknown as React.ComponentType<Record<string, unknown>>
   const FormSelectComponent = FormSelect as unknown as React.ComponentType<Record<string, unknown>>
+  const FormTextareaComponent = FormTextarea as unknown as React.ComponentType<Record<string, unknown>>
+  const FormSwitchComponent = FormSwitch as unknown as React.ComponentType<Record<string, unknown>>
+  const FormDateRangeInputComponent = FormDateRangeInput as unknown as React.ComponentType<Record<string, unknown>>
 
   switch (field.type) {
     case "custom":
@@ -294,7 +296,7 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
         ...(field.props as Omit<FormInputProps<TFieldValues, FieldPath<TFieldValues>>, "control">),
       })
     case "textarea":
-      return <FormTextarea control={context.control} disabled={context.disabled} readOnly={context.readOnly} {...field.props} />
+      return React.createElement(FormTextareaComponent, { control: context.control, disabled: context.disabled, readOnly: context.readOnly, ...field.props })
     case "select":
       return React.createElement(FormSelectComponent, {
         control: context.control,
@@ -309,7 +311,7 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
         ...field.props,
       })
     case "switch":
-      return <FormSwitch control={context.control} disabled={context.disabled} {...field.props} />
+      return React.createElement(FormSwitchComponent, { control: context.control, disabled: context.disabled, ...field.props })
     case "number":
       return React.createElement(FormInputComponent, {
         control: context.control,
@@ -335,14 +337,12 @@ function renderFormBuilderField<TFieldValues extends FieldValues>(
         ...field.props,
       })
     case "date-range":
-      return (
-        <FormDateRangeInput
-          control={context.control}
-          fromInputProps={{ disabled: context.disabled, readOnly: context.readOnly }}
-          toInputProps={{ disabled: context.disabled, readOnly: context.readOnly }}
-          {...field.props}
-        />
-      )
+      return React.createElement(FormDateRangeInputComponent, {
+        control: context.control,
+        fromInputProps: { disabled: context.disabled, readOnly: context.readOnly },
+        toInputProps: { disabled: context.disabled, readOnly: context.readOnly },
+        ...field.props,
+      })
     default:
       return null
   }

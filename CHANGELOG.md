@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.16 - 2026-07-16
+
+- Fixed composed Card surfaces so `StatisticCard`, `InfoCard`, `ActivityFeed`, and other Card-based components retain base border, background, radius, and variant styling.
+- Added compatibility aliases for legacy theme tokens used by installed components.
+- Fixed `StatusLegend` surfaces and item borders in light and dark themes.
+- Reduced default Card elevation and strengthened the light-theme border for dense application layouts.
+- Fixed `FormBuilder` field preset typing so discriminated input and select props remain usable in strongly typed React Hook Form schemas.
+- Prevented `ResizablePanel` sizing props from leaking to DOM elements.
+- Made `ResourcePage`, `ResourceDetailPage`, and `DetailLayout` reserve an aside column only when aside content exists.
+
 ## 3.1.15 - 2026-07-16
 
 - Fixed `NotificationCenter` to use solid, fallback-safe popover surfaces when host apps do not define optional `--aui-*` theme tokens.

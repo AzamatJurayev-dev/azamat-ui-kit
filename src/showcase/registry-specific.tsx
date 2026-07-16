@@ -48,7 +48,7 @@ import {
   Avatar,
 } from "@/index"
 import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
-import { FormBuilder, customField, formSection } from "@/components/patterns/form-builder"
+import { FormBuilder, customField, formSection, inputField, selectField, switchField, textareaField } from "@/components/patterns/form-builder"
 import { ResourceDetailPage } from "@/components/patterns/resource-detail-page"
 import { ResourcePage, ResourcePageSection } from "@/components/patterns/resource-page"
 import { useForm } from "react-hook-form"
@@ -750,6 +750,7 @@ function FormBuilderPreview() {
     email: string
     notes: string
     marketing: boolean
+    role: string
   }
 
   const form = useForm<FormBuilderDemoValues>({
@@ -758,6 +759,7 @@ function FormBuilderPreview() {
       email: "azamat@example.com",
       notes: "Release gate is ready.",
       marketing: true,
+      role: "admin",
     },
   })
 
@@ -779,6 +781,14 @@ function FormBuilderPreview() {
             </div>
           ),
         }),
+        inputField<FormBuilderDemoValues, "name">({ id: "name", props: { name: "name", label: "Name", required: true } }),
+        inputField<FormBuilderDemoValues, "email">({ id: "email", props: { name: "email", label: "Email", type: "email" } }),
+        selectField<FormBuilderDemoValues, "role">({ id: "role", props: { name: "role", label: "Role", options: [
+          { value: "admin", label: "Administrator" },
+          { value: "member", label: "Member" },
+        ] } }),
+        switchField<FormBuilderDemoValues, "marketing">({ id: "marketing", props: { name: "marketing", label: "Product updates" } }),
+        textareaField<FormBuilderDemoValues, "notes">({ id: "notes", colSpan: "full", props: { name: "notes", label: "Release notes" } }),
       ],
     }),
   ]

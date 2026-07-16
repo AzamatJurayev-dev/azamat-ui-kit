@@ -136,7 +136,7 @@ function ResourcePage<TData, TValue = unknown>({
       {(hasMainContent || aside) && (
         <div
           data-slot="resource-page-content"
-          className={cn("grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]", contentClassName)}
+          className={cn("grid min-w-0 gap-4", aside && "xl:grid-cols-[minmax(0,1fr)_20rem]", contentClassName)}
         >
           <div data-slot="resource-page-main" className="grid min-w-0 gap-4">
             {children}

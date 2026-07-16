@@ -7,12 +7,16 @@ import {
   BulkActionBar,
   CalendarScheduler,
   DataView,
+  DetailLayout,
   DualListPicker,
   EmptyState,
   JsonInput,
   PageToolbar,
   ResourceDetailPage,
   ResourcePage,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
   SettingsPage,
 } from "@/index"
 
@@ -103,5 +107,29 @@ describe("component quality regressions", () => {
     expect(container.querySelector("[data-slot='bulk-action-bar']")).toBeTruthy()
     expect(container.querySelector("[data-slot='settings-page']")).toBeTruthy()
     expect(screen.getByText("No rows")).toBeInTheDocument()
+  })
+
+  it("only reserves an aside column when an aside is present", () => {
+    const { container, rerender } = render(<ResourcePage title="Customers">Customer list</ResourcePage>)
+
+    expect(container.querySelector("[data-slot='resource-page-content']")?.className).not.toContain("xl:grid-cols")
+
+    rerender(<ResourceDetailPage title="Customer">Customer detail</ResourceDetailPage>)
+    expect(container.querySelector("[data-slot='resource-detail-page-content']")?.className).not.toContain("xl:grid-cols")
+
+    rerender(<DetailLayout title="Customer">Customer detail</DetailLayout>)
+    expect(container.querySelector("[data-slot='detail-layout-content']")?.className).not.toContain("xl:grid-cols")
+  })
+
+  it("does not leak ResizablePanel sizing props to the DOM", () => {
+    const { container } = render(
+      <ResizablePanelGroup>
+        <ResizablePanel minSize={25}>First</ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel minSize={30}>Second</ResizablePanel>
+      </ResizablePanelGroup>
+    )
+
+    expect(container.querySelector("[minsize]")).toBeNull()
   })
 })

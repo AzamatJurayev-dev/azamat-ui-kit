@@ -132,7 +132,7 @@ function ResizablePanelGroup({ direction = "horizontal", className, children, ..
   )
 }
 
-function ResizablePanel({ className, style, defaultSize, ...props }: ResizablePanelInternalProps) {
+function ResizablePanel({ className, style, defaultSize, minSize: _minSize, ...props }: ResizablePanelInternalProps) {
   const context = React.useContext(ResizablePanelContext)
   const panelIndex = Number(props["data-panel-index"] ?? 0)
   const basis = context ? context.getSize(panelIndex) : normalizeSizeValue(defaultSize) ?? 100
