@@ -41,15 +41,15 @@ export function Demo() {
     />
   )
 }`,
-  "dialog-actions": `import { DialogActionButton, DialogActions } from "tembro"
+  "dialog-actions": `import { Button, ButtonGroup } from "tembro"
 
 export function Demo() {
   return (
-    <DialogActions align="end">
-      <DialogActionButton variant="ghost">Cancel</DialogActionButton>
-      <DialogActionButton variant="outline">Save draft</DialogActionButton>
-      <DialogActionButton>Publish</DialogActionButton>
-    </DialogActions>
+    <ButtonGroup attached={false}>
+      <Button variant="ghost">Cancel</Button>
+      <Button variant="outline">Save draft</Button>
+      <Button>Publish</Button>
+    </ButtonGroup>
   )
 }`,
   stepper: `import { Stepper } from "tembro"

@@ -1,3 +1,7 @@
-import { createShowcaseDemoRegistry } from "@/showcase/create-demo"
+import { DataTableShowcase, dataTableMock } from "@/showcase/premium/data-table"
 
-export const dataTableShowcaseDemoRegistry = createShowcaseDemoRegistry([])
+import type { ComponentDemoBundle } from "@/showcase/premium/types"
+
+export const dataTableShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = {
+  "data-table": { mock: dataTableMock, Showcase: DataTableShowcase },
+}

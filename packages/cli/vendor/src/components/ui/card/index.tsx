@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const cardVariants = cva(
-  "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-[var(--aui-card-radius,var(--radius-xl))] border py-(--card-spacing) text-sm text-card-foreground transition-[background-color,border-color,box-shadow,transform,opacity] [--card-spacing:--spacing(5)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 *:[img:first-child]:rounded-t-[var(--aui-card-radius,var(--radius-xl))] *:[img:last-child]:rounded-b-[var(--aui-card-radius,var(--radius-xl))]",
+  "group/card flex min-w-0 flex-col gap-(--card-spacing) overflow-hidden py-(--card-spacing) [--card-spacing:--spacing(5)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0",
   {
     variants: {
       variant: {
@@ -12,17 +12,17 @@ const cardVariants = cva(
         elevated: "",
         outline: "",
         soft: "",
-        ghost: "border-transparent bg-transparent shadow-none ring-0",
+        ghost: "",
       },
       size: {
-        sm: "[--card-spacing:--spacing(4)] data-[has-footer=true]:pb-0",
-        default: "[--card-spacing:--spacing(5)]",
-        lg: "[--card-spacing:--spacing(6)]",
+        sm: "",
+        default: "",
+        lg: "",
       },
       density: {
-        compact: "text-xs",
-        default: "text-sm",
-        comfortable: "text-base",
+        compact: "",
+        default: "",
+        comfortable: "",
       },
       tone: {
         neutral: "",
@@ -40,7 +40,7 @@ const cardVariants = cva(
         false: "",
       },
       disabled: {
-        true: "pointer-events-none opacity-55",
+        true: "pointer-events-none",
         false: "",
       },
     },
@@ -197,8 +197,6 @@ function Card({
       className={cn(
         cardVariants({ variant, size, density, tone, interactive, selected, disabled }),
         orientation === "horizontal" && "flex-row py-0",
-        interactive && "hover:border-[color:var(--aui-control-hover-border,var(--ring))] hover:shadow-[var(--aui-card-shadow-hover,var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08)))]",
-        selected && "border-[color:var(--aui-control-border-strong,var(--ring))] shadow-[var(--aui-card-shadow-hover,var(--aui-card-shadow,0_12px_32px_rgba(15,23,42,0.08)))]",
         className
       )}
       {...props}
@@ -217,9 +215,9 @@ function Card({
           >
             {hasHeader ? (
               <CardHeader className={cn(surfacePaddingClassName[padding], headerClassName)}>
-                <div className="min-w-0 space-y-1">
+                <div className="flex min-w-0 flex-col gap-1">
                   {eyebrow != null ? (
-                    <div className={cn("text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80", eyebrowClassName)}>
+                    <div data-slot="card-eyebrow" className={eyebrowClassName}>
                       {eyebrow}
                     </div>
                   ) : null}
@@ -253,7 +251,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-header"
       className={cn(
-        "group/card-header @container/card-header grid auto-rows-min items-start gap-1.5 rounded-t-[var(--aui-card-radius,var(--radius-xl))] px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing)",
+        "group/card-header @container/card-header grid min-w-0 auto-rows-min items-start gap-1.5 px-(--card-spacing) has-data-[slot=card-action]:grid-cols-[minmax(0,1fr)_auto] has-data-[slot=card-description]:grid-rows-[auto_auto] [.border-b]:pb-(--card-spacing)",
         className
       )}
       {...props}
@@ -265,10 +263,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn(
-        "font-heading text-[1.05rem] leading-snug font-semibold tracking-tight group-data-[size=sm]/card:text-sm group-data-[size=lg]/card:text-xl",
-        className
-      )}
+      className={cn("min-w-0 max-w-full break-words leading-snug", className)}
       {...props}
     />
   )
@@ -278,7 +273,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-sm leading-6 text-muted-foreground", className)}
+      className={cn("min-w-0 max-w-full break-words leading-snug text-muted-foreground", className)}
       {...props}
     />
   )
@@ -303,7 +298,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center rounded-b-[var(--aui-card-radius,var(--radius-xl))] border-t border-border/60 bg-muted/22 p-(--card-spacing)",
+        "flex items-center p-(--card-spacing)",
         className
       )}
       {...props}

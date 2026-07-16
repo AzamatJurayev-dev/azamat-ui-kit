@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { AsyncSelect, Badge, type AsyncSelectOption } from "@/index"
+import { AsyncSelect, Badge, Button, type AsyncSelectOption } from "@/index"
 import { routeWorkspaceOptions } from "@/showcase/component-route-data"
 
 const workspaceOptions: AsyncSelectOption[] = routeWorkspaceOptions
@@ -11,8 +11,31 @@ const panelClass =
 const loadOptions = async (query: string): Promise<typeof workspaceOptions> => {
   await new Promise((resolve) => setTimeout(resolve, 260))
   const normalized = query.trim().toLowerCase()
+  if (normalized === "error") {
+    throw new Error("Unable to load regions")
+  }
   if (!normalized) return workspaceOptions
   return workspaceOptions.filter((item) => String(item.label ?? "").toLowerCase().includes(normalized))
+}
+
+const loadSelectedOption = async (selectedValue: string) => {
+  await new Promise((resolve) => setTimeout(resolve, 120))
+  return workspaceOptions.find((item) => item.value === selectedValue) ?? null
+}
+
+const loadSelectedOptions = async (selectedValues: string[]) => {
+  await new Promise((resolve) => setTimeout(resolve, 120))
+  return workspaceOptions.filter((item) => selectedValues.includes(String(item.value)))
+}
+
+const createWorkspaceOption = async (search: string): Promise<AsyncSelectOption> => {
+  await new Promise((resolve) => setTimeout(resolve, 180))
+  const value = search.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
+  return {
+    value: value || "custom-region",
+    label: search.trim(),
+    description: "Created from the current search query",
+  }
 }
 
 export function AsyncSelectShowcase() {
@@ -48,14 +71,18 @@ export function AsyncSelectShowcase() {
                 value={value}
                 onValueChange={(nextValue) => setValue(nextValue ?? "")}
                 loadOptions={loadOptions}
+                loadSelectedOption={loadSelectedOption}
                 defaultOptions={workspaceOptions}
                 minSearchLength={1}
                 clearable
                 showSelectedDescription
                 debounceMs={220}
+                onCreateOption={createWorkspaceOption}
+                createOptionLabel={(search) => `Create region "${search.trim()}"`}
                 labels={{
                   placeholder: "Choose service region",
                   searchPlaceholder: "Search regions...",
+                  error: "Could not load regions. Try another query.",
                 }}
               />
             </div>
@@ -67,33 +94,54 @@ export function AsyncSelectShowcase() {
                   value={teamValues}
                   onValueChange={(nextValue) => setTeamValues(nextValue)}
                   loadOptions={loadOptions}
+                  loadSelectedOptions={loadSelectedOptions}
                   defaultOptions={workspaceOptions}
                   minSearchLength={1}
                   clearable
                   showSelectAll
                   maxSelected={3}
+                  maxVisibleTags={2}
                   showSelectedDescription
                   debounceMs={220}
+                  onCreateOption={createWorkspaceOption}
+                  createOptionLabel={(search) => `Create team "${search.trim()}"`}
                   labels={{
                     multiPlaceholder: "Choose team coverage",
                     searchPlaceholder: "Search team regions...",
+                    error: "Could not load teams. Try another query.",
                     selectedCount: (count) => `${count} regions selected`,
+                    hiddenSelected: (count) => `+${count} more`,
+                    maxSelected: (count) => `Maximum ${count} regions`,
                   }}
                 />
               </div>
             </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Button size="sm" variant="secondary" onClick={() => setValue("south")}>
+                Hydrate South
+              </Button>
+              <Button size="sm" variant="secondary" onClick={() => setTeamValues(["north", "west", "central"])}>
+                Fill max selected
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => {
+                setValue("")
+                setTeamValues([])
+              }}>
+                Clear all
+              </Button>
+            </div>
             <div className="mt-4 grid gap-3 md:grid-cols-3">
               <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
                 <p className="font-medium aui-text-strong">Type to query</p>
-                <p className="mt-2 leading-6 aui-text-muted">Minimum search length keeps remote requests intentional.</p>
+                <p className="mt-2 leading-6 aui-text-muted">Minimum search length keeps remote requests intentional. Type error to test failure state.</p>
               </div>
               <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
                 <p className="font-medium aui-text-strong">Clear safely</p>
                 <p className="mt-2 leading-6 aui-text-muted">Clear action is isolated from the trigger surface.</p>
               </div>
               <div className="rounded-[18px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm">
-                <p className="font-medium aui-text-strong">Hydrate selection</p>
-                <p className="mt-2 leading-6 aui-text-muted">Selected value can be restored from ID-first edit state.</p>
+                <p className="font-medium aui-text-strong">Create and hydrate</p>
+                <p className="mt-2 leading-6 aui-text-muted">Create missing options and restore selected labels from ID-first edit state.</p>
               </div>
             </div>
           </div>

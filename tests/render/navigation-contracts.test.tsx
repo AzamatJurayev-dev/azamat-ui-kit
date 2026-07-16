@@ -1,8 +1,9 @@
 import * as React from "react"
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Breadcrumbs, Sidebar, SidebarNav } from "@/index"
+import { Breadcrumbs, Sidebar } from "@/index"
+import { SidebarNav } from "@/components/layout/sidebar-nav"
 
 function mockMatchMedia(matches: boolean) {
   Object.defineProperty(window, "matchMedia", {
@@ -43,6 +44,32 @@ describe("navigation contracts", () => {
     expect(screen.getByText("Main")).toBeTruthy()
     expect(screen.getByText("Workspace")).toBeTruthy()
     expect(screen.getByText("Overview").closest("[aria-current]")?.getAttribute("aria-current")).toBe("page")
+  })
+
+  it("supports uncontrolled and controlled sidebar groups", async () => {
+    const onExpandedChange = vi.fn()
+    const items = [
+      {
+        key: "workspace",
+        label: "Workspace",
+        defaultExpanded: false,
+        onExpandedChange,
+        items: [{ key: "overview", label: "Overview", href: "/overview" }],
+      },
+    ]
+    const { rerender } = render(<SidebarNav items={items} />)
+    const details = screen.getByText("Workspace").closest("details") as HTMLDetailsElement
+
+    expect(details.open).toBe(false)
+    fireEvent.click(screen.getByText("Workspace"))
+    expect(details.open).toBe(true)
+    await waitFor(() => expect(onExpandedChange).toHaveBeenLastCalledWith(true))
+
+    rerender(<SidebarNav items={[{ ...items[0], expanded: false }]} />)
+    expect(details.open).toBe(false)
+
+    rerender(<SidebarNav items={[{ ...items[0], expanded: true }]} />)
+    expect(details.open).toBe(true)
   })
 
   it("keeps collapsed app sidebar items discoverable with tooltip content", () => {

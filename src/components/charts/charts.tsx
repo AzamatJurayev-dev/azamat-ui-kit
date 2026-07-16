@@ -141,6 +141,7 @@ function BarChart({ data, size = "md", max, showLabels = true, showValues = true
   const values = data.map((item) => item.value)
   const absoluteMax = max ?? safeMax(values.map((value) => Math.abs(value)))
   const height = chartHeightBySize[size]
+  const plotHeight = Math.max(height - (showValues ? 28 : 0) - (showLabels ? 24 : 0), 32)
 
   if (state === "loading") {
     return <div data-slot="bar-chart" className={cn("grid gap-3", className)} {...props}><div className="h-40 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70" /></div>
@@ -152,18 +153,19 @@ function BarChart({ data, size = "md", max, showLabels = true, showValues = true
 
   return (
     <div data-slot="bar-chart" className={cn("grid gap-3", className)} {...props}>
-      <div className="flex items-end gap-2" style={{ height }}>
+      <div className="flex items-end gap-2" style={{ minHeight: height }}>
         {data.map((item, index) => {
           const ratio = normalizeValue(Math.abs(item.value), absoluteMax)
           const negative = item.value < 0
           const title = chartLabelToTitle(item.label)
+          const barHeight = Math.max(Math.round(ratio * plotHeight), Math.abs(item.value) > 0 ? 3 : 0)
           return (
             <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-2" title={title ? `${title}: ${item.value}` : undefined}>
               {showValues && <div className="text-xs font-medium text-muted-foreground">{formatChartValue(item.value, valueFormatter)}</div>}
-              <div className="flex w-full flex-1 items-end rounded-[min(var(--radius-xl),16px)] border border-border/60 bg-muted/38 p-1">
+              <div className="flex w-full items-end rounded-[min(var(--radius-xl),16px)] border border-border/60 bg-muted/38 p-1" style={{ height: plotHeight }}>
                 <div
                   className={cn("w-full rounded-[min(var(--radius-lg),12px)] bg-primary transition-all", barClassName)}
-                  style={{ height: `${Math.max(ratio * 100, Math.abs(item.value) > 0 ? 3 : 0)}%`, background: getChartColor(index, item.color), opacity: negative ? 0.72 : 1 }}
+                  style={{ height: barHeight, background: getChartColor(index, item.color), opacity: negative ? 0.72 : 1 }}
                 />
               </div>
               {showLabels && <div className="max-w-full truncate text-xs text-muted-foreground">{item.label}</div>}
@@ -188,7 +190,7 @@ export type LineChartProps = Omit<React.ComponentProps<"svg">, "values"> & {
   emptyLabel?: React.ReactNode
 }
 
-function LineChart({ values, size = "md", width = 560, showArea = false, showGrid = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", className, ...props }: LineChartProps) {
+function LineChart({ values, size = "md", width = 560, showArea = false, showGrid = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", className, style, ...props }: LineChartProps) {
   const height = chartHeightBySize[size]
   const linePath = buildLinePath(values, width, height)
   const areaPath = buildAreaPath(values, width, height)
@@ -203,7 +205,7 @@ function LineChart({ values, size = "md", width = 560, showArea = false, showGri
   }
 
   return (
-    <svg data-slot="line-chart" viewBox={`0 0 ${width} ${height}`} className={cn("h-auto w-full overflow-visible", className)} role="img" {...props}>
+    <svg data-slot="line-chart" viewBox={`0 0 ${width} ${height}`} className={cn("w-full overflow-visible", className)} style={{ height, ...style }} role="img" {...props}>
       {showGrid && [0.25, 0.5, 0.75].map((position) => (
         <line
           key={position}

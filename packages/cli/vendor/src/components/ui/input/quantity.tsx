@@ -5,7 +5,7 @@ import { InputChrome } from "./chrome"
 import { getInputValue } from "./value"
 import { clampNumericValue, parseDecimalInput } from "./numeric-value"
 import { Button } from "@/components/ui/button"
-import { InputPrimitive } from "@/components/ui/input-primitive"
+import { InputPrimitive } from "./primitive"
 import { cn } from "@/lib/utils"
 
 export type QuantityInputProps = Omit<

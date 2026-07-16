@@ -14,13 +14,15 @@ export type VirtualListRenderContext = {
   virtualItem: VirtualItem
 }
 
+export type VirtualListItemKey = string | number
+
 export type VirtualListProps<TItem> = Omit<
   React.ComponentProps<"div">,
   "children"
 > & {
   items: TItem[]
   renderItem: (item: TItem, context: VirtualListRenderContext) => React.ReactNode
-  getItemKey?: (item: TItem, index: number) => React.Key
+  getItemKey?: (item: TItem, index: number) => VirtualListItemKey
   estimateSize?: number | ((index: number) => number)
   overscan?: number
   height?: number | string
@@ -38,7 +40,7 @@ function createInitialVirtualItems(
   overscan: number,
   gap: number,
   estimateSize: (index: number) => number,
-  getItemKey: (index: number) => React.Key
+  getItemKey: (index: number) => VirtualListItemKey
 ) {
   const items: VirtualItem[] = []
   let start = 0

@@ -1,11 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { MenuIcon, XIcon } from "lucide-react"
+import { ChevronRightIcon, MenuIcon, XIcon } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-is-mobile"
 import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { ControllableDetails } from "./controllable-details"
 
 type AppSidebarNavItem = {
   key: string
@@ -19,6 +20,8 @@ type AppSidebarNavItem = {
   hidden?: boolean
   sectionLabel?: React.ReactNode
   defaultExpanded?: boolean
+  expanded?: boolean
+  onExpandedChange?: (expanded: boolean) => void
   current?: React.AriaAttributes["aria-current"]
   tooltip?: React.ReactNode
   onSelect?: () => void
@@ -33,7 +36,7 @@ type AppSidebarFooterAccount = {
   onSelect?: () => void
 }
 
-type AppSidebarProps = React.ComponentProps<"aside"> & {
+export type AppSidebarProps = React.ComponentProps<"aside"> & {
   header?: React.ReactNode
   footer?: React.ReactNode
   items?: AppSidebarNavItem[]
@@ -47,6 +50,10 @@ type AppSidebarProps = React.ComponentProps<"aside"> & {
   secondaryActions?: AppSidebarNavItem[]
   footerSecondary?: React.ReactNode
   tooltipOnCollapsed?: boolean
+  showSectionLabels?: boolean
+  itemSize?: "sm" | "md" | "lg"
+  activeIndicator?: "none" | "bar" | "pill"
+  navigationLabel?: string
   responsive?: boolean
   mobileBreakpoint?: number
   mobileOpen?: boolean
@@ -55,6 +62,7 @@ type AppSidebarProps = React.ComponentProps<"aside"> & {
   mobileTitle?: React.ReactNode
   mobileDescription?: React.ReactNode
   mobileToggleLabel?: string
+  mobileCloseLabel?: string
   mobileToggleIcon?: React.ReactNode
   showMobileToggle?: boolean
   closeOnSelect?: boolean
@@ -81,9 +89,35 @@ function getSidebarInteractiveClassName({
   disabled?: boolean
 }) {
   return cn(
-    "border-[color:transparent] text-foreground/80 hover:border-[color:var(--aui-divider)] hover:bg-[color:color-mix(in_oklch,var(--card),var(--primary)_4%)] hover:text-foreground focus-visible:border-[color:var(--aui-control-border-strong,var(--border))] focus-visible:bg-[color:color-mix(in_oklch,var(--card),var(--primary)_6%)] focus-visible:text-foreground focus-visible:shadow-[0_0_0_3px_color-mix(in_oklch,var(--primary),transparent_86%)]",
-    active && "border-[color:color-mix(in_oklch,var(--primary),transparent_76%)] bg-[color:color-mix(in_oklch,var(--primary),transparent_91%)] text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]",
-    disabled && "hover:border-transparent hover:bg-transparent hover:text-foreground/80"
+    "border border-transparent bg-transparent text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_6%)] hover:border-[color:var(--aui-sidebar-item-active-border)] hover:bg-[color:var(--aui-sidebar-item-hover-bg)] hover:text-[color:var(--sidebar-foreground)] focus-visible:border-[color:var(--sidebar-ring)] focus-visible:bg-[color:var(--aui-sidebar-item-hover-bg)] focus-visible:text-[color:var(--sidebar-foreground)] focus-visible:shadow-[0_0_0_3px_color-mix(in_oklch,var(--sidebar-ring),transparent_82%)]",
+    active &&
+      "border-[color:var(--aui-sidebar-item-active-border)] bg-[color:var(--aui-sidebar-item-active-bg)] text-[color:var(--aui-sidebar-item-active-fg)] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_color-mix(in_oklch,var(--sidebar-primary),transparent_88%)]",
+    disabled && "hover:border-transparent hover:bg-transparent hover:text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_6%)]"
+  )
+}
+
+function getSidebarItemLayoutClassName({
+  collapsed,
+  depth,
+  itemSize,
+  activeIndicator,
+}: {
+  collapsed: boolean
+  depth: number
+  itemSize: NonNullable<AppSidebarProps["itemSize"]>
+  activeIndicator: NonNullable<AppSidebarProps["activeIndicator"]>
+}) {
+  return cn(
+    "relative w-full rounded-[min(var(--radius-xl),14px)] py-2",
+    itemSize === "sm" && "min-h-8 text-xs",
+    itemSize === "md" && "min-h-9 text-sm",
+    itemSize === "lg" && "min-h-11 text-sm",
+    collapsed ? "justify-center px-2" : "px-2.5",
+    !collapsed && depth > 0 && "pl-3",
+    activeIndicator === "bar" &&
+      "data-[active=true]:pl-4 before:pointer-events-none before:absolute before:left-1.5 before:top-1/2 before:hidden before:h-5 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-[color:var(--sidebar-primary)] data-[active=true]:before:block",
+    activeIndicator === "pill" && "rounded-full",
+    activeIndicator === "none" && "data-[active=true]:shadow-none"
   )
 }
 
@@ -105,12 +139,16 @@ function SidebarLeafItem({
   item,
   collapsed,
   depth,
+  itemSize,
+  activeIndicator,
   onItemSelect,
   renderLink,
 }: {
   item: AppSidebarNavItem
   collapsed: boolean
   depth: number
+  itemSize: NonNullable<AppSidebarProps["itemSize"]>
+  activeIndicator: NonNullable<AppSidebarProps["activeIndicator"]>
   onItemSelect?: (item: AppSidebarNavItem) => void
   renderLink?: AppSidebarProps["renderLink"]
 }) {
@@ -122,10 +160,12 @@ function SidebarLeafItem({
     "data-active": item.active || undefined,
     "data-disabled": item.disabled || undefined,
     "data-depth": String(depth),
+    "data-size": itemSize,
+    "data-active-indicator": activeIndicator,
     className: cn(
-      "flex min-h-9 items-center gap-2 rounded-lg border border-transparent px-2.5 text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+      "flex items-center gap-2 border border-transparent font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
       getSidebarInteractiveClassName({ active: item.active, disabled: item.disabled }),
-      collapsed && "justify-center px-2"
+      getSidebarItemLayoutClassName({ collapsed, depth, itemSize, activeIndicator })
     ),
   }
 
@@ -226,12 +266,18 @@ function SidebarTree({
   items,
   collapsed,
   depth,
+  showSectionLabels,
+  itemSize,
+  activeIndicator,
   onItemSelect,
   renderLink,
 }: {
   items: AppSidebarNavItem[]
   collapsed: boolean
   depth: number
+  showSectionLabels: boolean
+  itemSize: NonNullable<AppSidebarProps["itemSize"]>
+  activeIndicator: NonNullable<AppSidebarProps["activeIndicator"]>
   onItemSelect?: (item: AppSidebarNavItem) => void
   renderLink?: AppSidebarProps["renderLink"]
 }) {
@@ -240,7 +286,7 @@ function SidebarTree({
 
     const hasChildren = hasVisibleSidebarChildren(item)
     const active = isSidebarItemActive(item)
-    const showSectionLabel = !collapsed && depth === 0 && item.sectionLabel
+    const showSectionLabel = showSectionLabels && !collapsed && depth === 0 && item.sectionLabel
 
     if (!hasChildren) {
       return (
@@ -248,7 +294,7 @@ function SidebarTree({
           {showSectionLabel ? (
             <div
               data-slot="app-sidebar-group-label"
-              className="px-2.5 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground first:pt-0"
+              className="px-2.5 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_42%)] first:pt-0"
             >
               {item.sectionLabel}
             </div>
@@ -257,6 +303,8 @@ function SidebarTree({
             item={item}
             collapsed={collapsed}
             depth={depth}
+            itemSize={itemSize}
+            activeIndicator={activeIndicator}
             onItemSelect={onItemSelect}
             renderLink={renderLink}
           />
@@ -271,18 +319,27 @@ function SidebarTree({
         {showSectionLabel && (
           <div
             data-slot="app-sidebar-group-label"
-            className="px-2.5 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground first:pt-0"
+            className="px-2.5 pb-1 pt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_42%)] first:pt-0"
           >
             {item.sectionLabel}
           </div>
         )}
-        <details data-slot="app-sidebar-group-details" open={defaultExpanded} className="group/app-sidebar-details">
+        <ControllableDetails
+          data-slot="app-sidebar-group-details"
+          open={item.expanded}
+          defaultOpen={defaultExpanded}
+          className="group/app-sidebar-details"
+          onOpenChange={item.onExpandedChange}
+        >
           <summary
             data-slot="app-sidebar-group-trigger"
+            data-size={itemSize}
+            data-active={active || undefined}
+            data-active-indicator={activeIndicator}
             className={cn(
-              "flex min-h-9 list-none items-center gap-2 rounded-lg border border-transparent text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
+              "flex list-none items-center gap-2 border border-transparent font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
               getSidebarInteractiveClassName({ active }),
-              collapsed ? "justify-center px-2" : "px-2.5"
+              getSidebarItemLayoutClassName({ collapsed, depth, itemSize, activeIndicator })
             )}
           >
             {item.icon ? (
@@ -297,24 +354,25 @@ function SidebarTree({
             {!collapsed && <span className="min-w-0 flex-1 truncate">{item.label}</span>}
             {!collapsed && item.badge && <span className="shrink-0">{item.badge}</span>}
             {!collapsed && (
-              <span
+              <ChevronRightIcon
                 data-slot="app-sidebar-group-chevron"
-                className="ml-auto text-xs text-muted-foreground transition-transform group-open/app-sidebar-details:rotate-90"
-              >
-                ›
-              </span>
+                className="ml-auto size-3.5 shrink-0 text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_42%)] transition-transform group-open/app-sidebar-details:rotate-90"
+              />
             )}
           </summary>
-          <div data-slot="app-sidebar-group-content" className={cn("mt-1 space-y-1", !collapsed && "pl-3")}>
+          <div data-slot="app-sidebar-group-content" className={cn("mt-1 flex flex-col gap-1", !collapsed && "pl-3")}>
             <SidebarTree
               items={item.items ?? []}
               collapsed={collapsed}
               depth={depth + 1}
+              showSectionLabels={showSectionLabels}
+              itemSize={itemSize}
+              activeIndicator={activeIndicator}
               onItemSelect={onItemSelect}
               renderLink={renderLink}
             />
           </div>
-        </details>
+        </ControllableDetails>
       </div>
     )
   })
@@ -400,11 +458,11 @@ function SidebarFooterAccount({
       ) : null}
       {!collapsed ? (
         <span className="min-w-0 flex-1">
-          <span data-slot="app-sidebar-account-label" className="block truncate text-sm font-semibold text-foreground">
+          <span data-slot="app-sidebar-account-label" className="block truncate text-sm font-semibold text-[color:var(--sidebar-foreground)]">
             {account.label}
           </span>
           {account.description ? (
-            <span data-slot="app-sidebar-account-description" className="block truncate text-xs text-muted-foreground">
+            <span data-slot="app-sidebar-account-description" className="block truncate text-xs text-[color:color-mix(in_oklch,var(--sidebar-foreground),transparent_36%)]">
               {account.description}
             </span>
           ) : null}
@@ -438,6 +496,10 @@ function SidebarSurface({
   footerSecondary,
   footerClassName,
   tooltipOnCollapsed,
+  showSectionLabels = true,
+  itemSize = "md",
+  activeIndicator = "bar",
+  navigationLabel = "Primary navigation",
   onItemSelect,
   renderItem,
   renderLink,
@@ -445,6 +507,7 @@ function SidebarSurface({
   mobile,
   mobileTitle,
   mobileDescription,
+  mobileCloseLabel = "Close navigation",
   onRequestClose,
   closeOnSelect = true,
   ...props
@@ -495,9 +558,9 @@ function SidebarSurface({
             {mobile && onRequestClose ? (
               <button
                 type="button"
-                aria-label="Close navigation"
+                aria-label={mobileCloseLabel}
                 data-slot="app-sidebar-mobile-close"
-                className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] text-[color:var(--aui-page-foreground)] transition hover:bg-[color:var(--aui-control-bg)]"
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg-alt,var(--muted))] text-[color:var(--aui-page-foreground,var(--foreground))] transition hover:bg-[color:var(--aui-control-bg,var(--muted))]"
                 onClick={onRequestClose}
               >
                 <XIcon className="size-4" />
@@ -507,7 +570,11 @@ function SidebarSurface({
         </div>
       )}
 
-      <nav data-slot="app-sidebar-nav" className="min-h-0 flex-1 space-y-1 overflow-y-auto overscroll-contain p-2">
+      <nav
+        data-slot="app-sidebar-nav"
+        aria-label={navigationLabel}
+        className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain p-2"
+      >
         {children ??
           visibleItems.map((item) => {
             if (!renderItem) return null
@@ -528,6 +595,9 @@ function SidebarSurface({
             items={visibleItems}
             collapsed={collapsed}
             depth={0}
+            showSectionLabels={showSectionLabels}
+            itemSize={itemSize}
+            activeIndicator={activeIndicator}
             onItemSelect={handleSelect}
             renderLink={renderLink}
           />
@@ -610,6 +680,10 @@ function Sidebar({
   secondaryActions = [],
   footerSecondary,
   tooltipOnCollapsed = true,
+  showSectionLabels = true,
+  itemSize = "md",
+  activeIndicator = "bar",
+  navigationLabel = "Primary navigation",
   responsive = true,
   mobileBreakpoint = DEFAULT_APP_SIDEBAR_BREAKPOINT,
   mobileOpen: mobileOpenProp,
@@ -618,6 +692,7 @@ function Sidebar({
   mobileTitle,
   mobileDescription,
   mobileToggleLabel = "Open navigation",
+  mobileCloseLabel = "Close navigation",
   mobileToggleIcon,
   showMobileToggle = true,
   closeOnSelect = true,
@@ -682,6 +757,11 @@ function Sidebar({
     secondaryActions,
     footerSecondary,
     tooltipOnCollapsed,
+    showSectionLabels,
+    itemSize,
+    activeIndicator,
+    navigationLabel,
+    mobileCloseLabel,
     closeOnSelect,
     onItemSelect,
     renderItem,
@@ -697,19 +777,19 @@ function Sidebar({
   const defaultTrigger = (
     <button
       type="button"
-      aria-label={mobileOpen ? "Close navigation" : mobileToggleLabel}
+      aria-label={mobileOpen ? mobileCloseLabel : mobileToggleLabel}
       data-slot="app-sidebar-mobile-trigger"
       data-state={mobileOpen ? "open" : "closed"}
       className={cn(
-        "inline-flex min-h-10 items-center gap-2 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-3 text-sm font-medium text-[color:var(--aui-page-foreground)] shadow-sm transition hover:bg-[color:var(--aui-page-bg-alt)]",
+        "inline-flex min-h-10 items-center gap-2 rounded-xl border border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg,var(--background))] px-3 text-sm font-medium text-[color:var(--aui-page-foreground,var(--foreground))] shadow-sm transition hover:bg-[color:var(--aui-page-bg-alt,var(--muted))]",
         mobileToggleClassName
       )}
       onClick={() => setMobileOpen(!mobileOpen)}
     >
-      <span className="inline-flex size-8 items-center justify-center rounded-lg bg-[color:var(--aui-page-bg-alt)]">
+      <span className="inline-flex size-8 items-center justify-center rounded-lg bg-[color:var(--aui-page-bg-alt,var(--muted))]">
         {mobileToggleIcon ?? <MenuIcon className="size-4" />}
       </span>
-      <span>{mobileOpen ? "Close navigation" : mobileToggleLabel}</span>
+      <span>{mobileOpen ? mobileCloseLabel : mobileToggleLabel}</span>
     </button>
   )
 
@@ -731,6 +811,10 @@ function Sidebar({
             mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
             mobileOverlayClassName
           )}
+          style={{
+            opacity: mobileOpen ? 1 : 0,
+            pointerEvents: mobileOpen ? "auto" : "none",
+          }}
           onClick={() => setMobileOpen(false)}
         />
         <SidebarSurface
@@ -745,7 +829,7 @@ function Sidebar({
           aria-modal="true"
           aria-label={typeof mobileTitle === "string" ? mobileTitle : "Navigation"}
           className={cn(
-            "fixed inset-y-0 left-0 z-50 max-w-[22rem] border-r border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] shadow-2xl transition-transform duration-200 ease-out",
+            "fixed inset-y-0 left-0 z-50 max-w-[22rem] border-r border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg,var(--background))] shadow-2xl transition-transform duration-200 ease-out",
             mobileOpen ? "translate-x-0" : "-translate-x-full",
             mobilePanelClassName,
             className
@@ -753,6 +837,7 @@ function Sidebar({
           style={{
             width: mobileWidth,
             minWidth: mobileWidth,
+            translate: mobileOpen ? "0 0" : "-100% 0",
           }}
         />
       </div>

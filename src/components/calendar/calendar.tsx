@@ -213,8 +213,8 @@ function Calendar({
       const from = formatCalendarSummaryDate(currentRange?.from, locale)
       const to = formatCalendarSummaryDate(currentRange?.to, locale)
 
-      if (from && to) return `Selected range: ${from} - ${to}`
-      if (from) return `Selected range starts ${from}`
+      if (from && to) return `${from} -> ${to}`
+      if (from) return `${from} -> ...`
       return "No range selected"
     }
 

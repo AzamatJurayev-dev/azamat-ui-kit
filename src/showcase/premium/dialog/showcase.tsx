@@ -1,4 +1,4 @@
-import { Badge, Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/index"
+import { Badge, Button, Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/index"
 
 import { dialogDemoItems } from "./data"
 
@@ -34,6 +34,11 @@ export function DialogShowcase() {
                       <DialogTitle>{item.title}</DialogTitle>
                       <DialogDescription>{item.description}</DialogDescription>
                     </DialogHeader>
+                    <DialogBody>
+                      <div className="rounded-[16px] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm leading-6 aui-text-muted">
+                        This body area scrolls independently when content becomes long. Footer actions stay visible and aligned.
+                      </div>
+                    </DialogBody>
                     <DialogFooter showCloseButton>
                       <Button variant={item.confirmVariant}>{item.confirmLabel}</Button>
                     </DialogFooter>
@@ -42,6 +47,53 @@ export function DialogShowcase() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className={panelClass}>
+        <div className="grid gap-4 xl:grid-cols-2">
+          <Dialog>
+            <DialogTrigger render={<Button variant="outline" />}>Open form dialog</DialogTrigger>
+            <DialogContent size="lg">
+              <DialogHeader>
+                <DialogTitle>Create staff member</DialogTitle>
+                <DialogDescription>Use focused form dialogs for short admin tasks with stable footer actions.</DialogDescription>
+              </DialogHeader>
+              <DialogBody>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {["Full name", "Phone", "Role", "Status", "Branch", "Temporary password"].map((label) => (
+                    <label key={label} className="grid gap-2 text-sm font-medium aui-text-strong">
+                      {label}
+                      <input className="h-10 rounded-xl border border-[color:var(--aui-input-border)] bg-[color:var(--aui-input-bg)] px-3 text-sm outline-none focus-visible:border-[color:var(--aui-ring)]" placeholder={label} />
+                    </label>
+                  ))}
+                </div>
+              </DialogBody>
+              <DialogFooter>
+                <Button variant="outline">Cancel</Button>
+                <Button>Create staff</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Dialog>
+            <DialogTrigger render={<Button variant="destructive" />}>Open destructive dialog</DialogTrigger>
+            <DialogContent size="sm">
+              <DialogHeader>
+                <DialogTitle>Deactivate restaurant</DialogTitle>
+                <DialogDescription>This action pauses public ordering and hides active shifts from the restaurant.</DialogDescription>
+              </DialogHeader>
+              <DialogBody>
+                <div className="rounded-[16px] border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-700">
+                  Operators can reactivate it later, but active customer sessions will be interrupted.
+                </div>
+              </DialogBody>
+              <DialogFooter>
+                <Button variant="outline">Keep active</Button>
+                <Button variant="destructive">Deactivate</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
 

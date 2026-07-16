@@ -2,12 +2,34 @@
 
 import * as React from "react"
 
-import { DialogActionButton, DialogActions } from "@/components/overlay/dialog-actions"
-import { ModalShell, type ModalShellProps } from "@/components/overlay/modal-shell"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 
-type ConfirmVariant = React.ComponentProps<typeof DialogActionButton>["variant"]
+type ConfirmVariant = React.ComponentProps<typeof Button>["variant"]
+type ConfirmDialogSize = "sm" | "md" | "lg" | "xl" | "full"
 
-type ConfirmDialogProps = Omit<ModalShellProps, "footer"> & {
+type ConfirmDialogProps = {
+  open?: boolean
+  defaultOpen?: boolean
+  onOpenChange?: (open: boolean) => void
+  trigger?: React.ReactNode
+  title?: React.ReactNode
+  description?: React.ReactNode
+  children?: React.ReactNode
+  size?: ConfirmDialogSize
+  showCloseButton?: boolean
+  contentClassName?: string
+  headerClassName?: string
+  bodyClassName?: string
   cancelText?: React.ReactNode
   confirmText?: React.ReactNode
   confirmVariant?: ConfirmVariant
@@ -20,7 +42,24 @@ type ConfirmDialogProps = Omit<ModalShellProps, "footer"> & {
   onConfirm?: () => void | Promise<void>
 }
 
+function renderConfirmDialogTrigger(trigger: React.ReactNode) {
+  if (!trigger) return null
+  if (React.isValidElement(trigger)) return <DialogTrigger render={trigger} />
+  return <DialogTrigger>{trigger}</DialogTrigger>
+}
+
 function ConfirmDialog({
+  open,
+  defaultOpen,
+  trigger,
+  title,
+  description,
+  children,
+  size = "md",
+  showCloseButton = true,
+  contentClassName,
+  headerClassName,
+  bodyClassName,
   cancelText = "Cancel",
   confirmText = "Confirm",
   confirmVariant = "default",
@@ -32,7 +71,6 @@ function ConfirmDialog({
   onCancel,
   onConfirm,
   onOpenChange,
-  ...props
 }: ConfirmDialogProps) {
   const [pending, setPending] = React.useState(false)
   const resolvedLoading = isLoading || pending
@@ -69,32 +107,48 @@ function ConfirmDialog({
   }
 
   return (
-    <ModalShell
-      showCloseButton={!resolvedLoading}
-      onOpenChange={handleOpenChange}
-      footer={
-        <DialogActions>
-          <DialogActionButton
+    <Dialog open={open} defaultOpen={defaultOpen} onOpenChange={handleOpenChange}>
+      {renderConfirmDialogTrigger(trigger)}
+      <DialogContent
+        size={size}
+        showCloseButton={showCloseButton && !resolvedLoading}
+        className={contentClassName}
+      >
+        {(title || description) && (
+          <DialogHeader className={headerClassName}>
+            {title && <DialogTitle>{title}</DialogTitle>}
+            {description && <DialogDescription>{description}</DialogDescription>}
+          </DialogHeader>
+        )}
+
+        {children && (
+          <div data-slot="confirm-dialog-body" className={cn("min-w-0", bodyClassName)}>
+            {children}
+          </div>
+        )}
+
+        <DialogFooter>
+          <Button
             type="button"
             variant="outline"
             disabled={cancelDisabled || resolvedLoading}
             onClick={handleCancel}
           >
             {cancelText}
-          </DialogActionButton>
-          <DialogActionButton
+          </Button>
+          <Button
             type="button"
             variant={confirmVariant}
             disabled={confirmDisabled || resolvedLoading}
-            isLoading={resolvedLoading}
+            loading={resolvedLoading}
+            loadingLabel={typeof confirmText === "string" ? confirmText : "Loading"}
             onClick={() => void handleConfirm()}
           >
             {confirmText}
-          </DialogActionButton>
-        </DialogActions>
-      }
-      {...props}
-    />
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
 

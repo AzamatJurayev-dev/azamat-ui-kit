@@ -8,9 +8,18 @@ const requiredDemoSlugs = [
   "button",
   "input",
   "select",
+  "card",
+  "badge",
+  "checkbox",
   "dialog",
+  "sidebar",
   "data-table",
   "date-picker",
+  "date-range-picker",
+  "calendar",
+  "alert",
+  "file-upload",
+  "progress",
 ]
 
 const requiredApiSlugs = [

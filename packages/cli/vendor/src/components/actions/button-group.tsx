@@ -21,6 +21,7 @@ export type ButtonGroupProps = React.ComponentProps<"div"> & {
   activeVariant?: ButtonProps["variant"]
   orientation?: "horizontal" | "vertical"
   fullWidth?: boolean
+  allowDeselect?: boolean
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
@@ -34,6 +35,7 @@ function ButtonGroup({
   activeVariant = "default",
   orientation = "horizontal",
   fullWidth = false,
+  allowDeselect = false,
   value,
   defaultValue,
   onValueChange,
@@ -46,10 +48,12 @@ function ButtonGroup({
   const [internalValue, setInternalValue] = React.useState(defaultValue)
   const currentValue = isControlled ? value : internalValue
   const groupId = React.useId()
+  const itemRefs = React.useRef<Array<HTMLButtonElement | null>>([])
 
   const updateValue = (nextValue: string) => {
-    if (!isControlled) setInternalValue(nextValue)
-    onValueChange?.(nextValue)
+    const resolvedValue = allowDeselect && currentValue === nextValue ? "" : nextValue
+    if (!isControlled) setInternalValue(resolvedValue)
+    onValueChange?.(resolvedValue)
   }
 
   return (
@@ -68,7 +72,7 @@ function ButtonGroup({
       )}
       {...props}
     >
-      {items?.map(({ key, label, description, className: itemClassName, size: itemSize, variant: itemVariant, onClick, "aria-label": itemAriaLabel, ...item }) => {
+      {items?.map(({ key, label, description, className: itemClassName, size: itemSize, variant: itemVariant, onClick, "aria-label": itemAriaLabel, ...item }, index) => {
         const selected = currentValue === key
         const descriptionId = description ? `${groupId}-${key}-description` : undefined
         const resolvedAriaLabel = itemAriaLabel ?? (description && typeof label === "string" ? label : undefined)
@@ -84,6 +88,7 @@ function ButtonGroup({
           aria-label={resolvedAriaLabel}
           aria-pressed={selected || undefined}
           aria-describedby={descriptionId}
+          tabIndex={selected || (!currentValue && index === 0) ? 0 : -1}
           data-selected={selected || undefined}
           className={cn(
             attached &&
@@ -100,6 +105,35 @@ function ButtonGroup({
           onClick={(event) => {
             updateValue(key)
             onClick?.(event)
+          }}
+          onKeyDown={(event) => {
+            const itemCount = items?.length ?? 0
+            if (!itemCount) return
+
+            const moveFocus = (nextIndex: number) => {
+              const boundedIndex = (nextIndex + itemCount) % itemCount
+              itemRefs.current[boundedIndex]?.focus()
+            }
+
+            if (event.key === "ArrowRight" && !isVertical) {
+              event.preventDefault()
+              moveFocus(index + 1)
+            } else if (event.key === "ArrowLeft" && !isVertical) {
+              event.preventDefault()
+              moveFocus(index - 1)
+            } else if (event.key === "ArrowDown" && isVertical) {
+              event.preventDefault()
+              moveFocus(index + 1)
+            } else if (event.key === "ArrowUp" && isVertical) {
+              event.preventDefault()
+              moveFocus(index - 1)
+            } else if (event.key === "Home") {
+              event.preventDefault()
+              moveFocus(0)
+            } else if (event.key === "End") {
+              event.preventDefault()
+              moveFocus(itemCount - 1)
+            }
           }}
           {...item}
         >

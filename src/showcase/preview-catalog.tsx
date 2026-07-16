@@ -12,8 +12,8 @@ export const previewSurfaceCatalog: PreviewSurfaceRecord[] = [
   {
     slug: "dashboard-01",
     title: "Dashboard with sidebar",
-    command: "npx tembro init --template next --defaults\nnpx tembro add sidebar metric-grid data-table",
-    code: `import { Sidebar } from "@/components/layout/sidebar"\nimport { MetricGrid } from "@/components/display/metric-grid"\n\nexport function Dashboard01() {\n  return <Sidebar />\n}`,
+    command: "npx tembro init --template next --defaults\nnpx tembro add sidebar statistic data-table",
+    code: `import { Sidebar } from "tembro"\n\nexport function Dashboard01() {\n  return <Sidebar />\n}`,
     tone: "dashboard",
   },
   {

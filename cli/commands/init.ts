@@ -6,17 +6,13 @@ import { detectPackageManager } from "../utils/detect-package-manager"
 import { installPackages } from "../utils/install-packages"
 import { upsertThemeCss } from "../utils/upsert-theme-css"
 import { getCliNpxCommand } from "../utils/cli-metadata"
+import { addCommand } from "./add"
 
 const baseDependencies = [
-  "@base-ui/react",
   "@fontsource-variable/geist",
   "clsx",
   "tailwind-merge",
-  "class-variance-authority",
-  "lucide-react",
   "tw-animate-css",
-  "@tanstack/react-table",
-  "react-hook-form",
 ]
 
 const templateTailwindDependencies: Record<InitTemplate, string[]> = {
@@ -30,6 +26,22 @@ type InitCommandOptions = {
   template?: string
   skipInstall?: boolean
   defaults?: boolean
+  showcase?: boolean
+}
+
+type TembroConfig = {
+  style?: string
+  alias?: string
+  componentsPath?: string
+  utilsPath?: string
+  cssPath?: string
+  globalCssPath?: string
+  paths?: {
+    components?: string
+    ui?: string
+    hooks?: string
+    lib?: string
+  }
 }
 
 type InitResponse = {
@@ -93,7 +105,6 @@ async function ensureTsconfigAlias({
   }
 
   tsconfig.compilerOptions ??= {}
-  tsconfig.compilerOptions.baseUrl = "."
 
   const paths = ((tsconfig.compilerOptions.paths ?? {}) as Record<string, string[]>)
   paths[`${alias}/*`] = [getAliasTargetPath(template, componentsPath, hooksPath, utilsPath)]
@@ -114,21 +125,44 @@ async function ensureViteAlias({
 
   const currentContent = await fs.readFile(viteConfigPath, "utf8")
   const importLine = `import path from 'node:path'`
+  const tailwindImportLine = `import tailwindcss from '@tailwindcss/vite'`
   const resolveBlock = `  resolve: {\n    alias: {\n      '${alias}': path.resolve(process.cwd(), 'src'),\n    },\n  },`
+  const aliasEntry = `      '${alias}': path.resolve(process.cwd(), 'src'),`
 
   let nextContent = currentContent
 
-  if (!nextContent.includes(importLine)) {
+  if (!/import\s+path\s+from\s+["']node:path["']/.test(nextContent)) {
     nextContent = `${importLine}\n${nextContent}`
   }
 
-  if (!nextContent.includes("resolve: {") && nextContent.includes("export default defineConfig({")) {
-    nextContent = nextContent.replace("export default defineConfig({", `export default defineConfig({\n${resolveBlock}`)
+  if (!/from\s+["']@tailwindcss\/vite["']/.test(nextContent)) {
+    nextContent = `${tailwindImportLine}\n${nextContent}`
   }
 
-  if (!nextContent.includes(`'${alias}': path.resolve(process.cwd(), 'src')`)) {
-    await fs.writeFile(viteConfigPath, nextContent)
-  } else if (nextContent !== currentContent) {
+  if (!/plugins\s*:\s*\[[\s\S]*?tailwindcss\s*\(/.test(nextContent)) {
+    if (/plugins\s*:\s*\[/.test(nextContent)) {
+      nextContent = nextContent.replace(/plugins\s*:\s*\[/, (match) => `${match}tailwindcss(), `)
+    } else if (nextContent.includes("export default defineConfig({")) {
+      nextContent = nextContent.replace("export default defineConfig({", "export default defineConfig({\n  plugins: [tailwindcss()],")
+    }
+  }
+
+  if (nextContent.includes(`'${alias}': path.resolve(process.cwd(), 'src')`) || nextContent.includes(`"${alias}": path.resolve(process.cwd(), "src")`)) {
+    if (nextContent !== currentContent) await fs.writeFile(viteConfigPath, nextContent)
+    return
+  }
+
+  if (/alias\s*:\s*\{/.test(nextContent)) {
+    nextContent = nextContent.replace(/alias\s*:\s*\{/, (match) => `${match}\n${aliasEntry}`)
+  } else if (/resolve\s*:\s*\{/.test(nextContent)) {
+    nextContent = nextContent.replace(/resolve\s*:\s*\{/, (match) => `${match}\n    alias: {\n${aliasEntry}\n    },`)
+  } else if (nextContent.includes("export default defineConfig({")) {
+    nextContent = nextContent.replace("export default defineConfig({", `export default defineConfig({\n${resolveBlock}`)
+  } else {
+    logger.warn("vite.config.ts ichida defineConfig topilmadi; alias faqat tsconfigga yozildi.")
+  }
+
+  if (nextContent !== currentContent) {
     await fs.writeFile(viteConfigPath, nextContent)
   }
 }
@@ -172,11 +206,62 @@ function getTemplateDefaults(cwd: string, template: InitTemplate): Omit<InitResp
   }
 }
 
-function resolveTemplate(value?: string): InitTemplate {
+function getConfiguredDefaults(
+  defaults: Omit<InitResponse, "installDeps" | "writeThemeCss">,
+  config?: TembroConfig,
+): Omit<InitResponse, "installDeps" | "writeThemeCss"> {
+  if (!config) return defaults
+
+  return {
+    ...defaults,
+    alias: config.alias ?? defaults.alias,
+    componentsPath: config.paths?.components ?? config.componentsPath ?? defaults.componentsPath,
+    uiPath: config.paths?.ui ?? defaults.uiPath,
+    hooksPath: config.paths?.hooks ?? defaults.hooksPath,
+    utilsPath: config.utilsPath ?? defaults.utilsPath,
+    globalCssPath: config.globalCssPath ?? config.cssPath ?? defaults.globalCssPath,
+  }
+}
+
+function assertProjectPath(cwd: string, value: string, label: string) {
+  if (path.isAbsolute(value)) {
+    throw new Error(`${label} project ichidagi relative path bo‘lishi kerak: ${value}`)
+  }
+
+  const resolved = path.resolve(cwd, value)
+  const relative = path.relative(cwd, resolved)
+  if (relative.startsWith("..") || path.isAbsolute(relative)) {
+    throw new Error(`${label} project tashqarisiga chiqmasligi kerak: ${value}`)
+  }
+}
+
+function detectTemplate(cwd: string, packageJsonPath: string): InitTemplate {
+  const packageJson = fs.readJsonSync(packageJsonPath) as {
+    dependencies?: Record<string, string>
+    devDependencies?: Record<string, string>
+  }
+  const deps = { ...packageJson.dependencies, ...packageJson.devDependencies }
+  const hasNextConfig = ["next.config.js", "next.config.mjs", "next.config.ts"].some((fileName) =>
+    fs.existsSync(path.join(cwd, fileName)),
+  )
+  const hasViteConfig = ["vite.config.js", "vite.config.mjs", "vite.config.ts"].some((fileName) =>
+    fs.existsSync(path.join(cwd, fileName)),
+  )
+
+  if (deps.next || hasNextConfig) return "next"
+  if (deps.vite || hasViteConfig) return "vite"
+
+  return "vite"
+}
+
+function resolveTemplate(value: string | undefined, cwd: string, packageJsonPath: string): InitTemplate {
   if (value === "next" || value === "vite") return value
 
-  logger.warn(`Unknown template '${value}'. Falling back to vite defaults.`)
-  return "vite"
+  const detectedTemplate = detectTemplate(cwd, packageJsonPath)
+  if (value) {
+    logger.warn(`Unknown template '${value}'. Falling back to ${detectedTemplate} defaults.`)
+  }
+  return detectedTemplate
 }
 
 function getInstalledPackages(cwd: string) {
@@ -201,8 +286,13 @@ export async function initCommand(options: InitCommandOptions = {}) {
     process.exit(1)
   }
 
-  const template = resolveTemplate(options.template)
-  const defaults = getTemplateDefaults(cwd, template)
+  const template = resolveTemplate(options.template, cwd, packageJsonPath)
+  logger.info(`Template: ${template}${options.template ? "" : " (detected)"}`)
+  const existingConfigPath = path.join(cwd, "tembro.json")
+  const existingConfig = fs.existsSync(existingConfigPath)
+    ? ((await fs.readJson(existingConfigPath)) as TembroConfig)
+    : undefined
+  const defaults = getConfiguredDefaults(getTemplateDefaults(cwd, template), existingConfig)
   const installedPackages = getInstalledPackages(cwd)
   const missingTailwindDependencies = templateTailwindDependencies[template].filter((pkg) => !installedPackages.has(pkg))
 
@@ -222,7 +312,7 @@ export async function initCommand(options: InitCommandOptions = {}) {
     {
       type: "confirm",
       name: "installDeps",
-      message: "Component source uchun kerakli dependencylarni o‘rnataymi? / Install component dependencies?",
+      message: "Theme va local source uchun minimal dependencylarni o‘rnataymi? / Install minimal theme dependencies?",
       initial: !options.skipInstall,
     },
     {
@@ -302,8 +392,18 @@ export async function initCommand(options: InitCommandOptions = {}) {
   const hooksPath = response.hooksPath || defaults.hooksPath
   const globalCssPath = response.globalCssPath || defaults.globalCssPath
 
+  for (const [label, value] of [
+    ["componentsPath", componentsPath],
+    ["uiPath", uiPath],
+    ["hooksPath", hooksPath],
+    ["utilsPath", utilsPath],
+    ["globalCssPath", globalCssPath],
+  ] as const) {
+    assertProjectPath(cwd, value, label)
+  }
+
   const config = {
-    style: "default",
+    style: existingConfig?.style ?? "default",
     alias: response.alias || defaults.alias,
     componentsPath,
     utilsPath,
@@ -375,6 +475,7 @@ export function cn(...inputs: ClassValue[]) {
     const cssTarget = await upsertThemeCss({
       cwd,
       cssPath: globalCssPath,
+      componentsPath,
     })
 
     logger.success(`Theme CSS yozildi / written: ${cssTarget}`)
@@ -387,10 +488,21 @@ export function cn(...inputs: ClassValue[]) {
   logger.info("Componentlarni ko‘rish / list components:")
   logger.info(getCliNpxCommand("list"))
   logger.info("Component qo‘shish / add components:")
-  logger.info(getCliNpxCommand("add button input data-table"))
+  logger.info(getCliNpxCommand("add button input"))
   if (missingTailwindDependencies.length > 0 && !response.installTailwindDeps) {
     logger.warn(`Tailwind paketlari hali o‘rnatilmadi: ${missingTailwindDependencies.join(", ")}`)
   }
   logger.info("Theme CSS ni yangilash / update theme CSS:")
   logger.info(getCliNpxCommand("theme"))
+
+  if (options.showcase) {
+    logger.info("Showcase qo‘shilmoqda: barcha componentlar + local workbench.")
+    await addCommand(["showcase"], {
+      overwrite: true,
+      skipInstall: options.skipInstall,
+    })
+  } else {
+    logger.info("To‘liq local workbench kerak bo‘lsa / full local workbench:")
+    logger.info(getCliNpxCommand("init --showcase --defaults"))
+  }
 }

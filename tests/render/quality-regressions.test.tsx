@@ -3,7 +3,18 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
-import { CalendarScheduler, DualListPicker, JsonInput } from "@/index"
+import {
+  BulkActionBar,
+  CalendarScheduler,
+  DataView,
+  DualListPicker,
+  EmptyState,
+  JsonInput,
+  PageToolbar,
+  ResourceDetailPage,
+  ResourcePage,
+  SettingsPage,
+} from "@/index"
 
 describe("component quality regressions", () => {
   it("renders a useful scheduler empty state when no days are available", () => {
@@ -51,5 +62,46 @@ describe("component quality regressions", () => {
 
     expect(input).toHaveAttribute("aria-invalid", "true")
     expect(screen.getByRole("alert")).toHaveTextContent("Invalid JSON")
+  })
+
+  it("does not render empty pattern chrome when optional regions are absent", () => {
+    const { container, rerender } = render(
+      <ResourcePage title="Customers" breadcrumbs={<nav aria-label="Breadcrumbs">Customers</nav>} />
+    )
+
+    expect(container.querySelector("[data-slot='resource-page-breadcrumbs']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='resource-page-toolbar']")).toBeNull()
+    expect(container.querySelector("[data-slot='resource-page-content']")).toBeNull()
+
+    rerender(<ResourceDetailPage title="Customer profile" />)
+
+    expect(container.querySelector("[data-slot='page-header'] [class*='shrink-0']")).toBeNull()
+    expect(container.querySelector("[data-slot='resource-detail-page-content']")).toBeNull()
+  })
+
+  it("renders added pattern surfaces without empty chrome", () => {
+    const onClear = vi.fn()
+
+    const { container } = render(
+      <div>
+        <EmptyState title="No customers" description="Create the first customer." />
+        <PageToolbar actions={<button type="button">Export</button>} />
+        <BulkActionBar selectedCount={2} onClear={onClear} />
+        <SettingsPage
+          title="Settings"
+          sections={[
+            { value: "profile", label: "Profile", content: <div>Profile form</div> },
+            { value: "billing", label: "Billing", content: <div>Billing form</div> },
+          ]}
+        />
+        <DataView count={0} emptyTitle="No rows" />
+      </div>
+    )
+
+    expect(container.querySelector("[data-slot='empty-state']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='page-toolbar']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='bulk-action-bar']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='settings-page']")).toBeTruthy()
+    expect(screen.getByText("No rows")).toBeInTheDocument()
   })
 })

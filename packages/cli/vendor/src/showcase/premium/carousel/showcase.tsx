@@ -1,12 +1,13 @@
 import * as React from "react"
 
-import { Button, Carousel, CarouselItem } from "@/index"
+import { Button } from "@/index"
+import { Carousel, CarouselItem } from "@/components/display/carousel"
 import { cn } from "@/lib/utils"
 
 const steps = [
-  { title: "Onboarding", text: "Guide quickly from first login.", tone: "Launch" },
-  { title: "Components", text: "Review ready-made dashboard patterns.", tone: "Library" },
-  { title: "Release", text: "Publish, test, and iterate faster.", tone: "Ship" },
+  { title: "Onboarding", text: "Guide quickly from first login.", tone: "Launch", detail: "Hero slider for product onboarding and release tours." },
+  { title: "Components", text: "Review ready-made dashboard patterns.", tone: "Library", detail: "Card rail, docs previews, and swipe-ready gallery states." },
+  { title: "Release", text: "Publish, test, and iterate faster.", tone: "Ship", detail: "Active slide details stay below the main frame for context." },
 ]
 
 export function CarouselShowcase() {
@@ -49,9 +50,12 @@ export function CarouselShowcase() {
         loop
         showArrows={showArrows}
         showDots={showDots}
+        showStatus
+        showThumbnails
         autoplay={autoplay}
         autoplayInterval={2200}
         showPlaybackControl
+        aspectRatio="16 / 9"
         onIndexChange={(next) => setIndex(next)}
         onAutoplayChange={setPlaying}
         previousLabel="Previous slide"

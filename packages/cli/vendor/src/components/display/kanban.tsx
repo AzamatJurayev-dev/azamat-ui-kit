@@ -98,6 +98,20 @@ type KanbanCardViewProps = {
   onCardClick?: KanbanBoardProps["onCardClick"]
   dragHandleLabel?: KanbanBoardProps["dragHandleLabel"]
   cardClassName?: string
+  onNativeDragStart?: (source: NativeDragSource) => void
+  onNativeDragEnd?: () => void
+  onNativeDrop?: (target: NativeDropTarget) => void
+}
+
+type NativeDragSource = {
+  cardKey: string
+  columnKey: string
+  index: number
+}
+
+type NativeDropTarget = {
+  columnKey: string
+  index?: number
 }
 
 function createCardMap(columns: KanbanColumn[]) {
@@ -127,6 +141,55 @@ function moveKanbanCards(
       .map((id) => cardMap.get(String(id)))
       .filter((card): card is KanbanCard => Boolean(card)),
   }))
+}
+
+function moveKanbanCardToTarget(
+  columns: KanbanColumn[],
+  source: NativeDragSource,
+  target: NativeDropTarget
+): { columns: KanbanColumn[]; change: KanbanCardMove } | null {
+  const sourceColumn = columns.find((column) => column.key === source.columnKey)
+  const targetColumn = columns.find((column) => column.key === target.columnKey)
+  if (!sourceColumn || !targetColumn) return null
+
+  const card = sourceColumn.cards.find((item) => item.key === source.cardKey)
+  if (!card) return null
+
+  const sourceIndex = sourceColumn.cards.findIndex((item) => item.key === source.cardKey)
+  if (sourceIndex < 0) return null
+
+  const targetCards = targetColumn.cards
+  let targetIndex = target.index ?? targetCards.length
+  if (sourceColumn.key === targetColumn.key && targetIndex > sourceIndex) {
+    targetIndex -= 1
+  }
+  targetIndex = Math.max(0, Math.min(targetIndex, targetCards.length))
+  if (sourceColumn.key === targetColumn.key && sourceIndex === targetIndex) return null
+
+  const nextColumns = columns.map((column) => {
+    if (column.key === sourceColumn.key) {
+      return { ...column, cards: column.cards.filter((item) => item.key !== source.cardKey) }
+    }
+    return column
+  }).map((column) => {
+    if (column.key !== targetColumn.key) return column
+    const nextCards = [...column.cards]
+    nextCards.splice(targetIndex, 0, card)
+    return { ...column, cards: nextCards }
+  })
+
+  const resolvedTargetColumn = nextColumns.find((column) => column.key === targetColumn.key) ?? targetColumn
+
+  return {
+    columns: nextColumns,
+    change: {
+      card,
+      fromColumn: sourceColumn,
+      toColumn: resolvedTargetColumn,
+      fromIndex: sourceIndex,
+      toIndex: targetIndex,
+    },
+  }
 }
 
 const KanbanDragHandle = React.forwardRef<HTMLButtonElement, {
@@ -178,6 +241,9 @@ function KanbanCardView({
   onCardClick,
   dragHandleLabel,
   cardClassName,
+  onNativeDragStart,
+  onNativeDragEnd,
+  onNativeDrop,
 }: KanbanCardViewProps) {
   const disabled = boardDisabled || column.disabled === true || card.disabled === true
   const { ref, handleRef, isDragging, isDropTarget } = useSortable({
@@ -215,6 +281,7 @@ function KanbanCardView({
       role={onCardClick && !disabled ? "button" : undefined}
       tabIndex={onCardClick && !disabled ? 0 : undefined}
       aria-label={typeof card.title === "string" ? card.title : undefined}
+      draggable={!disabled}
       className={cn(
         "rounded-lg outline-none transition-[opacity,box-shadow]",
         onCardClick && !disabled && "cursor-pointer focus-visible:ring-2 focus-visible:ring-ring",
@@ -225,6 +292,23 @@ function KanbanCardView({
       )}
       onClick={() => {
         if (!disabled) onCardClick?.(card, column)
+      }}
+      onDragStart={(event) => {
+        if (disabled) return
+        const source = { cardKey: card.key, columnKey: column.key, index }
+        event.dataTransfer.effectAllowed = "move"
+        event.dataTransfer.setData("text/plain", JSON.stringify(source))
+        onNativeDragStart?.(source)
+      }}
+      onDragEnd={onNativeDragEnd}
+      onDragOver={(event) => {
+        if (!disabled) event.preventDefault()
+      }}
+      onDrop={(event) => {
+        if (disabled) return
+        event.preventDefault()
+        event.stopPropagation()
+        onNativeDrop?.({ columnKey: column.key, index })
       }}
       onKeyDown={(event) => {
         if (event.target !== event.currentTarget || disabled || !onCardClick) return
@@ -248,6 +332,9 @@ function KanbanColumnView({
   emptyColumn,
   columnClassName,
   cardClassName,
+  onNativeDragStart,
+  onNativeDragEnd,
+  onNativeDrop,
 }: {
   column: KanbanColumn
   boardDisabled: boolean
@@ -257,6 +344,9 @@ function KanbanColumnView({
   emptyColumn: React.ReactNode
   columnClassName?: string
   cardClassName?: string
+  onNativeDragStart?: (source: NativeDragSource) => void
+  onNativeDragEnd?: () => void
+  onNativeDrop?: (target: NativeDropTarget) => void
 }) {
   const { ref, isDropTarget } = useDroppable({
     id: getColumnId(column.key),
@@ -280,6 +370,14 @@ function KanbanColumnView({
         column.disabled && "opacity-60",
         columnClassName
       )}
+      onDragOver={(event) => {
+        if (!(boardDisabled || column.disabled === true)) event.preventDefault()
+      }}
+      onDrop={(event) => {
+        if (boardDisabled || column.disabled === true) return
+        event.preventDefault()
+        onNativeDrop?.({ columnKey: column.key, index: column.cards.length })
+      }}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="grid gap-0.5">
@@ -293,7 +391,8 @@ function KanbanColumnView({
       <div className="grid min-h-16 content-start gap-2">
         {column.cards.length === 0 ? (
           <div className="grid min-h-20 place-items-center rounded-lg border border-dashed p-3 text-center text-xs text-muted-foreground">
-            {emptyColumn}
+            <span>{emptyColumn}</span>
+            <span className="sr-only">No cards yet.</span>
           </div>
         ) : (
           column.cards.map((card, index) => (
@@ -307,6 +406,9 @@ function KanbanColumnView({
               onCardClick={onCardClick}
               dragHandleLabel={dragHandleLabel}
               cardClassName={cardClassName}
+              onNativeDragStart={onNativeDragStart}
+              onNativeDragEnd={onNativeDragEnd}
+              onNativeDrop={onNativeDrop}
             />
           ))
         )}
@@ -336,6 +438,7 @@ function KanbanBoard({
   const [draftColumns, setDraftColumns] = React.useState<KanbanColumn[] | null>(null)
   const [activeCardId, setActiveCardId] = React.useState<string | null>(null)
   const draftColumnsRef = React.useRef<KanbanColumn[] | null>(null)
+  const nativeDragRef = React.useRef<NativeDragSource | null>(null)
   const columns = columnsProp ?? internalColumns
   const renderedColumns = draftColumns ?? columns
   const isControlled = columnsProp !== undefined
@@ -395,6 +498,19 @@ function KanbanBoard({
     onCardMove?.(change)
   }
 
+  function handleNativeDrop(target: NativeDropTarget) {
+    const source = nativeDragRef.current
+    nativeDragRef.current = null
+    if (!source) return
+
+    const result = moveKanbanCardToTarget(columns, source, target)
+    if (!result) return
+
+    if (!isControlled) setInternalColumns(result.columns)
+    onColumnsChange?.(result.columns, result.change)
+    onCardMove?.(result.change)
+  }
+
   const activeEntry = activeCardId
     ? renderedColumns
         .flatMap((column) => column.cards.map((card) => ({ card, column })))
@@ -413,7 +529,7 @@ function KanbanBoard({
         aria-label={ariaLabel}
         data-slot="kanban-board"
         className={cn(
-          "grid auto-cols-[minmax(280px,1fr)] grid-flow-col gap-4 overflow-x-auto pb-2",
+          "grid gap-4 sm:auto-cols-[minmax(280px,1fr)] sm:grid-flow-col sm:overflow-x-auto sm:pb-2",
           className
         )}
       >
@@ -428,6 +544,9 @@ function KanbanBoard({
             emptyColumn={emptyColumn}
             columnClassName={columnClassName}
             cardClassName={cardClassName}
+            onNativeDragStart={(source) => { nativeDragRef.current = source }}
+            onNativeDragEnd={() => { nativeDragRef.current = null }}
+            onNativeDrop={handleNativeDrop}
           />
         ))}
       </div>

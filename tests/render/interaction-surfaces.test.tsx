@@ -8,11 +8,10 @@ import { AlertDialog } from "@/components/overlay/alert-dialog"
 import { Alert } from "@/components/feedback/alert"
 import { ConfirmDialog } from "@/components/overlay/confirm-dialog"
 import { Drawer } from "@/components/overlay/drawer"
-import { NavTabs } from "@/components/navigation/nav-tabs"
-import { PageTabs } from "@/components/navigation/page-tabs"
 import { Pagination } from "@/components/navigation/pagination"
 import { RightClickMenu } from "@/components/ui/right-click-menu"
 import { SegmentedControl } from "@/components/ui/segmented-control"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip } from "@/components/ui/tooltip"
 
 function CommandShortcutHarness({
@@ -337,45 +336,30 @@ describe("overlay, command and navigation interactions", () => {
     })
   })
 
-  it("emits navigation changes for pagination, nav tabs and page tabs", async () => {
+  it("emits navigation changes for pagination and tabs", async () => {
     const user = userEvent.setup()
     const onPageChange = vi.fn()
     const onNavChange = vi.fn()
-    const onPageTabChange = vi.fn()
 
     render(
       <>
         <Pagination page={2} pageCount={5} onPageChange={onPageChange} />
-        <NavTabs
-          value="overview"
-          onValueChange={onNavChange}
-          items={[
-            { value: "overview", label: "Overview" },
-            { value: "components", label: "Components" },
-          ]}
-        />
-        <PageTabs
-          value="docs"
-          onValueChange={onPageTabChange}
-          items={[
-            { value: "docs", label: "Docs" },
-            { value: "examples", label: "Examples", badge: "3" },
-            { value: "hidden", label: "Hidden", hidden: true },
-          ]}
-        />
+        <Tabs value="overview" onValueChange={onNavChange}>
+          <TabsList variant="pills">
+            <TabsTrigger value="overview" variant="pills">Overview</TabsTrigger>
+            <TabsTrigger value="components" variant="pills">Components</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </>
     )
 
     await user.click(screen.getByRole("button", { name: "Next page" }))
     await user.click(screen.getByRole("button", { name: "Page 5" }))
     await user.click(screen.getByRole("tab", { name: "Components" }))
-    await user.click(screen.getByRole("tab", { name: "Examples3" }))
 
     expect(onPageChange).toHaveBeenCalledWith(3)
     expect(onPageChange).toHaveBeenCalledWith(5)
-    expect(onNavChange).toHaveBeenCalledWith("components")
-    expect(onPageTabChange).toHaveBeenCalledWith("examples", expect.objectContaining({ value: "examples" }))
-    expect(screen.queryByRole("tab", { name: "Hidden" })).toBeNull()
+    expect(onNavChange).toHaveBeenCalledWith("components", expect.anything())
   })
 
   it("opens right-click menus from keyboard and selects focused items", async () => {

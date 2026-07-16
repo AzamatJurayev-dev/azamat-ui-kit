@@ -1,6 +1,6 @@
 import {
-  Accordion,
   Alert,
+  Accordion,
   Avatar,
   AvatarGroup,
   Badge,
@@ -9,55 +9,52 @@ import {
   CalendarScheduler,
   Card,
   CardContent,
-  Carousel,
-  CarouselItem,
   CodeBlock,
+  ColorPicker,
+  CommandPalette,
   CopyButton,
-  CopyField,
   DataState,
-  Descriptions,
   Divider,
   DualListPicker,
   FilterBar,
-  Heading,
   Input,
+  ImageCropper,
   JsonInput,
   KanbanBoard,
   List,
-  Mark,
   OtpInput,
   PageState,
-  PageTabs,
-  PropertyGrid,
+  QRCode,
   QuickActionGrid,
   RangeSlider,
   Rating,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
+  RichTextEditor,
   SavedFilterSelect,
   Section,
   SegmentedControl,
+  SignaturePad,
   Skeleton,
   SkeletonCard,
   SkeletonText,
   Slider,
   Spinner,
-  StepperTabs,
   Statistic,
   StatisticCard,
   StatisticGrid,
-  StickyFooterBar,
   StatusLegend,
-  Tag,
+  SortableList,
   TagInput,
-  TagGroup,
-  Text,
   TimePicker,
   TimeRangePicker,
   TreeView,
+  VirtualList,
 } from "@/index"
-import { StatCard } from "@/components/layout/stat-card"
+import { Carousel, CarouselItem } from "@/components/display/carousel"
+import { Tag, TagGroup } from "@/components/display/tag"
+import { Heading, Mark, Text } from "@/components/display/typography"
 
 import type { ShowcaseDemoBundle, ShowcaseDemoProps } from "./types"
 
@@ -155,23 +152,10 @@ function renderGenericPreviewSurface(
   setState: ShowcaseDemoProps["setState"],
   mode: ShowcaseDemoProps["mode"]
 ) {
-  if (item.slug === "accordion") {
-    return (
-      <Accordion
-        type="single"
-        defaultValue="api"
-        items={[
-          { key: "api", title: "Single open section", description: "Open one section at a time.", content: "Use one expanded panel when the page needs compact disclosure." },
-          { key: "states", title: "State handling", description: "Controlled or uncontrolled usage.", content: "Use one expanded section for FAQs, settings clusters, and compact disclosure flows." },
-        ]}
-      />
-    )
-  }
-
   if (item.slug === "avatar") {
     return (
       <div className="flex flex-wrap items-center gap-4">
-        <Avatar name="Azamat UI" />
+        <Avatar name="Tembro" />
         <Avatar fallback="AJ" shape="rounded" />
         <AvatarGroup
           items={[
@@ -182,6 +166,29 @@ function renderGenericPreviewSurface(
           ]}
         />
       </div>
+    )
+  }
+
+  if (item.slug === "accordion") {
+    return (
+      <Accordion
+        type="single"
+        defaultValue="install"
+        items={[
+          {
+            key: "install",
+            title: "Install with CLI",
+            description: "Copy source into your app.",
+            content: "Run `npx tembro add accordion`, then edit the local component source.",
+          },
+          {
+            key: "compose",
+            title: "Compose route content",
+            description: "Use it for settings, FAQ and dense docs groups.",
+            content: "Accordion items keep title, description, meta, badges and disabled states together.",
+          },
+        ]}
+      />
     )
   }
 
@@ -230,18 +237,32 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "copy-button") {
-    return <CopyButton value="npx tembro add button">Copy command</CopyButton>
-  }
-
-  if (item.slug === "copy-field") {
+  if (item.slug === "command-palette") {
     return (
-      <CopyField
-        label="CLI command"
-        description="Quick source-copy command"
-        value="npx tembro add input"
+      <CommandPalette
+        open
+        onOpenChange={() => undefined}
+        title="Preview command palette"
+        description="Command palette preview with grouped actions."
+        placeholder="Search commands..."
+        groups={[
+          {
+            id: "components",
+            label: "Components",
+            items: [
+              { id: "button", label: "Button", description: "Open button docs", shortcut: "B" },
+              { id: "input", label: "Input", description: "Open input docs", shortcut: "I" },
+              { id: "data-table", label: "DataTable", description: "Open table docs", shortcut: "T" },
+            ],
+          },
+        ]}
+        contentClassName="relative inset-auto translate-x-0 translate-y-0 shadow-none"
       />
     )
+  }
+
+  if (item.slug === "copy-button") {
+    return <CopyButton value="npx tembro add button">Copy command</CopyButton>
   }
 
   if (item.slug === "data-state") {
@@ -255,16 +276,13 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "descriptions") {
+  if (item.slug === "color-picker") {
     return (
-      <Descriptions
-        title="Workspace details"
-        columns={3}
-        items={[
-          { key: "owner", label: "Owner", value: "Azamat UI" },
-          { key: "plan", label: "Plan", value: "Scale" },
-          { key: "renewal", label: "Renewal", value: "Jul 14, 2026" },
-        ]}
+      <ColorPicker
+        label="Brand accent"
+        defaultValue="#2563ebcc"
+        showAlpha
+        swatches={["#0f172a", "#2563eb", "#059669", "#d97706", "#dc2626", "#7c3aed"]}
       />
     )
   }
@@ -338,15 +356,6 @@ function renderGenericPreviewSurface(
         <Statistic label="MRR" value="$7.0k" change="+3.1%" trend="up" description="Live subscriptions" />
         <Statistic label="Churn" value="1.9%" change="-0.4%" trend="down" description="Healthy range" />
       </StatisticGrid>
-    )
-  }
-
-  if (item.slug === "sticky-footer-bar") {
-    return (
-      <div className="rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)]">
-        <div className="p-4 text-sm text-muted-foreground">Scrollable page content</div>
-        <StickyFooterBar start={<div className="text-sm font-medium">2 unsaved changes</div>} end={<><Button size="sm" variant="outline">Discard</Button><Button size="sm">Save</Button></>} />
-      </div>
     )
   }
 
@@ -438,11 +447,10 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "quick-action-grid" || item.slug === "command-bar") {
+  if (item.slug === "quick-action-grid") {
     return (
       <QuickActionGrid
-        columns={item.slug === "command-bar" ? 4 : 3}
-        compact={item.slug === "command-bar"}
+        columns={3}
         items={[
           { key: "new", label: "New invoice", description: "Create a fresh billing row.", badge: "N" },
           { key: "import", label: "Import CSV", description: "Bring finance data into the table.", badge: "I" },
@@ -476,33 +484,6 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "page-tabs") {
-    return (
-      <PageTabs
-        value="overview"
-        variant="pills"
-        items={[
-          { value: "overview", label: "Overview" },
-          { value: "usage", label: "Usage" },
-          { value: "api", label: "API", badge: "3" },
-        ]}
-      />
-    )
-  }
-
-  if (item.slug === "stepper-tabs") {
-    return (
-      <StepperTabs
-        value="billing"
-        items={[
-          { value: "profile", label: "Profile", description: "Team and owner details", completed: true },
-          { value: "billing", label: "Billing", description: "Payment and invoices" },
-          { value: "review", label: "Review", description: "Confirm release" },
-        ]}
-      />
-    )
-  }
-
   if (item.slug === "alert") {
     return <Alert tone="warning" title="Review needed" description="Billing rules changed and one approval is pending." action={<Button size="sm">Open</Button>} />
   }
@@ -518,7 +499,7 @@ function renderGenericPreviewSurface(
     )
   }
 
-  if (item.slug === "data-list" || item.slug === "list") {
+  if (item.slug === "list") {
     return (
       <List
         items={[
@@ -540,20 +521,6 @@ function renderGenericPreviewSurface(
           { key: "blocked", label: "Blocked", description: "Needs engineering action", tone: "danger", count: 1 },
         ]}
       />
-    )
-  }
-
-  if (item.slug === "trend-card" || item.slug === "comparison-card") {
-    return <StatCard title={item.slug === "trend-card" ? "Weekly revenue" : "Current vs previous"} value="$84.2k" description="Compared with last month" trend={{ value: "+12.4%", tone: "success" }} />
-  }
-
-  if (item.slug === "delta-badge") {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <Badge variant="secondary">+12.4%</Badge>
-        <Badge variant="outline">-3.1%</Badge>
-        <Badge variant="destructive">Risk</Badge>
-      </div>
     )
   }
 
@@ -581,11 +548,107 @@ function renderGenericPreviewSurface(
   if (item.slug === "json-input") {
     return (
       <JsonInput
-        value={`{\n  "workspace": "azamat-ui",\n  "theme": "dashboard"\n}`}
+        value={`{\n  "workspace": "tembro",\n  "theme": "dashboard"\n}`}
         onValueChange={() => undefined}
         rows={7}
       />
     )
+  }
+
+  if (item.slug === "sortable-list") {
+    const tasks = [
+      { id: "docs", title: "Docs polish", meta: "Ready" },
+      { id: "api", title: "API table", meta: "Review" },
+      { id: "preview", title: "Live preview", meta: "Live" },
+    ]
+
+    return (
+      <SortableList
+        defaultItems={tasks}
+        getItemId={(task) => task.id}
+        getItemLabel={(task) => task.title}
+        renderItem={(task) => (
+          <div className="flex min-w-0 items-center justify-between gap-3">
+            <span className="truncate text-sm font-medium">{task.title}</span>
+            <Badge variant="outline">{task.meta}</Badge>
+          </div>
+        )}
+      />
+    )
+  }
+
+  if (item.slug === "virtual-list") {
+    const rows = Array.from({ length: 80 }, (_, index) => ({
+      id: `row-${index + 1}`,
+      name: `Virtual record ${index + 1}`,
+      status: index % 3 === 0 ? "Review" : "Live",
+    }))
+
+    return (
+      <VirtualList
+        items={rows}
+        height={280}
+        estimateSize={56}
+        getItemKey={(row) => row.id}
+        renderItem={(row) => (
+          <div className="mx-1 flex items-center justify-between rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+            <span className="text-sm font-medium">{row.name}</span>
+            <Badge variant={row.status === "Live" ? "secondary" : "outline"}>{row.status}</Badge>
+          </div>
+        )}
+      />
+    )
+  }
+
+  if (item.slug === "signature-pad") {
+    return (
+      <SignaturePad
+        defaultValue={[
+          [
+            { x: 0.16, y: 0.58, pressure: 0.5 },
+            { x: 0.26, y: 0.38, pressure: 0.5 },
+            { x: 0.38, y: 0.62, pressure: 0.5 },
+            { x: 0.54, y: 0.42, pressure: 0.5 },
+            { x: 0.72, y: 0.56, pressure: 0.5 },
+          ],
+        ]}
+        labels={{ canvas: "Signature preview", undo: "Undo", clear: "Clear" }}
+      />
+    )
+  }
+
+  if (item.slug === "qr-code") {
+    return (
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-white p-4">
+          <QRCode value="https://tembro.dev/components" size={148} alt="Tembro components QR" />
+        </div>
+        <div>
+          <p className="font-semibold aui-text-strong">QR code</p>
+          <p className="mt-2 text-sm leading-6 aui-text-muted">Generates SVG output, supports custom colors, error fallback and async loading.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (item.slug === "rich-text-editor") {
+    return (
+      <RichTextEditor
+        defaultValue="<h2>Release notes</h2><p>Write rich product copy with toolbar actions, links and placeholder support.</p>"
+        minHeight={180}
+        onLinkRequest={() => "https://tembro.dev"}
+      />
+    )
+  }
+
+  if (item.slug === "image-cropper") {
+    const cropperImage =
+      "data:image/svg+xml;utf8," +
+      encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0f172a"/><stop offset="1" stop-color="#22c55e"/></linearGradient></defs><rect width="640" height="420" fill="url(#g)"/><circle cx="460" cy="150" r="88" fill="#ffffff" opacity=".22"/><rect x="70" y="245" width="310" height="64" rx="20" fill="#fff" opacity=".88"/><text x="95" y="287" font-family="Arial" font-size="28" font-weight="700" fill="#0f172a">Tembro crop</text></svg>`
+      )
+
+    return <ImageCropper src={cropperImage} aspect={16 / 9} defaultZoom={1.15} defaultRotation={-2} />
   }
 
   if (item.slug === "kanban") {
@@ -626,23 +689,6 @@ function renderGenericPreviewSurface(
         <Card><CardContent className="p-4"><p className="font-medium">Sheet</p><p className="mt-1 text-sm text-muted-foreground">Side panel workflows.</p></CardContent></Card>
       </div>
     )
-  }
-
-  if (item.slug === "property-grid") {
-    return (
-      <PropertyGrid
-        columns={3}
-        items={[
-          { key: "framework", label: "Framework", value: "Next.js", description: "App Router setup" },
-          { key: "theme", label: "Theme", value: "Light / Dark", description: "CSS tokens ready" },
-          { key: "mode", label: "Mode", value: "Source-copy", description: "Editable local files" },
-        ]}
-      />
-    )
-  }
-
-  if (item.slug === "quantity-stepper") {
-    return <Input kind="quantity" value={3} min={1} max={10} showControls aria-label="Quantity" />
   }
 
   if (item.slug === "resizable-panel") {

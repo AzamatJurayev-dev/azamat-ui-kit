@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "3.1.0",
+  "version": "3.1.15",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -138,6 +138,11 @@
     "check-version-sync": "node scripts/check-version-sync.mjs",
     "check-neutral-palette": "node scripts/check-neutral-palette.mjs",
     "check:showcase-quality": "node scripts/check-showcase-quality.mjs",
+    "check:api-schema": "node scripts/check-api-schema-source.mjs",
+    "check:fallback-coverage": "node scripts/check-fallback-coverage.mjs",
+    "check:theme-contract": "node scripts/check-theme-contract.mjs",
+    "check:package-contract": "node scripts/check-package-contract.mjs",
+    "sync:site": "node scripts/sync-public-site.mjs",
     "test:cli": "node scripts/test-cli.mjs",
     "lint": "eslint .",
     "test:types": "tsc -p tsconfig.test.json --noEmit",
@@ -145,10 +150,10 @@
     "test:registry": "node scripts/validate-registry.mjs",
     "test:build-output": "node scripts/check-build-output.mjs",
     "test:root-exports": "node scripts/check-root-exports.mjs",
-    "test:render": "vitest run --config vitest.config.ts",
+    "test:render": "vitest run --config vitest.config.ts --maxWorkers=1",
     "test:fixtures": "node scripts/fixture-smoke.mjs",
-    "test:run": "npm run test:types && npm run test:render && npm run test:a11y && npm run test:registry && npm run test:root-exports && node scripts/ensure-build-output.mjs && npm run test:build-output && npm run check:showcase-quality",
-    "release:quick": "npm run test:types && npm run test:registry && npm run test:root-exports && npx vitest run tests/render/async-select.test.tsx tests/render/form-select.test.tsx tests/render/base-primitives.test.tsx tests/render/calendar-upload.test.tsx tests/render/data-table.test.tsx --config vitest.config.ts && npm run build:all && npm run check-version-sync && npm run pack:dry-run",
+    "test:run": "npm run test:types && npm run test:render && npm run test:a11y && npm run test:registry && npm run test:root-exports && node scripts/ensure-build-output.mjs && npm run test:build-output && npm run check:showcase-quality && npm run check:api-schema && npm run check:fallback-coverage && npm run check:theme-contract && npm run check:package-contract",
+    "release:quick": "npm run test:types && npm run test:registry && npm run test:root-exports && npm run check:api-schema && npm run check:fallback-coverage && npm run check:theme-contract && npm run check:package-contract && npx vitest run tests/render/async-select.test.tsx tests/render/form-select.test.tsx tests/render/base-primitives.test.tsx tests/render/calendar-upload.test.tsx tests/render/data-table.test.tsx --config vitest.config.ts && npm run build:all && npm run check-version-sync && npm run pack:dry-run",
     "release:gate": "npm run lint && npm run build:all && npm run check-version-sync && npm run test:run && npm run test:cli && npm run test:fixtures && npm run pack:dry-run"
   },
   "peerDependencies": {
@@ -162,10 +167,18 @@
     "@dnd-kit/react": "^0.5.0",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.14.5",
+    "@tiptap/extension-link": "^3.27.3",
+    "@tiptap/extension-placeholder": "^3.27.3",
+    "@tiptap/pm": "^3.27.3",
+    "@tiptap/react": "^3.27.3",
+    "@tiptap/starter-kit": "^3.27.3",
+    "@types/qrcode": "^1.5.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "lucide-react": "^1.17.0",
+    "qrcode": "^1.5.4",
+    "react-easy-crop": "^6.2.2",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
@@ -196,7 +209,7 @@
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12",
+    "vite": "8.0.16",
     "vitest": "^3.2.6"
   }
 }

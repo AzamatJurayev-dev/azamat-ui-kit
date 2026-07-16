@@ -2,6 +2,7 @@ import type { ReactElement } from "react"
 
 import { actionsShowcaseDemoRegistry } from "@/components/actions/demo"
 import { calendarShowcaseDemoRegistry } from "@/components/calendar/demo"
+import { chartsShowcaseDemoRegistry } from "@/components/charts/demo"
 import { dataTableShowcaseDemoRegistry } from "@/components/data-table/demo"
 import { displayShowcaseDemoRegistry } from "@/components/display/demo"
 import { feedbackShowcaseDemoRegistry } from "@/components/feedback/demo"
@@ -29,10 +30,10 @@ const dashboardMetrics = [
 ]
 
 const dashboardRows = [
-  ["AZ-001", "Acme Dashboard", "Live", "$8,240"],
-  ["AZ-002", "CRM Workspace", "Review", "$5,180"],
-  ["AZ-003", "Store Command", "Draft", "$3,740"],
-  ["AZ-004", "Finance Dock", "Live", "$7,620"],
+  ["TM-001", "Acme Dashboard", "Live", "$8,240"],
+  ["TM-002", "CRM Workspace", "Review", "$5,180"],
+  ["TM-003", "Store Command", "Draft", "$3,740"],
+  ["TM-004", "Finance Dock", "Live", "$7,620"],
 ]
 
 const tableRows = [
@@ -57,6 +58,7 @@ const darkPanelClassName =
 const componentPreviewRegistry = {
   ...actionsShowcaseDemoRegistry,
   ...calendarShowcaseDemoRegistry,
+  ...chartsShowcaseDemoRegistry,
   ...dataTableShowcaseDemoRegistry,
   ...displayShowcaseDemoRegistry,
   ...feedbackShowcaseDemoRegistry,
@@ -91,7 +93,7 @@ function PreviewSurfaceRenderer({ tone }: { tone: PreviewSurfaceTone }) {
             <div className="mb-6 flex items-center gap-3">
               <PreviewLogo />
               <div>
-                <p className="font-semibold">Azamat UI</p>
+                <p className="font-semibold">Tembro</p>
                 <p className={`text-sm ${mutedTextClassName}`}>Dashboard shell</p>
               </div>
             </div>
@@ -251,7 +253,7 @@ function PreviewSurfaceRenderer({ tone }: { tone: PreviewSurfaceTone }) {
                 <div className="flex size-8 items-center justify-center rounded-xl border-[color:color-mix(in_oklch,var(--aui-surface-strong-foreground),transparent_88%)] bg-[color:var(--aui-page-bg)] text-xs font-semibold tracking-[0.22em] text-[color:var(--aui-page-foreground)]">
                   AZ
                 </div>
-                <span className="text-sm font-medium">Azamat UI</span>
+                <span className="text-sm font-medium">Tembro</span>
               </div>
               <h1 className="mt-8 max-w-lg text-5xl font-semibold tracking-tight">Production sign in flow for modern product surfaces.</h1>
               <p className={`mt-4 max-w-md text-base leading-7 ${softWhiteTextClassName}`}>Preview a reusable auth block inside the docs system without leaving the library site.</p>

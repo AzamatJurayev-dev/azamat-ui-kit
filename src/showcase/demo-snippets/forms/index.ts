@@ -21,7 +21,7 @@ export function Demo() {
   "clearable-input": `import { Input } from "tembro"
 
 export function Demo() {
-  return <Input defaultValue="Azamat UI" placeholder="Search customer" clearable />
+  return <Input defaultValue="Tembro" placeholder="Search customer" clearable />
 }`,
   "tag-input": `import { TagInput } from "tembro"
 

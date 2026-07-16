@@ -7,6 +7,10 @@ import { upsertThemeCss } from "../utils/upsert-theme-css"
 type TembroConfig = {
   cssPath?: string
   globalCssPath?: string
+  componentsPath?: string
+  paths?: {
+    components?: string
+  }
 }
 
 export async function themeCommand(cssPathArg?: string) {
@@ -18,7 +22,8 @@ export async function themeCommand(cssPathArg?: string) {
     : {}
 
   const cssPath = cssPathArg ?? config.cssPath ?? config.globalCssPath ?? "src/index.css"
-  const targetPath = await upsertThemeCss({ cwd, cssPath })
+  const componentsPath = config.paths?.components ?? config.componentsPath ?? "src/components"
+  const targetPath = await upsertThemeCss({ cwd, cssPath, componentsPath })
 
   logger.success(`Tembro theme CSS yangilandi: ${targetPath}`)
 }

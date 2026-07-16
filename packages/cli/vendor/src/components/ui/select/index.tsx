@@ -16,7 +16,9 @@ export type SelectContentProps = SelectPrimitive.Popup.Props &
     "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
   >
 export type SelectLabelProps = SelectPrimitive.GroupLabel.Props
-export type SelectItemProps = SelectPrimitive.Item.Props
+export type SelectItemProps = SelectPrimitive.Item.Props & {
+  showIndicator?: boolean
+}
 export type SelectSeparatorProps = SelectPrimitive.Separator.Props
 export type SelectScrollUpButtonProps = React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>
 export type SelectScrollDownButtonProps = React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>
@@ -57,6 +59,7 @@ export type SelectProps = Omit<SelectRootProps, "value" | "defaultValue" | "onVa
   itemClassName?: string
   searchClassName?: string
   renderOption?: (option: SelectOption, state: { selected: boolean }) => React.ReactNode
+  showSelectedIndicator?: boolean
   invalid?: boolean
   onSearchChange?: (value: string) => void
 }
@@ -98,31 +101,18 @@ function Select({
   itemClassName,
   searchClassName,
   renderOption,
+  showSelectedIndicator = true,
   invalid,
   children,
   onOpenChange,
   onSearchChange,
   ...props
 }: SelectProps) {
-  if (!options && !groups) {
-    return (
-      <SelectRoot
-        value={value ?? undefined}
-        defaultValue={defaultValue ?? undefined}
-        onValueChange={(nextValue) => onValueChange?.((nextValue as string | null | undefined) ?? undefined)}
-        onOpenChange={onOpenChange}
-        disabled={disabled}
-        {...props}
-      >
-        {children}
-      </SelectRoot>
-    )
-  }
-
+  const hasCustomOptions = Boolean(options || groups)
   const [search, setSearch] = React.useState("")
   const optionGroups = React.useMemo<SelectOptionGroup[]>(
-    () => groups ?? [{ options: options ?? [] }],
-    [groups, options]
+    () => (hasCustomOptions ? groups ?? [{ options: options ?? [] }] : []),
+    [groups, hasCustomOptions, options]
   )
   const flatOptions = React.useMemo(
     () => optionGroups.flatMap((group) => group.options),
@@ -136,6 +126,21 @@ function Select({
     }))
     .filter((group) => group.options.length > 0)
   const filteredOptionsCount = filteredGroups.reduce((count, group) => count + group.options.length, 0)
+
+  if (!hasCustomOptions) {
+    return (
+      <SelectRoot
+        value={value ?? undefined}
+        defaultValue={defaultValue ?? undefined}
+        onValueChange={(nextValue) => onValueChange?.((nextValue as string | null | undefined) ?? undefined)}
+        onOpenChange={onOpenChange}
+        disabled={disabled}
+        {...props}
+      >
+        {children}
+      </SelectRoot>
+    )
+  }
 
   return (
     <SelectRoot
@@ -195,7 +200,7 @@ function Select({
         {searchable ? (
           <div
             data-slot="select-search"
-            className="sticky top-0 z-10 mb-1 flex items-center gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-popover px-2.5 py-2 text-sm"
+            className="sticky top-0 flex items-center gap-2"
           >
             <SearchIcon className="size-4 text-muted-foreground" />
             <input
@@ -216,7 +221,7 @@ function Select({
         {loading ? (
           <div
             data-slot="select-state"
-            className="flex items-center gap-2 rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-2.5 text-sm text-muted-foreground"
+            className="flex items-center gap-2"
           >
             <LoaderCircleIcon className="size-4 animate-spin" />
             {loadingLabel}
@@ -224,7 +229,6 @@ function Select({
         ) : filteredOptionsCount === 0 ? (
           <div
             data-slot="select-state"
-            className="rounded-[var(--radius-md)] border border-[color:var(--aui-card-border,var(--border))] bg-[color:color-mix(in_oklch,var(--muted),transparent_55%)] px-3 py-2.5 text-sm text-muted-foreground"
           >
             {emptyMessage ?? emptyLabel}
           </div>
@@ -239,6 +243,7 @@ function Select({
                     key={option.value}
                     value={option.value}
                     disabled={option.disabled}
+                    showIndicator={showSelectedIndicator}
                     className={cn("rounded-[var(--radius-md)]", itemClassName)}
                   >
                     {renderOption ? (
@@ -247,7 +252,6 @@ function Select({
                       <span className="flex min-w-0 flex-1 flex-col">
                         <span className="flex min-w-0 items-center gap-2">
                           <span className="truncate">{option.label}</span>
-                          {selected ? <CheckIcon className="ml-auto size-3.5 text-primary" /> : null}
                         </span>
                         {option.description ? (
                           <span className="truncate text-xs text-muted-foreground">{option.description}</span>
@@ -296,13 +300,20 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex w-full min-w-0 items-center justify-between gap-2 rounded-[var(--aui-control-radius,var(--radius-md))] border border-[color:var(--aui-control-border-strong,var(--input))] bg-[color:var(--aui-control-surface,var(--background))] pr-3 pl-3 text-sm whitespace-nowrap text-foreground shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04))] transition-[background-color,border-color,box-shadow,color] outline-none select-none hover:border-[color:var(--aui-control-hover-border,var(--ring))] hover:bg-[color:var(--aui-control-surface-hover,var(--background))] hover:shadow-[var(--aui-control-shadow-hover,0_2px_6px_rgba(15,23,42,0.06))] focus-visible:border-[color:var(--ring)] focus-visible:ring-0 focus-visible:shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04)),0_0_0_1px_var(--aui-focus-ring,var(--ring)),0_0_0_4px_var(--aui-focus-ring-soft,transparent)] disabled:cursor-not-allowed disabled:border-[color:color-mix(in_oklch,var(--border),transparent_18%)] disabled:bg-[color:var(--aui-control-surface-disabled,var(--muted))] disabled:text-muted-foreground disabled:opacity-100 aria-invalid:border-destructive aria-invalid:shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04)),0_0_0_1px_var(--aui-danger-ring,var(--destructive)),0_0_0_4px_var(--aui-danger-ring-soft,transparent)] data-placeholder:text-muted-foreground/74 data-[size=default]:h-11 data-[size=lg]:h-12 data-[size=sm]:h-9 data-[size=sm]:rounded-[var(--radius-sm)] *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:min-w-0 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "flex w-full min-w-0 items-center justify-between gap-2 whitespace-nowrap outline-none select-none disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "rounded-[var(--radius-lg)] border border-[color:var(--aui-input-border,var(--border))] bg-[color:var(--aui-input-bg,var(--background))] px-3 text-[color:var(--aui-input-fg,var(--foreground))] shadow-sm transition-[border-color,box-shadow,background-color] hover:border-[color:var(--aui-input-border-hover,var(--border))] focus-visible:border-[color:var(--aui-ring,var(--ring))] focus-visible:shadow-[0_0_0_3px_color-mix(in_oklch,var(--aui-ring,var(--ring)),transparent_82%)] disabled:opacity-60 data-[size=sm]:h-9 data-[size=default]:min-h-10 data-[size=lg]:min-h-11 data-[size=lg]:px-4 aria-[invalid=true]:border-[color:var(--aui-danger,var(--destructive))] aria-[invalid=true]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--aui-danger,var(--destructive)),transparent_84%)]",
         className
       )}
       {...props}
     >
       {children}
-      <SelectPrimitive.Icon render={<ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground" />} />
+      <SelectPrimitive.Icon
+        render={
+          <span data-slot="select-icon" className="inline-flex shrink-0 items-center justify-center">
+            <ChevronDownIcon data-icon="chevron" />
+          </span>
+        }
+      />
     </SelectPrimitive.Trigger>
   )
 }
@@ -331,7 +342,7 @@ function SelectContent({
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={cn(
-            "relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-popover p-1.5 text-popover-foreground shadow-[var(--aui-control-panel-shadow,0_18px_40px_rgba(15,23,42,0.14))] backdrop-blur duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "relative isolate max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-[var(--radius-xl)] border border-[color:var(--aui-surface-border,var(--border))] bg-[color:var(--aui-popover-bg,var(--popover))] p-1 text-[color:var(--aui-popover-fg,var(--popover-foreground))] shadow-xl",
             className
           )}
           {...props}
@@ -349,21 +360,18 @@ function SelectLabel({ className, ...props }: SelectLabelProps) {
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
-      className={cn(
-        "px-2 py-1.5 text-[11px] font-semibold tracking-[0.14em] uppercase text-muted-foreground/90",
-        className
-      )}
+      className={className}
       {...props}
     />
   )
 }
 
-function SelectItem({ className, children, ...props }: SelectItemProps) {
+function SelectItem({ className, children, showIndicator = true, ...props }: SelectItemProps) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex w-full cursor-default items-center gap-2 rounded-[var(--radius-md)] border border-transparent py-2.5 pr-9 pl-3 text-sm text-[color:var(--aui-page-muted-strong,var(--foreground))] outline-hidden select-none transition-[background-color,border-color,color,box-shadow,transform] data-[highlighted]:border-[color:color-mix(in_oklch,var(--primary),transparent_72%)] data-[highlighted]:bg-[color:color-mix(in_oklch,var(--primary),transparent_92%)] data-[highlighted]:text-foreground data-[selected]:border-[color:color-mix(in_oklch,var(--primary),transparent_70%)] data-[selected]:bg-[color:color-mix(in_oklch,var(--primary),transparent_90%)] data-[selected]:font-semibold data-[selected]:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:min-w-0 *:[span]:last:items-center *:[span]:last:gap-2",
+        "relative flex w-full cursor-default items-center gap-2 px-2.5 py-2 pr-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-highlighted:bg-[color:var(--aui-control-bg,var(--muted))] data-highlighted:text-[color:var(--aui-control-fg,var(--foreground))] data-selected:bg-[color:var(--aui-control-bg,var(--muted))] data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -371,11 +379,13 @@ function SelectItem({ className, children, ...props }: SelectItemProps) {
       <SelectPrimitive.ItemText className="flex flex-1 shrink-0 gap-2 whitespace-nowrap">
         {children}
       </SelectPrimitive.ItemText>
-      <SelectPrimitive.ItemIndicator
-        render={<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />}
-      >
-        <CheckIcon className="pointer-events-none" />
-      </SelectPrimitive.ItemIndicator>
+      {showIndicator ? (
+        <SelectPrimitive.ItemIndicator
+          render={<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />}
+        >
+          <CheckIcon className="pointer-events-none size-4" />
+        </SelectPrimitive.ItemIndicator>
+      ) : null}
     </SelectPrimitive.Item>
   )
 }
@@ -384,7 +394,7 @@ function SelectSeparator({ className, ...props }: SelectSeparatorProps) {
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn("pointer-events-none -mx-1 my-1.5 h-px bg-border/80", className)}
+      className={cn("pointer-events-none", className)}
       {...props}
     />
   )

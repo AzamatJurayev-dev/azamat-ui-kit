@@ -39,6 +39,37 @@ function CalendarScheduler({
 }: CalendarSchedulerProps) {
   const visibleDays = days ?? Array.from(new Set(events.map((event) => event.date)))
 
+  if (visibleDays.length === 0) {
+    return (
+      <div
+        data-slot="calendar-scheduler"
+        data-view={view}
+        className={cn(
+          "rounded-[var(--aui-card-radius,var(--radius-xl))] border border-[color:var(--aui-card-border,var(--border))] bg-card p-5 text-sm text-muted-foreground shadow-[var(--aui-card-shadow,var(--aui-control-shadow,none))]",
+          className
+        )}
+        {...props}
+      >
+        <div className="flex min-h-32 items-center justify-center rounded-[var(--radius-lg)] border border-dashed border-[color:var(--aui-card-border,var(--border))] bg-muted/20 px-4 py-6 text-center">
+          <div className="space-y-1.5">
+            <p data-empty="true" className="text-sm font-medium text-foreground">
+              {empty}
+            </p>
+            {onCreateEvent ? (
+              <button
+                type="button"
+                className="rounded-md border border-dashed px-3 py-2 text-sm text-muted-foreground hover:bg-muted/50"
+                onClick={() => onCreateEvent("today")}
+              >
+                Create event
+              </button>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       data-slot="calendar-scheduler"

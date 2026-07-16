@@ -28,7 +28,7 @@ import {
   ToggleLeftIcon,
   WorkflowIcon,
 } from "lucide-react"
-import azamatKitRegistry from "./tembro-registry.json"
+import tembroRegistry from "./tembro-registry.json"
 import {
   PACKAGE_LATEST_RELEASE_DATE,
   PACKAGE_LATEST_VERSION,
@@ -254,7 +254,7 @@ export type ComponentDetailSidebarSection = {
 export const PACKAGE_NAME = "tembro"
 export const CLI_PACKAGE_NAME = "tembro"
 export const PACKAGE_IMPORT = "tembro"
-export const DOCS_APP_NAME = "azamat-ui"
+export const DOCS_APP_NAME = "tembro"
 export const CLI_INIT_NEXT_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template next --defaults`
 export const CLI_INIT_VITE_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template vite --defaults`
 export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button input`
@@ -262,9 +262,9 @@ export const PACKAGE_INSTALL_COMMAND = `${CLI_INIT_NEXT_COMMAND}\n${CLI_ADD_COMM
 export const CLI_INSTALL_COMMAND = `npx ${CLI_PACKAGE_NAME} --help`
 export const CLI_THEME_COMMAND = `npx ${CLI_PACKAGE_NAME} theme`
 export const PACKAGE_NPM_URL = "https://www.npmjs.com/package/tembro"
-export const PACKAGE_GITHUB_URL = "https://github.com/AzamatJurayev-dev/tembro"
+export const PACKAGE_GITHUB_URL = "https://github.com/AzamatJurayev-dev/azamat-ui-kit"
 export const PACKAGE_GITHUB_RELEASES_URL = `${PACKAGE_GITHUB_URL}/releases`
-export const DOCS_REPO_URL = "https://github.com/AzamatJurayev-dev/azamat-ui"
+export const DOCS_REPO_URL = PACKAGE_GITHUB_URL
 export const PACKAGE_RELEASES_URL = PACKAGE_GITHUB_RELEASES_URL
 export const DOCS_RELEASES_URL = `${DOCS_REPO_URL}/releases`
 export const DOCS_ROOT_PATH = "/docs"
@@ -275,7 +275,7 @@ export const releaseHistory: PackageReleaseRecord[] = [
     status: "Published",
     summary: "Expanded the registry with newer dashboard, input, badge, sidebar, and notification primitives.",
     notes: [
-      "Registry truth now includes `accordion`, `sidebar`, `trend-card`, `delta-badge`, `notification-center`, and `command-bar`.",
+      "Registry truth now includes `collapse`, `sidebar`, `statistic`, `badge`, `notification-center`, and `command-palette`.",
       "Component metadata was refreshed so docs can keep canonical surfaces and related helpers accurate.",
       "CLI-first local component setup remains the default path for Next.js and Vite users.",
     ],
@@ -351,12 +351,9 @@ export const componentGroupMeta: Record<ComponentGroup, ComponentGroupMeta> = {
 const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd"])
 const formControlComponentSlugs = new Set([
   "select",
-  "simple-select",
   "async-select",
   "async-multi-select",
-  "combobox",
   "radio-group",
-  "number-input",
   "date-picker",
   "date-range-picker",
   "form-field-shell",
@@ -367,15 +364,11 @@ const formControlComponentSlugs = new Set([
   "form-date-range-input",
   "form-date-picker",
   "form-date-range-picker",
-  "phone-input",
-  "masked-input",
-  "money-input",
-  "quantity-input",
 ])
-const overlayComponentSlugs = new Set(["dialog", "popover", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "modal-shell", "sheet-shell", "alert-dialog", "drawer"])
-const layoutComponentSlugs = new Set(["sidebar", "app-shell", "sidebar-nav", "breadcrumbs", "page-header", "page-container", "app-header", "section-header", "sticky-footer-bar"])
-const feedbackComponentSlugs = new Set(["toast", "loading-state", "empty-state", "result"])
-const patternComponentSlugs = new Set(["form-builder"])
+const overlayComponentSlugs = new Set(["dialog", "popover", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "alert-dialog", "drawer"])
+const layoutComponentSlugs = new Set(["sidebar", "breadcrumbs", "section"])
+const feedbackComponentSlugs = new Set(["toast", "loading-state", "empty-state"])
+const patternComponentSlugs = new Set(["form-builder", "resource-page", "resource-detail-page", "page-toolbar", "bulk-action-bar", "detail-layout", "settings-page", "data-view"])
 
 const legacyComponentSlugAliases = new Map<string, string>([
   ["app-sidebar", "sidebar"],
@@ -386,11 +379,11 @@ const legacyComponentSlugAliases = new Map<string, string>([
   ["form-phone-input", "form-input"],
   ["form-date-input", "form-input"],
   ["confirm-action", "confirm-dialog"],
-  ["file-dropzone", "upload"],
-  ["hover-card", "tooltip"],
-  ["metric-card", "metric-grid"],
+  ["file-dropzone", "file-upload"],
+  ["hover-card", "popover"],
+  ["metric-card", "statistic"],
   ["nav-tabs", "tabs"],
-  ["section-header", "page-header"],
+  ["section-header", "section"],
   ["side-panel", "sidebar"],
   ["status-dot", "status-legend"],
 ]) 
@@ -494,26 +487,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Primary choice input", "Local filtering", "Compact trigger", "Preset-friendly API"],
   },
   {
-    slug: "simple-select",
-    title: "Simple Select",
-    description: "Static-option select surface for compact forms, filter rows, and settings screens that do not need remote loading.",
-    icon: ComponentIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["options", "SimpleSelectOption[]", "-", "Static options for display and selection."],
-      ["value", "string", "-", "Controlled selected value."],
-      ["onValueChange", "(value) => void", "-", "Selection callback."],
-      ["defaultValue", "string", "-", "Uncontrolled initial selected value."],
-      ["placeholder", "string", "-", "Prompt text for empty state."],
-      ["size", "'sm' | 'default'", "'default'", "Trigger visual density."],
-      ["disabled", "boolean", "false", "Disables select interaction."],
-      ["triggerClassName", "string", "-", "Trigger custom class."],
-    ],
-    features: ["Static options API", "Controlled and uncontrolled usage", "Shared select styling", "Compact filter and form flows"],
-  },
-  {
     slug: "async-select",
     title: "Async Select",
     description: "Remote-aware select for search-driven datasets, edit hydration, and production loading or empty states.",
@@ -555,27 +528,8 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Legacy alias", "Multi selection", "Select-all helpers", "Use AsyncSelect as the canonical API"],
   },
   {
-    slug: "combobox",
-    title: "Combobox",
-    description: "Keyboard-first local filtering member for assignment flows and command-style lists.",
-    icon: ComponentIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["options", "ComboboxOption[]", "-", "Local options with label, description and disabled state."],
-      ["value", "string", "-", "Controlled selected value."],
-      ["onValueChange", "(value, option?) => void", "-", "Selection callback with option payload."],
-      ["placeholder", "ReactNode", "\"Select option\"", "Trigger content when no value is selected."],
-      ["searchPlaceholder", "string", "\"Search...\"", "Search input placeholder."],
-      ["emptyLabel", "ReactNode", "\"No option found\"", "Empty state content."],
-      ["disabled", "boolean", "false", "Disables trigger and dropdown interaction."],
-    ],
-    features: ["Keyboard-first member", "Local option filtering", "Description rows", "Controlled assignment flows"],
-  },
-  {
-  slug: "number-input",
-  title: "Number Input",
+    slug: "number-input",
+    title: "Number Input",
     description: "Numeric entry with parsing, constraints, and precise change semantics.",
     icon: ToggleLeftIcon,
     category: "Forms",
@@ -825,82 +779,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Single selection", "Descriptions", "Horizontal or vertical layout", "Controlled plans"],
   },
   {
-    slug: "phone-input",
-    title: "Phone Input",
-    description: "Localized phone number input with formatted display and consistent editing assumptions.",
-    icon: SmartphoneIcon,
-    category: "Forms",
-    status: "Preview",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["value", "string", "-", "Controlled phone value used as canonical form (usually raw digits or formatted string)."],
-      ["defaultValue", "string", "-", "Uncontrolled initial phone value."],
-      ["onValueChange", "(value) => void", "-", "Emitted value after formatting transformations."],
-      ["defaultCountry", "string", "\"UZ\" | \"US\" | ...", "Country context used by masking layer."],
-      ["placeholder", "string", "\"+998 (__) ___-__-__\"", "Field placeholder."],
-      ["disabled", "boolean", "false", "Disable interaction."],
-      ["separator", "string", "\" \"", "Custom separator for grouping digits."],
-    ],
-    features: ["Phone parsing", "Masking assumptions", "Localized formatting", "Controlled usage"],
-  },
-  {
-    slug: "masked-input",
-    title: "Masked Input",
-    description: "Pattern-driven text input for IDs, codes and fixed-format strings.",
-    icon: SmartphoneIcon,
-    category: "Forms",
-    status: "Preview",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["value", "string", "-", "Controlled masked value."],
-      ["defaultValue", "string", "-", "Uncontrolled initial masked value."],
-      ["onValueChange", "(value) => void", "-", "Raw value callback after mask is applied."],
-      ["mask", "((value: string) => string) | ((value: string, pattern: string) => string)", "-", "Formatting function for live masking."],
-      ["placeholder", "string", "-", "Placeholder and pattern hint for users."],
-      ["stripMask", "boolean", "true", "Whether callback should return raw digits."],
-      ["disabled", "boolean", "false", "Disables user edits."],
-    ],
-    features: ["Mask function", "Pattern assumptions", "Controlled editing", "Fixed-format workflows"],
-  },
-  {
-    slug: "money-input",
-    title: "Money Input",
-    description: "Currency-aware input with prefix/suffix and parsing helper for numeric payload.",
-    icon: WalletIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["value", "number", "-", "Controlled money value."],
-      ["defaultValue", "number", "-", "Initial uncontrolled value."],
-      ["onValueChange", "(value, rawValue) => void", "-", "Parsed numeric value and raw text callback."],
-      ["prefix", "string", "\"$\"", "Money prefix text."],
-      ["suffix", "string", "-", "Money suffix text."],
-      ["inputMode", "'text' | 'decimal' | 'numeric'", "'decimal'", "Mobile keyboard hint."],
-      ["className", "string", "-", "Wrapper custom styles."],
-    ],
-    features: ["Currency formatting assumptions", "Parsing flow", "Prefix/suffix", "Read/write numeric value"],
-  },
-  {
-    slug: "quantity-input",
-    title: "Quantity Input",
-    description: "Stepper-like numeric input for compact quantity and count constraints.",
-    icon: ToggleLeftIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["value", "number", "-", "Controlled quantity."],
-      ["defaultValue", "number", "-", "Initial quantity."],
-      ["onValueChange", "(value) => void", "-", "Change callback with parsed quantity."],
-      ["min", "number", "0", "Minimum value."],
-      ["max", "number", "-", "Maximum value."],
-      ["step", "number", "1", "Increment size."],
-      ["showControls", "boolean", "true", "Display increment/decrement controls."],
-    ],
-    features: ["Count editing", "Clamp behavior", "Controls", "Min/max guardrails"],
-  },
-  {
     slug: "checkbox",
     title: "Checkbox",
     description: "Binary selection control for permissions, tasks and grouped form actions.",
@@ -1063,22 +941,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Short helper copy", "Hover + focus", "Side placement", "Low-noise guidance"],
   },
   {
-    slug: "hover-card",
-    title: "Hover Card",
-    description: "Hover-revealed detail card for compact entity previews and secondary context.",
-    icon: SparklesIcon,
-    category: "Overlay",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["trigger", "ReactNode", "-", "Inline trigger element that reveals the card."],
-      ["content", "ReactNode", "-", "Card body content shown on hover/focus."],
-      ["side", "'top' | 'right' | 'bottom' | 'left'", "'bottom'", "Preferred card placement."],
-      ["contentClassName", "string", "-", "Extra classes for the revealed card surface."],
-    ],
-    features: ["Entity preview", "Hover + focus", "Secondary context", "Compact detail card"],
-  },
-  {
     slug: "right-click-menu",
     title: "Right Click Menu",
     description: "Context menu surface for dense workspaces that need pointer-driven secondary actions.",
@@ -1114,65 +976,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Destructive confirmations", "Controlled usage", "Async confirm", "Clear copy guidance"],
   },
   {
-    slug: "modal-shell",
-    title: "Modal Shell",
-    description: "Composable shell for short focused forms, approvals, and information dialogs.",
-    icon: PanelTopIcon,
-    category: "Overlay",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["open", "boolean", "-", "Controlled open state."],
-      ["onOpenChange", "(open) => void", "-", "Open state callback."],
-      ["title", "string", "-", "Header title for shell context."],
-      ["description", "string", "-", "Header description or guidance text."],
-      ["footer", "ReactNode", "-", "Optional footer action area."],
-      ["size", "'sm' | 'md' | 'lg' | 'xl'", "'md'", "Shell width/spacing profile."],
-      ["showCloseButton", "boolean", "true", "Show default close icon."],
-    ],
-    features: ["Reusable overlay shell", "Controlled modal", "Slot composition", "Action footers"],
-  },
-  {
-    slug: "sheet-shell",
-    title: "Sheet Shell",
-    description: "Side anchored shell for contextual editing and mobile drawer flows.",
-    icon: PanelTopIcon,
-    category: "Overlay",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["open", "boolean", "-", "Controlled open state."],
-      ["onOpenChange", "(open) => void", "-", "Open state callback."],
-      ["side", "'right' | 'left' | 'top' | 'bottom'", "'right'", "Drawer anchor side."],
-      ["title", "string", "-", "Sheet title."],
-      ["description", "string", "-", "Optional supporting text."],
-      ["footer", "ReactNode", "-", "Optional footer action area."],
-      ["size", "'sm' | 'md' | 'lg' | 'xl'", "'md'", "Shell width/spacing profile."],
-    ],
-    features: ["Side drawer", "Mobile sheet", "Slot composition", "Context workflows"],
-  },
-  {
-    slug: "app-shell",
-    title: "App Shell",
-    description: "Compose dashboards and pages with header, sidebar, content, aside and mobile controls.",
-    icon: LayoutDashboardIcon,
-    category: "Components",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["header", "ReactNode", "-", "Optional top header region."],
-      ["sidebar", "ReactNode", "-", "Optional sidebar region for global navigation."],
-      ["aside", "ReactNode", "-", "Optional side content region."],
-      ["footer", "ReactNode", "-", "Optional footer region."],
-      ["sidebarCollapsed", "boolean", "-", "Controlled sidebar collapse state."],
-      ["onSidebarCollapsedChange", "(collapsed) => void", "-", "Callback for controlled collapse toggles."],
-      ["mobileSidebarOpen", "boolean", "-", "Controlled mobile sidebar visibility."],
-      ["sidebarMode", "'fixed' | 'static'", "'fixed'", "Desktop sidebar placement strategy."],
-      ["showMobileMenuButton", "boolean", "true", "Shows mobile menu trigger button."],
-    ],
-    features: ["Shell composition", "Responsive layout", "Aside slot", "Controlled sidebar"],
-  },
-  {
     slug: "sidebar",
     title: "Sidebar",
     description: "Reusable application sidebar with header, footer, active states, collapsed mode and custom link rendering.",
@@ -1190,24 +993,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["renderLink", "(props) => ReactNode", "-", "Override anchor rendering for router integration."],
     ],
     features: ["Navigation sidebar", "Collapsed state", "Header and footer slots", "Router-friendly rendering"],
-  },
-  {
-    slug: "sidebar-nav",
-    title: "Sidebar Nav",
-    description: "Structured nav list with active/disabled states, route metadata and custom render hooks.",
-    icon: LayoutDashboardIcon,
-    category: "Components",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["items", "SidebarNavItem[]", "-", "Navigation entries, including active, disabled and custom render payloads."],
-      ["collapsed", "boolean", "false", "Compact nav mode with item labels hidden."],
-      ["itemClassName", "string", "-", "Class for all nav items."],
-      ["activeItemClassName", "string", "-", "Class added to the active item."],
-      ["renderItem", "(item, element) => ReactNode", "-", "Custom item rendering hook."],
-      ["renderLink", "(props) => ReactNode", "-", "Custom link rendering hook."],
-    ],
-    features: ["Navigation lists", "Active states", "Custom render", "Collapsed mode"],
   },
   {
     slug: "breadcrumbs",
@@ -1244,37 +1029,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["sticky", "boolean", "false", "Enable sticky positioning in scroll containers."],
     ],
     features: ["Page context", "Action areas", "Breadcrumb composition", "Sticky header option"],
-  },
-  {
-    slug: "page-container",
-    title: "Page Container",
-    description: "Consistent width and spacing wrapper for page contents and responsive content density.",
-    icon: PanelTopIcon,
-    category: "Components",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["size", "'default' | 'sm' | 'md' | 'lg' | 'xl' | 'full'", "'default'", "Container width preset."],
-      ["className", "string", "-", "Additional wrapper class names."],
-      ["children", "ReactNode", "-", "Page content."],
-    ],
-    features: ["Consistent content width", "Responsive max-width", "Spacing control", "Dashboard wrappers"],
-  },
-  {
-    slug: "metric-grid",
-    title: "Metric Grid",
-    description: "Compact KPI cards for dashboards with trend, icon and tone options.",
-    icon: DatabaseIcon,
-    category: "Data Display",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["items", "MetricItem[]", "-", "Metric tiles and optional descriptions."],
-      ["columns", "1 | 2 | 3 | 4", "3", "Number of columns for layout."],
-      ["compact", "boolean", "false", "Shrinks paddings and typography for dense layouts."],
-      ["itemClassName", "string", "-", "Shared class override for each metric card."],
-    ],
-    features: ["KPI display", "Compact and dense layout", "Trend labels", "Dashboard summaries"],
   },
   {
     slug: "info-card",
@@ -1352,25 +1106,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["className", "string", "-", "Container class override."],
     ],
     features: ["Spinner, skeleton and progress", "Section loading labels", "Scoped placeholders", "Custom icon"],
-  },
-  {
-    slug: "result",
-    title: "Result",
-    description: "Status result surface for success, warning, error and blocked/empty outcomes.",
-    icon: ShieldCheckIcon,
-    category: "Data Display",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["status", "'success' | 'error' | 'warning' | 'info' | 'not-found' | 'forbidden' | 'server-error'", "'info'", "Result semantic status."],
-      ["title", "ReactNode", "-", "Result title."],
-      ["description", "ReactNode", "-", "Result detail text."],
-      ["icon", "ReactNode", "-", "Optional custom icon."],
-      ["actions", "ReactNode", "-", "Primary action area."],
-      ["extra", "ReactNode", "-", "Secondary/auxiliary action area."],
-      ["compact", "boolean", "false", "Compact status surface."],
-    ],
-    features: ["Outcome states", "Action block", "Error/result screens", "No-page-needed fallback"],
   },
   {
     slug: "scroll-box",
@@ -1473,47 +1208,35 @@ export const componentRelations: ComponentRelationMap = {
     componentSlugs: ["badge", "card", "tabs"],
   },
   input: {
-    groupSlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["form", "filters"],
     componentSlugs: ["textarea", "select", "switch"],
   },
   textarea: {
-    groupSlugs: ["inputs", "form", "layout"],
+    groupSlugs: ["form", "layout"],
     componentSlugs: ["input", "card", "badge"],
   },
   select: {
-    groupSlugs: ["inputs", "filters", "overlay"],
-    componentSlugs: ["simple-select", "async-select", "combobox"],
-  },
-  "simple-select": {
-    groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "async-select", "combobox"],
-  },
-  combobox: {
-    groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "simple-select", "async-select"],
+    groupSlugs: ["filters", "overlay"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   "radio-group": {
-    groupSlugs: ["inputs", "form"],
+    groupSlugs: ["form"],
     componentSlugs: ["checkbox", "switch", "select"],
   },
   "async-select": {
-    groupSlugs: ["inputs", "form", "filters"],
-    componentSlugs: ["select", "simple-select", "combobox"],
+    groupSlugs: ["form", "filters"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   "async-multi-select": {
-    groupSlugs: ["inputs", "form"],
-    componentSlugs: ["select", "async-select", "simple-select"],
-  },
-  "number-input": {
-    groupSlugs: ["inputs", "form"],
-    componentSlugs: ["money-input", "quantity-input", "input"],
+    groupSlugs: ["form"],
+    componentSlugs: ["select", "async-select", "form-select"],
   },
   "date-picker": {
-    groupSlugs: ["inputs", "form", "display"],
+    groupSlugs: ["form", "display"],
     componentSlugs: ["calendar", "date-range-picker"],
   },
   "date-range-picker": {
-    groupSlugs: ["inputs", "form", "filters"],
+    groupSlugs: ["form", "filters"],
     componentSlugs: ["date-picker", "calendar", "data-table"],
   },
   "form-field-shell": {
@@ -1521,28 +1244,28 @@ export const componentRelations: ComponentRelationMap = {
     componentSlugs: ["form-input", "form-select", "form-textarea", "form-switch", "input", "textarea", "switch"],
   },
   "form-input": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-field-shell", "form-textarea", "input", "password-input", "phone-input", "number-input"],
+    groupSlugs: ["form"],
+    componentSlugs: ["form-field-shell", "form-textarea", "input"],
   },
   "form-select": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["async-select", "select", "simple-select", "form-field-shell"],
+    groupSlugs: ["form"],
+    componentSlugs: ["async-select", "select", "form-field-shell"],
   },
   "form-textarea": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["form-input", "textarea", "form-field-shell", "quantity-input"],
+    groupSlugs: ["form"],
+    componentSlugs: ["form-input", "textarea", "form-field-shell"],
   },
   "form-switch": {
-    groupSlugs: ["form", "inputs"],
+    groupSlugs: ["form"],
     componentSlugs: ["form-field-shell", "switch", "checkbox", "form-builder"],
   },
   "form-date-range-input": {
     groupSlugs: ["form", "filters"],
-    componentSlugs: ["date-range-input", "date-range-picker", "form-date-range-picker", "form-field-shell"],
+    componentSlugs: ["date-range-picker", "form-date-range-picker", "form-field-shell"],
   },
   "form-date-picker": {
-    groupSlugs: ["form", "inputs"],
-    componentSlugs: ["date-picker", "date-input", "calendar", "form-field-shell"],
+    groupSlugs: ["form"],
+    componentSlugs: ["date-picker", "calendar", "form-field-shell"],
   },
   "form-date-range-picker": {
     groupSlugs: ["form", "filters"],
@@ -1552,28 +1275,12 @@ export const componentRelations: ComponentRelationMap = {
     groupSlugs: ["patterns", "form"],
     componentSlugs: ["form-field-shell", "form-input", "form-switch", "form-textarea", "form-select"],
   },
-  "phone-input": {
-    groupSlugs: ["inputs", "form"],
-    componentSlugs: ["input", "textarea", "simple-select"],
-  },
-  "masked-input": {
-    groupSlugs: ["inputs", "form"],
-    componentSlugs: ["input", "number-input", "phone-input"],
-  },
-  "money-input": {
-    groupSlugs: ["inputs", "display"],
-    componentSlugs: ["number-input", "quantity-input", "input"],
-  },
-  "quantity-input": {
-    groupSlugs: ["inputs", "form"],
-    componentSlugs: ["number-input", "money-input", "input"],
-  },
   checkbox: {
-    groupSlugs: ["inputs", "form"],
+    groupSlugs: ["form"],
     componentSlugs: ["switch", "button", "card"],
   },
   switch: {
-    groupSlugs: ["inputs", "layout"],
+    groupSlugs: ["layout"],
     componentSlugs: ["checkbox", "tabs", "badge"],
   },
   badge: {
@@ -1590,11 +1297,11 @@ export const componentRelations: ComponentRelationMap = {
   },
   collapse: {
     groupSlugs: ["layout", "display", "form"],
-    componentSlugs: ["tabs", "card", "sidebar-nav"],
+    componentSlugs: ["tabs", "card"],
   },
   dialog: {
     groupSlugs: ["overlay", "notifications"],
-    componentSlugs: ["popover", "confirm-dialog", "sheet-shell"],
+    componentSlugs: ["popover", "confirm-dialog"],
   },
   popover: {
     groupSlugs: ["overlay", "navigation"],
@@ -1608,25 +1315,13 @@ export const componentRelations: ComponentRelationMap = {
     groupSlugs: ["overlay", "actions", "form"],
     componentSlugs: ["popover", "button", "input"],
   },
-  "hover-card": {
-    groupSlugs: ["overlay", "display"],
-    componentSlugs: ["tooltip", "card", "info-card"],
-  },
   "right-click-menu": {
     groupSlugs: ["overlay", "actions", "navigation"],
     componentSlugs: ["dropdown-menu", "popover", "data-table"],
   },
   "confirm-dialog": {
     groupSlugs: ["overlay", "notifications"],
-    componentSlugs: ["dialog", "modal-shell", "sheet-shell"],
-  },
-  "modal-shell": {
-    groupSlugs: ["overlay", "layout"],
-    componentSlugs: ["sheet-shell", "dialog", "confirm-dialog"],
-  },
-  "sheet-shell": {
-    groupSlugs: ["overlay", "layout", "navigation"],
-    componentSlugs: ["modal-shell", "dialog", "dropdown-menu"],
+    componentSlugs: ["dialog", "alert-dialog"],
   },
   table: {
     groupSlugs: ["data-table", "display", "filters"],
@@ -1638,59 +1333,35 @@ export const componentRelations: ComponentRelationMap = {
   },
   sidebar: {
     groupSlugs: ["layout", "navigation"],
-    componentSlugs: ["sidebar-nav", "breadcrumbs", "app-shell", "page-container"],
-  },
-  "app-shell": {
-    groupSlugs: ["layout"],
-    componentSlugs: ["sidebar", "sidebar-nav", "page-header", "page-container"],
-  },
-  "sidebar-nav": {
-    groupSlugs: ["layout", "navigation"],
-    componentSlugs: ["sidebar", "breadcrumbs", "app-shell"],
+    componentSlugs: ["breadcrumbs"],
   },
   breadcrumbs: {
     groupSlugs: ["layout", "navigation"],
-    componentSlugs: ["page-header", "sidebar", "sidebar-nav"],
-  },
-  "page-header": {
-    groupSlugs: ["layout"],
-    componentSlugs: ["breadcrumbs", "sidebar", "metric-grid", "info-card"],
-  },
-  "page-container": {
-    groupSlugs: ["layout"],
-    componentSlugs: ["page-header", "app-shell", "info-card"],
-  },
-  "metric-grid": {
-    groupSlugs: ["display"],
-    componentSlugs: ["info-card", "activity-feed", "data-state"],
+    componentSlugs: ["section", "sidebar"],
   },
   "info-card": {
     groupSlugs: ["display", "layout"],
-    componentSlugs: ["metric-grid", "activity-feed", "result", "card"],
+    componentSlugs: ["activity-feed", "card"],
   },
   "activity-feed": {
     groupSlugs: ["display"],
-    componentSlugs: ["info-card", "metric-grid", "result"],
+    componentSlugs: ["info-card"],
   },
   "data-state": {
     groupSlugs: ["display"],
-    componentSlugs: ["loading-state", "result", "data-table"],
+    componentSlugs: ["loading-state", "data-table"],
   },
   "loading-state": {
     groupSlugs: ["display"],
-    componentSlugs: ["data-state", "result", "data-table"],
-  },
-  result: {
-    groupSlugs: ["display"],
-    componentSlugs: ["data-state", "loading-state", "page-header"],
+    componentSlugs: ["data-state", "data-table"],
   },
   "scroll-box": {
     groupSlugs: ["display", "layout"],
-    componentSlugs: ["table", "data-table", "page-container"],
+    componentSlugs: ["table", "data-table"],
   },
   toast: {
     groupSlugs: ["notifications", "overlay"],
-    componentSlugs: ["confirm-dialog", "sheet-shell", "modal-shell"],
+    componentSlugs: ["confirm-dialog", "dialog"],
   },
   kbd: {
     groupSlugs: ["command", "actions"],
@@ -1714,35 +1385,22 @@ const primaryComponentSurfaceSlugs = new Set([
   "sidebar",
   "breadcrumbs",
   "data-table",
-  "metric-grid",
   "info-card",
   "activity-feed",
   "loading-state",
-  "result",
   "toast",
-  "trend-card",
   "notification-center",
-  "command-bar",
   "progress",
-  "progress-circle",
 ])
 
 const componentPrimarySurfaceParent: Record<string, string> = {
   textarea: "input",
-  "search-input": "input",
-  "password-input": "input",
-  "number-input": "input",
-  "phone-input": "input",
-  "masked-input": "input",
-  "money-input": "input",
-  "quantity-input": "input",
   "tag-input": "input",
   "otp-input": "input",
   "form-input": "input",
   "form-textarea": "input",
-  "simple-select": "select",
   "async-select": "select",
-  combobox: "select",
+  "async-multi-select": "select",
   "form-select": "select",
   calendar: "date-picker",
   "date-range-picker": "date-picker",
@@ -1750,25 +1408,12 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "form-date-picker": "date-picker",
   "form-date-range-picker": "date-picker",
   "confirm-dialog": "dialog",
-  "modal-shell": "dialog",
-  "sheet-shell": "dialog",
-  "app-shell": "sidebar",
   "app-header": "sidebar",
-  "sidebar-nav": "sidebar",
-  "page-container": "sidebar",
   section: "sidebar",
   toolbar: "sidebar",
   "split-layout": "sidebar",
-  "sticky-footer-bar": "sidebar",
   "page-header": "breadcrumbs",
-  "stat-card": "metric-grid",
-  "form-builder": "form-field-shell",
-  "data-table-column-visibility-menu": "data-table",
-  "data-table-sortable-header": "data-table",
-  "data-table-bulk-actions": "data-table",
-  "data-table-view-presets": "data-table",
   table: "data-table",
-  "progress-circle": "progress",
 }
 
 const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMeta[]>> = {
@@ -1783,7 +1428,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "related",
       title: "Related input patterns",
       description: "Specialized input types for search, masking, numeric entry, and compact structured values.",
-      slugs: ["search-input", "password-input", "number-input", "phone-input", "masked-input", "money-input", "quantity-input", "tag-input", "otp-input"],
+      slugs: ["tag-input", "otp-input"],
     },
     {
       key: "integrations",
@@ -1803,19 +1448,13 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "related",
       title: "Related select members",
       description: "These members add real behavior such as remote loading or keyboard-first local filtering.",
-      slugs: ["async-select", "combobox"],
+      slugs: ["async-select"],
     },
     {
       key: "integrations",
       title: "Form integrations",
       description: "Use wrapped selects when you need consistent form-level validation, labels, and shell behavior.",
       slugs: ["form-select"],
-    },
-    {
-      key: "compatibility",
-      title: "Supporting select surface",
-      description: "Use SimpleSelect when source-copy code needs a compact controlled selector.",
-      slugs: ["simple-select"],
     },
   ],
   "date-picker": [
@@ -1842,8 +1481,8 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
     {
       key: "advanced",
       title: "Confirmation and shell patterns",
-      description: "These composed overlays handle destructive confirmation, reusable modal shells, and side-drawer editing flows.",
-      slugs: ["confirm-dialog", "modal-shell", "sheet-shell"],
+      description: "These composed overlays handle destructive confirmation and side-drawer editing flows.",
+      slugs: ["confirm-dialog", "drawer"],
     },
   ],
   sidebar: [
@@ -1869,20 +1508,8 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
     },
     {
       key: "related",
-      title: "Core companions",
-      description: "These are the most common helpers teams install next to the main grid.",
-      slugs: ["data-table-column-visibility-menu", "data-table-bulk-actions", "data-table-view-presets"],
-    },
-    {
-      key: "advanced",
-      title: "Composable helpers",
-      description: "Factories and low-level pieces belong after the main grid contract is already clear.",
-      slugs: ["data-table-column-visibility-menu", "data-table-sortable-header"],
-    },
-    {
-      key: "related",
-      title: "Low-level primitive",
-      description: "Use the semantic table primitive only for lightweight markup. It is not the main reusable data-grid surface.",
+      title: "Supporting primitive",
+      description: "Drop down to the semantic table primitive only when you do not need the full DataTable workflow.",
       slugs: ["table"],
     },
   ],
@@ -1902,7 +1529,7 @@ type KitRegistryFile = {
   recommended?: string[]
 }
 
-const kitRegistry = azamatKitRegistry as KitRegistryFile
+const kitRegistry = tembroRegistry as KitRegistryFile
 const kitGroups = kitRegistry?.groups ?? {}
 const kitRecommendedSlugs = new Set((kitRegistry?.recommended ?? []).map((slug) => slug))
 const kitMigrationAliases = kitRegistry?.migrationAliases ?? {}
@@ -1910,53 +1537,15 @@ const migrationAliasTargets = new Set(Object.values(kitMigrationAliases))
 
 const internalComponentCatalogSlugs = new Set([
   "app-header",
-  "app-sidebar",
-  "app-shell",
   "async-multi-select",
-  "clearable-input",
-  "combobox",
-  "copy-field",
-  "data-table-actions-column",
-  "data-table-bulk-actions",
-  "data-table-column-visibility-menu",
-  "data-table-pagination",
-  "data-table-row-actions",
-  "data-table-saved-filters",
-  "data-table-select-column",
-  "data-table-sortable-header",
-  "data-table-toolbar",
-  "data-table-view-presets",
-  "date-input",
-  "date-range-input",
-  "file-dropzone",
   "form",
-  "form-async-select",
   "form-field",
   "form-field-shell",
   "form-input",
   "form-select",
   "form-switch",
   "form-textarea",
-  "hover-card",
-  "input-decorator",
-  "input-value",
-  "inputs",
-  "masked-input",
-  "money-input",
-  "number-input",
-  "page-container",
   "page-header",
-  "password-input",
-  "phone-input",
-  "quantity-input",
-  "search-input",
-  "section-header",
-  "sidebar-nav",
-  "simple-select",
-  "stat-card",
-  "sticky-footer-bar",
-  "table-export-menu",
-  "table-import-button",
 ])
 
 const hiddenKitGroups = new Set(["kits"])
@@ -1970,7 +1559,6 @@ const fallbackRegistryCategoryByGroup: Record<string, ComponentCatalogItem["cate
   feedback: "Data Display",
   display: "Data Display",
   overlay: "Overlay",
-  inputs: "Forms",
   form: "Forms",
   dataTable: "Data Display",
   data_table: "Data Display",
@@ -2014,6 +1602,61 @@ function slugToTitle(value: string) {
     .join(" ")
 }
 
+const fallbackRegistryFeaturesByGroup: Record<string, string[]> = {
+  ui: ["Composable primitive", "Variant-ready styling", "Keyboard and focus-friendly defaults", "Local source-copy customization"],
+  actions: ["Action composition", "Icon and label pairing", "Keyboard and focus-friendly defaults", "Dense toolbar usage"],
+  feedback: ["Inline status messaging", "Loading, empty or error context", "Accessible status copy", "Actionable recovery guidance"],
+  display: ["Structured content display", "Empty and loading state support", "Accessible reading order", "Responsive data presentation"],
+  overlay: ["Focused overlay behavior", "Escape and outside-click handling", "Accessible focus management", "Compact action footer"],
+  inputs: ["Controlled value support", "Validation-ready states", "Keyboard and focus-friendly defaults", "Form-friendly composition"],
+  form: ["Form shell integration", "Validation and error states", "Accessible label contract", "Reusable field composition"],
+  dataTable: ["Data workflow composition", "Sorting/filtering integration", "Accessible row and header semantics", "Responsive operator surfaces"],
+  data_table: ["Data workflow composition", "Sorting/filtering integration", "Accessible row and header semantics", "Responsive operator surfaces"],
+  layout: ["Route-level structure", "Navigation-aware composition", "Responsive shell behavior", "Reusable product framing"],
+  navigation: ["Section navigation", "Current state support", "Keyboard and focus-friendly defaults", "Route-friendly links"],
+  filters: ["Search and filter composition", "Saved or reusable filter state", "Accessible control labels", "Data-table integration"],
+  calendar: ["Date selection workflow", "Boundary and disabled-date support", "Keyboard and focus-friendly defaults", "Scheduling-ready layout"],
+  upload: ["File interaction workflow", "Preview and progress states", "Accessible upload guidance", "Validation-ready constraints"],
+  wizard: ["Step flow composition", "Progress and completion state", "Keyboard and focus-friendly defaults", "Guided form workflow"],
+  notifications: ["Transient status messaging", "Unread and dismiss flows", "Accessible notification copy", "Async completion feedback"],
+  command: ["Keyboard-first discovery", "Search and grouped actions", "Accessible command labels", "Route or action execution"],
+  patterns: ["Composed product workflow", "Reusable screen section", "Accessible structure", "Production layout starting point"],
+}
+
+const fallbackRegistryDescriptionByGroup: Record<string, string> = {
+  ui: "Reusable primitive for product interfaces with source-copy styling and predictable focus behavior.",
+  actions: "Action surface for dense product workflows, toolbar controls and copy-friendly command areas.",
+  feedback: "Status surface for communicating loading, empty, success, warning or error context with a clear next step.",
+  display: "Read-oriented surface for presenting operational content, metadata, timelines or structured records.",
+  overlay: "Focused overlay pattern for short decisions, contextual actions and contained editing flows.",
+  inputs: "Input surface for controlled values, validation states and form-ready interaction patterns.",
+  form: "Form composition helper for labels, validation, controlled values and repeatable field structure.",
+  dataTable: "Data workflow helper for reusable tables, row actions, filtering, selection and responsive records.",
+  data_table: "Data workflow helper for reusable tables, row actions, filtering, selection and responsive records.",
+  layout: "Layout helper for route-level structure, navigation context and reusable application shells.",
+  navigation: "Navigation helper for route-aware sections, current state and keyboard-friendly movement.",
+  filters: "Filter composition helper for search, chips, saved views and data narrowing workflows.",
+  calendar: "Date and schedule surface for reporting, planning, disabled-date rules and calendar-style selection.",
+  upload: "Upload workflow surface for files, images, preview states, progress and validation guidance.",
+  wizard: "Guided workflow surface for multi-step forms, progress state and step-by-step completion.",
+  notifications: "Notification surface for async status, unread activity, dismiss behavior and transient updates.",
+  command: "Command surface for keyboard-first search, grouped actions and fast route or action discovery.",
+  patterns: "Composed product pattern that combines primitives into reusable production screen sections.",
+}
+
+function getFallbackFeatures(group: string) {
+  return fallbackRegistryFeaturesByGroup[group] ?? [
+    "Source-copy component",
+    "Composable product usage",
+    "Keyboard and focus-friendly defaults",
+    "Local customization",
+  ]
+}
+
+function getFallbackDescription(group: string, title: string) {
+  return `${title}. ${fallbackRegistryDescriptionByGroup[group] ?? "Reusable source-copy surface for production product interfaces."}`
+}
+
 const baseComponentSlugs = new Set(baseComponentCatalog.map((item) => item.slug))
 const generatedComponentCatalog = new Map<string, ComponentCatalogItem>()
 for (const [group, groupSlugs] of Object.entries(kitGroups)) {
@@ -2034,15 +1677,17 @@ for (const [group, groupSlugs] of Object.entries(kitGroups)) {
     generatedComponentCatalog.set(effectiveSlug, {
       slug: effectiveSlug,
       title: aliasTarget ? slugToTitle(aliasTarget) : slugToTitle(effectiveSlug),
-      description: `${slugToTitle(effectiveSlug)} surfaced from package registry group "${group}".`,
+      description: getFallbackDescription(group, slugToTitle(effectiveSlug)),
       icon,
       category,
       status: kitRecommendedSlugs.has(effectiveSlug) ? "Stable" : "Preview",
       installCommand: PACKAGE_INSTALL_COMMAND,
       propsRows: [
         ["className", "string", "-", "Additional classes for wrapper element."],
+        ["children", "ReactNode", "-", "Optional composed content or custom slots when the component supports composition."],
+        ["aria-label", "string", "-", "Accessible label for icon-only, compact, or non-text usage."],
       ],
-      features: [group],
+      features: getFallbackFeatures(group),
     })
   }
 }
@@ -2057,18 +1702,10 @@ const packageDocsSurfaceCatalog: ComponentCatalogItem[] = []
 const packageDocsSurfaceCatalogMap = new Map(packageDocsSurfaceCatalog.map((item) => [item.slug, item] as const))
 const hiddenPrimaryComponentCatalogSlugs = new Set([
   ...internalComponentCatalogSlugs,
-  "app-sidebar",
-  "app-shell",
   "app-header",
   "page-header",
-  "page-container",
-  "stat-card",
   "resource-page",
   "resource-detail-page",
-  "data-table-column-visibility-menu",
-  "data-table-sortable-header",
-  "data-table-bulk-actions",
-  "data-table-view-presets",
 ])
 const hiddenDirectoryComponentSlugs = new Set([...hiddenPrimaryComponentCatalogSlugs, ...legacyComponentSlugAliases.keys()])
 
@@ -2254,7 +1891,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Route-level sidebars, breadcrumbs and page framing helpers that support real reusable components instead of replacing them.",
     icon: LayoutDashboardIcon,
     category: "Layout",
-    exports: ["Sidebar", "SidebarNav", "Breadcrumbs", "PageContainer", "Section", "SectionHeader", "StickyFooterBar"],
+    exports: ["Sidebar", "Breadcrumbs", "Section"],
     href: componentModulePath("layout"),
     status: "Stable",
     features: ["Sidebar navigation", "Page framing", "Section structure", "Sticky actions"],
@@ -2276,7 +1913,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Confirm flows, modal shells, sheet layouts and dialog actions.",
     icon: AlertCircleIcon,
     category: "Overlay",
-    exports: ["DialogActions", "ModalShell", "ConfirmDialog", "SheetShell", "Tooltip", "HoverCard", "RightClickMenu"],
+    exports: ["AlertDialog", "ConfirmDialog", "Drawer", "Tooltip", "Popover", "RightClickMenu"],
     href: componentModulePath("overlay"),
     status: "Stable",
     features: ["Confirm flows", "Sheet layouts", "Modal actions", "Lightweight helper hints"],
@@ -2287,21 +1924,10 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Pagination and tabbed navigation patterns for sectioned or paginated interfaces.",
     icon: ChevronRightIcon,
     category: "Layout",
-    exports: ["Pagination", "PageTabs", "StepperTabs"],
+    exports: ["Pagination"],
     href: componentModulePath("navigation"),
     status: "Stable",
     features: ["Pagination", "Page tabs", "Stepper tabs"],
-  },
-  {
-    slug: "inputs",
-    title: "Inputs",
-    description: "Input-first family with typed presets and select/date members introduced only when behavior changes.",
-    icon: FormInputIcon,
-    category: "Forms",
-    exports: ["Input", "Textarea", "Select", "DatePicker", "NumberInput", "MoneyInput", "PhoneInput", "TagInput"],
-    href: componentModulePath("inputs"),
-    status: "Stable",
-    features: ["Text entry", "Select flows", "Date controls", "Money input", "Tag input"],
   },
   {
     slug: "form",
@@ -2320,7 +1946,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Metrics, activity, avatars, timelines and descriptive content surfaces.",
     icon: DatabaseIcon,
     category: "Data",
-    exports: ["DescriptionList", "Progress", "Result", "Timeline", "MetricGrid", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
+    exports: ["DescriptionList", "Progress", "PageState", "Timeline", "Statistic", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
     href: componentModulePath("display"),
     status: "Stable",
     features: ["Metric grids", "Timelines", "Activity feeds", "Status legends"],
@@ -2468,7 +2094,7 @@ export const featuredBlock: BlockCard = {
   bestFor: "Dashboard entry sections, KPI headers, recent activity, and operational overview surfaces.",
   category: "Dashboard",
   tags: ["Dashboard", "Analytics", "Charts", "Overview"],
-  uses: ["AppShell", "PageHeader", "MetricGrid", "DataTable"],
+  uses: ["Sidebar", "Section", "Statistic", "DataTable"],
   tone: "from-emerald-50 via-white to-sky-50",
   href: blockPath("dashboard-starter"),
   previewHref: "/preview/blocks/dashboard-01",
@@ -2501,7 +2127,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Route-level shells that need stable navigation, app header actions, and one main content zone.",
     category: "Dashboard",
     tags: ["Navigation", "Shell", "Analytics"],
-    uses: ["AppShell", "SidebarNav", "PageHeader", "Button"],
+    uses: ["Sidebar", "Section", "Button"],
     tone: "from-[color:var(--aui-page-bg-alt)] to-[color:var(--aui-page-bg)]",
     href: blockPath("sidebar-layout"),
     previewHref: "/preview/blocks/dashboard-01",
@@ -2528,7 +2154,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Pipeline snapshots, team handoff sections, and account-focused operational dashboards.",
     category: "Product",
     tags: ["CRM", "Pipeline", "Kanban"],
-    uses: ["PageHeader", "Badge", "Tabs", "ActivityFeed"],
+    uses: ["ResourcePage", "Badge", "Tabs", "ActivityFeed"],
     tone: "from-[color:color-mix(in_oklch,var(--aui-accent)_10%,var(--aui-page-bg-alt))] to-[color:var(--aui-page-bg)]",
     href: blockPath("crm-dashboard"),
     previewTone: "crm",
@@ -2554,7 +2180,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Management tables with filters, row actions, bulk actions, and compact result scanning.",
     category: "Table",
     tags: ["Data", "Filters", "Bulk actions"],
-    uses: ["DataTable", "DataTableToolbar", "Button", "Badge"],
+    uses: ["DataTable", "PageToolbar", "Button", "Badge"],
     tone: "from-[color:var(--aui-page-bg-alt)] to-[color:var(--aui-page-bg)]",
     href: blockPath("users-table"),
     previewHref: "/preview/blocks/table-01",
@@ -2634,7 +2260,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Billing or finance tables that need status columns, invoice actions, and readable operational totals.",
     category: "Table",
     tags: ["Finance", "Invoices", "Status"],
-    uses: ["DataTable", "Badge", "Button", "PageHeader"],
+    uses: ["DataTable", "Badge", "Button", "ResourcePage"],
     tone: "from-[color:color-mix(in_oklch,var(--aui-accent)_12%,var(--aui-page-bg-alt))] to-[color:var(--aui-page-bg)]",
     href: blockPath("invoices-page"),
     previewHref: "/preview/blocks/table-01",

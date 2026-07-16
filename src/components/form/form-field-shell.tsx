@@ -103,7 +103,7 @@ function FormFieldShell({
   layout = "vertical",
   descriptionPosition = "top",
   labelAction,
-  requiredIndicator = <span className="ml-1 text-destructive">*</span>,
+  requiredIndicator = <span data-slot="form-field-required">*</span>,
   errorIcon,
   showErrorIcon = true,
   disabled = false,
@@ -119,7 +119,7 @@ function FormFieldShell({
   const hasHeader = Boolean(label || labelAction)
   const hasDescriptionTop = description && descriptionPosition === "top"
   const hasDescriptionBottom = description && descriptionPosition === "bottom"
-  const resolvedErrorIcon = errorIcon ?? <AlertCircleIcon className="size-3.5" />
+  const resolvedErrorIcon = errorIcon ?? <AlertCircleIcon data-icon="error" />
 
   const header = hasHeader ? (
     <div
@@ -136,9 +136,7 @@ function FormFieldShell({
           htmlFor={htmlFor}
           id={labelId}
           className={cn(
-            "min-w-0 text-sm font-semibold leading-none tracking-tight text-foreground",
-            disabled && "cursor-not-allowed opacity-60",
-            readOnly && "opacity-80",
+            "min-w-0",
             labelClassName
           )}
         >
@@ -161,14 +159,14 @@ function FormFieldShell({
     <p
       data-slot="form-field-description"
       id={descriptionId}
-      className={cn("text-sm leading-6 text-muted-foreground", disabled && "opacity-60", descriptionClassName)}
+      className={descriptionClassName}
     >
       {description}
     </p>
   ) : null
 
   const content = (
-    <div data-slot="form-field-content" className={cn("min-w-0 space-y-2", contentClassName)}>
+    <div data-slot="form-field-content" className={cn("flex min-w-0 flex-col gap-2", contentClassName)}>
       {children}
     </div>
   )
@@ -180,11 +178,11 @@ function FormFieldShell({
       role="alert"
       aria-live="polite"
       className={cn(
-        "flex items-start gap-2 rounded-[min(var(--radius-xl),16px)] border border-destructive/18 bg-destructive/8 px-3 py-2 text-sm font-medium leading-6 text-destructive",
+        "flex items-start gap-2",
         errorClassName
       )}
     >
-      {showErrorIcon && <span className="mt-1 shrink-0">{resolvedErrorIcon}</span>}
+      {showErrorIcon && <span data-slot="form-field-error-icon" className="shrink-0">{resolvedErrorIcon}</span>}
       <span className="min-w-0">{error}</span>
     </p>
   ) : null
@@ -192,14 +190,13 @@ function FormFieldShell({
   const successNode = success && !error ? (
     <p
       data-slot="form-field-success"
-      className="rounded-[min(var(--radius-xl),16px)] border border-emerald-500/18 bg-emerald-500/8 px-3 py-2 text-sm font-medium leading-6 text-emerald-700 dark:text-emerald-300"
     >
       {success}
     </p>
   ) : null
 
   const loadingNode = loading ? (
-    <p data-slot="form-field-loading" className="text-sm leading-6 text-muted-foreground">
+    <p data-slot="form-field-loading">
       Loading...
     </p>
   ) : null
@@ -214,7 +211,7 @@ function FormFieldShell({
       data-disabled={disabled || undefined}
       data-readonly={readOnly || undefined}
       aria-disabled={disabled || undefined}
-      className={cn(layoutClassName[layout], "rounded-[var(--radius-2xl)]", className)}
+      className={cn(layoutClassName[layout], className)}
       {...props}
     >
       {layout === "horizontal" ? (

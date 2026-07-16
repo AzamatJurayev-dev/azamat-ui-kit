@@ -16,6 +16,7 @@ export type AlertProps = React.ComponentProps<"div"> & {
   dismissible?: boolean
   dismissLabel?: string
   onDismiss?: () => void
+  actionsAlign?: "start" | "end"
 }
 
 const alertToneClassName: Record<AlertTone, Record<NonNullable<AlertProps["variant"]>, string>> = {
@@ -78,6 +79,7 @@ function Alert({
   dismissible = false,
   dismissLabel = "Dismiss alert",
   onDismiss,
+  actionsAlign = "end",
   className,
   children,
   ...props
@@ -88,7 +90,7 @@ function Alert({
       data-size={size}
       role={tone === "destructive" || tone === "warning" ? "alert" : "status"}
       className={cn(
-        "flex gap-3 rounded-[var(--aui-card-radius,var(--radius-xl))] border p-4 text-sm shadow-[var(--aui-card-shadow,var(--aui-control-shadow,0_1px_0_rgba(255,255,255,0.05)))] data-[size=sm]:p-3",
+        "flex min-w-0 gap-3 rounded-[var(--aui-card-radius,var(--radius-xl))] border p-4 text-sm shadow-[var(--aui-card-shadow,var(--aui-control-shadow,0_1px_0_rgba(255,255,255,0.05)))] data-[size=sm]:p-3",
         alertToneClassName[tone][variant],
         className
       )}
@@ -105,15 +107,15 @@ function Alert({
         {icon ?? defaultIcon(tone)}
       </div>
       <div className="min-w-0 flex-1 space-y-1">
-        {title && <div data-slot="alert-title" className="font-medium leading-none">{title}</div>}
+        {title && <div data-slot="alert-title" className="max-w-full break-words font-medium leading-snug">{title}</div>}
         {(description || children) && (
-          <div data-slot="alert-description" className={cn("text-muted-foreground", variant === "solid" && "text-current/88")}>
+          <div data-slot="alert-description" className={cn("max-w-full break-words leading-snug text-muted-foreground", variant === "solid" && "text-current/88")}>
             {description ?? children}
           </div>
         )}
       </div>
       {(action || dismissible) ? (
-        <div data-slot="alert-action" className="flex shrink-0 items-start gap-2">
+        <div data-slot="alert-action" className={cn("flex shrink-0 items-start gap-2", actionsAlign === "start" && "order-[-1] mr-2")}>
           {action}
           {dismissible ? (
             <button

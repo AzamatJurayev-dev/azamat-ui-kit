@@ -33,15 +33,15 @@ function Stepper({ className, steps, currentStep, onStepChange, orientation = "h
             key={step.id}
             type="button"
             disabled={!isClickable}
-            className={cn("flex min-w-0 items-start gap-2 text-left disabled:cursor-default", orientation === "horizontal" && "flex-1")}
+            className={cn("flex min-w-0 items-start gap-2 text-left disabled:cursor-default", orientation === "horizontal" && "min-w-36 flex-1")}
             onClick={() => onStepChange?.(step.id)}
           >
             <span className={cn("flex size-7 shrink-0 items-center justify-center rounded-full border text-xs font-medium", isActive && "border-primary bg-primary text-primary-foreground", isComplete && !isActive && "border-primary bg-primary/10 text-primary")}>
               {isComplete && !isActive ? <CheckIcon className="size-4" /> : index + 1}
             </span>
-            <span className="min-w-0 grid gap-0.5">
-              <span className={cn("text-sm font-medium", isActive ? "text-foreground" : "text-muted-foreground")}>{step.title}</span>
-              {step.description && <span className="text-xs text-muted-foreground">{step.description}</span>}
+            <span className="grid min-w-0 max-w-full gap-0.5">
+              <span className={cn("max-w-full break-words text-sm font-medium leading-snug", isActive ? "text-foreground" : "text-muted-foreground")}>{step.title}</span>
+              {step.description && <span className="max-w-full break-words text-xs leading-snug text-muted-foreground">{step.description}</span>}
             </span>
           </button>
         )

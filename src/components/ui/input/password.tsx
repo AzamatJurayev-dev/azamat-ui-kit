@@ -84,19 +84,19 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
       <>
         {trailing}
         {showCapsLockWarning && capsLockOn ? (
-          <span data-slot="password-caps-lock" className="hidden text-xs text-amber-600 sm:inline" aria-live="polite">
+          <span data-slot="password-caps-lock" aria-live="polite">
             {capsLockLabel}
           </span>
         ) : null}
         {showToggle ? (
           <button
             type="button"
+            data-slot="password-toggle"
             disabled={disabled}
             aria-label={currentVisible ? hideLabel : showLabel}
-            className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
             onClick={() => setVisibleState(!currentVisible)}
           >
-            {currentVisible ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
+            {currentVisible ? <EyeOffIcon data-icon="password-hide" /> : <EyeIcon data-icon="password-show" />}
           </button>
         ) : null}
       </>

@@ -2,7 +2,7 @@ import type { ComponentDemoMock } from "../types"
 
 export const dialogMock: ComponentDemoMock = {
   code: `import * as React from "react"
-import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "tembro"
+import { Button, Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "tembro"
 
 export function Example() {
   const [open, setOpen] = React.useState(false)
@@ -17,6 +17,11 @@ export function Example() {
             Confirm that these notes are final before moving to production.
           </DialogDescription>
         </DialogHeader>
+        <DialogBody>
+          <p className="text-sm text-muted-foreground">
+            The body scrolls independently when content is long, while the footer stays usable.
+          </p>
+        </DialogBody>
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
           <Button>Publish</Button>

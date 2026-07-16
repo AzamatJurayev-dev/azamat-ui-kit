@@ -21,40 +21,37 @@ import {
   Calendar,
   DescriptionList,
   Drawer,
-  FileDropzone,
   FileUpload,
   ImageUpload,
   FilterBar,
   InfoCard,
   Input,
   List,
-  NavTabs,
   OtpInput,
   PageState,
-  PageTabs,
   Pagination,
   Progress,
-  ProgressCircle,
   QuickActionGrid,
   RangeSlider,
   Rating,
   SavedFilterSelect,
-  SectionHeader,
   Slider,
-  Select,
   StatusDot,
   StatusLegend,
   Stepper,
-  StepperTabs,
   TagInput,
+  Tabs,
+  TabsList,
+  TabsTrigger,
   Timeline,
-  UserCard,
   Wizard,
+  Avatar,
 } from "@/index"
-import { AppHeader } from "@/components/layout/app-header"
-import { StatCard } from "@/components/layout/stat-card"
+import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
+import { FormBuilder, customField, formSection } from "@/components/patterns/form-builder"
 import { ResourceDetailPage } from "@/components/patterns/resource-detail-page"
 import { ResourcePage, ResourcePageSection } from "@/components/patterns/resource-page"
+import { useForm } from "react-hook-form"
 
 import type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps } from "./premium/types"
 
@@ -88,38 +85,26 @@ const registryDemoDefinitions = [
   component("alert-dialog", "AlertDialog", "overlay", "Destructive confirmation dialog with loading-ready action states."),
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),
   component("pagination", "Pagination", "navigation", "Controlled page navigation with edge buttons and active state."),
-  component("nav-tabs", "NavTabs", "navigation", "Navigation tabs for switching related document sections."),
-  component("search-input", "SearchInput", "inputs", "Search field with icon, count, shortcut and debounce-friendly value handling."),
-  component("password-input", "PasswordInput", "inputs", "Password field with visibility toggle and secure autocomplete defaults."),
   component("slider", "Slider", "inputs", "Single value range control for density, threshold, and score tuning."),
   component("range-slider", "RangeSlider", "inputs", "Two-handle slider for min/max filtering."),
   component("rating", "Rating", "inputs", "Compact score input for feedback and review flows."),
   component("otp-input", "OtpInput", "inputs", "One-time code entry with fixed-length slots."),
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
-  component("progress-circle", "ProgressCircle", "display", "Compact circular progress for sidebars and status cards."),
   component("timeline", "Timeline", "display", "Vertical or horizontal event stream for workflow history."),
   component("status-dot", "StatusDot", "display", "Tiny live status indicator with optional pulse animation."),
-  component("user-card", "UserCard", "display", "User summary row with avatar, metadata and actions."),
   component("notification-center", "NotificationCenter", "display", "Compact activity and notifications stream."),
-  component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
-  component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
-  component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
-  component("section-header", "SectionHeader", "layout", "Reusable section title block with actions and metadata."),
-  component("stat-card", "StatCard", "layout", "Dashboard stat card for KPI, trend and helper text."),
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
-  component("page-tabs", "PageTabs", "navigation", "Top-level page tab strip for route-sized sections."),
-  component("stepper-tabs", "StepperTabs", "navigation", "Step-like tabs for setup and onboarding progress."),
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
+  component("form-builder", "FormBuilder", "patterns", "Declarative form scaffold with sections and reusable field presets."),
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
   component("file-upload", "FileUpload", "upload", "Full file upload surface with dropzone, action button and helper text."),
   component("image-upload", "ImageUpload", "upload", "Image upload pattern with preview-oriented copy.", "ImageUpload"),
-  component("file-dropzone", "FileDropzone", "upload", "Lightweight file dropzone primitive for custom upload flows."),
   component("stepper", "Stepper", "wizard", "Clickable step navigation for multi-step forms."),
   component("wizard", "Wizard", "wizard", "Stepper, content and footer controls combined into one workflow."),
   component("resource-page", "ResourcePage", "patterns", "Full resource index page shell for admin dashboards."),
@@ -247,14 +232,6 @@ function InputPreview({
   const value = state.textValue
   const onValueChange = (nextValue: string) => setState({ textValue: nextValue })
 
-  if (slug === "search-input") {
-    return <Input type="search" value={value} onValueChange={onValueChange} resultCount={12} shortcut="Ctrl K" placeholder="Search customers..." />
-  }
-
-  if (slug === "password-input") {
-    return <Input kind="password" value="secret-token" onValueChange={onValueChange} placeholder="Password" />
-  }
-
   if (slug === "slider") {
     return <Slider label="Density" description="Tune content density." defaultValue={64} showValue />
   }
@@ -273,31 +250,6 @@ function InputPreview({
 
   if (slug === "tag-input") {
     return <TagInput defaultValue={["dashboard", "beta", "ops"]} placeholder="Add label" />
-  }
-
-  if (slug === "simple-select") {
-    return (
-      <div className="grid gap-4">
-        <Select
-          value="private"
-          onValueChange={() => undefined}
-          options={[
-            { value: "public", label: "Public", description: "Visible to all users" },
-            { value: "private", label: "Private", description: "Restricted to invited members" },
-            { value: "internal", label: "Internal", description: "Only workspace maintainers" },
-            { value: "archived", label: "Archived", description: "History only", disabled: true },
-          ]}
-          placeholder="Visibility"
-          searchable
-          clearable
-        />
-        <div className="grid gap-3 md:grid-cols-3">
-          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Static options with lightweight search.</div>
-          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Clear action stays inside the trigger surface.</div>
-          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Use before moving to AsyncSelect.</div>
-        </div>
-      </div>
-    )
   }
 
   if (slug === "async-select") {
@@ -379,7 +331,7 @@ function OverlayPreview({ slug }: { slug: string }) {
         <DescriptionList
           items={[
             { key: "plan", label: "Plan", value: "Scale" },
-            { key: "owner", label: "Owner", value: "Azamat UI" },
+            { key: "owner", label: "Owner", value: "Tembro" },
           ]}
         />
       </Drawer>
@@ -400,42 +352,14 @@ function NavigationPreview({ slug }: { slug: string }) {
     return <Pagination page={3} pageCount={9} onPageChange={() => undefined} />
   }
 
-  if (slug === "page-tabs") {
-    return (
-      <PageTabs
-        value="overview"
-        variant="pills"
-        items={[
-          { value: "overview", label: "Overview" },
-          { value: "usage", label: "Usage" },
-          { value: "api", label: "API", badge: "3" },
-        ]}
-      />
-    )
-  }
-
-  if (slug === "stepper-tabs") {
-    return (
-      <StepperTabs
-        value="billing"
-        items={[
-          { value: "profile", label: "Profile", description: "Team and owner details", completed: true },
-          { value: "billing", label: "Billing", description: "Payment and invoices" },
-          { value: "review", label: "Review", description: "Confirm release" },
-        ]}
-      />
-    )
-  }
-
   return (
-    <NavTabs
-      value="overview"
-      items={[
-        { value: "overview", label: "Overview" },
-        { value: "usage", label: "Usage" },
-        { value: "api", label: "API" },
-      ]}
-    />
+    <Tabs defaultValue="overview">
+      <TabsList variant="pills" overflow="wrap">
+        <TabsTrigger value="overview" variant="pills">Overview</TabsTrigger>
+        <TabsTrigger value="usage" variant="pills">Usage</TabsTrigger>
+        <TabsTrigger value="api" variant="pills">API</TabsTrigger>
+      </TabsList>
+    </Tabs>
   )
 }
 
@@ -468,10 +392,6 @@ function FeedbackPreview({ slug }: { slug?: string }) {
 function DisplayPreview({ slug }: { slug: string }) {
   if (slug === "progress") {
     return <Progress label="Migration progress" description="Production rollout" value={68} tone="success" showValue />
-  }
-
-  if (slug === "progress-circle") {
-    return <ProgressCircle value={72} label="Profile completed" />
   }
 
   if (slug === "timeline") {
@@ -516,18 +436,6 @@ function DisplayPreview({ slug }: { slug: string }) {
   }
 
 
-  if (slug === "data-list") {
-    return (
-      <List
-        items={[
-          { key: "1", title: "Enterprise plan", description: "Priority support and SSO", extra: "$499" },
-          { key: "2", title: "Growth plan", description: "Most used by product teams", extra: "$199" },
-          { key: "3", title: "Starter plan", description: "Lightweight team setup", extra: "$49" },
-        ]}
-      />
-    )
-  }
-
   if (slug === "status-legend") {
     return (
       <StatusLegend
@@ -541,10 +449,6 @@ function DisplayPreview({ slug }: { slug: string }) {
         ]}
       />
     )
-  }
-
-  if (slug === "trend-card") {
-    return <StatCard title={slug === "trend-card" ? "Weekly revenue" : "Current vs previous"} value="$84.2k" description="Compared with last month" trend={{ value: "+12.4%", tone: "success" }} icon={<LayoutDashboardIcon />} />
   }
 
   if (slug === "info-card") {
@@ -568,7 +472,14 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  return <UserCard name="Azamat Jurayev" description="Product designer and maintainer" meta="Admin workspace" actions={<Button size="sm">Invite</Button>} />
+  return (
+    <InfoCard
+      title="Azamat Jurayev"
+      description="Product designer and maintainer"
+      media={<Avatar name="Azamat Jurayev" />}
+      actions={<Button size="sm">Invite</Button>}
+    />
+  )
 }
 
 function ActionsPreview({
@@ -663,18 +574,18 @@ function ActionsPreview({
 function LayoutPreview({ slug }: { slug: string }) {
   if (slug === "app-header") {
     return (
-      <AppHeader
-        sticky={false}
-        left={<><LayoutDashboardIcon className="size-4" /><span className="font-medium">Dashboard</span></>}
-        center={<Badge variant="secondary">Preview</Badge>}
-        right={<><Button variant="ghost" size="icon-sm" aria-label="Notifications"><BellIcon /></Button><Button size="sm">Deploy</Button></>}
-        className="rounded-xl border border-[color:var(--aui-divider)]"
-      />
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-3">
+        <div className="flex items-center gap-2">
+          <LayoutDashboardIcon className="size-4" />
+          <span className="font-medium">Dashboard</span>
+        </div>
+        <Badge variant="secondary">Preview</Badge>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon-sm" aria-label="Notifications"><BellIcon /></Button>
+          <Button size="sm">Deploy</Button>
+        </div>
+      </div>
     )
-  }
-
-  if (slug === "section-header") {
-    return <SectionHeader eyebrow="Components" title="Production-ready surfaces" description="SectionHeader keeps copy, metadata and actions aligned." actions={<Button size="sm">Add component</Button>} />
   }
 
   return (
@@ -711,7 +622,7 @@ function DataTablePartsPreview({ slug }: { slug: string }) {
         <span>Status</span>
         <span>Actions</span>
       </div>
-      {["Azamat UI", "Registry", "Dashboard"].map((row, index) => (
+      {["Tembro", "Registry", "Dashboard"].map((row, index) => (
         <div key={row} className="grid grid-cols-[40px_1fr_120px_72px] items-center border-b border-[color:var(--aui-divider)] px-3 py-3 last:border-b-0">
           <span><input type="checkbox" aria-label={`Select ${row}`} defaultChecked={index === 0} /></span>
           <span className="font-medium aui-text-strong">{row}</span>
@@ -732,10 +643,6 @@ function CalendarPreview() {
 }
 
 function UploadPreview({ slug }: { slug: string }) {
-  if (slug === "file-dropzone") {
-    return <FileDropzone label="Drop contract files" description="PDF, PNG or CSV up to 10MB." />
-  }
-
   if (slug === "file-upload") {
     return (
       <div className="grid gap-4">
@@ -794,6 +701,10 @@ function WizardPreview({ slug }: { slug: string }) {
 }
 
 function PatternsPreview({ slug }: { slug: string }) {
+  if (slug === "form-builder") {
+    return <FormBuilderPreview />
+  }
+
   if (slug === "resource-detail-page") {
     return (
       <ResourceDetailPage
@@ -830,6 +741,62 @@ function PatternsPreview({ slug }: { slug: string }) {
         />
       </ResourcePageSection>
     </ResourcePage>
+  )
+}
+
+function FormBuilderPreview() {
+  type FormBuilderDemoValues = {
+    name: string
+    email: string
+    notes: string
+    marketing: boolean
+  }
+
+  const form = useForm<FormBuilderDemoValues>({
+    defaultValues: {
+      name: "Azamat Jurayev",
+      email: "azamat@example.com",
+      notes: "Release gate is ready.",
+      marketing: true,
+    },
+  })
+
+  const sections = [
+    formSection<FormBuilderDemoValues>({
+      id: "profile",
+      title: "Profile",
+      description: "Core account and contact fields.",
+      fields: [
+        customField<FormBuilderDemoValues>({
+          id: "profile-summary",
+          colSpan: "full",
+          render: () => (
+            <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
+              <p className="text-sm font-semibold text-[color:var(--aui-page-foreground)]">Reusable section shell</p>
+              <p className="mt-1 text-sm text-[color:var(--aui-page-muted)]">
+                FormBuilder groups controls, helper copy and actions without scattering layout logic.
+              </p>
+            </div>
+          ),
+        }),
+      ],
+    }),
+  ]
+
+  return (
+    <FormBuilder<FormBuilderDemoValues>
+      control={form.control}
+      sections={sections}
+      columns={1}
+      submitLabel="Save changes"
+      resetLabel="Reset"
+      onResetClick={() => form.reset()}
+      footer={
+        <div className="rounded-2xl border border-dashed border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm text-[color:var(--aui-page-muted)]">
+          Use the builder for real form routes, then replace this preview with your own field presets.
+        </div>
+      }
+    />
   )
 }
 

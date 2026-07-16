@@ -1,10 +1,24 @@
 import * as React from "react"
 
-import { Badge, FileUpload } from "@/index"
+import { Badge, Button, FileUpload } from "@/index"
 
 export function FileUploadShowcase() {
   const [files, setFiles] = React.useState<File[]>([])
   const [status, setStatus] = React.useState<Record<string, "idle" | "uploading" | "success" | "error">>({})
+  const [progress, setProgress] = React.useState<Record<string, number>>({})
+
+  const loadSamples = () => {
+    const now = Date.now()
+    const samples = [
+      new File(["release notes"], "release-notes.pdf", { type: "application/pdf", lastModified: now }),
+      new File(["contract draft"], "contract.docx", { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", lastModified: now + 1 }),
+      new File(["preview image"], "preview.png", { type: "image/png", lastModified: now + 2 }),
+    ]
+    const keys = samples.map((file) => `${file.name}-${file.size}-${file.lastModified}`)
+    setFiles(samples)
+    setStatus({ [keys[0]]: "uploading", [keys[1]]: "error", [keys[2]]: "success" })
+    setProgress({ [keys[0]]: 46, [keys[1]]: 72, [keys[2]]: 100 })
+  }
 
   React.useEffect(() => {
     setStatus((current) => {
@@ -31,6 +45,15 @@ export function FileUploadShowcase() {
         </p>
       </div>
 
+      <div className="flex flex-wrap gap-2">
+        <Button size="sm" onClick={loadSamples}>Load sample files</Button>
+        <Button size="sm" variant="outline" disabled={files.length === 0} onClick={() => {
+          setFiles([])
+          setStatus({})
+          setProgress({})
+        }}>Clear demo</Button>
+      </div>
+
       <FileUpload
         files={files}
         onFilesChange={setFiles}
@@ -38,14 +61,22 @@ export function FileUploadShowcase() {
         accept=".pdf,.docx,.png"
         maxFiles={4}
         maxSize={4 * 1024 * 1024}
+        progress={progress}
         dropzoneLabel="Upload release assets"
         dropzoneDescription="Drag files here or choose from your device."
-        helperText="Supports PDF, DOCX and PNG up to 4 MB."
+        helperText="Supports PDF, DOCX and PNG up to 4 MB. Filenames containing private are rejected."
+        validateFile={(file) => file.name.toLowerCase().includes("private") ? "Private files cannot be uploaded here." : null}
+        rejectionMessages={{
+          "max-files": ({ maxFiles }) => `Only ${maxFiles} release assets are allowed.`,
+          "max-size": "This asset exceeds the 4 MB release limit.",
+        }}
         onRetryFile={(file) => {
           const key = `${file.name}-${file.size}-${file.lastModified}`
           setStatus((current) => ({ ...current, [key]: "uploading" }))
+          setProgress((current) => ({ ...current, [key]: 35 }))
           window.setTimeout(() => {
             setStatus((current) => ({ ...current, [key]: "success" }))
+            setProgress((current) => ({ ...current, [key]: 100 }))
           }, 900)
         }}
       />

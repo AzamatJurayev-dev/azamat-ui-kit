@@ -52,7 +52,7 @@ function loadSelectedWorkspace(value: string) {
 export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
   const form = useForm<DemoValues>({
     defaultValues: {
-      name: "Azamat UI",
+      name: "Tembro",
       ownerPhone: "+998 90 123 45 67",
       budget: 120,
       notes: "RHF wrapper coverage for control, name, and validation.",

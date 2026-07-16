@@ -1,6 +1,7 @@
 import * as React from "react"
 
-import { Button, Carousel, CarouselItem } from "@/index"
+import { Button } from "@/index"
+import { Carousel, CarouselItem } from "@/components/display/carousel"
 import { cn } from "@/lib/utils"
 
 const steps = [

@@ -3,7 +3,7 @@ import * as React from "react"
 import { InputChrome } from "./chrome"
 import { getInputValue } from "./value"
 import { parseMoneyLikeInput } from "./numeric-value"
-import { InputPrimitive } from "@/components/ui/input-primitive"
+import { InputPrimitive } from "./primitive"
 import { cn } from "@/lib/utils"
 
 export type MoneyInputProps = Omit<

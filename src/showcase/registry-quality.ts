@@ -4,9 +4,14 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("button", "Button", "actions", "Primary action surface for clicks, submit, and quick triggers in dashboard workflows."),
   component("input", "Input", "inputs", "Single-line text input for quick edits, queries, and form fields."),
   component("select", "Select", "inputs", "Select component with menu-driven single choice workflows."),
+  component("card", "Card", "display", "Container surface for dense dashboard sections, summaries, and interactive panels."),
+  component("badge", "Badge", "display", "Compact status and category label with tone, variant, and inline usage states."),
+  component("checkbox", "Checkbox", "inputs", "Boolean selection control for forms, tables, and filter groups."),
   component("dialog", "Dialog", "overlay", "Modal surface for confirmation, forms, and contextual workflows."),
+  component("sidebar", "Sidebar", "layout", "Application navigation shell with active states, account area, and responsive collapse."),
   component("data-table", "DataTable", "data-table", "High density table with search, filters, rows, actions and pagination context."),
   component("date-picker", "DatePicker", "calendar", "Date picker surface for period and event selection."),
+  component("date-range-picker", "DateRangePicker", "calendar", "Range picker surface for reporting windows and planning flows."),
   component("form-input", "FormInput", "form", "Input wrapper with RHF-ready metadata and helper text."),
   component("form-select", "FormSelect", "form", "Select wrapper for controlled local and async choice fields."),
   component("form-textarea", "FormTextarea", "form", "Textarea wrapper with helper, validation and consistent spacing."),
@@ -17,17 +22,7 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),
 
   component("pagination", "Pagination", "navigation", "Controlled page navigation with edge buttons and active state."),
-  component("nav-tabs", "NavTabs", "navigation", "Navigation tabs for switching related document sections."),
-  component("page-tabs", "PageTabs", "navigation", "Top-level page tab strip for route-sized sections."),
-  component("stepper-tabs", "StepperTabs", "navigation", "Step-like tabs for setup and onboarding progress."),
-
-  component("password-input", "PasswordInput", "inputs", "Password field with visibility toggle and secure autocomplete defaults."),
-  component("number-input", "NumberInput", "inputs", "Numeric entry for counts, thresholds, and reporting controls."),
-  component("phone-input", "PhoneInput", "inputs", "Phone input with stable raw and masked value handling."),
-  component("money-input", "MoneyInput", "inputs", "Currency entry for billing, finance and KPI editing flows."),
-  component("simple-select", "SimpleSelect", "inputs", "Static local-option select for dashboards and settings forms."),
   component("async-select", "AsyncSelect", "inputs", "Remote-loaded select for large server-backed option sets."),
-  component("combobox", "Combobox", "inputs", "Searchable local choice input for reassignment and command-like selection."),
   component("slider", "Slider", "inputs", "Single value range control for density, threshold, and score tuning."),
   component("range-slider", "RangeSlider", "inputs", "Two-handle slider for min/max filtering."),
   component("rating", "Rating", "inputs", "Compact score input for feedback and review flows."),
@@ -36,37 +31,30 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
 
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
-  component("progress-circle", "ProgressCircle", "display", "Compact circular progress for sidebars and status cards."),
   component("timeline", "Timeline", "display", "Vertical or horizontal event stream for workflow history."),
   component("status-dot", "StatusDot", "display", "Tiny live status indicator with optional pulse animation."),
-  component("user-card", "UserCard", "display", "User summary row with avatar, metadata and actions."),
   component("notification-center", "NotificationCenter", "display", "Compact activity and notifications stream."),
-  component("data-list", "DataList", "display", "Readable title and description rows for compact operational lists."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
-  component("trend-card", "TrendCard", "display", "Metric summary card with trend context."),
 
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
 
-  component("app-header", "AppHeader", "layout", "Sticky product header with left, center and right slots."),
-  component("app-shell", "AppShell", "layout", "Responsive application shell with sidebar, header and content regions."),
-  component("section-header", "SectionHeader", "layout", "Reusable section title block with actions and metadata."),
-  component("stat-card", "StatCard", "layout", "Dashboard stat card for KPI, trend and helper text."),
-
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
+  component("empty-state", "EmptyState", "patterns", "Focused empty and error state with clear next actions."),
 
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
 
   component("file-upload", "FileUpload", "upload", "Full file upload surface with dropzone, action button and helper text."),
   component("image-upload", "ImageUpload", "upload", "Image upload pattern with preview-oriented copy."),
-  component("file-dropzone", "FileDropzone", "upload", "Lightweight file dropzone primitive for custom upload flows."),
 
   component("stepper", "Stepper", "wizard", "Clickable step navigation for multi-step forms."),
   component("wizard", "Wizard", "wizard", "Stepper, content and footer controls combined into one workflow."),
 
   component("resource-page", "ResourcePage", "patterns", "Full resource index page shell for admin dashboards."),
   component("resource-detail-page", "ResourceDetailPage", "patterns", "Detail page shell with title, metadata and sections."),
+  component("page-toolbar", "PageToolbar", "patterns", "Reusable page toolbar for search, filters, view controls and actions."),
+  component("data-view", "DataView", "patterns", "Data view shell that combines toolbar, table, loading, error and empty states."),
 ])

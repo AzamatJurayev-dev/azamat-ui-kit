@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { InputPrimitive } from "@/components/ui/input-primitive"
+import { InputPrimitive } from "./primitive"
 import { cn } from "@/lib/utils"
 
 const inputDecoratorVariants = cva("relative flex w-full items-center", {
