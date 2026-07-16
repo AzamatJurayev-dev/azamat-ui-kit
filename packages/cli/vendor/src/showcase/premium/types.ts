@@ -36,7 +36,7 @@ export type ComponentDemoBundle = {
 }
 
 export const defaultComponentDemoState: ComponentDemoState = {
-  textValue: "Azamat UI",
+  textValue: "Tembro",
   textareaValue: "Controlled preview content for the selected component.",
   checked: true,
   switchOn: true,

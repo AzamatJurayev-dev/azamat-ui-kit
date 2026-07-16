@@ -4,7 +4,7 @@ import { JsonInput } from "@/index"
 
 export function JsonInputShowcase() {
   const [value, setValue] = React.useState(`{
-  "name": "Azamat UI",
+  "name": "Tembro",
   "version": 1
 }`)
 

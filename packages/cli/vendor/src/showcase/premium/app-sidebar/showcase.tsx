@@ -56,7 +56,7 @@ export function AppSidebarShowcase({ mode }: ComponentDemoProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.26em] aui-text-muted">Navigation shell</p>
             <h3 className="mt-3 text-2xl font-semibold tracking-tight aui-text-strong">Sidebar should feel install-ready on its own</h3>
             <p className="mt-3 max-w-lg text-sm leading-6 aui-text-muted">
-              This preview keeps the focus on one reusable sidebar surface: identity, route items, badges, disabled states and collapsed behavior.
+              This preview keeps the focus on one reusable sidebar surface: identity, route items, badges, disabled states, section labels, active indicators and collapsed behavior.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

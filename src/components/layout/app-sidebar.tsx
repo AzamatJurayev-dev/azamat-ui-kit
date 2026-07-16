@@ -96,6 +96,31 @@ function getSidebarInteractiveClassName({
   )
 }
 
+function getSidebarItemLayoutClassName({
+  collapsed,
+  depth,
+  itemSize,
+  activeIndicator,
+}: {
+  collapsed: boolean
+  depth: number
+  itemSize: NonNullable<AppSidebarProps["itemSize"]>
+  activeIndicator: NonNullable<AppSidebarProps["activeIndicator"]>
+}) {
+  return cn(
+    "relative w-full rounded-[min(var(--radius-xl),14px)] py-2",
+    itemSize === "sm" && "min-h-8 text-xs",
+    itemSize === "md" && "min-h-9 text-sm",
+    itemSize === "lg" && "min-h-11 text-sm",
+    collapsed ? "justify-center px-2" : "px-2.5",
+    !collapsed && depth > 0 && "pl-3",
+    activeIndicator === "bar" &&
+      "data-[active=true]:pl-4 before:pointer-events-none before:absolute before:left-1.5 before:top-1/2 before:hidden before:h-5 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-[color:var(--sidebar-primary)] data-[active=true]:before:block",
+    activeIndicator === "pill" && "rounded-full",
+    activeIndicator === "none" && "data-[active=true]:shadow-none"
+  )
+}
+
 function hasVisibleSidebarChildren(item: AppSidebarNavItem) {
   return item.items?.some((child) => !child.hidden) ?? false
 }
@@ -138,9 +163,9 @@ function SidebarLeafItem({
     "data-size": itemSize,
     "data-active-indicator": activeIndicator,
     className: cn(
-      "flex items-center gap-2 border border-transparent text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+      "flex items-center gap-2 border border-transparent font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
       getSidebarInteractiveClassName({ active: item.active, disabled: item.disabled }),
-      collapsed && "justify-center px-2"
+      getSidebarItemLayoutClassName({ collapsed, depth, itemSize, activeIndicator })
     ),
   }
 
@@ -312,9 +337,9 @@ function SidebarTree({
             data-active={active || undefined}
             data-active-indicator={activeIndicator}
             className={cn(
-              "flex list-none items-center gap-2 border border-transparent text-sm font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
+              "flex list-none items-center gap-2 border border-transparent font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
               getSidebarInteractiveClassName({ active }),
-              collapsed ? "justify-center px-2" : "px-2.5"
+              getSidebarItemLayoutClassName({ collapsed, depth, itemSize, activeIndicator })
             )}
           >
             {item.icon ? (
@@ -535,7 +560,7 @@ function SidebarSurface({
                 type="button"
                 aria-label={mobileCloseLabel}
                 data-slot="app-sidebar-mobile-close"
-                className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] text-[color:var(--aui-page-foreground)] transition hover:bg-[color:var(--aui-control-bg)]"
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-xl border border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg-alt,var(--muted))] text-[color:var(--aui-page-foreground,var(--foreground))] transition hover:bg-[color:var(--aui-control-bg,var(--muted))]"
                 onClick={onRequestClose}
               >
                 <XIcon className="size-4" />
@@ -756,12 +781,12 @@ function Sidebar({
       data-slot="app-sidebar-mobile-trigger"
       data-state={mobileOpen ? "open" : "closed"}
       className={cn(
-        "inline-flex min-h-10 items-center gap-2 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-3 text-sm font-medium text-[color:var(--aui-page-foreground)] shadow-sm transition hover:bg-[color:var(--aui-page-bg-alt)]",
+        "inline-flex min-h-10 items-center gap-2 rounded-xl border border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg,var(--background))] px-3 text-sm font-medium text-[color:var(--aui-page-foreground,var(--foreground))] shadow-sm transition hover:bg-[color:var(--aui-page-bg-alt,var(--muted))]",
         mobileToggleClassName
       )}
       onClick={() => setMobileOpen(!mobileOpen)}
     >
-      <span className="inline-flex size-8 items-center justify-center rounded-lg bg-[color:var(--aui-page-bg-alt)]">
+      <span className="inline-flex size-8 items-center justify-center rounded-lg bg-[color:var(--aui-page-bg-alt,var(--muted))]">
         {mobileToggleIcon ?? <MenuIcon className="size-4" />}
       </span>
       <span>{mobileOpen ? mobileCloseLabel : mobileToggleLabel}</span>
@@ -786,6 +811,10 @@ function Sidebar({
             mobileOpen ? "opacity-100" : "pointer-events-none opacity-0",
             mobileOverlayClassName
           )}
+          style={{
+            opacity: mobileOpen ? 1 : 0,
+            pointerEvents: mobileOpen ? "auto" : "none",
+          }}
           onClick={() => setMobileOpen(false)}
         />
         <SidebarSurface
@@ -800,7 +829,7 @@ function Sidebar({
           aria-modal="true"
           aria-label={typeof mobileTitle === "string" ? mobileTitle : "Navigation"}
           className={cn(
-            "fixed inset-y-0 left-0 z-50 max-w-[22rem] border-r border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] shadow-2xl transition-transform duration-200 ease-out",
+            "fixed inset-y-0 left-0 z-50 max-w-[22rem] border-r border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg,var(--background))] shadow-2xl transition-transform duration-200 ease-out",
             mobileOpen ? "translate-x-0" : "-translate-x-full",
             mobilePanelClassName,
             className
@@ -808,6 +837,7 @@ function Sidebar({
           style={{
             width: mobileWidth,
             minWidth: mobileWidth,
+            translate: mobileOpen ? "0 0" : "-100% 0",
           }}
         />
       </div>

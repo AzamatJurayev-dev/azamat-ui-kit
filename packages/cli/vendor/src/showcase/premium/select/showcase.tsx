@@ -113,6 +113,27 @@ export function SelectShowcase({ state, setState }: ComponentDemoProps) {
               </div>
             </div>
 
+            <div className="rounded-[20px] border border-[color:var(--aui-divider)] p-4">
+              <p className="text-sm font-medium aui-text-muted">Custom option renderer without duplicate check icons</p>
+              <div className="mt-3">
+                <Select
+                  defaultValue={planOptions[1].value}
+                  options={planOptions}
+                  showSelectedIndicator={false}
+                  renderOption={(option, optionState) => (
+                    <span className="flex min-w-0 flex-1 items-center justify-between gap-3">
+                      <span className="min-w-0">
+                        <span className="block truncate font-medium">{option.label}</span>
+                        {option.description ? <span className="block truncate text-xs aui-text-muted">{option.description}</span> : null}
+                      </span>
+                      {optionState.selected ? <span className="rounded-full bg-[color:var(--aui-control-bg)] px-2 py-0.5 text-xs font-semibold">Selected</span> : null}
+                    </span>
+                  )}
+                  triggerClassName="w-full"
+                />
+              </div>
+            </div>
+
             <div className="grid gap-3 sm:grid-cols-3">
               {summaryRows.map(([label, value]) => (
                 <div key={label} className="rounded-[18px] border border-[color:var(--aui-divider)] px-4 py-3">
@@ -151,6 +172,23 @@ export function SelectShowcase({ state, setState }: ComponentDemoProps) {
               <Button type="button" size="sm" variant="secondary" onClick={() => setState({ selectValue: planOptions[0].value })}>
                 Reset
               </Button>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Select
+                value="invalid"
+                onValueChange={() => undefined}
+                options={[{ value: "invalid", label: "Invalid selection" }]}
+                invalid
+                triggerClassName="w-full"
+              />
+              <Select
+                value="loading"
+                onValueChange={() => undefined}
+                options={[{ value: "loading", label: "Loading options" }]}
+                loading
+                triggerClassName="w-full"
+              />
             </div>
           </div>
         </div>

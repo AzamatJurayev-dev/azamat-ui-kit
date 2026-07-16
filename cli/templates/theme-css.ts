@@ -1,9 +1,9 @@
-export const AZAMAT_UI_THEME_START = "/* tembro:start */"
-export const AZAMAT_UI_THEME_END = "/* tembro:end */"
-export const AZAMAT_UI_THEME_MARKER = "tembro"
+export const TEMBRO_THEME_START = "/* tembro:start */"
+export const TEMBRO_THEME_END = "/* tembro:end */"
+export const TEMBRO_THEME_MARKER = "tembro"
 
-export function getAzamatUiThemeCss(componentSourcePath: string) {
-  return `${AZAMAT_UI_THEME_START}
+export function getTembroThemeCss(componentSourcePath: string) {
+  return `${TEMBRO_THEME_START}
 @source "${componentSourcePath}";
 
 @custom-variant dark (&:is(.dark *));
@@ -1765,6 +1765,6 @@ export function getAzamatUiThemeCss(componentSourcePath: string) {
   [data-slot="file-upload-file-status"][data-status="error"] { color: var(--destructive); background: color-mix(in oklch, var(--destructive), transparent 90%); }
   [data-slot="file-upload-progress-bar"] { background: var(--primary); }
 }
-${AZAMAT_UI_THEME_END}
+${TEMBRO_THEME_END}
 `
 }

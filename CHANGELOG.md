@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## 3.1.14 - 2026-07-16
+
+- Fixed Kanban drag-and-drop by adding a native drag/drop fallback while preserving the existing `@dnd-kit` integration.
+- Kept Kanban controlled and uncontrolled column updates in sync for drag, drop, and card move callbacks.
+- Refreshed registry/showcase package metadata for the 3.1.14 release.
+
+## 3.1.13 - 2026-07-16
+
+- Fixed `LineChart` responsive SVG height so wide dashboard cards no longer stretch line charts into oversized panels.
+
+## 3.1.12 - 2026-07-16
+
+- Fixed `BarChart` bars rendering with zero height inside dashboard cards.
+- Kept `DataTable` desktop and mobile layouts mutually exclusive at runtime so hidden duplicate cells and badges are not rendered.
+
+## 3.1.11 - 2026-07-16
+
+- Removed the fixed max-width shell from the generated showcase workbench so `tembro init` projects can use the full viewport for component QA.
+- Updated generated showcase grids to align items at the start, preventing cards from stretching to unrelated sibling heights on wide dashboards.
+- Synced the full-width showcase template into the vendored CLI assets used by the published package.
+
+## 3.1.6 - 2026-07-13
+
+- Fixed duplicate selected indicators in Select options.
+- Enforced horizontal icon and label alignment for Button.
+- Strengthened centralized Select trigger borders and consumer theme scanning.
+
 ## 3.1.5 - 2026-07-13
 
 ### Changed
@@ -96,7 +123,7 @@ All notable changes to this project will be documented in this file.
 - replaced `SavedFilterSelect` browser `prompt()` saving with an inline input flow so saved-view creation is stylable, testable, and accessible
 - rebuilt `ResizablePanel` into an actual split-panel primitive with draggable and keyboard-accessible handles instead of a fake CSS resize shell
 - upgraded `MentionInput` into a real trigger-based mention surface with inline suggestions, keyboard selection, and cursor-aware insertion
-- synced `JsonInput` validation with controlled values and aligned `TrendCard` success sparkline colors with Azamat UI theme tokens
+- synced `JsonInput` validation with controlled values and aligned `TrendCard` success sparkline colors with Tembro theme tokens
 - refreshed registry/showcase wiring and CLI vendor copies so the new component behavior ships consistently in both package and source-copy flows
 
 ## 0.3.22 - 2026-07-01

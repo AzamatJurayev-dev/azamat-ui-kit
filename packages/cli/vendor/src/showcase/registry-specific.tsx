@@ -331,7 +331,7 @@ function OverlayPreview({ slug }: { slug: string }) {
         <DescriptionList
           items={[
             { key: "plan", label: "Plan", value: "Scale" },
-            { key: "owner", label: "Owner", value: "Azamat UI" },
+            { key: "owner", label: "Owner", value: "Tembro" },
           ]}
         />
       </Drawer>
@@ -622,7 +622,7 @@ function DataTablePartsPreview({ slug }: { slug: string }) {
         <span>Status</span>
         <span>Actions</span>
       </div>
-      {["Azamat UI", "Registry", "Dashboard"].map((row, index) => (
+      {["Tembro", "Registry", "Dashboard"].map((row, index) => (
         <div key={row} className="grid grid-cols-[40px_1fr_120px_72px] items-center border-b border-[color:var(--aui-divider)] px-3 py-3 last:border-b-0">
           <span><input type="checkbox" aria-label={`Select ${row}`} defaultChecked={index === 0} /></span>
           <span className="font-medium aui-text-strong">{row}</span>

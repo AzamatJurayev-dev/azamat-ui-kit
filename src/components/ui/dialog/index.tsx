@@ -16,6 +16,7 @@ export type DialogPopupProps = DialogPrimitive.Popup.Props & {
   surface?: "default" | "plain"
 }
 export type DialogHeaderProps = React.ComponentProps<"div">
+export type DialogBodyProps = React.ComponentProps<"div">
 export type DialogFooterProps = React.ComponentProps<"div"> & {
   showCloseButton?: boolean
 }
@@ -72,7 +73,7 @@ function DialogContent({
         role="dialog"
         aria-modal="true"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid max-h-[min(92vh,calc(100dvh-2rem))] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 overflow-y-auto overscroll-contain duration-100 outline-none data-[surface=plain]:overflow-visible data-[size=xs]:sm:max-w-sm data-[size=sm]:sm:max-w-md data-[size=md]:sm:max-w-lg data-[size=lg]:sm:max-w-2xl data-[size=xl]:sm:max-w-4xl data-[size=full]:h-[min(92vh,56rem)] data-[size=full]:max-w-[min(96vw,84rem)] data-[size=full]:grid-rows-[auto_minmax(0,1fr)] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 left-1/2 z-50 grid max-h-[min(92vh,calc(100dvh-2rem))] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_minmax(0,1fr)_auto] gap-5 overflow-hidden overscroll-contain duration-100 outline-none data-[surface=plain]:overflow-visible data-[size=xs]:sm:max-w-sm data-[size=sm]:sm:max-w-md data-[size=md]:sm:max-w-lg data-[size=lg]:sm:max-w-2xl data-[size=xl]:sm:max-w-4xl data-[size=full]:h-[min(92vh,56rem)] data-[size=full]:max-w-[min(96vw,84rem)] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -102,7 +103,17 @@ function DialogHeader({ className, ...props }: DialogHeaderProps) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col", className)}
+      className={cn("min-w-0 shrink-0 pr-10", className)}
+      {...props}
+    />
+  )
+}
+
+function DialogBody({ className, ...props }: DialogBodyProps) {
+  return (
+    <div
+      data-slot="dialog-body"
+      className={cn("min-h-0 overflow-y-auto overscroll-contain", className)}
       {...props}
     />
   )
@@ -118,7 +129,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        "flex shrink-0 flex-wrap items-center justify-end gap-2 [&_[data-slot=button]]:inline-flex [&_[data-slot=button]]:flex-row [&_[data-slot=button]]:items-center [&_[data-slot=button]]:justify-center [&_[data-slot=button]]:gap-2",
         className
       )}
       {...props}
@@ -158,6 +169,7 @@ function DialogDescription({
 
 export {
   Dialog,
+  DialogBody,
   DialogClose,
   DialogContent,
   DialogDescription,

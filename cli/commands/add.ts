@@ -2,11 +2,12 @@ import path from "path";
 import fs from "fs-extra";
 import prompts from "prompts";
 import { logger } from "../utils/logger";
-import { registry, registryNames, type ComponentName, type ComponentRegistryItem } from "../registry";
+import { getAllRegistryComponentNames, registry, registryNames, type ComponentName, type ComponentRegistryItem } from "../registry";
 import { detectPackageManager } from "../utils/detect-package-manager";
 import { installPackages } from "../utils/install-packages";
 import { getCliNpxCommand } from "../utils/cli-metadata";
 import { getPackageRootFromImportMeta } from "../utils/package-root";
+import { writeShowcaseFiles } from "../showcase-files";
 
 type TembroConfig = {
   style?: string;
@@ -24,11 +25,35 @@ type TembroConfig = {
 type AddCommandOptions = {
   overwrite?: boolean;
   dryRun?: boolean;
+  plan?: boolean;
   skipInstall?: boolean;
 };
 
 function isComponentName(value: string): value is ComponentName {
   return value in registry;
+}
+
+function getSuggestedComponents(value: string) {
+  const normalizedValue = value.toLowerCase();
+
+  return registryNames
+    .filter((name) => !registry[name].migrationAliasFor)
+    .map((name) => {
+      const normalizedName = name.toLowerCase();
+      let score = 0;
+
+      if (normalizedName.startsWith(normalizedValue)) score += 40;
+      if (normalizedName.includes(normalizedValue)) score += 25;
+      for (const part of normalizedValue.split(/[-_\s]+/).filter(Boolean)) {
+        if (normalizedName.includes(part)) score += 8;
+      }
+
+      return { name, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))
+    .slice(0, 5)
+    .map((item) => item.name);
 }
 
 function resolveCanonicalComponentName(componentName: ComponentName) {
@@ -214,11 +239,20 @@ export async function addCommand(components: string[], options: AddCommandOption
     process.exit(1);
   }
 
+  const requestedComponents = components.includes("showcase")
+    ? components.flatMap((componentName) => (componentName === "showcase" ? getAllRegistryComponentNames() : componentName))
+    : components
+
   const validComponents: ComponentName[] = [];
 
-  for (const componentName of components) {
+  for (const componentName of requestedComponents) {
     if (!isComponentName(componentName)) {
+      const suggestions = getSuggestedComponents(componentName);
       logger.warn(`${componentName} registry ichida mavjud emas.`);
+      if (suggestions.length) {
+        logger.info(`Yaqin nomlar: ${suggestions.join(", ")}`);
+      }
+      logger.info(`Barcha componentlar: ${getCliNpxCommand("list")}`);
       continue;
     }
 
@@ -247,6 +281,114 @@ export async function addCommand(components: string[], options: AddCommandOption
   let addedFiles = 0;
   let overwrittenFiles = 0;
   let skippedFiles = 0;
+  const shouldWriteShowcase = components.includes("showcase");
+
+  async function collectCopyPlan() {
+    const plannedSources = new Set<string>();
+    const files: Array<{
+      source: string;
+      target: string | null;
+      exists: boolean;
+      operation: "add" | "overwrite" | "skip" | "unresolved";
+    }> = [];
+
+    async function visitSource(source: string, targetTemplate?: string) {
+      const normalizedSource = source.replaceAll("\\", "/");
+      if (plannedSources.has(normalizedSource)) return;
+
+      const sourcePath = path.join(packageRoot, normalizedSource);
+      if (!fs.existsSync(sourcePath)) {
+        files.push({
+          source: normalizedSource,
+          target: null,
+          exists: false,
+          operation: "unresolved",
+        });
+        return;
+      }
+
+      const sourceStat = await fs.stat(sourcePath);
+      if (sourceStat.isDirectory()) {
+        plannedSources.add(normalizedSource);
+        const entries = await fs.readdir(sourcePath, { withFileTypes: true });
+
+        for (const entry of entries) {
+          const childSource = path.posix.join(normalizedSource, entry.name);
+          const childTarget = targetTemplate
+            ? path.posix.join(targetTemplate.replaceAll("\\", "/"), entry.name)
+            : undefined;
+
+          await visitSource(childSource, childTarget);
+        }
+
+        return;
+      }
+
+      plannedSources.add(normalizedSource);
+      const resolvedTarget = targetTemplate
+        ? resolveTargetPath(targetTemplate, config)
+        : getLocalSourceTarget(normalizedSource, config);
+
+      const sourceContent = await fs.readFile(sourcePath, "utf8");
+      for (const externalPackage of getExternalImportPackages(sourceContent)) {
+        dependenciesToInstall.add(externalPackage);
+      }
+
+      for (const importedSource of getLocalImports(sourceContent, normalizedSource)) {
+        for (const candidate of getImportCandidates(importedSource)) {
+          if (fs.existsSync(path.join(packageRoot, candidate))) {
+            await visitSource(candidate);
+            break;
+          }
+        }
+      }
+
+      if (!resolvedTarget) {
+        files.push({
+          source: normalizedSource,
+          target: null,
+          exists: false,
+          operation: "unresolved",
+        });
+        return;
+      }
+
+      const targetPath = path.join(cwd, resolvedTarget);
+      const exists = fs.existsSync(targetPath);
+      files.push({
+        source: normalizedSource,
+        target: path.relative(cwd, targetPath),
+        exists,
+        operation: exists ? (options.overwrite ? "overwrite" : "skip") : "add",
+      });
+    }
+
+    for (const item of items) {
+      item.dependencies?.forEach((dep) => dependenciesToInstall.add(dep));
+
+      for (const file of item.files ?? []) {
+        await visitSource(file.source, file.target);
+      }
+    }
+
+    return {
+      components: validComponents,
+      resolvedComponents: items.map((item) => item.name),
+      dependencies: Array.from(dependenciesToInstall).sort(),
+      files,
+    };
+  }
+
+  if (options.plan) {
+    const plan = await collectCopyPlan()
+    console.log(JSON.stringify({
+      ...plan,
+      showcase: shouldWriteShowcase,
+    }, null, 2));
+    return;
+  }
+
+  logger.info(`Resolved: ${items.map((item) => item.name).join(", ")}`);
 
   async function shouldOverwriteConflict(relativeTarget: string) {
     if (overwriteConflicts !== undefined) return overwriteConflicts;
@@ -357,12 +499,30 @@ async function copySourceWithLocalImports(source: string, targetTemplate?: strin
 
   const changedFiles = addedFiles + overwrittenFiles;
 
+  if (shouldWriteShowcase) {
+    await writeShowcaseFiles({
+      cwd,
+      config,
+      packageRoot,
+      overwrite: options.overwrite,
+      dryRun: options.dryRun,
+    })
+  }
+
+  const dependencyList = Array.from(dependenciesToInstall).sort();
+
+  if (options.dryRun && dependencyList.length) {
+    logger.info(`[dry-run:dependencies] ${dependencyList.join(", ")}`);
+  }
+
   if (!options.skipInstall && dependenciesToInstall.size > 0 && !options.dryRun && changedFiles > 0) {
     await installPackages({
       cwd,
       packageManager,
-      packages: Array.from(dependenciesToInstall),
+      packages: dependencyList,
     });
+  } else if (options.skipInstall && dependencyList.length && changedFiles > 0) {
+    logger.warn(`Dependency install skipped: ${dependencyList.join(", ")}`);
   }
 
   if (options.dryRun) {

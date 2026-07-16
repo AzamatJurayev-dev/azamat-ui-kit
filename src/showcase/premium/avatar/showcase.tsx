@@ -41,11 +41,11 @@ export function AvatarShowcase() {
           <div className="rounded-xl border border-[color:var(--aui-divider)] p-4">
             <p className="text-sm font-semibold aui-text-strong">Size and shape</p>
             <div className="mt-4 flex flex-wrap items-center gap-3">
-              <Avatar name="AZ" size="xs" />
-              <Avatar name="AZ" size="sm" shape="rounded" />
-              <Avatar name="AZ" size="default" />
-              <Avatar name="AZ" size="lg" shape="square" />
-              <Avatar name="AZ" size="xl" shape="rounded" />
+              <Avatar name="TM" size="xs" />
+              <Avatar name="TM" size="sm" shape="rounded" />
+              <Avatar name="TM" size="default" />
+              <Avatar name="TM" size="lg" shape="square" />
+              <Avatar name="TM" size="xl" shape="rounded" />
             </div>
           </div>
         </div>

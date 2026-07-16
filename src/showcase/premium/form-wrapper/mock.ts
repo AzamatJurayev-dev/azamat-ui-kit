@@ -15,7 +15,7 @@ type DemoValues = {
 export function Example() {
   const form = useForm<DemoValues>({
     defaultValues: {
-      name: "Azamat UI",
+      name: "Tembro",
       ownerPhone: "+998 90 123 45 67",
       price: 120,
       notes: "Use control, name, rules, error, and required labels.",
@@ -75,7 +75,7 @@ export function Example() {
     </form>
   )`
 ,
-  htmlCode: '<form><label for="workspace">Workspace</label><input id="workspace" value="Azamat UI" /></form>',
+  htmlCode: '<form><label for="workspace">Workspace</label><input id="workspace" value="Tembro" /></form>',
   cliCommand: "npx tembro add form-input form-textarea form-switch",
   highlights: ["control + name contract", "Universal `kind` variants", "Error display and required markers", "Consistent wrapper shell behavior"],
   relatedBlockSlugs: ["settings-form", "crm-dashboard", "users-table"],

@@ -28,7 +28,7 @@ import {
   ToggleLeftIcon,
   WorkflowIcon,
 } from "lucide-react"
-import azamatKitRegistry from "./tembro-registry.json"
+import tembroRegistry from "./tembro-registry.json"
 import {
   PACKAGE_LATEST_RELEASE_DATE,
   PACKAGE_LATEST_VERSION,
@@ -254,7 +254,7 @@ export type ComponentDetailSidebarSection = {
 export const PACKAGE_NAME = "tembro"
 export const CLI_PACKAGE_NAME = "tembro"
 export const PACKAGE_IMPORT = "tembro"
-export const DOCS_APP_NAME = "azamat-ui"
+export const DOCS_APP_NAME = "tembro"
 export const CLI_INIT_NEXT_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template next --defaults`
 export const CLI_INIT_VITE_COMMAND = `npx ${CLI_PACKAGE_NAME} init --template vite --defaults`
 export const CLI_ADD_COMMAND = `npx ${CLI_PACKAGE_NAME} add button input`
@@ -262,9 +262,9 @@ export const PACKAGE_INSTALL_COMMAND = `${CLI_INIT_NEXT_COMMAND}\n${CLI_ADD_COMM
 export const CLI_INSTALL_COMMAND = `npx ${CLI_PACKAGE_NAME} --help`
 export const CLI_THEME_COMMAND = `npx ${CLI_PACKAGE_NAME} theme`
 export const PACKAGE_NPM_URL = "https://www.npmjs.com/package/tembro"
-export const PACKAGE_GITHUB_URL = "https://github.com/AzamatJurayev-dev/tembro"
+export const PACKAGE_GITHUB_URL = "https://github.com/AzamatJurayev-dev/azamat-ui-kit"
 export const PACKAGE_GITHUB_RELEASES_URL = `${PACKAGE_GITHUB_URL}/releases`
-export const DOCS_REPO_URL = "https://github.com/AzamatJurayev-dev/azamat-ui"
+export const DOCS_REPO_URL = PACKAGE_GITHUB_URL
 export const PACKAGE_RELEASES_URL = PACKAGE_GITHUB_RELEASES_URL
 export const DOCS_RELEASES_URL = `${DOCS_REPO_URL}/releases`
 export const DOCS_ROOT_PATH = "/docs"
@@ -1529,7 +1529,7 @@ type KitRegistryFile = {
   recommended?: string[]
 }
 
-const kitRegistry = azamatKitRegistry as KitRegistryFile
+const kitRegistry = tembroRegistry as KitRegistryFile
 const kitGroups = kitRegistry?.groups ?? {}
 const kitRecommendedSlugs = new Set((kitRegistry?.recommended ?? []).map((slug) => slug))
 const kitMigrationAliases = kitRegistry?.migrationAliases ?? {}
@@ -1602,6 +1602,61 @@ function slugToTitle(value: string) {
     .join(" ")
 }
 
+const fallbackRegistryFeaturesByGroup: Record<string, string[]> = {
+  ui: ["Composable primitive", "Variant-ready styling", "Keyboard and focus-friendly defaults", "Local source-copy customization"],
+  actions: ["Action composition", "Icon and label pairing", "Keyboard and focus-friendly defaults", "Dense toolbar usage"],
+  feedback: ["Inline status messaging", "Loading, empty or error context", "Accessible status copy", "Actionable recovery guidance"],
+  display: ["Structured content display", "Empty and loading state support", "Accessible reading order", "Responsive data presentation"],
+  overlay: ["Focused overlay behavior", "Escape and outside-click handling", "Accessible focus management", "Compact action footer"],
+  inputs: ["Controlled value support", "Validation-ready states", "Keyboard and focus-friendly defaults", "Form-friendly composition"],
+  form: ["Form shell integration", "Validation and error states", "Accessible label contract", "Reusable field composition"],
+  dataTable: ["Data workflow composition", "Sorting/filtering integration", "Accessible row and header semantics", "Responsive operator surfaces"],
+  data_table: ["Data workflow composition", "Sorting/filtering integration", "Accessible row and header semantics", "Responsive operator surfaces"],
+  layout: ["Route-level structure", "Navigation-aware composition", "Responsive shell behavior", "Reusable product framing"],
+  navigation: ["Section navigation", "Current state support", "Keyboard and focus-friendly defaults", "Route-friendly links"],
+  filters: ["Search and filter composition", "Saved or reusable filter state", "Accessible control labels", "Data-table integration"],
+  calendar: ["Date selection workflow", "Boundary and disabled-date support", "Keyboard and focus-friendly defaults", "Scheduling-ready layout"],
+  upload: ["File interaction workflow", "Preview and progress states", "Accessible upload guidance", "Validation-ready constraints"],
+  wizard: ["Step flow composition", "Progress and completion state", "Keyboard and focus-friendly defaults", "Guided form workflow"],
+  notifications: ["Transient status messaging", "Unread and dismiss flows", "Accessible notification copy", "Async completion feedback"],
+  command: ["Keyboard-first discovery", "Search and grouped actions", "Accessible command labels", "Route or action execution"],
+  patterns: ["Composed product workflow", "Reusable screen section", "Accessible structure", "Production layout starting point"],
+}
+
+const fallbackRegistryDescriptionByGroup: Record<string, string> = {
+  ui: "Reusable primitive for product interfaces with source-copy styling and predictable focus behavior.",
+  actions: "Action surface for dense product workflows, toolbar controls and copy-friendly command areas.",
+  feedback: "Status surface for communicating loading, empty, success, warning or error context with a clear next step.",
+  display: "Read-oriented surface for presenting operational content, metadata, timelines or structured records.",
+  overlay: "Focused overlay pattern for short decisions, contextual actions and contained editing flows.",
+  inputs: "Input surface for controlled values, validation states and form-ready interaction patterns.",
+  form: "Form composition helper for labels, validation, controlled values and repeatable field structure.",
+  dataTable: "Data workflow helper for reusable tables, row actions, filtering, selection and responsive records.",
+  data_table: "Data workflow helper for reusable tables, row actions, filtering, selection and responsive records.",
+  layout: "Layout helper for route-level structure, navigation context and reusable application shells.",
+  navigation: "Navigation helper for route-aware sections, current state and keyboard-friendly movement.",
+  filters: "Filter composition helper for search, chips, saved views and data narrowing workflows.",
+  calendar: "Date and schedule surface for reporting, planning, disabled-date rules and calendar-style selection.",
+  upload: "Upload workflow surface for files, images, preview states, progress and validation guidance.",
+  wizard: "Guided workflow surface for multi-step forms, progress state and step-by-step completion.",
+  notifications: "Notification surface for async status, unread activity, dismiss behavior and transient updates.",
+  command: "Command surface for keyboard-first search, grouped actions and fast route or action discovery.",
+  patterns: "Composed product pattern that combines primitives into reusable production screen sections.",
+}
+
+function getFallbackFeatures(group: string) {
+  return fallbackRegistryFeaturesByGroup[group] ?? [
+    "Source-copy component",
+    "Composable product usage",
+    "Keyboard and focus-friendly defaults",
+    "Local customization",
+  ]
+}
+
+function getFallbackDescription(group: string, title: string) {
+  return `${title}. ${fallbackRegistryDescriptionByGroup[group] ?? "Reusable source-copy surface for production product interfaces."}`
+}
+
 const baseComponentSlugs = new Set(baseComponentCatalog.map((item) => item.slug))
 const generatedComponentCatalog = new Map<string, ComponentCatalogItem>()
 for (const [group, groupSlugs] of Object.entries(kitGroups)) {
@@ -1622,15 +1677,17 @@ for (const [group, groupSlugs] of Object.entries(kitGroups)) {
     generatedComponentCatalog.set(effectiveSlug, {
       slug: effectiveSlug,
       title: aliasTarget ? slugToTitle(aliasTarget) : slugToTitle(effectiveSlug),
-      description: `${slugToTitle(effectiveSlug)} surfaced from package registry group "${group}".`,
+      description: getFallbackDescription(group, slugToTitle(effectiveSlug)),
       icon,
       category,
       status: kitRecommendedSlugs.has(effectiveSlug) ? "Stable" : "Preview",
       installCommand: PACKAGE_INSTALL_COMMAND,
       propsRows: [
         ["className", "string", "-", "Additional classes for wrapper element."],
+        ["children", "ReactNode", "-", "Optional composed content or custom slots when the component supports composition."],
+        ["aria-label", "string", "-", "Accessible label for icon-only, compact, or non-text usage."],
       ],
-      features: [group],
+      features: getFallbackFeatures(group),
     })
   }
 }

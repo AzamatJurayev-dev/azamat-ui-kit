@@ -36,7 +36,7 @@ export type ShowcaseDemoBundle = {
 }
 
 export const defaultShowcaseDemoState: ShowcaseDemoState = {
-  textValue: "Azamat UI",
+  textValue: "Tembro",
   textareaValue: "Controlled preview content for the selected component.",
   checked: true,
   switchOn: true,

@@ -248,6 +248,18 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "modern", "rich-text-editor.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "modern", "image-cropper.tsx"))
 
+    if (template === "vite") {
+      await runCli(fixtureRoot, ["add", "showcase", "--overwrite", "--skip-install"])
+      assertFileExists(fixtureRoot, "src/App.tsx")
+      assertFileExists(fixtureRoot, "src/showcase/layout/WorkbenchSidebar.tsx")
+      assertFileExists(fixtureRoot, "src/showcase/sections/KanbanSection.tsx")
+      assertFileExists(fixtureRoot, path.join(paths.componentsPath, "display", "kanban.tsx"))
+      const showcaseHero = await fs.readFile(path.join(fixtureRoot, "src", "showcase", "layout", "HeroSection.tsx"), "utf8")
+      if (!showcaseHero.includes("All Tembro Components Test Surface")) {
+        throw new Error("showcase command did not write the workbench hero")
+      }
+    }
+
     await runCli(fixtureRoot, ["theme", paths.cssPath])
     const themePath = path.join(fixtureRoot, paths.cssPath)
     const themeContent = await fs.readFile(themePath, "utf8")

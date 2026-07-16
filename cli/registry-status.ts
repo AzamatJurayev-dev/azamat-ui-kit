@@ -107,6 +107,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "rich-text-editor": "preview",
   "image-cropper": "preview",
   "qr-code": "stable",
+  charts: "stable",
   "progress-circle": "stable",
   tag: "preview",
   typography: "preview",

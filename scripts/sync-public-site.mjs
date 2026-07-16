@@ -37,6 +37,11 @@ const copyFiles = [
   "src/showcase/types.ts",
 ]
 
+const copyFileTargets = [
+  ["src/showcase/package-meta.ts", "src/showcase/site/package-meta.ts"],
+  ["src/showcase/tembro-registry.json", "src/showcase/site/tembro-registry.json"],
+]
+
 async function assertDirectory(directory, label) {
   const stat = await fs.stat(directory).catch(() => null)
   if (!stat?.isDirectory()) {
@@ -59,6 +64,13 @@ async function copyFile(relativePath) {
   await fs.copyFile(source, target)
 }
 
+async function copyFileTo(sourceRelativePath, targetRelativePath) {
+  const source = path.join(root, sourceRelativePath)
+  const target = path.join(siteRoot, targetRelativePath)
+  await fs.mkdir(path.dirname(target), { recursive: true })
+  await fs.copyFile(source, target)
+}
+
 await assertDirectory(siteRoot, "public site")
 
 for (const [source, target] of copyTrees) {
@@ -67,6 +79,10 @@ for (const [source, target] of copyTrees) {
 
 for (const file of copyFiles) {
   await copyFile(file)
+}
+
+for (const [source, target] of copyFileTargets) {
+  await copyFileTo(source, target)
 }
 
 console.log(`Public site synced: ${siteRoot}`)

@@ -1,5 +1,6 @@
 import { actionsShowcaseDemoRegistry } from "@/components/actions/demo"
 import { calendarShowcaseDemoRegistry } from "@/components/calendar/demo"
+import { chartsShowcaseDemoRegistry } from "@/components/charts/demo"
 import { dataTableShowcaseDemoRegistry } from "@/components/data-table/demo"
 import { displayShowcaseDemoRegistry } from "@/components/display/demo"
 import { feedbackShowcaseDemoRegistry } from "@/components/feedback/demo"
@@ -33,6 +34,7 @@ export * from "./supplemental"
 export const showcaseDemoRegistry = {
   ...actionsShowcaseDemoRegistry,
   ...calendarShowcaseDemoRegistry,
+  ...chartsShowcaseDemoRegistry,
   ...dataTableShowcaseDemoRegistry,
   ...displayShowcaseDemoRegistry,
   ...feedbackShowcaseDemoRegistry,
@@ -47,8 +49,8 @@ export const showcaseDemoRegistry = {
   ...wizardShowcaseDemoRegistry,
   ...registrySpecificDemoRegistry,
   ...supplementalShowcaseDemoRegistry,
-  ...premiumShowcaseDemoRegistry,
   ...registryQualityDemoRegistry,
+  ...premiumShowcaseDemoRegistry,
 }
 
 export { defaultComponentDemoState }

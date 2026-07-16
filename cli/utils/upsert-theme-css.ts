@@ -1,9 +1,9 @@
 import path from "path"
 import fs from "fs-extra"
 import {
-  AZAMAT_UI_THEME_END,
-  AZAMAT_UI_THEME_START,
-  getAzamatUiThemeCss,
+  TEMBRO_THEME_END,
+  TEMBRO_THEME_START,
+  getTembroThemeCss,
 } from "../templates/theme-css"
 
 type UpsertThemeCssOptions = {
@@ -29,12 +29,12 @@ function ensureRequiredImports(content: string) {
 }
 
 function replaceMarkedBlock(content: string, block: string) {
-  const startIndex = content.indexOf(AZAMAT_UI_THEME_START)
-  const endIndex = content.indexOf(AZAMAT_UI_THEME_END)
+  const startIndex = content.indexOf(TEMBRO_THEME_START)
+  const endIndex = content.indexOf(TEMBRO_THEME_END)
 
   if (startIndex !== -1 && endIndex !== -1 && endIndex > startIndex) {
     const before = content.slice(0, startIndex).trimEnd()
-    const after = content.slice(endIndex + AZAMAT_UI_THEME_END.length).trimStart()
+    const after = content.slice(endIndex + TEMBRO_THEME_END.length).trimStart()
 
     return [before, block, after].filter(Boolean).join("\n\n") + "\n"
   }
@@ -92,7 +92,7 @@ export async function upsertThemeCss({ cwd, cssPath, componentsPath = "src/compo
     : ""
 
   const withTailwind = ensureRequiredImports(currentContent)
-  const withManagedTheme = replaceMarkedBlock(withTailwind, getAzamatUiThemeCss(relativeSourceGlob))
+  const withManagedTheme = replaceMarkedBlock(withTailwind, getTembroThemeCss(relativeSourceGlob))
   const nextContent = ensureCustomStylesBlock(withManagedTheme)
 
   await fs.writeFile(targetPath, nextContent)

@@ -22,7 +22,7 @@ export function InputShowcase({ state, setState }: ComponentDemoProps) {
   const [quantityValue, setQuantityValue] = React.useState<number | null>(3)
   const [phoneValue, setPhoneValue] = React.useState("+998 90 123 45 67")
   const [dateValue, setDateValue] = React.useState("2026-07-13")
-  const [clearableValue, setClearableValue] = React.useState("Azamat UI")
+  const [clearableValue, setClearableValue] = React.useState("Tembro")
 
   return (
     <div className="space-y-0">

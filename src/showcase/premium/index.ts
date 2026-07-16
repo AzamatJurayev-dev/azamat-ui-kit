@@ -80,6 +80,7 @@ import { fileUploadMock, FileUploadShowcase } from "./file-upload"
 import { imageUploadMock, ImageUploadShowcase } from "./image-upload"
 import { ratingMock, RatingShowcase } from "./rating"
 import { virtualListMock, VirtualListShowcase } from "./virtual-list"
+import { wizardMock, WizardShowcase } from "./wizard"
 
 export { defaultComponentDemoState } from "./types"
 export type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps, ComponentDemoState } from "./types"
@@ -175,4 +176,5 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   timeline: { mock: timelineMock, Showcase: TimelineShowcase },
   toast: { mock: toastMock, Showcase: ToastShowcase },
   "virtual-list": { mock: virtualListMock, Showcase: VirtualListShowcase },
+  wizard: { mock: wizardMock, Showcase: WizardShowcase },
 }

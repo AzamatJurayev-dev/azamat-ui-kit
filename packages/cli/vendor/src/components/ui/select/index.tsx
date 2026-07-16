@@ -16,7 +16,9 @@ export type SelectContentProps = SelectPrimitive.Popup.Props &
     "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
   >
 export type SelectLabelProps = SelectPrimitive.GroupLabel.Props
-export type SelectItemProps = SelectPrimitive.Item.Props
+export type SelectItemProps = SelectPrimitive.Item.Props & {
+  showIndicator?: boolean
+}
 export type SelectSeparatorProps = SelectPrimitive.Separator.Props
 export type SelectScrollUpButtonProps = React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>
 export type SelectScrollDownButtonProps = React.ComponentProps<typeof SelectPrimitive.ScrollDownArrow>
@@ -57,6 +59,7 @@ export type SelectProps = Omit<SelectRootProps, "value" | "defaultValue" | "onVa
   itemClassName?: string
   searchClassName?: string
   renderOption?: (option: SelectOption, state: { selected: boolean }) => React.ReactNode
+  showSelectedIndicator?: boolean
   invalid?: boolean
   onSearchChange?: (value: string) => void
 }
@@ -98,6 +101,7 @@ function Select({
   itemClassName,
   searchClassName,
   renderOption,
+  showSelectedIndicator = true,
   invalid,
   children,
   onOpenChange,
@@ -239,6 +243,7 @@ function Select({
                     key={option.value}
                     value={option.value}
                     disabled={option.disabled}
+                    showIndicator={showSelectedIndicator}
                     className={cn("rounded-[var(--radius-md)]", itemClassName)}
                   >
                     {renderOption ? (
@@ -247,7 +252,6 @@ function Select({
                       <span className="flex min-w-0 flex-1 flex-col">
                         <span className="flex min-w-0 items-center gap-2">
                           <span className="truncate">{option.label}</span>
-                          {selected ? <CheckIcon className="ml-auto size-3.5 text-primary" /> : null}
                         </span>
                         {option.description ? (
                           <span className="truncate text-xs text-muted-foreground">{option.description}</span>
@@ -297,6 +301,7 @@ function SelectTrigger({
       data-size={size}
       className={cn(
         "flex w-full min-w-0 items-center justify-between gap-2 whitespace-nowrap outline-none select-none disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "rounded-[var(--radius-lg)] border border-[color:var(--aui-input-border,var(--border))] bg-[color:var(--aui-input-bg,var(--background))] px-3 text-[color:var(--aui-input-fg,var(--foreground))] shadow-sm transition-[border-color,box-shadow,background-color] hover:border-[color:var(--aui-input-border-hover,var(--border))] focus-visible:border-[color:var(--aui-ring,var(--ring))] focus-visible:shadow-[0_0_0_3px_color-mix(in_oklch,var(--aui-ring,var(--ring)),transparent_82%)] disabled:opacity-60 data-[size=sm]:h-9 data-[size=default]:min-h-10 data-[size=lg]:min-h-11 data-[size=lg]:px-4 aria-[invalid=true]:border-[color:var(--aui-danger,var(--destructive))] aria-[invalid=true]:shadow-[0_0_0_3px_color-mix(in_oklch,var(--aui-danger,var(--destructive)),transparent_84%)]",
         className
       )}
       {...props}
@@ -337,7 +342,7 @@ function SelectContent({
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={cn(
-            "relative isolate max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto",
+            "relative isolate max-h-(--available-height) w-(--anchor-width) min-w-52 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-[var(--radius-xl)] border border-[color:var(--aui-surface-border,var(--border))] bg-[color:var(--aui-popover-bg,var(--popover))] p-1 text-[color:var(--aui-popover-fg,var(--popover-foreground))] shadow-xl",
             className
           )}
           {...props}
@@ -361,12 +366,12 @@ function SelectLabel({ className, ...props }: SelectLabelProps) {
   )
 }
 
-function SelectItem({ className, children, ...props }: SelectItemProps) {
+function SelectItem({ className, children, showIndicator = true, ...props }: SelectItemProps) {
   return (
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex w-full cursor-default items-center gap-2 outline-hidden select-none data-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "relative flex w-full cursor-default items-center gap-2 px-2.5 py-2 pr-8 text-sm outline-hidden select-none data-disabled:pointer-events-none data-highlighted:bg-[color:var(--aui-control-bg,var(--muted))] data-highlighted:text-[color:var(--aui-control-fg,var(--foreground))] data-selected:bg-[color:var(--aui-control-bg,var(--muted))] data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className
       )}
       {...props}
@@ -374,11 +379,13 @@ function SelectItem({ className, children, ...props }: SelectItemProps) {
       <SelectPrimitive.ItemText className="flex flex-1 shrink-0 gap-2 whitespace-nowrap">
         {children}
       </SelectPrimitive.ItemText>
-      <SelectPrimitive.ItemIndicator
-        render={<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />}
-      >
-        <CheckIcon className="pointer-events-none" />
-      </SelectPrimitive.ItemIndicator>
+      {showIndicator ? (
+        <SelectPrimitive.ItemIndicator
+          render={<span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />}
+        >
+          <CheckIcon className="pointer-events-none size-4" />
+        </SelectPrimitive.ItemIndicator>
+      ) : null}
     </SelectPrimitive.Item>
   )
 }

@@ -6,17 +6,13 @@ import { detectPackageManager } from "../utils/detect-package-manager"
 import { installPackages } from "../utils/install-packages"
 import { upsertThemeCss } from "../utils/upsert-theme-css"
 import { getCliNpxCommand } from "../utils/cli-metadata"
+import { addCommand } from "./add"
 
 const baseDependencies = [
-  "@base-ui/react",
   "@fontsource-variable/geist",
   "clsx",
   "tailwind-merge",
-  "class-variance-authority",
-  "lucide-react",
   "tw-animate-css",
-  "@tanstack/react-table",
-  "react-hook-form",
 ]
 
 const templateTailwindDependencies: Record<InitTemplate, string[]> = {
@@ -30,6 +26,7 @@ type InitCommandOptions = {
   template?: string
   skipInstall?: boolean
   defaults?: boolean
+  showcase?: boolean
 }
 
 type TembroConfig = {
@@ -238,11 +235,33 @@ function assertProjectPath(cwd: string, value: string, label: string) {
   }
 }
 
-function resolveTemplate(value?: string): InitTemplate {
+function detectTemplate(cwd: string, packageJsonPath: string): InitTemplate {
+  const packageJson = fs.readJsonSync(packageJsonPath) as {
+    dependencies?: Record<string, string>
+    devDependencies?: Record<string, string>
+  }
+  const deps = { ...packageJson.dependencies, ...packageJson.devDependencies }
+  const hasNextConfig = ["next.config.js", "next.config.mjs", "next.config.ts"].some((fileName) =>
+    fs.existsSync(path.join(cwd, fileName)),
+  )
+  const hasViteConfig = ["vite.config.js", "vite.config.mjs", "vite.config.ts"].some((fileName) =>
+    fs.existsSync(path.join(cwd, fileName)),
+  )
+
+  if (deps.next || hasNextConfig) return "next"
+  if (deps.vite || hasViteConfig) return "vite"
+
+  return "vite"
+}
+
+function resolveTemplate(value: string | undefined, cwd: string, packageJsonPath: string): InitTemplate {
   if (value === "next" || value === "vite") return value
 
-  logger.warn(`Unknown template '${value}'. Falling back to vite defaults.`)
-  return "vite"
+  const detectedTemplate = detectTemplate(cwd, packageJsonPath)
+  if (value) {
+    logger.warn(`Unknown template '${value}'. Falling back to ${detectedTemplate} defaults.`)
+  }
+  return detectedTemplate
 }
 
 function getInstalledPackages(cwd: string) {
@@ -267,7 +286,8 @@ export async function initCommand(options: InitCommandOptions = {}) {
     process.exit(1)
   }
 
-  const template = resolveTemplate(options.template)
+  const template = resolveTemplate(options.template, cwd, packageJsonPath)
+  logger.info(`Template: ${template}${options.template ? "" : " (detected)"}`)
   const existingConfigPath = path.join(cwd, "tembro.json")
   const existingConfig = fs.existsSync(existingConfigPath)
     ? ((await fs.readJson(existingConfigPath)) as TembroConfig)
@@ -292,7 +312,7 @@ export async function initCommand(options: InitCommandOptions = {}) {
     {
       type: "confirm",
       name: "installDeps",
-      message: "Component source uchun kerakli dependencylarni o‘rnataymi? / Install component dependencies?",
+      message: "Theme va local source uchun minimal dependencylarni o‘rnataymi? / Install minimal theme dependencies?",
       initial: !options.skipInstall,
     },
     {
@@ -468,10 +488,21 @@ export function cn(...inputs: ClassValue[]) {
   logger.info("Componentlarni ko‘rish / list components:")
   logger.info(getCliNpxCommand("list"))
   logger.info("Component qo‘shish / add components:")
-  logger.info(getCliNpxCommand("add button input data-table"))
+  logger.info(getCliNpxCommand("add button input"))
   if (missingTailwindDependencies.length > 0 && !response.installTailwindDeps) {
     logger.warn(`Tailwind paketlari hali o‘rnatilmadi: ${missingTailwindDependencies.join(", ")}`)
   }
   logger.info("Theme CSS ni yangilash / update theme CSS:")
   logger.info(getCliNpxCommand("theme"))
+
+  if (options.showcase) {
+    logger.info("Showcase qo‘shilmoqda: barcha componentlar + local workbench.")
+    await addCommand(["showcase"], {
+      overwrite: true,
+      skipInstall: options.skipInstall,
+    })
+  } else {
+    logger.info("To‘liq local workbench kerak bo‘lsa / full local workbench:")
+    logger.info(getCliNpxCommand("init --showcase --defaults"))
+  }
 }

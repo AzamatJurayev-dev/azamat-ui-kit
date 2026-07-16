@@ -1,7 +1,8 @@
 import type { ComponentDemoMock } from "../types"
 
 export const appSidebarMock: ComponentDemoMock = {
-  code: `import { Sidebar } from "tembro"
+  code: `import { Link } from "react-router-dom"
+import { Sidebar } from "tembro"
 
 const items = [
   { key: "overview", label: "Overview", href: "/overview", active: true, sectionLabel: "Workspace" },
@@ -29,7 +30,7 @@ export function Example() {
       showSectionLabels
       responsive
       renderLink={({ item: _item, href = "/", ...props }) => (
-        <a {...props} href={href} />
+        <Link {...props} to={href} />
       )}
       header={<div className="px-3 py-2 text-sm font-semibold">Azamat Workspace</div>}
       footerAccount={{ label: "Azamat Workspace", description: "Starter plan", avatar: "AW" }}

@@ -13,7 +13,7 @@ type ThemeContextValue = {
   toggleTheme: () => void
 }
 
-const THEME_STORAGE_KEY = "azamat-ui-theme"
+const THEME_STORAGE_KEY = "tembro-theme"
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null)
 

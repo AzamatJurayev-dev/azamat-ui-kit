@@ -31,6 +31,7 @@ import { DataState, type DataStateProps } from "@/components/display/data-state"
 import { LoadingState, type LoadingStateProps } from "@/components/feedback/loading-state"
 import { Button } from "@/components/ui/button"
 import { Input, type InputSearchProps } from "@/components/ui/input"
+import { useIsMobile } from "@/hooks/use-is-mobile"
 import {
   Table,
   TableBody,
@@ -43,6 +44,7 @@ import { cn } from "@/lib/utils"
 
 export type DataTableDensity = "compact" | "default" | "comfortable"
 export type DataTableLoadingVariant = "skeleton" | "state"
+export type DataTableMobileLayout = "auto" | "cards" | "scroll"
 
 export type DataTableVirtualizationRange = {
   startIndex: number
@@ -141,6 +143,7 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   onRowSelectionChange?: OnChangeFn<RowSelectionState>
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
   renderMobileCard?: (row: Row<TData>) => React.ReactNode
+  mobileLayout?: DataTableMobileLayout
   onRowClick?: (row: Row<TData>) => void
   onRowDoubleClick?: (row: Row<TData>) => void
   getRowDisabled?: (row: Row<TData>) => boolean
@@ -204,6 +207,15 @@ function isEmptyCellContent(content: React.ReactNode) {
   return content === null || content === undefined || content === ""
 }
 
+function getMobileCellLabel<TData>(cell: Cell<TData, unknown>) {
+  const header = cell.column.columnDef.header
+
+  if (typeof header === "string") return header
+  if (typeof header === "number") return String(header)
+
+  return cell.column.id === "actions" ? "Actions" : cell.column.id
+}
+
 function DataTable<TData, TValue = unknown>({
   className,
   columns,
@@ -239,6 +251,7 @@ function DataTable<TData, TValue = unknown>({
   onRowSelectionChange,
   enableRowSelection,
   renderMobileCard,
+  mobileLayout = "auto",
   onRowClick,
   onRowDoubleClick,
   getRowDisabled,
@@ -451,6 +464,8 @@ function DataTable<TData, TValue = unknown>({
   const hasToolbar = Boolean(resolvedToolbar || resolvedToolbarProps || hasDefaultToolbarContent)
   const showPagination = Boolean(paginationConfig && !paginationConfig.hidden)
   const shouldRenderSkeleton = isLoading && loadingVariant === "skeleton"
+  const isMobileViewport = useIsMobile()
+  const shouldUseMobileCards = mobileLayout !== "scroll" && isMobileViewport
 
   const renderVirtualSpacer = (key: string, height: number) =>
     height > 0 ? (
@@ -568,6 +583,57 @@ function DataTable<TData, TValue = unknown>({
     )
   }
 
+  const renderDefaultMobileCard = (row: Row<TData>) => {
+    const rowDisabled = getRowDisabled?.(row) ?? false
+    const cells = row.getVisibleCells()
+
+    return (
+      <article
+        key={row.id}
+        data-slot="data-table-mobile-card"
+        data-state={row.getIsSelected() ? "selected" : undefined}
+        data-disabled={rowDisabled || undefined}
+        className={cn(
+          "grid gap-3 rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card p-3 shadow-[var(--aui-card-shadow,0_10px_24px_rgba(15,23,42,0.07))]",
+          onRowClick && !rowDisabled && "cursor-pointer transition-colors hover:bg-[color:color-mix(in_oklch,var(--primary),transparent_96%)]",
+          rowDisabled && "pointer-events-none opacity-55",
+          getRowClassName(row, rowClassName)
+        )}
+        role={onRowClick && !rowDisabled ? "button" : undefined}
+        tabIndex={onRowClick && !rowDisabled ? 0 : undefined}
+        onClick={() => {
+          if (!rowDisabled) onRowClick?.(row)
+        }}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget || rowDisabled || !onRowClick) return
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault()
+            onRowClick(row)
+          }
+        }}
+      >
+        {cells.map((cell) => {
+          const renderedCell = flexRender(cell.column.columnDef.cell, cell.getContext())
+
+          return (
+            <div
+              key={cell.id}
+              data-slot="data-table-mobile-cell"
+              className="grid grid-cols-[minmax(7rem,0.42fr)_minmax(0,1fr)] items-start gap-3 text-sm"
+            >
+              <span className="min-w-0 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {getMobileCellLabel(cell)}
+              </span>
+              <div className="min-w-0 text-right text-foreground/92 [&>*]:ml-auto">
+                {isEmptyCellContent(renderedCell) ? cellFallback : renderedCell}
+              </div>
+            </div>
+          )
+        })}
+      </article>
+    )
+  }
+
   return (
     <div data-slot="data-table" className={cn("grid gap-3", className)} {...props}>
       {hasToolbar &&
@@ -587,17 +653,22 @@ function DataTable<TData, TValue = unknown>({
           />
         ))}
 
-      {renderMobileCard && (
-        <div className="grid gap-3 md:hidden">
+      {shouldUseMobileCards && (
+        <div className="grid gap-3">
           {stateContent ??
             (shouldRenderSkeleton ? (
               <LoadingState label="Loading data..." {...loadingState} />
             ) : (
-              rows.map((row) => <React.Fragment key={row.id}>{renderMobileCard(row)}</React.Fragment>)
+              rows.map((row) => (
+                <React.Fragment key={row.id}>
+                  {renderMobileCard ? renderMobileCard(row) : renderDefaultMobileCard(row)}
+                </React.Fragment>
+              ))
             ))}
         </div>
       )}
 
+      {!shouldUseMobileCards && (
       <div
         data-slot="data-table-wrapper"
         data-density={density}
@@ -606,7 +677,6 @@ function DataTable<TData, TValue = unknown>({
         data-virtualized={virtualizationEnabled || undefined}
         className={cn(
           "overflow-hidden rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card shadow-[var(--aui-card-shadow,0_10px_24px_rgba(15,23,42,0.07))] backdrop-blur",
-          renderMobileCard && "hidden md:block",
           tableWrapperClassName
         )}
       >
@@ -692,6 +762,7 @@ function DataTable<TData, TValue = unknown>({
           />
         )}
       </div>
+      )}
     </div>
   )
 }

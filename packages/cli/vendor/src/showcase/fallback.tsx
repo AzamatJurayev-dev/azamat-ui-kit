@@ -1,5 +1,6 @@
 import {
   Alert,
+  Accordion,
   Avatar,
   AvatarGroup,
   Badge,
@@ -9,26 +10,32 @@ import {
   Card,
   CardContent,
   CodeBlock,
+  ColorPicker,
+  CommandPalette,
   CopyButton,
   DataState,
   Divider,
   DualListPicker,
   FilterBar,
   Input,
+  ImageCropper,
   JsonInput,
   KanbanBoard,
   List,
   OtpInput,
   PageState,
+  QRCode,
   QuickActionGrid,
   RangeSlider,
   Rating,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
+  RichTextEditor,
   SavedFilterSelect,
   Section,
   SegmentedControl,
+  SignaturePad,
   Skeleton,
   SkeletonCard,
   SkeletonText,
@@ -38,10 +45,12 @@ import {
   StatisticCard,
   StatisticGrid,
   StatusLegend,
+  SortableList,
   TagInput,
   TimePicker,
   TimeRangePicker,
   TreeView,
+  VirtualList,
 } from "@/index"
 import { Carousel, CarouselItem } from "@/components/display/carousel"
 import { Tag, TagGroup } from "@/components/display/tag"
@@ -146,7 +155,7 @@ function renderGenericPreviewSurface(
   if (item.slug === "avatar") {
     return (
       <div className="flex flex-wrap items-center gap-4">
-        <Avatar name="Azamat UI" />
+        <Avatar name="Tembro" />
         <Avatar fallback="AJ" shape="rounded" />
         <AvatarGroup
           items={[
@@ -157,6 +166,29 @@ function renderGenericPreviewSurface(
           ]}
         />
       </div>
+    )
+  }
+
+  if (item.slug === "accordion") {
+    return (
+      <Accordion
+        type="single"
+        defaultValue="install"
+        items={[
+          {
+            key: "install",
+            title: "Install with CLI",
+            description: "Copy source into your app.",
+            content: "Run `npx tembro add accordion`, then edit the local component source.",
+          },
+          {
+            key: "compose",
+            title: "Compose route content",
+            description: "Use it for settings, FAQ and dense docs groups.",
+            content: "Accordion items keep title, description, meta, badges and disabled states together.",
+          },
+        ]}
+      />
     )
   }
 
@@ -205,6 +237,30 @@ function renderGenericPreviewSurface(
     )
   }
 
+  if (item.slug === "command-palette") {
+    return (
+      <CommandPalette
+        open
+        onOpenChange={() => undefined}
+        title="Preview command palette"
+        description="Command palette preview with grouped actions."
+        placeholder="Search commands..."
+        groups={[
+          {
+            id: "components",
+            label: "Components",
+            items: [
+              { id: "button", label: "Button", description: "Open button docs", shortcut: "B" },
+              { id: "input", label: "Input", description: "Open input docs", shortcut: "I" },
+              { id: "data-table", label: "DataTable", description: "Open table docs", shortcut: "T" },
+            ],
+          },
+        ]}
+        contentClassName="relative inset-auto translate-x-0 translate-y-0 shadow-none"
+      />
+    )
+  }
+
   if (item.slug === "copy-button") {
     return <CopyButton value="npx tembro add button">Copy command</CopyButton>
   }
@@ -216,6 +272,17 @@ function renderGenericPreviewSurface(
         title="No matching rows"
         description="Try another filter or import the first record."
         actions={<Button size="sm">Import CSV</Button>}
+      />
+    )
+  }
+
+  if (item.slug === "color-picker") {
+    return (
+      <ColorPicker
+        label="Brand accent"
+        defaultValue="#2563ebcc"
+        showAlpha
+        swatches={["#0f172a", "#2563eb", "#059669", "#d97706", "#dc2626", "#7c3aed"]}
       />
     )
   }
@@ -481,11 +548,107 @@ function renderGenericPreviewSurface(
   if (item.slug === "json-input") {
     return (
       <JsonInput
-        value={`{\n  "workspace": "azamat-ui",\n  "theme": "dashboard"\n}`}
+        value={`{\n  "workspace": "tembro",\n  "theme": "dashboard"\n}`}
         onValueChange={() => undefined}
         rows={7}
       />
     )
+  }
+
+  if (item.slug === "sortable-list") {
+    const tasks = [
+      { id: "docs", title: "Docs polish", meta: "Ready" },
+      { id: "api", title: "API table", meta: "Review" },
+      { id: "preview", title: "Live preview", meta: "Live" },
+    ]
+
+    return (
+      <SortableList
+        defaultItems={tasks}
+        getItemId={(task) => task.id}
+        getItemLabel={(task) => task.title}
+        renderItem={(task) => (
+          <div className="flex min-w-0 items-center justify-between gap-3">
+            <span className="truncate text-sm font-medium">{task.title}</span>
+            <Badge variant="outline">{task.meta}</Badge>
+          </div>
+        )}
+      />
+    )
+  }
+
+  if (item.slug === "virtual-list") {
+    const rows = Array.from({ length: 80 }, (_, index) => ({
+      id: `row-${index + 1}`,
+      name: `Virtual record ${index + 1}`,
+      status: index % 3 === 0 ? "Review" : "Live",
+    }))
+
+    return (
+      <VirtualList
+        items={rows}
+        height={280}
+        estimateSize={56}
+        getItemKey={(row) => row.id}
+        renderItem={(row) => (
+          <div className="mx-1 flex items-center justify-between rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] px-4 py-3">
+            <span className="text-sm font-medium">{row.name}</span>
+            <Badge variant={row.status === "Live" ? "secondary" : "outline"}>{row.status}</Badge>
+          </div>
+        )}
+      />
+    )
+  }
+
+  if (item.slug === "signature-pad") {
+    return (
+      <SignaturePad
+        defaultValue={[
+          [
+            { x: 0.16, y: 0.58, pressure: 0.5 },
+            { x: 0.26, y: 0.38, pressure: 0.5 },
+            { x: 0.38, y: 0.62, pressure: 0.5 },
+            { x: 0.54, y: 0.42, pressure: 0.5 },
+            { x: 0.72, y: 0.56, pressure: 0.5 },
+          ],
+        ]}
+        labels={{ canvas: "Signature preview", undo: "Undo", clear: "Clear" }}
+      />
+    )
+  }
+
+  if (item.slug === "qr-code") {
+    return (
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-white p-4">
+          <QRCode value="https://tembro.dev/components" size={148} alt="Tembro components QR" />
+        </div>
+        <div>
+          <p className="font-semibold aui-text-strong">QR code</p>
+          <p className="mt-2 text-sm leading-6 aui-text-muted">Generates SVG output, supports custom colors, error fallback and async loading.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (item.slug === "rich-text-editor") {
+    return (
+      <RichTextEditor
+        defaultValue="<h2>Release notes</h2><p>Write rich product copy with toolbar actions, links and placeholder support.</p>"
+        minHeight={180}
+        onLinkRequest={() => "https://tembro.dev"}
+      />
+    )
+  }
+
+  if (item.slug === "image-cropper") {
+    const cropperImage =
+      "data:image/svg+xml;utf8," +
+      encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0f172a"/><stop offset="1" stop-color="#22c55e"/></linearGradient></defs><rect width="640" height="420" fill="url(#g)"/><circle cx="460" cy="150" r="88" fill="#ffffff" opacity=".22"/><rect x="70" y="245" width="310" height="64" rx="20" fill="#fff" opacity=".88"/><text x="95" y="287" font-family="Arial" font-size="28" font-weight="700" fill="#0f172a">Tembro crop</text></svg>`
+      )
+
+    return <ImageCropper src={cropperImage} aspect={16 / 9} defaultZoom={1.15} defaultRotation={-2} />
   }
 
   if (item.slug === "kanban") {

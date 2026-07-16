@@ -16,11 +16,15 @@ import {
   Alert,
   AlertDialog,
   Badge,
+  BarChart,
   Button,
   ButtonGroup,
   Calendar,
+  ChartFrame,
+  ChartLegend,
   CommandPalette,
   DescriptionList,
+  DonutChart,
   Drawer,
   FileUpload,
   FilterBar,
@@ -185,7 +189,7 @@ function OverlayPreview({ slug }: { slug: string }) {
         <DescriptionList
           items={[
             { key: "plan", label: "Plan", value: "Scale" },
-            { key: "owner", label: "Owner", value: "Azamat UI" },
+            { key: "owner", label: "Owner", value: "Tembro" },
           ]}
         />
       </Drawer>
@@ -330,6 +334,38 @@ function DisplayPreview({ slug }: { slug: string }) {
           { key: "blocked", label: "Blocked", description: "Needs engineering action", tone: "danger", count: 1 },
         ]}
       />
+    )
+  }
+
+  if (slug === "charts") {
+    const channelData = [
+      { label: "Organic", value: 42, color: "var(--aui-brand)" },
+      { label: "Paid", value: 28, color: "var(--aui-success)" },
+      { label: "Referral", value: 18, color: "var(--aui-warning)" },
+      { label: "Direct", value: 12, color: "var(--aui-danger)" },
+    ]
+
+    return (
+      <div className="grid items-start gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+        <ChartFrame title="Pipeline by week" description="BarChart inside the shared chart frame.">
+          <BarChart
+            data={[
+              { label: "Mon", value: 18 },
+              { label: "Tue", value: 26 },
+              { label: "Wed", value: 21 },
+              { label: "Thu", value: 34 },
+              { label: "Fri", value: 29 },
+            ]}
+            valueFormatter={(value) => `$${value}k`}
+          />
+        </ChartFrame>
+        <ChartFrame title="Traffic mix" description="DonutChart with legend and center value.">
+          <div className="grid justify-items-center gap-4">
+            <DonutChart data={channelData} centerValue="88k" centerLabel="Visitors" />
+            <ChartLegend data={channelData} />
+          </div>
+        </ChartFrame>
+      </div>
     )
   }
 
@@ -517,7 +553,7 @@ function DataTablePartsPreview({ slug }: { slug: string }) {
         <span>Status</span>
         <span>Actions</span>
       </div>
-      {["Azamat UI", "Registry", "Dashboard"].map((row, index) => (
+      {["Tembro", "Registry", "Dashboard"].map((row, index) => (
         <div key={row} className="grid grid-cols-[40px_1fr_120px_72px] items-center border-b border-[color:var(--aui-divider)] px-3 py-3 last:border-b-0">
           <span><input type="checkbox" aria-label={`Select ${row}`} defaultChecked={index === 0} /></span>
           <span className="font-medium text-[color:var(--aui-page-foreground)]">{row}</span>

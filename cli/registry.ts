@@ -208,6 +208,7 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "detail-layout", category: "patterns", registryDependencies: ["utils"], files: [file("src/components/patterns/detail-layout.tsx", "{components}/patterns/detail-layout.tsx")] },
   { name: "empty-state", category: "patterns", dependencies: ["lucide-react"], registryDependencies: ["button", "utils"], files: [file("src/components/patterns/empty-state.tsx", "{components}/patterns/empty-state.tsx")] },
   { name: "form-builder", category: "patterns", dependencies: ["react-hook-form"], registryDependencies: ["button", "form-input", "form-select", "form-textarea", "form-switch", "form-date-range-input", "utils"], files: [file("src/components/patterns/form-builder.tsx", "{components}/patterns/form-builder.tsx")] },
+  { name: "charts", category: "charts", registryDependencies: ["card", "utils"], files: [file("src/components/charts/charts.tsx", "{components}/charts/charts.tsx"), file("src/components/charts/index.ts", "{components}/charts/index.ts")] },
   { name: "horizontal-bar-chart", category: "charts", migrationAliasFor: "data-view" },
   { name: "image-upload", category: "upload", files: [file("src/components/upload/image-upload.tsx", "{components}/upload/image-upload.tsx")] },
   { name: "kanban", category: "display", dependencies: ["@dnd-kit/helpers", "@dnd-kit/react", "lucide-react"], registryDependencies: ["card", "utils"], files: [file("src/components/display/kanban.tsx", "{components}/display/kanban.tsx")] },
@@ -263,5 +264,16 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
 for (const item of generatedSourceRegistry) {
   registry[item.name] ??= item;
 }
+
+export function getAllRegistryComponentNames() {
+  return Object.values(registry)
+    .filter((item) => item.name !== "all")
+    .filter((item) => item.category !== "group" && item.category !== "lib")
+    .filter((item) => !item.migrationAliasFor)
+    .filter((item) => (item.files?.length ?? 0) > 0)
+    .map((item) => item.name);
+}
+
+registry.all.registryDependencies = getAllRegistryComponentNames();
 
 export const registryNames = Object.keys(registry) as ComponentName[];
