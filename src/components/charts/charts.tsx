@@ -36,6 +36,8 @@ export type ChartSeries = {
   color?: string
 }
 
+export type ChartCurve = "linear" | "monotone" | "natural" | "step"
+
 export type ChartAxisLabel = string | number | React.ReactNode
 export type ChartSize = "sm" | "md" | "lg"
 export type ChartState = "ready" | "loading" | "empty"
@@ -72,6 +74,18 @@ function ChartDataTable({ data, valueFormatter, caption }: { data: ChartDatum[];
         <caption>{caption}</caption>
         <thead><tr><th scope="col">Label</th><th scope="col">Value</th><th scope="col">Description</th></tr></thead>
         <tbody>{data.map((item, index) => <tr key={index}><th scope="row">{item.label}</th><td>{formatChartValue(item.value, valueFormatter)}</td><td>{item.description}</td></tr>)}</tbody>
+      </table>
+    </div>
+  )
+}
+
+function ChartSeriesDataTable({ labels, series, valueFormatter, caption }: { labels: ChartAxisLabel[]; series: ChartSeries[]; valueFormatter?: (value: number) => React.ReactNode; caption: string }) {
+  return (
+    <div className="sr-only">
+      <table>
+        <caption>{caption}</caption>
+        <thead><tr><th scope="col">Label</th>{series.map((item) => <th scope="col" key={item.key}>{item.label}</th>)}</tr></thead>
+        <tbody>{labels.map((label, index) => <tr key={index}><th scope="row">{label}</th>{series.map((item) => <td key={item.key}>{formatChartValue(item.data[index] ?? 0, valueFormatter)}</td>)}</tr>)}</tbody>
       </table>
     </div>
   )
@@ -129,7 +143,8 @@ function ChartFrame({ title, description, action, state = "ready", emptyLabel = 
 }
 
 export type BarChartProps = React.ComponentProps<"div"> & {
-  data: ChartDatum[]
+  data?: ChartDatum[]
+  series?: ChartSeries[]
   size?: ChartSize
   max?: number
   showLabels?: boolean
@@ -142,13 +157,23 @@ export type BarChartProps = React.ComponentProps<"div"> & {
   barClassName?: string
   domain?: ChartDomain
   ariaLabel?: string
+  stacked?: boolean
+  showLegend?: boolean
+  barRadius?: number
 }
 
-function BarChart({ data, size = "md", max, showLabels = true, showValues = false, showGrid = true, showTooltip = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", barClassName, domain, ariaLabel = "Bar chart", className, ...props }: BarChartProps) {
+function BarChart({ data = [], series, size = "md", max, showLabels = true, showValues = false, showGrid = true, showTooltip = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", barClassName, domain, ariaLabel = "Bar chart", stacked = false, showLegend = Boolean(series?.length), barRadius = 6, className, ...props }: BarChartProps) {
   const height = chartHeightBySize[size]
-  const status = state === "ready" && data.length === 0 ? "empty" : state
+  const activeSeries = series?.length ? series : [{ key: "value", label: "Value", data: data.map((item) => item.value) }]
+  const itemCount = Math.max(data.length, ...activeSeries.map((item) => item.data.length))
+  const status = state === "ready" && itemCount === 0 ? "empty" : state
   if (status !== "ready") return <ChartStatus state={status} emptyLabel={emptyLabel} height={height} />
-  const chartData = data.map((item, index) => ({ name: toText(item.label, `Item ${index + 1}`), value: item.value, fill: getChartColor(index, item.color), originalLabel: item.label, description: item.description }))
+  const labels = Array.from({ length: itemCount }, (_, index) => data[index]?.label ?? `Item ${index + 1}`)
+  const chartData = labels.map((label, index) => Object.fromEntries([
+    ["name", toText(label, `Item ${index + 1}`)],
+    ["originalLabel", label],
+    ...activeSeries.map((item) => [item.key, item.data[index] ?? 0]),
+  ]))
   const resolvedDomain: ChartDomain = domain ?? (max !== undefined ? ["auto", max] : ["auto", "auto"])
 
   return (
@@ -160,19 +185,23 @@ function BarChart({ data, size = "md", max, showLabels = true, showValues = fals
             <XAxis dataKey="name" hide={!showLabels} axisLine={false} tickLine={false} tick={{ fill: "var(--muted-foreground)", fontSize: 12 }} interval="preserveStartEnd" />
             <YAxis hide domain={resolvedDomain} />
             {showTooltip ? <RechartsTooltip cursor={{ fill: "var(--muted)", opacity: 0.35 }} content={<ChartTooltipContent valueFormatter={valueFormatter} />} /> : null}
-            <Bar dataKey="value" name="Value" radius={[6, 6, 2, 2]} className={barClassName} isAnimationActive={false} label={showValues ? { position: "top", fill: "var(--muted-foreground)", fontSize: 11, formatter: (value: unknown) => String(formatChartValue(Number(value), valueFormatter)) } : false}>
-              {chartData.map((item) => <Cell key={item.name} fill={item.fill} />)}
-            </Bar>
+            {activeSeries.map((item, seriesIndex) => (
+              <Bar key={item.key} dataKey={item.key} name={toText(item.label, item.key)} fill={getChartColor(seriesIndex, item.color)} stackId={stacked ? "total" : undefined} radius={[barRadius, barRadius, 2, 2]} className={barClassName} isAnimationActive={false} label={showValues && (!stacked || seriesIndex === activeSeries.length - 1) ? { position: "top", fill: "var(--muted-foreground)", fontSize: 11, formatter: (value: unknown) => String(formatChartValue(Number(value), valueFormatter)) } : false}>
+                {!series?.length ? data.map((datum, index) => <Cell key={index} fill={getChartColor(index, datum.color)} />) : null}
+              </Bar>
+            ))}
           </RechartsBarChart>
         </ResponsiveContainer>
       </div>
-      <ChartDataTable data={data} valueFormatter={valueFormatter} caption={ariaLabel} />
+      {showLegend && activeSeries.length > 1 ? <ChartLegend className="mt-3" data={activeSeries.map((item, index) => ({ label: item.label, value: 0, color: getChartColor(index, item.color) }))} /> : null}
+      {series?.length ? <ChartSeriesDataTable labels={labels} series={activeSeries} valueFormatter={valueFormatter} caption={ariaLabel} /> : <ChartDataTable data={data} valueFormatter={valueFormatter} caption={ariaLabel} />}
     </div>
   )
 }
 
 export type LineChartProps = Omit<React.ComponentProps<"div">, "children"> & {
-  values: number[]
+  values?: number[]
+  series?: ChartSeries[]
   size?: ChartSize
   width?: number
   height?: number
@@ -187,13 +216,22 @@ export type LineChartProps = Omit<React.ComponentProps<"div">, "children"> & {
   emptyLabel?: React.ReactNode
   domain?: ChartDomain
   ariaLabel?: string
+  curve?: ChartCurve
+  showDots?: boolean
+  showLegend?: boolean
+  gradient?: boolean
+  strokeWidth?: number
 }
 
-function LineChart({ values, size = "md", width = 560, height: heightProp, showArea = false, showGrid = true, showAxis = false, showTooltip = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", domain = ["auto", "auto"], ariaLabel = showArea ? "Area chart" : "Line chart", className, style, ...props }: LineChartProps) {
+function LineChart({ values = [], series, size = "md", width = 560, height: heightProp, showArea = false, showGrid = true, showAxis = false, showTooltip = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", domain = ["auto", "auto"], ariaLabel = showArea ? "Area chart" : "Line chart", curve = "monotone", showDots = !showArea, showLegend = Boolean(series?.length), gradient = showArea, strokeWidth = 2.5, className, style, ...props }: LineChartProps) {
   const height = heightProp ?? chartHeightBySize[size]
-  const status = state === "ready" && values.length === 0 ? "empty" : state
+  const gradientId = React.useId().replace(/:/g, "")
+  const activeSeries = series?.length ? series : [{ key: "value", label: "Value", data: values, color: stroke }]
+  const itemCount = Math.max(...activeSeries.map((item) => item.data.length), 0)
+  const status = state === "ready" && itemCount === 0 ? "empty" : state
   if (status !== "ready") return <ChartStatus state={status} emptyLabel={emptyLabel} height={height} />
-  const data = values.map((value, index) => ({ name: toText(labels?.[index], String(index + 1)), value, originalLabel: labels?.[index] ?? String(index + 1) }))
+  const resolvedLabels = Array.from({ length: itemCount }, (_, index) => labels?.[index] ?? String(index + 1))
+  const data = resolvedLabels.map((label, index) => Object.fromEntries([["name", toText(label, String(index + 1))], ["originalLabel", label], ...activeSeries.map((item) => [item.key, item.data[index] ?? 0])]))
   const Engine = showArea ? RechartsAreaChart : RechartsLineChart
 
   return (
@@ -201,22 +239,24 @@ function LineChart({ values, size = "md", width = 560, height: heightProp, showA
       <div style={{ height }}>
         <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
           <Engine data={data} margin={{ top: 10, right: 10, bottom: showAxis ? 8 : 0, left: showAxis ? -12 : 0 }}>
+            {showArea && gradient ? <defs>{activeSeries.map((item, index) => { const color = getChartColor(index, item.color); return <linearGradient key={item.key} id={`${gradientId}-${item.key}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity={0.34} /><stop offset="92%" stopColor={color} stopOpacity={0.02} /></linearGradient> })}</defs> : null}
             {showGrid ? <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="4 6" /> : null}
             <XAxis dataKey="name" hide={!showAxis} axisLine={false} tickLine={false} tick={{ fill: "var(--muted-foreground)", fontSize: 12 }} interval="preserveStartEnd" />
             <YAxis hide={!showAxis} domain={domain} axisLine={false} tickLine={false} width={44} tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} />
             {showTooltip ? <RechartsTooltip content={<ChartTooltipContent valueFormatter={valueFormatter} />} /> : null}
-            {showArea ? <Area type="monotone" dataKey="value" name="Value" stroke={stroke} strokeWidth={2.5} fill={stroke} fillOpacity={0.14} activeDot={{ r: 5 }} isAnimationActive={false} /> : <Line type="monotone" dataKey="value" name="Value" stroke={stroke} strokeWidth={2.5} dot={{ r: 3.5, fill: stroke }} activeDot={{ r: 5 }} isAnimationActive={false} />}
+            {activeSeries.map((item, index) => { const color = getChartColor(index, item.color); return showArea ? <Area key={item.key} type={curve} dataKey={item.key} name={toText(item.label, item.key)} stroke={color} strokeWidth={strokeWidth} fill={gradient ? `url(#${gradientId}-${item.key})` : color} fillOpacity={gradient ? 1 : 0.12} dot={showDots ? { r: 3, fill: color, strokeWidth: 2, stroke: "var(--background)" } : false} activeDot={{ r: 5, strokeWidth: 2, stroke: "var(--background)" }} isAnimationActive={false} /> : <Line key={item.key} type={curve} dataKey={item.key} name={toText(item.label, item.key)} stroke={color} strokeWidth={strokeWidth} dot={showDots ? { r: 3, fill: color, strokeWidth: 2, stroke: "var(--background)" } : false} activeDot={{ r: 5, strokeWidth: 2, stroke: "var(--background)" }} isAnimationActive={false} /> })}
           </Engine>
         </ResponsiveContainer>
       </div>
-      <ChartDataTable data={values.map((value, index) => ({ label: labels?.[index] ?? index + 1, value }))} valueFormatter={valueFormatter} caption={ariaLabel} />
+      {showLegend && activeSeries.length > 1 ? <ChartLegend className="mt-3" data={activeSeries.map((item, index) => ({ label: item.label, value: 0, color: getChartColor(index, item.color) }))} /> : null}
+      <ChartSeriesDataTable labels={resolvedLabels} series={activeSeries} valueFormatter={valueFormatter} caption={ariaLabel} />
     </div>
   )
 }
 
 function AreaChart(props: Omit<LineChartProps, "showArea">) { return <LineChart showArea {...props} /> }
 
-export type SparklineProps = Omit<LineChartProps, "size" | "showArea" | "showAxis"> & { values: number[]; positive?: boolean }
+export type SparklineProps = Omit<LineChartProps, "size" | "showArea" | "showAxis" | "series" | "showLegend"> & { values: number[]; positive?: boolean }
 
 function Sparkline({ values, positive = true, stroke, className, showTooltip = false, ...props }: SparklineProps) {
   return <LineChart values={values} size="sm" stroke={stroke ?? (positive ? "var(--aui-success,var(--primary))" : "var(--destructive)")} showGrid={false} showAxis={false} showTooltip={showTooltip} className={cn("max-w-44", className)} ariaLabel="Sparkline" {...props} />

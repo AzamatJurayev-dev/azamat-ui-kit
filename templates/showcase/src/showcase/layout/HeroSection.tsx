@@ -25,7 +25,7 @@ export function HeroSection() {
           <div className="flex flex-wrap gap-2">
             <Button leftIcon={<PlusIcon className="size-4" />}>Create</Button>
             <Button variant="outline" leftIcon={<SettingsIcon className="size-4" />}>Settings</Button>
-            <CopyButton value="npx tembro@4.0.0 list --json">Copy list command</CopyButton>
+            <CopyButton value="npx tembro@4.0.1 list --json">Copy list command</CopyButton>
           </div>
         </div>
 
@@ -33,7 +33,7 @@ export function HeroSection() {
           <StatisticCard label="Registry components" value={moduleCount} change="visible below" trend="up" description="tembro add <name>" />
           <StatisticCard label="Local source files" value="152" change="with hooks/lib" trend="up" description="installed by CLI" />
           <StatisticCard label="Categories" value={registryGroups.length} change="all shown" trend="up" description="actions to wizard" />
-          <StatisticCard label="Build" value="Pass" change="doctor pass" trend="up" description="tembro@4.0.0" />
+          <StatisticCard label="Build" value="Pass" change="doctor pass" trend="up" description="tembro@4.0.1" />
         </StatisticGrid>
       </div>
     </section>

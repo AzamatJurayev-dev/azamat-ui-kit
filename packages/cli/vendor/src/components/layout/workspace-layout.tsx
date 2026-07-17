@@ -13,7 +13,7 @@ function WorkspaceLayout({ viewport = true, className, ...props }: WorkspaceLayo
       data-viewport={viewport || undefined}
       className={cn(
         "flex min-h-0 min-w-0 bg-[color:var(--aui-page-bg,var(--background))] text-foreground",
-        viewport && "h-dvh overflow-hidden",
+        viewport && "h-dvh max-h-dvh w-full overflow-hidden overscroll-none",
         className
       )}
       {...props}
@@ -27,7 +27,7 @@ function WorkspaceContent({ className, ...props }: WorkspaceContentProps) {
   return (
     <div
       data-slot="workspace-content"
-      className={cn("flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden", className)}
+      className={cn("isolate flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden", className)}
       {...props}
     />
   )
@@ -45,7 +45,7 @@ function WorkspaceMain({ scrollable = true, padded = false, className, ...props 
       data-scrollable={scrollable || undefined}
       className={cn(
         "min-h-0 min-w-0 flex-1",
-        scrollable && "overflow-x-hidden overflow-y-auto overscroll-contain",
+        scrollable && "overflow-x-hidden overflow-y-auto overscroll-contain [scrollbar-gutter:stable]",
         padded && "p-4 md:p-6",
         className
       )}

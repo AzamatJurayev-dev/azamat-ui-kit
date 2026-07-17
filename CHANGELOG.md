@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.0.1 - 2026-07-17
+
+### Changed
+
+- Fixed viewport workspaces so the document never competes with `WorkspaceMain` for vertical scrolling.
+- Rebalanced light and dark surface, border, elevation, hover, active, and keyboard-focus tokens.
+- Added multi-series grouped and stacked bars, multi-series line and gradient area charts, legends, curves, dots, and accessible series tables.
+- Improved responsive chart and dashboard composition while preserving the existing single-series API.
+
 ## 4.0.0 - 2026-07-17
 
 ### Added

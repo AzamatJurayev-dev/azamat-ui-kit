@@ -128,17 +128,17 @@
   --aui-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --aui-disabled-opacity: 0.52;
   --aui-shadow-xs: 0 1px 2px oklch(0.24 0.02 255 / 5%);
-  --aui-shadow-sm: 0 1px 3px oklch(0.24 0.02 255 / 7%);
-  --aui-shadow-md: 0 8px 24px oklch(0.24 0.02 255 / 8%);
-  --aui-shadow-lg: 0 16px 36px oklch(0.24 0.02 255 / 10%);
+  --aui-shadow-sm: 0 1px 2px oklch(0.24 0.02 255 / 6%), 0 1px 6px oklch(0.24 0.02 255 / 4%);
+  --aui-shadow-md: 0 10px 28px -12px oklch(0.24 0.02 255 / 18%), 0 2px 8px oklch(0.24 0.02 255 / 5%);
+  --aui-shadow-lg: 0 24px 56px -20px oklch(0.24 0.02 255 / 26%), 0 8px 18px oklch(0.24 0.02 255 / 6%);
   --aui-surface-base: var(--background);
   --aui-surface-raised: color-mix(in oklch, var(--background), white 42%);
   --aui-surface-muted: color-mix(in oklch, var(--muted), var(--background) 52%);
   --aui-border-strong: color-mix(in oklch, var(--border), var(--foreground) 7%);
 
   --aui-control-radius: var(--aui-radius-control);
-  --aui-focus-ring: color-mix(in oklch, var(--ring), transparent 44%);
-  --aui-focus-ring-soft: color-mix(in oklch, var(--ring), transparent 82%);
+  --aui-focus-ring: color-mix(in oklch, var(--ring), transparent 22%);
+  --aui-focus-ring-soft: color-mix(in oklch, var(--ring), transparent 78%);
   --aui-danger-ring: color-mix(in oklch, var(--destructive), transparent 48%);
   --aui-danger-ring-soft: color-mix(in oklch, var(--destructive), transparent 86%);
   --aui-warning-ring: color-mix(in oklch, var(--aui-warning), transparent 48%);
@@ -150,13 +150,13 @@
   --aui-control-surface-readonly: color-mix(in oklch, var(--muted), var(--background) 78%);
   --aui-control-shadow: var(--aui-shadow-sm);
   --aui-control-border-strong: var(--aui-border-strong);
-  --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 68%);
+  --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 42%);
   --aui-control-panel-bg: var(--aui-surface-raised);
   --aui-control-panel-shadow: var(--aui-shadow-md);
   --aui-card-radius: var(--aui-radius-surface);
   --aui-card-border: var(--border);
   --aui-card-shadow: var(--aui-shadow-xs);
-  --aui-card-shadow-hover: var(--aui-shadow-md);
+  --aui-card-shadow-hover: 0 18px 42px -18px oklch(0.24 0.02 255 / 24%), 0 3px 10px oklch(0.24 0.02 255 / 6%);
   --aui-card-soft-bg: color-mix(in oklch, var(--muted), var(--background) 34%);
   --aui-card-outline-bg: var(--aui-surface-raised);
   --aui-popover-shadow: var(--aui-shadow-lg);
@@ -234,8 +234,8 @@
   --aui-danger: var(--destructive);
   --aui-danger-foreground: oklch(0.19 0.012 255);
 
-  --aui-focus-ring: color-mix(in oklch, var(--ring), transparent 40%);
-  --aui-focus-ring-soft: color-mix(in oklch, var(--ring), transparent 80%);
+  --aui-focus-ring: color-mix(in oklch, var(--ring), transparent 18%);
+  --aui-focus-ring-soft: color-mix(in oklch, var(--ring), transparent 72%);
   --aui-danger-ring: color-mix(in oklch, var(--destructive), transparent 46%);
   --aui-danger-ring-soft: color-mix(in oklch, var(--destructive), transparent 84%);
   --aui-warning-ring: color-mix(in oklch, var(--aui-warning), transparent 46%);
@@ -243,9 +243,9 @@
   --aui-radius-control: var(--radius-lg);
   --aui-radius-surface: var(--radius-xl);
   --aui-shadow-xs: 0 1px 2px oklch(0 0 0 / 12%);
-  --aui-shadow-sm: 0 1px 3px oklch(0 0 0 / 16%);
-  --aui-shadow-md: 0 12px 30px oklch(0 0 0 / 26%);
-  --aui-shadow-lg: 0 22px 54px oklch(0 0 0 / 36%);
+  --aui-shadow-sm: 0 1px 2px oklch(0 0 0 / 20%), 0 2px 8px oklch(0 0 0 / 12%);
+  --aui-shadow-md: 0 16px 36px -16px oklch(0 0 0 / 62%), 0 3px 12px oklch(0 0 0 / 20%);
+  --aui-shadow-lg: 0 28px 64px -20px oklch(0 0 0 / 72%), 0 10px 24px oklch(0 0 0 / 24%);
   --aui-surface-base: var(--background);
   --aui-surface-raised: oklch(1 0 0 / 4%);
   --aui-surface-muted: oklch(1 0 0 / 6%);
@@ -286,7 +286,7 @@
   --aui-table-border: oklch(1 0 0 / 8%);
   --aui-table-selection-surface: oklch(1 0 0 / 4%);
   --aui-control-border-strong: var(--aui-border-strong);
-  --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 72%);
+  --aui-control-hover-border: color-mix(in oklch, var(--ring), transparent 44%);
   --aui-control-panel-bg: var(--aui-surface-raised);
   --aui-control-panel-shadow: var(--aui-shadow-md);
   --aui-button-primary-shadow: 0 1px 0 color-mix(in oklch, white, transparent 82%), 0 18px 40px color-mix(in oklch, var(--primary), transparent 82%);
@@ -317,6 +317,20 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    margin: 0;
+  }
+
+  html:has([data-slot="workspace-layout"][data-viewport="true"]),
+  body:has([data-slot="workspace-layout"][data-viewport="true"]) {
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  body:has([data-slot="workspace-layout"][data-viewport="true"]) > #root {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
   }
 }
 
@@ -552,7 +566,9 @@
   }
 
   [data-slot="button"][data-slot="button"]:focus-visible {
-    box-shadow: var(--aui-control-shadow), 0 0 0 1px var(--aui-focus-ring), 0 0 0 5px var(--aui-focus-ring-soft);
+    position: relative;
+    z-index: 1;
+    box-shadow: var(--aui-control-shadow), 0 0 0 2px var(--background), 0 0 0 4px var(--aui-focus-ring);
   }
 
   [data-slot="button"][data-slot="button"]:not(:disabled):not([aria-disabled="true"]):hover {
@@ -568,8 +584,9 @@
   }
 
   [data-slot="button"][data-variant="default"]:not(:disabled):not([aria-disabled="true"]):hover {
-    background: color-mix(in oklch, var(--primary), white 10%);
-    box-shadow: 0 1px 0 color-mix(in oklch, white, transparent 18%), 0 20px 42px color-mix(in oklch, var(--primary), transparent 74%);
+    border-color: color-mix(in oklch, var(--primary), black 16%);
+    background: color-mix(in oklch, var(--primary), white 7%);
+    box-shadow: 0 8px 20px -10px color-mix(in oklch, var(--primary), transparent 35%);
   }
 
   [data-slot="button"][data-variant="secondary"] {
@@ -585,7 +602,9 @@
   }
 
   [data-slot="button"][data-variant="outline"]:not(:disabled):not([aria-disabled="true"]):hover {
-    background: color-mix(in oklch, var(--background), transparent 14%);
+    border-color: var(--aui-control-hover-border);
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
 
   [data-slot="button"][data-variant="ghost"] {
@@ -596,8 +615,9 @@
   }
 
   [data-slot="button"][data-variant="ghost"]:not(:disabled):not([aria-disabled="true"]):hover {
-    border-color: color-mix(in oklch, var(--border), var(--foreground) 8%);
-    background: color-mix(in oklch, var(--accent), transparent 22%);
+    border-color: transparent;
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
 
   [data-slot="button"][data-variant="destructive"] {
@@ -688,7 +708,8 @@
   [data-slot="input"][data-slot="input"]:focus-visible,
   [data-slot="textarea"][data-slot="textarea"]:focus-visible,
   [data-slot="select-trigger"][data-slot="select-trigger"]:focus-visible {
-    box-shadow: var(--aui-control-shadow), 0 0 0 1px var(--aui-focus-ring), 0 0 0 5px var(--aui-focus-ring-soft);
+    border-color: var(--ring);
+    box-shadow: var(--aui-control-shadow), 0 0 0 1px var(--background), 0 0 0 3px var(--aui-focus-ring);
   }
 
   [data-slot="input"][data-slot="input"]:disabled,
@@ -867,7 +888,7 @@
 
   [data-slot="tabs-trigger"][data-slot="tabs-trigger"]:hover {
     color: var(--foreground);
-    background: color-mix(in oklch, var(--background), transparent 18%);
+    background: var(--accent);
   }
 
   [data-slot="tabs-trigger"][data-slot="tabs-trigger"][data-selected] {
@@ -878,13 +899,13 @@
   }
 
   [data-slot="tabs-trigger"][data-slot="tabs-trigger"]:focus-visible {
-    box-shadow: var(--aui-control-shadow), 0 0 0 1px var(--aui-focus-ring), 0 0 0 5px var(--aui-focus-ring-soft);
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--aui-focus-ring);
   }
 
   :is([data-slot="card"], [data-card]) {
     border: 1px solid var(--aui-card-border);
     border-radius: var(--aui-card-radius);
-    background: linear-gradient(180deg, color-mix(in oklch, var(--card), white 8%), var(--card));
+    background: var(--card);
     box-shadow: var(--aui-card-shadow);
   }
 
@@ -945,6 +966,7 @@
   :is([data-slot="card"], [data-card])[data-interactive="true"]:hover {
     border-color: var(--aui-control-hover-border);
     box-shadow: var(--aui-card-shadow-hover);
+    transform: translateY(-1px);
   }
 
   :is([data-slot="card"], [data-card])[data-interactive="true"]:focus-visible {

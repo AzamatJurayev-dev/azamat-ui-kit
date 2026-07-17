@@ -62,6 +62,16 @@ describe("library-backed components", () => {
       <>
         <BarChart ariaLabel="Revenue by region" data={[{ label: "North", value: 42 }, { label: "South", value: -8 }]} />
         <LineChart ariaLabel="Weekly trend" values={[-12, 4, 18]} labels={["Mon", "Tue", "Wed"]} showAxis />
+        <LineChart
+          ariaLabel="Revenue comparison"
+          labels={["Jan", "Feb", "Mar"]}
+          series={[
+            { key: "current", label: "Current", data: [42, 58, 76] },
+            { key: "previous", label: "Previous", data: [36, 49, 62] },
+          ]}
+          showArea
+          showLegend
+        />
         <DonutChart ariaLabel="Plan distribution" data={[{ label: "Pro", value: 70 }, { label: "Free", value: 30 }]} />
       </>
     )
@@ -69,7 +79,9 @@ describe("library-backed components", () => {
     expect(screen.getByRole("img", { name: "Revenue by region" })).toBeTruthy()
     expect(screen.getByRole("img", { name: "Weekly trend" })).toBeTruthy()
     expect(screen.getByRole("img", { name: "Plan distribution" })).toBeTruthy()
+    expect(screen.getByRole("img", { name: "Revenue comparison" })).toBeTruthy()
     expect(screen.getByRole("table", { name: "Revenue by region" })).toHaveTextContent("-8")
     expect(screen.getByRole("table", { name: "Weekly trend" })).toHaveTextContent("Mon")
+    expect(screen.getByRole("table", { name: "Revenue comparison" })).toHaveTextContent("Previous")
   })
 })
