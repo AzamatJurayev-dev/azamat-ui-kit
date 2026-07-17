@@ -76,8 +76,6 @@ if (packageJson) {
     "./charts/*",
     "./data-table/*",
     "./dnd/*",
-    "./showcase",
-    "./showcase/*",
     "./public-component-surface",
     "./registry.json",
     "./package.json",

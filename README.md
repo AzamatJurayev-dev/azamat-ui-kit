@@ -133,7 +133,7 @@ The CLI accepts several old names and redirects them to canonical entries. Examp
 // before
 <FormNumberInput control={control} name="price" />
 <FormAsyncSelect control={control} name="ownerId" loadOptions={loadOwners} />
-<AppSidebar items={items} />
+<Sidebar items={items} />
 <SmartCard title="Account" />
 
 // after

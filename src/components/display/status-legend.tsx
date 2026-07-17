@@ -2,6 +2,7 @@ import * as React from "react"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { StatusDot, type StatusDotTone } from "./status-dot"
 import { cn } from "@/lib/utils"
 
 export type StatusLegendTone = "default" | "success" | "warning" | "danger" | "info" | "muted"
@@ -30,13 +31,13 @@ export type StatusLegendProps = Omit<React.ComponentProps<typeof Card>, "orienta
   itemClassName?: string
 }
 
-const dotClassName: Record<StatusLegendTone, string> = {
-  default: "bg-primary",
-  success: "bg-emerald-500",
-  warning: "bg-amber-500",
-  danger: "bg-destructive",
-  info: "bg-blue-500",
-  muted: "bg-muted-foreground",
+const statusDotTone: Record<StatusLegendTone, StatusDotTone> = {
+  default: "neutral",
+  success: "success",
+  warning: "warning",
+  danger: "danger",
+  info: "info",
+  muted: "muted",
 }
 
 function StatusLegend({
@@ -105,7 +106,7 @@ function StatusLegend({
               {item.icon ? (
                 <span className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-xl bg-[color:var(--aui-page-bg)] text-muted-foreground [&_svg]:size-4">{item.icon}</span>
               ) : (
-                <span className={cn("mt-1.5 size-2.5 shrink-0 rounded-full ring-4 ring-background", dotClassName[item.tone ?? "default"])} />
+                <StatusDot className="mt-1.5" tone={statusDotTone[item.tone ?? "default"]} size="lg" aria-label={typeof item.label === "string" ? item.label : undefined} />
               )}
               <div className="min-w-0 space-y-0.5">
                 <div className="truncate text-sm font-medium text-foreground">{item.label}</div>

@@ -55,23 +55,16 @@ export type InfoCardProps = Omit<React.ComponentProps<typeof Card>, "title" | "c
   renderFooter?: (ctx: InfoCardRenderContext) => React.ReactNode
 }
 
-const variantClassName: Record<InfoCardVariant, string> = {
-  default: "",
-  outline: "",
-  elevated: "",
-  ghost: "",
-}
-
 const densityClassName: Record<InfoCardDensity, string> = {
-  compact: "",
-  default: "",
-  comfortable: "",
+  compact: "gap-2",
+  default: "gap-3",
+  comfortable: "gap-4",
 }
 
 const titleClassName: Record<InfoCardSize, string> = {
-  sm: "",
-  md: "",
-  lg: "",
+  sm: "text-sm font-semibold",
+  md: "text-base font-semibold",
+  lg: "text-lg font-semibold",
 }
 
 function InfoCard({
@@ -126,7 +119,6 @@ function InfoCard({
       disabled={disabled}
       className={cn(
         "overflow-hidden",
-        variantClassName[variant],
         orientation === "horizontal" && "flex",
         className,
         classNames?.root

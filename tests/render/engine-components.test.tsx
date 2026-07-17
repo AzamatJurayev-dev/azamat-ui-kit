@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
-import { ImageCropper, QRCode, RichTextEditor } from "@/index"
+import { BarChart, DonutChart, ImageCropper, LineChart, QRCode, RichTextEditor } from "@/index"
 
 describe("library-backed components", () => {
   it("generates a real SVG QR code with error correction", async () => {
@@ -51,5 +51,25 @@ describe("library-backed components", () => {
     expect(screen.getByLabelText("Zoom")).toBeDisabled()
     expect(screen.getByLabelText("Rotation")).toBeDisabled()
     expect(screen.getByRole("img", { name: "Image crop preview" }).parentElement).toHaveAttribute("data-disabled", "true")
+  })
+
+  it("renders responsive charts with accessible data fallbacks", () => {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
+      x: 0, y: 0, top: 0, left: 0, right: 800, bottom: 320, width: 800, height: 320,
+      toJSON: () => ({}),
+    } as DOMRect)
+    render(
+      <>
+        <BarChart ariaLabel="Revenue by region" data={[{ label: "North", value: 42 }, { label: "South", value: -8 }]} />
+        <LineChart ariaLabel="Weekly trend" values={[-12, 4, 18]} labels={["Mon", "Tue", "Wed"]} showAxis />
+        <DonutChart ariaLabel="Plan distribution" data={[{ label: "Pro", value: 70 }, { label: "Free", value: 30 }]} />
+      </>
+    )
+
+    expect(screen.getByRole("img", { name: "Revenue by region" })).toBeTruthy()
+    expect(screen.getByRole("img", { name: "Weekly trend" })).toBeTruthy()
+    expect(screen.getByRole("img", { name: "Plan distribution" })).toBeTruthy()
+    expect(screen.getByRole("table", { name: "Revenue by region" })).toHaveTextContent("-8")
+    expect(screen.getByRole("table", { name: "Weekly trend" })).toHaveTextContent("Mon")
   })
 })

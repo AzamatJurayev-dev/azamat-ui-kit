@@ -263,8 +263,8 @@ export const componentApiSchemas: Record<string, ComponentApiSchema> = {
     ],
     accessibility: ["Make tag remove controls keyboard reachable.", "Announce selected count when selections are constrained.", "Keep deprecated alias docs pointed to the preferred API."],
   },
-  "app-sidebar": {
-    slug: "app-sidebar",
+  sidebar: {
+    slug: "sidebar",
     source: "metadata",
     summary: "Reusable dashboard navigation shell for admin products. Keep route state in one items array, render framework links through `renderLink`, and use the built-in active indicators, collapsed rail, mobile drawer and footer account slots instead of rebuilding sidebar chrome per app.",
     props: [
@@ -303,6 +303,41 @@ export const componentApiSchemas: Record<string, ComponentApiSchema> = {
       { title: "Admin density", code: "<Sidebar itemSize=\"sm\" activeIndicator=\"bar\" showSectionLabels={false} items={items} />" },
     ],
     accessibility: ["Use `navigationLabel` that matches the product language.", "Keep active route state explicit through `item.active` or child active state.", "Use `renderLink` for client routing instead of raw anchors in React Router or Next apps.", "Collapsed sidebars need icons or tooltips that still identify each route.", "Mobile drawer should close on selection unless the route opens another nested group."],
+  },
+  "workspace-layout": {
+    slug: "workspace-layout",
+    source: "metadata",
+    summary: "Viewport-safe product shell. Compose WorkspaceLayout, Sidebar, WorkspaceContent, WorkspaceHeader and WorkspaceMain so navigation stays fixed while only main content scrolls.",
+    props: [
+      { name: "viewport", type: "boolean", defaultValue: "true", description: "Locks the shell to dynamic viewport height and prevents body-level scrolling." },
+      { name: "scrollable", type: "boolean", defaultValue: "true", description: "WorkspaceMain owns vertical scrolling inside the shell." },
+      { name: "padded", type: "boolean", defaultValue: "false", description: "Adds responsive route padding to WorkspaceMain." },
+      { name: "SidebarProvider", type: "Component", defaultValue: "-", description: "Coordinates collapsed and mobile navigation state without route-specific plumbing." },
+      { name: "SidebarTrigger", type: "Component", defaultValue: "-", description: "Automatically toggles collapse on desktop and the drawer on mobile." },
+    ],
+    examples: [
+      { title: "Workspace shell", code: "<SidebarProvider><WorkspaceLayout><Sidebar items={items} /><WorkspaceContent><WorkspaceHeader left={<SidebarTrigger />} /><WorkspaceMain padded>{children}</WorkspaceMain></WorkspaceContent></WorkspaceLayout></SidebarProvider>" },
+    ],
+    accessibility: ["Keep one main landmark per route.", "Give Sidebar a product-specific navigationLabel.", "Do not move keyboard focus when desktop collapse changes."],
+  },
+  "state-view": {
+    slug: "state-view",
+    source: "metadata",
+    summary: "Canonical state surface replacing separate empty, loading, page and data-state markup.",
+    props: [
+      { name: "status", type: "'idle' | 'loading' | 'empty' | 'error' | 'success' | 'info'", defaultValue: "'empty'", description: "Controls semantic announcement, default icon and copy." },
+      { name: "variant", type: "'card' | 'plain' | 'inline'", defaultValue: "'card'", description: "Chooses route, embedded or inline presentation." },
+      { name: "size", type: "'compact' | 'default' | 'page'", defaultValue: "'default'", description: "Controls density and minimum height." },
+      { name: "onRetry", type: "() => void", defaultValue: "-", description: "Adds a recovery action with consistent semantics." },
+      { name: "onClear", type: "() => void", defaultValue: "-", description: "Adds a clear action for filtered empty states." },
+      { name: "loadingVariant", type: "'spinner' | 'skeleton' | 'progress'", defaultValue: "'spinner'", description: "Controls loading feedback without switching components." },
+      { name: "progress", type: "number", defaultValue: "-", description: "Progress percentage announced through a progressbar." },
+    ],
+    examples: [
+      { title: "Recoverable error", code: "<StateView status=\"error\" title=\"Could not load invoices\" onRetry={reload} />" },
+      { title: "Inline empty state", code: "<StateView status=\"empty\" variant=\"inline\" size=\"compact\" />" },
+    ],
+    accessibility: ["Errors use an alert role.", "Loading states expose aria-busy.", "Recovery actions remain keyboard reachable."],
   },
   dialog: {
     slug: "dialog",

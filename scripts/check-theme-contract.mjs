@@ -32,7 +32,7 @@ const requiredSelectors = [
   '[data-slot="dialog-footer"]',
   '[data-slot="data-table-wrapper"]',
   '[data-slot="data-table-toolbar"]',
-  '[data-slot="app-sidebar-item"]',
+  '[data-slot="sidebar-item"]',
   '[data-slot="sidebar-nav-item"]',
 ]
 

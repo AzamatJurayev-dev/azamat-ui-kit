@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "3.1.17",
+  "version": "4.0.0",
   "description": "Reusable React + TypeScript UI kit registry",
   "groups": {
     "ui": [
@@ -62,6 +62,7 @@
     ],
     "feedback": [
       "alert",
+      "state-view",
       "loading-state",
       "page-state",
       "data-state"
@@ -98,6 +99,8 @@
       "sortable-list"
     ],
     "layout": [
+      "workspace-layout",
+      "sidebar-context",
       "sidebar",
       "breadcrumbs",
       "section"
@@ -267,10 +270,10 @@
       "alert",
       "charts",
       "sidebar",
+      "workspace-layout",
+      "state-view",
       "file-upload",
-      "progress"
-    ],
-    "standalone": [
+      "progress",
       "accordion",
       "divider",
       "segmented-control",
@@ -312,7 +315,8 @@
       "qr-code",
       "rich-text-editor",
       "image-cropper"
-    ]
+    ],
+    "standalone": []
   },
   "migrationAliases": {
     "clearable-input": "input",
@@ -365,7 +369,7 @@
     "data-list": "list",
     "property-grid": "description-list",
     "result": "page-state",
-    "app-header": "sidebar",
+    "app-header": "workspace-layout",
     "page-header": "section",
     "kpi": "statistic",
     "progress-ring": "progress-circle",

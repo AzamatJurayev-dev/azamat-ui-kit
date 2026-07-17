@@ -52,6 +52,7 @@ type BadgeProps = useRender.ComponentProps<"span"> &
     count?: React.ReactNode
     status?: "neutral" | "info" | "success" | "warning" | "danger" | "muted"
     removable?: boolean
+    selected?: boolean
     onRemove?: () => void
     removeLabel?: string
     leftIcon?: React.ReactNode
@@ -68,12 +69,14 @@ function Badge({
   count,
   status,
   removable = false,
+  selected = false,
   onRemove,
   removeLabel = "Remove badge",
   leftIcon,
   rightIcon,
   children,
   render,
+  onKeyDown,
   ...props
 }: BadgeProps) {
   const resolvedTone = status ?? tone
@@ -84,7 +87,19 @@ function Badge({
     defaultTagName: "span",
     props: mergeProps<"span">(
       {
-        className: cn(badgeVariants({ variant, tone: resolvedTone, size, dot: showDot }), className),
+        className: cn(
+          badgeVariants({ variant, tone: resolvedTone, size, dot: showDot }),
+          selected && "ring-2 ring-ring/45 ring-offset-1",
+          className
+        ),
+        tabIndex: removable ? 0 : undefined,
+        onKeyDown: (event: React.KeyboardEvent<HTMLSpanElement>) => {
+          if (removable && (event.key === "Backspace" || event.key === "Delete")) {
+            event.preventDefault()
+            onRemove?.()
+          }
+          onKeyDown?.(event)
+        },
         children: (
           <>
             {showDot ? <span data-slot="badge-dot" /> : null}
@@ -120,6 +135,7 @@ function Badge({
         "data-tone": resolvedTone ?? "neutral",
         "data-size": size ?? "default",
         "data-removable": removable || undefined,
+        "data-selected": selected || undefined,
       } as React.HTMLAttributes<HTMLSpanElement>,
       props
     ),

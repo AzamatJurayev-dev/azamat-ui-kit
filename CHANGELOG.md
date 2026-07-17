@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.0.0 - 2026-07-17
+
+### Added
+
+- Added the canonical `WorkspaceLayout`, `WorkspaceContent`, `WorkspaceMain`, `WorkspaceHeader`, `SidebarProvider`, and `SidebarTrigger` application shell.
+- Added `StateView` as the shared loading, empty, error, success, and informational state primitive.
+- Rebuilt bar, line, area, sparkline, and donut charts on Recharts with responsive sizing, tooltips, negative domains, deterministic rendering, and accessible table fallbacks.
+
+### Changed
+
+- Renamed source-copy layout files to `sidebar.tsx` and `workspace-header.tsx`; public components now use their real `Sidebar` and `WorkspaceHeader` names.
+- Consolidated `PageState`, `InlineState`, `LoadingState`, `DataState`, `EmptyState`, and `ErrorState` as compatibility adapters over `StateView`.
+- Consolidated `Tag` and `Chip` behavior around `Badge`, and removed duplicated status-dot rendering from `StatusLegend`.
+- Expanded `Section`, `ResourcePage`, `SplitLayout`, `InfoCard`, and `Badge` configuration while reducing overlapping wrappers.
+- Removed showcase/demo source from the production library and CLI vendor payload, reducing the packed package from roughly 5.3 MB unpacked and 3,013 files to roughly 3 MB and 1,200 files.
+
+### Breaking
+
+- Removed package exports for `./showcase` and `./showcase/*`; showcase code is development-only.
+- Removed deprecated `AppHeader`, `AppHeaderProps`, and `AppSidebarProps` exports. Use `WorkspaceHeader`, `WorkspaceHeaderProps`, and `SidebarProps`.
+- Renamed sidebar `data-slot` values from `app-sidebar*` to `sidebar*`; custom CSS selectors must be updated.
+
 ## 3.1.17 - 2026-07-16
 
 - Added production-ready `agenda` and `board` variants, density controls, rich event metadata, selection state, hidden/disabled events, custom rendering, and formatted day labels to `CalendarScheduler`.

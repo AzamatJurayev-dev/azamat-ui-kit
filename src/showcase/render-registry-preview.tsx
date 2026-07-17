@@ -13,10 +13,12 @@ import {
 
 import {
   ActionMenu,
+  Accordion,
   Alert,
   AlertDialog,
   Badge,
   BarChart,
+  BulkActionBar,
   Button,
   ButtonGroup,
   Calendar,
@@ -24,6 +26,7 @@ import {
   ChartLegend,
   CommandPalette,
   DescriptionList,
+  DetailLayout,
   DonutChart,
   Drawer,
   FileUpload,
@@ -39,6 +42,11 @@ import {
   RangeSlider,
   Rating,
   Slider,
+  Sidebar,
+  SidebarProvider,
+  SidebarTrigger,
+  SettingsPage,
+  StateView,
   StatusDot,
   StatusLegend,
   Stepper,
@@ -48,6 +56,10 @@ import {
   TabsTrigger,
   Timeline,
   Wizard,
+  WorkspaceContent,
+  WorkspaceHeader,
+  WorkspaceLayout,
+  WorkspaceMain,
   Avatar,
 } from "@/index"
 import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
@@ -206,6 +218,19 @@ function OverlayPreview({ slug }: { slug: string }) {
 }
 
 function NavigationPreview({ slug }: { slug: string }) {
+  if (slug === "accordion") {
+    return (
+      <Accordion
+        type="single"
+        defaultValue="install"
+        items={[
+          { key: "install", title: "Install with CLI", description: "Copy source into your app.", content: "Run npx tembro add accordion, then edit the local source." },
+          { key: "compose", title: "Compose route content", description: "Use it for settings and dense detail groups.", content: "Items keep titles, metadata, badges and disabled state together." },
+        ]}
+      />
+    )
+  }
+
   if (slug === "pagination") {
     return <Pagination page={3} pageCount={9} onPageChange={() => undefined} />
   }
@@ -231,6 +256,10 @@ function FeedbackPreview({ slug }: { slug?: string }) {
         action={<Button size="sm">Open</Button>}
       />
     )
+  }
+
+  if (slug === "state-view") {
+    return <StateView status="error" title="Could not load workspace" description="Check the connection and retry the request." onRetry={() => undefined} />
   }
 
   if (slug === "page-state") {
@@ -498,19 +527,31 @@ function ActionsPreview({
 }
 
 function LayoutPreview({ slug }: { slug: string }) {
-  if (slug === "app-header") {
+  if (slug === "workspace-layout" || slug === "sidebar-context") {
     return (
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-3">
-        <div className="flex items-center gap-2">
-          <LayoutDashboardIcon className="size-4" />
-          <span className="font-medium">Dashboard</span>
-        </div>
-        <Badge variant="secondary">Preview</Badge>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon-sm" aria-label="Notifications"><BellIcon /></Button>
-          <Button size="sm">Deploy</Button>
-        </div>
-      </div>
+      <SidebarProvider>
+        <WorkspaceLayout viewport={false} className="h-80 overflow-hidden rounded-[var(--radius-lg)] border border-[color:var(--aui-divider)]">
+          <Sidebar
+            responsive={false}
+            width="13rem"
+            collapsedWidth="4rem"
+            header={<div className="font-semibold">Tembro Ops</div>}
+            items={[
+              { key: "overview", label: "Overview", active: true, icon: <LayoutDashboardIcon className="size-4" /> },
+              { key: "alerts", label: "Alerts", icon: <BellIcon className="size-4" /> },
+            ]}
+          />
+          <WorkspaceContent>
+            <WorkspaceHeader left={<><SidebarTrigger /><span className="font-medium">Operations</span></>} right={<Badge variant="secondary">Live</Badge>} />
+            <WorkspaceMain padded>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <InfoCard title="Pipeline" description="24 active opportunities" />
+                <InfoCard title="Approvals" description="3 items need review" />
+              </div>
+            </WorkspaceMain>
+          </WorkspaceContent>
+        </WorkspaceLayout>
+      </SidebarProvider>
     )
   }
 
@@ -610,6 +651,31 @@ function WizardPreview({ slug }: { slug: string }) {
 }
 
 function PatternsPreview({ slug }: { slug: string }) {
+  if (slug === "bulk-action-bar") {
+    return <BulkActionBar selectedCount={3} onClear={() => undefined} actions={<><Button size="sm">Assign</Button><Button size="sm" variant="outline">Export</Button></>} />
+  }
+
+  if (slug === "detail-layout") {
+    return (
+      <DetailLayout title="Customer account" description="Production detail layout with a responsive aside." eyebrow="Enterprise" actions={<Button size="sm">Edit</Button>} summary={<InfoCard title="Account health" description="All systems operational" />} aside={<InfoCard title="Owner" description="Customer success team" />}>
+        <DescriptionList items={[{ key: "plan", label: "Plan", value: "Scale" }, { key: "region", label: "Region", value: "Central Asia" }]} />
+      </DetailLayout>
+    )
+  }
+
+  if (slug === "settings-page") {
+    return (
+      <SettingsPage
+        title="Workspace settings"
+        description="Manage team defaults and notification policy."
+        sections={[
+          { value: "general", label: "General", description: "Workspace identity", content: <InfoCard title="General settings" description="Name, timezone and locale controls." /> },
+          { value: "notifications", label: "Notifications", description: "Delivery channels", content: <InfoCard title="Notification policy" description="Email and product alert preferences." /> },
+        ]}
+      />
+    )
+  }
+
   if (slug === "resource-detail-page") {
     return (
       <ResourceDetailPage

@@ -13,6 +13,7 @@ const externalPackages = [
   "@tiptap",
   "qrcode",
   "react-easy-crop",
+  "recharts",
   "@base-ui/react",
   "@base-ui/react/button",
   "@base-ui/react/menu",
@@ -36,7 +37,7 @@ function collectBuildEntries(directory: string): string[] {
 
     if (entry.isDirectory()) {
       const normalizedPath = fullPath.replaceAll(path.sep, "/");
-      if (entry.name === "families" || normalizedPath.endsWith("/showcase/families")) {
+      if (entry.name === "families" || normalizedPath.endsWith("/showcase")) {
         continue;
       }
 
@@ -48,6 +49,7 @@ function collectBuildEntries(directory: string): string[] {
     const isIgnoredFile =
       fullPath.endsWith(".test.ts") ||
       fullPath.endsWith(".test.tsx") ||
+      fullPath.endsWith(`${path.sep}demo.tsx`) ||
       fullPath.endsWith(".stories.tsx") ||
       fullPath.endsWith(".d.ts");
 

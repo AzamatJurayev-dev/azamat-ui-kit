@@ -1,8 +1,9 @@
 import * as React from "react"
-import { fireEvent, render, screen, within } from "@testing-library/react"
+import { act, fireEvent, render, screen, within } from "@testing-library/react"
 import { useForm } from "react-hook-form"
 import { describe, expect, it } from "vitest"
 import type { ColumnDef } from "@tanstack/react-table"
+import axe from "axe-core"
 
 import { CommandPalette, type CommandPaletteGroup } from "@/components/command/command-palette"
 import { AsyncSelect, type AsyncSelectOption } from "@/components/inputs/async-select"
@@ -12,6 +13,15 @@ import { FileUpload } from "@/components/upload/file-upload"
 import { ResourcePage } from "@/components/patterns/resource-page"
 import { FormInput } from "@/components/form/form-input"
 import { Button } from "@/components/ui/button"
+import { Sidebar, SidebarProvider, SidebarTrigger, WorkspaceContent, WorkspaceHeader, WorkspaceLayout, WorkspaceMain } from "@/components/layout"
+import { StateView } from "@/components/feedback/state-view"
+import { CalendarScheduler } from "@/components/modern/calendar-scheduler"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+async function expectNoAxeViolations(container: HTMLElement) {
+  const result = await axe.run(container, { rules: { "color-contrast": { enabled: false } } })
+  expect(result.violations.map((violation) => `${violation.id}: ${violation.help}`)).toEqual([])
+}
 
 type PersonRow = {
   id: string
@@ -191,5 +201,57 @@ describe("render-based accessibility coverage", () => {
     expect(screen.getByRole("textbox", { name: "Name" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "Save" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "Reset" })).toBeTruthy()
+  })
+
+  it("passes automated checks for workspace navigation and main scrolling", async () => {
+    const { container } = render(
+      <SidebarProvider>
+        <WorkspaceLayout>
+          <Sidebar navigationLabel="Workspace" items={[{ key: "overview", label: "Overview", active: true }]} />
+          <WorkspaceContent>
+            <WorkspaceHeader left={<SidebarTrigger />} />
+            <WorkspaceMain><h1>Overview</h1></WorkspaceMain>
+          </WorkspaceContent>
+        </WorkspaceLayout>
+      </SidebarProvider>
+    )
+    await act(async () => expectNoAxeViolations(container))
+  })
+
+  it("announces canonical loading and error states", async () => {
+    const { container, rerender } = render(<StateView status="loading" title="Loading invoices" />)
+    expect(screen.getByRole("status")).toHaveAttribute("aria-busy", "true")
+    await expectNoAxeViolations(container)
+
+    rerender(<StateView status="error" title="Invoices failed" onRetry={() => undefined} />)
+    expect(screen.getByRole("alert")).toBeTruthy()
+    await expectNoAxeViolations(container)
+  })
+
+  it("keeps tabs keyboard semantics valid", async () => {
+    const { container } = render(
+      <Tabs defaultValue="overview">
+        <TabsList aria-label="Report views">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="activity">Activity</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">Overview report</TabsContent>
+        <TabsContent value="activity">Activity report</TabsContent>
+      </Tabs>
+    )
+    await act(async () => expectNoAxeViolations(container))
+  })
+
+  it("exposes scheduler events as selectable controls", async () => {
+    const { container } = render(
+      <CalendarScheduler
+        title="Team schedule"
+        variant="agenda"
+        days={["2026-07-20"]}
+        events={[{ id: "review", date: "2026-07-20", time: "10:00", title: "Release review", description: "Product room" }]}
+      />
+    )
+    expect(screen.getByRole("button", { name: /release review/i })).toBeTruthy()
+    await expectNoAxeViolations(container)
   })
 })

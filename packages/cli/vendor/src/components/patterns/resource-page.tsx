@@ -2,17 +2,12 @@ import * as React from "react"
 
 import { DataTable, type DataTableProps } from "@/components/data-table/data-table"
 import { PageHeader, type PageHeaderProps } from "@/components/layout/page-header"
+import { Section, type SectionProps } from "@/components/layout/section"
 import { cn } from "@/lib/utils"
 
 export type ResourcePageDensity = "default" | "compact" | "comfortable"
 
-export type ResourcePageSectionProps = React.ComponentProps<"section"> & {
-  title?: React.ReactNode
-  description?: React.ReactNode
-  actions?: React.ReactNode
-  headerClassName?: string
-  bodyClassName?: string
-}
+export type ResourcePageSectionProps = Omit<SectionProps, "variant">
 
 function ResourcePageSection({
   className,
@@ -25,28 +20,19 @@ function ResourcePageSection({
   ...props
 }: ResourcePageSectionProps) {
   return (
-    <section
+    <Section
       data-slot="resource-page-section"
-      className={cn("rounded-xl border bg-card text-card-foreground shadow-sm", className)}
+      variant="panel"
+      title={title}
+      description={description}
+      actions={actions}
+      headerClassName={headerClassName}
+      bodyClassName={bodyClassName}
+      className={className}
       {...props}
     >
-      {(title || description || actions) && (
-        <div
-          data-slot="resource-page-section-header"
-          className={cn("flex flex-col gap-3 border-b p-4 sm:flex-row sm:items-start sm:justify-between", headerClassName)}
-        >
-          <div className="min-w-0 space-y-1">
-            {title && <h2 className="text-base font-semibold leading-none tracking-tight">{title}</h2>}
-            {description && <p className="text-sm text-muted-foreground">{description}</p>}
-          </div>
-          {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
-        </div>
-      )}
-
-      <div data-slot="resource-page-section-body" className={cn("p-4", bodyClassName)}>
-        {children}
-      </div>
-    </section>
+      {children}
+    </Section>
   )
 }
 
@@ -69,6 +55,7 @@ export type ResourcePageProps<TData, TValue = unknown> = Omit<React.ComponentPro
   toolbarClassName?: string
   contentClassName?: string
   asideClassName?: string
+  asideWidth?: React.CSSProperties["width"]
 }
 
 const densityClassName: Record<ResourcePageDensity, string> = {
@@ -97,6 +84,8 @@ function ResourcePage<TData, TValue = unknown>({
   toolbarClassName,
   contentClassName,
   asideClassName,
+  asideWidth = "20rem",
+  style,
   ...props
 }: ResourcePageProps<TData, TValue>) {
   const hasHeader = Boolean(title || description || eyebrow || actions)
@@ -108,6 +97,7 @@ function ResourcePage<TData, TValue = unknown>({
       data-slot="resource-page"
       data-density={density}
       className={cn("grid min-w-0", densityClassName[density], className)}
+      style={{ "--resource-aside-width": asideWidth, ...style } as React.CSSProperties}
       {...props}
     >
       {breadcrumbs && <div data-slot="resource-page-breadcrumbs">{breadcrumbs}</div>}
@@ -136,7 +126,7 @@ function ResourcePage<TData, TValue = unknown>({
       {(hasMainContent || aside) && (
         <div
           data-slot="resource-page-content"
-          className={cn("grid min-w-0 gap-4", aside && "xl:grid-cols-[minmax(0,1fr)_20rem]", contentClassName)}
+          className={cn("grid min-w-0 gap-4", aside && "xl:grid-cols-[minmax(0,1fr)_var(--resource-aside-width)]", contentClassName)}
         >
           <div data-slot="resource-page-main" className="grid min-w-0 gap-4">
             {children}

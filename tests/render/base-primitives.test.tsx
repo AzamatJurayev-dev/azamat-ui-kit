@@ -297,7 +297,9 @@ describe("base primitives", () => {
     const badge = screen.getByText("Beta").closest("[data-slot='badge']")
     expect(badge?.getAttribute("data-variant")).toBe("soft")
 
-    await user.click(screen.getByRole("button", { name: "Remove badge" }))
+    const badgeRemove = badge?.querySelector<HTMLButtonElement>('[data-slot="badge-remove"]')
+    expect(badgeRemove).toBeTruthy()
+    await user.click(badgeRemove!)
     expect(onBadgeRemove).toHaveBeenCalledTimes(1)
 
     const tag = screen.getByText("Priority").closest("[data-slot='tag']") as HTMLElement
