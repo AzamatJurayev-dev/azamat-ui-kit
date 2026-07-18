@@ -42,6 +42,8 @@ export const registryGroups: RegistryGroup[] = [
       component("dropdown-menu", "stable", "src/components/ui/dropdown-menu"),
       component("popover", "stable", "src/components/ui/popover"),
       component("tooltip", "preview", "src/components/ui/tooltip"),
+      component("hover-card", "stable", "src/components/ui/hover-card"),
+      component("menubar", "preview", "src/components/ui/menubar"),
       component("select", "stable", "src/components/ui/select"),
       component("table", "stable", "src/components/ui/table"),
       component("segmented-control", "preview", "src/components/ui/segmented-control"),
@@ -153,15 +155,7 @@ export const registryGroups: RegistryGroup[] = [
   {
     name: "patterns",
     components: [
-      component("bulk-action-bar", "preview", "src/components/patterns/bulk-action-bar.tsx"),
-      component("data-view", "preview", "src/components/patterns/data-view.tsx"),
-      component("detail-layout", "preview", "src/components/patterns/detail-layout.tsx"),
       component("empty-state", "preview", "src/components/patterns/empty-state.tsx"),
-      component("form-builder", "preview", "src/components/patterns/form-builder.tsx"),
-      component("resource-detail-page", "preview", "src/components/patterns/resource-detail-page.tsx"),
-      component("resource-page", "preview", "src/components/patterns/resource-page.tsx"),
-      component("page-toolbar", "preview", "src/components/patterns/page-toolbar.tsx"),
-      component("settings-page", "preview", "src/components/patterns/settings-page.tsx"),
     ],
   },
   {
@@ -188,7 +182,13 @@ export const registryGroups: RegistryGroup[] = [
       component("saved-filter-select", "preview", "src/components/filters/saved-filter-select.tsx"),
     ],
   },
-  { name: "navigation", components: [component("pagination", "stable", "src/components/navigation/pagination.tsx")] },
+  {
+    name: "navigation",
+    components: [
+      component("navigation-menu", "preview", "src/components/ui/navigation-menu"),
+      component("pagination", "stable", "src/components/navigation/pagination.tsx"),
+    ],
+  },
   { name: "charts", components: [component("progress-circle", "stable", "src/components/charts/progress-circle.tsx")] },
   {
     name: "wizard",
@@ -221,7 +221,7 @@ export const componentRows: ComponentRow[] = [
 
 export const wizardSteps = [
   { id: "setup", title: "Setup", description: "init + theme", completed: true },
-  { id: "add", title: "Add", description: "105 registry components", completed: true },
+  { id: "add", title: "Add", description: "registry components", completed: true },
   { id: "test", title: "Test", description: "visible workbench" },
 ]
 

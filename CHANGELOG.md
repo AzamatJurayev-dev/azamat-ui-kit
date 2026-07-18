@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## 5.0.0 - 2026-07-18
+
+### Added
+
+- Added `HoverCard`, `Menubar`, and `NavigationMenu` as real source-copy primitives backed by Base UI.
+
+### Removed
+
+- Removed composed page/pattern components from the package code and registry: `form-builder`, `page-toolbar`, `bulk-action-bar`, `detail-layout`, `settings-page`, `data-view`, `resource-page`, and `resource-detail-page`.
+- Removed related root exports, CLI registry entries, docs surface entries, and source-copy vendor files for those pattern components.
+
+### Changed
+
+- Kept `empty-state` as the only `patterns` component because it is still a reusable primitive-level surface.
+
 ## 4.2.1 - 2026-07-18
 
 ### Changed

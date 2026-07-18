@@ -19,6 +19,9 @@ export const documentedPublicComponentSurfaces: readonly PublicComponentSurfaceE
   { slug: "overlay", registryName: "dialog", surface: "documented" },
   { slug: "dropdown-menu", registryName: "dropdown-menu", surface: "documented" },
   { slug: "popover", registryName: "popover", surface: "documented" },
+  { slug: "hover-card", registryName: "hover-card", surface: "documented" },
+  { slug: "menubar", registryName: "menubar", surface: "documented" },
+  { slug: "navigation-menu", registryName: "navigation-menu", surface: "documented" },
   { slug: "tooltip", registryName: "tooltip", surface: "documented" },
   { slug: "data-table", registryName: "data-table", surface: "documented" },
   { slug: "pagination", registryName: "pagination", surface: "documented" },
@@ -71,16 +74,7 @@ export const documentedPublicComponentSurfaces: readonly PublicComponentSurfaceE
   { slug: "image-cropper", registryName: "image-cropper", surface: "documented" },
 ] as const
 
-export const standalonePublicComponentSurfaces: readonly PublicComponentSurfaceEntry[] = [
-  { slug: "form-builder", registryName: "form-builder", surface: "standalone" },
-  { slug: "page-toolbar", registryName: "page-toolbar", surface: "standalone" },
-  { slug: "bulk-action-bar", registryName: "bulk-action-bar", surface: "standalone" },
-  { slug: "detail-layout", registryName: "detail-layout", surface: "standalone" },
-  { slug: "settings-page", registryName: "settings-page", surface: "standalone" },
-  { slug: "data-view", registryName: "data-view", surface: "standalone" },
-  { slug: "resource-page", registryName: "resource-page", surface: "standalone" },
-  { slug: "resource-detail-page", registryName: "resource-detail-page", surface: "standalone" },
-] as const
+export const standalonePublicComponentSurfaces: readonly PublicComponentSurfaceEntry[] = [] as const
 
 export const publicComponentSurfaceEntries = [
   ...documentedPublicComponentSurfaces,

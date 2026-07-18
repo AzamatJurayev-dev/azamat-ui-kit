@@ -72,7 +72,7 @@ export function WorkbenchSidebar({ selectedKey, onSelect }: WorkbenchSidebarProp
           }),
         ]}
         footerAccount={{
-          label: "tembro@4.2.1",
+          label: "tembro@5.0.0",
           description: `${moduleCount} registry components`,
         }}
         activeIndicator="bar"

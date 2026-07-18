@@ -1,262 +1,1936 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "4.2.1",
-  "description": "Reusable React + TypeScript UI kit registry",
-  "groups": {
-    "ui": [
-      "badge",
-      "button",
-      "card",
-      "checkbox",
-      "accordion",
-      "collapse",
-      "dialog",
-      "divider",
-      "dropdown-menu",
-      "input",
-      "kbd",
-      "popover",
-      "radio-group",
-      "right-click-menu",
-      "scroll-box",
-      "select",
-      "segmented-control",
-      "skeleton",
-      "spinner",
-      "switch",
-      "table",
-      "tabs",
-      "textarea",
-      "tooltip"
-    ],
-    "overlay": [
-      "alert-dialog",
-      "confirm-dialog",
-      "drawer"
-    ],
-    "navigation": [
-      "pagination"
-    ],
-    "inputs": [
-      "combobox",
-      "async-select",
-      "otp-input",
-      "rating",
-      "slider",
-      "tag-input",
-      "inline-editable",
-      "color-picker",
-      "signature-pad",
-      "json-input",
-      "time-picker"
-    ],
-    "form": [
-      "form-date-picker",
-      "form-date-range-input",
-      "form-date-range-picker",
-      "form-field-shell",
-      "form-input",
-      "form-select",
-      "form-switch",
-      "form-textarea"
-    ],
-    "feedback": [
-      "alert",
-      "state-view",
-      "loading-state",
-      "page-state",
-      "data-state"
-    ],
-    "display": [
-      "activity-feed",
-      "avatar",
-      "code-block",
-      "chat",
-      "description-list",
-      "data-state",
-      "info-card",
-      "kanban",
-      "qr-code",
-      "virtual-list",
-      "list",
-      "progress",
-      "progress-circle",
-      "statistic",
-      "status-dot",
-      "status-legend",
-      "timeline",
-      "tree-view",
-      "carousel",
-      "tag",
-      "typography"
-    ],
-    "actions": [
-      "action-menu",
-      "button-group",
-      "copy-button",
-      "quick-action-grid"
-    ],
-    "dnd": [
-      "sortable-list"
-    ],
-    "layout": [
-      "workspace-layout",
-      "sidebar-context",
-      "sidebar",
-      "breadcrumbs",
-      "section"
-    ],
-    "filters": [
-      "filter-bar",
-      "saved-filter-select"
-    ],
-    "data-table": [
-      "data-table"
-    ],
-    "calendar": [
-      "calendar",
-      "date-picker",
-      "date-range-picker"
-    ],
-    "upload": [
-      "file-upload",
-      "image-upload"
-    ],
-    "wizard": [
-      "stepper",
-      "wizard"
-    ],
-    "notifications": [
-      "toast",
-      "notification-center"
-    ],
-    "command": [
-      "command-palette"
-    ],
-    "patterns": [
-      "form-builder",
-      "resource-page",
-      "resource-detail-page",
-      "empty-state",
-      "page-toolbar",
-      "bulk-action-bar",
-      "detail-layout",
-      "settings-page",
-      "data-view"
-    ],
-    "modern": [
-      "calendar-scheduler",
-      "dual-list-picker",
-      "resizable-panel",
-      "rich-text-editor",
-      "image-cropper"
-    ],
-    "hooks": [
-      "use-session-storage-state",
-      "use-before-unload-when-dirty",
-      "use-is-mobile",
-      "use-disclosure",
-      "use-debounce",
-      "use-data-table-view-state"
-    ],
-    "kits": [
-      "dashboard",
-      "calendar-kit",
-      "wizard-kit",
-      "all"
-    ],
-    "charts": [
-      "charts",
-      "progress-circle"
-    ]
-  },
-  "recommended": [
-    "button",
-    "input",
-    "textarea",
-    "checkbox",
-    "switch",
-    "radio-group",
-    "dialog",
-    "popover",
-    "select",
-    "combobox",
-    "table",
-    "badge",
-    "card",
-    "tabs",
-    "collapse",
-    "accordion",
-    "segmented-control",
-    "spinner",
-    "tooltip",
-    "kbd",
-    "sidebar",
-    "breadcrumbs",
-    "data-state",
-    "loading-state",
-    "progress",
-    "progress-circle",
-    "activity-feed",
-    "action-menu",
-    "filter-bar",
-    "notification-center",
-    "command-palette",
-    "list",
-    "empty-state",
-    "page-toolbar"
-  ],
-  "recommendedByMode": {
-    "foundation": [
-      "button",
-      "input",
-      "textarea",
-      "checkbox",
-      "switch",
-      "radio-group",
-      "dialog",
-      "popover",
-      "select",
-      "combobox",
-      "table",
-      "badge",
-      "card",
-      "tabs",
-      "kbd",
-      "scroll-box"
-    ],
-    "sourceCopy": [
-      "sidebar",
-      "breadcrumbs",
-      "data-state",
-      "loading-state",
-      "progress-circle",
-      "activity-feed",
-      "action-menu",
-      "filter-bar",
-      "date-picker",
-      "date-range-picker",
-      "file-upload",
-      "use-data-table-view-state",
-      "data-table",
-      "notification-center",
-      "sortable-list",
-      "virtual-list",
-      "color-picker",
-      "signature-pad",
-      "qr-code",
-      "rich-text-editor",
-      "image-cropper",
-      "command-palette",
-      "empty-state",
-      "page-toolbar",
-      "data-view"
-    ],
-    "system": [
-      "data-table",
-      "sidebar"
-    ]
+  "version": "5.0.0",
+  "components": {
+    "utils": {
+      "category": "lib",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "source": "src/lib/utils.ts",
+          "target": "{utils}"
+        }
+      ]
+    },
+    "button": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/button",
+          "target": "{ui}/button"
+        }
+      ]
+    },
+    "input": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/input",
+          "target": "{ui}/input"
+        }
+      ]
+    },
+    "textarea": {
+      "category": "ui",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/textarea",
+          "target": "{ui}/textarea"
+        }
+      ]
+    },
+    "checkbox": {
+      "category": "ui",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/checkbox",
+          "target": "{ui}/checkbox"
+        }
+      ]
+    },
+    "switch": {
+      "category": "ui",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/switch",
+          "target": "{ui}/switch"
+        }
+      ]
+    },
+    "badge": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/badge",
+          "target": "{ui}/badge"
+        }
+      ]
+    },
+    "card": {
+      "category": "ui",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/card",
+          "target": "{ui}/card"
+        }
+      ]
+    },
+    "skeleton": {
+      "category": "ui",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/skeleton",
+          "target": "{ui}/skeleton"
+        }
+      ]
+    },
+    "tabs": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/tabs",
+          "target": "{ui}/tabs"
+        }
+      ]
+    },
+    "dialog": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/dialog",
+          "target": "{ui}/dialog"
+        }
+      ]
+    },
+    "dropdown-menu": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/dropdown-menu",
+          "target": "{ui}/dropdown-menu"
+        }
+      ]
+    },
+    "popover": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/popover",
+          "target": "{ui}/popover"
+        }
+      ]
+    },
+    "tooltip": {
+      "category": "ui",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/tooltip",
+          "target": "{ui}/tooltip"
+        }
+      ]
+    },
+    "hover-card": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/hover-card",
+          "target": "{ui}/hover-card"
+        }
+      ]
+    },
+    "menubar": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/menubar",
+          "target": "{ui}/menubar"
+        }
+      ]
+    },
+    "navigation-menu": {
+      "category": "navigation",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/navigation-menu",
+          "target": "{ui}/navigation-menu"
+        }
+      ]
+    },
+    "simple-select": {
+      "category": "ui",
+      "migrationAliasFor": "select"
+    },
+    "select": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/select",
+          "target": "{ui}/select"
+        }
+      ]
+    },
+    "table": {
+      "category": "ui",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/table",
+          "target": "{ui}/table"
+        }
+      ]
+    },
+    "segmented-control": {
+      "category": "ui",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/segmented-control",
+          "target": "{ui}/segmented-control"
+        }
+      ]
+    },
+    "radio-group": {
+      "category": "ui",
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/radio-group",
+          "target": "{ui}/radio-group"
+        }
+      ]
+    },
+    "accordion": {
+      "category": "ui",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "collapse"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/accordion",
+          "target": "{ui}/accordion"
+        }
+      ]
+    },
+    "kbd": {
+      "category": "ui",
+      "files": [
+        {
+          "source": "src/components/ui/kbd",
+          "target": "{ui}/kbd"
+        }
+      ]
+    },
+    "scroll-box": {
+      "category": "ui",
+      "files": [
+        {
+          "source": "src/components/ui/scroll-box",
+          "target": "{ui}/scroll-box"
+        }
+      ]
+    },
+    "right-click-menu": {
+      "category": "ui",
+      "dependencies": [
+        "react"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/right-click-menu",
+          "target": "{ui}/right-click-menu"
+        }
+      ]
+    },
+    "tag-input": {
+      "category": "inputs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "input",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/tag-input.tsx",
+          "target": "{components}/inputs/tag-input.tsx"
+        }
+      ]
+    },
+    "combobox": {
+      "category": "inputs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/combobox.tsx",
+          "target": "{components}/inputs/combobox.tsx"
+        }
+      ]
+    },
+    "async-select": {
+      "category": "inputs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/async-select.tsx",
+          "target": "{components}/inputs/async-select.tsx"
+        }
+      ]
+    },
+    "form-field-shell": {
+      "category": "form",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-field-shell.tsx",
+          "target": "{components}/form/form-field-shell.tsx"
+        }
+      ]
+    },
+    "form-input": {
+      "category": "form",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "input",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-input.tsx",
+          "target": "{components}/form/form-input.tsx"
+        }
+      ]
+    },
+    "form-select": {
+      "category": "form",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "select",
+        "async-select",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-select.tsx",
+          "target": "{components}/form/form-select.tsx"
+        }
+      ]
+    },
+    "form-textarea": {
+      "category": "form",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "textarea",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-textarea.tsx",
+          "target": "{components}/form/form-textarea.tsx"
+        }
+      ]
+    },
+    "form-switch": {
+      "category": "form",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "switch",
+        "form-field-shell",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-switch.tsx",
+          "target": "{components}/form/form-switch.tsx"
+        }
+      ]
+    },
+    "form-date-range-input": {
+      "category": "form",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "input",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-date-range-input.tsx",
+          "target": "{components}/form/form-date-range-input.tsx"
+        }
+      ]
+    },
+    "form-date-picker": {
+      "category": "form",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "date-picker",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-date-picker.tsx",
+          "target": "{components}/form/form-date-picker.tsx"
+        }
+      ]
+    },
+    "form-date-range-picker": {
+      "category": "form",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "date-range-picker",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-date-range-picker.tsx",
+          "target": "{components}/form/form-date-range-picker.tsx"
+        }
+      ]
+    },
+    "form": {
+      "category": "group",
+      "registryDependencies": [
+        "form-field-shell",
+        "form-input",
+        "form-select",
+        "form-textarea",
+        "form-switch",
+        "form-date-range-input",
+        "form-date-picker",
+        "form-date-range-picker"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/index.ts",
+          "target": "{components}/form/index.ts"
+        }
+      ]
+    },
+    "dialog-actions": {
+      "category": "overlay",
+      "migrationAliasFor": "dialog"
+    },
+    "modal-shell": {
+      "category": "overlay",
+      "migrationAliasFor": "dialog"
+    },
+    "confirm-dialog": {
+      "category": "overlay",
+      "registryDependencies": [
+        "button",
+        "dialog"
+      ],
+      "files": [
+        {
+          "source": "src/components/overlay/confirm-dialog.tsx",
+          "target": "{components}/overlay/confirm-dialog.tsx"
+        }
+      ]
+    },
+    "alert-dialog": {
+      "category": "overlay",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "button"
+      ],
+      "files": [
+        {
+          "source": "src/components/overlay/alert-dialog.tsx",
+          "target": "{components}/overlay/alert-dialog.tsx"
+        }
+      ]
+    },
+    "drawer": {
+      "category": "overlay",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "dialog"
+      ],
+      "files": [
+        {
+          "source": "src/components/overlay/drawer.tsx",
+          "target": "{components}/overlay/drawer.tsx"
+        }
+      ]
+    },
+    "state-view": {
+      "category": "feedback",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/feedback/state-view.tsx",
+          "target": "{components}/feedback/state-view.tsx"
+        }
+      ]
+    },
+    "loading-state": {
+      "category": "feedback",
+      "registryDependencies": [
+        "state-view"
+      ],
+      "files": [
+        {
+          "source": "src/components/feedback/loading-state.tsx",
+          "target": "{components}/feedback/loading-state.tsx"
+        }
+      ]
+    },
+    "page-state": {
+      "category": "feedback",
+      "registryDependencies": [
+        "state-view",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/feedback/page-state.tsx",
+          "target": "{components}/feedback/page-state.tsx"
+        }
+      ]
+    },
+    "feedback": {
+      "category": "group",
+      "registryDependencies": [
+        "alert",
+        "state-view"
+      ],
+      "files": [
+        {
+          "source": "src/components/feedback/index.ts",
+          "target": "{components}/feedback/index.ts"
+        }
+      ]
+    },
+    "sidebar-context": {
+      "category": "layout",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/sidebar-context.tsx",
+          "target": "{components}/layout/sidebar-context.tsx"
+        }
+      ]
+    },
+    "workspace-layout": {
+      "category": "layout",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/workspace-layout.tsx",
+          "target": "{components}/layout/workspace-layout.tsx"
+        },
+        {
+          "source": "src/components/layout/workspace-header.tsx",
+          "target": "{components}/layout/workspace-header.tsx"
+        }
+      ]
+    },
+    "sidebar": {
+      "category": "layout",
+      "dependencies": [
+        "react"
+      ],
+      "registryDependencies": [
+        "tooltip",
+        "sidebar-context",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/sidebar.tsx",
+          "target": "{components}/layout/sidebar.tsx"
+        }
+      ]
+    },
+    "layout": {
+      "category": "group",
+      "registryDependencies": [
+        "workspace-layout",
+        "sidebar",
+        "breadcrumbs",
+        "section"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/index.ts",
+          "target": "{components}/layout/index.ts"
+        }
+      ]
+    },
+    "calendar": {
+      "category": "calendar",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/calendar.tsx",
+          "target": "{components}/calendar/calendar.tsx"
+        },
+        {
+          "source": "src/components/calendar/date-utils.ts",
+          "target": "{components}/calendar/date-utils.ts"
+        }
+      ]
+    },
+    "date-picker": {
+      "category": "calendar",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "calendar",
+        "button",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/date-picker.tsx",
+          "target": "{components}/calendar/date-picker.tsx"
+        }
+      ]
+    },
+    "date-range-picker": {
+      "category": "calendar",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "calendar",
+        "button",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/date-range-picker.tsx",
+          "target": "{components}/calendar/date-range-picker.tsx"
+        }
+      ]
+    },
+    "dashboard": {
+      "category": "group",
+      "registryDependencies": [
+        "layout",
+        "feedback",
+        "input",
+        "async-select",
+        "tag-input",
+        "form"
+      ]
+    },
+    "calendar-kit": {
+      "category": "group",
+      "registryDependencies": [
+        "calendar",
+        "date-picker",
+        "date-range-picker"
+      ]
+    },
+    "wizard-kit": {
+      "category": "group",
+      "registryDependencies": [
+        "stepper",
+        "wizard"
+      ]
+    },
+    "dnd": {
+      "category": "group",
+      "registryDependencies": [
+        "sortable-list"
+      ],
+      "files": [
+        {
+          "source": "src/components/dnd/index.ts",
+          "target": "{components}/dnd/index.ts"
+        }
+      ]
+    },
+    "all": {
+      "category": "group",
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea",
+        "checkbox",
+        "switch",
+        "badge",
+        "card",
+        "skeleton",
+        "tabs",
+        "dialog",
+        "dropdown-menu",
+        "popover",
+        "tooltip",
+        "hover-card",
+        "menubar",
+        "navigation-menu",
+        "select",
+        "table",
+        "segmented-control",
+        "radio-group",
+        "accordion",
+        "kbd",
+        "scroll-box",
+        "right-click-menu",
+        "tag-input",
+        "combobox",
+        "async-select",
+        "form-field-shell",
+        "form-input",
+        "form-select",
+        "form-textarea",
+        "form-switch",
+        "form-date-range-input",
+        "form-date-picker",
+        "form-date-range-picker",
+        "confirm-dialog",
+        "alert-dialog",
+        "drawer",
+        "state-view",
+        "loading-state",
+        "page-state",
+        "sidebar-context",
+        "workspace-layout",
+        "sidebar",
+        "calendar",
+        "date-picker",
+        "date-range-picker",
+        "action-menu",
+        "activity-feed",
+        "alert",
+        "avatar",
+        "breadcrumbs",
+        "button-group",
+        "code-block",
+        "collapse",
+        "carousel",
+        "tag",
+        "typography",
+        "command",
+        "copy-button",
+        "data-state",
+        "data-table",
+        "description-list",
+        "divider",
+        "file-upload",
+        "filter-bar",
+        "empty-state",
+        "charts",
+        "image-upload",
+        "kanban",
+        "chat",
+        "list",
+        "otp-input",
+        "color-picker",
+        "signature-pad",
+        "pagination",
+        "progress",
+        "progress-circle",
+        "quick-action-grid",
+        "rating",
+        "section",
+        "slider",
+        "info-card",
+        "spinner",
+        "statistic",
+        "status-dot",
+        "status-legend",
+        "stepper",
+        "timeline",
+        "toast",
+        "tree-view",
+        "use-before-unload-when-dirty",
+        "use-data-table-view-state",
+        "use-debounce",
+        "use-disclosure",
+        "use-is-mobile",
+        "use-session-storage-state",
+        "wizard",
+        "inline-editable",
+        "command-palette",
+        "saved-filter-select",
+        "notification-center",
+        "calendar-scheduler",
+        "dual-list-picker",
+        "resizable-panel",
+        "rich-text-editor",
+        "image-cropper",
+        "qr-code",
+        "json-input",
+        "time-picker",
+        "sortable-list",
+        "virtual-list"
+      ]
+    },
+    "action-menu": {
+      "category": "actions",
+      "files": [
+        {
+          "source": "src/components/actions/action-menu.tsx",
+          "target": "{components}/actions/action-menu.tsx"
+        }
+      ]
+    },
+    "activity-feed": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/activity-feed.tsx",
+          "target": "{components}/display/activity-feed.tsx"
+        }
+      ]
+    },
+    "alert": {
+      "category": "feedback",
+      "files": [
+        {
+          "source": "src/components/feedback/alert.tsx",
+          "target": "{components}/feedback/alert.tsx"
+        }
+      ]
+    },
+    "app-header": {
+      "category": "layout",
+      "migrationAliasFor": "workspace-layout"
+    },
+    "avatar": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/avatar.tsx",
+          "target": "{components}/display/avatar.tsx"
+        }
+      ]
+    },
+    "breadcrumbs": {
+      "category": "layout",
+      "files": [
+        {
+          "source": "src/components/layout/breadcrumbs.tsx",
+          "target": "{components}/layout/breadcrumbs.tsx"
+        }
+      ]
+    },
+    "button-group": {
+      "category": "actions",
+      "files": [
+        {
+          "source": "src/components/actions/button-group.tsx",
+          "target": "{components}/actions/button-group.tsx"
+        }
+      ]
+    },
+    "code-block": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/code-block.tsx",
+          "target": "{components}/display/code-block.tsx"
+        }
+      ]
+    },
+    "collapse": {
+      "category": "ui",
+      "files": [
+        {
+          "source": "src/components/ui/collapse",
+          "target": "{ui}/collapse"
+        }
+      ]
+    },
+    "carousel": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/carousel.tsx",
+          "target": "{components}/display/carousel.tsx"
+        }
+      ]
+    },
+    "tag": {
+      "category": "display",
+      "registryDependencies": [
+        "badge",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/tag.tsx",
+          "target": "{components}/display/tag.tsx"
+        }
+      ]
+    },
+    "typography": {
+      "category": "display",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/typography.tsx",
+          "target": "{components}/display/typography.tsx"
+        }
+      ]
+    },
+    "command": {
+      "category": "ui",
+      "files": [
+        {
+          "source": "src/components/ui/command",
+          "target": "{ui}/command"
+        }
+      ]
+    },
+    "copy-button": {
+      "category": "actions",
+      "files": [
+        {
+          "source": "src/components/actions/copy-button.tsx",
+          "target": "{components}/actions/copy-button.tsx"
+        }
+      ]
+    },
+    "copy-field": {
+      "category": "actions",
+      "migrationAliasFor": "copy-button"
+    },
+    "clearable-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "search-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "password-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "number-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "money-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "phone-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "masked-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "quantity-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "date-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "date-range-input": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "form-async-select": {
+      "category": "form",
+      "migrationAliasFor": "form-select"
+    },
+    "input-decorator": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "input-value": {
+      "category": "inputs",
+      "migrationAliasFor": "input"
+    },
+    "inputs": {
+      "category": "group",
+      "migrationAliasFor": "input"
+    },
+    "app-sidebar": {
+      "category": "layout",
+      "migrationAliasFor": "sidebar"
+    },
+    "page-header": {
+      "category": "layout",
+      "migrationAliasFor": "section"
+    },
+    "page-container": {
+      "category": "layout",
+      "migrationAliasFor": "sidebar"
+    },
+    "section-header": {
+      "category": "layout",
+      "migrationAliasFor": "section"
+    },
+    "sidebar-nav": {
+      "category": "layout",
+      "migrationAliasFor": "sidebar"
+    },
+    "stat-card": {
+      "category": "layout",
+      "migrationAliasFor": "statistic"
+    },
+    "sticky-footer-bar": {
+      "category": "layout",
+      "migrationAliasFor": "sidebar"
+    },
+    "smart-card": {
+      "category": "display",
+      "migrationAliasFor": "info-card"
+    },
+    "file-dropzone": {
+      "category": "upload",
+      "migrationAliasFor": "file-upload"
+    },
+    "comparison-card": {
+      "category": "display",
+      "migrationAliasFor": "card"
+    },
+    "delta-badge": {
+      "category": "display",
+      "migrationAliasFor": "badge"
+    },
+    "trend-card": {
+      "category": "display",
+      "migrationAliasFor": "statistic"
+    },
+    "user-card": {
+      "category": "display",
+      "migrationAliasFor": "avatar"
+    },
+    "sheet-shell": {
+      "category": "overlay",
+      "migrationAliasFor": "drawer"
+    },
+    "nav-tabs": {
+      "category": "navigation",
+      "migrationAliasFor": "tabs"
+    },
+    "page-tabs": {
+      "category": "navigation",
+      "migrationAliasFor": "tabs"
+    },
+    "stepper-tabs": {
+      "category": "navigation",
+      "migrationAliasFor": "stepper"
+    },
+    "command-bar": {
+      "category": "navigation",
+      "migrationAliasFor": "command-palette"
+    },
+    "data-list": {
+      "category": "display",
+      "migrationAliasFor": "list"
+    },
+    "property-grid": {
+      "category": "display",
+      "migrationAliasFor": "description-list"
+    },
+    "result": {
+      "category": "display",
+      "migrationAliasFor": "page-state"
+    },
+    "data-table-bulk-actions": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-column-visibility-menu": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-pagination": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-row-actions": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-saved-filters": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-select-column": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-sortable-header": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-toolbar": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-table-view-presets": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "data-state": {
+      "category": "display",
+      "registryDependencies": [
+        "state-view"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/data-state.tsx",
+          "target": "{components}/display/data-state.tsx"
+        }
+      ]
+    },
+    "data-table": {
+      "category": "data-table",
+      "dependencies": [
+        "@tanstack/react-table",
+        "@tanstack/react-virtual",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "data-state",
+        "dropdown-menu",
+        "input",
+        "pagination",
+        "search-input",
+        "select",
+        "table",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/data-table/data-table.tsx",
+          "target": "{components}/data-table/data-table.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-actions-column.tsx",
+          "target": "{components}/data-table/data-table-actions-column.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-bulk-actions.tsx",
+          "target": "{components}/data-table/data-table-bulk-actions.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-column-visibility-menu.tsx",
+          "target": "{components}/data-table/data-table-column-visibility-menu.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-pagination.tsx",
+          "target": "{components}/data-table/data-table-pagination.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-row-actions.tsx",
+          "target": "{components}/data-table/data-table-row-actions.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-saved-filters.tsx",
+          "target": "{components}/data-table/data-table-saved-filters.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-select-column.tsx",
+          "target": "{components}/data-table/data-table-select-column.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-sortable-header.tsx",
+          "target": "{components}/data-table/data-table-sortable-header.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-toolbar.tsx",
+          "target": "{components}/data-table/data-table-toolbar.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-view-presets.tsx",
+          "target": "{components}/data-table/data-table-view-presets.tsx"
+        },
+        {
+          "source": "src/components/data-table/table-export-menu.tsx",
+          "target": "{components}/data-table/table-export-menu.tsx"
+        },
+        {
+          "source": "src/components/data-table/table-import-button.tsx",
+          "target": "{components}/data-table/table-import-button.tsx"
+        }
+      ]
+    },
+    "data-table-actions-column": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "table-export-menu": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "table-import-button": {
+      "category": "data-table",
+      "migrationAliasFor": "data-table"
+    },
+    "description-list": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/description-list.tsx",
+          "target": "{components}/display/description-list.tsx"
+        }
+      ]
+    },
+    "divider": {
+      "category": "ui",
+      "files": [
+        {
+          "source": "src/components/ui/divider",
+          "target": "{ui}/divider"
+        }
+      ]
+    },
+    "file-upload": {
+      "category": "upload",
+      "files": [
+        {
+          "source": "src/components/upload/file-upload.tsx",
+          "target": "{components}/upload/file-upload.tsx"
+        }
+      ]
+    },
+    "filter-bar": {
+      "category": "filters",
+      "files": [
+        {
+          "source": "src/components/filters/filter-bar.tsx",
+          "target": "{components}/filters/filter-bar.tsx"
+        }
+      ]
+    },
+    "empty-state": {
+      "category": "patterns",
+      "registryDependencies": [
+        "state-view",
+        "button"
+      ],
+      "files": [
+        {
+          "source": "src/components/patterns/empty-state.tsx",
+          "target": "{components}/patterns/empty-state.tsx"
+        }
+      ]
+    },
+    "charts": {
+      "category": "charts",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "card",
+        "state-view",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/charts/charts.tsx",
+          "target": "{components}/charts/charts.tsx"
+        },
+        {
+          "source": "src/components/charts/index.ts",
+          "target": "{components}/charts/index.ts"
+        }
+      ]
+    },
+    "horizontal-bar-chart": {
+      "category": "charts",
+      "migrationAliasFor": "charts"
+    },
+    "image-upload": {
+      "category": "upload",
+      "files": [
+        {
+          "source": "src/components/upload/image-upload.tsx",
+          "target": "{components}/upload/image-upload.tsx"
+        }
+      ]
+    },
+    "kanban": {
+      "category": "display",
+      "dependencies": [
+        "@dnd-kit/helpers",
+        "@dnd-kit/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "button",
+        "card",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/kanban.tsx",
+          "target": "{components}/display/kanban.tsx"
+        }
+      ]
+    },
+    "chat": {
+      "category": "display",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "button",
+        "input",
+        "textarea",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/chat.tsx",
+          "target": "{components}/display/chat.tsx"
+        }
+      ]
+    },
+    "kpi": {
+      "category": "charts",
+      "migrationAliasFor": "statistic"
+    },
+    "list": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/list.tsx",
+          "target": "{components}/display/list.tsx"
+        }
+      ]
+    },
+    "otp-input": {
+      "category": "inputs",
+      "files": [
+        {
+          "source": "src/components/inputs/otp-input.tsx",
+          "target": "{components}/inputs/otp-input.tsx"
+        }
+      ]
+    },
+    "color-picker": {
+      "category": "inputs",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/color-picker.tsx",
+          "target": "{components}/inputs/color-picker.tsx"
+        }
+      ]
+    },
+    "signature-pad": {
+      "category": "inputs",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/signature-pad.tsx",
+          "target": "{components}/inputs/signature-pad.tsx"
+        }
+      ]
+    },
+    "pagination": {
+      "category": "navigation",
+      "files": [
+        {
+          "source": "src/components/navigation/pagination.tsx",
+          "target": "{components}/navigation/pagination.tsx"
+        }
+      ]
+    },
+    "progress": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/progress.tsx",
+          "target": "{components}/display/progress.tsx"
+        }
+      ]
+    },
+    "progress-ring": {
+      "category": "charts",
+      "migrationAliasFor": "progress-circle"
+    },
+    "progress-circle": {
+      "category": "charts",
+      "files": [
+        {
+          "source": "src/components/charts/progress-circle.tsx",
+          "target": "{components}/charts/progress-circle.tsx"
+        },
+        {
+          "source": "src/components/charts/progress-ring.tsx",
+          "target": "{components}/charts/progress-ring.tsx"
+        }
+      ]
+    },
+    "quick-action-grid": {
+      "category": "actions",
+      "files": [
+        {
+          "source": "src/components/actions/quick-action-grid.tsx",
+          "target": "{components}/actions/quick-action-grid.tsx"
+        }
+      ]
+    },
+    "rating": {
+      "category": "inputs",
+      "files": [
+        {
+          "source": "src/components/inputs/rating.tsx",
+          "target": "{components}/inputs/rating.tsx"
+        }
+      ]
+    },
+    "section": {
+      "category": "layout",
+      "files": [
+        {
+          "source": "src/components/layout/section.tsx",
+          "target": "{components}/layout/section.tsx"
+        }
+      ]
+    },
+    "slider": {
+      "category": "inputs",
+      "files": [
+        {
+          "source": "src/components/inputs/slider.tsx",
+          "target": "{components}/inputs/slider.tsx"
+        }
+      ]
+    },
+    "info-card": {
+      "category": "display",
+      "registryDependencies": [
+        "card",
+        "skeleton",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/info-card.tsx",
+          "target": "{components}/display/info-card.tsx"
+        }
+      ]
+    },
+    "spinner": {
+      "category": "ui",
+      "files": [
+        {
+          "source": "src/components/ui/spinner",
+          "target": "{ui}/spinner"
+        }
+      ]
+    },
+    "statistic": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/statistic.tsx",
+          "target": "{components}/display/statistic.tsx"
+        }
+      ]
+    },
+    "status-dot": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/status-dot.tsx",
+          "target": "{components}/display/status-dot.tsx"
+        }
+      ]
+    },
+    "status-legend": {
+      "category": "display",
+      "registryDependencies": [
+        "badge",
+        "status-dot",
+        "card",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/status-legend.tsx",
+          "target": "{components}/display/status-legend.tsx"
+        }
+      ]
+    },
+    "stepper": {
+      "category": "wizard",
+      "files": [
+        {
+          "source": "src/components/wizard/stepper.tsx",
+          "target": "{components}/wizard/stepper.tsx"
+        }
+      ]
+    },
+    "timeline": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/timeline.tsx",
+          "target": "{components}/display/timeline.tsx"
+        }
+      ]
+    },
+    "toast": {
+      "category": "notifications",
+      "files": [
+        {
+          "source": "src/components/notifications/toast.tsx",
+          "target": "{components}/notifications/toast.tsx"
+        }
+      ]
+    },
+    "tree-view": {
+      "category": "display",
+      "files": [
+        {
+          "source": "src/components/display/tree-view.tsx",
+          "target": "{components}/display/tree-view.tsx"
+        }
+      ]
+    },
+    "use-before-unload-when-dirty": {
+      "category": "hooks",
+      "files": [
+        {
+          "source": "src/hooks/use-before-unload-when-dirty.ts",
+          "target": "{hooks}/use-before-unload-when-dirty.ts"
+        }
+      ]
+    },
+    "use-data-table-view-state": {
+      "category": "hooks",
+      "files": [
+        {
+          "source": "src/hooks/use-data-table-view-state.ts",
+          "target": "{hooks}/use-data-table-view-state.ts"
+        }
+      ]
+    },
+    "use-debounce": {
+      "category": "hooks",
+      "files": [
+        {
+          "source": "src/hooks/use-debounce.ts",
+          "target": "{hooks}/use-debounce.ts"
+        }
+      ]
+    },
+    "use-disclosure": {
+      "category": "hooks",
+      "files": [
+        {
+          "source": "src/hooks/use-disclosure.ts",
+          "target": "{hooks}/use-disclosure.ts"
+        }
+      ]
+    },
+    "use-is-mobile": {
+      "category": "hooks",
+      "files": [
+        {
+          "source": "src/hooks/use-is-mobile.ts",
+          "target": "{hooks}/use-is-mobile.ts"
+        }
+      ]
+    },
+    "use-session-storage-state": {
+      "category": "hooks",
+      "files": [
+        {
+          "source": "src/hooks/use-session-storage-state.ts",
+          "target": "{hooks}/use-session-storage-state.ts"
+        }
+      ]
+    },
+    "wizard": {
+      "category": "wizard",
+      "files": [
+        {
+          "source": "src/components/wizard/wizard.tsx",
+          "target": "{components}/wizard/wizard.tsx"
+        }
+      ]
+    },
+    "inline-editable": {
+      "category": "inputs",
+      "files": [
+        {
+          "source": "src/components/inputs/inline-editable.tsx",
+          "target": "{components}/inputs/inline-editable.tsx"
+        }
+      ]
+    },
+    "command-palette": {
+      "category": "command",
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dialog",
+        "input",
+        "kbd",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/command/command-palette.tsx",
+          "target": "{components}/command/command-palette.tsx"
+        }
+      ]
+    },
+    "saved-filter-select": {
+      "category": "filters",
+      "files": [
+        {
+          "source": "src/components/filters/saved-filter-select.tsx",
+          "target": "{components}/filters/saved-filter-select.tsx"
+        }
+      ]
+    },
+    "notification-center": {
+      "category": "notifications",
+      "files": [
+        {
+          "source": "src/components/notifications/notification-center.tsx",
+          "target": "{components}/notifications/notification-center.tsx"
+        }
+      ]
+    },
+    "calendar-scheduler": {
+      "category": "modern",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/calendar-scheduler.tsx",
+          "target": "{components}/modern/calendar-scheduler.tsx"
+        }
+      ]
+    },
+    "dual-list-picker": {
+      "category": "modern",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/dual-list-picker.tsx",
+          "target": "{components}/modern/dual-list-picker.tsx"
+        }
+      ]
+    },
+    "resizable-panel": {
+      "category": "modern",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/resizable-panel.tsx",
+          "target": "{components}/modern/resizable-panel.tsx"
+        }
+      ]
+    },
+    "rich-text-editor": {
+      "category": "modern",
+      "dependencies": [
+        "@tiptap/react",
+        "@tiptap/pm",
+        "@tiptap/starter-kit",
+        "@tiptap/extension-link",
+        "@tiptap/extension-placeholder",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/rich-text-editor.tsx",
+          "target": "{components}/modern/rich-text-editor.tsx"
+        }
+      ]
+    },
+    "image-cropper": {
+      "category": "modern",
+      "dependencies": [
+        "react-easy-crop",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/image-cropper.tsx",
+          "target": "{components}/modern/image-cropper.tsx"
+        }
+      ]
+    },
+    "qr-code": {
+      "category": "display",
+      "dependencies": [
+        "qrcode",
+        "@types/qrcode"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/qr-code.tsx",
+          "target": "{components}/display/qr-code.tsx"
+        }
+      ]
+    },
+    "json-input": {
+      "category": "inputs",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/json-input.tsx",
+          "target": "{components}/inputs/json-input.tsx"
+        }
+      ]
+    },
+    "time-picker": {
+      "category": "inputs",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/time-picker.tsx",
+          "target": "{components}/inputs/time-picker.tsx"
+        }
+      ]
+    },
+    "sortable-list": {
+      "category": "dnd",
+      "dependencies": [
+        "@dnd-kit/helpers",
+        "@dnd-kit/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/dnd/sortable-list.tsx",
+          "target": "{components}/dnd/sortable-list.tsx"
+        }
+      ]
+    },
+    "virtual-list": {
+      "category": "display",
+      "dependencies": [
+        "@tanstack/react-virtual"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/virtual-list.tsx",
+          "target": "{components}/display/virtual-list.tsx"
+        }
+      ]
+    }
   },
   "publicSurface": {
     "documented": [
@@ -274,6 +1948,9 @@
       "dialog",
       "dropdown-menu",
       "popover",
+      "hover-card",
+      "menubar",
+      "navigation-menu",
       "tooltip",
       "data-table",
       "pagination",
@@ -325,18 +2002,213 @@
       "rich-text-editor",
       "image-cropper"
     ],
-    "standalone": [
-      "form-builder",
-      "page-toolbar",
-      "bulk-action-bar",
-      "detail-layout",
-      "settings-page",
-      "data-view",
-      "resource-page",
-      "resource-detail-page"
+    "standalone": []
+  },
+  "groups": {
+    "ui": [
+      "accordion",
+      "badge",
+      "button",
+      "card",
+      "checkbox",
+      "collapse",
+      "command",
+      "dialog",
+      "divider",
+      "dropdown-menu",
+      "hover-card",
+      "input",
+      "kbd",
+      "menubar",
+      "popover",
+      "radio-group",
+      "right-click-menu",
+      "scroll-box",
+      "segmented-control",
+      "select",
+      "skeleton",
+      "spinner",
+      "switch",
+      "table",
+      "tabs",
+      "textarea",
+      "tooltip"
+    ],
+    "navigation": [
+      "navigation-menu",
+      "pagination"
+    ],
+    "inputs": [
+      "async-select",
+      "color-picker",
+      "combobox",
+      "inline-editable",
+      "json-input",
+      "otp-input",
+      "rating",
+      "signature-pad",
+      "slider",
+      "tag-input",
+      "time-picker"
+    ],
+    "form": [
+      "form-date-picker",
+      "form-date-range-input",
+      "form-date-range-picker",
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-switch",
+      "form-textarea"
+    ],
+    "overlay": [
+      "alert-dialog",
+      "confirm-dialog",
+      "drawer"
+    ],
+    "feedback": [
+      "alert",
+      "loading-state",
+      "page-state",
+      "state-view"
+    ],
+    "layout": [
+      "breadcrumbs",
+      "section",
+      "sidebar",
+      "sidebar-context",
+      "workspace-layout"
+    ],
+    "calendar": [
+      "calendar",
+      "date-picker",
+      "date-range-picker"
+    ],
+    "actions": [
+      "action-menu",
+      "button-group",
+      "copy-button",
+      "quick-action-grid"
+    ],
+    "display": [
+      "activity-feed",
+      "avatar",
+      "carousel",
+      "chat",
+      "code-block",
+      "data-state",
+      "description-list",
+      "info-card",
+      "kanban",
+      "list",
+      "progress",
+      "qr-code",
+      "statistic",
+      "status-dot",
+      "status-legend",
+      "tag",
+      "timeline",
+      "tree-view",
+      "typography",
+      "virtual-list"
+    ],
+    "data-table": [
+      "data-table"
+    ],
+    "upload": [
+      "file-upload",
+      "image-upload"
+    ],
+    "filters": [
+      "filter-bar",
+      "saved-filter-select"
+    ],
+    "patterns": [
+      "empty-state"
+    ],
+    "charts": [
+      "charts",
+      "progress-circle"
+    ],
+    "wizard": [
+      "stepper",
+      "wizard"
+    ],
+    "notifications": [
+      "notification-center",
+      "toast"
+    ],
+    "hooks": [
+      "use-before-unload-when-dirty",
+      "use-data-table-view-state",
+      "use-debounce",
+      "use-disclosure",
+      "use-is-mobile",
+      "use-session-storage-state"
+    ],
+    "command": [
+      "command-palette"
+    ],
+    "modern": [
+      "calendar-scheduler",
+      "dual-list-picker",
+      "image-cropper",
+      "resizable-panel",
+      "rich-text-editor"
+    ],
+    "dnd": [
+      "sortable-list"
     ]
   },
+  "recommended": [
+    "button",
+    "input",
+    "textarea",
+    "select",
+    "combobox",
+    "async-select",
+    "card",
+    "badge",
+    "checkbox",
+    "switch",
+    "radio-group",
+    "dropdown-menu",
+    "popover",
+    "hover-card",
+    "menubar",
+    "navigation-menu",
+    "tooltip",
+    "data-table",
+    "pagination",
+    "calendar",
+    "date-picker",
+    "date-range-picker",
+    "alert",
+    "toast",
+    "notification-center",
+    "sidebar",
+    "breadcrumbs",
+    "workspace-layout",
+    "state-view",
+    "file-upload",
+    "progress",
+    "accordion",
+    "divider",
+    "segmented-control",
+    "skeleton",
+    "spinner",
+    "command-palette",
+    "avatar",
+    "kanban",
+    "chat"
+  ],
+  "recommendedByMode": {},
   "migrationAliases": {
+    "simple-select": "select",
+    "dialog-actions": "dialog",
+    "modal-shell": "dialog",
+    "app-header": "workspace-layout",
+    "copy-field": "copy-button",
     "clearable-input": "input",
     "search-input": "input",
     "password-input": "input",
@@ -347,26 +2219,31 @@
     "quantity-input": "input",
     "date-input": "input",
     "date-range-input": "input",
-    "simple-select": "select",
-    "hover-card": "popover",
-    "copy-field": "copy-button",
-    "comparison-card": "card",
-    "delta-badge": "badge",
-    "trend-card": "statistic",
-    "user-card": "avatar",
     "form-async-select": "form-select",
+    "input-decorator": "input",
+    "input-value": "input",
+    "inputs": "input",
     "app-sidebar": "sidebar",
-    "smart-card": "info-card",
-    "file-dropzone": "file-upload",
+    "page-header": "section",
     "page-container": "sidebar",
     "section-header": "section",
     "sidebar-nav": "sidebar",
     "stat-card": "statistic",
     "sticky-footer-bar": "sidebar",
-    "input-decorator": "input",
-    "input-value": "input",
-    "inputs": "input",
-    "data-table-actions-column": "data-table",
+    "smart-card": "info-card",
+    "file-dropzone": "file-upload",
+    "comparison-card": "card",
+    "delta-badge": "badge",
+    "trend-card": "statistic",
+    "user-card": "avatar",
+    "sheet-shell": "drawer",
+    "nav-tabs": "tabs",
+    "page-tabs": "tabs",
+    "stepper-tabs": "stepper",
+    "command-bar": "command-palette",
+    "data-list": "list",
+    "property-grid": "description-list",
+    "result": "page-state",
     "data-table-bulk-actions": "data-table",
     "data-table-column-visibility-menu": "data-table",
     "data-table-pagination": "data-table",
@@ -376,22 +2253,11 @@
     "data-table-sortable-header": "data-table",
     "data-table-toolbar": "data-table",
     "data-table-view-presets": "data-table",
+    "data-table-actions-column": "data-table",
     "table-export-menu": "data-table",
     "table-import-button": "data-table",
-    "sheet-shell": "drawer",
-    "nav-tabs": "tabs",
-    "page-tabs": "tabs",
-    "stepper-tabs": "stepper",
-    "command-bar": "command-palette",
-    "data-list": "list",
-    "property-grid": "description-list",
-    "result": "page-state",
-    "app-header": "workspace-layout",
-    "page-header": "section",
+    "horizontal-bar-chart": "charts",
     "kpi": "statistic",
-    "progress-ring": "progress-circle",
-    "dialog-actions": "dialog",
-    "modal-shell": "dialog",
-    "horizontal-bar-chart": "data-view"
+    "progress-ring": "progress-circle"
   }
 }

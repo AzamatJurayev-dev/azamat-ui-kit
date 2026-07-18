@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "4.2.1",
+  "version": "5.0.0",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",

@@ -366,10 +366,10 @@ const formControlComponentSlugs = new Set([
   "form-date-picker",
   "form-date-range-picker",
 ])
-const overlayComponentSlugs = new Set(["dialog", "popover", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "alert-dialog", "drawer"])
-const layoutComponentSlugs = new Set(["sidebar", "breadcrumbs", "section"])
+const overlayComponentSlugs = new Set(["dialog", "popover", "hover-card", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "alert-dialog", "drawer"])
+const layoutComponentSlugs = new Set(["sidebar", "breadcrumbs", "section", "navigation-menu", "menubar"])
 const feedbackComponentSlugs = new Set(["toast", "loading-state", "empty-state"])
-const patternComponentSlugs = new Set(["form-builder", "resource-page", "resource-detail-page", "page-toolbar", "bulk-action-bar", "detail-layout", "settings-page", "data-view"])
+const patternComponentSlugs = new Set<string>([])
 
 const legacyComponentSlugAliases = new Map<string, string>([
   ["app-sidebar", "sidebar"],
@@ -381,7 +381,6 @@ const legacyComponentSlugAliases = new Map<string, string>([
   ["form-date-input", "form-input"],
   ["confirm-action", "confirm-dialog"],
   ["file-dropzone", "file-upload"],
-  ["hover-card", "popover"],
   ["metric-card", "statistic"],
   ["nav-tabs", "tabs"],
   ["section-header", "section"],
@@ -753,35 +752,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onValueChange", "(value: { from: string; to: string }) => void", "-", "Range callback for form state updates."],
     ],
     features: [...formRHFWrapperCommonFeatures, "Range-specific validation", "Date range constraints", "Accessible error mapping"],
-  },
-  {
-    slug: "form-builder",
-    title: "Form Builder",
-    description: "RHF section builder for schema-driven forms with submit/reset and disabled/read-only modes.",
-    icon: FileTextIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["control", "Control<TFieldValues>", "-", "RHF control passed to all generated sections."],
-      ["fields", "FormBuilderField<TFieldValues, string>[]", "-", "Explicit field descriptors for full control."],
-      ["sections", "FormBuilderSection<TFieldValues>[]", "-", "Form section descriptors with grouped presets."],
-      ["submitLabel", "string", "\"Save\"", "Submit button text."],
-      ["resetLabel", "string", "\"Reset\"", "Reset button text."],
-      ["disabled", "boolean", "false", "Disables all controls and actions in builder."],
-      ["readOnly", "boolean", "false", "Read-only state for generated field controls."],
-      ["columns", "1 | 2 | 3", "1", "Grid column count for generated sections."],
-      ["onSubmit", "(values) => Promise<void> | void", "-", "Submit handler for generated `<form>` events."],
-    ],
-    features: [
-      "Field schema",
-      "Section composition",
-      "Custom render hooks",
-      "Submit and reset control",
-      "Disabled/readOnly pass-through",
-      "Preset factories (inputField, phoneField, ...)",
-    ],
-  },
+  },
   {
     slug: "radio-group",
     title: "Radio Group",
@@ -1314,7 +1285,7 @@ export const componentRelations: ComponentRelationMap = {
   },
   "form-switch": {
     groupSlugs: ["form"],
-    componentSlugs: ["form-field-shell", "switch", "checkbox", "form-builder"],
+    componentSlugs: ["form-field-shell", "switch", "checkbox"],
   },
   "form-date-range-input": {
     groupSlugs: ["form", "filters"],
@@ -1327,11 +1298,7 @@ export const componentRelations: ComponentRelationMap = {
   "form-date-range-picker": {
     groupSlugs: ["form", "filters"],
     componentSlugs: ["date-range-picker", "form-date-range-input", "calendar", "form-field-shell"],
-  },
-  "form-builder": {
-    groupSlugs: ["patterns", "form"],
-    componentSlugs: ["form-field-shell", "form-input", "form-switch", "form-textarea", "form-select"],
-  },
+  },
   checkbox: {
     groupSlugs: ["form"],
     componentSlugs: ["switch", "button", "card"],
@@ -1760,9 +1727,7 @@ const packageDocsSurfaceCatalogMap = new Map(packageDocsSurfaceCatalog.map((item
 const hiddenPrimaryComponentCatalogSlugs = new Set([
   ...internalComponentCatalogSlugs,
   "app-header",
-  "page-header",
-  "resource-page",
-  "resource-detail-page",
+  "page-header",
 ])
 const hiddenDirectoryComponentSlugs = new Set([...hiddenPrimaryComponentCatalogSlugs, ...legacyComponentSlugAliases.keys()])
 
@@ -2211,7 +2176,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Pipeline snapshots, team handoff sections, and account-focused operational dashboards.",
     category: "Product",
     tags: ["CRM", "Pipeline", "Kanban"],
-    uses: ["ResourcePage", "Badge", "Tabs", "ActivityFeed"],
+    uses: ["DataTable", "Badge", "Tabs", "ActivityFeed"],
     tone: "from-[color:color-mix(in_oklch,var(--aui-accent)_10%,var(--aui-page-bg-alt))] to-[color:var(--aui-page-bg)]",
     href: blockPath("crm-dashboard"),
     previewTone: "crm",
@@ -2317,7 +2282,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Billing or finance tables that need status columns, invoice actions, and readable operational totals.",
     category: "Table",
     tags: ["Finance", "Invoices", "Status"],
-    uses: ["DataTable", "Badge", "Button", "ResourcePage"],
+    uses: ["DataTable", "Badge", "Button", "DataTable"],
     tone: "from-[color:color-mix(in_oklch,var(--aui-accent)_12%,var(--aui-page-bg-alt))] to-[color:var(--aui-page-bg)]",
     href: blockPath("invoices-page"),
     previewHref: "/preview/blocks/table-01",

@@ -18,7 +18,6 @@ import {
   AlertDialog,
   Badge,
   BarChart,
-  BulkActionBar,
   Button,
   ButtonGroup,
   Calendar,
@@ -27,7 +26,6 @@ import {
   Combobox,
   CommandPalette,
   DescriptionList,
-  DetailLayout,
   DonutChart,
   Drawer,
   FileUpload,
@@ -46,7 +44,6 @@ import {
   Sidebar,
   SidebarProvider,
   SidebarTrigger,
-  SettingsPage,
   StateView,
   StatusDot,
   StatusLegend,
@@ -62,10 +59,9 @@ import {
   WorkspaceLayout,
   WorkspaceMain,
   Avatar,
+  EmptyState,
 } from "@/index"
 import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
-import { ResourceDetailPage } from "@/components/patterns/resource-detail-page"
-import { ResourcePage, ResourcePageSection } from "@/components/patterns/resource-page"
 
 import type { ShowcaseDemoDefinition, ShowcaseDemoProps } from "./types"
 
@@ -671,71 +667,5 @@ function WizardPreview({ slug }: { slug: string }) {
 }
 
 function PatternsPreview({ slug }: { slug: string }) {
-  if (slug === "bulk-action-bar") {
-    return <BulkActionBar selectedCount={3} onClear={() => undefined} actions={<><Button size="sm">Assign</Button><Button size="sm" variant="outline">Export</Button></>} />
-  }
-
-  if (slug === "detail-layout") {
-    return (
-      <DetailLayout title="Customer account" description="Production detail layout with a responsive aside." eyebrow="Enterprise" actions={<Button size="sm">Edit</Button>} summary={<InfoCard title="Account health" description="All systems operational" />} aside={<InfoCard title="Owner" description="Customer success team" />}>
-        <DescriptionList items={[{ key: "plan", label: "Plan", value: "Scale" }, { key: "region", label: "Region", value: "Central Asia" }]} />
-      </DetailLayout>
-    )
-  }
-
-  if (slug === "settings-page") {
-    return (
-      <SettingsPage
-        title="Workspace settings"
-        description="Manage team defaults and notification policy."
-        sections={[
-          { value: "general", label: "General", description: "Workspace identity", content: <InfoCard title="General settings" description="Name, timezone and locale controls." /> },
-          { value: "notifications", label: "Notifications", description: "Delivery channels", content: <InfoCard title="Notification policy" description="Email and product alert preferences." /> },
-        ]}
-      />
-    )
-  }
-
-  if (slug === "resource-detail-page") {
-    return (
-      <ResourceDetailPage
-        title="Customer profile"
-        description="ResourceDetailPage organizes detail screens."
-        actions={<Button size="sm">Edit</Button>}
-      >
-        <ResourcePageSection title="Account">
-          <DescriptionList
-            items={[
-              { key: "plan", label: "Plan", value: "Scale" },
-              { key: "owner", label: "Owner", value: "Design team" },
-            ]}
-          />
-        </ResourcePageSection>
-      </ResourceDetailPage>
-    )
-  }
-
-  return (
-    <ResourcePage
-      title="Customers"
-      description="ResourcePage combines header, stats, filters and sections."
-      actions={<Button size="sm">New customer</Button>}
-      stats={
-        <div className="grid gap-3 sm:grid-cols-2">
-          <StatCard title="Active" value="2,418" trend={{ value: "+8%", tone: "success" }} />
-          <StatCard title="Health" value="94%" trend={{ value: "Stable", tone: "default" }} />
-        </div>
-      }
-      filters={<FilterBar search={<Input type="search" value="" placeholder="Search..." readOnly />} activeCount={1} />}
-    >
-      <ResourcePageSection title="Recent activity">
-        <Timeline
-          items={[
-            { key: "a", title: "Customer added", description: "Acme workspace", tone: "success" },
-            { key: "b", title: "Plan updated", description: "Scale plan enabled", tone: "info" },
-          ]}
-        />
-      </ResourcePageSection>
-    </ResourcePage>
-  )
+  return <EmptyState title="No records" description={`${slug} is composed from reusable primitives.`} primaryAction={{ label: "Create record" }} />
 }

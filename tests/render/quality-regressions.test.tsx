@@ -4,20 +4,29 @@ import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
 import {
-  BulkActionBar,
   CalendarScheduler,
-  DataView,
-  DetailLayout,
   DualListPicker,
   EmptyState,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   JsonInput,
-  PageToolbar,
-  ResourceDetailPage,
-  ResourcePage,
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuPositioner,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-  SettingsPage,
 } from "@/index"
 
 describe("component quality regressions", () => {
@@ -96,57 +105,34 @@ describe("component quality regressions", () => {
     expect(screen.getByRole("button", { name: /Unavailable/ })).toBeDisabled()
   })
 
-  it("does not render empty pattern chrome when optional regions are absent", () => {
-    const { container, rerender } = render(
-      <ResourcePage title="Customers" breadcrumbs={<nav aria-label="Breadcrumbs">Customers</nav>} />
-    )
-
-    expect(container.querySelector("[data-slot='resource-page-breadcrumbs']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='resource-page-toolbar']")).toBeNull()
-    expect(container.querySelector("[data-slot='resource-page-content']")).toBeNull()
-
-    rerender(<ResourceDetailPage title="Customer profile" />)
-
-    expect(container.querySelector("[data-slot='page-header'] [class*='shrink-0']")).toBeNull()
-    expect(container.querySelector("[data-slot='resource-detail-page-content']")).toBeNull()
-  })
-
-  it("renders added pattern surfaces without empty chrome", () => {
-    const onClear = vi.fn()
-
+  it("keeps patterns limited to composable empty state", () => {
     const { container } = render(
-      <div>
-        <EmptyState title="No customers" description="Create the first customer." />
-        <PageToolbar actions={<button type="button">Export</button>} />
-        <BulkActionBar selectedCount={2} onClear={onClear} />
-        <SettingsPage
-          title="Settings"
-          sections={[
-            { value: "profile", label: "Profile", content: <div>Profile form</div> },
-            { value: "billing", label: "Billing", content: <div>Billing form</div> },
-          ]}
-        />
-        <DataView count={0} emptyTitle="No rows" />
-      </div>
+      <EmptyState title="No customers" description="Create the first customer." />
     )
 
     expect(container.querySelector("[data-slot='empty-state']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='page-toolbar']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='bulk-action-bar']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='settings-page']")).toBeTruthy()
-    expect(screen.getByText("No rows")).toBeInTheDocument()
   })
 
-  it("only reserves an aside column when an aside is present", () => {
-    const { container, rerender } = render(<ResourcePage title="Customers">Customer list</ResourcePage>)
+  it("renders new reusable navigation primitives", () => {
+    const { container } = render(
+      <div>
+        <HoverCard><HoverCardTrigger>Owner</HoverCardTrigger><HoverCardContent>Azamat workspace</HoverCardContent></HoverCard>
+        <Menubar><MenubarMenu><MenubarTrigger>File</MenubarTrigger><MenubarContent><MenubarItem>New file</MenubarItem></MenubarContent></MenubarMenu></Menubar>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+              <NavigationMenuContent><NavigationMenuLink href="/products">Products overview</NavigationMenuLink></NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+          <NavigationMenuPositioner><NavigationMenuViewport /></NavigationMenuPositioner>
+        </NavigationMenu>
+      </div>
+    )
 
-    expect(container.querySelector("[data-slot='resource-page-content']")?.className).not.toContain("xl:grid-cols")
-
-    rerender(<ResourceDetailPage title="Customer">Customer detail</ResourceDetailPage>)
-    expect(container.querySelector("[data-slot='resource-detail-page-content']")?.className).not.toContain("xl:grid-cols")
-
-    rerender(<DetailLayout title="Customer">Customer detail</DetailLayout>)
-    expect(container.querySelector("[data-slot='detail-layout-content']")?.className).not.toContain("xl:grid-cols")
+    expect(container.querySelector("[data-slot='hover-card-trigger']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='menubar']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='navigation-menu']")).toBeTruthy()
   })
 
   it("does not leak ResizablePanel sizing props to the DOM", () => {

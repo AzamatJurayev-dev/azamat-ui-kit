@@ -19,6 +19,22 @@ import {
   InfoCard,
   Input,
   LoadingState,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuPositioner,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
   Pagination,
   Rating,
   RangeSlider,
@@ -26,7 +42,6 @@ import {
   ToastProvider,
   Wizard,
 } from "../../src"
-import { ResourceDetailPage, ResourcePage, ResourcePageSection } from "../../src/components/patterns/public"
 
 type Product = {
   id: string
@@ -72,13 +87,17 @@ export const smokeElements = [
   <Wizard key="wizard" steps={[{ id: "one", title: "One" }]} currentStep="one" />,
   <CommandPalette key="command" open={false} onOpenChange={noop} groups={[]} />,
   <ToastProvider key="toast-provider"><div>App</div></ToastProvider>,
-  <ResourcePage<Product> key="resource" title="Products" table={{ columns, data: products }} />,
-  <ResourceDetailPage
-    key="resource-detail"
-    title="Keyboard"
-    sections={[{ id: "main", title: "Main", items: [{ key: "name", label: "Name", value: "Keyboard" }] }]}
-  />,
-  <ResourcePageSection key="resource-section" title="Section">Content</ResourcePageSection>,
+  <HoverCard key="hover-card"><HoverCardTrigger>Azamat</HoverCardTrigger><HoverCardContent>Workspace owner</HoverCardContent></HoverCard>,
+  <Menubar key="menubar"><MenubarMenu><MenubarTrigger>File</MenubarTrigger><MenubarContent><MenubarItem>New</MenubarItem></MenubarContent></MenubarMenu></Menubar>,
+  <NavigationMenu key="navigation-menu">
+    <NavigationMenuList>
+      <NavigationMenuItem>
+        <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+        <NavigationMenuContent><NavigationMenuLink href="/docs">Docs</NavigationMenuLink></NavigationMenuContent>
+      </NavigationMenuItem>
+    </NavigationMenuList>
+    <NavigationMenuPositioner><NavigationMenuViewport /></NavigationMenuPositioner>
+  </NavigationMenu>,
 ]
 
 export function SmokeComponent() {

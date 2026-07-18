@@ -21,8 +21,11 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("form-date-range-picker", "FormDateRangePicker", "form", "Range date picker wrapper for planning and reporting flows."),
   component("alert-dialog", "AlertDialog", "overlay", "Destructive confirmation dialog with loading-ready action states."),
   component("drawer", "Drawer", "overlay", "Side panel for contextual details without leaving the page."),
+  component("hover-card", "HoverCard", "overlay", "Hover and focus preview card for profile, metric, and link context."),
 
   component("pagination", "Pagination", "navigation", "Controlled page navigation with edge buttons and active state."),
+  component("menubar", "Menubar", "navigation", "Accessible application menu bar for desktop-like command surfaces."),
+  component("navigation-menu", "NavigationMenu", "navigation", "Accessible marketing and product navigation with viewport panels."),
   component("async-select", "AsyncSelect", "inputs", "Remote-loaded select for large server-backed option sets."),
   component("slider", "Slider", "inputs", "Single value range control for density, threshold, and score tuning."),
   component("range-slider", "RangeSlider", "inputs", "Two-handle slider for min/max filtering."),
@@ -59,9 +62,5 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("stepper", "Stepper", "wizard", "Clickable step navigation for multi-step forms."),
   component("wizard", "Wizard", "wizard", "Stepper, content and footer controls combined into one workflow."),
 
-  component("resource-page", "ResourcePage", "patterns", "Full resource index page shell for admin dashboards."),
-  component("resource-detail-page", "ResourceDetailPage", "patterns", "Detail page shell with title, metadata and sections."),
-  component("page-toolbar", "PageToolbar", "patterns", "Reusable page toolbar for search, filters, view controls and actions."),
   component("breadcrumbs", "Breadcrumbs", "layout", "Route context trail with overflow collapse and custom link rendering."),
-  component("data-view", "DataView", "patterns", "Data view shell that combines toolbar, table, loading, error and empty states."),
 ])

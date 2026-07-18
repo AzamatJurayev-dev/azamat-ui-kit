@@ -10,7 +10,6 @@ import { AsyncSelect, type AsyncSelectOption } from "@/components/inputs/async-s
 import { DataTable } from "@/components/data-table/data-table"
 import { createDataTableSelectColumn } from "@/components/data-table/data-table-select-column"
 import { FileUpload } from "@/components/upload/file-upload"
-import { ResourcePage } from "@/components/patterns/resource-page"
 import { FormInput } from "@/components/form/form-input"
 import { Button } from "@/components/ui/button"
 import { Sidebar, SidebarProvider, SidebarTrigger, WorkspaceContent, WorkspaceHeader, WorkspaceLayout, WorkspaceMain } from "@/components/layout"
@@ -173,34 +172,17 @@ describe("render-based accessibility coverage", () => {
     expect(screen.getByText(/resume\.pdf:/i)).toBeTruthy()
   })
 
-  it("renders resource page and form builder through accessible headings and buttons", () => {
-    const rows: PersonRow[] = [{ id: "1", name: "Azamat", role: "Owner" }]
-    const columns: ColumnDef<PersonRow>[] = [
-      {
-        accessorKey: "name",
-        header: "Name",
-      },
-    ]
-
+  it("renders form fields through accessible labels and buttons", () => {
     const { container } = render(
       <div>
-        <ResourcePage
-          title="Team members"
-          description="Manage the workspace roster."
-          table={{
-            columns,
-            data: rows,
-          }}
-        />
         <FormHarness />
       </div>
     )
 
-    expect(screen.getByRole("heading", { name: "Team members" })).toBeTruthy()
-    expect(container.querySelector('[data-slot="resource-page-main"]')).toBeTruthy()
     expect(screen.getByRole("textbox", { name: "Name" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "Save" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "Reset" })).toBeTruthy()
+    expect(container.querySelector("[data-slot='form-field-shell']")).toBeTruthy()
   })
 
   it("passes automated checks for workspace navigation and main scrolling", async () => {

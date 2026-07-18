@@ -83,8 +83,9 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   notifications: "preview",
   "command-palette": "preview",
   command: "preview",
-  "resource-page": "preview",
-  "resource-detail-page": "preview",
+  "hover-card": "stable",
+  menubar: "preview",
+  "navigation-menu": "preview",
   patterns: "preview",
 
   "use-session-storage-state": "stable",
