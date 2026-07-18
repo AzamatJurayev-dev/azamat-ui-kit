@@ -10,7 +10,7 @@ export const presetComponents: Record<string, ComponentName[]> = {
     "dropdown-menu",
     "skeleton",
     "tabs",
-    "page-state",
+    "state-view",
     "filter-bar",
     "description-list",
     "info-card",

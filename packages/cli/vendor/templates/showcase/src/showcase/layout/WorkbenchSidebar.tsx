@@ -10,7 +10,7 @@ import {
   WandSparklesIcon,
 } from "lucide-react"
 
-import { Sidebar } from "@/components/layout/app-sidebar"
+import { Sidebar } from "@/components/layout/sidebar"
 import { Badge } from "@/components/ui/badge"
 import { getCategoryKey, getModuleKey, getModuleLabel, moduleCount, registryGroups } from "@/showcase/data/registry"
 
@@ -72,7 +72,7 @@ export function WorkbenchSidebar({ selectedKey, onSelect }: WorkbenchSidebarProp
           }),
         ]}
         footerAccount={{
-          label: "tembro@5.0.0",
+          label: "tembro@6.0.3",
           description: `${moduleCount} registry components`,
         }}
         activeIndicator="bar"
@@ -80,3 +80,4 @@ export function WorkbenchSidebar({ selectedKey, onSelect }: WorkbenchSidebarProp
     </aside>
   )
 }
+

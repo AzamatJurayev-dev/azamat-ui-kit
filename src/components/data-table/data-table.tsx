@@ -28,7 +28,7 @@ import { DataTablePagination, type DataTablePaginationProps } from "@/components
 import { type DataTableRowAction } from "@/components/data-table/data-table-row-actions"
 import { DataTableToolbar, type DataTableToolbarProps } from "@/components/data-table/data-table-toolbar"
 import { DataState, type DataStateProps } from "@/components/display/data-state"
-import { LoadingState, type LoadingStateProps } from "@/components/feedback/loading-state"
+import { StateView, type StateViewProps } from "@/components/feedback/state-view"
 import { Button } from "@/components/ui/button"
 import { Input, type InputSearchProps } from "@/components/ui/input"
 import { useIsMobile } from "@/hooks/use-is-mobile"
@@ -130,7 +130,7 @@ export type DataTableProps<TData, TValue = unknown> = Omit<
   isError?: boolean
   emptyState?: Omit<DataStateProps, "status">
   errorState?: Omit<DataStateProps, "status">
-  loadingState?: LoadingStateProps
+  loadingState?: Omit<StateViewProps, "status">
   loadingVariant?: DataTableLoadingVariant
   toolbar?: React.ReactNode | ((table: TanStackTable<TData>) => React.ReactNode)
   toolbarProps?: DataTableToolbarProps | ((table: TanStackTable<TData>) => DataTableToolbarProps)
@@ -511,7 +511,7 @@ function DataTable<TData, TValue = unknown>({
     ))
 
   const stateContent = shouldRenderSkeleton ? null : isLoading ? (
-    <LoadingState label="Loading data..." {...loadingState} />
+    <StateView status="loading" title="Loading data..." {...loadingState} />
   ) : isError ? (
     <DataState status="error" title="Could not load data" description="Please try again." variant="plain" {...errorState} />
   ) : rows.length === 0 ? (
@@ -657,7 +657,7 @@ function DataTable<TData, TValue = unknown>({
         <div className="grid gap-3">
           {stateContent ??
             (shouldRenderSkeleton ? (
-              <LoadingState label="Loading data..." {...loadingState} />
+              <StateView status="loading" title="Loading data..." {...loadingState} />
             ) : (
               rows.map((row) => (
                 <React.Fragment key={row.id}>

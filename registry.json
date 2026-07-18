@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "5.0.0",
+  "version": "6.0.3",
   "components": {
     "utils": {
       "category": "lib",
@@ -14,7 +14,9 @@
           "source": "src/lib/utils.ts",
           "target": "{utils}"
         }
-      ]
+      ],
+      "status": "internal",
+      "distribution": "foundation"
     },
     "button": {
       "category": "ui",
@@ -30,7 +32,9 @@
           "source": "src/components/ui/button",
           "target": "{ui}/button"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "input": {
       "category": "ui",
@@ -46,7 +50,9 @@
           "source": "src/components/ui/input",
           "target": "{ui}/input"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "textarea": {
       "category": "ui",
@@ -58,7 +64,9 @@
           "source": "src/components/ui/textarea",
           "target": "{ui}/textarea"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "checkbox": {
       "category": "ui",
@@ -73,7 +81,9 @@
           "source": "src/components/ui/checkbox",
           "target": "{ui}/checkbox"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "switch": {
       "category": "ui",
@@ -85,7 +95,9 @@
           "source": "src/components/ui/switch",
           "target": "{ui}/switch"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "badge": {
       "category": "ui",
@@ -101,7 +113,9 @@
           "source": "src/components/ui/badge",
           "target": "{ui}/badge"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "card": {
       "category": "ui",
@@ -116,7 +130,9 @@
           "source": "src/components/ui/card",
           "target": "{ui}/card"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "skeleton": {
       "category": "ui",
@@ -128,7 +144,9 @@
           "source": "src/components/ui/skeleton",
           "target": "{ui}/skeleton"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "tabs": {
       "category": "ui",
@@ -143,7 +161,9 @@
           "source": "src/components/ui/tabs",
           "target": "{ui}/tabs"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "dialog": {
       "category": "ui",
@@ -160,7 +180,9 @@
           "source": "src/components/ui/dialog",
           "target": "{ui}/dialog"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "dropdown-menu": {
       "category": "ui",
@@ -176,7 +198,9 @@
           "source": "src/components/ui/dropdown-menu",
           "target": "{ui}/dropdown-menu"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "popover": {
       "category": "ui",
@@ -191,7 +215,9 @@
           "source": "src/components/ui/popover",
           "target": "{ui}/popover"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "tooltip": {
       "category": "ui",
@@ -203,7 +229,9 @@
           "source": "src/components/ui/tooltip",
           "target": "{ui}/tooltip"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "hover-card": {
       "category": "ui",
@@ -218,7 +246,9 @@
           "source": "src/components/ui/hover-card",
           "target": "{ui}/hover-card"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "system"
     },
     "menubar": {
       "category": "ui",
@@ -234,7 +264,9 @@
           "source": "src/components/ui/menubar",
           "target": "{ui}/menubar"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "navigation-menu": {
       "category": "navigation",
@@ -250,11 +282,15 @@
           "source": "src/components/ui/navigation-menu",
           "target": "{ui}/navigation-menu"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "simple-select": {
       "category": "ui",
-      "migrationAliasFor": "select"
+      "migrationAliasFor": "select",
+      "status": "internal",
+      "distribution": "foundation"
     },
     "select": {
       "category": "ui",
@@ -270,7 +306,9 @@
           "source": "src/components/ui/select",
           "target": "{ui}/select"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "table": {
       "category": "ui",
@@ -282,7 +320,9 @@
           "source": "src/components/ui/table",
           "target": "{ui}/table"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "segmented-control": {
       "category": "ui",
@@ -294,7 +334,9 @@
           "source": "src/components/ui/segmented-control",
           "target": "{ui}/segmented-control"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "radio-group": {
       "category": "ui",
@@ -307,7 +349,9 @@
           "source": "src/components/ui/radio-group",
           "target": "{ui}/radio-group"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "accordion": {
       "category": "ui",
@@ -322,7 +366,9 @@
           "source": "src/components/ui/accordion",
           "target": "{ui}/accordion"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "kbd": {
       "category": "ui",
@@ -331,7 +377,9 @@
           "source": "src/components/ui/kbd",
           "target": "{ui}/kbd"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "scroll-box": {
       "category": "ui",
@@ -340,7 +388,9 @@
           "source": "src/components/ui/scroll-box",
           "target": "{ui}/scroll-box"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "right-click-menu": {
       "category": "ui",
@@ -352,7 +402,61 @@
           "source": "src/components/ui/right-click-menu",
           "target": "{ui}/right-click-menu"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "number-field": {
+      "category": "inputs",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/number-field",
+          "target": "{ui}/number-field"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "toggle-group": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/toggle-group",
+          "target": "{ui}/toggle-group"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "toolbar": {
+      "category": "ui",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/toolbar",
+          "target": "{ui}/toolbar"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "tag-input": {
       "category": "inputs",
@@ -369,7 +473,9 @@
           "source": "src/components/inputs/tag-input.tsx",
           "target": "{components}/inputs/tag-input.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "combobox": {
       "category": "inputs",
@@ -387,7 +493,9 @@
           "source": "src/components/inputs/combobox.tsx",
           "target": "{components}/inputs/combobox.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "async-select": {
       "category": "inputs",
@@ -405,7 +513,9 @@
           "source": "src/components/inputs/async-select.tsx",
           "target": "{components}/inputs/async-select.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-field-shell": {
       "category": "form",
@@ -417,7 +527,9 @@
           "source": "src/components/form/form-field-shell.tsx",
           "target": "{components}/form/form-field-shell.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-input": {
       "category": "form",
@@ -433,7 +545,9 @@
           "source": "src/components/form/form-input.tsx",
           "target": "{components}/form/form-input.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-select": {
       "category": "form",
@@ -450,7 +564,9 @@
           "source": "src/components/form/form-select.tsx",
           "target": "{components}/form/form-select.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-textarea": {
       "category": "form",
@@ -466,7 +582,9 @@
           "source": "src/components/form/form-textarea.tsx",
           "target": "{components}/form/form-textarea.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-switch": {
       "category": "form",
@@ -483,7 +601,9 @@
           "source": "src/components/form/form-switch.tsx",
           "target": "{components}/form/form-switch.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-date-range-input": {
       "category": "form",
@@ -499,7 +619,9 @@
           "source": "src/components/form/form-date-range-input.tsx",
           "target": "{components}/form/form-date-range-input.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-date-picker": {
       "category": "form",
@@ -515,7 +637,9 @@
           "source": "src/components/form/form-date-picker.tsx",
           "target": "{components}/form/form-date-picker.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-date-range-picker": {
       "category": "form",
@@ -531,7 +655,9 @@
           "source": "src/components/form/form-date-range-picker.tsx",
           "target": "{components}/form/form-date-range-picker.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form": {
       "category": "group",
@@ -550,15 +676,21 @@
           "source": "src/components/form/index.ts",
           "target": "{components}/form/index.ts"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "dialog-actions": {
       "category": "overlay",
-      "migrationAliasFor": "dialog"
+      "migrationAliasFor": "dialog",
+      "status": "internal",
+      "distribution": "source-copy"
     },
     "modal-shell": {
       "category": "overlay",
-      "migrationAliasFor": "dialog"
+      "migrationAliasFor": "dialog",
+      "status": "internal",
+      "distribution": "source-copy"
     },
     "confirm-dialog": {
       "category": "overlay",
@@ -571,7 +703,9 @@
           "source": "src/components/overlay/confirm-dialog.tsx",
           "target": "{components}/overlay/confirm-dialog.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "alert-dialog": {
       "category": "overlay",
@@ -587,7 +721,9 @@
           "source": "src/components/overlay/alert-dialog.tsx",
           "target": "{components}/overlay/alert-dialog.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "drawer": {
       "category": "overlay",
@@ -602,7 +738,9 @@
           "source": "src/components/overlay/drawer.tsx",
           "target": "{components}/overlay/drawer.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "state-view": {
       "category": "feedback",
@@ -618,32 +756,9 @@
           "source": "src/components/feedback/state-view.tsx",
           "target": "{components}/feedback/state-view.tsx"
         }
-      ]
-    },
-    "loading-state": {
-      "category": "feedback",
-      "registryDependencies": [
-        "state-view"
       ],
-      "files": [
-        {
-          "source": "src/components/feedback/loading-state.tsx",
-          "target": "{components}/feedback/loading-state.tsx"
-        }
-      ]
-    },
-    "page-state": {
-      "category": "feedback",
-      "registryDependencies": [
-        "state-view",
-        "utils"
-      ],
-      "files": [
-        {
-          "source": "src/components/feedback/page-state.tsx",
-          "target": "{components}/feedback/page-state.tsx"
-        }
-      ]
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "feedback": {
       "category": "group",
@@ -656,7 +771,9 @@
           "source": "src/components/feedback/index.ts",
           "target": "{components}/feedback/index.ts"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "system"
     },
     "sidebar-context": {
       "category": "layout",
@@ -671,7 +788,9 @@
           "source": "src/components/layout/sidebar-context.tsx",
           "target": "{components}/layout/sidebar-context.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "workspace-layout": {
       "category": "layout",
@@ -687,7 +806,9 @@
           "source": "src/components/layout/workspace-header.tsx",
           "target": "{components}/layout/workspace-header.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "sidebar": {
       "category": "layout",
@@ -704,7 +825,9 @@
           "source": "src/components/layout/sidebar.tsx",
           "target": "{components}/layout/sidebar.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "layout": {
       "category": "group",
@@ -719,7 +842,9 @@
           "source": "src/components/layout/index.ts",
           "target": "{components}/layout/index.ts"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "system"
     },
     "calendar": {
       "category": "calendar",
@@ -739,7 +864,9 @@
           "source": "src/components/calendar/date-utils.ts",
           "target": "{components}/calendar/date-utils.ts"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "date-picker": {
       "category": "calendar",
@@ -757,7 +884,9 @@
           "source": "src/components/calendar/date-picker.tsx",
           "target": "{components}/calendar/date-picker.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "date-range-picker": {
       "category": "calendar",
@@ -775,7 +904,9 @@
           "source": "src/components/calendar/date-range-picker.tsx",
           "target": "{components}/calendar/date-range-picker.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "dashboard": {
       "category": "group",
@@ -786,7 +917,9 @@
         "async-select",
         "tag-input",
         "form"
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "calendar-kit": {
       "category": "group",
@@ -794,14 +927,18 @@
         "calendar",
         "date-picker",
         "date-range-picker"
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "wizard-kit": {
       "category": "group",
       "registryDependencies": [
         "stepper",
         "wizard"
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "dnd": {
       "category": "group",
@@ -813,7 +950,9 @@
           "source": "src/components/dnd/index.ts",
           "target": "{components}/dnd/index.ts"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "all": {
       "category": "group",
@@ -842,6 +981,9 @@
         "kbd",
         "scroll-box",
         "right-click-menu",
+        "number-field",
+        "toggle-group",
+        "toolbar",
         "tag-input",
         "combobox",
         "async-select",
@@ -857,8 +999,6 @@
         "alert-dialog",
         "drawer",
         "state-view",
-        "loading-state",
-        "page-state",
         "sidebar-context",
         "workspace-layout",
         "sidebar",
@@ -930,7 +1070,9 @@
         "time-picker",
         "sortable-list",
         "virtual-list"
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "action-menu": {
       "category": "actions",
@@ -939,7 +1081,9 @@
           "source": "src/components/actions/action-menu.tsx",
           "target": "{components}/actions/action-menu.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "activity-feed": {
       "category": "display",
@@ -948,7 +1092,9 @@
           "source": "src/components/display/activity-feed.tsx",
           "target": "{components}/display/activity-feed.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "alert": {
       "category": "feedback",
@@ -957,11 +1103,15 @@
           "source": "src/components/feedback/alert.tsx",
           "target": "{components}/feedback/alert.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "app-header": {
       "category": "layout",
-      "migrationAliasFor": "workspace-layout"
+      "migrationAliasFor": "workspace-layout",
+      "status": "internal",
+      "distribution": "source-copy"
     },
     "avatar": {
       "category": "display",
@@ -970,7 +1120,9 @@
           "source": "src/components/display/avatar.tsx",
           "target": "{components}/display/avatar.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "breadcrumbs": {
       "category": "layout",
@@ -979,7 +1131,9 @@
           "source": "src/components/layout/breadcrumbs.tsx",
           "target": "{components}/layout/breadcrumbs.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "button-group": {
       "category": "actions",
@@ -988,7 +1142,9 @@
           "source": "src/components/actions/button-group.tsx",
           "target": "{components}/actions/button-group.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "code-block": {
       "category": "display",
@@ -997,7 +1153,9 @@
           "source": "src/components/display/code-block.tsx",
           "target": "{components}/display/code-block.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "collapse": {
       "category": "ui",
@@ -1006,7 +1164,9 @@
           "source": "src/components/ui/collapse",
           "target": "{ui}/collapse"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "carousel": {
       "category": "display",
@@ -1015,7 +1175,9 @@
           "source": "src/components/display/carousel.tsx",
           "target": "{components}/display/carousel.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "tag": {
       "category": "display",
@@ -1028,7 +1190,9 @@
           "source": "src/components/display/tag.tsx",
           "target": "{components}/display/tag.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "typography": {
       "category": "display",
@@ -1040,7 +1204,9 @@
           "source": "src/components/display/typography.tsx",
           "target": "{components}/display/typography.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "command": {
       "category": "ui",
@@ -1049,7 +1215,9 @@
           "source": "src/components/ui/command",
           "target": "{ui}/command"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "copy-button": {
       "category": "actions",
@@ -1058,187 +1226,243 @@
           "source": "src/components/actions/copy-button.tsx",
           "target": "{components}/actions/copy-button.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "copy-field": {
       "category": "actions",
-      "migrationAliasFor": "copy-button"
+      "migrationAliasFor": "copy-button",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "clearable-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "search-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "password-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "number-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "money-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "phone-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "masked-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "quantity-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "date-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "date-range-input": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "form-async-select": {
       "category": "form",
-      "migrationAliasFor": "form-select"
+      "migrationAliasFor": "form-select",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "input-decorator": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "input-value": {
       "category": "inputs",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "inputs": {
       "category": "group",
-      "migrationAliasFor": "input"
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "system"
     },
     "app-sidebar": {
       "category": "layout",
-      "migrationAliasFor": "sidebar"
-    },
-    "page-header": {
-      "category": "layout",
-      "migrationAliasFor": "section"
-    },
-    "page-container": {
-      "category": "layout",
-      "migrationAliasFor": "sidebar"
-    },
-    "section-header": {
-      "category": "layout",
-      "migrationAliasFor": "section"
-    },
-    "sidebar-nav": {
-      "category": "layout",
-      "migrationAliasFor": "sidebar"
+      "migrationAliasFor": "sidebar",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "stat-card": {
       "category": "layout",
-      "migrationAliasFor": "statistic"
-    },
-    "sticky-footer-bar": {
-      "category": "layout",
-      "migrationAliasFor": "sidebar"
+      "migrationAliasFor": "statistic",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "smart-card": {
       "category": "display",
-      "migrationAliasFor": "info-card"
+      "migrationAliasFor": "info-card",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "file-dropzone": {
       "category": "upload",
-      "migrationAliasFor": "file-upload"
+      "migrationAliasFor": "file-upload",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "comparison-card": {
       "category": "display",
-      "migrationAliasFor": "card"
+      "migrationAliasFor": "card",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "delta-badge": {
       "category": "display",
-      "migrationAliasFor": "badge"
+      "migrationAliasFor": "badge",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "trend-card": {
       "category": "display",
-      "migrationAliasFor": "statistic"
+      "migrationAliasFor": "statistic",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "user-card": {
       "category": "display",
-      "migrationAliasFor": "avatar"
+      "migrationAliasFor": "avatar",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "sheet-shell": {
       "category": "overlay",
-      "migrationAliasFor": "drawer"
+      "migrationAliasFor": "drawer",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "nav-tabs": {
       "category": "navigation",
-      "migrationAliasFor": "tabs"
+      "migrationAliasFor": "tabs",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "page-tabs": {
       "category": "navigation",
-      "migrationAliasFor": "tabs"
+      "migrationAliasFor": "tabs",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "stepper-tabs": {
       "category": "navigation",
-      "migrationAliasFor": "stepper"
+      "migrationAliasFor": "stepper",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "command-bar": {
       "category": "navigation",
-      "migrationAliasFor": "command-palette"
+      "migrationAliasFor": "command-palette",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "data-list": {
       "category": "display",
-      "migrationAliasFor": "list"
+      "migrationAliasFor": "list",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "property-grid": {
       "category": "display",
-      "migrationAliasFor": "description-list"
-    },
-    "result": {
-      "category": "display",
-      "migrationAliasFor": "page-state"
+      "migrationAliasFor": "description-list",
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "data-table-bulk-actions": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-column-visibility-menu": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-pagination": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-row-actions": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-saved-filters": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-select-column": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-sortable-header": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-toolbar": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-view-presets": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
     },
     "data-state": {
       "category": "display",
@@ -1250,7 +1474,9 @@
           "source": "src/components/display/data-state.tsx",
           "target": "{components}/display/data-state.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "data-table": {
       "category": "data-table",
@@ -1324,19 +1550,27 @@
           "source": "src/components/data-table/table-import-button.tsx",
           "target": "{components}/data-table/table-import-button.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "data-table-actions-column": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "internal",
+      "distribution": "system"
     },
     "table-export-menu": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "internal",
+      "distribution": "system"
     },
     "table-import-button": {
       "category": "data-table",
-      "migrationAliasFor": "data-table"
+      "migrationAliasFor": "data-table",
+      "status": "internal",
+      "distribution": "system"
     },
     "description-list": {
       "category": "display",
@@ -1345,7 +1579,9 @@
           "source": "src/components/display/description-list.tsx",
           "target": "{components}/display/description-list.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "divider": {
       "category": "ui",
@@ -1354,7 +1590,9 @@
           "source": "src/components/ui/divider",
           "target": "{ui}/divider"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "file-upload": {
       "category": "upload",
@@ -1363,7 +1601,9 @@
           "source": "src/components/upload/file-upload.tsx",
           "target": "{components}/upload/file-upload.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "filter-bar": {
       "category": "filters",
@@ -1372,7 +1612,9 @@
           "source": "src/components/filters/filter-bar.tsx",
           "target": "{components}/filters/filter-bar.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "empty-state": {
       "category": "patterns",
@@ -1385,7 +1627,9 @@
           "source": "src/components/patterns/empty-state.tsx",
           "target": "{components}/patterns/empty-state.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "system"
     },
     "charts": {
       "category": "charts",
@@ -1406,11 +1650,13 @@
           "source": "src/components/charts/index.ts",
           "target": "{components}/charts/index.ts"
         }
-      ]
+      ],
+      "status": "stable"
     },
     "horizontal-bar-chart": {
       "category": "charts",
-      "migrationAliasFor": "charts"
+      "migrationAliasFor": "charts",
+      "status": "preview"
     },
     "image-upload": {
       "category": "upload",
@@ -1419,7 +1665,9 @@
           "source": "src/components/upload/image-upload.tsx",
           "target": "{components}/upload/image-upload.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "kanban": {
       "category": "display",
@@ -1440,7 +1688,9 @@
           "source": "src/components/display/kanban.tsx",
           "target": "{components}/display/kanban.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "chat": {
       "category": "display",
@@ -1460,11 +1710,14 @@
           "source": "src/components/display/chat.tsx",
           "target": "{components}/display/chat.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "kpi": {
       "category": "charts",
-      "migrationAliasFor": "statistic"
+      "migrationAliasFor": "statistic",
+      "status": "preview"
     },
     "list": {
       "category": "display",
@@ -1473,7 +1726,9 @@
           "source": "src/components/display/list.tsx",
           "target": "{components}/display/list.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "otp-input": {
       "category": "inputs",
@@ -1482,7 +1737,9 @@
           "source": "src/components/inputs/otp-input.tsx",
           "target": "{components}/inputs/otp-input.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "color-picker": {
       "category": "inputs",
@@ -1494,7 +1751,9 @@
           "source": "src/components/inputs/color-picker.tsx",
           "target": "{components}/inputs/color-picker.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "signature-pad": {
       "category": "inputs",
@@ -1509,7 +1768,9 @@
           "source": "src/components/inputs/signature-pad.tsx",
           "target": "{components}/inputs/signature-pad.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "pagination": {
       "category": "navigation",
@@ -1518,7 +1779,9 @@
           "source": "src/components/navigation/pagination.tsx",
           "target": "{components}/navigation/pagination.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "progress": {
       "category": "display",
@@ -1527,11 +1790,9 @@
           "source": "src/components/display/progress.tsx",
           "target": "{components}/display/progress.tsx"
         }
-      ]
-    },
-    "progress-ring": {
-      "category": "charts",
-      "migrationAliasFor": "progress-circle"
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "progress-circle": {
       "category": "charts",
@@ -1539,12 +1800,9 @@
         {
           "source": "src/components/charts/progress-circle.tsx",
           "target": "{components}/charts/progress-circle.tsx"
-        },
-        {
-          "source": "src/components/charts/progress-ring.tsx",
-          "target": "{components}/charts/progress-ring.tsx"
         }
-      ]
+      ],
+      "status": "stable"
     },
     "quick-action-grid": {
       "category": "actions",
@@ -1553,7 +1811,9 @@
           "source": "src/components/actions/quick-action-grid.tsx",
           "target": "{components}/actions/quick-action-grid.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "rating": {
       "category": "inputs",
@@ -1562,7 +1822,9 @@
           "source": "src/components/inputs/rating.tsx",
           "target": "{components}/inputs/rating.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "section": {
       "category": "layout",
@@ -1571,7 +1833,9 @@
           "source": "src/components/layout/section.tsx",
           "target": "{components}/layout/section.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "slider": {
       "category": "inputs",
@@ -1580,7 +1844,9 @@
           "source": "src/components/inputs/slider.tsx",
           "target": "{components}/inputs/slider.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "info-card": {
       "category": "display",
@@ -1594,7 +1860,9 @@
           "source": "src/components/display/info-card.tsx",
           "target": "{components}/display/info-card.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "spinner": {
       "category": "ui",
@@ -1603,7 +1871,9 @@
           "source": "src/components/ui/spinner",
           "target": "{ui}/spinner"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "statistic": {
       "category": "display",
@@ -1612,7 +1882,9 @@
           "source": "src/components/display/statistic.tsx",
           "target": "{components}/display/statistic.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "status-dot": {
       "category": "display",
@@ -1621,7 +1893,9 @@
           "source": "src/components/display/status-dot.tsx",
           "target": "{components}/display/status-dot.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "status-legend": {
       "category": "display",
@@ -1636,7 +1910,9 @@
           "source": "src/components/display/status-legend.tsx",
           "target": "{components}/display/status-legend.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "stepper": {
       "category": "wizard",
@@ -1645,7 +1921,9 @@
           "source": "src/components/wizard/stepper.tsx",
           "target": "{components}/wizard/stepper.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "timeline": {
       "category": "display",
@@ -1654,7 +1932,9 @@
           "source": "src/components/display/timeline.tsx",
           "target": "{components}/display/timeline.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "toast": {
       "category": "notifications",
@@ -1663,7 +1943,9 @@
           "source": "src/components/notifications/toast.tsx",
           "target": "{components}/notifications/toast.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "tree-view": {
       "category": "display",
@@ -1672,7 +1954,9 @@
           "source": "src/components/display/tree-view.tsx",
           "target": "{components}/display/tree-view.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "use-before-unload-when-dirty": {
       "category": "hooks",
@@ -1681,7 +1965,9 @@
           "source": "src/hooks/use-before-unload-when-dirty.ts",
           "target": "{hooks}/use-before-unload-when-dirty.ts"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "use-data-table-view-state": {
       "category": "hooks",
@@ -1690,7 +1976,9 @@
           "source": "src/hooks/use-data-table-view-state.ts",
           "target": "{hooks}/use-data-table-view-state.ts"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "foundation"
     },
     "use-debounce": {
       "category": "hooks",
@@ -1699,7 +1987,9 @@
           "source": "src/hooks/use-debounce.ts",
           "target": "{hooks}/use-debounce.ts"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "use-disclosure": {
       "category": "hooks",
@@ -1708,7 +1998,9 @@
           "source": "src/hooks/use-disclosure.ts",
           "target": "{hooks}/use-disclosure.ts"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "use-is-mobile": {
       "category": "hooks",
@@ -1717,7 +2009,9 @@
           "source": "src/hooks/use-is-mobile.ts",
           "target": "{hooks}/use-is-mobile.ts"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "use-session-storage-state": {
       "category": "hooks",
@@ -1726,7 +2020,9 @@
           "source": "src/hooks/use-session-storage-state.ts",
           "target": "{hooks}/use-session-storage-state.ts"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "foundation"
     },
     "wizard": {
       "category": "wizard",
@@ -1735,7 +2031,9 @@
           "source": "src/components/wizard/wizard.tsx",
           "target": "{components}/wizard/wizard.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "inline-editable": {
       "category": "inputs",
@@ -1744,7 +2042,9 @@
           "source": "src/components/inputs/inline-editable.tsx",
           "target": "{components}/inputs/inline-editable.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "command-palette": {
       "category": "command",
@@ -1764,7 +2064,9 @@
           "source": "src/components/command/command-palette.tsx",
           "target": "{components}/command/command-palette.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "saved-filter-select": {
       "category": "filters",
@@ -1773,7 +2075,9 @@
           "source": "src/components/filters/saved-filter-select.tsx",
           "target": "{components}/filters/saved-filter-select.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "notification-center": {
       "category": "notifications",
@@ -1782,7 +2086,9 @@
           "source": "src/components/notifications/notification-center.tsx",
           "target": "{components}/notifications/notification-center.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "calendar-scheduler": {
       "category": "modern",
@@ -1794,7 +2100,9 @@
           "source": "src/components/modern/calendar-scheduler.tsx",
           "target": "{components}/modern/calendar-scheduler.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "dual-list-picker": {
       "category": "modern",
@@ -1806,7 +2114,9 @@
           "source": "src/components/modern/dual-list-picker.tsx",
           "target": "{components}/modern/dual-list-picker.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "resizable-panel": {
       "category": "modern",
@@ -1821,7 +2131,9 @@
           "source": "src/components/modern/resizable-panel.tsx",
           "target": "{components}/modern/resizable-panel.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "rich-text-editor": {
       "category": "modern",
@@ -1841,7 +2153,9 @@
           "source": "src/components/modern/rich-text-editor.tsx",
           "target": "{components}/modern/rich-text-editor.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "image-cropper": {
       "category": "modern",
@@ -1857,7 +2171,9 @@
           "source": "src/components/modern/image-cropper.tsx",
           "target": "{components}/modern/image-cropper.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "qr-code": {
       "category": "display",
@@ -1873,7 +2189,9 @@
           "source": "src/components/display/qr-code.tsx",
           "target": "{components}/display/qr-code.tsx"
         }
-      ]
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
     },
     "json-input": {
       "category": "inputs",
@@ -1885,7 +2203,9 @@
           "source": "src/components/inputs/json-input.tsx",
           "target": "{components}/inputs/json-input.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "time-picker": {
       "category": "inputs",
@@ -1897,7 +2217,9 @@
           "source": "src/components/inputs/time-picker.tsx",
           "target": "{components}/inputs/time-picker.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "sortable-list": {
       "category": "dnd",
@@ -1914,7 +2236,9 @@
           "source": "src/components/dnd/sortable-list.tsx",
           "target": "{components}/dnd/sortable-list.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     },
     "virtual-list": {
       "category": "display",
@@ -1929,8 +2253,418 @@
           "source": "src/components/display/virtual-list.tsx",
           "target": "{components}/display/virtual-list.tsx"
         }
-      ]
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     }
+  },
+  "recommended": [
+    "button",
+    "input",
+    "textarea",
+    "checkbox",
+    "switch",
+    "badge",
+    "card",
+    "skeleton",
+    "tabs",
+    "dialog",
+    "dropdown-menu",
+    "popover",
+    "tooltip",
+    "hover-card",
+    "menubar",
+    "navigation-menu",
+    "select",
+    "table",
+    "segmented-control",
+    "radio-group",
+    "accordion",
+    "kbd",
+    "scroll-box",
+    "right-click-menu",
+    "number-field",
+    "toggle-group",
+    "toolbar",
+    "tag-input",
+    "combobox",
+    "async-select",
+    "form-field-shell",
+    "form-input",
+    "form-select",
+    "form-textarea",
+    "form-switch",
+    "form-date-range-input",
+    "form-date-picker",
+    "form-date-range-picker",
+    "confirm-dialog",
+    "alert-dialog",
+    "drawer",
+    "state-view",
+    "sidebar-context",
+    "workspace-layout",
+    "sidebar",
+    "calendar",
+    "date-picker",
+    "date-range-picker",
+    "action-menu",
+    "activity-feed",
+    "alert",
+    "avatar",
+    "breadcrumbs",
+    "button-group",
+    "code-block",
+    "collapse",
+    "carousel",
+    "tag",
+    "typography",
+    "command",
+    "copy-button",
+    "data-state",
+    "data-table",
+    "description-list",
+    "divider",
+    "file-upload",
+    "filter-bar",
+    "empty-state",
+    "charts",
+    "image-upload",
+    "kanban",
+    "chat",
+    "list",
+    "otp-input",
+    "color-picker",
+    "signature-pad",
+    "pagination",
+    "progress",
+    "progress-circle",
+    "quick-action-grid",
+    "rating",
+    "section",
+    "slider",
+    "info-card",
+    "spinner",
+    "statistic",
+    "status-dot",
+    "status-legend",
+    "stepper",
+    "timeline",
+    "toast",
+    "tree-view",
+    "use-before-unload-when-dirty",
+    "use-data-table-view-state",
+    "use-debounce",
+    "use-disclosure",
+    "use-is-mobile",
+    "use-session-storage-state",
+    "wizard",
+    "inline-editable",
+    "command-palette",
+    "saved-filter-select",
+    "notification-center",
+    "calendar-scheduler",
+    "dual-list-picker",
+    "resizable-panel",
+    "rich-text-editor",
+    "image-cropper",
+    "qr-code",
+    "json-input",
+    "time-picker",
+    "sortable-list",
+    "virtual-list"
+  ],
+  "recommendedByMode": {
+    "minimal": [
+      "button",
+      "input",
+      "card",
+      "badge"
+    ],
+    "dashboard": [
+      "sidebar",
+      "workspace-layout",
+      "button",
+      "input",
+      "badge",
+      "card",
+      "data-table",
+      "filter-bar",
+      "state-view",
+      "info-card"
+    ],
+    "full": [
+      "button",
+      "input",
+      "textarea",
+      "checkbox",
+      "switch",
+      "badge",
+      "card",
+      "skeleton",
+      "tabs",
+      "dialog",
+      "dropdown-menu",
+      "popover",
+      "tooltip",
+      "hover-card",
+      "menubar",
+      "navigation-menu",
+      "select",
+      "table",
+      "segmented-control",
+      "radio-group",
+      "accordion",
+      "kbd",
+      "scroll-box",
+      "right-click-menu",
+      "number-field",
+      "toggle-group",
+      "toolbar",
+      "tag-input",
+      "combobox",
+      "async-select",
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-textarea",
+      "form-switch",
+      "form-date-range-input",
+      "form-date-picker",
+      "form-date-range-picker",
+      "confirm-dialog",
+      "alert-dialog",
+      "drawer",
+      "state-view",
+      "sidebar-context",
+      "workspace-layout",
+      "sidebar",
+      "calendar",
+      "date-picker",
+      "date-range-picker",
+      "action-menu",
+      "activity-feed",
+      "alert",
+      "avatar",
+      "breadcrumbs",
+      "button-group",
+      "code-block",
+      "collapse",
+      "carousel",
+      "tag",
+      "typography",
+      "command",
+      "copy-button",
+      "data-state",
+      "data-table",
+      "description-list",
+      "divider",
+      "file-upload",
+      "filter-bar",
+      "empty-state",
+      "charts",
+      "image-upload",
+      "kanban",
+      "chat",
+      "list",
+      "otp-input",
+      "color-picker",
+      "signature-pad",
+      "pagination",
+      "progress",
+      "progress-circle",
+      "quick-action-grid",
+      "rating",
+      "section",
+      "slider",
+      "info-card",
+      "spinner",
+      "statistic",
+      "status-dot",
+      "status-legend",
+      "stepper",
+      "timeline",
+      "toast",
+      "tree-view",
+      "use-before-unload-when-dirty",
+      "use-data-table-view-state",
+      "use-debounce",
+      "use-disclosure",
+      "use-is-mobile",
+      "use-session-storage-state",
+      "wizard",
+      "inline-editable",
+      "command-palette",
+      "saved-filter-select",
+      "notification-center",
+      "calendar-scheduler",
+      "dual-list-picker",
+      "resizable-panel",
+      "rich-text-editor",
+      "image-cropper",
+      "qr-code",
+      "json-input",
+      "time-picker",
+      "sortable-list",
+      "virtual-list"
+    ]
+  },
+  "groups": {
+    "form": [
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-textarea",
+      "form-switch",
+      "form-date-range-input",
+      "form-date-picker",
+      "form-date-range-picker"
+    ],
+    "feedback": [
+      "alert",
+      "state-view"
+    ],
+    "layout": [
+      "workspace-layout",
+      "sidebar",
+      "breadcrumbs",
+      "section"
+    ],
+    "dashboard": [
+      "layout",
+      "feedback",
+      "input",
+      "async-select",
+      "tag-input",
+      "form"
+    ],
+    "calendar-kit": [
+      "calendar",
+      "date-picker",
+      "date-range-picker"
+    ],
+    "wizard-kit": [
+      "stepper",
+      "wizard"
+    ],
+    "dnd": [
+      "sortable-list"
+    ],
+    "all": [
+      "button",
+      "input",
+      "textarea",
+      "checkbox",
+      "switch",
+      "badge",
+      "card",
+      "skeleton",
+      "tabs",
+      "dialog",
+      "dropdown-menu",
+      "popover",
+      "tooltip",
+      "hover-card",
+      "menubar",
+      "navigation-menu",
+      "select",
+      "table",
+      "segmented-control",
+      "radio-group",
+      "accordion",
+      "kbd",
+      "scroll-box",
+      "right-click-menu",
+      "number-field",
+      "toggle-group",
+      "toolbar",
+      "tag-input",
+      "combobox",
+      "async-select",
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-textarea",
+      "form-switch",
+      "form-date-range-input",
+      "form-date-picker",
+      "form-date-range-picker",
+      "confirm-dialog",
+      "alert-dialog",
+      "drawer",
+      "state-view",
+      "sidebar-context",
+      "workspace-layout",
+      "sidebar",
+      "calendar",
+      "date-picker",
+      "date-range-picker",
+      "action-menu",
+      "activity-feed",
+      "alert",
+      "avatar",
+      "breadcrumbs",
+      "button-group",
+      "code-block",
+      "collapse",
+      "carousel",
+      "tag",
+      "typography",
+      "command",
+      "copy-button",
+      "data-state",
+      "data-table",
+      "description-list",
+      "divider",
+      "file-upload",
+      "filter-bar",
+      "empty-state",
+      "charts",
+      "image-upload",
+      "kanban",
+      "chat",
+      "list",
+      "otp-input",
+      "color-picker",
+      "signature-pad",
+      "pagination",
+      "progress",
+      "progress-circle",
+      "quick-action-grid",
+      "rating",
+      "section",
+      "slider",
+      "info-card",
+      "spinner",
+      "statistic",
+      "status-dot",
+      "status-legend",
+      "stepper",
+      "timeline",
+      "toast",
+      "tree-view",
+      "use-before-unload-when-dirty",
+      "use-data-table-view-state",
+      "use-debounce",
+      "use-disclosure",
+      "use-is-mobile",
+      "use-session-storage-state",
+      "wizard",
+      "inline-editable",
+      "command-palette",
+      "saved-filter-select",
+      "notification-center",
+      "calendar-scheduler",
+      "dual-list-picker",
+      "resizable-panel",
+      "rich-text-editor",
+      "image-cropper",
+      "qr-code",
+      "json-input",
+      "time-picker",
+      "sortable-list",
+      "virtual-list"
+    ],
+    "inputs": []
   },
   "publicSurface": {
     "documented": [
@@ -1945,6 +2679,9 @@
       "checkbox",
       "switch",
       "radio-group",
+      "number-field",
+      "toggle-group",
+      "toolbar",
       "dialog",
       "dropdown-menu",
       "popover",
@@ -2004,205 +2741,6 @@
     ],
     "standalone": []
   },
-  "groups": {
-    "ui": [
-      "accordion",
-      "badge",
-      "button",
-      "card",
-      "checkbox",
-      "collapse",
-      "command",
-      "dialog",
-      "divider",
-      "dropdown-menu",
-      "hover-card",
-      "input",
-      "kbd",
-      "menubar",
-      "popover",
-      "radio-group",
-      "right-click-menu",
-      "scroll-box",
-      "segmented-control",
-      "select",
-      "skeleton",
-      "spinner",
-      "switch",
-      "table",
-      "tabs",
-      "textarea",
-      "tooltip"
-    ],
-    "navigation": [
-      "navigation-menu",
-      "pagination"
-    ],
-    "inputs": [
-      "async-select",
-      "color-picker",
-      "combobox",
-      "inline-editable",
-      "json-input",
-      "otp-input",
-      "rating",
-      "signature-pad",
-      "slider",
-      "tag-input",
-      "time-picker"
-    ],
-    "form": [
-      "form-date-picker",
-      "form-date-range-input",
-      "form-date-range-picker",
-      "form-field-shell",
-      "form-input",
-      "form-select",
-      "form-switch",
-      "form-textarea"
-    ],
-    "overlay": [
-      "alert-dialog",
-      "confirm-dialog",
-      "drawer"
-    ],
-    "feedback": [
-      "alert",
-      "loading-state",
-      "page-state",
-      "state-view"
-    ],
-    "layout": [
-      "breadcrumbs",
-      "section",
-      "sidebar",
-      "sidebar-context",
-      "workspace-layout"
-    ],
-    "calendar": [
-      "calendar",
-      "date-picker",
-      "date-range-picker"
-    ],
-    "actions": [
-      "action-menu",
-      "button-group",
-      "copy-button",
-      "quick-action-grid"
-    ],
-    "display": [
-      "activity-feed",
-      "avatar",
-      "carousel",
-      "chat",
-      "code-block",
-      "data-state",
-      "description-list",
-      "info-card",
-      "kanban",
-      "list",
-      "progress",
-      "qr-code",
-      "statistic",
-      "status-dot",
-      "status-legend",
-      "tag",
-      "timeline",
-      "tree-view",
-      "typography",
-      "virtual-list"
-    ],
-    "data-table": [
-      "data-table"
-    ],
-    "upload": [
-      "file-upload",
-      "image-upload"
-    ],
-    "filters": [
-      "filter-bar",
-      "saved-filter-select"
-    ],
-    "patterns": [
-      "empty-state"
-    ],
-    "charts": [
-      "charts",
-      "progress-circle"
-    ],
-    "wizard": [
-      "stepper",
-      "wizard"
-    ],
-    "notifications": [
-      "notification-center",
-      "toast"
-    ],
-    "hooks": [
-      "use-before-unload-when-dirty",
-      "use-data-table-view-state",
-      "use-debounce",
-      "use-disclosure",
-      "use-is-mobile",
-      "use-session-storage-state"
-    ],
-    "command": [
-      "command-palette"
-    ],
-    "modern": [
-      "calendar-scheduler",
-      "dual-list-picker",
-      "image-cropper",
-      "resizable-panel",
-      "rich-text-editor"
-    ],
-    "dnd": [
-      "sortable-list"
-    ]
-  },
-  "recommended": [
-    "button",
-    "input",
-    "textarea",
-    "select",
-    "combobox",
-    "async-select",
-    "card",
-    "badge",
-    "checkbox",
-    "switch",
-    "radio-group",
-    "dropdown-menu",
-    "popover",
-    "hover-card",
-    "menubar",
-    "navigation-menu",
-    "tooltip",
-    "data-table",
-    "pagination",
-    "calendar",
-    "date-picker",
-    "date-range-picker",
-    "alert",
-    "toast",
-    "notification-center",
-    "sidebar",
-    "breadcrumbs",
-    "workspace-layout",
-    "state-view",
-    "file-upload",
-    "progress",
-    "accordion",
-    "divider",
-    "segmented-control",
-    "skeleton",
-    "spinner",
-    "command-palette",
-    "avatar",
-    "kanban",
-    "chat"
-  ],
-  "recommendedByMode": {},
   "migrationAliases": {
     "simple-select": "select",
     "dialog-actions": "dialog",
@@ -2224,12 +2762,7 @@
     "input-value": "input",
     "inputs": "input",
     "app-sidebar": "sidebar",
-    "page-header": "section",
-    "page-container": "sidebar",
-    "section-header": "section",
-    "sidebar-nav": "sidebar",
     "stat-card": "statistic",
-    "sticky-footer-bar": "sidebar",
     "smart-card": "info-card",
     "file-dropzone": "file-upload",
     "comparison-card": "card",
@@ -2243,7 +2776,6 @@
     "command-bar": "command-palette",
     "data-list": "list",
     "property-grid": "description-list",
-    "result": "page-state",
     "data-table-bulk-actions": "data-table",
     "data-table-column-visibility-menu": "data-table",
     "data-table-pagination": "data-table",
@@ -2257,7 +2789,6 @@
     "table-export-menu": "data-table",
     "table-import-button": "data-table",
     "horizontal-bar-chart": "charts",
-    "kpi": "statistic",
-    "progress-ring": "progress-circle"
+    "kpi": "statistic"
   }
 }

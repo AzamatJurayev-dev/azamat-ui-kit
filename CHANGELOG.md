@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file.
 
+## 6.0.3 - 2026-07-18
+
+### Fixed
+
+- Fixed the showcase template sidebar import path so generated workbenches use the canonical `layout/sidebar` component.
+
+## 6.0.2 - 2026-07-18
+
+### Fixed
+
+- Added an npm peer-resolution fallback for CLI dependency installs so existing projects with older rich text editor peer packages can still upgrade through `tembro add`.
+
+## 6.0.1 - 2026-07-18
+
+### Fixed
+
+- Pinned Tiptap install specs used by the CLI so rich text editor dependencies resolve as one compatible package family during `tembro add`.
+
+## 6.0.0 - 2026-07-18
+
+### Added
+
+- Added `NumberField`, `ToggleGroup`, and `Toolbar` as canonical product UI primitives.
+
+### Removed
+
+- Removed duplicate composition wrappers from code and registry: `loading-state`, `page-state`, `page-header`, `page-container`, `section-header`, `sidebar-nav`, `sticky-footer-bar`, and `progress-ring`.
+
+### Changed
+
+- Updated `DataTable` loading customization to use `StateView` props and made `ProgressCircle` independent from the removed ring alias.
+
 ## 5.0.0 - 2026-07-18
 
 ### Added

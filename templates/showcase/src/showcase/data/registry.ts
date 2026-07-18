@@ -52,6 +52,8 @@ export const registryGroups: RegistryGroup[] = [
       component("kbd", "stable", "src/components/ui/kbd"),
       component("scroll-box", "stable", "src/components/ui/scroll-box"),
       component("right-click-menu", "stable", "src/components/ui/right-click-menu"),
+      component("toggle-group", "preview", "src/components/ui/toggle-group"),
+      component("toolbar", "preview", "src/components/ui/toolbar"),
       component("collapse", "preview", "src/components/ui/collapse"),
       component("command", "preview", "src/components/ui/command"),
       component("divider", "preview", "src/components/ui/divider"),
@@ -80,6 +82,7 @@ export const registryGroups: RegistryGroup[] = [
       component("inline-editable", "preview", "src/components/inputs/inline-editable.tsx"),
       component("json-input", "preview", "src/components/inputs/json-input.tsx"),
       component("time-picker", "preview", "src/components/inputs/time-picker.tsx"),
+      component("number-field", "preview", "src/components/ui/number-field"),
     ],
   },
   {
@@ -139,15 +142,14 @@ export const registryGroups: RegistryGroup[] = [
   {
     name: "feedback",
     components: [
-      component("loading-state", "stable", "src/components/feedback/loading-state.tsx"),
-      component("page-state", "preview", "src/components/feedback/page-state.tsx"),
+      component("state-view", "stable", "src/components/feedback/state-view.tsx"),
       component("alert", "preview", "src/components/feedback/alert.tsx"),
     ],
   },
   {
     name: "layout",
     components: [
-      component("sidebar", "stable", "src/components/layout/app-sidebar.tsx"),
+      component("sidebar", "stable", "src/components/layout/sidebar.tsx"),
       component("breadcrumbs", "stable", "src/components/layout/breadcrumbs.tsx"),
       component("section", "preview", "src/components/layout/section.tsx"),
     ],

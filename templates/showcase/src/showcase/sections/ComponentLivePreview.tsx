@@ -19,7 +19,7 @@ import { StatusLegend } from "@/components/display/status-legend"
 import { Tag, TagGroup } from "@/components/display/tag"
 import { Timeline } from "@/components/display/timeline"
 import { Alert } from "@/components/feedback/alert"
-import { LoadingState } from "@/components/feedback/loading-state"
+import { StateView } from "@/components/feedback/state-view"
 import { Pagination } from "@/components/navigation/pagination"
 import { EmptyState } from "@/components/patterns/empty-state"
 import { Badge } from "@/components/ui/badge"
@@ -39,7 +39,7 @@ import { Switch } from "@/components/ui/switch"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { Sidebar } from "@/components/layout/app-sidebar"
+import { Sidebar } from "@/components/layout/sidebar"
 import type { RegistryComponent, RegistryGroup } from "@/showcase/data/registry"
 import { CalendarSection } from "@/showcase/sections/CalendarSection"
 import { CoreUiSection } from "@/showcase/sections/CoreUiSection"
@@ -283,7 +283,7 @@ function DirectComponentSurface({ group, component }: ComponentLivePreviewProps)
   if (group.name === "form") return <FormsSection />
   if (group.name === "display") return <DisplayPreview />
   if (group.name === "calendar" || group.name === "navigation") return group.name === "navigation" ? <Pagination page={2} pageCount={8} onPageChange={() => undefined} /> : <CalendarSection />
-  if (group.name === "feedback") return component.name === "alert" ? <Alert tone="success" title="Alert component" description="Rendered from feedback/alert." /> : <LoadingState label="LoadingState" description="Rendered from feedback/loading-state." />
+  if (group.name === "feedback") return component.name === "alert" ? <Alert tone="success" title="Alert component" description="Rendered from feedback/alert." /> : <StateView status="loading" title="StateView" description="Rendered from feedback/state-view." />
   if (group.name === "patterns") return <EmptyState title="EmptyState component" description="Rendered from patterns/empty-state." primaryAction={{ label: "Create item" }} secondaryAction={{ label: "Reset" }} />
   if (group.name === "wizard") return <WizardSection />
   if (group.name === "overlay") return <OverlaySection />

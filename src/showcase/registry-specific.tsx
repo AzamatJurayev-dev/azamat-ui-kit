@@ -34,7 +34,7 @@ import {
   Input,
   List,
   OtpInput,
-  PageState,
+  StateView,
   Pagination,
   Progress,
   QuickActionGrid,
@@ -105,7 +105,7 @@ const registryDemoDefinitions = [
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
   component("command", "Command", "command", "Composable command surface for search palettes and in-page action pickers."),
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
-  component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
+  component("state-view", "StateView", "feedback", "Route, inline, empty, loading, success and error states with next actions."),
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
   component("file-upload", "FileUpload", "upload", "Full file upload surface with dropzone, action button and helper text."),
   component("image-upload", "ImageUpload", "upload", "Image upload pattern with preview-oriented copy.", "ImageUpload"),
@@ -371,13 +371,13 @@ function FeedbackPreview({ slug }: { slug?: string }) {
     return <Alert tone="warning" title="Review needed" description="Billing rules changed and one approval is pending." action={<Button size="sm">Open</Button>} />
   }
 
-  if (slug === "page-state") {
+  if (slug === "state-view") {
     return (
-      <PageState
+      <StateView
+        status="success"
         title="Workspace connected"
         description="The route is ready to accept live data and team actions."
-        tone="success"
-        action={<Button size="sm">Continue</Button>}
+        actions={<Button size="sm">Continue</Button>}
       />
     )
   }

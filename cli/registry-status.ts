@@ -23,6 +23,9 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   combobox: "preview",
   "scroll-box": "stable",
   "right-click-menu": "stable",
+  "number-field": "preview",
+  "toggle-group": "preview",
+  toolbar: "preview",
   kbd: "stable",
 
   "dialog-actions": "internal",
@@ -47,7 +50,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "form-date-range-picker": "preview",
   form: "preview",
 
-  "loading-state": "stable",
+  "state-view": "stable",
   feedback: "stable",
   "description-list": "stable",
   progress: "stable",

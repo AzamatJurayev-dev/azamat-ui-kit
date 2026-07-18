@@ -1,5 +1,5 @@
 import { ProgressCard } from "@/components/display/progress"
-import { LoadingState } from "@/components/feedback/loading-state"
+import { StateView } from "@/components/feedback/state-view"
 import { Rating } from "@/components/inputs/rating"
 import { RangeSlider, Slider } from "@/components/inputs/slider"
 import { Badge } from "@/components/ui/badge"
@@ -20,7 +20,7 @@ export function FormsSection() {
         </CardContent>
       </Card>
       <ProgressCard title="Form completeness" description="input, select, switch, textarea" value={86} tone="success" footer={<Badge label="forms" status="success" />} />
-      <LoadingState label="Loading state" description="Spinner/skeleton/progress state component." />
+      <StateView status="loading" title="Loading state" description="Spinner/skeleton/progress state component." />
     </div>
   )
 }

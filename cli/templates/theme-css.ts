@@ -1756,17 +1756,17 @@ export function getTembroThemeCss(componentSourcePath: string) {
   [data-slot="statistic-change"][data-trend="up"] { color: var(--aui-success-fg); background: var(--aui-success-bg); }
   [data-slot="statistic-change"][data-trend="down"] { color: var(--destructive); background: color-mix(in oklch, var(--destructive), transparent 90%); }
 
-  [data-slot="page-state"] {
+  [data-slot="state-view"] {
     border-color: var(--aui-surface-border);
     border-radius: var(--aui-radius-panel);
     background: var(--aui-surface);
     box-shadow: var(--aui-shadow-card);
   }
 
-  [data-slot="page-state-icon"] { color: var(--muted-foreground); background: var(--aui-surface-muted); }
-  [data-slot="page-state"][data-tone="error"] [data-slot="page-state-icon"] { color: var(--destructive); background: color-mix(in oklch, var(--destructive), transparent 90%); }
-  [data-slot="page-state"][data-tone="success"] [data-slot="page-state-icon"] { color: var(--aui-success-fg); background: var(--aui-success-bg); }
-  [data-slot="page-state"][data-tone="info"] [data-slot="page-state-icon"] { color: var(--aui-info-fg); background: var(--aui-info-bg); }
+  [data-slot="state-view-icon"] { color: var(--muted-foreground); background: var(--aui-surface-muted); }
+  [data-slot="state-view"][data-tone="danger"] [data-slot="state-view-icon"] { color: var(--destructive); background: color-mix(in oklch, var(--destructive), transparent 90%); }
+  [data-slot="state-view"][data-tone="success"] [data-slot="state-view-icon"] { color: var(--aui-success-fg); background: var(--aui-success-bg); }
+  [data-slot="state-view"][data-tone="info"] [data-slot="state-view-icon"] { color: var(--aui-info-fg); background: var(--aui-info-bg); }
 
   [data-slot="file-upload-dropzone"],
   [data-slot="file-upload-item"] {

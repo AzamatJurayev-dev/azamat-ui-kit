@@ -29,10 +29,12 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("async-select", "AsyncSelect", "inputs", "Remote-loaded select for large server-backed option sets."),
   component("slider", "Slider", "inputs", "Single value range control for density, threshold, and score tuning."),
   component("range-slider", "RangeSlider", "inputs", "Two-handle slider for min/max filtering."),
+  component("number-field", "NumberField", "inputs", "Stepper-backed numeric input with min, max, step, scrub area and controlled value support."),
   component("rating", "Rating", "inputs", "Compact score input for feedback and review flows."),
   component("otp-input", "OtpInput", "inputs", "One-time code entry with fixed-length slots."),
   component("inline-editable", "InlineEditable", "inputs", "Inline editing primitive for dense tables and configuration rows."),
   component("tag-input", "TagInput", "inputs", "Tokenized text input for labels, skills, and quick filters."),
+  component("toggle-group", "ToggleGroup", "inputs", "Single or multi-select toggle group for compact mode, formatting and filter controls."),
 
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
   component("timeline", "Timeline", "display", "Vertical or horizontal event stream for workflow history."),
@@ -46,12 +48,13 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
 
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
+  component("toolbar", "Toolbar", "actions", "Composable toolbar primitive with grouped buttons, separators, links, inputs and orientation support."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
 
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("toast", "ToastProvider", "feedback", "Provider and hook for transient success, warning, loading, and promise-driven messages."),
-  component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
+  component("state-view", "StateView", "feedback", "Route, inline, empty, loading, success and error states with next actions."),
   component("empty-state", "EmptyState", "patterns", "Focused empty and error state with clear next actions."),
 
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),

@@ -7,7 +7,6 @@ import {
   BoxIcon,
   ChevronRightIcon,
   ComponentIcon,
-  CreditCardIcon,
   BellIcon,
   DatabaseIcon,
   CalendarClockIcon,
@@ -348,13 +347,14 @@ export const componentGroupMeta: Record<ComponentGroup, ComponentGroupMeta> = {
   },
 }
 
-const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd"])
+const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd", "toggle-group", "toolbar"])
 const formControlComponentSlugs = new Set([
   "select",
   "combobox",
   "async-select",
   "async-multi-select",
   "radio-group",
+  "number-field",
   "date-picker",
   "date-range-picker",
   "form-field-shell",
@@ -368,7 +368,7 @@ const formControlComponentSlugs = new Set([
 ])
 const overlayComponentSlugs = new Set(["dialog", "popover", "hover-card", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "alert-dialog", "drawer"])
 const layoutComponentSlugs = new Set(["sidebar", "breadcrumbs", "section", "navigation-menu", "menubar"])
-const feedbackComponentSlugs = new Set(["toast", "loading-state", "empty-state"])
+const feedbackComponentSlugs = new Set(["toast", "state-view", "empty-state"])
 const patternComponentSlugs = new Set<string>([])
 
 const legacyComponentSlugAliases = new Map<string, string>([
@@ -383,7 +383,6 @@ const legacyComponentSlugAliases = new Map<string, string>([
   ["file-dropzone", "file-upload"],
   ["metric-card", "statistic"],
   ["nav-tabs", "tabs"],
-  ["section-header", "section"],
   ["side-panel", "sidebar"],
   ["status-dot", "status-legend"],
 ]) 
@@ -1022,25 +1021,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Navigation context", "Custom separators", "Custom links", "Current state support"],
   },
   {
-    slug: "page-header",
-    title: "Page Header",
-    description: "Top-level page heading block with breadcrumbs, actions and optional meta area.",
-    icon: CreditCardIcon,
-    category: "Components",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["title", "ReactNode", "-", "Primary heading text."],
-      ["description", "ReactNode", "-", "Subtext explanation for current page."],
-      ["eyebrow", "ReactNode", "-", "Small uppercase lead text."],
-      ["breadcrumbs", "ReactNode", "-", "Optional breadcrumb trail."],
-      ["actions", "ReactNode", "-", "Actions rendered on the right side."],
-      ["meta", "ReactNode", "-", "Secondary metadata block."],
-      ["sticky", "boolean", "false", "Enable sticky positioning in scroll containers."],
-    ],
-    features: ["Page context", "Action areas", "Breadcrumb composition", "Sticky header option"],
-  },
-  {
     slug: "info-card",
     title: "Info Card",
     description: "Flexible context card for summaries, metadata, quick actions, and supporting media inside real product surfaces.",
@@ -1116,24 +1096,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onClear", "() => void", "-", "Clear callback for search-empty states."],
     ],
     features: ["Empty/search-empty states", "Error retry", "Plain table fallback", "Inline state rows"],
-  },
-  {
-    slug: "loading-state",
-    title: "Loading State",
-    description: "Scoped loading block with spinner, skeleton, or progress variants for real route and panel states.",
-    icon: SparklesIcon,
-    category: "Data Display",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["label", "ReactNode", "-", "Loading heading."],
-      ["description", "ReactNode", "-", "Loading explanation text."],
-      ["icon", "ReactNode", "-", "Optional loading icon."],
-      ["variant", "'spinner' | 'skeleton' | 'progress'", "'spinner'", "Visual loading style."],
-      ["progress", "number", "-", "Progress amount when `variant` is `progress`."],
-      ["className", "string", "-", "Container class override."],
-    ],
-    features: ["Spinner, skeleton and progress", "Section loading labels", "Scoped placeholders", "Custom icon"],
   },
   {
     slug: "scroll-box",
@@ -1222,7 +1184,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onRowClick", "(row) => void", "-", "Row click callback."],
       ["isLoading", "boolean", "false", "Loading indicator state."],
       ["isError", "boolean", "false", "Error state flag for fallback."],
-      ["loadingState", "LoadingState", "-", "Loading UI when `isLoading` is true."],
+      ["loadingState", "Omit<StateViewProps, \"status\">", "-", "Loading UI when `isLoading` is true."],
       ["emptyState", "Omit<DataStateProps, \"status\">", "-", "State shown when no rows are present."],
       ["errorState", "ErrorState", "-", "State shown when `isError` is true."],
     ],
@@ -1373,11 +1335,7 @@ export const componentRelations: ComponentRelationMap = {
   },
   "data-state": {
     groupSlugs: ["display"],
-    componentSlugs: ["loading-state", "data-table"],
-  },
-  "loading-state": {
-    groupSlugs: ["display"],
-    componentSlugs: ["data-state", "data-table"],
+    componentSlugs: ["state-view", "data-table"],
   },
   "scroll-box": {
     groupSlugs: ["display", "layout"],
@@ -1411,7 +1369,7 @@ const primaryComponentSurfaceSlugs = new Set([
   "data-table",
   "info-card",
   "activity-feed",
-  "loading-state",
+  "state-view",
   "toast",
   "notification-center",
   "progress",
@@ -1436,7 +1394,6 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   section: "sidebar",
   toolbar: "sidebar",
   "split-layout": "sidebar",
-  "page-header": "breadcrumbs",
   table: "data-table",
 }
 
@@ -1569,7 +1526,14 @@ const internalComponentCatalogSlugs = new Set([
   "form-select",
   "form-switch",
   "form-textarea",
-  "page-header",
+  "feedback",
+  "layout",
+  "use-before-unload-when-dirty",
+  "use-data-table-view-state",
+  "use-debounce",
+  "use-disclosure",
+  "use-is-mobile",
+  "use-session-storage-state",
 ])
 
 const hiddenKitGroups = new Set(["kits"])
@@ -1727,7 +1691,6 @@ const packageDocsSurfaceCatalogMap = new Map(packageDocsSurfaceCatalog.map((item
 const hiddenPrimaryComponentCatalogSlugs = new Set([
   ...internalComponentCatalogSlugs,
   "app-header",
-  "page-header",
 ])
 const hiddenDirectoryComponentSlugs = new Set([...hiddenPrimaryComponentCatalogSlugs, ...legacyComponentSlugAliases.keys()])
 
@@ -1968,7 +1931,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Metrics, activity, avatars, timelines and descriptive content surfaces.",
     icon: DatabaseIcon,
     category: "Data",
-    exports: ["DescriptionList", "Progress", "PageState", "Timeline", "Statistic", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
+    exports: ["DescriptionList", "Progress", "StateView", "Timeline", "Statistic", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
     href: componentModulePath("display"),
     status: "Stable",
     features: ["Metric grids", "Timelines", "Activity feeds", "Status legends"],

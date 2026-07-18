@@ -191,7 +191,7 @@ export const componentApiSchemas: Record<string, ComponentApiSchema> = {
       { name: "virtualization", type: "DataTableVirtualizationConfig | false", defaultValue: "-", description: "Enables virtualized row rendering for large datasets." },
       { name: "isLoading", type: "boolean", defaultValue: "false", description: "Shows loading state." },
       { name: "loadingVariant", type: "'skeleton' | 'state'", defaultValue: "'skeleton'", description: "Choose between skeleton rows or a dedicated loading state block." },
-      { name: "loadingState", type: "LoadingStateProps", defaultValue: "-", description: "Customizes the loading state when `loadingVariant=\"state\"`." },
+      { name: "loadingState", type: "Omit<StateViewProps, \"status\">", defaultValue: "-", description: "Customizes the loading state when `loadingVariant=\"state\"`." },
       { name: "isError", type: "boolean", defaultValue: "false", description: "Switches the grid into an error fallback state." },
       { name: "emptyState", type: "Omit<DataStateProps, \"status\">", defaultValue: "-", description: "Fallback when there are no rows." },
       { name: "errorState", type: "Omit<DataStateProps, \"status\">", defaultValue: "-", description: "Fallback when the data request fails." },

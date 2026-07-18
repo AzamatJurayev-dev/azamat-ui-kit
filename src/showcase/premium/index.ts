@@ -41,13 +41,11 @@ import { imageCropperMock, ImageCropperShowcase } from "./image-cropper"
 import { inputMock, InputShowcase } from "./input"
 import { kbdMock, KbdShowcase } from "./kbd"
 import { listMock, ListShowcase } from "./list"
-import { loadingStateMock, LoadingStateShowcase } from "./loading-state"
 import { timePickerMock, TimePickerShowcase } from "./time-picker"
 import { resizablePanelMock, ResizablePanelShowcase } from "./resizable-panel"
 import { NotificationCenterShowcase, notificationCenterMock } from "./notification-center"
 import { OtpInputShowcase, otpInputMock } from "./otp-input"
 import { sectionMock, SectionShowcase } from "./section"
-import { pageStateMock, PageStateShowcase } from "./page-state"
 import { paginationMock, PaginationShowcase } from "./pagination"
 import { popoverMock, PopoverShowcase } from "./popover"
 import { ProgressShowcase, progressMock } from "./progress"
@@ -153,14 +151,12 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   table: { mock: tableMock, Showcase: TableShowcase },
   sidebar: { mock: appSidebarMock, Showcase: AppSidebarShowcase },
   breadcrumbs: { mock: breadcrumbsMock, Showcase: BreadcrumbsShowcase },
-  "page-state": { mock: pageStateMock, Showcase: PageStateShowcase },
   pagination: { mock: paginationMock, Showcase: PaginationShowcase },
   "notification-center": { mock: notificationCenterMock, Showcase: NotificationCenterShowcase },
   "info-card": { mock: infoCardMock, Showcase: InfoCardShowcase },
   "image-cropper": { mock: imageCropperMock, Showcase: ImageCropperShowcase },
   list: { mock: listMock, Showcase: ListShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
-  "loading-state": { mock: loadingStateMock, Showcase: LoadingStateShowcase },
   "data-state": { mock: dataStateMock, Showcase: DataStateShowcase },
   progress: { mock: progressMock, Showcase: ProgressShowcase },
   "progress-circle": { mock: progressMock, Showcase: ProgressShowcase },

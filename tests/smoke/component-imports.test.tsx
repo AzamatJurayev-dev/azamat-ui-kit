@@ -18,7 +18,6 @@ import {
   FileUpload,
   InfoCard,
   Input,
-  LoadingState,
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
@@ -35,11 +34,24 @@ import {
   NavigationMenuPositioner,
   NavigationMenuTrigger,
   NavigationMenuViewport,
+  NumberField,
+  NumberFieldDecrement,
+  NumberFieldGroup,
+  NumberFieldIncrement,
+  NumberFieldInput,
+  NumberFieldStepper,
   Pagination,
   Rating,
   RangeSlider,
   Slider,
+  StateView,
   ToastProvider,
+  ToggleGroup,
+  ToggleGroupItem,
+  Toolbar,
+  ToolbarButton,
+  ToolbarGroup,
+  ToolbarSeparator,
   Wizard,
 } from "../../src"
 
@@ -70,7 +82,7 @@ export const smokeElements = [
   <Pagination key="pagination" page={1} pageCount={3} onPageChange={noop} />,
   <Badge key="status" tone="success" dot>Active</Badge>,
   <DataState key="empty" status="empty" title="No data" />,
-  <LoadingState key="loading" label="Loading" />,
+  <StateView key="loading" status="loading" title="Loading" />,
   <InfoCard key="info-card" title="Info">Content</InfoCard>,
   <ActivityFeed key="activity-feed" items={[{ id: "1", title: "Created", time: "now" }]} />,
   <ChatMessage key="chat-message" outgoing status="read">Ready</ChatMessage>,
@@ -84,6 +96,26 @@ export const smokeElements = [
   <Slider key="slider" value={40} onValueChange={noop} />,
   <RangeSlider key="range-slider" value={[20, 80]} onValueChange={noop} />,
   <Rating key="rating" value={4} onValueChange={noop} />,
+  <NumberField key="number-field" defaultValue={3}>
+    <NumberFieldGroup>
+      <NumberFieldInput aria-label="Quantity" />
+      <NumberFieldStepper>
+        <NumberFieldIncrement />
+        <NumberFieldDecrement />
+      </NumberFieldStepper>
+    </NumberFieldGroup>
+  </NumberField>,
+  <ToggleGroup key="toggle-group" defaultValue={["day"]}>
+    <ToggleGroupItem value="day">Day</ToggleGroupItem>
+    <ToggleGroupItem value="week">Week</ToggleGroupItem>
+  </ToggleGroup>,
+  <Toolbar key="toolbar">
+    <ToolbarGroup>
+      <ToolbarButton>Bold</ToolbarButton>
+      <ToolbarSeparator />
+      <ToolbarButton>Italic</ToolbarButton>
+    </ToolbarGroup>
+  </Toolbar>,
   <Wizard key="wizard" steps={[{ id: "one", title: "One" }]} currentStep="one" />,
   <CommandPalette key="command" open={false} onOpenChange={noop} groups={[]} />,
   <ToastProvider key="toast-provider"><div>App</div></ToastProvider>,

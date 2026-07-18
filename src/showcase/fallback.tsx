@@ -23,7 +23,7 @@ import {
   KanbanBoard,
   List,
   OtpInput,
-  PageState,
+  StateView,
   QRCode,
   QuickActionGrid,
   RangeSlider,
@@ -488,13 +488,13 @@ function renderGenericPreviewSurface(
     return <Alert tone="warning" title="Review needed" description="Billing rules changed and one approval is pending." action={<Button size="sm">Open</Button>} />
   }
 
-  if (item.slug === "page-state") {
+  if (item.slug === "state-view") {
     return (
-      <PageState
+      <StateView
+        status="success"
         title="Workspace connected"
         description="The route is ready to accept live data and team actions."
-        tone="success"
-        action={<Button size="sm">Continue</Button>}
+        actions={<Button size="sm">Continue</Button>}
       />
     )
   }

@@ -27,6 +27,9 @@ export * from './components/ui/kbd'
 export * from './components/ui/radio-group'
 export * from './components/ui/scroll-box'
 export * from './components/ui/right-click-menu'
+export * from './components/ui/number-field'
+export * from './components/ui/toggle-group'
+export * from './components/ui/toolbar'
 
 // Reusable groups
 export * from './components/actions/public'

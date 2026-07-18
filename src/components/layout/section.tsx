@@ -69,33 +69,6 @@ function Section({
   )
 }
 
-export type ToolbarProps = React.ComponentProps<"div"> & {
-  title?: React.ReactNode
-  description?: React.ReactNode
-  filters?: React.ReactNode
-  actions?: React.ReactNode
-}
-
-function Toolbar({ title, description, filters, actions, className, children, ...props }: ToolbarProps) {
-  return (
-    <div data-slot="toolbar" className={cn("flex flex-wrap items-center justify-between gap-3", className)} {...props}>
-      {(title || description) && (
-        <div className="grid gap-0.5">
-          {title && <div className="font-medium text-foreground">{title}</div>}
-          {description && <div className="text-sm text-muted-foreground">{description}</div>}
-        </div>
-      )}
-      {children}
-      {(filters || actions) && (
-        <div className="flex flex-wrap items-center gap-2">
-          {filters}
-          {actions}
-        </div>
-      )}
-    </div>
-  )
-}
-
 export type SplitLayoutProps = React.ComponentProps<"div"> & {
   aside: React.ReactNode
   asidePosition?: "start" | "end"
@@ -125,4 +98,4 @@ function SplitLayout({ aside, asidePosition = "end", asideClassName, contentClas
   )
 }
 
-export { Section, SplitLayout, Toolbar }
+export { Section, SplitLayout }

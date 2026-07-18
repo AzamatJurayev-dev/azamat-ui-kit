@@ -34,7 +34,6 @@ import {
   Input,
   List,
   OtpInput,
-  PageState,
   Pagination,
   Progress,
   QuickActionGrid,
@@ -276,17 +275,6 @@ function FeedbackPreview({ slug }: { slug?: string }) {
 
   if (slug === "state-view") {
     return <StateView status="error" title="Could not load workspace" description="Check the connection and retry the request." onRetry={() => undefined} />
-  }
-
-  if (slug === "page-state") {
-    return (
-      <PageState
-        title="Workspace connected"
-        description="The route is ready to accept live data and team actions."
-        tone="success"
-        action={<Button size="sm">Continue</Button>}
-      />
-    )
   }
 
   return (
