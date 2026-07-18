@@ -1,9 +1,10 @@
 "use client"
 
 import * as React from "react"
-import { ChevronRightIcon, MenuIcon, XIcon } from "lucide-react"
+import { ChevronRightIcon, MenuIcon, SearchIcon, XIcon } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-is-mobile"
+import { Input } from "@/components/ui/input"
 import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { ControllableDetails } from "./controllable-details"
@@ -26,6 +27,19 @@ export type SidebarItem = {
   current?: React.AriaAttributes["aria-current"]
   tooltip?: React.ReactNode
   onSelect?: () => void
+  keywords?: string[]
+  action?: React.ReactNode
+  actionLabel?: string
+  onAction?: () => void
+}
+
+export type SidebarSearch = {
+  value?: string
+  defaultValue?: string
+  placeholder?: string
+  label?: string
+  onValueChange?: (value: string) => void
+  empty?: React.ReactNode
 }
 
 export type SidebarFooterAccount = {
@@ -42,6 +56,11 @@ export type SidebarProps = React.ComponentProps<"aside"> & {
   footer?: React.ReactNode
   items?: SidebarItem[]
   collapsed?: boolean
+  defaultCollapsed?: boolean
+  onCollapsedChange?: (collapsed: boolean) => void
+  variant?: "sidebar" | "floating" | "inset"
+  side?: "left" | "right"
+  collapsible?: "icon" | "offcanvas" | "none"
   width?: React.CSSProperties["width"]
   collapsedWidth?: React.CSSProperties["width"]
   mobileWidth?: React.CSSProperties["width"]
@@ -55,6 +74,10 @@ export type SidebarProps = React.ComponentProps<"aside"> & {
   itemSize?: "sm" | "md" | "lg"
   activeIndicator?: "none" | "bar" | "pill"
   navigationLabel?: string
+  search?: SidebarSearch | React.ReactNode
+  hideScrollbar?: boolean
+  keyboardShortcut?: string | false
+  persistKey?: string
   responsive?: boolean
   mobileBreakpoint?: number
   mobileOpen?: boolean
@@ -155,6 +178,7 @@ function SidebarLeafItem({
 }) {
   const currentValue: React.AriaAttributes["aria-current"] = item.current ?? (item.active ? "page" : undefined)
   const commonProps = {
+    "aria-label": collapsed && typeof item.label === "string" ? item.label : undefined,
     "aria-current": currentValue,
     "aria-disabled": item.disabled || undefined,
     "data-slot": "sidebar-item" as const,
@@ -164,7 +188,7 @@ function SidebarLeafItem({
     "data-size": itemSize,
     "data-active-indicator": activeIndicator,
     className: cn(
-      "flex items-center gap-2 border border-transparent font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
+      "flex min-w-0 flex-1 items-center gap-2 border border-transparent text-left font-medium outline-none transition-[background-color,border-color,color,box-shadow] data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50",
       getSidebarInteractiveClassName({ active: item.active, disabled: item.disabled }),
       getSidebarItemLayoutClassName({ collapsed, depth, itemSize, activeIndicator })
     ),
@@ -187,9 +211,31 @@ function SidebarLeafItem({
       node
     )
 
+  const wrapItemAction = (node: React.ReactNode) => {
+    if (collapsed || !item.action) return node
+    return (
+      <div data-slot="sidebar-item-row" className="group/sidebar-item-row flex min-w-0 items-center gap-1">
+        {node}
+        <button
+          type="button"
+          data-slot="sidebar-item-action"
+          aria-label={item.actionLabel ?? `Actions for ${String(item.label)}`}
+          className="grid size-8 shrink-0 place-items-center rounded-md p-0 leading-none text-muted-foreground opacity-0 outline-none transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-sidebar-ring group-hover/sidebar-item-row:opacity-100"
+          onClick={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+            item.onAction?.()
+          }}
+        >
+          {item.action}
+        </button>
+      </div>
+    )
+  }
+
   if (item.href?.startsWith("/")) {
     if (renderLink) {
-      return wrapCollapsedContent(
+      return wrapCollapsedContent(wrapItemAction(
         <>
           {renderLink({
             item,
@@ -205,10 +251,10 @@ function SidebarLeafItem({
             children: content,
           })}
         </>
-      )
+      ))
     }
 
-    return wrapCollapsedContent(
+    return wrapCollapsedContent(wrapItemAction(
       <a
         href={item.href}
         {...commonProps}
@@ -222,11 +268,11 @@ function SidebarLeafItem({
       >
         {content}
       </a>
-    )
+    ))
   }
 
   if (item.href) {
-    return wrapCollapsedContent(
+    return wrapCollapsedContent(wrapItemAction(
       <button
         type="button"
         {...commonProps}
@@ -245,10 +291,10 @@ function SidebarLeafItem({
       >
         {content}
       </button>
-    )
+    ))
   }
 
-  return wrapCollapsedContent(
+  return wrapCollapsedContent(wrapItemAction(
     <button
       type="button"
       disabled={item.disabled}
@@ -260,7 +306,7 @@ function SidebarLeafItem({
     >
       {content}
     </button>
-  )
+  ))
 }
 
 function SidebarTree({
@@ -333,12 +379,13 @@ function SidebarTree({
           onOpenChange={item.onExpandedChange}
         >
           <summary
+            aria-label={collapsed && typeof item.label === "string" ? item.label : undefined}
             data-slot="sidebar-group-trigger"
             data-size={itemSize}
             data-active={active || undefined}
             data-active-indicator={activeIndicator}
             className={cn(
-              "flex list-none items-center gap-2 border border-transparent font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
+              "flex list-none items-center gap-2 border border-transparent text-left font-medium outline-none transition-[background-color,border-color,color,box-shadow]",
               getSidebarInteractiveClassName({ active }),
               getSidebarItemLayoutClassName({ collapsed, depth, itemSize, activeIndicator })
             )}
@@ -376,6 +423,22 @@ function SidebarTree({
         </ControllableDetails>
       </div>
     )
+  })
+}
+
+function filterSidebarItems(items: SidebarItem[], query: string): SidebarItem[] {
+  const normalized = query.trim().toLocaleLowerCase()
+  if (!normalized) return items
+
+  return items.flatMap((item) => {
+    const children = item.items ? filterSidebarItems(item.items, normalized) : []
+    const label = typeof item.label === "string" ? item.label : ""
+    const haystack = [label, item.sectionLabel, ...(item.keywords ?? [])]
+      .filter((value): value is string => typeof value === "string")
+      .join(" ")
+      .toLocaleLowerCase()
+    if (!haystack.includes(normalized) && children.length === 0) return []
+    return [{ ...item, items: children.length ? children : item.items, defaultExpanded: children.length ? true : item.defaultExpanded }]
   })
 }
 
@@ -501,6 +564,11 @@ function SidebarSurface({
   itemSize = "md",
   activeIndicator = "bar",
   navigationLabel = "Primary navigation",
+  search,
+  hideScrollbar = true,
+  variant = "sidebar",
+  side = "left",
+  collapsible = "icon",
   onItemSelect,
   renderItem,
   renderLink,
@@ -516,7 +584,10 @@ function SidebarSurface({
   mobile?: boolean
   onRequestClose?: () => void
 }) {
-  const visibleItems = items.filter((item) => !item.hidden)
+  const searchConfig = search && !React.isValidElement(search) && typeof search === "object" ? search as SidebarSearch : undefined
+  const [internalSearch, setInternalSearch] = React.useState(searchConfig?.defaultValue ?? "")
+  const searchValue = searchConfig?.value ?? internalSearch
+  const visibleItems = filterSidebarItems(items.filter((item) => !item.hidden), searchValue)
   const visibleRailItems = railItems.filter((item) => !item.hidden)
   const visibleSecondaryActions = secondaryActions.filter((item) => !item.hidden)
 
@@ -532,10 +603,21 @@ function SidebarSurface({
       data-slot="sidebar"
       data-collapsed={collapsed || undefined}
       data-mobile={mobile || undefined}
-      className={cn("group/sidebar flex h-full min-h-0 flex-col overflow-hidden", className)}
+      data-variant={variant}
+      data-side={side}
+      data-collapsible={collapsible}
+      className={cn(
+        "peer group/sidebar flex h-full min-h-0 flex-col overflow-hidden bg-sidebar text-sidebar-foreground transition-[width,min-width,transform,border-radius,box-shadow] duration-200",
+        side === "right" && "border-l border-r-0",
+        !mobile && variant === "floating" && "m-2 h-[calc(100%-1rem)] rounded-xl border shadow-lg",
+        !mobile && variant === "inset" && "m-2 h-[calc(100%-1rem)] rounded-lg border bg-sidebar/92 shadow-sm",
+        mobile && "m-0 h-full rounded-none border-y-0",
+        collapsible === "offcanvas" && collapsed && (side === "left" ? "-translate-x-full" : "translate-x-full"),
+        className
+      )}
       style={{
-        width: collapsed ? collapsedWidth : width,
-        minWidth: collapsed ? collapsedWidth : width,
+        width: collapsed ? (collapsible === "icon" ? collapsedWidth : collapsible === "offcanvas" ? 0 : width) : width,
+        minWidth: collapsed ? (collapsible === "icon" ? collapsedWidth : collapsible === "offcanvas" ? 0 : width) : width,
         ...style,
       }}
       {...props}
@@ -571,10 +653,32 @@ function SidebarSurface({
         </div>
       )}
 
+      {search && !collapsed ? (
+        <div data-slot="sidebar-search" className="shrink-0 px-2 pt-2">
+          {React.isValidElement(search) ? search : (
+            <Input
+              kind="search"
+              value={searchValue}
+              onValueChange={(nextValue) => {
+                if (searchConfig?.value === undefined) setInternalSearch(nextValue)
+                searchConfig?.onValueChange?.(nextValue)
+              }}
+              placeholder={searchConfig?.placeholder ?? "Search navigation..."}
+              searchIcon={<SearchIcon />}
+              aria-label={searchConfig?.label ?? "Search navigation"}
+              className="h-9 bg-sidebar-accent/45"
+            />
+          )}
+        </div>
+      ) : null}
+
       <nav
         data-slot="sidebar-nav"
         aria-label={navigationLabel}
-        className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain p-2"
+        className={cn(
+          "flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto overscroll-contain p-2 [scrollbar-gutter:stable]",
+          hideScrollbar && "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        )}
       >
         {children ??
           visibleItems.map((item) => {
@@ -603,6 +707,11 @@ function SidebarSurface({
             renderLink={renderLink}
           />
         )}
+        {!children && visibleItems.length === 0 ? (
+          <div data-slot="sidebar-search-empty" className="grid min-h-24 place-items-center px-4 text-center text-xs text-muted-foreground">
+            {searchConfig?.empty ?? "No navigation items found."}
+          </div>
+        ) : null}
       </nav>
 
       {(footerAccount || footerSecondary || footer || visibleSecondaryActions.length > 0 || (collapsed && (collapsedRail || visibleRailItems.length > 0))) && (
@@ -672,6 +781,11 @@ function Sidebar({
   footer,
   items = [],
   collapsed: collapsedProp,
+  defaultCollapsed = false,
+  onCollapsedChange,
+  variant = "sidebar",
+  side = "left",
+  collapsible = "icon",
   width = DEFAULT_SIDEBAR_WIDTH,
   collapsedWidth = DEFAULT_COLLAPSED_SIDEBAR_WIDTH,
   mobileWidth = DEFAULT_MOBILE_SIDEBAR_WIDTH,
@@ -685,6 +799,10 @@ function Sidebar({
   itemSize = "md",
   activeIndicator = "bar",
   navigationLabel = "Primary navigation",
+  search,
+  hideScrollbar = true,
+  keyboardShortcut = "b",
+  persistKey,
   responsive = true,
   mobileBreakpoint = DEFAULT_SIDEBAR_BREAKPOINT,
   mobileOpen: mobileOpenProp,
@@ -708,11 +826,38 @@ function Sidebar({
   ...props
 }: SidebarProps) {
   const sidebarContext = useSidebar(true)
-  const collapsed = collapsedProp ?? sidebarContext?.collapsed ?? false
+  const [internalCollapsed, setInternalCollapsed] = React.useState(defaultCollapsed)
+  const collapsed = collapsible === "none" ? false : collapsedProp ?? sidebarContext?.collapsed ?? internalCollapsed
   const matchesMobileBreakpoint = useIsMobile(mobileBreakpoint)
   const isMobile = responsive && matchesMobileBreakpoint
   const [uncontrolledMobileOpen, setUncontrolledMobileOpen] = React.useState(defaultMobileOpen)
   const mobileOpen = mobileOpenProp ?? sidebarContext?.mobileOpen ?? uncontrolledMobileOpen
+
+  const setCollapsed = React.useCallback((nextCollapsed: boolean) => {
+    if (collapsible === "none") return
+    if (collapsedProp === undefined && sidebarContext) sidebarContext.setCollapsed(nextCollapsed)
+    else if (collapsedProp === undefined) setInternalCollapsed(nextCollapsed)
+    onCollapsedChange?.(nextCollapsed)
+    if (persistKey) window.localStorage.setItem(persistKey, String(nextCollapsed))
+  }, [collapsedProp, collapsible, onCollapsedChange, persistKey, sidebarContext])
+
+  React.useEffect(() => {
+    if (!persistKey || collapsedProp !== undefined) return
+    const stored = window.localStorage.getItem(persistKey)
+    if (stored === "true" || stored === "false") setCollapsed(stored === "true")
+  }, [collapsedProp, persistKey, setCollapsed])
+
+  React.useEffect(() => {
+    if (!keyboardShortcut || collapsible === "none") return
+    const handleShortcut = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLocaleLowerCase() === keyboardShortcut.toLocaleLowerCase()) {
+        event.preventDefault()
+        setCollapsed(!collapsed)
+      }
+    }
+    window.addEventListener("keydown", handleShortcut)
+    return () => window.removeEventListener("keydown", handleShortcut)
+  }, [collapsed, collapsible, keyboardShortcut, setCollapsed])
 
   const setMobileOpen = React.useCallback((nextOpen: boolean) => {
     if (mobileOpenProp == null && sidebarContext) {
@@ -766,6 +911,11 @@ function Sidebar({
     itemSize,
     activeIndicator,
     navigationLabel,
+    search,
+    hideScrollbar,
+    variant,
+    side,
+    collapsible,
     mobileCloseLabel,
     closeOnSelect,
     onItemSelect,
@@ -834,15 +984,16 @@ function Sidebar({
           aria-modal="true"
           aria-label={typeof mobileTitle === "string" ? mobileTitle : "Navigation"}
           className={cn(
-            "fixed inset-y-0 left-0 z-50 max-w-[22rem] border-r border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg,var(--background))] shadow-2xl transition-transform duration-200 ease-out",
-            mobileOpen ? "translate-x-0" : "-translate-x-full",
+            "fixed inset-y-0 z-50 max-w-[22rem] border-[color:var(--aui-divider,var(--border))] bg-[color:var(--aui-page-bg,var(--background))] shadow-2xl transition-transform duration-200 ease-out",
+            side === "left" ? "left-0 border-r" : "right-0 border-l",
+            mobileOpen ? "translate-x-0" : side === "left" ? "-translate-x-full" : "translate-x-full",
             mobilePanelClassName,
             className
           )}
           style={{
             width: mobileWidth,
             minWidth: mobileWidth,
-            translate: mobileOpen ? "0 0" : "-100% 0",
+            translate: mobileOpen ? "0 0" : side === "left" ? "-100% 0" : "100% 0",
           }}
         />
       </div>
@@ -850,4 +1001,14 @@ function Sidebar({
   )
 }
 
-export { Sidebar }
+function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
+  return (
+    <main
+      data-slot="sidebar-inset"
+      className={cn("relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-background md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:border md:peer-data-[variant=inset]:shadow-sm", className)}
+      {...props}
+    />
+  )
+}
+
+export { Sidebar, SidebarInset }

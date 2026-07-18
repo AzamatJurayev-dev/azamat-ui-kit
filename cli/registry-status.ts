@@ -20,7 +20,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "radio-group": "stable",
   accordion: "stable",
   "simple-select": "internal",
-  combobox: "internal",
+  combobox: "preview",
   "scroll-box": "stable",
   "right-click-menu": "stable",
   kbd: "stable",

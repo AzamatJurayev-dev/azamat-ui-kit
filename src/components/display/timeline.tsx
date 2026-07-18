@@ -85,7 +85,7 @@ function TimelineDot({ item }: { item: TimelineItem }) {
     <span
       data-slot="timeline-dot"
       data-tone={tone}
-      className={cn("flex size-7 shrink-0 items-center justify-center rounded-full border text-[10px]", dotClassName[tone])}
+      className={cn("relative z-10 grid size-7 shrink-0 place-items-center rounded-full border-2 border-background text-[10px] shadow-[0_0_0_1px_var(--border)]", dotClassName[tone])}
     >
       {item.icon ?? <CircleIcon className="size-2 fill-current" />}
     </span>
@@ -94,12 +94,12 @@ function TimelineDot({ item }: { item: TimelineItem }) {
 
 function TimelineVerticalItem({ item, compact, className, isLast }: { item: TimelineItem; compact: boolean; className?: string; isLast?: boolean }) {
   return (
-    <div data-slot="timeline-item" className={cn("grid grid-cols-[auto_1fr] gap-3", className, item.className)}>
-      <div className="flex flex-col items-center">
+    <div data-slot="timeline-item" className={cn("relative grid grid-cols-[1.75rem_minmax(0,1fr)] gap-3", className, item.className)}>
+      <div className="relative flex justify-center">
         <TimelineDot item={item} />
-        {!isLast && <div data-slot="timeline-line" className="w-px flex-1 bg-border" />}
+        {!isLast && <div data-slot="timeline-line" className="absolute left-1/2 top-7 h-[calc(100%_-_1.75rem)] w-px -translate-x-1/2 bg-border" />}
       </div>
-      <div className={cn("min-w-0 pb-5", compact && "pb-3")}> 
+      <div className={cn("min-w-0 pb-5 pt-0.5", compact && "pb-3")}>
         <div className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             {item.title && <div className="text-sm font-medium text-foreground">{item.title}</div>}

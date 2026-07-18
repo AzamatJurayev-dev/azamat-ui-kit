@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## 4.2.1 - 2026-07-18
+
+### Changed
+
+- Hardened `PopoverContent` with default surface background, border, text color and shadow so combobox and dropdown panels do not blend into content behind them.
+- Republished the expanded 4.2 component surface with the popover layering fix included in CLI source-copy assets.
+
+## 4.2.0 - 2026-07-18
+
+### Added
+
+- Added source-copy `Combobox` with grouped options, search, clear controls, controlled/uncontrolled state, custom renderers and custom filtering.
+- Promoted common primitives to the documented public surface: `textarea`, `combobox`, `async-select`, `switch`, `radio-group`, `dropdown-menu`, `popover`, `tooltip`, `pagination`, `toast`, `notification-center` and `breadcrumbs`.
+- Added chat demo snippets and registry/showcase coverage for newly promoted components.
+
+### Changed
+
+- Moved composed page-pattern surfaces such as `resource-page`, `settings-page`, `data-view`, `detail-layout`, `page-toolbar`, `bulk-action-bar` and `form-builder` out of the primary install surface so the component set focuses on reusable primitives.
+
+## 4.1.0 - 2026-07-17
+
+### Added
+
+- Added reusable chat workspace primitives for conversation lists, messages, replies, attachments, reactions, typing states, delivery status, and message composition.
+- Added named theme support with `data-theme`, color-scheme mapping, system mode, theme cycling, and built-in light, dark, and dim presets.
+- Added Kanban WIP limits, controlled selection, rich task metadata, add-card/add-column actions, density, column sizing, and move policies.
+
+### Changed
+
+- Expanded Sidebar with inset/floating/offcanvas variants, search, persistence, keyboard collapse, item actions, accessible collapsed labels, and corrected mobile drawer geometry.
+- Expanded RichTextEditor with grouped responsive controls, headings, block tools, link actions, format clearing, sticky/compact toolbar modes, and word/character counts.
+- Improved Badge dot, pulse, avatar, icon, remove, focus, and interactive states; centered tag and clear icons and removed duplicate native search cancel controls.
+- Corrected ActivityFeed and Timeline connector alignment and strengthened viewport-only sidebar/main scrolling behavior.
+
 ## 4.0.1 - 2026-07-17
 
 ### Changed

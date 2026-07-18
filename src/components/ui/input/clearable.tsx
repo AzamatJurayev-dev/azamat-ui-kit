@@ -98,12 +98,12 @@ const ClearableInput = React.forwardRef<HTMLInputElement, ClearableInputProps>(
                 type="button"
                 data-slot="clearable-input-clear"
                 aria-label={clearLabel}
-                className="inline-flex size-7 items-center justify-center rounded-[var(--radius-sm)] border border-transparent bg-transparent text-muted-foreground/74 transition hover:border-border/60 hover:bg-muted/58 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
+                className="grid size-7 shrink-0 place-items-center rounded-[var(--radius-sm)] border border-transparent bg-transparent p-0 leading-none text-muted-foreground/74 transition hover:border-border/60 hover:bg-muted/58 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
                 onClick={handleClearClick}
                 onMouseDown={handleClearMouseDown}
                 onDoubleClick={handleClearMouseDown}
               >
-                <XIcon className="size-4" />
+                <XIcon className="size-3.5" strokeWidth={2} />
               </button>
             )}
           </>

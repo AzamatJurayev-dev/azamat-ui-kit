@@ -4,6 +4,7 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("button", "Button", "actions", "Primary action surface for clicks, submit, and quick triggers in dashboard workflows."),
   component("input", "Input", "inputs", "Single-line text input for quick edits, queries, and form fields."),
   component("select", "Select", "inputs", "Select component with menu-driven single choice workflows."),
+  component("combobox", "Combobox", "inputs", "Searchable local choice input for static datasets, labels, owners, and compact filters."),
   component("card", "Card", "display", "Container surface for dense dashboard sections, summaries, and interactive panels."),
   component("badge", "Badge", "display", "Compact status and category label with tone, variant, and inline usage states."),
   component("checkbox", "Checkbox", "inputs", "Boolean selection control for forms, tables, and filter groups."),
@@ -32,6 +33,10 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
 
   component("progress", "Progress", "display", "Linear progress with label, value formatter, tone and indeterminate state."),
   component("timeline", "Timeline", "display", "Vertical or horizontal event stream for workflow history."),
+  component("activity-feed", "ActivityFeed", "display", "Operational activity stream with aligned connectors, metadata, and actions."),
+  component("kanban", "KanbanBoard", "display", "DnD project board with WIP limits, selection, rich cards, and controlled move policies."),
+  component("chat", "Chat", "display", "Conversation list, messages, attachments, status, typing, and composer primitives for support workspaces."),
+  component("rich-text-editor", "RichTextEditor", "display", "Configurable rich editor with grouped toolbar, links, blocks, and document counts."),
   component("status-dot", "StatusDot", "display", "Tiny live status indicator with optional pulse animation."),
   component("notification-center", "NotificationCenter", "display", "Compact activity and notifications stream."),
   component("status-legend", "StatusLegend", "display", "Explain status meaning and counts in a compact legend."),
@@ -42,6 +47,7 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
 
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
+  component("toast", "ToastProvider", "feedback", "Provider and hook for transient success, warning, loading, and promise-driven messages."),
   component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
   component("empty-state", "EmptyState", "patterns", "Focused empty and error state with clear next actions."),
 
@@ -56,5 +62,6 @@ export const registryQualityDemoRegistry = createShowcaseDemoRegistry([
   component("resource-page", "ResourcePage", "patterns", "Full resource index page shell for admin dashboards."),
   component("resource-detail-page", "ResourceDetailPage", "patterns", "Detail page shell with title, metadata and sections."),
   component("page-toolbar", "PageToolbar", "patterns", "Reusable page toolbar for search, filters, view controls and actions."),
+  component("breadcrumbs", "Breadcrumbs", "layout", "Route context trail with overflow collapse and custom link rendering."),
   component("data-view", "DataView", "patterns", "Data view shell that combines toolbar, table, loading, error and empty states."),
 ])

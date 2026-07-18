@@ -351,6 +351,7 @@ export const componentGroupMeta: Record<ComponentGroup, ComponentGroupMeta> = {
 const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd"])
 const formControlComponentSlugs = new Set([
   "select",
+  "combobox",
   "async-select",
   "async-multi-select",
   "radio-group",
@@ -485,6 +486,27 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["disabled", "boolean", "false", "Disables the trigger."],
     ],
     features: ["Primary choice input", "Local filtering", "Compact trigger", "Preset-friendly API"],
+  },
+  {
+    slug: "combobox",
+    title: "Combobox",
+    description: "Searchable local choice input for static datasets, owners, tags, and filter controls.",
+    icon: ComponentIcon,
+    category: "Forms",
+    status: "Preview",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ["value", "string", "-", "Controlled selected value."],
+      ["defaultValue", "string", "-", "Initial selected value."],
+      ["onValueChange", "(value, option?) => void", "-", "Selection callback with the resolved option."],
+      ["options", "ComboboxOption[]", "-", "Flat local option list."],
+      ["groups", "ComboboxGroup[]", "-", "Grouped local options with section labels."],
+      ["searchable", "boolean", "true", "Shows the built-in local search input."],
+      ["clearable", "boolean", "true", "Allows clearing the selected value."],
+      ["filterOption", "(option, search) => boolean", "-", "Custom local filtering contract."],
+      ["renderOption", "(option, state) => ReactNode", "-", "Custom option row renderer."],
+    ],
+    features: ["Local search", "Grouped options", "Clearable value", "Custom renderers"],
   },
   {
     slug: "async-select",

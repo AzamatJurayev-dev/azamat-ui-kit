@@ -24,6 +24,7 @@ import {
   Calendar,
   ChartFrame,
   ChartLegend,
+  Combobox,
   CommandPalette,
   DescriptionList,
   DetailLayout,
@@ -135,6 +136,25 @@ function InputPreview({
 
   if (slug === "tag-input") {
     return <TagInput defaultValue={["dashboard", "beta", "ops"]} placeholder="Add label" />
+  }
+
+  if (slug === "combobox") {
+    return (
+      <Combobox
+        defaultValue="ops"
+        labels={{ placeholder: "Choose workspace", searchPlaceholder: "Search teams..." }}
+        groups={[
+          {
+            label: "Teams",
+            options: [
+              { value: "ops", label: "Operations", description: "Tickets, billing, and support" },
+              { value: "sales", label: "Sales", description: "Pipeline and account handoff" },
+              { value: "product", label: "Product", description: "Roadmap and launch planning" },
+            ],
+          },
+        ]}
+      />
+    )
   }
 
   return <Input value={value} onChange={(event) => setState({ textValue: event.currentTarget.value })} placeholder="Unified input" />

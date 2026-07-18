@@ -11,8 +11,11 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/react"
 import { isSortable, useSortable } from "@dnd-kit/react/sortable"
-import { GripVerticalIcon } from "lucide-react"
+import { CalendarDaysIcon, CheckIcon, GripVerticalIcon, PlusIcon } from "lucide-react"
 
+import { Avatar } from "@/components/display/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
@@ -43,6 +46,11 @@ export type KanbanCard = {
   meta?: React.ReactNode
   extra?: React.ReactNode
   actions?: React.ReactNode
+  labels?: Array<React.ReactNode | { key: string; label: React.ReactNode; tone?: "neutral" | "info" | "success" | "warning" | "danger" | "muted" }>
+  priority?: "low" | "medium" | "high" | "urgent"
+  assignee?: { name: string; src?: string; fallback?: React.ReactNode }
+  dueDate?: React.ReactNode
+  selected?: boolean
   disabled?: boolean
 }
 
@@ -52,6 +60,10 @@ export type KanbanColumn = {
   description?: React.ReactNode
   cards: KanbanCard[]
   count?: React.ReactNode
+  limit?: number
+  color?: string
+  actions?: React.ReactNode
+  footer?: React.ReactNode
   disabled?: boolean
 }
 
@@ -59,6 +71,8 @@ export type KanbanCardRenderContext = {
   index: number
   isDragging: boolean
   isDropTarget: boolean
+  selected: boolean
+  selectControl: React.ReactNode
   handle: React.ReactNode
 }
 
@@ -75,12 +89,25 @@ export type KanbanBoardProps = Omit<React.ComponentProps<"div">, "defaultValue">
   defaultColumns?: KanbanColumn[]
   onColumnsChange?: (columns: KanbanColumn[], change: KanbanCardMove) => void
   onCardMove?: (change: KanbanCardMove) => void
+  canMoveCard?: (change: KanbanCardMove) => boolean
   renderCard?: (
     card: KanbanCard,
     column: KanbanColumn,
     context: KanbanCardRenderContext
   ) => React.ReactNode
   onCardClick?: (card: KanbanCard, column: KanbanColumn) => void
+  onAddCard?: (column: KanbanColumn) => void
+  onAddColumn?: () => void
+  renderColumnHeader?: (column: KanbanColumn) => React.ReactNode
+  renderColumnFooter?: (column: KanbanColumn) => React.ReactNode
+  selectionMode?: "none" | "single" | "multiple"
+  selectedCardKeys?: string[]
+  defaultSelectedCardKeys?: string[]
+  onSelectionChange?: (keys: string[], cards: KanbanCard[]) => void
+  allowCrossColumn?: boolean
+  allowReorder?: boolean
+  density?: "compact" | "comfortable"
+  columnWidth?: number | string
   disabled?: boolean
   emptyColumn?: React.ReactNode
   dragHandleLabel?: (card: KanbanCard, column: KanbanColumn) => string
@@ -96,6 +123,9 @@ type KanbanCardViewProps = {
   boardDisabled: boolean
   renderCard?: KanbanBoardProps["renderCard"]
   onCardClick?: KanbanBoardProps["onCardClick"]
+  selected: boolean
+  selectionMode: NonNullable<KanbanBoardProps["selectionMode"]>
+  onSelect: (card: KanbanCard) => void
   dragHandleLabel?: KanbanBoardProps["dragHandleLabel"]
   cardClassName?: string
   onNativeDragStart?: (source: NativeDragSource) => void
@@ -192,6 +222,37 @@ function moveKanbanCardToTarget(
   }
 }
 
+function getKanbanChange(before: KanbanColumn[], after: KanbanColumn[], cardKey: string): KanbanCardMove | null {
+  const fromColumn = before.find((column) => column.cards.some((card) => card.key === cardKey))
+  const toColumn = after.find((column) => column.cards.some((card) => card.key === cardKey))
+  const card = fromColumn?.cards.find((item) => item.key === cardKey)
+  if (!fromColumn || !toColumn || !card) return null
+  return {
+    card,
+    fromColumn,
+    toColumn,
+    fromIndex: fromColumn.cards.findIndex((item) => item.key === cardKey),
+    toIndex: toColumn.cards.findIndex((item) => item.key === cardKey),
+  }
+}
+
+function isKanbanMoveAllowed(
+  before: KanbanColumn[],
+  after: KanbanColumn[],
+  cardKey: string,
+  allowCrossColumn: boolean,
+  allowReorder: boolean,
+  canMoveCard?: KanbanBoardProps["canMoveCard"]
+) {
+  const change = getKanbanChange(before, after, cardKey)
+  if (!change) return false
+  const crossColumn = change.fromColumn.key !== change.toColumn.key
+  if (crossColumn && !allowCrossColumn) return false
+  if (!crossColumn && !allowReorder) return false
+  if (crossColumn && change.toColumn.limit !== undefined && change.toColumn.cards.length > change.toColumn.limit) return false
+  return canMoveCard?.(change) ?? true
+}
+
 const KanbanDragHandle = React.forwardRef<HTMLButtonElement, {
   label: string
   disabled: boolean
@@ -210,22 +271,35 @@ const KanbanDragHandle = React.forwardRef<HTMLButtonElement, {
   )
 })
 
-function DefaultKanbanCard({ card, handle }: { card: KanbanCard; handle: React.ReactNode }) {
+function DefaultKanbanCard({ card, handle, selectControl }: { card: KanbanCard; handle: React.ReactNode; selectControl?: React.ReactNode }) {
+  const priorityTone = card.priority === "urgent" ? "danger" : card.priority === "high" ? "warning" : card.priority === "medium" ? "info" : "muted"
   return (
-    <Card className="transition-colors hover:bg-muted/40">
-      <CardHeader className="p-3 pb-1">
+    <Card className="border-border/80 shadow-sm transition-[border-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-foreground/20 hover:shadow-md">
+      <CardHeader className="p-3.5 pb-2">
         <div className="flex items-start justify-between gap-2">
-          <CardTitle className="text-sm">{card.title}</CardTitle>
+          <div className="flex min-w-0 items-start gap-2">
+            {selectControl}
+            <CardTitle className="min-w-0 text-sm leading-5">{card.title}</CardTitle>
+          </div>
           <div className="flex items-center gap-1">
             {card.extra}
             {handle}
           </div>
         </div>
       </CardHeader>
-      {(card.description || card.meta) ? (
-        <CardContent className="grid gap-2 p-3 pt-0 text-xs text-muted-foreground">
-          {card.description}
+      {(card.description || card.meta || card.labels?.length || card.priority || card.assignee || card.dueDate || card.actions) ? (
+        <CardContent className="grid gap-3 p-3.5 pt-0 text-xs text-muted-foreground">
+          {card.description ? <div className="line-clamp-3 leading-5">{card.description}</div> : null}
+          {card.labels?.length || card.priority ? <div className="flex flex-wrap gap-1.5">
+            {card.priority ? <Badge size="sm" tone={priorityTone} variant="soft" label={card.priority} showDot /> : null}
+            {card.labels?.map((label, index) => React.isValidElement(label) ? React.cloneElement(label, { key: label.key ?? index }) : typeof label === "object" && label !== null && "key" in label ? <Badge key={label.key} size="sm" variant="outline" tone={label.tone} label={label.label} /> : <Badge key={index} size="sm" variant="outline" label={label} />)}
+          </div> : null}
           {card.meta ? <div>{card.meta}</div> : null}
+          {(card.assignee || card.dueDate) ? <div className="flex items-center justify-between gap-3 border-t pt-2.5">
+            {card.assignee ? <div className="flex min-w-0 items-center gap-2"><Avatar size="xs" name={card.assignee.name} src={card.assignee.src} fallback={card.assignee.fallback} /><span className="truncate">{card.assignee.name}</span></div> : <span />}
+            {card.dueDate ? <span className="inline-flex shrink-0 items-center gap-1"><CalendarDaysIcon className="size-3.5" />{card.dueDate}</span> : null}
+          </div> : null}
+          {card.actions ? <div className="flex flex-wrap items-center gap-2">{card.actions}</div> : null}
         </CardContent>
       ) : null}
     </Card>
@@ -239,6 +313,9 @@ function KanbanCardView({
   boardDisabled,
   renderCard,
   onCardClick,
+  selected,
+  selectionMode,
+  onSelect,
   dragHandleLabel,
   cardClassName,
   onNativeDragStart,
@@ -264,10 +341,23 @@ function KanbanCardView({
       disabled={disabled}
     />
   )
+  const selectControl = selectionMode !== "none" ? (
+    <button
+      type="button"
+      aria-label={`${selected ? "Deselect" : "Select"} ${String(card.title)}`}
+      aria-pressed={selected}
+      className={cn("mt-0.5 grid size-4 shrink-0 place-items-center rounded border bg-background text-primary outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring", selected && "border-primary bg-primary text-primary-foreground")}
+      onClick={(event) => { event.stopPropagation(); onSelect(card) }}
+    >
+      {selected ? <CheckIcon className="size-3" strokeWidth={3} /> : null}
+    </button>
+  ) : null
   const context: KanbanCardRenderContext = {
     index,
     isDragging,
     isDropTarget,
+    selected,
+    selectControl,
     handle,
   }
 
@@ -278,8 +368,7 @@ function KanbanCardView({
       data-dragging={isDragging || undefined}
       data-drop-target={isDropTarget || undefined}
       data-disabled={disabled || undefined}
-      role={onCardClick && !disabled ? "button" : undefined}
-      tabIndex={onCardClick && !disabled ? 0 : undefined}
+      role="group"
       aria-label={typeof card.title === "string" ? card.title : undefined}
       draggable={!disabled}
       className={cn(
@@ -287,6 +376,7 @@ function KanbanCardView({
         onCardClick && !disabled && "cursor-pointer focus-visible:ring-2 focus-visible:ring-ring",
         isDropTarget && "ring-2 ring-primary/30",
         isDragging && "opacity-30",
+        selected && "ring-2 ring-primary/35",
         disabled && "opacity-55",
         cardClassName
       )}
@@ -310,15 +400,8 @@ function KanbanCardView({
         event.stopPropagation()
         onNativeDrop?.({ columnKey: column.key, index })
       }}
-      onKeyDown={(event) => {
-        if (event.target !== event.currentTarget || disabled || !onCardClick) return
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault()
-          onCardClick(card, column)
-        }
-      }}
     >
-      {renderCard?.(card, column, context) ?? <DefaultKanbanCard card={card} handle={handle} />}
+      {renderCard?.(card, column, context) ?? <DefaultKanbanCard card={card} handle={handle} selectControl={selectControl} />}
     </article>
   )
 }
@@ -328,6 +411,12 @@ function KanbanColumnView({
   boardDisabled,
   renderCard,
   onCardClick,
+  selectedKeys,
+  selectionMode,
+  onSelect,
+  onAddCard,
+  renderColumnHeader,
+  renderColumnFooter,
   dragHandleLabel,
   emptyColumn,
   columnClassName,
@@ -335,11 +424,18 @@ function KanbanColumnView({
   onNativeDragStart,
   onNativeDragEnd,
   onNativeDrop,
+  density,
 }: {
   column: KanbanColumn
   boardDisabled: boolean
   renderCard?: KanbanBoardProps["renderCard"]
   onCardClick?: KanbanBoardProps["onCardClick"]
+  selectedKeys: Set<string>
+  selectionMode: NonNullable<KanbanBoardProps["selectionMode"]>
+  onSelect: (card: KanbanCard) => void
+  onAddCard?: KanbanBoardProps["onAddCard"]
+  renderColumnHeader?: KanbanBoardProps["renderColumnHeader"]
+  renderColumnFooter?: KanbanBoardProps["renderColumnFooter"]
   dragHandleLabel?: KanbanBoardProps["dragHandleLabel"]
   emptyColumn: React.ReactNode
   columnClassName?: string
@@ -347,6 +443,7 @@ function KanbanColumnView({
   onNativeDragStart?: (source: NativeDragSource) => void
   onNativeDragEnd?: () => void
   onNativeDrop?: (target: NativeDropTarget) => void
+  density: NonNullable<KanbanBoardProps["density"]>
 }) {
   const { ref, isDropTarget } = useDroppable({
     id: getColumnId(column.key),
@@ -363,9 +460,10 @@ function KanbanColumnView({
       data-slot="kanban-column"
       data-drop-target={isDropTarget || undefined}
       data-disabled={column.disabled || undefined}
+      data-density={density}
       aria-label={typeof column.title === "string" ? column.title : undefined}
       className={cn(
-        "grid min-h-40 content-start gap-3 rounded-lg border bg-muted/35 p-3 transition-[border-color,background-color,box-shadow]",
+        "grid min-h-40 content-start gap-3 rounded-lg border bg-muted/25 p-3 transition-[border-color,background-color,box-shadow] data-[density=compact]:gap-2 data-[density=compact]:p-2.5",
         isDropTarget && "border-primary/60 bg-primary/5 ring-2 ring-primary/15",
         column.disabled && "opacity-60",
         columnClassName
@@ -379,15 +477,18 @@ function KanbanColumnView({
         onNativeDrop?.({ columnKey: column.key, index: column.cards.length })
       }}
     >
-      <div className="flex items-start justify-between gap-3">
+      {renderColumnHeader?.(column) ?? <div className="flex items-start justify-between gap-3">
+        {column.color ? <span className="mt-1.5 size-2 shrink-0 rounded-full" style={{ backgroundColor: column.color }} /> : null}
         <div className="grid gap-0.5">
           <h3 className="text-sm font-semibold text-foreground">{column.title}</h3>
           {column.description ? <p className="text-xs text-muted-foreground">{column.description}</p> : null}
         </div>
-        <div className="rounded-full bg-background px-2 py-0.5 text-xs text-muted-foreground">
-          {column.count ?? column.cards.length}
+        <div className="ml-auto flex items-center gap-1">
+          {column.actions}
+          {onAddCard && !column.disabled ? <Button size="icon-xs" variant="ghost" iconOnly aria-label={`Add card to ${String(column.title)}`} onClick={() => onAddCard(column)}><PlusIcon /></Button> : null}
+          <Badge size="sm" variant={column.limit !== undefined && column.cards.length >= column.limit ? "soft" : "outline"} tone={column.limit !== undefined && column.cards.length >= column.limit ? "warning" : "muted"} label={column.count ?? (column.limit === undefined ? column.cards.length : `${column.cards.length}/${column.limit}`)} />
         </div>
-      </div>
+      </div>}
       <div className="grid min-h-16 content-start gap-2">
         {column.cards.length === 0 ? (
           <div className="grid min-h-20 place-items-center rounded-lg border border-dashed p-3 text-center text-xs text-muted-foreground">
@@ -404,6 +505,9 @@ function KanbanColumnView({
               boardDisabled={boardDisabled}
               renderCard={renderCard}
               onCardClick={onCardClick}
+              selected={selectedKeys.has(card.key) || card.selected === true}
+              selectionMode={selectionMode}
+              onSelect={onSelect}
               dragHandleLabel={dragHandleLabel}
               cardClassName={cardClassName}
               onNativeDragStart={onNativeDragStart}
@@ -413,6 +517,7 @@ function KanbanColumnView({
           ))
         )}
       </div>
+      {renderColumnFooter?.(column) ?? column.footer ?? (onAddCard && !column.disabled ? <Button size="sm" variant="ghost" className="w-full justify-start" leftIcon={<PlusIcon />} onClick={() => onAddCard(column)}>Add task</Button> : null)}
     </section>
   )
 }
@@ -422,8 +527,21 @@ function KanbanBoard({
   defaultColumns = [],
   onColumnsChange,
   onCardMove,
+  canMoveCard,
   renderCard,
   onCardClick,
+  onAddCard,
+  onAddColumn,
+  renderColumnHeader,
+  renderColumnFooter,
+  selectionMode = "none",
+  selectedCardKeys,
+  defaultSelectedCardKeys = [],
+  onSelectionChange,
+  allowCrossColumn = true,
+  allowReorder = true,
+  density = "comfortable",
+  columnWidth = 320,
   disabled = false,
   emptyColumn = "Drop cards here.",
   dragHandleLabel,
@@ -439,9 +557,22 @@ function KanbanBoard({
   const [activeCardId, setActiveCardId] = React.useState<string | null>(null)
   const draftColumnsRef = React.useRef<KanbanColumn[] | null>(null)
   const nativeDragRef = React.useRef<NativeDragSource | null>(null)
+  const [internalSelectedKeys, setInternalSelectedKeys] = React.useState(defaultSelectedCardKeys)
   const columns = columnsProp ?? internalColumns
   const renderedColumns = draftColumns ?? columns
   const isControlled = columnsProp !== undefined
+  const resolvedSelectedKeys = selectedCardKeys ?? internalSelectedKeys
+  const selectedKeySet = React.useMemo(() => new Set(resolvedSelectedKeys), [resolvedSelectedKeys])
+
+  function updateSelection(card: KanbanCard) {
+    if (selectionMode === "none" || card.disabled) return
+    const next = selectionMode === "single"
+      ? (selectedKeySet.has(card.key) ? [] : [card.key])
+      : (selectedKeySet.has(card.key) ? resolvedSelectedKeys.filter((key) => key !== card.key) : [...resolvedSelectedKeys, card.key])
+    if (selectedCardKeys === undefined) setInternalSelectedKeys(next)
+    const allCards = columns.flatMap((column) => column.cards)
+    onSelectionChange?.(next, allCards.filter((item) => next.includes(item.key)))
+  }
 
   function handleDragStart(event: DragStartEvent) {
     const source = event.operation.source
@@ -459,6 +590,8 @@ function KanbanBoard({
 
     const currentColumns = draftColumnsRef.current ?? columns
     const nextColumns = moveKanbanCards(currentColumns, event)
+    const cardKey = getCardKey(String(source.id))
+    if (!isKanbanMoveAllowed(columns, nextColumns, cardKey, allowCrossColumn, allowReorder, canMoveCard)) return
     draftColumnsRef.current = nextColumns
     setDraftColumns(nextColumns)
   }
@@ -493,6 +626,7 @@ function KanbanBoard({
       fromIndex: source.initialIndex,
       toIndex: source.index,
     }
+    if (!isKanbanMoveAllowed(columns, finalColumns, card.key, allowCrossColumn, allowReorder, canMoveCard)) return
     if (!isControlled) setInternalColumns(finalColumns)
     onColumnsChange?.(finalColumns, change)
     onCardMove?.(change)
@@ -505,6 +639,7 @@ function KanbanBoard({
 
     const result = moveKanbanCardToTarget(columns, source, target)
     if (!result) return
+    if (!isKanbanMoveAllowed(columns, result.columns, result.change.card.key, allowCrossColumn, allowReorder, canMoveCard)) return
 
     if (!isControlled) setInternalColumns(result.columns)
     onColumnsChange?.(result.columns, result.change)
@@ -528,8 +663,10 @@ function KanbanBoard({
         role="group"
         aria-label={ariaLabel}
         data-slot="kanban-board"
+        data-density={density}
+        style={{ "--kanban-column-width": typeof columnWidth === "number" ? `${columnWidth}px` : columnWidth, ...props.style } as React.CSSProperties}
         className={cn(
-          "grid gap-4 sm:auto-cols-[minmax(280px,1fr)] sm:grid-flow-col sm:overflow-x-auto sm:pb-2",
+          "grid gap-4 sm:auto-cols-[var(--kanban-column-width)] sm:grid-flow-col sm:overflow-x-auto sm:pb-2",
           className
         )}
       >
@@ -540,6 +677,12 @@ function KanbanBoard({
             boardDisabled={disabled}
             renderCard={renderCard}
             onCardClick={onCardClick}
+            selectedKeys={selectedKeySet}
+            selectionMode={selectionMode}
+            onSelect={updateSelection}
+            onAddCard={onAddCard}
+            renderColumnHeader={renderColumnHeader}
+            renderColumnFooter={renderColumnFooter}
             dragHandleLabel={dragHandleLabel}
             emptyColumn={emptyColumn}
             columnClassName={columnClassName}
@@ -547,8 +690,10 @@ function KanbanBoard({
             onNativeDragStart={(source) => { nativeDragRef.current = source }}
             onNativeDragEnd={() => { nativeDragRef.current = null }}
             onNativeDrop={handleNativeDrop}
+            density={density}
           />
         ))}
+        {onAddColumn ? <button type="button" className="flex min-h-32 items-center justify-center gap-2 rounded-lg border border-dashed bg-muted/15 text-sm font-medium text-muted-foreground outline-none transition-colors hover:border-foreground/25 hover:bg-muted/35 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring" onClick={onAddColumn}><PlusIcon className="size-4" />Add column</button> : null}
       </div>
 
       <DragOverlay>
@@ -559,6 +704,8 @@ function KanbanBoard({
               isDragging: true,
               isDropTarget: false,
               handle: null,
+              selected: selectedKeySet.has(activeEntry.card.key),
+              selectControl: null,
             }) ?? <DefaultKanbanCard card={activeEntry.card} handle={null} />}
           </div>
         ) : null}

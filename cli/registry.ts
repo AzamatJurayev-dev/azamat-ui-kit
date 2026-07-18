@@ -57,7 +57,6 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   tooltip: { name: "tooltip", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/tooltip", "{ui}/tooltip")] },
   "hover-card": { name: "hover-card", category: "ui", migrationAliasFor: "popover" },
   "simple-select": { name: "simple-select", category: "ui", migrationAliasFor: "select" },
-  combobox: { name: "combobox", category: "ui", migrationAliasFor: "select" },
   select: { name: "select", category: "ui", dependencies: ["@base-ui/react", "lucide-react"], registryDependencies: ["utils"], files: [file("src/components/ui/select", "{ui}/select")] },
   table: { name: "table", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/table", "{ui}/table")] },
   "segmented-control": { name: "segmented-control", category: "ui", registryDependencies: ["utils"], files: [file("src/components/ui/segmented-control", "{ui}/segmented-control")] },
@@ -68,6 +67,7 @@ export const registry: Record<ComponentName, ComponentRegistryItem> = {
   "right-click-menu": { name: "right-click-menu", category: "ui", dependencies: ["react"], files: [file("src/components/ui/right-click-menu", "{ui}/right-click-menu")] },
 
   "tag-input": { name: "tag-input", category: "inputs", dependencies: ["lucide-react"], registryDependencies: ["badge", "input", "utils"], files: [file("src/components/inputs/tag-input.tsx", "{components}/inputs/tag-input.tsx")] },
+  combobox: { name: "combobox", category: "inputs", dependencies: ["lucide-react"], registryDependencies: ["button", "input", "popover", "utils"], files: [file("src/components/inputs/combobox.tsx", "{components}/inputs/combobox.tsx")] },
   "async-select": { name: "async-select", category: "inputs", dependencies: ["lucide-react"], registryDependencies: ["button", "input", "popover", "utils"], files: [file("src/components/inputs/async-select.tsx", "{components}/inputs/async-select.tsx")] },
 
   "form-field-shell": { name: "form-field-shell", category: "form", registryDependencies: ["utils"], files: [file("src/components/form/form-field-shell.tsx", "{components}/form/form-field-shell.tsx")] },
@@ -214,7 +214,8 @@ const generatedSourceRegistry: ComponentRegistryItem[] = [
   { name: "charts", category: "charts", dependencies: ["recharts"], registryDependencies: ["card", "state-view", "utils"], files: [file("src/components/charts/charts.tsx", "{components}/charts/charts.tsx"), file("src/components/charts/index.ts", "{components}/charts/index.ts")] },
   { name: "horizontal-bar-chart", category: "charts", migrationAliasFor: "data-view" },
   { name: "image-upload", category: "upload", files: [file("src/components/upload/image-upload.tsx", "{components}/upload/image-upload.tsx")] },
-  { name: "kanban", category: "display", dependencies: ["@dnd-kit/helpers", "@dnd-kit/react", "lucide-react"], registryDependencies: ["card", "utils"], files: [file("src/components/display/kanban.tsx", "{components}/display/kanban.tsx")] },
+  { name: "kanban", category: "display", dependencies: ["@dnd-kit/helpers", "@dnd-kit/react", "lucide-react"], registryDependencies: ["avatar", "badge", "button", "card", "utils"], files: [file("src/components/display/kanban.tsx", "{components}/display/kanban.tsx")] },
+  { name: "chat", category: "display", dependencies: ["lucide-react"], registryDependencies: ["avatar", "badge", "button", "input", "textarea", "utils"], files: [file("src/components/display/chat.tsx", "{components}/display/chat.tsx")] },
   { name: "kpi", category: "charts", migrationAliasFor: "statistic" },
   { name: "list", category: "display", files: [file("src/components/display/list.tsx", "{components}/display/list.tsx")] },
   { name: "otp-input", category: "inputs", files: [file("src/components/inputs/otp-input.tsx", "{components}/inputs/otp-input.tsx")] },
