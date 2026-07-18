@@ -11,9 +11,12 @@ export const presetComponents: Record<string, ComponentName[]> = {
     "skeleton",
     "tabs",
     "state-view",
+    "async-boundary",
     "filter-bar",
     "description-list",
     "info-card",
+    "chart-card",
+    "multi-select",
     "data-table",
   ],
 }

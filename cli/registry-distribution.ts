@@ -46,6 +46,7 @@ const explicitDistribution: Partial<Record<ComponentName, RegistryDistribution>>
   "number-field": "foundation",
   "toggle-group": "foundation",
   toolbar: "foundation",
+  "multi-select": "foundation",
   "use-session-storage-state": "foundation",
   "use-before-unload-when-dirty": "foundation",
   "use-is-mobile": "foundation",

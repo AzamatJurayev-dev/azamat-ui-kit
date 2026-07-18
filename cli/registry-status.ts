@@ -26,6 +26,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "number-field": "preview",
   "toggle-group": "preview",
   toolbar: "preview",
+  "multi-select": "preview",
   kbd: "stable",
 
   "dialog-actions": "internal",
@@ -51,6 +52,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   form: "preview",
 
   "state-view": "stable",
+  "async-boundary": "preview",
   feedback: "stable",
   "description-list": "stable",
   progress: "stable",
@@ -75,6 +77,8 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   calendar: "preview",
   "date-picker": "preview",
   "date-range-picker": "preview",
+  "date-time-picker": "preview",
+  "calendar-range-scheduler": "preview",
   "calendar-kit": "preview",
   "file-upload": "preview",
   "image-upload": "preview",
@@ -85,6 +89,7 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   toast: "preview",
   notifications: "preview",
   "command-palette": "preview",
+  "advanced-command-menu": "preview",
   command: "preview",
   "hover-card": "stable",
   menubar: "preview",
@@ -106,13 +111,16 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "saved-filter-select": "preview",
   "notification-center": "preview",
   "calendar-scheduler": "preview",
+  "file-manager": "preview",
   "dual-list-picker": "preview",
   "resizable-panel": "preview",
   "rich-text-editor": "preview",
   "image-cropper": "preview",
   "qr-code": "stable",
   charts: "stable",
+  "chart-card": "preview",
   "progress-circle": "stable",
+  "data-grid": "preview",
   tag: "preview",
   typography: "preview",
   "json-input": "preview",
@@ -120,6 +128,8 @@ export const registryStatus: Partial<Record<ComponentName, ComponentStatus>> = {
   "sortable-list": "preview",
   "virtual-list": "preview",
   dnd: "preview",
+  "action-toast": "preview",
+  "permissions-matrix": "preview",
 }
 
 export function getRegistryStatus(name: ComponentName): ComponentStatus {

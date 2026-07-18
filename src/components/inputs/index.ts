@@ -1,4 +1,5 @@
 export * from "./async-select"
+export * from "./multi-select"
 export * from "./combobox"
 export * from "./otp-input"
 export * from "./rating"

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 6.1.0 - 2026-07-18
+
+### Added
+
+- Added 10 product-grade public components: `MultiSelect`, `ActionToast`, `ChartCard`, `AsyncBoundary`, `AdvancedCommandMenu`, `PermissionsMatrix`, `CalendarRangeScheduler`, `FileManager`, `CalendarDateTimePicker`, and `DataGrid`.
+- Added registry `kind` metadata so real components, presets, aliases, hooks, utilities, and internal entries are separated instead of being counted as one mixed component list.
+- Added dashboard, calendar, command, feedback, file management, data grid, chart, notification, input, and permissions coverage to the source-copy registry.
+
+### Changed
+
+- Simplified the primary component surface by moving duplicate or composable entries into `alias`, `preset`, `hook`, `utility`, or `internal` kinds.
+- Expanded dashboard preset coverage with `async-boundary`, `chart-card`, and `multi-select` so generated apps exercise richer real-project UI states.
+
 ## 6.0.3 - 2026-07-18
 
 ### Fixed
