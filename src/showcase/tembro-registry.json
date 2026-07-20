@@ -1,170 +1,2640 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "3.1.15",
-  "description": "Reusable React + TypeScript UI kit registry",
-  "groups": {
-    "ui": [
-      "badge",
-      "button",
-      "card",
-      "checkbox",
-      "accordion",
-      "collapse",
-      "dialog",
-      "divider",
-      "dropdown-menu",
-      "input",
-      "kbd",
-      "popover",
-      "radio-group",
-      "right-click-menu",
-      "scroll-box",
-      "select",
-      "segmented-control",
-      "skeleton",
-      "spinner",
-      "switch",
-      "table",
-      "tabs",
-      "textarea",
-      "tooltip"
-    ],
-    "overlay": [
-      "alert-dialog",
-      "confirm-dialog",
-      "drawer"
-    ],
-    "navigation": [
-      "pagination"
-    ],
-    "inputs": [
-      "async-select",
-      "otp-input",
-      "rating",
-      "slider",
-      "tag-input",
-      "inline-editable",
-      "color-picker",
-      "signature-pad",
-      "json-input",
-      "time-picker"
-    ],
-    "form": [
-      "form-date-picker",
-      "form-date-range-input",
-      "form-date-range-picker",
-      "form-field-shell",
-      "form-input",
-      "form-select",
-      "form-switch",
-      "form-textarea"
-    ],
-    "feedback": [
-      "alert",
-      "loading-state",
-      "page-state",
-      "data-state"
-    ],
-    "display": [
-      "activity-feed",
-      "avatar",
-      "code-block",
-      "description-list",
-      "data-state",
-      "info-card",
-      "kanban",
-      "qr-code",
-      "virtual-list",
-      "list",
-      "progress",
-      "progress-circle",
-      "statistic",
-      "status-dot",
-      "status-legend",
-      "timeline",
-      "tree-view",
-      "carousel",
-      "tag",
-      "typography"
-    ],
-    "actions": [
-      "action-menu",
-      "button-group",
-      "copy-button",
-      "quick-action-grid"
-    ],
-    "dnd": [
-      "sortable-list"
-    ],
-    "layout": [
-      "sidebar",
-      "breadcrumbs",
-      "section"
-    ],
-    "filters": [
-      "filter-bar",
-      "saved-filter-select"
-    ],
-    "data-table": [
-      "data-table"
-    ],
-    "calendar": [
-      "calendar",
-      "date-picker",
-      "date-range-picker"
-    ],
-    "upload": [
-      "file-upload",
-      "image-upload"
-    ],
-    "wizard": [
-      "stepper",
-      "wizard"
-    ],
-    "notifications": [
-      "toast",
-      "notification-center"
-    ],
-    "command": [
-      "command-palette"
-    ],
-    "patterns": [
-      "form-builder",
-      "resource-page",
-      "resource-detail-page",
-      "empty-state",
-      "page-toolbar",
-      "bulk-action-bar",
-      "detail-layout",
-      "settings-page",
-      "data-view"
-    ],
-    "modern": [
-      "calendar-scheduler",
-      "dual-list-picker",
-      "resizable-panel",
-      "rich-text-editor",
-      "image-cropper"
-    ],
-    "hooks": [
-      "use-session-storage-state",
-      "use-before-unload-when-dirty",
-      "use-is-mobile",
-      "use-disclosure",
-      "use-debounce",
-      "use-data-table-view-state"
-    ],
-    "kits": [
-      "dashboard",
-      "calendar-kit",
-      "wizard-kit",
-      "all"
-    ],
-    "charts": [
-      "charts",
-      "progress-circle"
-    ]
+  "version": "6.1.0",
+  "components": {
+    "accordion": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "collapse"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/accordion",
+          "target": "{ui}/accordion"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "action-menu": {
+      "category": "actions",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/actions/action-menu.tsx",
+          "target": "{components}/actions/action-menu.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "action-toast": {
+      "category": "notifications",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "toast"
+      ],
+      "files": [
+        {
+          "source": "src/components/notifications/action-toast.tsx",
+          "target": "{components}/notifications/action-toast.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "activity-feed": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/activity-feed.tsx",
+          "target": "{components}/display/activity-feed.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "advanced-command-menu": {
+      "category": "command",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "command",
+        "dialog"
+      ],
+      "files": [
+        {
+          "source": "src/components/command/advanced-command-menu.tsx",
+          "target": "{components}/command/advanced-command-menu.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "alert": {
+      "category": "feedback",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/feedback/alert.tsx",
+          "target": "{components}/feedback/alert.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "alert-dialog": {
+      "category": "overlay",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "dialog",
+        "button"
+      ],
+      "files": [
+        {
+          "source": "src/components/overlay/alert-dialog.tsx",
+          "target": "{components}/overlay/alert-dialog.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "all": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "button",
+        "input",
+        "textarea",
+        "checkbox",
+        "switch",
+        "badge",
+        "card",
+        "skeleton",
+        "tabs",
+        "dialog",
+        "dropdown-menu",
+        "popover",
+        "tooltip",
+        "hover-card",
+        "menubar",
+        "navigation-menu",
+        "select",
+        "table",
+        "segmented-control",
+        "radio-group",
+        "accordion",
+        "kbd",
+        "scroll-box",
+        "right-click-menu",
+        "number-field",
+        "toggle-group",
+        "toolbar",
+        "tag-input",
+        "multi-select",
+        "combobox",
+        "async-select",
+        "form-field-shell",
+        "form-input",
+        "form-select",
+        "form-textarea",
+        "form-switch",
+        "form-date-range-input",
+        "form-date-picker",
+        "form-date-range-picker",
+        "confirm-dialog",
+        "alert-dialog",
+        "drawer",
+        "state-view",
+        "async-boundary",
+        "sidebar-context",
+        "workspace-layout",
+        "sidebar",
+        "calendar",
+        "date-picker",
+        "date-range-picker",
+        "date-time-picker",
+        "calendar-range-scheduler",
+        "action-menu",
+        "activity-feed",
+        "alert",
+        "avatar",
+        "breadcrumbs",
+        "button-group",
+        "code-block",
+        "collapse",
+        "carousel",
+        "tag",
+        "typography",
+        "command",
+        "copy-button",
+        "data-state",
+        "data-table",
+        "description-list",
+        "divider",
+        "file-upload",
+        "filter-bar",
+        "empty-state",
+        "charts",
+        "chart-card",
+        "image-upload",
+        "kanban",
+        "chat",
+        "list",
+        "otp-input",
+        "color-picker",
+        "signature-pad",
+        "pagination",
+        "progress",
+        "progress-circle",
+        "data-grid",
+        "quick-action-grid",
+        "rating",
+        "section",
+        "slider",
+        "info-card",
+        "spinner",
+        "statistic",
+        "status-dot",
+        "status-legend",
+        "stepper",
+        "timeline",
+        "toast",
+        "action-toast",
+        "tree-view",
+        "use-before-unload-when-dirty",
+        "use-data-table-view-state",
+        "use-debounce",
+        "use-disclosure",
+        "use-is-mobile",
+        "use-session-storage-state",
+        "wizard",
+        "inline-editable",
+        "command-palette",
+        "advanced-command-menu",
+        "saved-filter-select",
+        "notification-center",
+        "calendar-scheduler",
+        "dual-list-picker",
+        "resizable-panel",
+        "rich-text-editor",
+        "file-manager",
+        "image-cropper",
+        "qr-code",
+        "json-input",
+        "time-picker",
+        "sortable-list",
+        "virtual-list",
+        "permissions-matrix"
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "app-header": {
+      "category": "layout",
+      "kind": "alias",
+      "migrationAliasFor": "workspace-layout",
+      "status": "internal",
+      "distribution": "source-copy"
+    },
+    "app-sidebar": {
+      "category": "layout",
+      "kind": "alias",
+      "migrationAliasFor": "sidebar",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "async-boundary": {
+      "category": "feedback",
+      "kind": "component",
+      "registryDependencies": [
+        "state-view"
+      ],
+      "files": [
+        {
+          "source": "src/components/feedback/async-boundary.tsx",
+          "target": "{components}/feedback/async-boundary.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "async-select": {
+      "category": "inputs",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/async-select.tsx",
+          "target": "{components}/inputs/async-select.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "avatar": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/avatar.tsx",
+          "target": "{components}/display/avatar.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "badge": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/badge",
+          "target": "{ui}/badge"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "breadcrumbs": {
+      "category": "layout",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/layout/breadcrumbs.tsx",
+          "target": "{components}/layout/breadcrumbs.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "button": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/button",
+          "target": "{ui}/button"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "button-group": {
+      "category": "actions",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/actions/button-group.tsx",
+          "target": "{components}/actions/button-group.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "calendar": {
+      "category": "calendar",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/calendar.tsx",
+          "target": "{components}/calendar/calendar.tsx"
+        },
+        {
+          "source": "src/components/calendar/date-utils.ts",
+          "target": "{components}/calendar/date-utils.ts"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "calendar-kit": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "calendar",
+        "date-picker",
+        "date-range-picker",
+        "date-time-picker",
+        "calendar-range-scheduler"
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "calendar-range-scheduler": {
+      "category": "calendar",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "date-range-picker",
+        "badge",
+        "button",
+        "card",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/calendar-range-scheduler.tsx",
+          "target": "{components}/calendar/calendar-range-scheduler.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "calendar-scheduler": {
+      "category": "modern",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/calendar-scheduler.tsx",
+          "target": "{components}/modern/calendar-scheduler.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "card": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/card",
+          "target": "{ui}/card"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "carousel": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/carousel.tsx",
+          "target": "{components}/display/carousel.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "chart-card": {
+      "category": "charts",
+      "kind": "component",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "badge",
+        "card",
+        "charts",
+        "select",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/charts/chart-card.tsx",
+          "target": "{components}/charts/chart-card.tsx"
+        }
+      ],
+      "status": "preview"
+    },
+    "charts": {
+      "category": "charts",
+      "kind": "component",
+      "dependencies": [
+        "recharts"
+      ],
+      "registryDependencies": [
+        "card",
+        "state-view",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/charts/charts.tsx",
+          "target": "{components}/charts/charts.tsx"
+        },
+        {
+          "source": "src/components/charts/index.ts",
+          "target": "{components}/charts/index.ts"
+        }
+      ],
+      "status": "stable"
+    },
+    "chat": {
+      "category": "display",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "button",
+        "input",
+        "textarea",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/chat.tsx",
+          "target": "{components}/display/chat.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "checkbox": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/checkbox",
+          "target": "{ui}/checkbox"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "clearable-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "code-block": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/code-block.tsx",
+          "target": "{components}/display/code-block.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "collapse": {
+      "category": "ui",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/ui/collapse",
+          "target": "{ui}/collapse"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "color-picker": {
+      "category": "inputs",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/color-picker.tsx",
+          "target": "{components}/inputs/color-picker.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "combobox": {
+      "category": "inputs",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/combobox.tsx",
+          "target": "{components}/inputs/combobox.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "command": {
+      "category": "ui",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/ui/command",
+          "target": "{ui}/command"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "command-bar": {
+      "category": "navigation",
+      "kind": "alias",
+      "migrationAliasFor": "command-palette",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "command-palette": {
+      "category": "command",
+      "kind": "component",
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "dialog",
+        "input",
+        "kbd",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/command/command-palette.tsx",
+          "target": "{components}/command/command-palette.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "comparison-card": {
+      "category": "display",
+      "kind": "alias",
+      "migrationAliasFor": "card",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "confirm-dialog": {
+      "category": "overlay",
+      "kind": "component",
+      "registryDependencies": [
+        "button",
+        "dialog"
+      ],
+      "files": [
+        {
+          "source": "src/components/overlay/confirm-dialog.tsx",
+          "target": "{components}/overlay/confirm-dialog.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "copy-button": {
+      "category": "actions",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/actions/copy-button.tsx",
+          "target": "{components}/actions/copy-button.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "copy-field": {
+      "category": "actions",
+      "kind": "alias",
+      "migrationAliasFor": "copy-button",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "dashboard": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "layout",
+        "feedback",
+        "input",
+        "async-select",
+        "tag-input",
+        "form"
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-grid": {
+      "category": "data-table",
+      "kind": "component",
+      "registryDependencies": [
+        "input",
+        "table",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/data-table/data-grid.tsx",
+          "target": "{components}/data-table/data-grid.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-list": {
+      "category": "display",
+      "kind": "alias",
+      "migrationAliasFor": "list",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "data-state": {
+      "category": "display",
+      "kind": "component",
+      "registryDependencies": [
+        "state-view"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/data-state.tsx",
+          "target": "{components}/display/data-state.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "data-table": {
+      "category": "data-table",
+      "kind": "component",
+      "dependencies": [
+        "@tanstack/react-table",
+        "@tanstack/react-virtual",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "checkbox",
+        "data-state",
+        "dropdown-menu",
+        "input",
+        "pagination",
+        "search-input",
+        "select",
+        "table",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/data-table/data-table.tsx",
+          "target": "{components}/data-table/data-table.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-actions-column.tsx",
+          "target": "{components}/data-table/data-table-actions-column.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-bulk-actions.tsx",
+          "target": "{components}/data-table/data-table-bulk-actions.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-column-visibility-menu.tsx",
+          "target": "{components}/data-table/data-table-column-visibility-menu.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-pagination.tsx",
+          "target": "{components}/data-table/data-table-pagination.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-row-actions.tsx",
+          "target": "{components}/data-table/data-table-row-actions.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-saved-filters.tsx",
+          "target": "{components}/data-table/data-table-saved-filters.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-select-column.tsx",
+          "target": "{components}/data-table/data-table-select-column.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-sortable-header.tsx",
+          "target": "{components}/data-table/data-table-sortable-header.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-toolbar.tsx",
+          "target": "{components}/data-table/data-table-toolbar.tsx"
+        },
+        {
+          "source": "src/components/data-table/data-table-view-presets.tsx",
+          "target": "{components}/data-table/data-table-view-presets.tsx"
+        },
+        {
+          "source": "src/components/data-table/table-export-menu.tsx",
+          "target": "{components}/data-table/table-export-menu.tsx"
+        },
+        {
+          "source": "src/components/data-table/table-import-button.tsx",
+          "target": "{components}/data-table/table-import-button.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-actions-column": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "internal",
+      "distribution": "system"
+    },
+    "data-table-bulk-actions": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-column-visibility-menu": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-pagination": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-row-actions": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-saved-filters": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-select-column": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-sortable-header": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-toolbar": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "data-table-view-presets": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "date-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "date-picker": {
+      "category": "calendar",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "calendar",
+        "button",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/date-picker.tsx",
+          "target": "{components}/calendar/date-picker.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "date-range-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "date-range-picker": {
+      "category": "calendar",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "calendar",
+        "button",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/date-range-picker.tsx",
+          "target": "{components}/calendar/date-range-picker.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "date-time-picker": {
+      "category": "calendar",
+      "kind": "component",
+      "registryDependencies": [
+        "date-picker",
+        "time-picker",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/calendar/date-time-picker.tsx",
+          "target": "{components}/calendar/date-time-picker.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "delta-badge": {
+      "category": "display",
+      "kind": "alias",
+      "migrationAliasFor": "badge",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "description-list": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/description-list.tsx",
+          "target": "{components}/display/description-list.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "dialog": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/dialog",
+          "target": "{ui}/dialog"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "dialog-actions": {
+      "category": "overlay",
+      "kind": "alias",
+      "migrationAliasFor": "dialog",
+      "status": "internal",
+      "distribution": "source-copy"
+    },
+    "divider": {
+      "category": "ui",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/ui/divider",
+          "target": "{ui}/divider"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "dnd": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "sortable-list"
+      ],
+      "files": [
+        {
+          "source": "src/components/dnd/index.ts",
+          "target": "{components}/dnd/index.ts"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "drawer": {
+      "category": "overlay",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "dialog"
+      ],
+      "files": [
+        {
+          "source": "src/components/overlay/drawer.tsx",
+          "target": "{components}/overlay/drawer.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "dropdown-menu": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/dropdown-menu",
+          "target": "{ui}/dropdown-menu"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "dual-list-picker": {
+      "category": "modern",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/dual-list-picker.tsx",
+          "target": "{components}/modern/dual-list-picker.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "empty-state": {
+      "category": "patterns",
+      "kind": "component",
+      "registryDependencies": [
+        "state-view",
+        "button"
+      ],
+      "files": [
+        {
+          "source": "src/components/patterns/empty-state.tsx",
+          "target": "{components}/patterns/empty-state.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "feedback": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "alert",
+        "state-view",
+        "async-boundary"
+      ],
+      "files": [
+        {
+          "source": "src/components/feedback/index.ts",
+          "target": "{components}/feedback/index.ts"
+        }
+      ],
+      "status": "stable",
+      "distribution": "system"
+    },
+    "file-dropzone": {
+      "category": "upload",
+      "kind": "alias",
+      "migrationAliasFor": "file-upload",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "file-manager": {
+      "category": "modern",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "input",
+        "scroll-box",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/file-manager.tsx",
+          "target": "{components}/modern/file-manager.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "file-upload": {
+      "category": "upload",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/upload/file-upload.tsx",
+          "target": "{components}/upload/file-upload.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "filter-bar": {
+      "category": "filters",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/filters/filter-bar.tsx",
+          "target": "{components}/filters/filter-bar.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "form": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "form-field-shell",
+        "form-input",
+        "form-select",
+        "form-textarea",
+        "form-switch",
+        "form-date-range-input",
+        "form-date-picker",
+        "form-date-range-picker"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/index.ts",
+          "target": "{components}/form/index.ts"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "form-async-select": {
+      "category": "form",
+      "kind": "alias",
+      "migrationAliasFor": "form-select",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-date-picker": {
+      "category": "form",
+      "kind": "component",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "date-picker",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-date-picker.tsx",
+          "target": "{components}/form/form-date-picker.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-date-range-input": {
+      "category": "form",
+      "kind": "component",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "input",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-date-range-input.tsx",
+          "target": "{components}/form/form-date-range-input.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-date-range-picker": {
+      "category": "form",
+      "kind": "component",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "date-range-picker",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-date-range-picker.tsx",
+          "target": "{components}/form/form-date-range-picker.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-field-shell": {
+      "category": "form",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-field-shell.tsx",
+          "target": "{components}/form/form-field-shell.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-input": {
+      "category": "form",
+      "kind": "component",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "input",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-input.tsx",
+          "target": "{components}/form/form-input.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-select": {
+      "category": "form",
+      "kind": "component",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "select",
+        "async-select",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-select.tsx",
+          "target": "{components}/form/form-select.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-switch": {
+      "category": "form",
+      "kind": "component",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "switch",
+        "form-field-shell",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-switch.tsx",
+          "target": "{components}/form/form-switch.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "form-textarea": {
+      "category": "form",
+      "kind": "component",
+      "dependencies": [
+        "react-hook-form"
+      ],
+      "registryDependencies": [
+        "textarea",
+        "form-field-shell"
+      ],
+      "files": [
+        {
+          "source": "src/components/form/form-textarea.tsx",
+          "target": "{components}/form/form-textarea.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "horizontal-bar-chart": {
+      "category": "charts",
+      "kind": "alias",
+      "migrationAliasFor": "charts",
+      "status": "preview"
+    },
+    "hover-card": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/hover-card",
+          "target": "{ui}/hover-card"
+        }
+      ],
+      "status": "stable",
+      "distribution": "system"
+    },
+    "image-cropper": {
+      "category": "modern",
+      "kind": "component",
+      "dependencies": [
+        "react-easy-crop",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/image-cropper.tsx",
+          "target": "{components}/modern/image-cropper.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "image-upload": {
+      "category": "upload",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/upload/image-upload.tsx",
+          "target": "{components}/upload/image-upload.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "info-card": {
+      "category": "display",
+      "kind": "component",
+      "registryDependencies": [
+        "card",
+        "skeleton",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/info-card.tsx",
+          "target": "{components}/display/info-card.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "inline-editable": {
+      "category": "inputs",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/inputs/inline-editable.tsx",
+          "target": "{components}/inputs/inline-editable.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "input": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/input",
+          "target": "{ui}/input"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "input-decorator": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "input-value": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "inputs": {
+      "category": "group",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "system"
+    },
+    "json-input": {
+      "category": "inputs",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/json-input.tsx",
+          "target": "{components}/inputs/json-input.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "kanban": {
+      "category": "display",
+      "kind": "component",
+      "dependencies": [
+        "@dnd-kit/helpers",
+        "@dnd-kit/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "avatar",
+        "badge",
+        "button",
+        "card",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/kanban.tsx",
+          "target": "{components}/display/kanban.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "kbd": {
+      "category": "ui",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/ui/kbd",
+          "target": "{ui}/kbd"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "kpi": {
+      "category": "charts",
+      "kind": "alias",
+      "migrationAliasFor": "statistic",
+      "status": "preview"
+    },
+    "layout": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "workspace-layout",
+        "sidebar",
+        "breadcrumbs",
+        "section"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/index.ts",
+          "target": "{components}/layout/index.ts"
+        }
+      ],
+      "status": "stable",
+      "distribution": "system"
+    },
+    "list": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/list.tsx",
+          "target": "{components}/display/list.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "masked-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "menubar": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/menubar",
+          "target": "{ui}/menubar"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "modal-shell": {
+      "category": "overlay",
+      "kind": "alias",
+      "migrationAliasFor": "dialog",
+      "status": "internal",
+      "distribution": "source-copy"
+    },
+    "money-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "multi-select": {
+      "category": "inputs",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "popover",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/multi-select.tsx",
+          "target": "{components}/inputs/multi-select.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "nav-tabs": {
+      "category": "navigation",
+      "kind": "alias",
+      "migrationAliasFor": "tabs",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "navigation-menu": {
+      "category": "navigation",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/navigation-menu",
+          "target": "{ui}/navigation-menu"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "notification-center": {
+      "category": "notifications",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/notifications/notification-center.tsx",
+          "target": "{components}/notifications/notification-center.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "number-field": {
+      "category": "inputs",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/number-field",
+          "target": "{ui}/number-field"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "number-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "otp-input": {
+      "category": "inputs",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/inputs/otp-input.tsx",
+          "target": "{components}/inputs/otp-input.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "page-tabs": {
+      "category": "navigation",
+      "kind": "alias",
+      "migrationAliasFor": "tabs",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "pagination": {
+      "category": "navigation",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/navigation/pagination.tsx",
+          "target": "{components}/navigation/pagination.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "password-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "permissions-matrix": {
+      "category": "patterns",
+      "kind": "component",
+      "registryDependencies": [
+        "checkbox",
+        "table",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/patterns/permissions-matrix.tsx",
+          "target": "{components}/patterns/permissions-matrix.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "phone-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "popover": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/popover",
+          "target": "{ui}/popover"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "progress": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/progress.tsx",
+          "target": "{components}/display/progress.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "progress-circle": {
+      "category": "charts",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/charts/progress-circle.tsx",
+          "target": "{components}/charts/progress-circle.tsx"
+        }
+      ],
+      "status": "stable"
+    },
+    "property-grid": {
+      "category": "display",
+      "kind": "alias",
+      "migrationAliasFor": "description-list",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "qr-code": {
+      "category": "display",
+      "kind": "component",
+      "dependencies": [
+        "qrcode",
+        "@types/qrcode"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/qr-code.tsx",
+          "target": "{components}/display/qr-code.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "quantity-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "quick-action-grid": {
+      "category": "actions",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/actions/quick-action-grid.tsx",
+          "target": "{components}/actions/quick-action-grid.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "radio-group": {
+      "category": "ui",
+      "kind": "component",
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/radio-group",
+          "target": "{ui}/radio-group"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "rating": {
+      "category": "inputs",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/inputs/rating.tsx",
+          "target": "{components}/inputs/rating.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "resizable-panel": {
+      "category": "modern",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/resizable-panel.tsx",
+          "target": "{components}/modern/resizable-panel.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "rich-text-editor": {
+      "category": "modern",
+      "kind": "component",
+      "dependencies": [
+        "@tiptap/core",
+        "@tiptap/extensions",
+        "@tiptap/extension-bubble-menu",
+        "@tiptap/extension-floating-menu",
+        "@tiptap/react",
+        "@tiptap/pm",
+        "@tiptap/starter-kit",
+        "@tiptap/extension-link",
+        "@tiptap/extension-placeholder",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/rich-text-editor.tsx",
+          "target": "{components}/modern/rich-text-editor.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "right-click-menu": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "react"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/right-click-menu",
+          "target": "{ui}/right-click-menu"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "saved-filter-select": {
+      "category": "filters",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/filters/saved-filter-select.tsx",
+          "target": "{components}/filters/saved-filter-select.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "scroll-box": {
+      "category": "ui",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/ui/scroll-box",
+          "target": "{ui}/scroll-box"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "search-input": {
+      "category": "inputs",
+      "kind": "alias",
+      "migrationAliasFor": "input",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "section": {
+      "category": "layout",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/layout/section.tsx",
+          "target": "{components}/layout/section.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "segmented-control": {
+      "category": "ui",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/segmented-control",
+          "target": "{ui}/segmented-control"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "select": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/select",
+          "target": "{ui}/select"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "sheet-shell": {
+      "category": "overlay",
+      "kind": "alias",
+      "migrationAliasFor": "drawer",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "sidebar": {
+      "category": "layout",
+      "kind": "component",
+      "dependencies": [
+        "react"
+      ],
+      "registryDependencies": [
+        "tooltip",
+        "sidebar-context",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/sidebar.tsx",
+          "target": "{components}/layout/sidebar.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "sidebar-context": {
+      "category": "layout",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/sidebar-context.tsx",
+          "target": "{components}/layout/sidebar-context.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "signature-pad": {
+      "category": "inputs",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/signature-pad.tsx",
+          "target": "{components}/inputs/signature-pad.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "simple-select": {
+      "category": "ui",
+      "kind": "alias",
+      "migrationAliasFor": "select",
+      "status": "internal",
+      "distribution": "foundation"
+    },
+    "skeleton": {
+      "category": "ui",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/skeleton",
+          "target": "{ui}/skeleton"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "slider": {
+      "category": "inputs",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/inputs/slider.tsx",
+          "target": "{components}/inputs/slider.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "smart-card": {
+      "category": "display",
+      "kind": "alias",
+      "migrationAliasFor": "info-card",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "sortable-list": {
+      "category": "dnd",
+      "kind": "component",
+      "dependencies": [
+        "@dnd-kit/helpers",
+        "@dnd-kit/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/dnd/sortable-list.tsx",
+          "target": "{components}/dnd/sortable-list.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "spinner": {
+      "category": "ui",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/ui/spinner",
+          "target": "{ui}/spinner"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "stat-card": {
+      "category": "layout",
+      "kind": "alias",
+      "migrationAliasFor": "statistic",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "state-view": {
+      "category": "feedback",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/feedback/state-view.tsx",
+          "target": "{components}/feedback/state-view.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "statistic": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/statistic.tsx",
+          "target": "{components}/display/statistic.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "status-dot": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/status-dot.tsx",
+          "target": "{components}/display/status-dot.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "status-legend": {
+      "category": "display",
+      "kind": "component",
+      "registryDependencies": [
+        "badge",
+        "status-dot",
+        "card",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/status-legend.tsx",
+          "target": "{components}/display/status-legend.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "stepper": {
+      "category": "wizard",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/wizard/stepper.tsx",
+          "target": "{components}/wizard/stepper.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "stepper-tabs": {
+      "category": "navigation",
+      "kind": "alias",
+      "migrationAliasFor": "stepper",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "switch": {
+      "category": "ui",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/switch",
+          "target": "{ui}/switch"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "table": {
+      "category": "ui",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/table",
+          "target": "{ui}/table"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "table-export-menu": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "internal",
+      "distribution": "system"
+    },
+    "table-import-button": {
+      "category": "data-table",
+      "kind": "alias",
+      "migrationAliasFor": "data-table",
+      "status": "internal",
+      "distribution": "system"
+    },
+    "tabs": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/tabs",
+          "target": "{ui}/tabs"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "tag": {
+      "category": "display",
+      "kind": "component",
+      "registryDependencies": [
+        "badge",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/tag.tsx",
+          "target": "{components}/display/tag.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "tag-input": {
+      "category": "inputs",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "input",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/tag-input.tsx",
+          "target": "{components}/inputs/tag-input.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "textarea": {
+      "category": "ui",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/textarea",
+          "target": "{ui}/textarea"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "time-picker": {
+      "category": "inputs",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/inputs/time-picker.tsx",
+          "target": "{components}/inputs/time-picker.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "timeline": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/timeline.tsx",
+          "target": "{components}/display/timeline.tsx"
+        }
+      ],
+      "status": "stable",
+      "distribution": "source-copy"
+    },
+    "toast": {
+      "category": "notifications",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/notifications/toast.tsx",
+          "target": "{components}/notifications/toast.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "toggle-group": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/toggle-group",
+          "target": "{ui}/toggle-group"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "toolbar": {
+      "category": "ui",
+      "kind": "component",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/toolbar",
+          "target": "{ui}/toolbar"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "tooltip": {
+      "category": "ui",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/ui/tooltip",
+          "target": "{ui}/tooltip"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "tree-view": {
+      "category": "display",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/display/tree-view.tsx",
+          "target": "{components}/display/tree-view.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "trend-card": {
+      "category": "display",
+      "kind": "alias",
+      "migrationAliasFor": "statistic",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "typography": {
+      "category": "display",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/typography.tsx",
+          "target": "{components}/display/typography.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "use-before-unload-when-dirty": {
+      "category": "hooks",
+      "kind": "hook",
+      "files": [
+        {
+          "source": "src/hooks/use-before-unload-when-dirty.ts",
+          "target": "{hooks}/use-before-unload-when-dirty.ts"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "use-data-table-view-state": {
+      "category": "hooks",
+      "kind": "hook",
+      "files": [
+        {
+          "source": "src/hooks/use-data-table-view-state.ts",
+          "target": "{hooks}/use-data-table-view-state.ts"
+        }
+      ],
+      "status": "preview",
+      "distribution": "foundation"
+    },
+    "use-debounce": {
+      "category": "hooks",
+      "kind": "hook",
+      "files": [
+        {
+          "source": "src/hooks/use-debounce.ts",
+          "target": "{hooks}/use-debounce.ts"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "use-disclosure": {
+      "category": "hooks",
+      "kind": "hook",
+      "files": [
+        {
+          "source": "src/hooks/use-disclosure.ts",
+          "target": "{hooks}/use-disclosure.ts"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "use-is-mobile": {
+      "category": "hooks",
+      "kind": "hook",
+      "files": [
+        {
+          "source": "src/hooks/use-is-mobile.ts",
+          "target": "{hooks}/use-is-mobile.ts"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "use-session-storage-state": {
+      "category": "hooks",
+      "kind": "hook",
+      "files": [
+        {
+          "source": "src/hooks/use-session-storage-state.ts",
+          "target": "{hooks}/use-session-storage-state.ts"
+        }
+      ],
+      "status": "stable",
+      "distribution": "foundation"
+    },
+    "user-card": {
+      "category": "display",
+      "kind": "alias",
+      "migrationAliasFor": "avatar",
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "utils": {
+      "category": "lib",
+      "kind": "utility",
+      "dependencies": [
+        "clsx",
+        "tailwind-merge"
+      ],
+      "files": [
+        {
+          "source": "src/lib/utils.ts",
+          "target": "{utils}"
+        }
+      ],
+      "status": "internal",
+      "distribution": "foundation"
+    },
+    "virtual-list": {
+      "category": "display",
+      "kind": "component",
+      "dependencies": [
+        "@tanstack/react-virtual"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/display/virtual-list.tsx",
+          "target": "{components}/display/virtual-list.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "wizard": {
+      "category": "wizard",
+      "kind": "component",
+      "files": [
+        {
+          "source": "src/components/wizard/wizard.tsx",
+          "target": "{components}/wizard/wizard.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "wizard-kit": {
+      "category": "group",
+      "kind": "preset",
+      "registryDependencies": [
+        "stepper",
+        "wizard"
+      ],
+      "status": "preview",
+      "distribution": "system"
+    },
+    "workspace-layout": {
+      "category": "layout",
+      "kind": "component",
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/layout/workspace-layout.tsx",
+          "target": "{components}/layout/workspace-layout.tsx"
+        },
+        {
+          "source": "src/components/layout/workspace-header.tsx",
+          "target": "{components}/layout/workspace-header.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    }
   },
   "recommended": [
     "button",
@@ -172,68 +2642,482 @@
     "textarea",
     "checkbox",
     "switch",
-    "radio-group",
-    "dialog",
-    "popover",
-    "select",
-    "table",
     "badge",
     "card",
+    "skeleton",
     "tabs",
-    "collapse",
-    "accordion",
-    "segmented-control",
-    "spinner",
+    "dialog",
+    "dropdown-menu",
+    "popover",
     "tooltip",
+    "hover-card",
+    "menubar",
+    "navigation-menu",
+    "select",
+    "table",
+    "segmented-control",
+    "radio-group",
+    "accordion",
     "kbd",
+    "scroll-box",
+    "right-click-menu",
+    "number-field",
+    "toggle-group",
+    "toolbar",
+    "tag-input",
+    "combobox",
+    "async-select",
+    "form-field-shell",
+    "form-input",
+    "form-select",
+    "form-textarea",
+    "form-switch",
+    "form-date-range-input",
+    "form-date-picker",
+    "form-date-range-picker",
+    "confirm-dialog",
+    "alert-dialog",
+    "drawer",
+    "state-view",
+    "sidebar-context",
+    "workspace-layout",
     "sidebar",
+    "calendar",
+    "date-picker",
+    "date-range-picker",
+    "action-menu",
+    "activity-feed",
+    "alert",
+    "avatar",
     "breadcrumbs",
+    "button-group",
+    "code-block",
+    "collapse",
+    "carousel",
+    "tag",
+    "typography",
+    "command",
+    "copy-button",
     "data-state",
-    "loading-state",
+    "data-table",
+    "description-list",
+    "divider",
+    "file-upload",
+    "filter-bar",
+    "empty-state",
+    "charts",
+    "image-upload",
+    "kanban",
+    "chat",
+    "list",
+    "otp-input",
+    "color-picker",
+    "signature-pad",
+    "pagination",
     "progress",
     "progress-circle",
-    "activity-feed",
-    "action-menu",
-    "filter-bar",
-    "notification-center",
+    "quick-action-grid",
+    "rating",
+    "section",
+    "slider",
+    "info-card",
+    "spinner",
+    "statistic",
+    "status-dot",
+    "status-legend",
+    "stepper",
+    "timeline",
+    "toast",
+    "tree-view",
+    "use-before-unload-when-dirty",
+    "use-data-table-view-state",
+    "use-debounce",
+    "use-disclosure",
+    "use-is-mobile",
+    "use-session-storage-state",
+    "wizard",
+    "inline-editable",
     "command-palette",
-    "list",
-    "empty-state",
-    "page-toolbar"
+    "saved-filter-select",
+    "notification-center",
+    "calendar-scheduler",
+    "dual-list-picker",
+    "resizable-panel",
+    "rich-text-editor",
+    "image-cropper",
+    "qr-code",
+    "json-input",
+    "time-picker",
+    "sortable-list",
+    "virtual-list"
   ],
   "recommendedByMode": {
-    "foundation": [
+    "minimal": [
+      "button",
+      "input",
+      "card",
+      "badge"
+    ],
+    "dashboard": [
+      "sidebar",
+      "workspace-layout",
+      "button",
+      "input",
+      "badge",
+      "card",
+      "data-table",
+      "filter-bar",
+      "state-view",
+      "info-card"
+    ],
+    "full": [
       "button",
       "input",
       "textarea",
       "checkbox",
       "switch",
-      "radio-group",
-      "dialog",
-      "popover",
-      "select",
-      "table",
       "badge",
       "card",
+      "skeleton",
       "tabs",
+      "dialog",
+      "dropdown-menu",
+      "popover",
+      "tooltip",
+      "hover-card",
+      "menubar",
+      "navigation-menu",
+      "select",
+      "table",
+      "segmented-control",
+      "radio-group",
+      "accordion",
       "kbd",
-      "scroll-box"
-    ],
-    "sourceCopy": [
+      "scroll-box",
+      "right-click-menu",
+      "number-field",
+      "toggle-group",
+      "toolbar",
+      "tag-input",
+      "combobox",
+      "async-select",
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-textarea",
+      "form-switch",
+      "form-date-range-input",
+      "form-date-picker",
+      "form-date-range-picker",
+      "confirm-dialog",
+      "alert-dialog",
+      "drawer",
+      "state-view",
+      "sidebar-context",
+      "workspace-layout",
       "sidebar",
-      "breadcrumbs",
-      "data-state",
-      "loading-state",
-      "progress-circle",
-      "activity-feed",
-      "action-menu",
-      "filter-bar",
+      "calendar",
       "date-picker",
       "date-range-picker",
-      "file-upload",
-      "use-data-table-view-state",
+      "action-menu",
+      "activity-feed",
+      "alert",
+      "avatar",
+      "breadcrumbs",
+      "button-group",
+      "code-block",
+      "collapse",
+      "carousel",
+      "tag",
+      "typography",
+      "command",
+      "copy-button",
+      "data-state",
       "data-table",
+      "description-list",
+      "divider",
+      "file-upload",
+      "filter-bar",
+      "empty-state",
+      "charts",
+      "image-upload",
+      "kanban",
+      "chat",
+      "list",
+      "otp-input",
+      "color-picker",
+      "signature-pad",
+      "pagination",
+      "progress",
+      "progress-circle",
+      "quick-action-grid",
+      "rating",
+      "section",
+      "slider",
+      "info-card",
+      "spinner",
+      "statistic",
+      "status-dot",
+      "status-legend",
+      "stepper",
+      "timeline",
+      "toast",
+      "tree-view",
+      "use-before-unload-when-dirty",
+      "use-data-table-view-state",
+      "use-debounce",
+      "use-disclosure",
+      "use-is-mobile",
+      "use-session-storage-state",
+      "wizard",
+      "inline-editable",
+      "command-palette",
+      "saved-filter-select",
       "notification-center",
+      "calendar-scheduler",
+      "dual-list-picker",
+      "resizable-panel",
+      "rich-text-editor",
+      "image-cropper",
+      "qr-code",
+      "json-input",
+      "time-picker",
+      "sortable-list",
+      "virtual-list"
+    ]
+  },
+  "groups": {
+    "form": [
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-textarea",
+      "form-switch",
+      "form-date-range-input",
+      "form-date-picker",
+      "form-date-range-picker"
+    ],
+    "feedback": [
+      "alert",
+      "state-view"
+    ],
+    "layout": [
+      "workspace-layout",
+      "sidebar",
+      "breadcrumbs",
+      "section"
+    ],
+    "dashboard": [
+      "layout",
+      "feedback",
+      "input",
+      "async-select",
+      "tag-input",
+      "form"
+    ],
+    "calendar-kit": [
+      "calendar",
+      "date-picker",
+      "date-range-picker"
+    ],
+    "wizard-kit": [
+      "stepper",
+      "wizard"
+    ],
+    "dnd": [
+      "sortable-list"
+    ],
+    "all": [
+      "button",
+      "input",
+      "textarea",
+      "checkbox",
+      "switch",
+      "badge",
+      "card",
+      "skeleton",
+      "tabs",
+      "dialog",
+      "dropdown-menu",
+      "popover",
+      "tooltip",
+      "hover-card",
+      "menubar",
+      "navigation-menu",
+      "select",
+      "table",
+      "segmented-control",
+      "radio-group",
+      "accordion",
+      "kbd",
+      "scroll-box",
+      "right-click-menu",
+      "number-field",
+      "toggle-group",
+      "toolbar",
+      "tag-input",
+      "combobox",
+      "async-select",
+      "form-field-shell",
+      "form-input",
+      "form-select",
+      "form-textarea",
+      "form-switch",
+      "form-date-range-input",
+      "form-date-picker",
+      "form-date-range-picker",
+      "confirm-dialog",
+      "alert-dialog",
+      "drawer",
+      "state-view",
+      "sidebar-context",
+      "workspace-layout",
+      "sidebar",
+      "calendar",
+      "date-picker",
+      "date-range-picker",
+      "action-menu",
+      "activity-feed",
+      "alert",
+      "avatar",
+      "breadcrumbs",
+      "button-group",
+      "code-block",
+      "collapse",
+      "carousel",
+      "tag",
+      "typography",
+      "command",
+      "copy-button",
+      "data-state",
+      "data-table",
+      "description-list",
+      "divider",
+      "file-upload",
+      "filter-bar",
+      "empty-state",
+      "charts",
+      "image-upload",
+      "kanban",
+      "chat",
+      "list",
+      "otp-input",
+      "color-picker",
+      "signature-pad",
+      "pagination",
+      "progress",
+      "progress-circle",
+      "quick-action-grid",
+      "rating",
+      "section",
+      "slider",
+      "info-card",
+      "spinner",
+      "statistic",
+      "status-dot",
+      "status-legend",
+      "stepper",
+      "timeline",
+      "toast",
+      "tree-view",
+      "use-before-unload-when-dirty",
+      "use-data-table-view-state",
+      "use-debounce",
+      "use-disclosure",
+      "use-is-mobile",
+      "use-session-storage-state",
+      "wizard",
+      "inline-editable",
+      "command-palette",
+      "saved-filter-select",
+      "notification-center",
+      "calendar-scheduler",
+      "dual-list-picker",
+      "resizable-panel",
+      "rich-text-editor",
+      "image-cropper",
+      "qr-code",
+      "json-input",
+      "time-picker",
+      "sortable-list",
+      "virtual-list"
+    ],
+    "inputs": []
+  },
+  "publicSurface": {
+    "documented": [
+      "button",
+      "input",
+      "textarea",
+      "select",
+      "combobox",
+      "async-select",
+      "card",
+      "badge",
+      "checkbox",
+      "switch",
+      "radio-group",
+      "number-field",
+      "multi-select",
+      "toggle-group",
+      "toolbar",
+      "dialog",
+      "dropdown-menu",
+      "popover",
+      "hover-card",
+      "menubar",
+      "navigation-menu",
+      "tooltip",
+      "data-table",
+      "pagination",
+      "calendar",
+      "date-picker",
+      "date-range-picker",
+      "alert",
+      "toast",
+      "notification-center",
+      "action-toast",
+      "charts",
+      "chart-card",
+      "sidebar",
+      "breadcrumbs",
+      "workspace-layout",
+      "state-view",
+      "async-boundary",
+      "file-upload",
+      "progress",
+      "accordion",
+      "divider",
+      "segmented-control",
+      "skeleton",
+      "spinner",
+      "command-palette",
+      "advanced-command-menu",
+      "inline-editable",
+      "avatar",
+      "code-block",
+      "data-state",
+      "kanban",
+      "chat",
+      "list",
+      "description-list",
+      "statistic",
+      "tree-view",
+      "copy-button",
+      "section",
+      "empty-state",
+      "permissions-matrix",
+      "calendar-scheduler",
+      "calendar-range-scheduler",
+      "dual-list-picker",
+      "resizable-panel",
+      "file-manager",
+      "tag",
+      "carousel",
+      "typography",
+      "json-input",
+      "time-picker",
+      "date-time-picker",
       "sortable-list",
       "virtual-list",
       "color-picker",
@@ -241,80 +3125,98 @@
       "qr-code",
       "rich-text-editor",
       "image-cropper",
-      "command-palette",
-      "empty-state",
-      "page-toolbar",
-      "data-view"
+      "data-grid"
     ],
-    "system": [
-      "data-table",
-      "sidebar"
-    ]
-  },
-  "publicSurface": {
-    "documented": [
+    "standalone": [],
+    "all": [
       "button",
       "input",
+      "textarea",
       "select",
+      "combobox",
+      "async-select",
       "card",
       "badge",
       "checkbox",
+      "switch",
+      "radio-group",
+      "number-field",
+      "multi-select",
+      "toggle-group",
+      "toolbar",
       "dialog",
+      "dropdown-menu",
+      "popover",
+      "hover-card",
+      "menubar",
+      "navigation-menu",
+      "tooltip",
       "data-table",
+      "pagination",
       "calendar",
       "date-picker",
       "date-range-picker",
       "alert",
+      "toast",
+      "notification-center",
+      "action-toast",
       "charts",
+      "chart-card",
       "sidebar",
+      "breadcrumbs",
+      "workspace-layout",
+      "state-view",
+      "async-boundary",
       "file-upload",
-      "progress"
-    ],
-    "standalone": [
+      "progress",
       "accordion",
       "divider",
       "segmented-control",
       "skeleton",
       "spinner",
       "command-palette",
+      "advanced-command-menu",
       "inline-editable",
       "avatar",
       "code-block",
       "data-state",
       "kanban",
+      "chat",
       "list",
       "description-list",
       "statistic",
       "tree-view",
       "copy-button",
       "section",
-      "form-builder",
       "empty-state",
-      "page-toolbar",
-      "bulk-action-bar",
-      "detail-layout",
-      "settings-page",
-      "data-view",
-      "resource-page",
-      "resource-detail-page",
+      "permissions-matrix",
       "calendar-scheduler",
+      "calendar-range-scheduler",
       "dual-list-picker",
       "resizable-panel",
+      "file-manager",
       "tag",
       "carousel",
       "typography",
       "json-input",
       "time-picker",
+      "date-time-picker",
       "sortable-list",
       "virtual-list",
       "color-picker",
       "signature-pad",
       "qr-code",
       "rich-text-editor",
-      "image-cropper"
+      "image-cropper",
+      "data-grid"
     ]
   },
   "migrationAliases": {
+    "simple-select": "select",
+    "dialog-actions": "dialog",
+    "modal-shell": "dialog",
+    "app-header": "workspace-layout",
+    "copy-field": "copy-button",
     "clearable-input": "input",
     "search-input": "input",
     "password-input": "input",
@@ -325,27 +3227,25 @@
     "quantity-input": "input",
     "date-input": "input",
     "date-range-input": "input",
-    "simple-select": "select",
-    "combobox": "select",
-    "hover-card": "popover",
-    "copy-field": "copy-button",
+    "form-async-select": "form-select",
+    "input-decorator": "input",
+    "input-value": "input",
+    "inputs": "input",
+    "app-sidebar": "sidebar",
+    "stat-card": "statistic",
+    "smart-card": "info-card",
+    "file-dropzone": "file-upload",
     "comparison-card": "card",
     "delta-badge": "badge",
     "trend-card": "statistic",
     "user-card": "avatar",
-    "form-async-select": "form-select",
-    "app-sidebar": "sidebar",
-    "smart-card": "info-card",
-    "file-dropzone": "file-upload",
-    "page-container": "sidebar",
-    "section-header": "section",
-    "sidebar-nav": "sidebar",
-    "stat-card": "statistic",
-    "sticky-footer-bar": "sidebar",
-    "input-decorator": "input",
-    "input-value": "input",
-    "inputs": "input",
-    "data-table-actions-column": "data-table",
+    "sheet-shell": "drawer",
+    "nav-tabs": "tabs",
+    "page-tabs": "tabs",
+    "stepper-tabs": "stepper",
+    "command-bar": "command-palette",
+    "data-list": "list",
+    "property-grid": "description-list",
     "data-table-bulk-actions": "data-table",
     "data-table-column-visibility-menu": "data-table",
     "data-table-pagination": "data-table",
@@ -355,22 +3255,10 @@
     "data-table-sortable-header": "data-table",
     "data-table-toolbar": "data-table",
     "data-table-view-presets": "data-table",
+    "data-table-actions-column": "data-table",
     "table-export-menu": "data-table",
     "table-import-button": "data-table",
-    "sheet-shell": "drawer",
-    "nav-tabs": "tabs",
-    "page-tabs": "tabs",
-    "stepper-tabs": "stepper",
-    "command-bar": "command-palette",
-    "data-list": "list",
-    "property-grid": "description-list",
-    "result": "page-state",
-    "app-header": "sidebar",
-    "page-header": "section",
-    "kpi": "statistic",
-    "progress-ring": "progress-circle",
-    "dialog-actions": "dialog",
-    "modal-shell": "dialog",
-    "horizontal-bar-chart": "data-view"
+    "horizontal-bar-chart": "charts",
+    "kpi": "statistic"
   }
 }

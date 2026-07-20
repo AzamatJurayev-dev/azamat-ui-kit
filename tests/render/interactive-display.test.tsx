@@ -6,6 +6,7 @@ import { describe, expect, it, vi } from "vitest"
 import { ActivityFeed } from "@/components/display/activity-feed"
 import { Carousel, CarouselItem } from "@/components/display/carousel"
 import { CodeBlock } from "@/components/display/code-block"
+import { ChatComposer, ChatMessage, ChatMessageList, ConversationList } from "@/components/display/chat"
 import { KanbanBoard } from "@/components/display/kanban"
 import { TreeView } from "@/components/display/tree-view"
 import { AsyncSelect } from "@/components/inputs/async-select"
@@ -176,9 +177,10 @@ describe("interactive display surfaces", () => {
     expect(screen.getByText("const b = 2").closest("[data-highlighted='true']")).toBeTruthy()
   })
 
-  it("supports kanban empty columns and keyboard card actions", async () => {
+  it("supports kanban empty columns, selection, and card actions", async () => {
     const user = userEvent.setup()
     const onCardClick = vi.fn()
+    const onSelectionChange = vi.fn()
 
     render(
       <KanbanBoard
@@ -187,15 +189,45 @@ describe("interactive display surfaces", () => {
           { key: "done", title: "Done", cards: [] },
         ]}
         onCardClick={onCardClick}
+        selectionMode="multiple"
+        onSelectionChange={onSelectionChange}
         onCardMove={() => undefined}
       />
     )
 
-    const card = screen.getByRole("button", { name: "Draft contract" })
-    card.focus()
-    await user.keyboard("{Enter}")
+    await user.click(screen.getByText("Draft contract"))
     expect(onCardClick).toHaveBeenCalledTimes(1)
+    await user.click(screen.getByRole("button", { name: "Select Draft contract" }))
+    expect(onSelectionChange).toHaveBeenCalledWith(["a"], expect.any(Array))
     expect(screen.getByText("No cards yet.")).toBeInTheDocument()
+  })
+
+  it("filters conversations and sends messages through chat primitives", async () => {
+    const user = userEvent.setup()
+    const onSend = vi.fn()
+
+    render(
+      <>
+        <ConversationList
+          items={[
+            { key: "atlas", participant: { name: "Atlas Retail" }, preview: "Invoice" },
+            { key: "nova", participant: { name: "Nova Bank" }, preview: "Security" },
+          ]}
+        />
+        <ChatMessageList><ChatMessage outgoing status="read">Ready</ChatMessage></ChatMessageList>
+        <ChatComposer onSend={onSend} />
+      </>
+    )
+
+    await user.type(screen.getByRole("searchbox", { name: "Search conversations..." }), "Nova")
+    expect(screen.getByText("Nova Bank")).toBeInTheDocument()
+    expect(screen.queryByText("Atlas Retail")).toBeNull()
+    expect(screen.getAllByRole("button", { name: "Clear" })).toHaveLength(1)
+
+    await user.type(screen.getByRole("textbox", { name: "Write a message..." }), "Ship the update")
+    await user.click(screen.getByRole("button", { name: "Send message" }))
+    expect(onSend).toHaveBeenCalledWith("Ship the update")
+    expect(screen.getByRole("textbox", { name: "Write a message..." })).toHaveValue("")
   })
 
   it("supports dual list search, transfer all, and max selected state", async () => {

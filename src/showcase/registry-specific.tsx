@@ -19,6 +19,12 @@ import {
   Button,
   ButtonGroup,
   Calendar,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
   DescriptionList,
   Drawer,
   FileUpload,
@@ -28,7 +34,7 @@ import {
   Input,
   List,
   OtpInput,
-  PageState,
+  StateView,
   Pagination,
   Progress,
   QuickActionGrid,
@@ -46,18 +52,16 @@ import {
   Timeline,
   Wizard,
   Avatar,
+  EmptyState,
 } from "@/index"
 import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
-import { FormBuilder, customField, formSection } from "@/components/patterns/form-builder"
-import { ResourceDetailPage } from "@/components/patterns/resource-detail-page"
-import { ResourcePage, ResourcePageSection } from "@/components/patterns/resource-page"
-import { useForm } from "react-hook-form"
 
 import type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps } from "./premium/types"
 
 type RegistryDemoKind =
   | "actions"
   | "calendar"
+  | "command"
   | "data-table"
   | "display"
   | "feedback"
@@ -99,16 +103,14 @@ const registryDemoDefinitions = [
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
   component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
+  component("command", "Command", "command", "Composable command surface for search palettes and in-page action pickers."),
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
-  component("page-state", "PageState", "feedback", "Full-page completion or blocked state with next actions."),
-  component("form-builder", "FormBuilder", "patterns", "Declarative form scaffold with sections and reusable field presets."),
+  component("state-view", "StateView", "feedback", "Route, inline, empty, loading, success and error states with next actions."),
   component("calendar", "Calendar", "calendar", "Single month calendar surface for date picker and scheduling flows."),
   component("file-upload", "FileUpload", "upload", "Full file upload surface with dropzone, action button and helper text."),
   component("image-upload", "ImageUpload", "upload", "Image upload pattern with preview-oriented copy.", "ImageUpload"),
   component("stepper", "Stepper", "wizard", "Clickable step navigation for multi-step forms."),
   component("wizard", "Wizard", "wizard", "Stepper, content and footer controls combined into one workflow."),
-  component("resource-page", "ResourcePage", "patterns", "Full resource index page shell for admin dashboards."),
-  component("resource-detail-page", "ResourceDetailPage", "patterns", "Detail page shell with title, metadata and sections."),
 ] satisfies RegistryDemoDefinition[]
 
 export const registrySpecificDemoRegistry: Record<string, ComponentDemoBundle> = Object.fromEntries(
@@ -213,6 +215,7 @@ function renderPreview(
   if (definition.kind === "layout") return <LayoutPreview slug={definition.slug} />
   if (definition.kind === "data-table") return <DataTablePartsPreview slug={definition.slug} />
   if (definition.kind === "calendar") return <CalendarPreview />
+  if (definition.kind === "command") return <CommandPreview />
   if (definition.kind === "upload") return <UploadPreview slug={definition.slug} />
   if (definition.kind === "wizard") return <WizardPreview slug={definition.slug} />
   if (definition.kind === "patterns") return <PatternsPreview slug={definition.slug} />
@@ -368,13 +371,13 @@ function FeedbackPreview({ slug }: { slug?: string }) {
     return <Alert tone="warning" title="Review needed" description="Billing rules changed and one approval is pending." action={<Button size="sm">Open</Button>} />
   }
 
-  if (slug === "page-state") {
+  if (slug === "state-view") {
     return (
-      <PageState
+      <StateView
+        status="success"
         title="Workspace connected"
         description="The route is ready to accept live data and team actions."
-        tone="success"
-        action={<Button size="sm">Continue</Button>}
+        actions={<Button size="sm">Continue</Button>}
       />
     )
   }
@@ -642,6 +645,22 @@ function CalendarPreview() {
   return <Calendar value="2026-06-18" defaultMonth="2026-06-01" onValueChange={() => undefined} />
 }
 
+function CommandPreview() {
+  return (
+    <Command className="mx-auto max-w-xl">
+      <CommandInput placeholder="Search actions..." />
+      <CommandList>
+        <CommandEmpty>No actions found.</CommandEmpty>
+        <CommandGroup heading="Workspace">
+          <CommandItem value="open-dashboard">Open dashboard</CommandItem>
+          <CommandItem value="invite-team">Invite team</CommandItem>
+          <CommandItem value="sync-data">Sync data</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </Command>
+  )
+}
+
 function UploadPreview({ slug }: { slug: string }) {
   if (slug === "file-upload") {
     return (
@@ -701,103 +720,7 @@ function WizardPreview({ slug }: { slug: string }) {
 }
 
 function PatternsPreview({ slug }: { slug: string }) {
-  if (slug === "form-builder") {
-    return <FormBuilderPreview />
-  }
-
-  if (slug === "resource-detail-page") {
-    return (
-      <ResourceDetailPage
-        title="Customer profile"
-        description="ResourceDetailPage organizes detail screens."
-        actions={<Button size="sm">Edit</Button>}
-      >
-        <ResourcePageSection title="Account">
-          <DescriptionList
-            items={[
-              { key: "plan", label: "Plan", value: "Scale" },
-              { key: "owner", label: "Owner", value: "Design team" },
-            ]}
-          />
-        </ResourcePageSection>
-      </ResourceDetailPage>
-    )
-  }
-
-  return (
-    <ResourcePage
-      title="Customers"
-      description="ResourcePage combines header, stats, filters and sections."
-      actions={<Button size="sm">New customer</Button>}
-      stats={<div className="grid gap-3 sm:grid-cols-2"><StatCard title="Active" value="2,418" trend={{ value: "+8%", tone: "success" }} /><StatCard title="Health" value="94%" trend={{ value: "Stable", tone: "info" }} /></div>}
-      filters={<FilterBar search={<Input type="search" value="" placeholder="Search..." readOnly />} activeCount={1} />}
-    >
-      <ResourcePageSection title="Recent activity">
-        <Timeline
-          items={[
-            { key: "a", title: "Customer added", description: "Acme workspace", tone: "success" },
-            { key: "b", title: "Plan updated", description: "Scale plan enabled", tone: "info" },
-          ]}
-        />
-      </ResourcePageSection>
-    </ResourcePage>
-  )
-}
-
-function FormBuilderPreview() {
-  type FormBuilderDemoValues = {
-    name: string
-    email: string
-    notes: string
-    marketing: boolean
-  }
-
-  const form = useForm<FormBuilderDemoValues>({
-    defaultValues: {
-      name: "Azamat Jurayev",
-      email: "azamat@example.com",
-      notes: "Release gate is ready.",
-      marketing: true,
-    },
-  })
-
-  const sections = [
-    formSection<FormBuilderDemoValues>({
-      id: "profile",
-      title: "Profile",
-      description: "Core account and contact fields.",
-      fields: [
-        customField<FormBuilderDemoValues>({
-          id: "profile-summary",
-          colSpan: "full",
-          render: () => (
-            <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-4">
-              <p className="text-sm font-semibold text-[color:var(--aui-page-foreground)]">Reusable section shell</p>
-              <p className="mt-1 text-sm text-[color:var(--aui-page-muted)]">
-                FormBuilder groups controls, helper copy and actions without scattering layout logic.
-              </p>
-            </div>
-          ),
-        }),
-      ],
-    }),
-  ]
-
-  return (
-    <FormBuilder<FormBuilderDemoValues>
-      control={form.control}
-      sections={sections}
-      columns={1}
-      submitLabel="Save changes"
-      resetLabel="Reset"
-      onResetClick={() => form.reset()}
-      footer={
-        <div className="rounded-2xl border border-dashed border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm text-[color:var(--aui-page-muted)]">
-          Use the builder for real form routes, then replace this preview with your own field presets.
-        </div>
-      }
-    />
-  )
+  return <EmptyState title="No records" description={`${slug} is now composed from reusable primitives.`} primaryAction={{ label: "Create record" }} />
 }
 
 function toTitle(slug: string) {

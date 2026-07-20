@@ -46,6 +46,7 @@ export type ButtonProps = ButtonPrimitive.Props &
     iconOnly?: boolean
     fullWidth?: boolean
     pressed?: boolean
+    labelClassName?: string
   }
 
 function Button({
@@ -60,6 +61,7 @@ function Button({
   iconOnly = false,
   fullWidth = false,
   pressed = false,
+  labelClassName,
   children,
   "aria-label": ariaLabel,
   ...props
@@ -96,7 +98,7 @@ function Button({
           {leftIcon}
         </span>
       ) : null}
-      {children ? <span data-slot="button-label">{loading ? loadingLabel : children}</span> : null}
+      {children ? <span data-slot="button-label" className={cn("inline-flex min-w-0 items-center gap-[inherit]", labelClassName)}>{loading ? loadingLabel : children}</span> : null}
       {!loading && rightIcon ? (
         <span data-icon="inline-end" data-slot="button-icon" className="inline-flex shrink-0 items-center justify-center">
           {rightIcon}

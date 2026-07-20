@@ -2,6 +2,10 @@ import * as React from "react"
 
 import { Badge, Button, FileUpload } from "@/index"
 
+function getFileKey(file: File) {
+  return `${file.name}-${file.size}-${file.lastModified}`
+}
+
 export function FileUploadShowcase() {
   const [files, setFiles] = React.useState<File[]>([])
   const [status, setStatus] = React.useState<Record<string, "idle" | "uploading" | "success" | "error">>({})
@@ -14,22 +18,23 @@ export function FileUploadShowcase() {
       new File(["contract draft"], "contract.docx", { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", lastModified: now + 1 }),
       new File(["preview image"], "preview.png", { type: "image/png", lastModified: now + 2 }),
     ]
-    const keys = samples.map((file) => `${file.name}-${file.size}-${file.lastModified}`)
+    const keys = samples.map(getFileKey)
     setFiles(samples)
     setStatus({ [keys[0]]: "uploading", [keys[1]]: "error", [keys[2]]: "success" })
     setProgress({ [keys[0]]: 46, [keys[1]]: 72, [keys[2]]: 100 })
   }
 
-  React.useEffect(() => {
+  const handleFilesChange = (nextFiles: File[]) => {
+    setFiles(nextFiles)
     setStatus((current) => {
       const next = { ...current }
-      files.forEach((file, index) => {
-        const key = `${file.name}-${file.size}-${file.lastModified}`
+      nextFiles.forEach((file, index) => {
+        const key = getFileKey(file)
         next[key] ??= index === 0 ? "uploading" : index === 1 ? "error" : "success"
       })
       return next
     })
-  }, [files])
+  }
 
   return (
     <div className="space-y-4">
@@ -56,7 +61,7 @@ export function FileUploadShowcase() {
 
       <FileUpload
         files={files}
-        onFilesChange={setFiles}
+        onFilesChange={handleFilesChange}
         status={status}
         accept=".pdf,.docx,.png"
         maxFiles={4}
@@ -71,7 +76,7 @@ export function FileUploadShowcase() {
           "max-size": "This asset exceeds the 4 MB release limit.",
         }}
         onRetryFile={(file) => {
-          const key = `${file.name}-${file.size}-${file.lastModified}`
+          const key = getFileKey(file)
           setStatus((current) => ({ ...current, [key]: "uploading" }))
           setProgress((current) => ({ ...current, [key]: 35 }))
           window.setTimeout(() => {

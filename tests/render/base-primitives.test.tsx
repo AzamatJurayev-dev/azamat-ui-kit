@@ -28,9 +28,22 @@ import {
   Switch,
   RadioGroup,
   Tag,
+  StatisticCard,
+  StatisticGrid,
 } from "@/index"
 
 describe("base primitives", () => {
+  it("supports compact statistic cards and configurable grid gaps", () => {
+    const { container } = render(
+      <StatisticGrid gap="sm">
+        <StatisticCard density="compact" label="Revenue" value="$42k" change="+8%" trend="up" />
+      </StatisticGrid>
+    )
+
+    expect(container.querySelector("[data-slot='statistic-grid']")).toHaveClass("gap-3")
+    expect(container.querySelector("[data-slot='statistic-card']")).toHaveAttribute("data-density", "compact")
+  })
+
   it("renders button content, icons and loading state", () => {
     render(
       <Button leftIcon={<span aria-hidden="true">L</span>} rightIcon={<span aria-hidden="true">R</span>}>
@@ -284,7 +297,9 @@ describe("base primitives", () => {
     const badge = screen.getByText("Beta").closest("[data-slot='badge']")
     expect(badge?.getAttribute("data-variant")).toBe("soft")
 
-    await user.click(screen.getByRole("button", { name: "Remove badge" }))
+    const badgeRemove = badge?.querySelector<HTMLButtonElement>('[data-slot="badge-remove"]')
+    expect(badgeRemove).toBeTruthy()
+    await user.click(badgeRemove!)
     expect(onBadgeRemove).toHaveBeenCalledTimes(1)
 
     const tag = screen.getByText("Priority").closest("[data-slot='tag']") as HTMLElement
@@ -433,6 +448,18 @@ describe("base primitives", () => {
     expect(card?.getAttribute("data-tone")).toBe("warning")
     expect(card?.getAttribute("data-disabled")).toBe("true")
     expect(card?.getAttribute("aria-disabled")).toBe("true")
+  })
+
+  it("keeps the base card surface marker when a composed component owns data-slot", () => {
+    render(
+      <Card data-slot="statistic-card">
+        <CardContent>Composed card</CardContent>
+      </Card>
+    )
+
+    const card = screen.getByText("Composed card").closest("[data-slot='statistic-card']")
+    expect(card).toBeTruthy()
+    expect(card?.hasAttribute("data-card")).toBe(true)
   })
 
   it("keeps nested cards visually downgraded without breaking content structure", () => {

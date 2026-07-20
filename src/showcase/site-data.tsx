@@ -7,7 +7,6 @@ import {
   BoxIcon,
   ChevronRightIcon,
   ComponentIcon,
-  CreditCardIcon,
   BellIcon,
   DatabaseIcon,
   CalendarClockIcon,
@@ -348,12 +347,14 @@ export const componentGroupMeta: Record<ComponentGroup, ComponentGroupMeta> = {
   },
 }
 
-const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd"])
+const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd", "toggle-group", "toolbar"])
 const formControlComponentSlugs = new Set([
   "select",
+  "combobox",
   "async-select",
   "async-multi-select",
   "radio-group",
+  "number-field",
   "date-picker",
   "date-range-picker",
   "form-field-shell",
@@ -365,10 +366,10 @@ const formControlComponentSlugs = new Set([
   "form-date-picker",
   "form-date-range-picker",
 ])
-const overlayComponentSlugs = new Set(["dialog", "popover", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "alert-dialog", "drawer"])
-const layoutComponentSlugs = new Set(["sidebar", "breadcrumbs", "section"])
-const feedbackComponentSlugs = new Set(["toast", "loading-state", "empty-state"])
-const patternComponentSlugs = new Set(["form-builder", "resource-page", "resource-detail-page", "page-toolbar", "bulk-action-bar", "detail-layout", "settings-page", "data-view"])
+const overlayComponentSlugs = new Set(["dialog", "popover", "hover-card", "dropdown-menu", "tooltip", "right-click-menu", "confirm-dialog", "alert-dialog", "drawer"])
+const layoutComponentSlugs = new Set(["sidebar", "breadcrumbs", "section", "navigation-menu", "menubar"])
+const feedbackComponentSlugs = new Set(["toast", "state-view", "empty-state"])
+const patternComponentSlugs = new Set<string>([])
 
 const legacyComponentSlugAliases = new Map<string, string>([
   ["app-sidebar", "sidebar"],
@@ -380,10 +381,8 @@ const legacyComponentSlugAliases = new Map<string, string>([
   ["form-date-input", "form-input"],
   ["confirm-action", "confirm-dialog"],
   ["file-dropzone", "file-upload"],
-  ["hover-card", "popover"],
   ["metric-card", "statistic"],
   ["nav-tabs", "tabs"],
-  ["section-header", "section"],
   ["side-panel", "sidebar"],
   ["status-dot", "status-legend"],
 ]) 
@@ -485,6 +484,27 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["disabled", "boolean", "false", "Disables the trigger."],
     ],
     features: ["Primary choice input", "Local filtering", "Compact trigger", "Preset-friendly API"],
+  },
+  {
+    slug: "combobox",
+    title: "Combobox",
+    description: "Searchable local choice input for static datasets, owners, tags, and filter controls.",
+    icon: ComponentIcon,
+    category: "Forms",
+    status: "Preview",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ["value", "string", "-", "Controlled selected value."],
+      ["defaultValue", "string", "-", "Initial selected value."],
+      ["onValueChange", "(value, option?) => void", "-", "Selection callback with the resolved option."],
+      ["options", "ComboboxOption[]", "-", "Flat local option list."],
+      ["groups", "ComboboxGroup[]", "-", "Grouped local options with section labels."],
+      ["searchable", "boolean", "true", "Shows the built-in local search input."],
+      ["clearable", "boolean", "true", "Allows clearing the selected value."],
+      ["filterOption", "(option, search) => boolean", "-", "Custom local filtering contract."],
+      ["renderOption", "(option, state) => ReactNode", "-", "Custom option row renderer."],
+    ],
+    features: ["Local search", "Grouped options", "Clearable value", "Custom renderers"],
   },
   {
     slug: "async-select",
@@ -731,35 +751,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onValueChange", "(value: { from: string; to: string }) => void", "-", "Range callback for form state updates."],
     ],
     features: [...formRHFWrapperCommonFeatures, "Range-specific validation", "Date range constraints", "Accessible error mapping"],
-  },
-  {
-    slug: "form-builder",
-    title: "Form Builder",
-    description: "RHF section builder for schema-driven forms with submit/reset and disabled/read-only modes.",
-    icon: FileTextIcon,
-    category: "Forms",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["control", "Control<TFieldValues>", "-", "RHF control passed to all generated sections."],
-      ["fields", "FormBuilderField<TFieldValues, string>[]", "-", "Explicit field descriptors for full control."],
-      ["sections", "FormBuilderSection<TFieldValues>[]", "-", "Form section descriptors with grouped presets."],
-      ["submitLabel", "string", "\"Save\"", "Submit button text."],
-      ["resetLabel", "string", "\"Reset\"", "Reset button text."],
-      ["disabled", "boolean", "false", "Disables all controls and actions in builder."],
-      ["readOnly", "boolean", "false", "Read-only state for generated field controls."],
-      ["columns", "1 | 2 | 3", "1", "Grid column count for generated sections."],
-      ["onSubmit", "(values) => Promise<void> | void", "-", "Submit handler for generated `<form>` events."],
-    ],
-    features: [
-      "Field schema",
-      "Section composition",
-      "Custom render hooks",
-      "Submit and reset control",
-      "Disabled/readOnly pass-through",
-      "Preset factories (inputField, phoneField, ...)",
-    ],
-  },
+  },
   {
     slug: "radio-group",
     title: "Radio Group",
@@ -984,7 +976,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     status: "Stable",
     installCommand: PACKAGE_INSTALL_COMMAND,
     propsRows: [
-      ["items", "AppSidebarNavItem[]", "[]", "Sidebar entries with active, disabled, badge and callback state."],
+      ["items", "SidebarItem[]", "[]", "Sidebar entries with active, disabled, badge and callback state."],
       ["header", "ReactNode", "-", "Optional content rendered above navigation items."],
       ["footer", "ReactNode", "-", "Optional footer actions or account area."],
       ["collapsed", "boolean", "false", "Compact sidebar mode for dense layouts."],
@@ -993,6 +985,23 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["renderLink", "(props) => ReactNode", "-", "Override anchor rendering for router integration."],
     ],
     features: ["Navigation sidebar", "Collapsed state", "Header and footer slots", "Router-friendly rendering"],
+  },
+  {
+    slug: "workspace-layout",
+    title: "Workspace Layout",
+    description: "Viewport-safe shell with fixed navigation, structured header and independently scrolling main content.",
+    icon: LayoutDashboardIcon,
+    category: "Components",
+    status: "Stable",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ["viewport", "boolean", "true", "Use dynamic viewport height and prevent body scrolling."],
+      ["SidebarProvider", "Component", "-", "Coordinates desktop collapse and mobile drawer state."],
+      ["WorkspaceContent", "Component", "-", "Contains header and route content without overflow leaks."],
+      ["WorkspaceHeader", "Component", "-", "Canonical product header for shell-level controls."],
+      ["WorkspaceMain", "Component", "-", "Owns route scrolling and optional responsive padding."],
+    ],
+    features: ["Viewport-safe shell", "Provider-driven sidebar", "Independent main scroll", "Mobile navigation state"],
   },
   {
     slug: "breadcrumbs",
@@ -1010,25 +1019,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["currentItemLabel", "string", "-", "Accessible label for the current page item."],
     ],
     features: ["Navigation context", "Custom separators", "Custom links", "Current state support"],
-  },
-  {
-    slug: "page-header",
-    title: "Page Header",
-    description: "Top-level page heading block with breadcrumbs, actions and optional meta area.",
-    icon: CreditCardIcon,
-    category: "Components",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["title", "ReactNode", "-", "Primary heading text."],
-      ["description", "ReactNode", "-", "Subtext explanation for current page."],
-      ["eyebrow", "ReactNode", "-", "Small uppercase lead text."],
-      ["breadcrumbs", "ReactNode", "-", "Optional breadcrumb trail."],
-      ["actions", "ReactNode", "-", "Actions rendered on the right side."],
-      ["meta", "ReactNode", "-", "Secondary metadata block."],
-      ["sticky", "boolean", "false", "Enable sticky positioning in scroll containers."],
-    ],
-    features: ["Page context", "Action areas", "Breadcrumb composition", "Sticky header option"],
   },
   {
     slug: "info-card",
@@ -1070,6 +1060,24 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Audit timeline", "Empty state handling", "Compact mode", "Action rows"],
   },
   {
+    slug: "state-view",
+    title: "State View",
+    description: "Canonical empty, loading, error, success and informational state surface for routes and embedded panels.",
+    icon: AlertCircleIcon,
+    category: "Data Display",
+    status: "Stable",
+    installCommand: PACKAGE_INSTALL_COMMAND,
+    propsRows: [
+      ["status", "StateViewStatus", "'empty'", "Controls semantics, icon and default copy."],
+      ["variant", "'card' | 'plain' | 'inline'", "'card'", "Selects the surrounding surface."],
+      ["size", "'compact' | 'default' | 'page'", "'default'", "Controls density and minimum height."],
+      ["onRetry", "() => void", "-", "Adds a consistent recovery action."],
+      ["onClear", "() => void", "-", "Adds clear behavior for filtered empty states."],
+      ["loadingVariant", "'spinner' | 'skeleton' | 'progress'", "'spinner'", "Selects loading feedback."],
+    ],
+    features: ["One canonical state API", "Accessible live regions", "Retry and clear actions", "Spinner, skeleton and progress"],
+  },
+  {
     slug: "data-state",
     title: "Data State",
     description: "Unified data state block for empty, search-empty, loading, error and success surfaces.",
@@ -1088,24 +1096,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onClear", "() => void", "-", "Clear callback for search-empty states."],
     ],
     features: ["Empty/search-empty states", "Error retry", "Plain table fallback", "Inline state rows"],
-  },
-  {
-    slug: "loading-state",
-    title: "Loading State",
-    description: "Scoped loading block with spinner, skeleton, or progress variants for real route and panel states.",
-    icon: SparklesIcon,
-    category: "Data Display",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["label", "ReactNode", "-", "Loading heading."],
-      ["description", "ReactNode", "-", "Loading explanation text."],
-      ["icon", "ReactNode", "-", "Optional loading icon."],
-      ["variant", "'spinner' | 'skeleton' | 'progress'", "'spinner'", "Visual loading style."],
-      ["progress", "number", "-", "Progress amount when `variant` is `progress`."],
-      ["className", "string", "-", "Container class override."],
-    ],
-    features: ["Spinner, skeleton and progress", "Section loading labels", "Scoped placeholders", "Custom icon"],
   },
   {
     slug: "scroll-box",
@@ -1194,7 +1184,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
       ["onRowClick", "(row) => void", "-", "Row click callback."],
       ["isLoading", "boolean", "false", "Loading indicator state."],
       ["isError", "boolean", "false", "Error state flag for fallback."],
-      ["loadingState", "LoadingState", "-", "Loading UI when `isLoading` is true."],
+      ["loadingState", "Omit<StateViewProps, \"status\">", "-", "Loading UI when `isLoading` is true."],
       ["emptyState", "Omit<DataStateProps, \"status\">", "-", "State shown when no rows are present."],
       ["errorState", "ErrorState", "-", "State shown when `isError` is true."],
     ],
@@ -1257,7 +1247,7 @@ export const componentRelations: ComponentRelationMap = {
   },
   "form-switch": {
     groupSlugs: ["form"],
-    componentSlugs: ["form-field-shell", "switch", "checkbox", "form-builder"],
+    componentSlugs: ["form-field-shell", "switch", "checkbox"],
   },
   "form-date-range-input": {
     groupSlugs: ["form", "filters"],
@@ -1270,11 +1260,7 @@ export const componentRelations: ComponentRelationMap = {
   "form-date-range-picker": {
     groupSlugs: ["form", "filters"],
     componentSlugs: ["date-range-picker", "form-date-range-input", "calendar", "form-field-shell"],
-  },
-  "form-builder": {
-    groupSlugs: ["patterns", "form"],
-    componentSlugs: ["form-field-shell", "form-input", "form-switch", "form-textarea", "form-select"],
-  },
+  },
   checkbox: {
     groupSlugs: ["form"],
     componentSlugs: ["switch", "button", "card"],
@@ -1349,11 +1335,7 @@ export const componentRelations: ComponentRelationMap = {
   },
   "data-state": {
     groupSlugs: ["display"],
-    componentSlugs: ["loading-state", "data-table"],
-  },
-  "loading-state": {
-    groupSlugs: ["display"],
-    componentSlugs: ["data-state", "data-table"],
+    componentSlugs: ["state-view", "data-table"],
   },
   "scroll-box": {
     groupSlugs: ["display", "layout"],
@@ -1387,7 +1369,7 @@ const primaryComponentSurfaceSlugs = new Set([
   "data-table",
   "info-card",
   "activity-feed",
-  "loading-state",
+  "state-view",
   "toast",
   "notification-center",
   "progress",
@@ -1408,11 +1390,10 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "form-date-picker": "date-picker",
   "form-date-range-picker": "date-picker",
   "confirm-dialog": "dialog",
-  "app-header": "sidebar",
+  "app-header": "workspace-layout",
   section: "sidebar",
   toolbar: "sidebar",
   "split-layout": "sidebar",
-  "page-header": "breadcrumbs",
   table: "data-table",
 }
 
@@ -1545,7 +1526,14 @@ const internalComponentCatalogSlugs = new Set([
   "form-select",
   "form-switch",
   "form-textarea",
-  "page-header",
+  "feedback",
+  "layout",
+  "use-before-unload-when-dirty",
+  "use-data-table-view-state",
+  "use-debounce",
+  "use-disclosure",
+  "use-is-mobile",
+  "use-session-storage-state",
 ])
 
 const hiddenKitGroups = new Set(["kits"])
@@ -1703,9 +1691,6 @@ const packageDocsSurfaceCatalogMap = new Map(packageDocsSurfaceCatalog.map((item
 const hiddenPrimaryComponentCatalogSlugs = new Set([
   ...internalComponentCatalogSlugs,
   "app-header",
-  "page-header",
-  "resource-page",
-  "resource-detail-page",
 ])
 const hiddenDirectoryComponentSlugs = new Set([...hiddenPrimaryComponentCatalogSlugs, ...legacyComponentSlugAliases.keys()])
 
@@ -1946,7 +1931,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Metrics, activity, avatars, timelines and descriptive content surfaces.",
     icon: DatabaseIcon,
     category: "Data",
-    exports: ["DescriptionList", "Progress", "PageState", "Timeline", "Statistic", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
+    exports: ["DescriptionList", "Progress", "StateView", "Timeline", "Statistic", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
     href: componentModulePath("display"),
     status: "Stable",
     features: ["Metric grids", "Timelines", "Activity feeds", "Status legends"],
@@ -2154,7 +2139,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Pipeline snapshots, team handoff sections, and account-focused operational dashboards.",
     category: "Product",
     tags: ["CRM", "Pipeline", "Kanban"],
-    uses: ["ResourcePage", "Badge", "Tabs", "ActivityFeed"],
+    uses: ["DataTable", "Badge", "Tabs", "ActivityFeed"],
     tone: "from-[color:color-mix(in_oklch,var(--aui-accent)_10%,var(--aui-page-bg-alt))] to-[color:var(--aui-page-bg)]",
     href: blockPath("crm-dashboard"),
     previewTone: "crm",
@@ -2260,7 +2245,7 @@ export const blockCards: BlockCard[] = [
     bestFor: "Billing or finance tables that need status columns, invoice actions, and readable operational totals.",
     category: "Table",
     tags: ["Finance", "Invoices", "Status"],
-    uses: ["DataTable", "Badge", "Button", "ResourcePage"],
+    uses: ["DataTable", "Badge", "Button", "DataTable"],
     tone: "from-[color:color-mix(in_oklch,var(--aui-accent)_12%,var(--aui-page-bg-alt))] to-[color:var(--aui-page-bg)]",
     href: blockPath("invoices-page"),
     previewHref: "/preview/blocks/table-01",

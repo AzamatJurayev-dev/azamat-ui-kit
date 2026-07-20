@@ -12,6 +12,8 @@ import { CommandPalette } from "@/components/command/command-palette"
 import { SavedFilterSelect } from "@/components/filters/saved-filter-select"
 import { NotificationCenter } from "@/components/notifications/notification-center"
 import { Badge } from "@/components/ui/badge"
+import { StateView } from "@/components/feedback/state-view"
+import { Tag } from "@/components/display/tag"
 
 describe("New components rendering tests", () => {
   it("renders InfoCard as the universal summary card", () => {
@@ -64,6 +66,28 @@ describe("New components rendering tests", () => {
     expect(screen.getByText("Workspace ready")).toBeInTheDocument()
     expect(screen.getByText("Live")).toBeInTheDocument()
     expect(screen.getByText("Footer details")).toBeInTheDocument()
+  })
+
+  it("uses StateView as the canonical state contract", async () => {
+    const onRetry = vi.fn()
+    const user = userEvent.setup()
+    render(<StateView status="error" title="Request failed" onRetry={onRetry} />)
+
+    expect(screen.getByRole("alert")).toHaveAttribute("data-slot", "state-view")
+    await user.click(screen.getByRole("button", { name: "Retry" }))
+    expect(onRetry).toHaveBeenCalledOnce()
+  })
+
+  it("keeps Tag as a thin Badge compatibility surface", async () => {
+    const onRemove = vi.fn()
+    const user = userEvent.setup()
+    render(<Tag removable onRemove={onRemove}>Billing</Tag>)
+
+    const tag = screen.getByText("Billing").closest('[data-slot="tag"]')
+    expect(tag).toHaveAttribute("data-tone", "neutral")
+    ;(tag as HTMLElement | null)?.focus()
+    await user.keyboard("{Delete}")
+    expect(onRemove).toHaveBeenCalledOnce()
   })
 
   it("renders CommandPalette", () => {

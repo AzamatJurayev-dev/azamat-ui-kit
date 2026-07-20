@@ -2,6 +2,149 @@
 
 All notable changes to this project will be documented in this file.
 
+## 6.1.0 - 2026-07-18
+
+### Added
+
+- Added 10 product-grade public components: `MultiSelect`, `ActionToast`, `ChartCard`, `AsyncBoundary`, `AdvancedCommandMenu`, `PermissionsMatrix`, `CalendarRangeScheduler`, `FileManager`, `CalendarDateTimePicker`, and `DataGrid`.
+- Added registry `kind` metadata so real components, presets, aliases, hooks, utilities, and internal entries are separated instead of being counted as one mixed component list.
+- Added dashboard, calendar, command, feedback, file management, data grid, chart, notification, input, and permissions coverage to the source-copy registry.
+
+### Changed
+
+- Simplified the primary component surface by moving duplicate or composable entries into `alias`, `preset`, `hook`, `utility`, or `internal` kinds.
+- Expanded dashboard preset coverage with `async-boundary`, `chart-card`, and `multi-select` so generated apps exercise richer real-project UI states.
+
+## 6.0.3 - 2026-07-18
+
+### Fixed
+
+- Fixed the showcase template sidebar import path so generated workbenches use the canonical `layout/sidebar` component.
+
+## 6.0.2 - 2026-07-18
+
+### Fixed
+
+- Added an npm peer-resolution fallback for CLI dependency installs so existing projects with older rich text editor peer packages can still upgrade through `tembro add`.
+
+## 6.0.1 - 2026-07-18
+
+### Fixed
+
+- Pinned Tiptap install specs used by the CLI so rich text editor dependencies resolve as one compatible package family during `tembro add`.
+
+## 6.0.0 - 2026-07-18
+
+### Added
+
+- Added `NumberField`, `ToggleGroup`, and `Toolbar` as canonical product UI primitives.
+
+### Removed
+
+- Removed duplicate composition wrappers from code and registry: `loading-state`, `page-state`, `page-header`, `page-container`, `section-header`, `sidebar-nav`, `sticky-footer-bar`, and `progress-ring`.
+
+### Changed
+
+- Updated `DataTable` loading customization to use `StateView` props and made `ProgressCircle` independent from the removed ring alias.
+
+## 5.0.0 - 2026-07-18
+
+### Added
+
+- Added `HoverCard`, `Menubar`, and `NavigationMenu` as real source-copy primitives backed by Base UI.
+
+### Removed
+
+- Removed composed page/pattern components from the package code and registry: `form-builder`, `page-toolbar`, `bulk-action-bar`, `detail-layout`, `settings-page`, `data-view`, `resource-page`, and `resource-detail-page`.
+- Removed related root exports, CLI registry entries, docs surface entries, and source-copy vendor files for those pattern components.
+
+### Changed
+
+- Kept `empty-state` as the only `patterns` component because it is still a reusable primitive-level surface.
+
+## 4.2.1 - 2026-07-18
+
+### Changed
+
+- Hardened `PopoverContent` with default surface background, border, text color and shadow so combobox and dropdown panels do not blend into content behind them.
+- Republished the expanded 4.2 component surface with the popover layering fix included in CLI source-copy assets.
+
+## 4.2.0 - 2026-07-18
+
+### Added
+
+- Added source-copy `Combobox` with grouped options, search, clear controls, controlled/uncontrolled state, custom renderers and custom filtering.
+- Promoted common primitives to the documented public surface: `textarea`, `combobox`, `async-select`, `switch`, `radio-group`, `dropdown-menu`, `popover`, `tooltip`, `pagination`, `toast`, `notification-center` and `breadcrumbs`.
+- Added chat demo snippets and registry/showcase coverage for newly promoted components.
+
+### Changed
+
+- Moved composed page-pattern surfaces such as `resource-page`, `settings-page`, `data-view`, `detail-layout`, `page-toolbar`, `bulk-action-bar` and `form-builder` out of the primary install surface so the component set focuses on reusable primitives.
+
+## 4.1.0 - 2026-07-17
+
+### Added
+
+- Added reusable chat workspace primitives for conversation lists, messages, replies, attachments, reactions, typing states, delivery status, and message composition.
+- Added named theme support with `data-theme`, color-scheme mapping, system mode, theme cycling, and built-in light, dark, and dim presets.
+- Added Kanban WIP limits, controlled selection, rich task metadata, add-card/add-column actions, density, column sizing, and move policies.
+
+### Changed
+
+- Expanded Sidebar with inset/floating/offcanvas variants, search, persistence, keyboard collapse, item actions, accessible collapsed labels, and corrected mobile drawer geometry.
+- Expanded RichTextEditor with grouped responsive controls, headings, block tools, link actions, format clearing, sticky/compact toolbar modes, and word/character counts.
+- Improved Badge dot, pulse, avatar, icon, remove, focus, and interactive states; centered tag and clear icons and removed duplicate native search cancel controls.
+- Corrected ActivityFeed and Timeline connector alignment and strengthened viewport-only sidebar/main scrolling behavior.
+
+## 4.0.1 - 2026-07-17
+
+### Changed
+
+- Fixed viewport workspaces so the document never competes with `WorkspaceMain` for vertical scrolling.
+- Rebalanced light and dark surface, border, elevation, hover, active, and keyboard-focus tokens.
+- Added multi-series grouped and stacked bars, multi-series line and gradient area charts, legends, curves, dots, and accessible series tables.
+- Improved responsive chart and dashboard composition while preserving the existing single-series API.
+
+## 4.0.0 - 2026-07-17
+
+### Added
+
+- Added the canonical `WorkspaceLayout`, `WorkspaceContent`, `WorkspaceMain`, `WorkspaceHeader`, `SidebarProvider`, and `SidebarTrigger` application shell.
+- Added `StateView` as the shared loading, empty, error, success, and informational state primitive.
+- Rebuilt bar, line, area, sparkline, and donut charts on Recharts with responsive sizing, tooltips, negative domains, deterministic rendering, and accessible table fallbacks.
+
+### Changed
+
+- Renamed source-copy layout files to `sidebar.tsx` and `workspace-header.tsx`; public components now use their real `Sidebar` and `WorkspaceHeader` names.
+- Consolidated `PageState`, `InlineState`, `LoadingState`, `DataState`, `EmptyState`, and `ErrorState` as compatibility adapters over `StateView`.
+- Consolidated `Tag` and `Chip` behavior around `Badge`, and removed duplicated status-dot rendering from `StatusLegend`.
+- Expanded `Section`, `ResourcePage`, `SplitLayout`, `InfoCard`, and `Badge` configuration while reducing overlapping wrappers.
+- Removed showcase/demo source from the production library and CLI vendor payload, reducing the packed package from roughly 5.3 MB unpacked and 3,013 files to roughly 3 MB and 1,200 files.
+
+### Breaking
+
+- Removed package exports for `./showcase` and `./showcase/*`; showcase code is development-only.
+- Removed deprecated `AppHeader`, `AppHeaderProps`, and `AppSidebarProps` exports. Use `WorkspaceHeader`, `WorkspaceHeaderProps`, and `SidebarProps`.
+- Renamed sidebar `data-slot` values from `app-sidebar*` to `sidebar*`; custom CSS selectors must be updated.
+
+## 3.1.17 - 2026-07-16
+
+- Added production-ready `agenda` and `board` variants, density controls, rich event metadata, selection state, hidden/disabled events, custom rendering, and formatted day labels to `CalendarScheduler`.
+- Added a compact trigger variant to `DatePicker` for dense filters, headers, and scheduling toolbars.
+- Added compact density to `StatisticCard` and configurable gaps to `StatisticGrid`.
+- Added `labelClassName` and a stable inline-flex label layout to `Button`, fixing complex icon/value/action labels that previously stacked vertically.
+- Updated the CalendarScheduler showcase and regression coverage for the expanded API.
+
+## 3.1.16 - 2026-07-16
+
+- Fixed composed Card surfaces so `StatisticCard`, `InfoCard`, `ActivityFeed`, and other Card-based components retain base border, background, radius, and variant styling.
+- Added compatibility aliases for legacy theme tokens used by installed components.
+- Fixed `StatusLegend` surfaces and item borders in light and dark themes.
+- Reduced default Card elevation and strengthened the light-theme border for dense application layouts.
+- Fixed `FormBuilder` field preset typing so discriminated input and select props remain usable in strongly typed React Hook Form schemas.
+- Prevented `ResizablePanel` sizing props from leaking to DOM elements.
+- Made `ResourcePage`, `ResourceDetailPage`, and `DetailLayout` reserve an aside column only when aside content exists.
+
 ## 3.1.15 - 2026-07-16
 
 - Fixed `NotificationCenter` to use solid, fallback-safe popover surfaces when host apps do not define optional `--aui-*` theme tokens.

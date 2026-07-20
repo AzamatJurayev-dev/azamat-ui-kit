@@ -10,7 +10,6 @@ const registryStatusTsPath = path.join(root, "cli/registry-status.ts")
 const presetComponentsTsPath = path.join(root, "cli/preset-files.ts")
 const publicComponentSurfaceTsPath = path.join(root, "src/public-component-surface.ts")
 const showcaseRegistryJsonPath = path.join(root, "src/showcase/tembro-registry.json")
-const vendorShowcaseRegistryJsonPath = path.join(root, "packages/cli/vendor/src/showcase/tembro-registry.json")
 
 const failures = []
 
@@ -121,7 +120,6 @@ const registryStatuses = extractRegistryStatuses(registryStatusTs)
 const presetComponents = extractPresetComponents(presetComponentsTs)
 const publicComponentSurfaceTs = readText(publicComponentSurfaceTsPath)
 const showcaseRegistryJson = readJson(showcaseRegistryJsonPath)
-const vendorShowcaseRegistryJson = readJson(vendorShowcaseRegistryJsonPath)
 const unionNames = extractedUnionNames.length > 0 ? extractedUnionNames : registryNames
 const unionSet = new Set(unionNames)
 const registrySet = new Set(registryNames)
@@ -199,15 +197,6 @@ if (registryJson && showcaseRegistryJson) {
 
   if (showcaseRegistrySnapshot !== registrySnapshot) {
     failures.push("src/showcase/tembro-registry.json does not match registry.json")
-  }
-}
-
-if (registryJson && vendorShowcaseRegistryJson) {
-  const registrySnapshot = JSON.stringify(registryJson)
-  const vendorShowcaseRegistrySnapshot = JSON.stringify(vendorShowcaseRegistryJson)
-
-  if (vendorShowcaseRegistrySnapshot !== registrySnapshot) {
-    failures.push("packages/cli/vendor/src/showcase/tembro-registry.json does not match registry.json")
   }
 }
 

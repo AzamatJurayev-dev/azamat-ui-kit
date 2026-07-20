@@ -13,6 +13,7 @@ import {
 
 import {
   ActionMenu,
+  Accordion,
   Alert,
   AlertDialog,
   Badge,
@@ -22,6 +23,7 @@ import {
   Calendar,
   ChartFrame,
   ChartLegend,
+  Combobox,
   CommandPalette,
   DescriptionList,
   DonutChart,
@@ -32,13 +34,16 @@ import {
   Input,
   List,
   OtpInput,
-  PageState,
   Pagination,
   Progress,
   QuickActionGrid,
   RangeSlider,
   Rating,
   Slider,
+  Sidebar,
+  SidebarProvider,
+  SidebarTrigger,
+  StateView,
   StatusDot,
   StatusLegend,
   Stepper,
@@ -48,11 +53,14 @@ import {
   TabsTrigger,
   Timeline,
   Wizard,
+  WorkspaceContent,
+  WorkspaceHeader,
+  WorkspaceLayout,
+  WorkspaceMain,
   Avatar,
+  EmptyState,
 } from "@/index"
 import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
-import { ResourceDetailPage } from "@/components/patterns/resource-detail-page"
-import { ResourcePage, ResourcePageSection } from "@/components/patterns/resource-page"
 
 import type { ShowcaseDemoDefinition, ShowcaseDemoProps } from "./types"
 
@@ -123,6 +131,25 @@ function InputPreview({
 
   if (slug === "tag-input") {
     return <TagInput defaultValue={["dashboard", "beta", "ops"]} placeholder="Add label" />
+  }
+
+  if (slug === "combobox") {
+    return (
+      <Combobox
+        defaultValue="ops"
+        labels={{ placeholder: "Choose workspace", searchPlaceholder: "Search teams..." }}
+        groups={[
+          {
+            label: "Teams",
+            options: [
+              { value: "ops", label: "Operations", description: "Tickets, billing, and support" },
+              { value: "sales", label: "Sales", description: "Pipeline and account handoff" },
+              { value: "product", label: "Product", description: "Roadmap and launch planning" },
+            ],
+          },
+        ]}
+      />
+    )
   }
 
   return <Input value={value} onChange={(event) => setState({ textValue: event.currentTarget.value })} placeholder="Unified input" />
@@ -206,6 +233,19 @@ function OverlayPreview({ slug }: { slug: string }) {
 }
 
 function NavigationPreview({ slug }: { slug: string }) {
+  if (slug === "accordion") {
+    return (
+      <Accordion
+        type="single"
+        defaultValue="install"
+        items={[
+          { key: "install", title: "Install with CLI", description: "Copy source into your app.", content: "Run npx tembro add accordion, then edit the local source." },
+          { key: "compose", title: "Compose route content", description: "Use it for settings and dense detail groups.", content: "Items keep titles, metadata, badges and disabled state together." },
+        ]}
+      />
+    )
+  }
+
   if (slug === "pagination") {
     return <Pagination page={3} pageCount={9} onPageChange={() => undefined} />
   }
@@ -233,15 +273,8 @@ function FeedbackPreview({ slug }: { slug?: string }) {
     )
   }
 
-  if (slug === "page-state") {
-    return (
-      <PageState
-        title="Workspace connected"
-        description="The route is ready to accept live data and team actions."
-        tone="success"
-        action={<Button size="sm">Continue</Button>}
-      />
-    )
+  if (slug === "state-view") {
+    return <StateView status="error" title="Could not load workspace" description="Check the connection and retry the request." onRetry={() => undefined} />
   }
 
   return (
@@ -498,19 +531,31 @@ function ActionsPreview({
 }
 
 function LayoutPreview({ slug }: { slug: string }) {
-  if (slug === "app-header") {
+  if (slug === "workspace-layout" || slug === "sidebar-context") {
     return (
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg)] p-3">
-        <div className="flex items-center gap-2">
-          <LayoutDashboardIcon className="size-4" />
-          <span className="font-medium">Dashboard</span>
-        </div>
-        <Badge variant="secondary">Preview</Badge>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon-sm" aria-label="Notifications"><BellIcon /></Button>
-          <Button size="sm">Deploy</Button>
-        </div>
-      </div>
+      <SidebarProvider>
+        <WorkspaceLayout viewport={false} className="h-80 overflow-hidden rounded-[var(--radius-lg)] border border-[color:var(--aui-divider)]">
+          <Sidebar
+            responsive={false}
+            width="13rem"
+            collapsedWidth="4rem"
+            header={<div className="font-semibold">Tembro Ops</div>}
+            items={[
+              { key: "overview", label: "Overview", active: true, icon: <LayoutDashboardIcon className="size-4" /> },
+              { key: "alerts", label: "Alerts", icon: <BellIcon className="size-4" /> },
+            ]}
+          />
+          <WorkspaceContent>
+            <WorkspaceHeader left={<><SidebarTrigger /><span className="font-medium">Operations</span></>} right={<Badge variant="secondary">Live</Badge>} />
+            <WorkspaceMain padded>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <InfoCard title="Pipeline" description="24 active opportunities" />
+                <InfoCard title="Approvals" description="3 items need review" />
+              </div>
+            </WorkspaceMain>
+          </WorkspaceContent>
+        </WorkspaceLayout>
+      </SidebarProvider>
     )
   }
 
@@ -610,46 +655,5 @@ function WizardPreview({ slug }: { slug: string }) {
 }
 
 function PatternsPreview({ slug }: { slug: string }) {
-  if (slug === "resource-detail-page") {
-    return (
-      <ResourceDetailPage
-        title="Customer profile"
-        description="ResourceDetailPage organizes detail screens."
-        actions={<Button size="sm">Edit</Button>}
-      >
-        <ResourcePageSection title="Account">
-          <DescriptionList
-            items={[
-              { key: "plan", label: "Plan", value: "Scale" },
-              { key: "owner", label: "Owner", value: "Design team" },
-            ]}
-          />
-        </ResourcePageSection>
-      </ResourceDetailPage>
-    )
-  }
-
-  return (
-    <ResourcePage
-      title="Customers"
-      description="ResourcePage combines header, stats, filters and sections."
-      actions={<Button size="sm">New customer</Button>}
-      stats={
-        <div className="grid gap-3 sm:grid-cols-2">
-          <StatCard title="Active" value="2,418" trend={{ value: "+8%", tone: "success" }} />
-          <StatCard title="Health" value="94%" trend={{ value: "Stable", tone: "default" }} />
-        </div>
-      }
-      filters={<FilterBar search={<Input type="search" value="" placeholder="Search..." readOnly />} activeCount={1} />}
-    >
-      <ResourcePageSection title="Recent activity">
-        <Timeline
-          items={[
-            { key: "a", title: "Customer added", description: "Acme workspace", tone: "success" },
-            { key: "b", title: "Plan updated", description: "Scale plan enabled", tone: "info" },
-          ]}
-        />
-      </ResourcePageSection>
-    </ResourcePage>
-  )
+  return <EmptyState title="No records" description={`${slug} is composed from reusable primitives.`} primaryAction={{ label: "Create record" }} />
 }

@@ -1,9 +1,17 @@
 import * as React from "react"
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { Breadcrumbs, Sidebar } from "@/index"
-import { SidebarNav } from "@/components/layout/sidebar-nav"
+import {
+  Breadcrumbs,
+  Sidebar,
+  SidebarProvider,
+  SidebarTrigger,
+  WorkspaceContent,
+  WorkspaceHeader,
+  WorkspaceLayout,
+  WorkspaceMain,
+} from "@/index"
 
 function mockMatchMedia(matches: boolean) {
   Object.defineProperty(window, "matchMedia", {
@@ -22,56 +30,6 @@ function mockMatchMedia(matches: boolean) {
 }
 
 describe("navigation contracts", () => {
-  it("renders nested sidebar navigation with section labels", () => {
-    render(
-      <SidebarNav
-        aria-label="primary-nav"
-        items={[
-          {
-            key: "workspace",
-            label: "Workspace",
-            sectionLabel: "Main",
-            items: [
-              { key: "overview", label: "Overview", href: "/overview", active: true },
-              { key: "billing", label: "Billing", href: "/billing" },
-            ],
-          },
-        ]}
-      />
-    )
-
-    expect(screen.getByLabelText("primary-nav").getAttribute("data-slot")).toBe("sidebar-nav")
-    expect(screen.getByText("Main")).toBeTruthy()
-    expect(screen.getByText("Workspace")).toBeTruthy()
-    expect(screen.getByText("Overview").closest("[aria-current]")?.getAttribute("aria-current")).toBe("page")
-  })
-
-  it("supports uncontrolled and controlled sidebar groups", async () => {
-    const onExpandedChange = vi.fn()
-    const items = [
-      {
-        key: "workspace",
-        label: "Workspace",
-        defaultExpanded: false,
-        onExpandedChange,
-        items: [{ key: "overview", label: "Overview", href: "/overview" }],
-      },
-    ]
-    const { rerender } = render(<SidebarNav items={items} />)
-    const details = screen.getByText("Workspace").closest("details") as HTMLDetailsElement
-
-    expect(details.open).toBe(false)
-    fireEvent.click(screen.getByText("Workspace"))
-    expect(details.open).toBe(true)
-    await waitFor(() => expect(onExpandedChange).toHaveBeenLastCalledWith(true))
-
-    rerender(<SidebarNav items={[{ ...items[0], expanded: false }]} />)
-    expect(details.open).toBe(false)
-
-    rerender(<SidebarNav items={[{ ...items[0], expanded: true }]} />)
-    expect(details.open).toBe(true)
-  })
-
   it("keeps collapsed app sidebar items discoverable with tooltip content", () => {
     render(
       <Sidebar
@@ -175,7 +133,7 @@ describe("navigation contracts", () => {
       />
     )
 
-    const desktopSidebar = screen.getByText("Dashboard").closest('[data-slot="app-sidebar"]') as HTMLElement
+    const desktopSidebar = screen.getByText("Dashboard").closest('[data-slot="sidebar"]') as HTMLElement
     expect(desktopSidebar.style.width).toBe("20rem")
     expect(desktopSidebar.style.minWidth).toBe("20rem")
 
@@ -188,7 +146,7 @@ describe("navigation contracts", () => {
       />
     )
 
-    expect((screen.getByText("Dashboard").closest('[data-slot="app-sidebar"]') as HTMLElement | null)?.style.width).toBe("5rem")
+    expect((screen.getByText("Dashboard").closest('[data-slot="sidebar"]') as HTMLElement | null)?.style.width).toBe("5rem")
 
     unmount()
     mockMatchMedia(true)
@@ -206,5 +164,27 @@ describe("navigation contracts", () => {
     const mobileSidebar = screen.getByRole("dialog", { name: "Workspace navigation" })
     expect((mobileSidebar as HTMLElement).style.width).toBe("19rem")
     expect((mobileSidebar as HTMLElement).style.minWidth).toBe("19rem")
+  })
+
+  it("coordinates sidebar collapse through the canonical provider", () => {
+    mockMatchMedia(false)
+    render(
+      <SidebarProvider>
+        <WorkspaceLayout>
+          <Sidebar items={[{ key: "dashboard", label: "Dashboard" }]} />
+          <WorkspaceContent>
+            <WorkspaceHeader left={<SidebarTrigger />} />
+            <WorkspaceMain>Workspace body</WorkspaceMain>
+          </WorkspaceContent>
+        </WorkspaceLayout>
+      </SidebarProvider>
+    )
+
+    const sidebar = screen.getByText("Dashboard").closest('[data-slot="sidebar"]')
+    expect(sidebar).not.toHaveAttribute("data-collapsed")
+    fireEvent.click(screen.getByRole("button", { name: "Collapse navigation" }))
+    expect(sidebar).toHaveAttribute("data-collapsed", "true")
+    expect(screen.getByRole("button", { name: "Expand navigation" })).toBeTruthy()
+    expect(screen.getByText("Workspace body").closest('[data-slot="workspace-main"]')).toHaveClass("overflow-y-auto")
   })
 })

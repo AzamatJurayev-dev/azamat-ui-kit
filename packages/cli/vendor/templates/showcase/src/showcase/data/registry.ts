@@ -42,6 +42,8 @@ export const registryGroups: RegistryGroup[] = [
       component("dropdown-menu", "stable", "src/components/ui/dropdown-menu"),
       component("popover", "stable", "src/components/ui/popover"),
       component("tooltip", "preview", "src/components/ui/tooltip"),
+      component("hover-card", "stable", "src/components/ui/hover-card"),
+      component("menubar", "preview", "src/components/ui/menubar"),
       component("select", "stable", "src/components/ui/select"),
       component("table", "stable", "src/components/ui/table"),
       component("segmented-control", "preview", "src/components/ui/segmented-control"),
@@ -50,6 +52,8 @@ export const registryGroups: RegistryGroup[] = [
       component("kbd", "stable", "src/components/ui/kbd"),
       component("scroll-box", "stable", "src/components/ui/scroll-box"),
       component("right-click-menu", "stable", "src/components/ui/right-click-menu"),
+      component("toggle-group", "preview", "src/components/ui/toggle-group"),
+      component("toolbar", "preview", "src/components/ui/toolbar"),
       component("collapse", "preview", "src/components/ui/collapse"),
       component("command", "preview", "src/components/ui/command"),
       component("divider", "preview", "src/components/ui/divider"),
@@ -78,6 +82,7 @@ export const registryGroups: RegistryGroup[] = [
       component("inline-editable", "preview", "src/components/inputs/inline-editable.tsx"),
       component("json-input", "preview", "src/components/inputs/json-input.tsx"),
       component("time-picker", "preview", "src/components/inputs/time-picker.tsx"),
+      component("number-field", "preview", "src/components/ui/number-field"),
     ],
   },
   {
@@ -137,15 +142,14 @@ export const registryGroups: RegistryGroup[] = [
   {
     name: "feedback",
     components: [
-      component("loading-state", "stable", "src/components/feedback/loading-state.tsx"),
-      component("page-state", "preview", "src/components/feedback/page-state.tsx"),
+      component("state-view", "stable", "src/components/feedback/state-view.tsx"),
       component("alert", "preview", "src/components/feedback/alert.tsx"),
     ],
   },
   {
     name: "layout",
     components: [
-      component("sidebar", "stable", "src/components/layout/app-sidebar.tsx"),
+      component("sidebar", "stable", "src/components/layout/sidebar.tsx"),
       component("breadcrumbs", "stable", "src/components/layout/breadcrumbs.tsx"),
       component("section", "preview", "src/components/layout/section.tsx"),
     ],
@@ -153,15 +157,7 @@ export const registryGroups: RegistryGroup[] = [
   {
     name: "patterns",
     components: [
-      component("bulk-action-bar", "preview", "src/components/patterns/bulk-action-bar.tsx"),
-      component("data-view", "preview", "src/components/patterns/data-view.tsx"),
-      component("detail-layout", "preview", "src/components/patterns/detail-layout.tsx"),
       component("empty-state", "preview", "src/components/patterns/empty-state.tsx"),
-      component("form-builder", "preview", "src/components/patterns/form-builder.tsx"),
-      component("resource-detail-page", "preview", "src/components/patterns/resource-detail-page.tsx"),
-      component("resource-page", "preview", "src/components/patterns/resource-page.tsx"),
-      component("page-toolbar", "preview", "src/components/patterns/page-toolbar.tsx"),
-      component("settings-page", "preview", "src/components/patterns/settings-page.tsx"),
     ],
   },
   {
@@ -188,7 +184,13 @@ export const registryGroups: RegistryGroup[] = [
       component("saved-filter-select", "preview", "src/components/filters/saved-filter-select.tsx"),
     ],
   },
-  { name: "navigation", components: [component("pagination", "stable", "src/components/navigation/pagination.tsx")] },
+  {
+    name: "navigation",
+    components: [
+      component("navigation-menu", "preview", "src/components/ui/navigation-menu"),
+      component("pagination", "stable", "src/components/navigation/pagination.tsx"),
+    ],
+  },
   { name: "charts", components: [component("progress-circle", "stable", "src/components/charts/progress-circle.tsx")] },
   {
     name: "wizard",
@@ -221,7 +223,7 @@ export const componentRows: ComponentRow[] = [
 
 export const wizardSteps = [
   { id: "setup", title: "Setup", description: "init + theme", completed: true },
-  { id: "add", title: "Add", description: "105 registry components", completed: true },
+  { id: "add", title: "Add", description: "registry components", completed: true },
   { id: "test", title: "Test", description: "visible workbench" },
 ]
 

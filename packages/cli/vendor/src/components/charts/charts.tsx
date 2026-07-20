@@ -1,6 +1,25 @@
+"use client"
+
 import * as React from "react"
+import {
+  Area,
+  AreaChart as RechartsAreaChart,
+  Bar,
+  BarChart as RechartsBarChart,
+  CartesianGrid,
+  Cell,
+  Line,
+  LineChart as RechartsLineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  XAxis,
+  YAxis,
+} from "recharts"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { StateView } from "@/components/feedback/state-view"
 import { cn } from "@/lib/utils"
 
 export type ChartDatum = {
@@ -17,79 +36,88 @@ export type ChartSeries = {
   color?: string
 }
 
-export type ChartAxisLabel = string | number | React.ReactNode
+export type ChartCurve = "linear" | "monotone" | "natural" | "step"
 
+export type ChartAxisLabel = string | number | React.ReactNode
 export type ChartSize = "sm" | "md" | "lg"
 export type ChartState = "ready" | "loading" | "empty"
+export type ChartDomain = [number | "auto" | "dataMin", number | "auto" | "dataMax"]
 
-const chartHeightBySize: Record<ChartSize, number> = {
-  sm: 120,
-  md: 180,
-  lg: 260,
-}
-
-function safeMax(values: number[], fallback = 1) {
-  return Math.max(...values, fallback)
-}
-
-function normalizeValue(value: number, max: number) {
-  if (!Number.isFinite(value) || max <= 0) return 0
-  return Math.max(0, Math.min(value / max, 1))
-}
+const chartHeightBySize: Record<ChartSize, number> = { sm: 120, md: 220, lg: 320 }
 
 function getChartColor(index: number, custom?: string) {
   return custom ?? `var(--color-chart-${(index % 5) + 1}, var(--primary))`
+}
+
+function toText(value: React.ReactNode, fallback: string) {
+  return typeof value === "string" || typeof value === "number" ? String(value) : fallback
 }
 
 function formatChartValue(value: number, formatter?: (value: number) => React.ReactNode) {
   return formatter ? formatter(value) : value.toLocaleString()
 }
 
-function chartLabelToTitle(label: React.ReactNode) {
-  return typeof label === "string" || typeof label === "number" ? String(label) : undefined
-}
-
-function polarToCartesian(cx: number, cy: number, radius: number, angle: number) {
-  const radians = ((angle - 90) * Math.PI) / 180
-  return {
-    x: cx + radius * Math.cos(radians),
-    y: cy + radius * Math.sin(radians),
+function ChartStatus({ state, emptyLabel, height }: { state: ChartState; emptyLabel: React.ReactNode; height: number }) {
+  if (state === "loading") {
+    return <StateView status="loading" loadingVariant="skeleton" variant="plain" size="compact" style={{ minHeight: height }} />
   }
+  if (state === "empty") {
+    return <StateView status="empty" title={emptyLabel} description={null} variant="plain" size="compact" style={{ minHeight: height }} />
+  }
+  return null
 }
 
-function describeArc(cx: number, cy: number, radius: number, startAngle: number, endAngle: number) {
-  const start = polarToCartesian(cx, cy, radius, endAngle)
-  const end = polarToCartesian(cx, cy, radius, startAngle)
-  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1"
-
-  return ["M", start.x, start.y, "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y].join(" ")
+function ChartDataTable({ data, valueFormatter, caption }: { data: ChartDatum[]; valueFormatter?: (value: number) => React.ReactNode; caption: string }) {
+  return (
+    <div className="sr-only">
+      <table>
+        <caption>{caption}</caption>
+        <thead><tr><th scope="col">Label</th><th scope="col">Value</th><th scope="col">Description</th></tr></thead>
+        <tbody>{data.map((item, index) => <tr key={index}><th scope="row">{item.label}</th><td>{formatChartValue(item.value, valueFormatter)}</td><td>{item.description}</td></tr>)}</tbody>
+      </table>
+    </div>
+  )
 }
 
-function buildLinePath(values: number[], width: number, height: number, padding = 12) {
-  const max = safeMax(values)
-  const usableWidth = Math.max(width - padding * 2, 1)
-  const usableHeight = Math.max(height - padding * 2, 1)
-
-  if (values.length === 0) return ""
-
-  return values
-    .map((value, index) => {
-      const x = padding + (values.length === 1 ? usableWidth / 2 : (index / (values.length - 1)) * usableWidth)
-      const y = padding + (1 - normalizeValue(value, max)) * usableHeight
-      return `${index === 0 ? "M" : "L"} ${x} ${y}`
-    })
-    .join(" ")
+function ChartSeriesDataTable({ labels, series, valueFormatter, caption }: { labels: ChartAxisLabel[]; series: ChartSeries[]; valueFormatter?: (value: number) => React.ReactNode; caption: string }) {
+  return (
+    <div className="sr-only">
+      <table>
+        <caption>{caption}</caption>
+        <thead><tr><th scope="col">Label</th>{series.map((item) => <th scope="col" key={item.key}>{item.label}</th>)}</tr></thead>
+        <tbody>{labels.map((label, index) => <tr key={index}><th scope="row">{label}</th>{series.map((item) => <td key={item.key}>{formatChartValue(item.data[index] ?? 0, valueFormatter)}</td>)}</tr>)}</tbody>
+      </table>
+    </div>
+  )
 }
 
-function buildAreaPath(values: number[], width: number, height: number, padding = 12) {
-  const line = buildLinePath(values, width, height, padding)
-  if (!line) return ""
+export type ChartTooltipContentProps = {
+  active?: boolean
+  label?: React.ReactNode
+  payload?: ReadonlyArray<{ value?: number | string; color?: string; name?: string; payload?: { description?: React.ReactNode; originalLabel?: React.ReactNode } }>
+  valueFormatter?: (value: number) => React.ReactNode
+  labelFormatter?: (label: React.ReactNode) => React.ReactNode
+}
 
-  const baseline = height - padding
-  const lastX = values.length === 1 ? width / 2 : width - padding
-  const firstX = values.length === 1 ? width / 2 : padding
-
-  return `${line} L ${lastX} ${baseline} L ${firstX} ${baseline} Z`
+function ChartTooltipContent({ active, label, payload, valueFormatter, labelFormatter }: ChartTooltipContentProps) {
+  if (!active || !payload?.length) return null
+  return (
+    <div data-slot="chart-tooltip" className="min-w-36 rounded-[var(--radius-md)] border border-border/75 bg-popover/98 p-3 text-popover-foreground shadow-lg backdrop-blur">
+      {label !== undefined ? <div className="mb-2 text-xs font-semibold text-muted-foreground">{labelFormatter ? labelFormatter(label) : label}</div> : null}
+      <div className="grid gap-1.5">
+        {payload.map((entry, index) => {
+          const numericValue = typeof entry.value === "number" ? entry.value : Number(entry.value ?? 0)
+          return (
+            <div key={`${entry.name ?? "value"}-${index}`} className="flex min-w-0 items-center gap-2 text-sm">
+              <span className="size-2.5 shrink-0 rounded-sm" style={{ background: entry.color }} />
+              <span className="min-w-0 flex-1 truncate">{entry.name ?? "Value"}</span>
+              <span className="font-semibold tabular-nums">{formatChartValue(numericValue, valueFormatter)}</span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
 }
 
 export type ChartFrameProps = React.ComponentProps<typeof Card> & {
@@ -102,163 +130,139 @@ export type ChartFrameProps = React.ComponentProps<typeof Card> & {
 
 function ChartFrame({ title, description, action, state = "ready", emptyLabel = "No data available.", className, children, ...props }: ChartFrameProps) {
   return (
-    <Card
-      data-slot="chart-frame"
-      className={cn("border-border/75 bg-card/96 shadow-sm ring-1 ring-foreground/4", className)}
-      {...props}
-    >
-      {(title || description || action) && (
-        <CardHeader className="flex flex-row items-start justify-between gap-3">
-          <div className="grid gap-1">
-            {title && <CardTitle>{title}</CardTitle>}
-            {description && <CardDescription>{description}</CardDescription>}
-          </div>
-          {action}
+    <Card data-slot="chart-frame" data-state={state} className={cn("min-w-0", className)} {...props}>
+      {(title || description || action) ? (
+        <CardHeader className="flex-row items-start justify-between gap-3">
+          <div className="min-w-0 space-y-1">{title ? <CardTitle>{title}</CardTitle> : null}{description ? <CardDescription>{description}</CardDescription> : null}</div>
+          {action ? <div className="shrink-0">{action}</div> : null}
         </CardHeader>
-      )}
-      <CardContent>
-        {state === "loading" ? <div className="grid gap-3"><div className="h-4 w-24 animate-pulse rounded bg-muted" /><div className="h-36 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70" /></div> : null}
-        {state === "empty" ? <div className="rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/70 px-4 py-10 text-center text-sm text-muted-foreground">{emptyLabel}</div> : null}
-        {state === "ready" ? children : null}
-      </CardContent>
+      ) : null}
+      <CardContent>{state === "ready" ? children : <ChartStatus state={state} emptyLabel={emptyLabel} height={180} />}</CardContent>
     </Card>
   )
 }
 
 export type BarChartProps = React.ComponentProps<"div"> & {
-  data: ChartDatum[]
+  data?: ChartDatum[]
+  series?: ChartSeries[]
   size?: ChartSize
   max?: number
   showLabels?: boolean
   showValues?: boolean
+  showGrid?: boolean
+  showTooltip?: boolean
   valueFormatter?: (value: number) => React.ReactNode
-  barClassName?: string
   state?: ChartState
   emptyLabel?: React.ReactNode
+  barClassName?: string
+  domain?: ChartDomain
+  ariaLabel?: string
+  stacked?: boolean
+  showLegend?: boolean
+  barRadius?: number
 }
 
-function BarChart({ data, size = "md", max, showLabels = true, showValues = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", className, barClassName, ...props }: BarChartProps) {
-  const values = data.map((item) => item.value)
-  const absoluteMax = max ?? safeMax(values.map((value) => Math.abs(value)))
+function BarChart({ data = [], series, size = "md", max, showLabels = true, showValues = false, showGrid = true, showTooltip = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", barClassName, domain, ariaLabel = "Bar chart", stacked = false, showLegend = Boolean(series?.length), barRadius = 6, className, ...props }: BarChartProps) {
   const height = chartHeightBySize[size]
-  const plotHeight = Math.max(height - (showValues ? 28 : 0) - (showLabels ? 24 : 0), 32)
-
-  if (state === "loading") {
-    return <div data-slot="bar-chart" className={cn("grid gap-3", className)} {...props}><div className="h-40 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70" /></div>
-  }
-
-  if (state === "empty" || data.length === 0) {
-    return <div data-slot="bar-chart" className={cn("rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/70 px-4 py-10 text-center text-sm text-muted-foreground", className)} {...props}>{emptyLabel}</div>
-  }
+  const activeSeries = series?.length ? series : [{ key: "value", label: "Value", data: data.map((item) => item.value) }]
+  const itemCount = Math.max(data.length, ...activeSeries.map((item) => item.data.length))
+  const status = state === "ready" && itemCount === 0 ? "empty" : state
+  if (status !== "ready") return <ChartStatus state={status} emptyLabel={emptyLabel} height={height} />
+  const labels = Array.from({ length: itemCount }, (_, index) => data[index]?.label ?? `Item ${index + 1}`)
+  const chartData = labels.map((label, index) => Object.fromEntries([
+    ["name", toText(label, `Item ${index + 1}`)],
+    ["originalLabel", label],
+    ...activeSeries.map((item) => [item.key, item.data[index] ?? 0]),
+  ]))
+  const resolvedDomain: ChartDomain = domain ?? (max !== undefined ? ["auto", max] : ["auto", "auto"])
 
   return (
-    <div data-slot="bar-chart" className={cn("grid gap-3", className)} {...props}>
-      <div className="flex items-end gap-2" style={{ minHeight: height }}>
-        {data.map((item, index) => {
-          const ratio = normalizeValue(Math.abs(item.value), absoluteMax)
-          const negative = item.value < 0
-          const title = chartLabelToTitle(item.label)
-          const barHeight = Math.max(Math.round(ratio * plotHeight), Math.abs(item.value) > 0 ? 3 : 0)
-          return (
-            <div key={index} className="flex min-w-0 flex-1 flex-col items-center gap-2" title={title ? `${title}: ${item.value}` : undefined}>
-              {showValues && <div className="text-xs font-medium text-muted-foreground">{formatChartValue(item.value, valueFormatter)}</div>}
-              <div className="flex w-full items-end rounded-[min(var(--radius-xl),16px)] border border-border/60 bg-muted/38 p-1" style={{ height: plotHeight }}>
-                <div
-                  className={cn("w-full rounded-[min(var(--radius-lg),12px)] bg-primary transition-all", barClassName)}
-                  style={{ height: barHeight, background: getChartColor(index, item.color), opacity: negative ? 0.72 : 1 }}
-                />
-              </div>
-              {showLabels && <div className="max-w-full truncate text-xs text-muted-foreground">{item.label}</div>}
-            </div>
-          )
-        })}
+    <div data-slot="bar-chart" role="img" aria-label={ariaLabel} className={cn("min-w-0", className)} {...props}>
+      <div style={{ height }}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+          <RechartsBarChart data={chartData} margin={{ top: showValues ? 20 : 8, right: 8, bottom: showLabels ? 8 : 0, left: 0 }}>
+            {showGrid ? <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="4 6" /> : null}
+            <XAxis dataKey="name" hide={!showLabels} axisLine={false} tickLine={false} tick={{ fill: "var(--muted-foreground)", fontSize: 12 }} interval="preserveStartEnd" />
+            <YAxis hide domain={resolvedDomain} />
+            {showTooltip ? <RechartsTooltip cursor={{ fill: "var(--muted)", opacity: 0.35 }} content={<ChartTooltipContent valueFormatter={valueFormatter} />} /> : null}
+            {activeSeries.map((item, seriesIndex) => (
+              <Bar key={item.key} dataKey={item.key} name={toText(item.label, item.key)} fill={getChartColor(seriesIndex, item.color)} stackId={stacked ? "total" : undefined} radius={[barRadius, barRadius, 2, 2]} className={barClassName} isAnimationActive={false} label={showValues && (!stacked || seriesIndex === activeSeries.length - 1) ? { position: "top", fill: "var(--muted-foreground)", fontSize: 11, formatter: (value: unknown) => String(formatChartValue(Number(value), valueFormatter)) } : false}>
+                {!series?.length ? data.map((datum, index) => <Cell key={index} fill={getChartColor(index, datum.color)} />) : null}
+              </Bar>
+            ))}
+          </RechartsBarChart>
+        </ResponsiveContainer>
       </div>
+      {showLegend && activeSeries.length > 1 ? <ChartLegend className="mt-3" data={activeSeries.map((item, index) => ({ label: item.label, value: 0, color: getChartColor(index, item.color) }))} /> : null}
+      {series?.length ? <ChartSeriesDataTable labels={labels} series={activeSeries} valueFormatter={valueFormatter} caption={ariaLabel} /> : <ChartDataTable data={data} valueFormatter={valueFormatter} caption={ariaLabel} />}
     </div>
   )
 }
 
-export type LineChartProps = Omit<React.ComponentProps<"svg">, "values"> & {
-  values: number[]
+export type LineChartProps = Omit<React.ComponentProps<"div">, "children"> & {
+  values?: number[]
+  series?: ChartSeries[]
   size?: ChartSize
   width?: number
+  height?: number
   showArea?: boolean
   showGrid?: boolean
+  showAxis?: boolean
+  showTooltip?: boolean
   labels?: ChartAxisLabel[]
   valueFormatter?: (value: number) => React.ReactNode
   stroke?: string
   state?: ChartState
   emptyLabel?: React.ReactNode
+  domain?: ChartDomain
+  ariaLabel?: string
+  curve?: ChartCurve
+  showDots?: boolean
+  showLegend?: boolean
+  gradient?: boolean
+  strokeWidth?: number
 }
 
-function LineChart({ values, size = "md", width = 560, showArea = false, showGrid = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", className, style, ...props }: LineChartProps) {
-  const height = chartHeightBySize[size]
-  const linePath = buildLinePath(values, width, height)
-  const areaPath = buildAreaPath(values, width, height)
-  const max = safeMax(values)
-
-  if (state === "loading") {
-    return <div className={cn("h-36 animate-pulse rounded-[min(var(--radius-xl),16px)] bg-muted/70", className)} />
-  }
-
-  if (state === "empty" || values.length === 0) {
-    return <div className={cn("rounded-[min(var(--radius-xl),16px)] border border-dashed border-border/70 px-4 py-10 text-center text-sm text-muted-foreground", className)}>{emptyLabel}</div>
-  }
+function LineChart({ values = [], series, size = "md", width = 560, height: heightProp, showArea = false, showGrid = true, showAxis = false, showTooltip = true, labels, valueFormatter, stroke = "var(--primary)", state = "ready", emptyLabel = "No line data.", domain = ["auto", "auto"], ariaLabel = showArea ? "Area chart" : "Line chart", curve = "monotone", showDots = !showArea, showLegend = Boolean(series?.length), gradient = showArea, strokeWidth = 2.5, className, style, ...props }: LineChartProps) {
+  const height = heightProp ?? chartHeightBySize[size]
+  const gradientId = React.useId().replace(/:/g, "")
+  const activeSeries = series?.length ? series : [{ key: "value", label: "Value", data: values, color: stroke }]
+  const itemCount = Math.max(...activeSeries.map((item) => item.data.length), 0)
+  const status = state === "ready" && itemCount === 0 ? "empty" : state
+  if (status !== "ready") return <ChartStatus state={status} emptyLabel={emptyLabel} height={height} />
+  const resolvedLabels = Array.from({ length: itemCount }, (_, index) => labels?.[index] ?? String(index + 1))
+  const data = resolvedLabels.map((label, index) => Object.fromEntries([["name", toText(label, String(index + 1))], ["originalLabel", label], ...activeSeries.map((item) => [item.key, item.data[index] ?? 0])]))
+  const Engine = showArea ? RechartsAreaChart : RechartsLineChart
 
   return (
-    <svg data-slot="line-chart" viewBox={`0 0 ${width} ${height}`} className={cn("w-full overflow-visible", className)} style={{ height, ...style }} role="img" {...props}>
-      {showGrid && [0.25, 0.5, 0.75].map((position) => (
-        <line
-          key={position}
-          x1="12"
-          x2={width - 12}
-          y1={12 + position * (height - 24)}
-          y2={12 + position * (height - 24)}
-          stroke="var(--border)"
-          strokeDasharray="4 6"
-          opacity="0.7"
-        />
-      ))}
-      {showArea && <path d={areaPath} fill="var(--primary)" opacity="0.12" />}
-      <path d={linePath} fill="none" stroke={stroke} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-      {values.map((value, index) => {
-        const x = 12 + (values.length === 1 ? (width - 24) / 2 : (index / (values.length - 1)) * (width - 24))
-        const y = 12 + (1 - normalizeValue(value, max)) * (height - 24)
-        const label = labels?.[index]
-        const title = label != null ? `${chartLabelToTitle(label) ?? "Value"}: ${value}` : `${value}`
-        return (
-          <circle key={index} cx={x} cy={y} r="3.5" fill={stroke}>
-            <title>{valueFormatter ? `${label ?? "Value"}: ${formatChartValue(value, valueFormatter)}` : title}</title>
-          </circle>
-        )
-      })}
-    </svg>
+    <div data-slot={showArea ? "area-chart" : "line-chart"} role="img" aria-label={ariaLabel} data-chart-width={width} className={cn("min-w-0", className)} style={style} {...props}>
+      <div style={{ height }}>
+        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+          <Engine data={data} margin={{ top: 10, right: 10, bottom: showAxis ? 8 : 0, left: showAxis ? -12 : 0 }}>
+            {showArea && gradient ? <defs>{activeSeries.map((item, index) => { const color = getChartColor(index, item.color); return <linearGradient key={item.key} id={`${gradientId}-${item.key}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity={0.34} /><stop offset="92%" stopColor={color} stopOpacity={0.02} /></linearGradient> })}</defs> : null}
+            {showGrid ? <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="4 6" /> : null}
+            <XAxis dataKey="name" hide={!showAxis} axisLine={false} tickLine={false} tick={{ fill: "var(--muted-foreground)", fontSize: 12 }} interval="preserveStartEnd" />
+            <YAxis hide={!showAxis} domain={domain} axisLine={false} tickLine={false} width={44} tick={{ fill: "var(--muted-foreground)", fontSize: 11 }} />
+            {showTooltip ? <RechartsTooltip content={<ChartTooltipContent valueFormatter={valueFormatter} />} /> : null}
+            {activeSeries.map((item, index) => { const color = getChartColor(index, item.color); return showArea ? <Area key={item.key} type={curve} dataKey={item.key} name={toText(item.label, item.key)} stroke={color} strokeWidth={strokeWidth} fill={gradient ? `url(#${gradientId}-${item.key})` : color} fillOpacity={gradient ? 1 : 0.12} dot={showDots ? { r: 3, fill: color, strokeWidth: 2, stroke: "var(--background)" } : false} activeDot={{ r: 5, strokeWidth: 2, stroke: "var(--background)" }} isAnimationActive={false} /> : <Line key={item.key} type={curve} dataKey={item.key} name={toText(item.label, item.key)} stroke={color} strokeWidth={strokeWidth} dot={showDots ? { r: 3, fill: color, strokeWidth: 2, stroke: "var(--background)" } : false} activeDot={{ r: 5, strokeWidth: 2, stroke: "var(--background)" }} isAnimationActive={false} /> })}
+          </Engine>
+        </ResponsiveContainer>
+      </div>
+      {showLegend && activeSeries.length > 1 ? <ChartLegend className="mt-3" data={activeSeries.map((item, index) => ({ label: item.label, value: 0, color: getChartColor(index, item.color) }))} /> : null}
+      <ChartSeriesDataTable labels={resolvedLabels} series={activeSeries} valueFormatter={valueFormatter} caption={ariaLabel} />
+    </div>
   )
 }
 
-function AreaChart(props: Omit<LineChartProps, "showArea">) {
-  return <LineChart showArea {...props} />
+function AreaChart(props: Omit<LineChartProps, "showArea">) { return <LineChart showArea {...props} /> }
+
+export type SparklineProps = Omit<LineChartProps, "size" | "showArea" | "showAxis" | "series" | "showLegend"> & { values: number[]; positive?: boolean }
+
+function Sparkline({ values, positive = true, stroke, className, showTooltip = false, ...props }: SparklineProps) {
+  return <LineChart values={values} size="sm" stroke={stroke ?? (positive ? "var(--aui-success,var(--primary))" : "var(--destructive)")} showGrid={false} showAxis={false} showTooltip={showTooltip} className={cn("max-w-44", className)} ariaLabel="Sparkline" {...props} />
 }
 
-export type SparklineProps = Omit<LineChartProps, "size" | "showArea"> & {
-  values: number[]
-  positive?: boolean
-}
-
-function Sparkline({ values, positive = true, stroke, className, ...props }: SparklineProps) {
-  return (
-    <LineChart
-      values={values}
-      width={180}
-      size="sm"
-      stroke={stroke ?? (positive ? "var(--primary)" : "var(--destructive)")}
-      className={cn("max-w-44", className)}
-      aria-label="Sparkline"
-      {...props}
-    />
-  )
-}
-
-export type DonutChartProps = React.ComponentProps<"svg"> & {
+export type DonutChartProps = Omit<React.ComponentProps<"div">, "children"> & {
   data: ChartDatum[]
   size?: number
   strokeWidth?: number
@@ -266,103 +270,43 @@ export type DonutChartProps = React.ComponentProps<"svg"> & {
   centerValue?: React.ReactNode
   state?: ChartState
   emptyLabel?: React.ReactNode
+  showTooltip?: boolean
+  valueFormatter?: (value: number) => React.ReactNode
+  ariaLabel?: string
 }
 
-function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerValue, state = "ready", emptyLabel = "No distribution data.", className, ...props }: DonutChartProps) {
-  const total = data.reduce((sum, item) => sum + Math.max(item.value, 0), 0)
-  const radius = size / 2 - strokeWidth
-  const segments = data.map((item, index) => {
-    const value = Math.max(item.value, 0)
-    const start = data.slice(0, index).reduce((sum, previous) => sum + Math.max(previous.value, 0), 0)
-    const end = total > 0 ? start + (value / total) * 360 : start
-
-    return { item, start, end }
-  })
-
-  if (state === "loading") {
-    return <div className={cn("h-44 w-full max-w-48 animate-pulse rounded-full bg-muted/70", className)} />
-  }
-
-  if (state === "empty" || data.length === 0 || total <= 0) {
-    return <div className={cn("flex h-44 w-full max-w-48 items-center justify-center rounded-full border border-dashed border-border/70 px-4 text-center text-sm text-muted-foreground", className)}>{emptyLabel}</div>
-  }
+function DonutChart({ data, size = 180, strokeWidth = 18, centerLabel, centerValue, state = "ready", emptyLabel = "No distribution data.", showTooltip = true, valueFormatter, ariaLabel = "Donut chart", className, style, ...props }: DonutChartProps) {
+  const status = state === "ready" && data.length === 0 ? "empty" : state
+  if (status !== "ready") return <ChartStatus state={status} emptyLabel={emptyLabel} height={size} />
+  const chartData = data.map((item, index) => ({ name: toText(item.label, `Item ${index + 1}`), value: Math.max(0, item.value), fill: getChartColor(index, item.color), description: item.description }))
+  const radius = Math.max(8, size / 2 - 8)
 
   return (
-    <svg data-slot="donut-chart" viewBox={`0 0 ${size} ${size}`} className={cn("h-auto w-full max-w-48", className)} role="img" {...props}>
-      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--muted)" strokeWidth={strokeWidth} />
-      {segments.map(({ item, start, end }, index) => {
-        return (
-          <path
-            key={index}
-            d={describeArc(size / 2, size / 2, radius, start, end)}
-            fill="none"
-            stroke={getChartColor(index, item.color)}
-            strokeWidth={strokeWidth}
-            strokeLinecap="round"
-          >
-            <title>{`${chartLabelToTitle(item.label) ?? "Segment"}: ${item.value}`}</title>
-          </path>
-        )
-      })}
-      {(centerValue || centerLabel) && (
-        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fill="var(--foreground)">
-          {centerValue && <tspan x="50%" dy={centerLabel ? "-0.2em" : "0"} className="text-lg font-semibold">{centerValue}</tspan>}
-          {centerLabel && <tspan x="50%" dy="1.3em" className="text-xs fill-muted-foreground">{centerLabel}</tspan>}
-        </text>
-      )}
-    </svg>
+    <div data-slot="donut-chart" role="img" aria-label={ariaLabel} className={cn("relative inline-grid place-items-center", className)} style={{ width: size, height: size, ...style }} {...props}>
+      <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+        <PieChart>
+          {showTooltip ? <RechartsTooltip content={<ChartTooltipContent valueFormatter={valueFormatter} />} /> : null}
+          <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={Math.max(0, radius - strokeWidth)} outerRadius={radius} paddingAngle={2} stroke="var(--background)" strokeWidth={2} isAnimationActive={false}>
+            {chartData.map((item) => <Cell key={item.name} fill={item.fill} />)}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+      {(centerValue || centerLabel) ? <div className="pointer-events-none absolute inset-0 grid place-content-center text-center"><div className="text-xl font-semibold tabular-nums">{centerValue}</div><div className="text-xs text-muted-foreground">{centerLabel}</div></div> : null}
+      <ChartDataTable data={data} valueFormatter={valueFormatter} caption={ariaLabel} />
+    </div>
   )
 }
 
-export type ChartLegendProps = React.ComponentProps<"div"> & {
-  data: ChartDatum[]
-}
+export type ChartLegendProps = React.ComponentProps<"div"> & { data: ChartDatum[] }
 
 function ChartLegend({ data, className, ...props }: ChartLegendProps) {
-  return (
-    <div data-slot="chart-legend" className={cn("flex flex-wrap gap-3 text-xs text-muted-foreground", className)} {...props}>
-      {data.map((item, index) => (
-        <div key={index} className="inline-flex items-center gap-1.5">
-          <span className="size-2 rounded-full bg-primary" style={{ background: getChartColor(index, item.color) }} />
-          <span>{item.label}</span>
-        </div>
-      ))}
-    </div>
-  )
+  return <div data-slot="chart-legend" className={cn("flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground", className)} {...props}>{data.map((item, index) => <div key={index} className="inline-flex min-w-0 items-center gap-2"><span className="size-2.5 shrink-0 rounded-sm" style={{ background: getChartColor(index, item.color) }} /><span className="truncate">{item.label}</span></div>)}</div>
 }
 
-export type MetricTrendProps = React.ComponentProps<"div"> & {
-  label: React.ReactNode
-  value: React.ReactNode
-  change?: React.ReactNode
-  positive?: boolean
-  values?: number[]
-}
+export type MetricTrendProps = React.ComponentProps<"div"> & { label: React.ReactNode; value: React.ReactNode; change?: React.ReactNode; positive?: boolean; values?: number[] }
 
 function MetricTrend({ label, value, change, positive = true, values, className, ...props }: MetricTrendProps) {
-  return (
-    <div
-      data-slot="metric-trend"
-      className={cn(
-        "grid gap-3 rounded-[var(--radius-2xl)] border border-border/75 bg-card/96 p-4 shadow-sm ring-1 ring-foreground/4",
-        className
-      )}
-      {...props}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="grid gap-1">
-          <div className="text-sm text-muted-foreground">{label}</div>
-          <div className="text-2xl font-semibold tracking-tight">{value}</div>
-        </div>
-        {change && (
-          <div className={cn("rounded-full px-2 py-1 text-xs font-medium", positive ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive")}>
-            {change}
-          </div>
-        )}
-      </div>
-      {values && <Sparkline values={values} positive={positive} />}
-    </div>
-  )
+  return <div data-slot="metric-trend" className={cn("grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-end gap-4", className)} {...props}><div className="min-w-0"><div className="text-sm text-muted-foreground">{label}</div><div className="mt-1 text-2xl font-semibold tracking-tight tabular-nums">{value}</div>{change ? <div className={cn("mt-1 text-xs font-medium", positive ? "text-[color:var(--aui-success,var(--primary))]" : "text-destructive")}>{change}</div> : null}</div>{values?.length ? <Sparkline values={values} positive={positive} /> : null}</div>
 }
 
-export { AreaChart, BarChart, ChartFrame, ChartLegend, DonutChart, LineChart, MetricTrend, Sparkline }
+export { AreaChart, BarChart, ChartFrame, ChartLegend, ChartTooltipContent, DonutChart, LineChart, MetricTrend, Sparkline }

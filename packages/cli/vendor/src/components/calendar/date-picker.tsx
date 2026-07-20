@@ -22,6 +22,7 @@ export type DatePickerProps = Omit<
   labels?: DatePickerLabels
   disabled?: boolean
   clearable?: boolean
+  triggerVariant?: "default" | "compact"
   formatValue?: (value: string) => React.ReactNode
   triggerClassName?: string
   contentClassName?: string
@@ -40,6 +41,7 @@ function DatePicker({
   labels,
   disabled = false,
   clearable = true,
+  triggerVariant = "default",
   formatValue = defaultFormatValue,
   triggerClassName,
   contentClassName,
@@ -66,7 +68,7 @@ function DatePicker({
   }
 
   return (
-    <div data-slot="date-picker" className={cn("w-full", className)}>
+    <div data-slot="date-picker" data-trigger-variant={triggerVariant} className={cn("w-full", className)}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           render={
@@ -74,8 +76,10 @@ function DatePicker({
               type="button"
               variant="outline"
               disabled={disabled}
+              labelClassName="flex-1"
               className={cn(
-                "group min-h-11 w-full justify-start gap-3 rounded-[var(--aui-control-radius,var(--radius-md))] border-border/80 bg-background/96 px-3 text-left font-normal shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04))]",
+                "group w-full justify-start rounded-[var(--aui-control-radius,var(--radius-md))] border-border/80 bg-background/96 text-left font-normal shadow-[var(--aui-control-shadow,0_1px_2px_rgba(15,23,42,0.04))]",
+                triggerVariant === "default" ? "min-h-11 gap-3 px-3" : "min-h-9 gap-2 px-2.5",
                 !hasValue && "text-muted-foreground",
                 triggerClassName
               )}
@@ -83,10 +87,10 @@ function DatePicker({
           }
         >
           <CalendarIcon data-icon="inline-start" className={cn(hasValue && "text-primary")} />
-          <span className="grid min-w-0 flex-1 gap-0.5">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          <span className={cn("grid min-w-0 flex-1", triggerVariant === "default" && "gap-0.5")}>
+            {triggerVariant === "default" ? <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               {labels?.selected ?? "Date"}
-            </span>
+            </span> : null}
             <span className={cn("truncate text-sm", hasValue && "font-semibold text-foreground")}>
               {hasValue ? formatValue(String(value)) : placeholder ?? labels?.placeholder ?? "Select date"}
             </span>
@@ -96,7 +100,7 @@ function DatePicker({
               role="button"
               tabIndex={0}
               aria-label={labels?.clear ?? "Clear date"}
-              className="ml-auto inline-flex size-7 shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground opacity-80 transition hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+              className={cn("ml-auto inline-flex shrink-0 items-center justify-center rounded-[var(--radius-sm)] text-muted-foreground opacity-80 transition hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring", triggerVariant === "default" ? "size-7" : "size-6")}
               onClick={handleClear}
               onKeyDown={(event) => {
                 if (event.key === "Enter" || event.key === " ") {

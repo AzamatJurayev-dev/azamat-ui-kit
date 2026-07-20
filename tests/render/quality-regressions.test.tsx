@@ -4,16 +4,29 @@ import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
 import {
-  BulkActionBar,
   CalendarScheduler,
-  DataView,
   DualListPicker,
   EmptyState,
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
   JsonInput,
-  PageToolbar,
-  ResourceDetailPage,
-  ResourcePage,
-  SettingsPage,
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuPositioner,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
 } from "@/index"
 
 describe("component quality regressions", () => {
@@ -64,44 +77,73 @@ describe("component quality regressions", () => {
     expect(screen.getByRole("alert")).toHaveTextContent("Invalid JSON")
   })
 
-  it("does not render empty pattern chrome when optional regions are absent", () => {
-    const { container, rerender } = render(
-      <ResourcePage title="Customers" breadcrumbs={<nav aria-label="Breadcrumbs">Customers</nav>} />
-    )
-
-    expect(container.querySelector("[data-slot='resource-page-breadcrumbs']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='resource-page-toolbar']")).toBeNull()
-    expect(container.querySelector("[data-slot='resource-page-content']")).toBeNull()
-
-    rerender(<ResourceDetailPage title="Customer profile" />)
-
-    expect(container.querySelector("[data-slot='page-header'] [class*='shrink-0']")).toBeNull()
-    expect(container.querySelector("[data-slot='resource-detail-page-content']")).toBeNull()
-  })
-
-  it("renders added pattern surfaces without empty chrome", () => {
-    const onClear = vi.fn()
+  it("supports rich agenda events and selection without rendering hidden events", async () => {
+    const user = userEvent.setup()
+    const onSelectedEventChange = vi.fn()
 
     const { container } = render(
-      <div>
-        <EmptyState title="No customers" description="Create the first customer." />
-        <PageToolbar actions={<button type="button">Export</button>} />
-        <BulkActionBar selectedCount={2} onClear={onClear} />
-        <SettingsPage
-          title="Settings"
-          sections={[
-            { value: "profile", label: "Profile", content: <div>Profile form</div> },
-            { value: "billing", label: "Billing", content: <div>Billing form</div> },
-          ]}
-        />
-        <DataView count={0} emptyTitle="No rows" />
-      </div>
+      <CalendarScheduler
+        variant="agenda"
+        density="compact"
+        title="Clinical schedule"
+        defaultSelectedEventId="review"
+        onSelectedEventChange={onSelectedEventChange}
+        events={[
+          { id: "review", date: "Today", time: "09:00", title: "Patient review", description: "Cardiology", badge: <span>Urgent</span> },
+          { id: "hidden", date: "Today", title: "Hidden event", hidden: true },
+          { id: "disabled", date: "Today", title: "Unavailable", disabled: true },
+        ]}
+      />
+    )
+
+    expect(container.querySelector("[data-slot='calendar-scheduler']")).toHaveAttribute("data-variant", "agenda")
+    expect(screen.getByRole("button", { name: /Patient review/ })).toHaveAttribute("data-selected", "true")
+    expect(screen.queryByText("Hidden event")).toBeNull()
+
+    await user.click(screen.getByRole("button", { name: /Patient review/ }))
+    expect(onSelectedEventChange).toHaveBeenCalledWith("review", expect.objectContaining({ title: "Patient review" }))
+    expect(screen.getByRole("button", { name: /Unavailable/ })).toBeDisabled()
+  })
+
+  it("keeps patterns limited to composable empty state", () => {
+    const { container } = render(
+      <EmptyState title="No customers" description="Create the first customer." />
     )
 
     expect(container.querySelector("[data-slot='empty-state']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='page-toolbar']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='bulk-action-bar']")).toBeTruthy()
-    expect(container.querySelector("[data-slot='settings-page']")).toBeTruthy()
-    expect(screen.getByText("No rows")).toBeInTheDocument()
+  })
+
+  it("renders new reusable navigation primitives", () => {
+    const { container } = render(
+      <div>
+        <HoverCard><HoverCardTrigger>Owner</HoverCardTrigger><HoverCardContent>Azamat workspace</HoverCardContent></HoverCard>
+        <Menubar><MenubarMenu><MenubarTrigger>File</MenubarTrigger><MenubarContent><MenubarItem>New file</MenubarItem></MenubarContent></MenubarMenu></Menubar>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+              <NavigationMenuContent><NavigationMenuLink href="/products">Products overview</NavigationMenuLink></NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+          <NavigationMenuPositioner><NavigationMenuViewport /></NavigationMenuPositioner>
+        </NavigationMenu>
+      </div>
+    )
+
+    expect(container.querySelector("[data-slot='hover-card-trigger']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='menubar']")).toBeTruthy()
+    expect(container.querySelector("[data-slot='navigation-menu']")).toBeTruthy()
+  })
+
+  it("does not leak ResizablePanel sizing props to the DOM", () => {
+    const { container } = render(
+      <ResizablePanelGroup>
+        <ResizablePanel minSize={25}>First</ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel minSize={30}>Second</ResizablePanel>
+      </ResizablePanelGroup>
+    )
+
+    expect(container.querySelector("[minsize]")).toBeNull()
   })
 })

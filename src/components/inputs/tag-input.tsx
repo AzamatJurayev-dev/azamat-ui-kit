@@ -86,7 +86,8 @@ function TagInput({
             {!readOnly && !disabled && (
               <button
                 type="button"
-                className="inline-flex size-5 items-center justify-center rounded-full text-muted-foreground transition hover:bg-[color:var(--aui-control-bg)] hover:text-foreground"
+                className="grid size-5 shrink-0 place-items-center rounded-full p-0 leading-none text-muted-foreground transition hover:bg-[color:var(--aui-control-bg)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                aria-label={`Remove ${tag}`}
                 onClick={(event) => {
                   stopInteractivePropagation(event)
                   removeTag(tag)
@@ -94,7 +95,7 @@ function TagInput({
                 onMouseDown={stopInteractivePropagation}
                 onDoubleClick={stopInteractivePropagation}
               >
-                <XIcon className="size-3" />
+                <XIcon className="size-3" strokeWidth={2} />
               </button>
             )}
           </Badge>

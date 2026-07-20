@@ -117,7 +117,7 @@ function ActivityFeed({
               className={cn("relative flex gap-3 pb-4 last:pb-0", isCompact && "gap-2 pb-3", itemClassName, item.className)}
             >
               {showConnector && index < visibleItems.length - 1 && (
-                <div className={cn("absolute left-3 top-7 h-[calc(100%-1.75rem)] w-px bg-border", connectorClassName)} />
+                <div data-slot="activity-feed-connector" className={cn("absolute left-5 top-8 h-[calc(100%-2rem)] w-px bg-border", connectorClassName)} />
               )}
               {item.href ? (
                 <a

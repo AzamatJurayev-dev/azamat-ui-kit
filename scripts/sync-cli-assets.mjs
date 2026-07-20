@@ -36,6 +36,24 @@ for (const source of sources) {
   })
 }
 
+await safeRemove(path.join(vendorRoot, "src", "showcase"))
+
+async function removeDevelopmentFiles(directory) {
+  const entries = await fs.readdir(directory, { withFileTypes: true })
+  await Promise.all(entries.map(async (entry) => {
+    const target = path.join(directory, entry.name)
+    if (entry.isDirectory()) {
+      await removeDevelopmentFiles(target)
+      return
+    }
+    if (entry.name === "demo.tsx" || entry.name.endsWith(".stories.tsx") || entry.name.endsWith(".test.tsx")) {
+      await fs.rm(target, { force: true })
+    }
+  }))
+}
+
+await removeDevelopmentFiles(path.join(vendorRoot, "src", "components"))
+
 await fs.writeFile(
   path.join(vendorRoot, "package.json"),
   JSON.stringify(
