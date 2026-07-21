@@ -1,3 +1,5 @@
+import "./integration-registry"
+
 import { Command } from "commander"
 import { initCommand } from "./commands/init"
 import { addCommand } from "./commands/add"
