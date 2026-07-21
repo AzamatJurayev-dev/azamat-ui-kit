@@ -19,7 +19,7 @@ They are distributed through the source-copy CLI. Installing one component copie
 | `whiteboard` | `Whiteboard` | tldraw |
 | `model-viewer` | `ModelViewer` | Google model-viewer |
 | `advanced-chart` | `AdvancedChart` | Apache ECharts |
-| `document-scanner` | `DocumentScanner` | OpenCV.js + MediaDevices |
+| `document-scanner` | `DocumentScanner`, `DocumentScannerHandle` | OpenCV.js + MediaDevices |
 
 ## Installation
 
@@ -41,7 +41,7 @@ npx tembro add document-scanner
 Multiple integrations can be installed in one command:
 
 ```bash
-npx tembro add map media-player pdf-viewer barcode-scanner
+npx tembro add map media-player pdf-viewer document-scanner
 ```
 
 ## Import examples
@@ -51,6 +51,7 @@ import { LocationPicker } from "@/components/integrations/map"
 import { VideoPlayer } from "@/components/integrations/media-player"
 import { PdfViewer, type PdfViewerHandle } from "@/components/integrations/pdf-viewer"
 import { QrScanner } from "@/components/integrations/barcode-scanner"
+import { DocumentScanner, type DocumentScannerHandle } from "@/components/integrations/document-scanner"
 ```
 
 ```tsx
@@ -216,6 +217,135 @@ Download and print work for URL and in-memory sources by reading raw bytes from 
 
 Cross-origin URL sources still require valid CORS headers. PDF.js API and worker versions must match. Large documents should use range requests where the server supports them, and continuous rendering should remain lazy.
 
+## Document Scanner
+
+`DocumentScanner` is a complete capture workflow rather than a camera button. Camera frames and imported images share one OpenCV contour, perspective, image-processing, encoding, and resizing pipeline.
+
+```tsx
+function ContractScanner() {
+  const scannerRef = React.useRef<DocumentScannerHandle>(null)
+  const [pages, setPages] = React.useState([])
+
+  return (
+    <DocumentScanner
+      ref={scannerRef}
+      facingMode="environment"
+      preferredWidth={1920}
+      preferredHeight={1080}
+      preferredFrameRate={30}
+      requireDocument
+      autoCapture
+      autoCaptureDelayMs={700}
+      stabilityFrames={4}
+      stabilityTolerance={0.025}
+      minDetectionConfidence={0.55}
+      defaultProcessingMode="grayscale"
+      scans={pages}
+      onScansChange={setPages}
+      maxScans={12}
+      allowTorch
+      allowFileImport
+      onDetectionChange={(detection) => {
+        console.log(detection?.confidence, detection?.stable)
+      }}
+      onPermissionChange={(permission) => {
+        analytics.track("scanner_permission", { permission })
+      }}
+      stateContent={{
+        permissionDenied: (error, retry) => (
+          <CameraPermissionError error={error} onRetry={retry} />
+        ),
+      }}
+    />
+  )
+}
+```
+
+### Camera lifecycle
+
+The scanner requests preferred resolution and frame rate while supporting exact camera IDs or user/environment facing mode. After permission is granted, it enumerates video devices, reports changes, and can switch the active camera. `devicechange` keeps the device inventory current when hardware is connected or removed.
+
+Camera access requires HTTPS or localhost. Denied permission, unsupported MediaDevices, insecure context, disconnected device, and retry states are explicit. Existing scans remain available when the camera stops.
+
+### Live detection and auto-capture
+
+OpenCV detection runs on a downscaled analysis canvas rather than the full output frame. Each accepted contour reports:
+
+```ts
+{
+  corners,
+  areaRatio,
+  confidence,
+  stableFrames,
+  stable,
+}
+```
+
+Confidence combines document area, edge symmetry, and frame centering. Stable-frame tracking compares normalized corner movement. When `autoCapture` is enabled, a contour must remain stable for the configured number of frames and delay before capture.
+
+### Processing and output
+
+The same corrected document can be rendered as:
+
+- `color`;
+- `grayscale`;
+- `black-white` with configurable threshold.
+
+Output type, quality, maximum width, and maximum height are configurable. The result contains the encoded `Blob`, data URL, output and source dimensions, document corners, detection confidence, processing mode, camera ID, and timestamp.
+
+### Multi-page review
+
+`scans` and `defaultScans` provide controlled and uncontrolled page collections. `selectedScanId` controls the review page. The built-in review surface supports selection, remove, clear, and download; `renderReview` replaces it while retaining typed actions.
+
+```tsx
+<DocumentScanner
+  defaultScans={draftPages}
+  defaultSelectedScanId={draftPages[0]?.id ?? null}
+  renderReview={(context) => (
+    <CustomDocumentReview
+      pages={context.scans}
+      selectedId={context.selectedScanId}
+      onSelect={context.actions.selectScan}
+      onRemove={context.actions.removeScan}
+      onDownload={context.actions.downloadScan}
+    />
+  )}
+/>
+```
+
+### File fallback and torch
+
+Image import uses `scanFile(file)` and the same correction pipeline. This provides a fallback for denied camera permission and supports photos already stored on the device.
+
+Torch controls are shown only when the active video track reports torch capability. Applications can also use `scannerRef.current?.toggleTorch()`.
+
+### Imperative actions
+
+```tsx
+await scannerRef.current?.start()
+scannerRef.current?.stop()
+await scannerRef.current?.scan()
+await scannerRef.current?.scanFile(file)
+await scannerRef.current?.listCameras()
+await scannerRef.current?.switchCamera(deviceId)
+await scannerRef.current?.toggleTorch(true)
+scannerRef.current?.selectScan(pageId)
+scannerRef.current?.downloadScan(pageId)
+scannerRef.current?.removeScan(pageId)
+scannerRef.current?.clearScans()
+const snapshot = scannerRef.current?.getSnapshot()
+```
+
+### Composition and cleanup
+
+- `renderToolbar` replaces controls while retaining camera, processing, detection, review, and action state.
+- `renderReview` replaces the multi-page review panel.
+- `beforePreview`, `afterPreview`, and `overlay` add product UI.
+- `labels` localizes built-in controls and status messages.
+- `stateContent` replaces idle, permission, error, and empty-review surfaces.
+
+The component stops media tracks, clears detection and auto-capture timers, deletes OpenCV Mats, revokes imported-image object URLs, removes device listeners, and resets torch and detection state during cleanup.
+
 ```tsx
 <QrScanner onResult={(value) => console.log(value)} />
 ```
@@ -225,6 +355,8 @@ Cross-origin URL sources still require valid CORS headers. PDF.js API and worker
 Camera-based components require a secure context (`https://` or localhost) and user permission. WebGL integrations depend on browser and GPU support. PDF, editor, spreadsheet, whiteboard, map, media, and 3D integrations should be lazy-loaded in applications where initial bundle size matters.
 
 PDF printing uses an isolated browser frame and remains subject to browser print policies. Fullscreen requires the Fullscreen API. Password, progress, metadata, outline, and raw-data operations are provided by the PDF.js display API.
+
+Torch availability depends on camera hardware, browser support, and the active track. Device labels may remain empty until camera permission is granted. OpenCV initialization can be expensive, so scanner routes should be lazy-loaded.
 
 ## Distribution policy
 
