@@ -25,7 +25,7 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "pdf-viewer",
     category,
-    description: "Canvas-based PDF viewer with paging, zoom, rotation, and download controls.",
+    description: "Production PDF.js workspace with lazy thumbnails, continuous rendering, search, password recovery, fit modes, print, download, fullscreen, and an imperative ref API.",
     dependencies: ["pdfjs-dist", "lucide-react"],
     registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/pdf-viewer.tsx", "{components}/integrations/pdf-viewer.tsx")],
