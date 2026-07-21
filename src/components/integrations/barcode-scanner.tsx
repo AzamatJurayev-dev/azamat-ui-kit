@@ -97,10 +97,7 @@ function BarcodeScanner({
         }))
         setDevices(nextDevices)
         onDevicesChange?.(nextDevices)
-
-        if (!selectedDeviceId && nextDevices.length > 0) {
-          setSelectedDeviceId(nextDevices[0].deviceId)
-        }
+        setSelectedDeviceId((current) => current || nextDevices[0]?.deviceId || "")
       })
       .catch((cause: unknown) => {
         if (disposed) return
@@ -112,7 +109,7 @@ function BarcodeScanner({
     return () => {
       disposed = true
     }
-  }, [labels?.camera, onDevicesChange, onError, selectedDeviceId])
+  }, [labels?.camera, onDevicesChange, onError])
 
   React.useEffect(() => {
     if (paused || !videoRef.current) {
@@ -125,40 +122,31 @@ function BarcodeScanner({
 
     setError(null)
 
+    const handleResult = (result: { getText: () => string } | undefined) => {
+      if (!result || disposed) return
+
+      const value = result.getText()
+      const now = Date.now()
+      const previous = lastResultRef.current
+      if (previous?.value === value && now - previous.timestamp < scanDelay) return
+
+      lastResultRef.current = { value, timestamp: now }
+      onResult?.(value, result)
+      if (stopAfterResult) stop()
+    }
+
     const start = async () => {
       try {
         const controls = selectedDeviceId
           ? await reader.decodeFromVideoDevice(
               selectedDeviceId,
               videoRef.current,
-              (result) => {
-                if (!result || disposed) return
-
-                const value = result.getText()
-                const now = Date.now()
-                const previous = lastResultRef.current
-                if (previous?.value === value && now - previous.timestamp < scanDelay) return
-
-                lastResultRef.current = { value, timestamp: now }
-                onResult?.(value, result)
-                if (stopAfterResult) stop()
-              }
+              (result) => handleResult(result ?? undefined)
             )
           : await reader.decodeFromConstraints(
               { video: { facingMode: { ideal: facingMode } }, audio: false },
               videoRef.current,
-              (result) => {
-                if (!result || disposed) return
-
-                const value = result.getText()
-                const now = Date.now()
-                const previous = lastResultRef.current
-                if (previous?.value === value && now - previous.timestamp < scanDelay) return
-
-                lastResultRef.current = { value, timestamp: now }
-                onResult?.(value, result)
-                if (stopAfterResult) stop()
-              }
+              (result) => handleResult(result ?? undefined)
             )
 
         if (disposed) {
@@ -182,7 +170,6 @@ function BarcodeScanner({
     return () => {
       disposed = true
       stop()
-      reader.reset()
     }
   }, [facingMode, mode, onError, onResult, paused, restartKey, scanDelay, selectedDeviceId, stop, stopAfterResult])
 
