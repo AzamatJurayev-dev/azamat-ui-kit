@@ -68,6 +68,7 @@ function MapView({
   style,
   initialViewState = DEFAULT_VIEW_STATE,
   mapStyle = DEFAULT_MAP_STYLE,
+  onClick,
   ...mapProps
 }: MapViewProps) {
   const [internalSelectedMarkerId, setInternalSelectedMarkerId] = React.useState<string | null>(
@@ -91,17 +92,17 @@ function MapView({
       style={style}
     >
       <MapGL
+        {...mapProps}
         initialViewState={initialViewState}
         mapStyle={mapStyle}
         className={cn("h-full min-h-72 w-full", mapClassName)}
         onClick={(event) => {
-          mapProps.onClick?.(event)
+          onClick?.(event)
           onMapClick?.(
             { longitude: event.lngLat.lng, latitude: event.lngLat.lat },
             event
           )
         }}
-        {...mapProps}
       >
         {showNavigationControl ? <NavigationControl position={navigationControlPosition} /> : null}
 
@@ -222,8 +223,7 @@ function LocationPicker({
             : []
         }
         onMarkerChange={(_, coordinate) => updateValue(coordinate)}
-        onMapClick={(coordinate, event) => {
-          props.onClick?.(event)
+        onMapClick={(coordinate) => {
           if (selectOnMapClick) updateValue(coordinate)
         }}
       />
