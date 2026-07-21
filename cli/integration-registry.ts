@@ -97,7 +97,7 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "document-scanner",
     category,
-    description: "Camera document capture with OpenCV contour detection and perspective correction.",
+    description: "Production OpenCV camera and image scanning workflow with device switching, torch, live contour stability, auto-capture, processing presets, multi-page review, and recovery states.",
     dependencies: ["@techstark/opencv-js", "lucide-react"],
     registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/document-scanner.tsx", "{components}/integrations/document-scanner.tsx")],
