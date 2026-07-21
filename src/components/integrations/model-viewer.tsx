@@ -38,6 +38,10 @@ export type ModelViewerProps = Omit<React.HTMLAttributes<HTMLElement>, "onError"
   onProgress?: (progress: ModelViewerProgress, event: Event) => void
 }
 
+type ModelViewerElementProps = React.HTMLAttributes<HTMLElement> &
+  React.RefAttributes<HTMLElement> &
+  Record<string, unknown>
+
 function ModelViewer({
   src,
   alt,
@@ -98,41 +102,39 @@ function ModelViewer({
     }
   }, [])
 
-  return React.createElement(
-    "model-viewer",
-    {
-      ...props,
-      ref: (node: HTMLElement | null) => {
-        elementRef.current = node
-      },
-      src,
-      alt,
-      poster,
-      ar: ar ? "" : undefined,
-      "ar-modes": ar ? arModes : undefined,
-      "camera-controls": cameraControls ? "" : undefined,
-      "auto-rotate": autoRotate ? "" : undefined,
-      "auto-rotate-delay": autoRotateDelay,
-      "rotation-per-second": rotationPerSecond,
-      autoplay: autoplay ? "" : undefined,
-      "animation-name": animationName,
-      exposure,
-      "shadow-intensity": shadowIntensity,
-      "environment-image": environmentImage,
-      "skybox-image": skyboxImage,
-      "camera-orbit": cameraOrbit,
-      "min-camera-orbit": minCameraOrbit,
-      "max-camera-orbit": maxCameraOrbit,
-      "field-of-view": fieldOfView,
-      loading,
-      reveal,
-      "interaction-prompt": interactionPrompt,
-      className: cn("block aspect-square min-h-72 w-full overflow-hidden rounded-lg border bg-muted", className),
-      style,
-      "data-slot": "model-viewer",
+  const elementProps: ModelViewerElementProps = {
+    ...props,
+    ref: (node: HTMLElement | null) => {
+      elementRef.current = node
     },
-    children
-  )
+    src,
+    alt,
+    poster,
+    ar: ar ? "" : undefined,
+    "ar-modes": ar ? arModes : undefined,
+    "camera-controls": cameraControls ? "" : undefined,
+    "auto-rotate": autoRotate ? "" : undefined,
+    "auto-rotate-delay": autoRotateDelay,
+    "rotation-per-second": rotationPerSecond,
+    autoplay: autoplay ? "" : undefined,
+    "animation-name": animationName,
+    exposure,
+    "shadow-intensity": shadowIntensity,
+    "environment-image": environmentImage,
+    "skybox-image": skyboxImage,
+    "camera-orbit": cameraOrbit,
+    "min-camera-orbit": minCameraOrbit,
+    "max-camera-orbit": maxCameraOrbit,
+    "field-of-view": fieldOfView,
+    loading,
+    reveal,
+    "interaction-prompt": interactionPrompt,
+    className: cn("block aspect-square min-h-72 w-full overflow-hidden rounded-lg border bg-muted", className),
+    style,
+    "data-slot": "model-viewer",
+  }
+
+  return React.createElement("model-viewer", elementProps, children)
 }
 
 export { ModelViewer }
