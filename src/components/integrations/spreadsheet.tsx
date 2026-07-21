@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils"
 export type SpreadsheetApi = ReturnType<typeof createUniver>["univerAPI"]
 export type SpreadsheetWorkbook = Parameters<SpreadsheetApi["createWorkbook"]>[0]
 
+const EMPTY_WORKBOOK = {} as SpreadsheetWorkbook
+
 export type SpreadsheetProps = Omit<React.ComponentProps<"div">, "children"> & {
   workbook?: SpreadsheetWorkbook
   resetKey?: React.Key
@@ -25,7 +27,7 @@ export type SpreadsheetProps = Omit<React.ComponentProps<"div">, "children"> & {
 }
 
 function Spreadsheet({
-  workbook = {},
+  workbook = EMPTY_WORKBOOK,
   resetKey,
   locale = LocaleType.EN_US,
   locales,
@@ -37,8 +39,18 @@ function Spreadsheet({
   ...props
 }: SpreadsheetProps) {
   const containerRef = React.useRef<HTMLDivElement>(null)
+  const onReadyRef = React.useRef(onReady)
+  const onErrorRef = React.useRef(onError)
   const [initializing, setInitializing] = React.useState(true)
   const [error, setError] = React.useState<Error | null>(null)
+
+  React.useEffect(() => {
+    onReadyRef.current = onReady
+  }, [onReady])
+
+  React.useEffect(() => {
+    onErrorRef.current = onError
+  }, [onError])
 
   React.useEffect(() => {
     if (!containerRef.current) return
@@ -65,7 +77,7 @@ function Spreadsheet({
 
       if (!disposed) {
         setInitializing(false)
-        onReady?.(univerAPI)
+        onReadyRef.current?.(univerAPI)
       }
 
       return () => {
@@ -76,9 +88,9 @@ function Spreadsheet({
       const nextError = cause instanceof Error ? cause : new Error("Spreadsheet could not be initialized")
       setError(nextError)
       setInitializing(false)
-      onError?.(nextError)
+      onErrorRef.current?.(nextError)
     }
-  }, [locale, locales, onError, onReady, resetKey, workbook])
+  }, [locale, locales, resetKey, workbook])
 
   return (
     <div
