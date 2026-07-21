@@ -6,7 +6,6 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   DownloadIcon,
-  ExpandIcon,
   FileIcon,
   ListIcon,
   LoaderCircleIcon,
@@ -82,7 +81,6 @@ export type PdfViewerLabels = {
   zoomIn?: string
   fitWidth?: string
   fitPage?: string
-  customZoom?: string
   rotateCounterClockwise?: string
   rotateClockwise?: string
   download?: string
@@ -245,6 +243,20 @@ type PasswordRequestState = PdfPasswordRequest & {
   incorrect: boolean
 }
 
+type PdfViewerCallbacks = Pick<
+  PdfViewerProps,
+  | "onLoad"
+  | "onProgress"
+  | "onPasswordRequest"
+  | "onMetadata"
+  | "onOutline"
+  | "onPageRendered"
+  | "onDownload"
+  | "onPrint"
+  | "onError"
+  | "onSearchResultsChange"
+>
+
 type PdfCanvasPageProps = {
   document: PDFDocumentProxy
   pageNumber: number
@@ -259,8 +271,15 @@ type PdfCanvasPageProps = {
   pageClassName?: string
   onVisible?: (pageNumber: number, ratio: number) => void
   onRendered?: (pageNumber: number, page: PDFPageProxy) => void
+  onRenderingChange?: (pageNumber: number, rendering: boolean) => void
   onError?: (error: Error) => void
   labels?: PdfViewerLabels
+}
+
+function useLatest<T>(value: T) {
+  const ref = React.useRef(value)
+  ref.current = value
+  return ref
 }
 
 function useControllableState<T>({
@@ -319,9 +338,12 @@ function getTextItemValue(item: unknown) {
 function createSearchContext(text: string, index: number, queryLength: number) {
   const start = Math.max(0, index - 44)
   const end = Math.min(text.length, index + queryLength + 56)
-  const prefix = start > 0 ? "…" : ""
-  const suffix = end < text.length ? "…" : ""
-  return `${prefix}${text.slice(start, end).trim()}${suffix}`
+  return `${start > 0 ? "…" : ""}${text.slice(start, end).trim()}${end < text.length ? "…" : ""}`
+}
+
+function toPdfBlob(data: Uint8Array) {
+  const buffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)
+  return new Blob([buffer as ArrayBuffer], { type: "application/pdf" })
 }
 
 function resolveStateContent<T extends unknown[]>(
@@ -347,6 +369,7 @@ function PdfCanvasPage({
   pageClassName,
   onVisible,
   onRendered,
+  onRenderingChange,
   onError,
   labels,
 }: PdfCanvasPageProps) {
@@ -384,12 +407,13 @@ function PdfCanvasPage({
     let disposed = false
     setRendering(true)
     setError(null)
+    onRenderingChange?.(pageNumber, true)
     renderTaskRef.current?.cancel()
 
     document
       .getPage(pageNumber)
       .then((pdfPage) => {
-        if (disposed || !canvasRef.current) return
+        if (disposed || !canvasRef.current) return null
 
         const baseViewport = pdfPage.getViewport({ scale: 1, rotation })
         const resolvedScale = targetWidth ? targetWidth / Math.max(baseViewport.width, 1) : scale
@@ -418,6 +442,7 @@ function PdfCanvasPage({
       .then((pdfPage) => {
         if (disposed || !pdfPage) return
         setRendering(false)
+        onRenderingChange?.(pageNumber, false)
         onRendered?.(pageNumber, pdfPage)
       })
       .catch((cause: unknown) => {
@@ -425,6 +450,7 @@ function PdfCanvasPage({
         const nextError = createError(cause, "PDF page could not be rendered")
         setError(nextError)
         setRendering(false)
+        onRenderingChange?.(pageNumber, false)
         onError?.(nextError)
       })
 
@@ -432,8 +458,9 @@ function PdfCanvasPage({
       disposed = true
       renderTaskRef.current?.cancel()
       renderTaskRef.current = null
+      onRenderingChange?.(pageNumber, false)
     }
-  }, [document, onError, onRendered, pageNumber, rotation, scale, targetWidth, visible])
+  }, [document, onError, onRendered, onRenderingChange, pageNumber, rotation, scale, targetWidth, visible])
 
   return (
     <div
@@ -666,8 +693,22 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
   const rootRef = React.useRef<HTMLDivElement>(null)
   const viewportRef = React.useRef<HTMLDivElement>(null)
   const pageElementsRef = React.useRef(new Map<number, HTMLDivElement>())
+  const renderingPagesRef = React.useRef(new Set<number>())
   const searchRunRef = React.useRef(0)
   const printFrameRef = React.useRef<HTMLIFrameElement | null>(null)
+  const callbacksRef = useLatest<PdfViewerCallbacks>({
+    onLoad,
+    onProgress,
+    onPasswordRequest,
+    onMetadata,
+    onOutline,
+    onPageRendered,
+    onDownload,
+    onPrint,
+    onError,
+    onSearchResultsChange,
+  })
+
   const [pdfDocument, setPdfDocument] = React.useState<PDFDocumentProxy | null>(null)
   const [pageCount, setPageCount] = React.useState(0)
   const [pageLabels, setPageLabels] = React.useState<string[] | null>(null)
@@ -699,6 +740,13 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
     return counts
   }, [searchResults])
 
+  const reportError = React.useCallback((cause: unknown, fallback: string) => {
+    const nextError = createError(cause, fallback)
+    setError(nextError)
+    callbacksRef.current.onError?.(nextError)
+    return nextError
+  }, [callbacksRef])
+
   const updatePage = React.useCallback(
     (nextPage: number, scroll = true) => {
       const normalized = clamp(Math.round(nextPage), 1, Math.max(pageCount, 1))
@@ -725,6 +773,12 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
     [setCurrentRotation]
   )
 
+  const handleRenderingChange = React.useCallback((pageNumber: number, nextRendering: boolean) => {
+    if (nextRendering) renderingPagesRef.current.add(pageNumber)
+    else renderingPagesRef.current.delete(pageNumber)
+    setRendering(renderingPagesRef.current.size > 0)
+  }, [])
+
   const fitDocument = React.useCallback(
     async (mode: "width" | "page") => {
       if (!pdfDocument || !viewportRef.current) return
@@ -734,14 +788,15 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
       const styles = window.getComputedStyle(container)
       const horizontalPadding = Number.parseFloat(styles.paddingLeft) + Number.parseFloat(styles.paddingRight)
       const verticalPadding = Number.parseFloat(styles.paddingTop) + Number.parseFloat(styles.paddingBottom)
-      const availableWidth = Math.max(container.clientWidth - horizontalPadding - (currentSidebarOpen ? 0 : 0), 120)
-      const availableHeight = Math.max(container.clientHeight - verticalPadding, 120)
-      const widthScale = availableWidth / Math.max(viewport.width, 1)
-      const pageScale = Math.min(widthScale, availableHeight / Math.max(viewport.height, 1))
+      const widthScale = Math.max(container.clientWidth - horizontalPadding, 120) / Math.max(viewport.width, 1)
+      const pageScale = Math.min(
+        widthScale,
+        Math.max(container.clientHeight - verticalPadding, 120) / Math.max(viewport.height, 1)
+      )
       setCurrentFitMode(mode)
       updateScale(mode === "width" ? widthScale : pageScale, true)
     },
-    [currentPage, currentRotation, currentSidebarOpen, pdfDocument, setCurrentFitMode, updateScale]
+    [currentPage, currentRotation, pdfDocument, setCurrentFitMode, updateScale]
   )
 
   const getDocumentData = React.useCallback(async () => {
@@ -750,46 +805,58 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
   }, [pdfDocument])
 
   const downloadDocument = React.useCallback(async () => {
-    const data = await getDocumentData()
-    onDownload?.(data)
-    const url = URL.createObjectURL(new Blob([data as BlobPart], { type: "application/pdf" }))
-    const anchor = window.document.createElement("a")
-    anchor.href = url
-    anchor.download = downloadName
-    anchor.click()
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000)
-  }, [downloadName, getDocumentData, onDownload])
+    try {
+      const data = await getDocumentData()
+      callbacksRef.current.onDownload?.(data)
+      const url = URL.createObjectURL(toPdfBlob(data))
+      const anchor = window.document.createElement("a")
+      anchor.href = url
+      anchor.download = downloadName
+      anchor.click()
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000)
+    } catch (cause: unknown) {
+      reportError(cause, "PDF document could not be downloaded")
+    }
+  }, [callbacksRef, downloadName, getDocumentData, reportError])
 
   const printDocument = React.useCallback(async () => {
-    const data = await getDocumentData()
-    onPrint?.(data)
-    const url = URL.createObjectURL(new Blob([data as BlobPart], { type: "application/pdf" }))
-    printFrameRef.current?.remove()
-    const frame = window.document.createElement("iframe")
-    frame.style.position = "fixed"
-    frame.style.right = "0"
-    frame.style.bottom = "0"
-    frame.style.width = "0"
-    frame.style.height = "0"
-    frame.style.border = "0"
-    frame.src = url
-    frame.onload = () => {
-      frame.contentWindow?.focus()
-      frame.contentWindow?.print()
-      window.setTimeout(() => {
-        frame.remove()
-        URL.revokeObjectURL(url)
-      }, 1000)
+    try {
+      const data = await getDocumentData()
+      callbacksRef.current.onPrint?.(data)
+      const url = URL.createObjectURL(toPdfBlob(data))
+      printFrameRef.current?.remove()
+      const frame = window.document.createElement("iframe")
+      frame.style.position = "fixed"
+      frame.style.right = "0"
+      frame.style.bottom = "0"
+      frame.style.width = "0"
+      frame.style.height = "0"
+      frame.style.border = "0"
+      frame.src = url
+      frame.onload = () => {
+        frame.contentWindow?.focus()
+        frame.contentWindow?.print()
+        window.setTimeout(() => {
+          frame.remove()
+          URL.revokeObjectURL(url)
+        }, 1000)
+      }
+      printFrameRef.current = frame
+      window.document.body.appendChild(frame)
+    } catch (cause: unknown) {
+      reportError(cause, "PDF document could not be printed")
     }
-    printFrameRef.current = frame
-    window.document.body.appendChild(frame)
-  }, [getDocumentData, onPrint])
+  }, [callbacksRef, getDocumentData, reportError])
 
   const toggleFullscreen = React.useCallback(async () => {
-    if (!rootRef.current) return
-    if (window.document.fullscreenElement) await window.document.exitFullscreen()
-    else await rootRef.current.requestFullscreen()
-  }, [])
+    try {
+      if (!rootRef.current) return
+      if (window.document.fullscreenElement) await window.document.exitFullscreen()
+      else await rootRef.current.requestFullscreen()
+    } catch (cause: unknown) {
+      reportError(cause, "Fullscreen mode could not be changed")
+    }
+  }, [reportError])
 
   const activateSearchResult = React.useCallback(
     (index: number) => {
@@ -809,7 +876,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
         setSearching(false)
         setSearchResults([])
         setActiveSearchIndex(-1)
-        onSearchResultsChange?.([])
+        callbacksRef.current.onSearchResultsChange?.([])
         return []
       }
 
@@ -844,28 +911,17 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
         if (runId !== searchRunRef.current) return []
         setSearchResults(results)
         setActiveSearchIndex(results.length ? 0 : -1)
-        onSearchResultsChange?.(results)
+        callbacksRef.current.onSearchResultsChange?.(results)
         if (results[0]) updatePage(results[0].pageNumber)
         return results
       } catch (cause: unknown) {
-        const nextError = createError(cause, "Document search failed")
-        onError?.(nextError)
+        reportError(cause, "Document search failed")
         return []
       } finally {
         if (runId === searchRunRef.current) setSearching(false)
       }
     },
-    [maxSearchResults, onError, onSearchResultsChange, pdfDocument, updatePage]
-  )
-
-  const handleError = React.useCallback(
-    (cause: unknown, fallback: string) => {
-      const nextError = createError(cause, fallback)
-      setError(nextError)
-      onError?.(nextError)
-      return nextError
-    },
-    [onError]
+    [callbacksRef, maxSearchResults, pdfDocument, reportError, updatePage]
   )
 
   React.useEffect(() => {
@@ -882,6 +938,8 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
 
     let disposed = false
     const loadingTask = getDocument(normalizedSource)
+    renderingPagesRef.current.clear()
+    setRendering(false)
     setLoading(true)
     setError(null)
     setPdfDocument(null)
@@ -900,7 +958,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
         percent: total ? Math.min(100, Math.round((loaded / total) * 100)) : undefined,
       }
       setLoadingProgress(progress)
-      onProgress?.(progress)
+      callbacksRef.current.onProgress?.(progress)
     }
 
     loadingTask.onPassword = (submit, reason) => {
@@ -908,7 +966,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
       const request = { submit, reason, incorrect: reason === 2 }
       setPasswordRequest(request)
       setLoading(false)
-      onPasswordRequest?.({ submit, reason })
+      callbacksRef.current.onPasswordRequest?.({ submit, reason })
     }
 
     loadingTask.promise
@@ -923,8 +981,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
         setLoading(false)
         setLoadingProgress(null)
         setPasswordRequest(null)
-        updatePage(clamp(currentPage, 1, nextDocument.numPages), false)
-        onLoad?.(nextDocument)
+        callbacksRef.current.onLoad?.(nextDocument)
 
         const [nextLabels, metadata, outline] = await Promise.all([
           nextDocument.getPageLabels().catch(() => null),
@@ -934,14 +991,14 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
 
         if (disposed) return
         setPageLabels(nextLabels)
-        if (metadata) onMetadata?.(metadata)
-        onOutline?.(outline)
+        if (metadata) callbacksRef.current.onMetadata?.(metadata)
+        callbacksRef.current.onOutline?.(outline)
       })
       .catch((cause: unknown) => {
         if (disposed) return
         setLoading(false)
         setPasswordRequest(null)
-        handleError(cause, "PDF document could not be loaded")
+        reportError(cause, "PDF document could not be loaded")
       })
 
     return () => {
@@ -949,7 +1006,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
       searchRunRef.current += 1
       void loadingTask.destroy()
     }
-  }, [handleError, normalizedSource, onLoad, onMetadata, onOutline, onPasswordRequest, onProgress, reloadKey])
+  }, [callbacksRef, normalizedSource, reloadKey, reportError])
 
   React.useEffect(() => {
     if (pageCount > 0 && currentPage > pageCount) updatePage(pageCount, false)
@@ -962,7 +1019,12 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
   }, [currentSearchOpen, currentSearchQuery, runSearch, searchDebounceMs, searchOnChange])
 
   React.useEffect(() => {
-    if (!autoFitOnResize || currentFitMode === "custom" || !viewportRef.current) return
+    if (
+      !autoFitOnResize ||
+      currentFitMode === "custom" ||
+      !viewportRef.current ||
+      typeof ResizeObserver === "undefined"
+    ) return
     const observer = new ResizeObserver(() => void fitDocument(currentFitMode))
     observer.observe(viewportRef.current)
     return () => observer.disconnect()
@@ -1081,7 +1143,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
   const defaultToolbar = (
     <div data-slot="pdf-toolbar" className={cn("flex flex-wrap items-center justify-between gap-2 border-b bg-muted/40 p-2", toolbarClassName)}>
       <div className="flex items-center gap-1">
-        {showSidebarToggle && showThumbnails ? (
+        {showSidebarToggle && (showThumbnails || sidebarContent) ? (
           <Button type="button" variant="ghost" size="icon-sm" iconOnly aria-label={currentSidebarOpen ? labels?.closeSidebar ?? "Close sidebar" : labels?.openSidebar ?? "Open sidebar"} onClick={() => setCurrentSidebarOpen(!currentSidebarOpen)}>
             {currentSidebarOpen ? <PanelLeftCloseIcon className="size-4" /> : <PanelLeftOpenIcon className="size-4" />}
           </Button>
@@ -1135,7 +1197,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
             <label className="relative">
               <span className="sr-only">Zoom mode</span>
               <select
-                value={currentFitMode === "custom" ? "custom" : currentFitMode}
+                value={currentFitMode}
                 onChange={(event) => {
                   const nextMode = event.target.value as PdfFitMode
                   if (nextMode === "width" || nextMode === "page") void fitDocument(nextMode)
@@ -1186,6 +1248,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
   const renderedToolbar = renderToolbar ? renderToolbar(toolbarContext) : defaultToolbar
   const customSidebarContent = typeof sidebarContent === "function" ? sidebarContent(toolbarContext) : sidebarContent
   const activeResult = activeSearchIndex >= 0 ? searchResults[activeSearchIndex] : null
+  const retry = React.useCallback(() => setReloadKey((value) => value + 1), [])
 
   return (
     <div
@@ -1252,7 +1315,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
       ) : null}
 
       <div className="relative flex min-h-0 flex-1">
-        {currentSidebarOpen && showThumbnails ? (
+        {currentSidebarOpen && (showThumbnails || customSidebarContent) ? (
           <aside data-slot="pdf-sidebar" className={cn("w-40 shrink-0 overflow-y-auto border-r bg-muted/20 p-3", sidebarClassName)} aria-label={labels?.thumbnails ?? "Page thumbnails"}>
             {customSidebarContent ?? (
               <div className="space-y-3">
@@ -1278,7 +1341,7 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
                           searchMatchCount={searchCountsByPage.get(pageNumber)}
                           canvasClassName="shadow-sm"
                           pageClassName="min-h-20 overflow-hidden"
-                          onError={(cause) => onError?.(cause)}
+                          onError={(cause) => callbacksRef.current.onError?.(cause)}
                           labels={labels}
                         />
                         <span className="mt-2 block text-center text-[10px] tabular-nums text-muted-foreground">
@@ -1331,9 +1394,9 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
             <div className="absolute inset-0 z-40 grid place-items-center bg-background/85 p-6 backdrop-blur-sm">
               {resolveStateContent(
                 stateContent?.error,
-                <DefaultErrorState error={error} retry={() => setReloadKey((value) => value + 1)} labels={labels} />,
+                <DefaultErrorState error={error} retry={retry} labels={labels} />,
                 error,
-                () => setReloadKey((value) => value + 1)
+                retry
               )}
             </div>
           ) : null}
@@ -1349,11 +1412,9 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
                 searchMatchCount={searchCountsByPage.get(currentPage)}
                 canvasClassName={canvasClassName}
                 pageClassName={pageClassName}
-                onRendered={(pageNumber, pdfPage) => {
-                  setRendering(false)
-                  onPageRendered?.(pageNumber, pdfPage)
-                }}
-                onError={(cause) => handleError(cause, "PDF page could not be rendered")}
+                onRenderingChange={handleRenderingChange}
+                onRendered={(pageNumber, pdfPage) => callbacksRef.current.onPageRendered?.(pageNumber, pdfPage)}
+                onError={(cause) => reportError(cause, "PDF page could not be rendered")}
                 labels={labels}
               />
             ) : (
@@ -1378,11 +1439,12 @@ const PdfViewer = React.forwardRef<PdfViewerHandle, PdfViewerProps>(function Pdf
                       searchMatchCount={searchCountsByPage.get(pageNumber)}
                       canvasClassName={canvasClassName}
                       pageClassName={pageClassName}
+                      onRenderingChange={handleRenderingChange}
                       onVisible={(visiblePage, ratio) => {
                         if (ratio >= 0.55 && visiblePage !== currentPage) setCurrentPage(visiblePage)
                       }}
-                      onRendered={(renderedPage, pdfPage) => onPageRendered?.(renderedPage, pdfPage)}
-                      onError={(cause) => onError?.(cause)}
+                      onRendered={(renderedPage, pdfPage) => callbacksRef.current.onPageRendered?.(renderedPage, pdfPage)}
+                      onError={(cause) => callbacksRef.current.onError?.(cause)}
                       labels={labels}
                     />
                   </div>
