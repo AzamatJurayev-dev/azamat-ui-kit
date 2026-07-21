@@ -3,7 +3,6 @@
 import * as React from "react"
 import * as echarts from "echarts"
 import type {
-  ECharts,
   EChartsOption,
   EChartsType,
   SetOptionOpts,
@@ -48,7 +47,7 @@ function AdvancedChart({
   ...props
 }: AdvancedChartProps) {
   const containerRef = React.useRef<HTMLDivElement>(null)
-  const chartRef = React.useRef<ECharts | null>(null)
+  const chartRef = React.useRef<EChartsType | null>(null)
   const callbacksRef = React.useRef({ onReady, onError })
 
   React.useEffect(() => {
@@ -103,12 +102,14 @@ function AdvancedChart({
 
     const bindings = Object.entries(events).map(([eventName, handler]) => {
       const listener = (params: unknown) => handler(params, chart)
-      chart.on(eventName, listener)
+      chart.on(eventName as never, listener as never)
       return { eventName, listener }
     })
 
     return () => {
-      for (const binding of bindings) chart.off(binding.eventName, binding.listener)
+      for (const binding of bindings) {
+        chart.off(binding.eventName as never, binding.listener as never)
+      }
     }
   }, [events])
 
