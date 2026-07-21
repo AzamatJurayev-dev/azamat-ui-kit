@@ -17,7 +17,7 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "media-player",
     category,
-    description: "Accessible video and audio players powered by Vidstack.",
+    description: "Composable Vidstack video and audio players with forwarded refs, custom layouts, tracks, overlays, thumbnails, and resilient empty/loading/error states.",
     dependencies: ["@vidstack/react"],
     registryDependencies: ["utils"],
     files: [file("src/components/integrations/media-player.tsx", "{components}/integrations/media-player.tsx")],
