@@ -1,5 +1,5 @@
 import type { ComponentRegistryItem, RegistryFile } from "./registry"
-import { registry } from "./registry"
+import { registry, registryNames } from "./registry"
 import { registryStatus } from "./registry-status"
 
 const file = (source: string, target: string): RegistryFile => ({ source, target })
@@ -64,6 +64,7 @@ const integrationRegistry: ComponentRegistryItem[] = [
 
 for (const item of integrationRegistry) {
   registry[item.name] = item
+  if (!registryNames.includes(item.name)) registryNames.push(item.name)
 }
 
 const canonicalNames = integrationRegistry
