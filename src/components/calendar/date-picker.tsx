@@ -86,11 +86,8 @@ function DatePicker({
             />
           }
         >
-          <CalendarIcon data-icon="inline-start" className={cn(hasValue && "text-primary")} />
-          <span className={cn("grid min-w-0 flex-1", triggerVariant === "default" && "gap-0.5")}>
-            {triggerVariant === "default" ? <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-              {labels?.selected ?? "Date"}
-            </span> : null}
+          <CalendarIcon data-icon="inline-start" className={cn("size-4", hasValue && "text-primary")} />
+          <span className="grid min-w-0 flex-1">
             <span className={cn("truncate text-sm", hasValue && "font-semibold text-foreground")}>
               {hasValue ? formatValue(String(value)) : placeholder ?? labels?.placeholder ?? "Select date"}
             </span>

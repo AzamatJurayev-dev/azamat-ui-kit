@@ -1,10 +1,17 @@
 import { PlusIcon, SettingsIcon } from "lucide-react"
 
 import { CopyButton } from "@/components/actions/copy-button"
-import { StatisticCard, StatisticGrid } from "@/components/display/statistic"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { moduleCount, registryGroups } from "@/showcase/data/registry"
+
+const metrics = [
+  { label: "Registry components", value: moduleCount, change: "visible below", description: "tembro add <name>" },
+  { label: "Local source files", value: "152", change: "with hooks/lib", description: "installed by CLI" },
+  { label: "Categories", value: registryGroups.length, change: "all shown", description: "actions to wizard" },
+  { label: "Build", value: "Pass", change: "doctor pass", description: "tembro@6.1.1" },
+]
 
 export function HeroSection() {
   return (
@@ -25,16 +32,24 @@ export function HeroSection() {
           <div className="flex flex-wrap gap-2">
             <Button leftIcon={<PlusIcon className="size-4" />}>Create</Button>
             <Button variant="outline" leftIcon={<SettingsIcon className="size-4" />}>Settings</Button>
-            <CopyButton value="npx tembro@6.1.0 list --json">Copy list command</CopyButton>
+            <CopyButton value="npx tembro@6.1.1 list --json">Copy list command</CopyButton>
           </div>
         </div>
 
-        <StatisticGrid columns={4} className="mt-8">
-          <StatisticCard label="Registry components" value={moduleCount} change="visible below" trend="up" description="tembro add <name>" />
-          <StatisticCard label="Local source files" value="152" change="with hooks/lib" trend="up" description="installed by CLI" />
-          <StatisticCard label="Categories" value={registryGroups.length} change="all shown" trend="up" description="actions to wizard" />
-          <StatisticCard label="Build" value="Pass" change="doctor pass" trend="up" description="tembro@6.1.0" />
-        </StatisticGrid>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {metrics.map((metric) => (
+            <Card key={metric.label}>
+              <CardContent className="p-4">
+                <p className="text-sm text-muted-foreground">{metric.label}</p>
+                <p className="mt-5 text-2xl font-semibold tracking-tight">{metric.value}</p>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                  <Badge tone="success" variant="soft">{metric.change}</Badge>
+                  <span className="text-muted-foreground">{metric.description}</span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
   )

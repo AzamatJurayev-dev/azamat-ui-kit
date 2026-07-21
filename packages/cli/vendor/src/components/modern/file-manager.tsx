@@ -18,7 +18,7 @@ export type FileManagerItem = {
   status?: React.ReactNode
 }
 
-export type FileManagerProps = React.ComponentProps<"div"> & {
+export type FileManagerProps = Omit<React.ComponentProps<"div">, "onSelect"> & {
   items: FileManagerItem[]
   selectedId?: string
   onSelect?: (item: FileManagerItem) => void

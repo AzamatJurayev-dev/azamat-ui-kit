@@ -7,7 +7,7 @@ export function PatternsSection() {
     <div className="grid items-start gap-4 lg:grid-cols-3">
       <EmptyState
         title="EmptyState pattern"
-        description="Pattern components are installed: resource pages, settings pages, page toolbar, data view and form builder."
+        description="Pattern components are installed: resource pages, settings pages, data view and form builder."
         primaryAction={{ label: "Primary action" }}
         secondaryAction={{ label: "Secondary action", variant: "outline" }}
       />

@@ -12,7 +12,7 @@ export const previewSurfaceCatalog: PreviewSurfaceRecord[] = [
   {
     slug: "dashboard-01",
     title: "Dashboard with sidebar",
-    command: "npx tembro init --template next --defaults\nnpx tembro add sidebar statistic data-table",
+    command: "npx tembro init --template next --defaults\nnpx tembro add sidebar chart-card data-table",
     code: `import { Sidebar } from "tembro"\n\nexport function Dashboard01() {\n  return <Sidebar />\n}`,
     tone: "dashboard",
   },

@@ -16,11 +16,12 @@ import {
   DataTable,
   DatePicker,
   FileUpload,
-  InfoCard,
   Input,
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
+  MapView,
+  MediaPlayer,
   Menubar,
   MenubarContent,
   MenubarItem,
@@ -34,24 +35,15 @@ import {
   NavigationMenuPositioner,
   NavigationMenuTrigger,
   NavigationMenuViewport,
-  NumberField,
-  NumberFieldDecrement,
-  NumberFieldGroup,
-  NumberFieldIncrement,
-  NumberFieldInput,
-  NumberFieldStepper,
   Pagination,
   Rating,
   RangeSlider,
   Slider,
+  Spreadsheet,
   StateView,
   ToastProvider,
   ToggleGroup,
   ToggleGroupItem,
-  Toolbar,
-  ToolbarButton,
-  ToolbarGroup,
-  ToolbarSeparator,
   Wizard,
 } from "../../src"
 
@@ -83,7 +75,7 @@ export const smokeElements = [
   <Badge key="status" tone="success" dot>Active</Badge>,
   <DataState key="empty" status="empty" title="No data" />,
   <StateView key="loading" status="loading" title="Loading" />,
-  <InfoCard key="info-card" title="Info">Content</InfoCard>,
+  <Badge key="info-badge" variant="secondary">Info</Badge>,
   <ActivityFeed key="activity-feed" items={[{ id: "1", title: "Created", time: "now" }]} />,
   <ChatMessage key="chat-message" outgoing status="read">Ready</ChatMessage>,
   <ChatComposer key="chat-composer" onSend={noop} />,
@@ -96,26 +88,13 @@ export const smokeElements = [
   <Slider key="slider" value={40} onValueChange={noop} />,
   <RangeSlider key="range-slider" value={[20, 80]} onValueChange={noop} />,
   <Rating key="rating" value={4} onValueChange={noop} />,
-  <NumberField key="number-field" defaultValue={3}>
-    <NumberFieldGroup>
-      <NumberFieldInput aria-label="Quantity" />
-      <NumberFieldStepper>
-        <NumberFieldIncrement />
-        <NumberFieldDecrement />
-      </NumberFieldStepper>
-    </NumberFieldGroup>
-  </NumberField>,
+  <MapView key="map" title="Map" showControls={false} showMarkerList={false} height={160} />,
+  <MediaPlayer key="media-player" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" showMeta={false} />,
+  <Spreadsheet key="spreadsheet" columns={[{ key: "name", label: "Name" }]} defaultRows={[{ key: "row-1", cells: { name: "Atlas" } }]} />,
   <ToggleGroup key="toggle-group" defaultValue={["day"]}>
     <ToggleGroupItem value="day">Day</ToggleGroupItem>
     <ToggleGroupItem value="week">Week</ToggleGroupItem>
   </ToggleGroup>,
-  <Toolbar key="toolbar">
-    <ToolbarGroup>
-      <ToolbarButton>Bold</ToolbarButton>
-      <ToolbarSeparator />
-      <ToolbarButton>Italic</ToolbarButton>
-    </ToolbarGroup>
-  </Toolbar>,
   <Wizard key="wizard" steps={[{ id: "one", title: "One" }]} currentStep="one" />,
   <CommandPalette key="command" open={false} onOpenChange={noop} groups={[]} />,
   <ToastProvider key="toast-provider"><div>App</div></ToastProvider>,

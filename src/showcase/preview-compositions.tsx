@@ -1,6 +1,7 @@
 import * as React from "react"
 
-import { InfoCard } from "@/components/display/info-card"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 import { FileUpload } from "@/components/upload/file-upload"
 
 type PreviewStatCardProps = {
@@ -13,7 +14,24 @@ type PreviewStatCardProps = {
 }
 
 export function PreviewStatCard({ title, value, description, trend, helperText, icon }: PreviewStatCardProps) {
-  return <InfoCard eyebrow={title} title={value} description={description} icon={icon} status={trend?.value} content={helperText} density="compact" />
+  return (
+    <Card density="compact">
+      <CardContent className="grid gap-2 p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            {title ? <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{title}</p> : null}
+            <div className="mt-1 flex items-center gap-2">
+              {icon ? <span className="text-muted-foreground">{icon}</span> : null}
+              {value ? <p className="text-2xl font-semibold tracking-tight">{value}</p> : null}
+            </div>
+          </div>
+          {trend?.value ? <Badge tone={trend.tone === "success" ? "success" : "neutral"}>{trend.value}</Badge> : null}
+        </div>
+        {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
+        {helperText ? <div className="text-sm text-muted-foreground">{helperText}</div> : null}
+      </CardContent>
+    </Card>
+  )
 }
 
 type PreviewPropertyItem = { key: string; label: React.ReactNode; value: React.ReactNode; description?: React.ReactNode }

@@ -25,7 +25,9 @@ const TabsList = React.forwardRef<
       data-variant={variant}
       data-overflow={overflow}
       className={cn(
-        "inline-flex max-w-full items-center justify-start",
+        "inline-flex max-w-full items-center justify-start gap-1 rounded-[var(--radius-lg)] border border-border/72 bg-muted/45 p-1",
+        variant === "underline" && "gap-4 rounded-none border-x-0 border-t-0 bg-transparent p-0",
+        variant === "compact" && "rounded-[var(--radius-md)] p-0.5",
         overflow === "scroll" && "overflow-x-auto overflow-y-hidden overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
         overflow === "wrap" && "flex-wrap",
         className
@@ -44,7 +46,10 @@ const TabsTrigger = React.forwardRef<
       data-slot="tabs-trigger"
       data-variant={variant}
       className={cn(
-        "inline-flex shrink-0 items-center justify-center whitespace-nowrap disabled:pointer-events-none",
+        "inline-flex h-9 shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-md)] px-3 text-sm font-medium text-muted-foreground outline-none transition-[background-color,border-color,color,box-shadow] hover:bg-background/72 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-background data-[selected]:text-foreground data-[selected]:shadow-sm",
+        variant === "pills" && "rounded-full px-4 data-[selected]:bg-primary data-[selected]:text-primary-foreground",
+        variant === "underline" && "h-10 rounded-none border-b-2 border-transparent bg-transparent px-0 shadow-none hover:bg-transparent data-[selected]:border-primary data-[selected]:bg-transparent data-[selected]:shadow-none",
+        variant === "compact" && "h-8 rounded-[calc(var(--radius-md)-2px)] px-2.5 text-xs",
         className
       )}
     {...props}
@@ -59,7 +64,7 @@ const TabsContent = React.forwardRef<
     <BaseTabs.Panel
       ref={ref}
       data-slot="tabs-content"
-      className={className}
+      className={cn("mt-3 outline-none focus-visible:ring-2 focus-visible:ring-ring", className)}
     {...props}
   />
 ))

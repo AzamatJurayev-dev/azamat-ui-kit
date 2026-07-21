@@ -47,7 +47,7 @@ function DialogOverlay({
     <DialogPrimitive.Backdrop
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 isolate z-50 duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+        "fixed inset-0 isolate z-50 bg-black/45 backdrop-blur-[2px] duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0 dark:bg-black/62",
         className
       )}
       {...props}
@@ -73,7 +73,7 @@ function DialogContent({
         role="dialog"
         aria-modal="true"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid max-h-[min(92vh,calc(100dvh-2rem))] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_minmax(0,1fr)_auto] gap-5 overflow-hidden overscroll-contain duration-100 outline-none data-[surface=plain]:overflow-visible data-[size=xs]:sm:max-w-sm data-[size=sm]:sm:max-w-md data-[size=md]:sm:max-w-lg data-[size=lg]:sm:max-w-2xl data-[size=xl]:sm:max-w-4xl data-[size=full]:h-[min(92vh,56rem)] data-[size=full]:max-w-[min(96vw,84rem)] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 left-1/2 z-50 grid max-h-[min(92vh,calc(100dvh-2rem))] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_minmax(0,1fr)_auto] gap-5 overflow-hidden overscroll-contain rounded-[var(--aui-card-radius,var(--radius-xl))] border border-border/78 bg-background p-6 text-foreground shadow-[0_32px_90px_rgba(15,23,42,0.24)] duration-100 outline-none data-[surface=plain]:overflow-visible data-[surface=plain]:border-0 data-[surface=plain]:bg-transparent data-[surface=plain]:p-0 data-[surface=plain]:shadow-none data-[size=xs]:sm:max-w-sm data-[size=sm]:sm:max-w-md data-[size=md]:sm:max-w-lg data-[size=lg]:sm:max-w-2xl data-[size=xl]:sm:max-w-4xl data-[size=full]:h-[min(92vh,56rem)] data-[size=full]:max-w-[min(96vw,84rem)] data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -148,7 +148,7 @@ function DialogTitle({ className, ...props }: DialogTitleProps) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={className}
+      className={cn("text-lg font-semibold tracking-tight text-foreground", className)}
       {...props}
     />
   )
@@ -161,7 +161,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={className}
+      className={cn("mt-1 text-sm leading-6 text-muted-foreground", className)}
       {...props}
     />
   )

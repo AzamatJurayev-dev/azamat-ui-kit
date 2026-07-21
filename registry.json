@@ -1,7 +1,7 @@
 {
   "$schema": "https://tembro.dev/registry.schema.json",
   "name": "tembro",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "components": {
     "accordion": {
       "category": "ui",
@@ -143,9 +143,7 @@
         "kbd",
         "scroll-box",
         "right-click-menu",
-        "number-field",
         "toggle-group",
-        "toolbar",
         "tag-input",
         "multi-select",
         "combobox",
@@ -189,7 +187,6 @@
         "description-list",
         "divider",
         "file-upload",
-        "filter-bar",
         "empty-state",
         "charts",
         "chart-card",
@@ -208,9 +205,7 @@
         "rating",
         "section",
         "slider",
-        "info-card",
         "spinner",
-        "statistic",
         "status-dot",
         "status-legend",
         "stepper",
@@ -235,7 +230,6 @@
         "resizable-panel",
         "rich-text-editor",
         "file-manager",
-        "image-cropper",
         "qr-code",
         "json-input",
         "time-picker",
@@ -1181,18 +1175,6 @@
       "status": "preview",
       "distribution": "source-copy"
     },
-    "filter-bar": {
-      "category": "filters",
-      "kind": "component",
-      "files": [
-        {
-          "source": "src/components/filters/filter-bar.tsx",
-          "target": "{components}/filters/filter-bar.tsx"
-        }
-      ],
-      "status": "stable",
-      "distribution": "source-copy"
-    },
     "form": {
       "category": "group",
       "kind": "preset",
@@ -1396,25 +1378,6 @@
       "status": "stable",
       "distribution": "system"
     },
-    "image-cropper": {
-      "category": "modern",
-      "kind": "component",
-      "dependencies": [
-        "react-easy-crop",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "source": "src/components/modern/image-cropper.tsx",
-          "target": "{components}/modern/image-cropper.tsx"
-        }
-      ],
-      "status": "preview",
-      "distribution": "source-copy"
-    },
     "image-upload": {
       "category": "upload",
       "kind": "component",
@@ -1425,23 +1388,6 @@
         }
       ],
       "status": "preview",
-      "distribution": "source-copy"
-    },
-    "info-card": {
-      "category": "display",
-      "kind": "component",
-      "registryDependencies": [
-        "card",
-        "skeleton",
-        "utils"
-      ],
-      "files": [
-        {
-          "source": "src/components/display/info-card.tsx",
-          "target": "{components}/display/info-card.tsx"
-        }
-      ],
-      "status": "stable",
       "distribution": "source-copy"
     },
     "inline-editable": {
@@ -1550,7 +1496,6 @@
     "kpi": {
       "category": "charts",
       "kind": "alias",
-      "migrationAliasFor": "statistic",
       "status": "preview"
     },
     "layout": {
@@ -1681,25 +1626,6 @@
       ],
       "status": "preview",
       "distribution": "source-copy"
-    },
-    "number-field": {
-      "category": "inputs",
-      "kind": "component",
-      "dependencies": [
-        "@base-ui/react",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "source": "src/components/ui/number-field",
-          "target": "{ui}/number-field"
-        }
-      ],
-      "status": "preview",
-      "distribution": "foundation"
     },
     "number-input": {
       "category": "inputs",
@@ -2121,7 +2047,6 @@
     "smart-card": {
       "category": "display",
       "kind": "alias",
-      "migrationAliasFor": "info-card",
       "status": "preview",
       "distribution": "source-copy"
     },
@@ -2160,7 +2085,6 @@
     "stat-card": {
       "category": "layout",
       "kind": "alias",
-      "migrationAliasFor": "statistic",
       "status": "preview",
       "distribution": "source-copy"
     },
@@ -2181,18 +2105,6 @@
         }
       ],
       "status": "stable",
-      "distribution": "source-copy"
-    },
-    "statistic": {
-      "category": "display",
-      "kind": "component",
-      "files": [
-        {
-          "source": "src/components/display/statistic.tsx",
-          "target": "{components}/display/statistic.tsx"
-        }
-      ],
-      "status": "preview",
       "distribution": "source-copy"
     },
     "status-dot": {
@@ -2414,24 +2326,6 @@
       "status": "preview",
       "distribution": "foundation"
     },
-    "toolbar": {
-      "category": "ui",
-      "kind": "component",
-      "dependencies": [
-        "@base-ui/react"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "source": "src/components/ui/toolbar",
-          "target": "{ui}/toolbar"
-        }
-      ],
-      "status": "preview",
-      "distribution": "foundation"
-    },
     "tooltip": {
       "category": "ui",
       "kind": "component",
@@ -2462,7 +2356,6 @@
     "trend-card": {
       "category": "display",
       "kind": "alias",
-      "migrationAliasFor": "statistic",
       "status": "preview",
       "distribution": "source-copy"
     },
@@ -2634,6 +2527,65 @@
       ],
       "status": "preview",
       "distribution": "source-copy"
+    },
+    "map": {
+      "category": "modern",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/map.tsx",
+          "target": "{components}/modern/map.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "media-player": {
+      "category": "modern",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "badge",
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/media-player.tsx",
+          "target": "{components}/modern/media-player.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
+    },
+    "spreadsheet": {
+      "category": "modern",
+      "kind": "component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "utils"
+      ],
+      "files": [
+        {
+          "source": "src/components/modern/spreadsheet.tsx",
+          "target": "{components}/modern/spreadsheet.tsx"
+        }
+      ],
+      "status": "preview",
+      "distribution": "source-copy"
     }
   },
   "recommended": [
@@ -2661,9 +2613,7 @@
     "kbd",
     "scroll-box",
     "right-click-menu",
-    "number-field",
     "toggle-group",
-    "toolbar",
     "tag-input",
     "combobox",
     "async-select",
@@ -2703,7 +2653,6 @@
     "description-list",
     "divider",
     "file-upload",
-    "filter-bar",
     "empty-state",
     "charts",
     "image-upload",
@@ -2720,9 +2669,7 @@
     "rating",
     "section",
     "slider",
-    "info-card",
     "spinner",
-    "statistic",
     "status-dot",
     "status-legend",
     "stepper",
@@ -2744,12 +2691,14 @@
     "dual-list-picker",
     "resizable-panel",
     "rich-text-editor",
-    "image-cropper",
     "qr-code",
     "json-input",
     "time-picker",
     "sortable-list",
-    "virtual-list"
+    "virtual-list",
+    "map",
+    "media-player",
+    "spreadsheet"
   ],
   "recommendedByMode": {
     "minimal": [
@@ -2766,9 +2715,10 @@
       "badge",
       "card",
       "data-table",
-      "filter-bar",
       "state-view",
-      "info-card"
+      "map",
+      "media-player",
+      "spreadsheet"
     ],
     "full": [
       "button",
@@ -2795,9 +2745,7 @@
       "kbd",
       "scroll-box",
       "right-click-menu",
-      "number-field",
       "toggle-group",
-      "toolbar",
       "tag-input",
       "combobox",
       "async-select",
@@ -2837,7 +2785,6 @@
       "description-list",
       "divider",
       "file-upload",
-      "filter-bar",
       "empty-state",
       "charts",
       "image-upload",
@@ -2854,9 +2801,7 @@
       "rating",
       "section",
       "slider",
-      "info-card",
       "spinner",
-      "statistic",
       "status-dot",
       "status-legend",
       "stepper",
@@ -2878,7 +2823,6 @@
       "dual-list-picker",
       "resizable-panel",
       "rich-text-editor",
-      "image-cropper",
       "qr-code",
       "json-input",
       "time-picker",
@@ -2952,9 +2896,7 @@
       "kbd",
       "scroll-box",
       "right-click-menu",
-      "number-field",
       "toggle-group",
-      "toolbar",
       "tag-input",
       "combobox",
       "async-select",
@@ -2994,7 +2936,6 @@
       "description-list",
       "divider",
       "file-upload",
-      "filter-bar",
       "empty-state",
       "charts",
       "image-upload",
@@ -3011,9 +2952,7 @@
       "rating",
       "section",
       "slider",
-      "info-card",
       "spinner",
-      "statistic",
       "status-dot",
       "status-legend",
       "stepper",
@@ -3035,7 +2974,6 @@
       "dual-list-picker",
       "resizable-panel",
       "rich-text-editor",
-      "image-cropper",
       "qr-code",
       "json-input",
       "time-picker",
@@ -3057,10 +2995,8 @@
       "checkbox",
       "switch",
       "radio-group",
-      "number-field",
       "multi-select",
       "toggle-group",
-      "toolbar",
       "dialog",
       "dropdown-menu",
       "popover",
@@ -3101,7 +3037,6 @@
       "chat",
       "list",
       "description-list",
-      "statistic",
       "tree-view",
       "copy-button",
       "section",
@@ -3112,6 +3047,9 @@
       "dual-list-picker",
       "resizable-panel",
       "file-manager",
+      "map",
+      "media-player",
+      "spreadsheet",
       "tag",
       "carousel",
       "typography",
@@ -3124,7 +3062,6 @@
       "signature-pad",
       "qr-code",
       "rich-text-editor",
-      "image-cropper",
       "data-grid"
     ],
     "standalone": [],
@@ -3140,10 +3077,8 @@
       "checkbox",
       "switch",
       "radio-group",
-      "number-field",
       "multi-select",
       "toggle-group",
-      "toolbar",
       "dialog",
       "dropdown-menu",
       "popover",
@@ -3184,7 +3119,6 @@
       "chat",
       "list",
       "description-list",
-      "statistic",
       "tree-view",
       "copy-button",
       "section",
@@ -3207,7 +3141,6 @@
       "signature-pad",
       "qr-code",
       "rich-text-editor",
-      "image-cropper",
       "data-grid"
     ]
   },
@@ -3232,12 +3165,12 @@
     "input-value": "input",
     "inputs": "input",
     "app-sidebar": "sidebar",
-    "stat-card": "statistic",
-    "smart-card": "info-card",
+    "stat-card": "card",
+    "smart-card": "card",
     "file-dropzone": "file-upload",
     "comparison-card": "card",
     "delta-badge": "badge",
-    "trend-card": "statistic",
+    "trend-card": "card",
     "user-card": "avatar",
     "sheet-shell": "drawer",
     "nav-tabs": "tabs",
@@ -3259,6 +3192,6 @@
     "table-export-menu": "data-table",
     "table-import-button": "data-table",
     "horizontal-bar-chart": "charts",
-    "kpi": "statistic"
+    "kpi": "chart-card"
   }
 }

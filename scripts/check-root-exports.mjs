@@ -38,8 +38,8 @@ if (/smart-card/.test(displayIndex)) {
   failures.push("src/components/display/index.ts must not expose the removed SmartCard compatibility surface")
 }
 
-if (!/export\s+\*\s+from\s+["']\.\/info-card["']/.test(displayIndex)) {
-  failures.push("src/components/display/index.ts must expose the canonical './info-card' module")
+if (/info-card/.test(displayIndex)) {
+  failures.push("src/components/display/index.ts must not expose the removed InfoCard compatibility surface")
 }
 
 for (const source of forbiddenRootBarrels) {

@@ -5,6 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
   type Cell,
   type ColumnDef,
@@ -289,6 +290,16 @@ function DataTable<TData, TValue = unknown>({
   }, [columns, features?.rowActions, rowActions])
 
   const paginationConfig = pagination === false ? undefined : pagination
+  const [internalSorting, setInternalSorting] = React.useState<SortingState>([])
+  const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<VisibilityState>({})
+  const [internalRowSelection, setInternalRowSelection] = React.useState<RowSelectionState>({})
+  const [internalExpanded, setInternalExpanded] = React.useState<ExpandedState>({})
+  const [internalColumnPinning, setInternalColumnPinning] = React.useState<ColumnPinningState>({})
+  const resolvedSorting = sorting ?? internalSorting
+  const resolvedColumnVisibility = columnVisibility ?? internalColumnVisibility
+  const resolvedRowSelection = rowSelection ?? internalRowSelection
+  const resolvedExpanded = expanded ?? internalExpanded
+  const resolvedColumnPinning = columnPinning ?? internalColumnPinning
   const controlledPagination = paginationConfig
     ? {
         pageIndex: paginationConfig.pageIndex,
@@ -296,7 +307,6 @@ function DataTable<TData, TValue = unknown>({
       }
     : undefined
   const manualPagination = Boolean(paginationConfig && paginationConfig.manual !== false)
-  const resolvedRowSelection = rowSelection ?? {}
 
   // TanStack Table returns imperative helpers that React Compiler flags by design.
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -305,22 +315,23 @@ function DataTable<TData, TValue = unknown>({
     columns: resolvedColumns,
     getRowId,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: paginationConfig && !manualPagination ? getPaginationRowModel() : undefined,
     manualPagination,
     pageCount: paginationConfig?.pageCount,
     state: {
-      sorting,
-      columnVisibility,
+      sorting: resolvedSorting,
+      columnVisibility: resolvedColumnVisibility,
       rowSelection: resolvedRowSelection,
       pagination: controlledPagination,
-      expanded,
-      ...(columnPinning ? { columnPinning } : {}),
+      expanded: resolvedExpanded,
+      columnPinning: resolvedColumnPinning,
     },
-    onSortingChange,
-    onColumnVisibilityChange,
-    onRowSelectionChange,
-    onExpandedChange,
-    onColumnPinningChange,
+    onSortingChange: onSortingChange ?? setInternalSorting,
+    onColumnVisibilityChange: onColumnVisibilityChange ?? setInternalColumnVisibility,
+    onRowSelectionChange: onRowSelectionChange ?? setInternalRowSelection,
+    onExpandedChange: onExpandedChange ?? setInternalExpanded,
+    onColumnPinningChange: onColumnPinningChange ?? setInternalColumnPinning,
     enableRowSelection,
     getRowCanExpand,
     getExpandedRowModel: getExpandedRowModel(),

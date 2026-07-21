@@ -1,20 +1,4 @@
 export const layoutDemoCodeSnippets: Record<string, string> = {
-  "filter-bar": `import { Button, FilterBar, Input } from "tembro"
-
-export function Demo() {
-  return (
-    <FilterBar
-      search={<Input type="search" value="" placeholder="Search rows..." readOnly />}
-      chips={[
-        { key: "status", label: "Status", value: "Active", tone: "success" },
-        { key: "owner", label: "Owner", value: "Azamat" },
-      ]}
-      filters={<Button variant="outline">Status</Button>}
-      actions={<Button>Export</Button>}
-      onReset={() => undefined}
-    />
-  )
-}`,
   "description-list": `import { DescriptionList } from "tembro"
 
 export function Demo() {

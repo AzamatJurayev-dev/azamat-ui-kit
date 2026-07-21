@@ -36,11 +36,11 @@ import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
 import { DrawerShowcase, drawerMock } from "./drawer"
 import { FormWrapperShowcase, formRHFWrapperMock, formSelectMock } from "./form-wrapper"
 import { kanbanBoardMock, KanbanBoardShowcase } from "./kanban-board"
-import { infoCardMock, InfoCardShowcase } from "./info-card"
-import { imageCropperMock, ImageCropperShowcase } from "./image-cropper"
 import { inputMock, InputShowcase } from "./input"
 import { kbdMock, KbdShowcase } from "./kbd"
 import { listMock, ListShowcase } from "./list"
+import { mapMock, MapShowcase } from "./map"
+import { mediaPlayerMock, MediaPlayerShowcase } from "./media-player"
 import { timePickerMock, TimePickerShowcase } from "./time-picker"
 import { resizablePanelMock, ResizablePanelShowcase } from "./resizable-panel"
 import { NotificationCenterShowcase, notificationCenterMock } from "./notification-center"
@@ -62,7 +62,7 @@ import { selectMock, SelectShowcase } from "./select"
 import { sliderMock, SliderShowcase } from "./slider"
 import { skeletonMock, SkeletonShowcase } from "./skeleton"
 import { spinnerMock, SpinnerShowcase } from "./spinner"
-import { statisticMock, StatisticShowcase } from "./statistic"
+import { spreadsheetMock, SpreadsheetShowcase } from "./spreadsheet"
 import { switchMock, SwitchShowcase } from "./switch"
 import { TagInputShowcase, tagInputMock } from "./tag-input"
 import { tableMock, TableShowcase } from "./table"
@@ -111,6 +111,8 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   drawer: { mock: drawerMock, Showcase: DrawerShowcase },
   "json-input": { mock: jsonInputMock, Showcase: JsonInputShowcase },
   kanban: { mock: kanbanBoardMock, Showcase: KanbanBoardShowcase },
+  map: { mock: mapMock, Showcase: MapShowcase },
+  "media-player": { mock: mediaPlayerMock, Showcase: MediaPlayerShowcase },
   "otp-input": { mock: otpInputMock, Showcase: OtpInputShowcase },
   "qr-code": { mock: qrCodeMock, Showcase: QRCodeShowcase },
   rating: { mock: ratingMock, Showcase: RatingShowcase },
@@ -146,6 +148,7 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "form-date-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "form-date-range-picker": { mock: formRHFWrapperMock, Showcase: FormWrapperShowcase },
   "segmented-control": { mock: segmentedControlMock, Showcase: SegmentedControlShowcase },
+  spreadsheet: { mock: spreadsheetMock, Showcase: SpreadsheetShowcase },
   skeleton: { mock: skeletonMock, Showcase: SkeletonShowcase },
   spinner: { mock: spinnerMock, Showcase: SpinnerShowcase },
   table: { mock: tableMock, Showcase: TableShowcase },
@@ -153,8 +156,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   breadcrumbs: { mock: breadcrumbsMock, Showcase: BreadcrumbsShowcase },
   pagination: { mock: paginationMock, Showcase: PaginationShowcase },
   "notification-center": { mock: notificationCenterMock, Showcase: NotificationCenterShowcase },
-  "info-card": { mock: infoCardMock, Showcase: InfoCardShowcase },
-  "image-cropper": { mock: imageCropperMock, Showcase: ImageCropperShowcase },
   list: { mock: listMock, Showcase: ListShowcase },
   "activity-feed": { mock: activityFeedMock, Showcase: ActivityFeedShowcase },
   "data-state": { mock: dataStateMock, Showcase: DataStateShowcase },
@@ -162,7 +163,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   "progress-circle": { mock: progressMock, Showcase: ProgressShowcase },
   "resizable-panel": { mock: resizablePanelMock, Showcase: ResizablePanelShowcase },
   section: { mock: sectionMock, Showcase: SectionShowcase },
-  statistic: { mock: statisticMock, Showcase: StatisticShowcase },
   tag: { mock: tagMock, Showcase: TagShowcase },
   typography: { mock: typographyMock, Showcase: TypographyShowcase },
   "tree-view": { mock: treeViewMock, Showcase: TreeViewShowcase },

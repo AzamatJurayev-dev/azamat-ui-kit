@@ -140,7 +140,7 @@ async function main() {
   Select,
   AsyncSelect,
   FormInput,
-  InfoCard,
+  Card,
   CommandPalette,
   KanbanBoard,
   ProgressCard,
@@ -157,7 +157,7 @@ const value = [
   Select,
   AsyncSelect,
   FormInput,
-  InfoCard,
+  Card,
   CommandPalette,
   KanbanBoard,
   ProgressCard,
@@ -176,7 +176,7 @@ export default value
   Select,
   AsyncSelect,
   FormInput,
-  InfoCard,
+  Card,
   CommandPalette,
   KanbanBoard,
   ProgressCard,
@@ -193,7 +193,7 @@ const required = [
   Select,
   AsyncSelect,
   FormInput,
-  InfoCard,
+  Card,
   CommandPalette,
   KanbanBoard,
   ProgressCard,
@@ -241,7 +241,7 @@ import {
   Button,
   CommandPalette,
   Input,
-  InfoCard,
+  Card,
   KanbanBoard,
   ProgressCard,
   SortableList,
@@ -275,7 +275,7 @@ export default function Page() {
       <Button>Open</Button>
       <CommandPalette open={false} onOpenChange={() => {}} groups={[]} />
       <Input placeholder="Search" value={value} onChange={() => setValue("changed")} />
-      <InfoCard title="Demo card" description="Root exports from package only." />
+      <Card title="Demo card" description="Root exports from package only." />
       <ProgressCard title="Load" value={70} />
       <SortableList
         items={[{ id: "one", label: "One" }]}
@@ -303,7 +303,7 @@ export default function Page() {
   Button,
   CommandPalette,
   Input,
-  InfoCard,
+  Card,
   KanbanBoard,
   ProgressCard,
   SortableList,
@@ -320,7 +320,7 @@ const required = [
   Button,
   CommandPalette,
   Input,
-  InfoCard,
+  Card,
   KanbanBoard,
   ProgressCard,
   SortableList,

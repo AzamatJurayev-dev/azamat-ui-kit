@@ -53,7 +53,6 @@ export const registryGroups: RegistryGroup[] = [
       component("scroll-box", "stable", "src/components/ui/scroll-box"),
       component("right-click-menu", "stable", "src/components/ui/right-click-menu"),
       component("toggle-group", "preview", "src/components/ui/toggle-group"),
-      component("toolbar", "preview", "src/components/ui/toolbar"),
       component("collapse", "preview", "src/components/ui/collapse"),
       component("command", "preview", "src/components/ui/command"),
       component("divider", "preview", "src/components/ui/divider"),
@@ -82,7 +81,6 @@ export const registryGroups: RegistryGroup[] = [
       component("inline-editable", "preview", "src/components/inputs/inline-editable.tsx"),
       component("json-input", "preview", "src/components/inputs/json-input.tsx"),
       component("time-picker", "preview", "src/components/inputs/time-picker.tsx"),
-      component("number-field", "preview", "src/components/ui/number-field"),
     ],
   },
   {
@@ -112,8 +110,6 @@ export const registryGroups: RegistryGroup[] = [
       component("kanban", "preview", "src/components/display/kanban.tsx"),
       component("list", "preview", "src/components/display/list.tsx"),
       component("progress", "stable", "src/components/display/progress.tsx"),
-      component("info-card", "stable", "src/components/display/info-card.tsx"),
-      component("statistic", "preview", "src/components/display/statistic.tsx"),
       component("status-dot", "preview", "src/components/display/status-dot.tsx"),
       component("status-legend", "preview", "src/components/display/status-legend.tsx"),
       component("timeline", "stable", "src/components/display/timeline.tsx"),
@@ -167,7 +163,9 @@ export const registryGroups: RegistryGroup[] = [
       component("dual-list-picker", "preview", "src/components/modern/dual-list-picker.tsx"),
       component("resizable-panel", "preview", "src/components/modern/resizable-panel.tsx"),
       component("rich-text-editor", "preview", "src/components/modern/rich-text-editor.tsx"),
-      component("image-cropper", "preview", "src/components/modern/image-cropper.tsx"),
+      component("map", "preview", "src/components/modern/map.tsx"),
+      component("media-player", "preview", "src/components/modern/media-player.tsx"),
+      component("spreadsheet", "preview", "src/components/modern/spreadsheet.tsx"),
     ],
   },
   {
@@ -180,7 +178,6 @@ export const registryGroups: RegistryGroup[] = [
   {
     name: "filters",
     components: [
-      component("filter-bar", "stable", "src/components/filters/filter-bar.tsx"),
       component("saved-filter-select", "preview", "src/components/filters/saved-filter-select.tsx"),
     ],
   },
@@ -219,6 +216,9 @@ export const componentRows: ComponentRow[] = [
   { id: "cmp-006", component: "wizard", category: "wizard", status: "Review", props: 12 },
   { id: "cmp-007", component: "button", category: "ui", status: "Ready", props: 9 },
   { id: "cmp-008", component: "input", category: "ui", status: "Ready", props: 11 },
+  { id: "cmp-009", component: "map", category: "modern", status: "Testing", props: 13 },
+  { id: "cmp-010", component: "media-player", category: "modern", status: "Testing", props: 12 },
+  { id: "cmp-011", component: "spreadsheet", category: "modern", status: "Testing", props: 13 },
 ]
 
 export const wizardSteps = [

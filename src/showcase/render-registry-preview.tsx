@@ -29,8 +29,6 @@ import {
   DonutChart,
   Drawer,
   FileUpload,
-  FilterBar,
-  InfoCard,
   Input,
   List,
   OtpInput,
@@ -75,7 +73,7 @@ export function renderShowcasePreview(
   if (definition.kind === "navigation") return <NavigationPreview slug={definition.slug} />
   if (definition.kind === "feedback") return <FeedbackPreview slug={definition.slug} />
   if (definition.kind === "display") return <DisplayPreview slug={definition.slug} />
-  if (definition.kind === "actions") return <ActionsPreview slug={definition.slug} state={state} setState={setState} />
+  if (definition.kind === "actions") return <ActionsPreview slug={definition.slug} />
   if (definition.kind === "layout") return <LayoutPreview slug={definition.slug} />
   if (definition.kind === "data-table") return <DataTablePartsPreview slug={definition.slug} />
   if (definition.kind === "calendar") return <CalendarPreview />
@@ -403,40 +401,24 @@ function DisplayPreview({ slug }: { slug: string }) {
   }
 
   return (
-    <InfoCard
-      title="Azamat Jurayev"
-      description="Product designer and maintainer"
-      media={<Avatar name="Azamat Jurayev" />}
-      actions={<Button size="sm">Invite</Button>}
-    />
+    <div className="flex items-center justify-between gap-3 rounded-lg border p-4">
+      <div className="flex items-center gap-3">
+        <Avatar name="Azamat Jurayev" />
+        <div>
+          <p className="font-medium">Azamat Jurayev</p>
+          <p className="text-sm text-muted-foreground">Product designer and maintainer</p>
+        </div>
+      </div>
+      <Button size="sm">Invite</Button>
+    </div>
   )
 }
 
 function ActionsPreview({
   slug,
-  state,
-  setState,
 }: {
   slug: string
-  state: ShowcaseDemoProps["state"]
-  setState: ShowcaseDemoProps["setState"]
 }) {
-  if (slug === "filter-bar") {
-    return (
-      <FilterBar
-        search={<Input type="search" value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
-        onReset={() => setState({ textValue: "" })}
-        chips={[
-          { key: "status", label: "Status", value: "Active", tone: "success" },
-          { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
-        ]}
-        onRemoveChip={() => undefined}
-        filters={<Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Status</Button>}
-        actions={<Button size="sm">Export</Button>}
-      />
-    )
-  }
-
   if (slug === "command-palette") {
     return (
       <div className="grid gap-3">
@@ -490,15 +472,11 @@ function ActionsPreview({
   if (slug === "data-table-saved-filters") {
     return (
       <div className="grid gap-3">
-        <FilterBar
-          chips={[
-            { key: "status", label: "Status", value: "Active", tone: "success" },
-            { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
-            { key: "region", label: "Region", value: "APAC", tone: "info" },
-          ]}
-          onRemoveChip={() => undefined}
-          onReset={() => undefined}
-        />
+        <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius-lg)] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] p-3">
+          <Badge label="Status" count="Active" status="success" variant="soft" />
+          <Badge label="Owner" count="Azamat" variant="secondary" />
+          <Badge label="Region" count="APAC" status="info" variant="soft" />
+        </div>
         <ButtonGroup
           attached={false}
           items={[
@@ -549,8 +527,14 @@ function LayoutPreview({ slug }: { slug: string }) {
             <WorkspaceHeader left={<><SidebarTrigger /><span className="font-medium">Operations</span></>} right={<Badge variant="secondary">Live</Badge>} />
             <WorkspaceMain padded>
               <div className="grid gap-3 sm:grid-cols-2">
-                <InfoCard title="Pipeline" description="24 active opportunities" />
-                <InfoCard title="Approvals" description="3 items need review" />
+                <div className="rounded-lg border p-3">
+                  <p className="font-medium">Pipeline</p>
+                  <p className="text-sm text-muted-foreground">24 active opportunities</p>
+                </div>
+                <div className="rounded-lg border p-3">
+                  <p className="font-medium">Approvals</p>
+                  <p className="text-sm text-muted-foreground">3 items need review</p>
+                </div>
               </div>
             </WorkspaceMain>
           </WorkspaceContent>

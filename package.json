@@ -1,6 +1,6 @@
 {
   "name": "tembro",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "Reusable React UI kit with dashboard-ready components, CLI registry helpers, and TypeScript support.",
   "keywords": [
     "react",
@@ -174,7 +174,6 @@
     "cmdk": "^1.1.1",
     "lucide-react": "^1.17.0",
     "qrcode": "^1.5.4",
-    "react-easy-crop": "^6.2.2",
     "recharts": "^3.9.2",
     "tailwind-merge": "^3.6.0"
   },

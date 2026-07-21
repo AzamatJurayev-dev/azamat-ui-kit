@@ -29,8 +29,6 @@ import {
   Drawer,
   FileUpload,
   ImageUpload,
-  FilterBar,
-  InfoCard,
   Input,
   List,
   OtpInput,
@@ -102,7 +100,6 @@ const registryDemoDefinitions = [
   component("action-menu", "ActionMenu", "actions", "Compact dropdown action menu for rows and cards."),
   component("button-group", "ButtonGroup", "actions", "Grouped action buttons for view switching and compact controls."),
   component("quick-action-grid", "QuickActionGrid", "actions", "Action launcher grid for dense dashboard shortcuts."),
-  component("filter-bar", "FilterBar", "actions", "Search, filters, active-count and reset actions in one toolbar."),
   component("command", "Command", "command", "Composable command surface for search palettes and in-page action pickers."),
   component("alert", "Alert", "feedback", "Inline feedback banner for success, warning, info, and error states."),
   component("state-view", "StateView", "feedback", "Route, inline, empty, loading, success and error states with next actions."),
@@ -211,7 +208,7 @@ function renderPreview(
   if (definition.kind === "navigation") return <NavigationPreview slug={definition.slug} />
   if (definition.kind === "feedback") return <FeedbackPreview slug={definition.slug} />
   if (definition.kind === "display") return <DisplayPreview slug={definition.slug} />
-  if (definition.kind === "actions") return <ActionsPreview slug={definition.slug} state={state} setState={setState} />
+  if (definition.kind === "actions") return <ActionsPreview slug={definition.slug} />
   if (definition.kind === "layout") return <LayoutPreview slug={definition.slug} />
   if (definition.kind === "data-table") return <DataTablePartsPreview slug={definition.slug} />
   if (definition.kind === "calendar") return <CalendarPreview />
@@ -454,58 +451,25 @@ function DisplayPreview({ slug }: { slug: string }) {
     )
   }
 
-  if (slug === "info-card") {
-    return (
-      <div className="grid gap-4">
-        <InfoCard
-          eyebrow="Summary"
-          title="Workspace"
-          description="Reusable card surface with header, actions and metadata."
-          actions={<Button size="sm" variant="outline">Open</Button>}
-          selected
-        >
-          <p className="aui-text-muted mt-2 text-sm">Keep metadata, helper copy and compact actions in one reusable card surface.</p>
-        </InfoCard>
-        <div className="grid gap-3 md:grid-cols-3">
-          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Vertical and horizontal layout support.</div>
-          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Selected and action-safe surfaces.</div>
-          <div className="rounded-2xl border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] px-4 py-3 text-sm aui-text-muted">Useful for summary panels and detail sidebars.</div>
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-lg border p-4">
+      <div className="flex items-center gap-3">
+        <Avatar name="Azamat Jurayev" />
+        <div>
+          <p className="font-medium">Azamat Jurayev</p>
+          <p className="text-sm text-muted-foreground">Product designer and maintainer</p>
         </div>
       </div>
-    )
-  }
-
-  return (
-    <InfoCard
-      title="Azamat Jurayev"
-      description="Product designer and maintainer"
-      media={<Avatar name="Azamat Jurayev" />}
-      actions={<Button size="sm">Invite</Button>}
-    />
+      <Button size="sm">Invite</Button>
+    </div>
   )
 }
 
 function ActionsPreview({
   slug,
-  state,
-  setState,
 }: {
   slug: string
-  state: ComponentDemoProps["state"]
-  setState: ComponentDemoProps["setState"]
 }) {
-  if (slug === "filter-bar") {
-    return (
-      <FilterBar
-        search={<Input type="search" value={state.textValue} onValueChange={(value) => setState({ textValue: value })} placeholder="Search invoices..." />}
-        activeCount={2}
-        onReset={() => setState({ textValue: "" })}
-        filters={<Button variant="outline" size="sm"><FilterIcon data-icon="inline-start" />Status</Button>}
-        actions={<Button size="sm">Export</Button>}
-      />
-    )
-  }
-
   if (slug === "button-group") {
     return (
       <ButtonGroup

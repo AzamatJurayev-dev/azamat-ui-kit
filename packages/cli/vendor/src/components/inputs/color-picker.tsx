@@ -31,6 +31,14 @@ function withAlpha(value: string, alpha: number, includeAlpha: boolean) {
   return `${opaque}${channel}`
 }
 
+function getAlphaTrackStyle(value: string): React.CSSProperties {
+  const opaque = getOpaqueColor(value)
+
+  return {
+    background: `linear-gradient(90deg, ${opaque}00 0%, ${opaque}ff 100%)`,
+  }
+}
+
 export type ColorPickerProps = Omit<React.ComponentProps<"div">, "defaultValue" | "onChange"> & {
   value?: string
   defaultValue?: string
@@ -83,6 +91,11 @@ function ColorPicker({
       {label ? <div className="text-sm font-medium text-foreground">{label}</div> : null}
       <div className="flex min-w-0 items-center gap-2">
         <label className="relative size-10 shrink-0 overflow-hidden rounded-md border bg-background shadow-sm focus-within:ring-2 focus-within:ring-ring">
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 bg-[linear-gradient(45deg,#e2e8f0_25%,transparent_25%),linear-gradient(-45deg,#e2e8f0_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#e2e8f0_75%),linear-gradient(-45deg,transparent_75%,#e2e8f0_75%)] bg-[length:10px_10px] bg-[position:0_0,0_5px,5px_-5px,-5px_0]"
+          />
+          <span aria-hidden="true" className="absolute inset-0" style={{ backgroundColor: currentValue }} />
           <span className="sr-only">{labels?.color ?? "Choose color"}</span>
           <input
             type="color"
@@ -120,7 +133,8 @@ function ColorPicker({
             value={getAlphaPercent(currentValue)}
             disabled={disabled}
             aria-label={labels?.alpha ?? "Opacity"}
-            className="w-full accent-foreground disabled:cursor-not-allowed"
+            style={getAlphaTrackStyle(currentValue)}
+            className="h-2 w-full cursor-pointer appearance-none rounded-full border border-border/70 outline-none focus-visible:ring-4 focus-visible:ring-ring/20 disabled:cursor-not-allowed [&::-webkit-slider-thumb]:size-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:bg-foreground [&::-webkit-slider-thumb]:shadow-sm"
             onChange={(event) => updateValue(withAlpha(currentValue, Number(event.target.value), true))}
           />
           <span className="w-10 text-right tabular-nums">{getAlphaPercent(currentValue)}%</span>
