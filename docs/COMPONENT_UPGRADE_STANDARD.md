@@ -169,6 +169,43 @@ The matching Azamat UI preview must demonstrate:
 - retryable document error;
 - print, download, fullscreen, responsive toolbar, and keyboard help.
 
+## Document Scanner reference upgrade
+
+The Document Scanner is the third reference implementation and establishes the standard for camera-driven capture workflows.
+
+The upgraded contract includes:
+
+- `DocumentScanner` remains the only public component;
+- `DocumentScannerHandle` exposes camera, file import, capture, device, torch, review, download, and snapshot actions;
+- camera ID, processing mode, scan collection, and selected review page support controlled and uncontrolled usage;
+- preferred width, height, frame rate, facing mode, and exact device constraints are supported;
+- browser permission, unsupported API, insecure context, stream interruption, and recovery states are explicit;
+- camera enumeration and `devicechange` events keep device inventory current;
+- torch support is detected from active track capabilities and applied through media constraints;
+- live OpenCV contour detection reports corners, area ratio, confidence, stable frames, and stability;
+- stable contour movement can trigger delayed auto-capture;
+- manual capture and imported images share the same contour, perspective, processing, encoding, and resize pipeline;
+- color, grayscale, and black-and-white presets are available;
+- output MIME type, quality, maximum dimensions, minimum contour area, confidence, and threshold are configurable;
+- controlled and uncontrolled multi-page review supports selection, remove, clear, and download;
+- toolbar, review panel, overlay, labels, and idle/permission/error/empty-review surfaces are replaceable;
+- camera, permission, devices, torch, status, detection, scan, collection, and error callbacks are available;
+- streams, tracks, timers, OpenCV Mats, object URLs, device listeners, and source changes are cleaned up;
+- source-copy distribution remains unchanged.
+
+The matching Azamat UI preview must demonstrate:
+
+- camera selection and camera stop/start;
+- torch state;
+- live contour and confidence progression;
+- stable-frame auto-capture;
+- manual capture and file import;
+- color, grayscale, and black-and-white processing;
+- multi-page review and selected scan metadata;
+- permission denial with import fallback;
+- OpenCV initialization;
+- device interruption and reconnect recovery.
+
 ## Definition of done
 
 A component upgrade is complete only when:
