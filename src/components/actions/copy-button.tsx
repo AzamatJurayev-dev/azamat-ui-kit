@@ -97,7 +97,7 @@ function CopyButton({
       aria-live="polite"
       {...props}
     >
-      {showIcon && (copied ? <CheckIcon data-icon="inline-start" /> : <CopyIcon data-icon="inline-start" />)}
+      {showIcon && (copied ? <CheckIcon data-icon="inline-start" className="size-3.5" /> : <CopyIcon data-icon="inline-start" className="size-3.5" />)}
       {children ?? (copied ? copiedLabel : copyLabel)}
     </Button>
   )

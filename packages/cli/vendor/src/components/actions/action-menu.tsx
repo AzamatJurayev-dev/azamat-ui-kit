@@ -33,7 +33,11 @@ export type ActionMenuItem = {
 
 export type ActionMenuProps = {
   actions: ActionMenuItem[]
+  open?: boolean
+  defaultOpen?: boolean
+  onOpenChange?: (open: boolean) => void
   label?: React.ReactNode
+  triggerLabel?: string
   trigger?: React.ReactElement
   align?: "start" | "center" | "end"
   side?: "top" | "right" | "bottom" | "left"
@@ -50,11 +54,18 @@ export type ActionMenuProps = {
   menuWidth?: number | string
   loadingLabel?: React.ReactNode
   persistIconSpace?: boolean
+  itemRoleDescription?: string
+  renderItem?: (action: ActionMenuItem, state: { loading: boolean; close: () => void }) => React.ReactNode
+  onActionError?: (error: unknown, action: ActionMenuItem) => void
 }
 
 function ActionMenu({
   actions,
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
   label,
+  triggerLabel = "Open actions",
   trigger,
   align = "end",
   side = "bottom",
@@ -71,11 +82,20 @@ function ActionMenu({
   menuWidth,
   loadingLabel = "Working...",
   persistIconSpace = true,
+  itemRoleDescription,
+  renderItem,
+  onActionError,
 }: ActionMenuProps) {
   const visibleActions = actions.filter((action) => !action.hidden)
   const [loadingKey, setLoadingKey] = React.useState<string | null>(null)
-  const [open, setOpen] = React.useState(false)
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
+  const open = openProp ?? internalOpen
   const lastInvokedActionKeyRef = React.useRef<string | null>(null)
+
+  const setOpen = React.useCallback((nextOpen: boolean) => {
+    if (openProp === undefined) setInternalOpen(nextOpen)
+    onOpenChange?.(nextOpen)
+  }, [onOpenChange, openProp])
 
   const handleSelect = async (action: ActionMenuItem) => {
     if (action.disabled || action.loading || loadingKey) return
@@ -84,6 +104,9 @@ function ActionMenu({
       setLoadingKey(action.key)
       await action.onSelect?.()
       if (closeOnSelect && !action.keepOpen) setOpen(false)
+    } catch (error) {
+      onActionError?.(error, action)
+      if (!onActionError) throw error
     } finally {
       setLoadingKey(null)
     }
@@ -122,7 +145,7 @@ function ActionMenu({
       >
         {!trigger && <MoreHorizontalIcon />}
         {!trigger && showChevron && <span className="text-[10px] font-medium uppercase tracking-[0.18em]">Menu</span>}
-        <span className="sr-only">Open actions</span>
+        <span className="sr-only">{triggerLabel}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align={align}
@@ -155,6 +178,7 @@ function ActionMenu({
                 disabled={action.disabled || isLoading}
                 variant={action.destructive ? "destructive" : "default"}
                 closeOnSelect={closeOnSelect && !action.keepOpen}
+                aria-roledescription={itemRoleDescription}
                 className={cn(
                   "min-h-11 items-start gap-3 rounded-[calc(var(--radius-md)+1px)] border border-transparent py-2.5 transition-[background-color,color,border-color,box-shadow] data-[highlighted]:shadow-[inset_0_0_0_1px_color-mix(in_oklch,var(--primary),transparent_76%)] data-[disabled]:opacity-45",
                   itemClassName
@@ -173,19 +197,23 @@ function ActionMenu({
                 onMouseDown={stopInteractivePropagation}
                 onDoubleClick={stopInteractivePropagation}
               >
-                <span className={cn("mt-0.5 flex size-5 shrink-0 items-center justify-center text-muted-foreground", !persistIconSpace && !isLoading && !action.icon && "hidden")}>
-                  {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : action.icon}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate">{action.label}</span>
-                  {action.description ? (
-                    <DropdownMenuItemDescription className="mt-0.5 truncate">
-                      {isLoading ? loadingLabel : action.description}
-                    </DropdownMenuItemDescription>
-                  ) : null}
-                </span>
-                {action.shortcut && (
-                  <DropdownMenuShortcut>{action.shortcut}</DropdownMenuShortcut>
+                {renderItem?.(action, { loading: isLoading, close: () => setOpen(false) }) ?? (
+                  <>
+                    <span className={cn("mt-0.5 flex size-5 shrink-0 items-center justify-center text-muted-foreground", !persistIconSpace && !isLoading && !action.icon && "hidden")}>
+                      {isLoading ? <Loader2Icon className="size-4 animate-spin" /> : action.icon}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate">{action.label}</span>
+                      {action.description ? (
+                        <DropdownMenuItemDescription className="mt-0.5 truncate">
+                          {isLoading ? loadingLabel : action.description}
+                        </DropdownMenuItemDescription>
+                      ) : null}
+                    </span>
+                    {action.shortcut && (
+                      <DropdownMenuShortcut>{action.shortcut}</DropdownMenuShortcut>
+                    )}
+                  </>
                 )}
               </DropdownMenuItem>
             </React.Fragment>

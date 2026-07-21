@@ -105,13 +105,13 @@ function Pagination({
       data-slot="pagination"
       aria-label="Pagination"
       className={cn(
-        "flex flex-wrap items-center justify-center gap-1 rounded-full border border-border/70 bg-background/76 p-1 shadow-none backdrop-blur",
+        "flex flex-wrap items-center justify-center gap-1.5 rounded-[var(--radius-lg)] border border-border/72 bg-background/84 p-1.5 shadow-[0_1px_2px_rgba(15,23,42,0.04)] backdrop-blur",
         className
       )}
       {...props}
     >
       {showSummary && totalCount !== undefined && pageSize ? (
-        <div className="px-2 text-xs text-muted-foreground">
+        <div className="mr-1 rounded-[var(--radius-md)] bg-muted/55 px-2.5 py-1.5 text-xs font-medium text-muted-foreground">
           {Math.min((currentPage - 1) * pageSize + 1, totalCount)}-{Math.min(currentPage * pageSize, totalCount)} of {totalCount}
         </div>
       ) : null}
@@ -163,7 +163,11 @@ function Pagination({
             aria-current={item === currentPage ? "page" : undefined}
             aria-label={labels?.page?.(item) ?? `Page ${item}`}
             onClick={() => goToPage(item)}
-            className={cn(item !== currentPage && "border-border/70 bg-background/80 shadow-none")}
+            className={cn(
+              "tabular-nums",
+              item === currentPage && "shadow-[0_8px_20px_rgba(15,23,42,0.14)]",
+              item !== currentPage && "border-border/70 bg-background/80 shadow-none hover:bg-muted/70"
+            )}
           >
             {item}
           </Button>
@@ -194,10 +198,10 @@ function Pagination({
         </Button>
       )}
       {pageSizeOptions && pageSize && onPageSizeChange ? (
-        <label className="ml-1 inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/90 px-3 py-1 text-xs text-muted-foreground">
+        <label className="ml-1 inline-flex h-9 items-center gap-2 rounded-[var(--radius-md)] border border-border/70 bg-background/90 px-3 text-xs font-medium text-muted-foreground">
           <span>Rows</span>
           <select
-            className="bg-transparent text-foreground outline-none"
+            className="rounded-sm bg-transparent text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
             value={pageSize}
             onChange={(event) => onPageSizeChange(Number(event.target.value))}
             disabled={disabled}

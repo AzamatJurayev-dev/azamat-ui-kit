@@ -38,7 +38,7 @@ export type DropdownMenuShortcutProps = React.ComponentProps<"span">
 export type DropdownMenuItemDescriptionProps = React.ComponentProps<"span">
 
 const menuItemClassName =
-  "relative group/dropdown-menu-item [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+  "relative group/dropdown-menu-item flex min-h-9 w-full cursor-default select-none items-center gap-2 rounded-[var(--radius-md)] px-2.5 py-2 text-sm text-popover-foreground outline-none transition-[background-color,color] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[inset=true]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:data-[highlighted]:bg-destructive/10 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
 
 function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
   return <MenuPrimitive.Root data-slot="dropdown-menu" {...props} />
@@ -76,7 +76,7 @@ function DropdownMenuContent({
       >
         <MenuPrimitive.Popup
           data-slot="dropdown-menu-content"
-          className={cn("z-50 max-h-(--available-height) w-(--anchor-width) min-w-56 origin-(--transform-origin) overflow-x-hidden overflow-y-auto duration-100 outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:overflow-hidden data-closed:fade-out-0 data-closed:zoom-out-95", className)}
+          className={cn("z-50 max-h-[min(var(--available-height),24rem)] w-(--anchor-width) min-w-56 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-[var(--aui-card-radius,var(--radius-lg))] border border-border/78 bg-popover p-1 text-popover-foreground shadow-[0_18px_50px_rgba(15,23,42,0.18)] outline-none backdrop-blur duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:overflow-hidden data-closed:fade-out-0 data-closed:zoom-out-95", className)}
           {...props}
         />
       </MenuPrimitive.Positioner>
@@ -97,7 +97,7 @@ function DropdownMenuLabel({
     <div
       data-slot="dropdown-menu-label"
       data-inset={inset}
-      className={className}
+      className={cn("px-2.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground data-[inset=true]:pl-8", className)}
       {...props}
     />
   )
@@ -118,6 +118,7 @@ function DropdownMenuItem({
       data-variant={variant}
       className={cn(
         menuItemClassName,
+        "pl-8 pr-8",
         className
       )}
       onSelect={(event) => {
@@ -147,6 +148,7 @@ function DropdownMenuSubTrigger({
       data-inset={inset}
       className={cn(
         menuItemClassName,
+        "pl-8",
         className
       )}
       {...props}
@@ -204,12 +206,9 @@ function DropdownMenuCheckboxItem({
       }}
       {...props}
     >
-      <span
-        data-slot="dropdown-menu-checkbox-item-indicator"
-      >
+      <span data-slot="dropdown-menu-checkbox-item-indicator" className="absolute left-2 grid size-4 place-items-center">
         <MenuPrimitive.CheckboxItemIndicator>
-          <CheckIcon
-          />
+          <CheckIcon className="size-4" />
         </MenuPrimitive.CheckboxItemIndicator>
       </span>
       {children}
@@ -250,12 +249,9 @@ function DropdownMenuRadioItem({
       }}
       {...props}
     >
-      <span
-        data-slot="dropdown-menu-radio-item-indicator"
-      >
+      <span data-slot="dropdown-menu-radio-item-indicator" className="absolute left-2 grid size-4 place-items-center">
         <MenuPrimitive.RadioItemIndicator>
-          <CheckIcon
-          />
+          <CheckIcon className="size-4" />
         </MenuPrimitive.RadioItemIndicator>
       </span>
       {children}
@@ -270,7 +266,7 @@ function DropdownMenuSeparator({
   return (
     <MenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
-      className={className}
+      className={cn("-mx-1 my-1 h-px bg-border/72", className)}
       {...props}
     />
   )
@@ -283,7 +279,7 @@ function DropdownMenuShortcut({
   return (
     <span
       data-slot="dropdown-menu-shortcut"
-      className={className}
+      className={cn("ml-auto text-xs tracking-widest text-muted-foreground", className)}
       {...props}
     />
   )
@@ -296,7 +292,7 @@ function DropdownMenuItemDescription({
   return (
     <span
       data-slot="dropdown-menu-item-description"
-      className={className}
+      className={cn("block text-xs leading-5 text-muted-foreground group-data-[highlighted]/dropdown-menu-item:text-accent-foreground/75", className)}
       {...props}
     />
   )

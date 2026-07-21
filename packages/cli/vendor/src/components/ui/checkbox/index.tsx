@@ -60,6 +60,8 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     const dataState = currentChecked === "indeterminate" ? "indeterminate" : currentChecked ? "checked" : "unchecked"
 
     const handleClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+      event.preventDefault()
+      event.stopPropagation()
       const nextChecked = getNextCheckedState(currentChecked, allowIndeterminate)
 
       if (!isControlled) {
@@ -98,7 +100,7 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
           disabled={disabled}
           aria-invalid={invalid || undefined}
           className={cn(
-            "peer flex shrink-0 items-center justify-center rounded-[10px] border border-input/88 bg-background text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] outline-none transition-[background-color,border-color,box-shadow,color,transform] hover:border-ring/30 hover:bg-background focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/45 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/25 data-[size=sm]:size-4 data-[size=md]:size-5 data-[size=lg]:size-6 data-[state=checked]:border-primary/28 data-[state=checked]:bg-primary data-[state=checked]:shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_82%)] data-[state=indeterminate]:border-primary/28 data-[state=indeterminate]:bg-primary data-[state=indeterminate]:shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_82%)] dark:border-white/12 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]",
+            "peer flex shrink-0 items-center justify-center rounded-[10px] border border-input/88 bg-background text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] outline-none transition-[background-color,border-color,box-shadow,color,transform] hover:border-ring/30 hover:bg-background focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/45 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/25 data-[size=sm]:size-4 data-[size=md]:size-5 data-[size=lg]:size-6 data-[state=checked]:border-primary/28 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_82%)] data-[state=indeterminate]:border-primary/28 data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground data-[state=indeterminate]:shadow-[0_10px_24px_color-mix(in_oklch,var(--primary),transparent_82%)] dark:data-[state=unchecked]:border-white/12 dark:data-[state=unchecked]:bg-white/[0.04] dark:data-[state=unchecked]:hover:bg-white/[0.08] [&_svg]:stroke-[2.6]",
             className
           )}
           onClick={handleClick}

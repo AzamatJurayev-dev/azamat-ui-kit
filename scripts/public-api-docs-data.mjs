@@ -106,13 +106,13 @@ export const publicComponentApiDocs = [
     useWhen: [
       "You need one neutral container before committing to a specialized card preset.",
       "The screen needs a reusable display card with consistent spacing and hierarchy.",
-      "InfoCard is the single public display-card name.",
+      "Dashboard metric and summary cards should compose from Card, Badge, Progress, and text primitives.",
     ],
     related: [
-      "InfoCard",
-      "StatisticCard",
-      "EntityCard",
-      "FileCard",
+      "Badge",
+      "Progress",
+      "DescriptionList",
+      "ActivityFeed",
     ],
     props: [
       ["children", "ReactNode", "Card body content."],
@@ -274,7 +274,7 @@ export const publicComponentApiDocs = [
       "The product needs one chart-led entry point before exposing legends, frames, or micro-trend helpers.",
       "Metric companions should stay related to the chart mental model instead of feeling like duplicate first-level exports.",
     ],
-    related: ["LineChart", "DonutChart", "ChartFrame", "ChartLegend", "Sparkline", "MetricTrend", "Statistic", "StatisticGrid", "StatisticCard"],
+    related: ["LineChart", "DonutChart", "ChartFrame", "ChartLegend", "Sparkline", "MetricTrend", "ProgressCircle", "ChartCard"],
     props: [
       ["data", "Array<{ label: string; value: number }>", "Visible chart values."],
       ["size", "'sm' | 'md' | 'lg'", "Controls chart density."],

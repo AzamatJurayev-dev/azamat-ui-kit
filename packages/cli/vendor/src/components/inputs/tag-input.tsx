@@ -80,13 +80,13 @@ function TagInput({
           <Badge
             key={tag}
             variant="secondary"
-            className="h-8 gap-1 rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-3 pr-1 text-[13px] font-medium shadow-sm"
+            className="h-8 gap-1.5 rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-3 pr-1.5 text-[13px] font-medium leading-none shadow-sm"
           >
-            {tag}
+            <span className="leading-none">{tag}</span>
             {!readOnly && !disabled && (
               <button
                 type="button"
-                className="grid size-5 shrink-0 place-items-center rounded-full p-0 leading-none text-muted-foreground transition hover:bg-[color:var(--aui-control-bg)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="inline-flex size-5 shrink-0 items-center justify-center rounded-full p-0 leading-none text-muted-foreground transition hover:bg-[color:var(--aui-control-bg)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
                 aria-label={`Remove ${tag}`}
                 onClick={(event) => {
                   stopInteractivePropagation(event)
@@ -95,7 +95,7 @@ function TagInput({
                 onMouseDown={stopInteractivePropagation}
                 onDoubleClick={stopInteractivePropagation}
               >
-                <XIcon className="size-3" strokeWidth={2} />
+                <XIcon className="size-3" strokeWidth={2.25} />
               </button>
             )}
           </Badge>

@@ -16,9 +16,7 @@ import {
   DataState,
   Divider,
   DualListPicker,
-  FilterBar,
   Input,
-  ImageCropper,
   JsonInput,
   KanbanBoard,
   List,
@@ -41,9 +39,6 @@ import {
   SkeletonText,
   Slider,
   Spinner,
-  Statistic,
-  StatisticCard,
-  StatisticGrid,
   StatusLegend,
   SortableList,
   TagInput,
@@ -349,16 +344,6 @@ function renderGenericPreviewSurface(
     return <Slider label="Spacing scale" description="Adjust dashboard density." defaultValue={64} showValue />
   }
 
-  if (item.slug === "statistic") {
-    return (
-      <StatisticGrid columns={3}>
-        <StatisticCard label="ARR" value="$84.2k" change="+12.4%" trend="up" description="vs previous month" />
-        <Statistic label="MRR" value="$7.0k" change="+3.1%" trend="up" description="Live subscriptions" />
-        <Statistic label="Churn" value="1.9%" change="-0.4%" trend="down" description="Healthy range" />
-      </StatisticGrid>
-    )
-  }
-
   if (item.slug === "tag") {
     return (
       <TagGroup>
@@ -463,15 +448,11 @@ function renderGenericPreviewSurface(
   if (item.slug === "data-table-saved-filters") {
     return (
       <div className="grid gap-3">
-        <FilterBar
-          chips={[
-            { key: "status", label: "Status", value: "Active", tone: "success" },
-            { key: "owner", label: "Owner", value: "Azamat", tone: "default" },
-            { key: "region", label: "Region", value: "APAC", tone: "info" },
-          ]}
-          onRemoveChip={() => undefined}
-          onReset={() => undefined}
-        />
+        <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius-lg)] border border-[color:var(--aui-divider)] bg-[color:var(--aui-page-bg-alt)] p-3">
+          <Badge label="Status" count="Active" status="success" variant="soft" />
+          <Badge label="Owner" count="Azamat" variant="secondary" />
+          <Badge label="Region" count="APAC" status="info" variant="soft" />
+        </div>
         <ButtonGroup
           attached={false}
           items={[
@@ -639,16 +620,6 @@ function renderGenericPreviewSurface(
         onLinkRequest={() => "https://tembro.dev"}
       />
     )
-  }
-
-  if (item.slug === "image-cropper") {
-    const cropperImage =
-      "data:image/svg+xml;utf8," +
-      encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#0f172a"/><stop offset="1" stop-color="#22c55e"/></linearGradient></defs><rect width="640" height="420" fill="url(#g)"/><circle cx="460" cy="150" r="88" fill="#ffffff" opacity=".22"/><rect x="70" y="245" width="310" height="64" rx="20" fill="#fff" opacity=".88"/><text x="95" y="287" font-family="Arial" font-size="28" font-weight="700" fill="#0f172a">Tembro crop</text></svg>`
-      )
-
-    return <ImageCropper src={cropperImage} aspect={16 / 9} defaultZoom={1.15} defaultRotation={-2} />
   }
 
   if (item.slug === "kanban") {

@@ -274,7 +274,7 @@ export const releaseHistory: PackageReleaseRecord[] = [
     status: "Published",
     summary: "Expanded the registry with newer dashboard, input, badge, sidebar, and notification primitives.",
     notes: [
-      "Registry truth now includes `collapse`, `sidebar`, `statistic`, `badge`, `notification-center`, and `command-palette`.",
+      "Registry truth now includes `collapse`, `sidebar`, `chart-card`, `badge`, `notification-center`, and `command-palette`.",
       "Component metadata was refreshed so docs can keep canonical surfaces and related helpers accurate.",
       "CLI-first local component setup remains the default path for Next.js and Vite users.",
     ],
@@ -347,14 +347,13 @@ export const componentGroupMeta: Record<ComponentGroup, ComponentGroupMeta> = {
   },
 }
 
-const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd", "toggle-group", "toolbar"])
+const primitiveComponentSlugs = new Set(["button", "input", "textarea", "checkbox", "switch", "badge", "card", "tabs", "collapse", "kbd", "toggle-group"])
 const formControlComponentSlugs = new Set([
   "select",
   "combobox",
   "async-select",
   "async-multi-select",
   "radio-group",
-  "number-field",
   "date-picker",
   "date-range-picker",
   "form-field-shell",
@@ -381,7 +380,7 @@ const legacyComponentSlugAliases = new Map<string, string>([
   ["form-date-input", "form-input"],
   ["confirm-action", "confirm-dialog"],
   ["file-dropzone", "file-upload"],
-  ["metric-card", "statistic"],
+  ["metric-card", "chart-card"],
   ["nav-tabs", "tabs"],
   ["side-panel", "sidebar"],
   ["status-dot", "status-legend"],
@@ -1021,26 +1020,6 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     features: ["Navigation context", "Custom separators", "Custom links", "Current state support"],
   },
   {
-    slug: "info-card",
-    title: "Info Card",
-    description: "Flexible context card for summaries, metadata, quick actions, and supporting media inside real product surfaces.",
-    icon: FileTextIcon,
-    category: "Data Display",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["eyebrow", "ReactNode", "-", "Small label above card title."],
-      ["title", "ReactNode", "-", "Main card title."],
-      ["description", "ReactNode", "-", "Supporting description text."],
-      ["icon", "ReactNode", "-", "Optional leading icon."],
-      ["actions", "ReactNode", "-", "Card action area."],
-      ["media", "ReactNode", "-", "Optional media block."],
-      ["compact", "boolean", "false", "Compact card density."],
-      ["orientation", "'vertical' | 'horizontal'", "'vertical'", "Content layout direction."],
-    ],
-    features: ["Metadata summaries", "Action regions", "Media slots", "Vertical or horizontal layout"],
-  },
-  {
     slug: "activity-feed",
     title: "Activity Feed",
     description: "Timeline-like feed list for events, audits and recent activity surfaces.",
@@ -1325,13 +1304,9 @@ export const componentRelations: ComponentRelationMap = {
     groupSlugs: ["layout", "navigation"],
     componentSlugs: ["section", "sidebar"],
   },
-  "info-card": {
-    groupSlugs: ["display", "layout"],
-    componentSlugs: ["activity-feed", "card"],
-  },
   "activity-feed": {
     groupSlugs: ["display"],
-    componentSlugs: ["info-card"],
+    componentSlugs: ["card"],
   },
   "data-state": {
     groupSlugs: ["display"],
@@ -1367,7 +1342,6 @@ const primaryComponentSurfaceSlugs = new Set([
   "sidebar",
   "breadcrumbs",
   "data-table",
-  "info-card",
   "activity-feed",
   "state-view",
   "toast",
@@ -1392,7 +1366,6 @@ const componentPrimarySurfaceParent: Record<string, string> = {
   "confirm-dialog": "dialog",
   "app-header": "workspace-layout",
   section: "sidebar",
-  toolbar: "sidebar",
   "split-layout": "sidebar",
   table: "data-table",
 }
@@ -1477,7 +1450,7 @@ const componentSurfaceSections: Partial<Record<string, ComponentSurfaceSectionMe
       key: "related",
       title: "Route-level patterns",
       description: "Use these patterns only after the sidebar and navigation contract are already clear.",
-      slugs: ["section", "toolbar", "split-layout"],
+      slugs: ["section", "workspace-layout", "split-layout"],
     },
   ],
   "data-table": [
@@ -1884,13 +1857,13 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
   {
     slug: "filters",
     title: "Filters",
-    description: "Filter bars and chip patterns for narrowing data without leaving the current view.",
+    description: "Saved filter and chip patterns for narrowing data without locking teams into one toolbar layout.",
     icon: SlidersHorizontalIcon,
     category: "Data",
-    exports: ["FilterBar", "SavedFilterSelect"],
+    exports: ["SavedFilterSelect"],
     href: componentModulePath("filters"),
     status: "Stable",
-    features: ["Filter bars", "Chips", "Search + filter pairing"],
+    features: ["Saved views", "Chips", "Composable search + filter pairing"],
   },
   {
     slug: "overlay",
@@ -1931,7 +1904,7 @@ export const componentModuleCatalog: ComponentModuleItem[] = [
     description: "Metrics, activity, avatars, timelines and descriptive content surfaces.",
     icon: DatabaseIcon,
     category: "Data",
-    exports: ["DescriptionList", "Progress", "StateView", "Timeline", "Statistic", "InfoCard", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
+    exports: ["DescriptionList", "Progress", "StateView", "Timeline", "ActivityFeed", "StatusLegend", "Avatar", "DataState", "ScrollBox"],
     href: componentModulePath("display"),
     status: "Stable",
     features: ["Metric grids", "Timelines", "Activity feeds", "Status legends"],
@@ -2079,7 +2052,7 @@ export const featuredBlock: BlockCard = {
   bestFor: "Dashboard entry sections, KPI headers, recent activity, and operational overview surfaces.",
   category: "Dashboard",
   tags: ["Dashboard", "Analytics", "Charts", "Overview"],
-  uses: ["Sidebar", "Section", "Statistic", "DataTable"],
+  uses: ["Sidebar", "Section", "Progress", "DataTable"],
   tone: "from-emerald-50 via-white to-sky-50",
   href: blockPath("dashboard-starter"),
   previewHref: "/preview/blocks/dashboard-01",

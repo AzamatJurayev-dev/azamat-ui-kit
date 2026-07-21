@@ -123,7 +123,7 @@ function ResizablePanelGroup({ direction = "horizontal", className, children, ..
         ref={groupRef}
         data-slot="resizable-panel-group"
         data-direction={direction}
-        className={cn("flex gap-2", direction === "horizontal" ? "flex-row items-stretch" : "flex-col", className)}
+        className={cn("flex", direction === "horizontal" ? "flex-row items-stretch" : "flex-col", className)}
         {...props}
       >
         {processedChildren}
@@ -140,7 +140,7 @@ function ResizablePanel({ className, style, defaultSize, minSize: _minSize, ...p
   return (
     <div
       data-slot="resizable-panel"
-      className={cn("min-h-24 overflow-auto rounded-lg border bg-card p-3", className)}
+      className={cn("min-h-24 min-w-0 overflow-auto rounded-[var(--aui-card-radius,var(--radius-lg))] border border-[color:var(--aui-card-border,var(--border))] bg-card p-3 shadow-[var(--aui-card-shadow,0_10px_24px_rgba(15,23,42,0.07))]", className)}
       style={{ flexBasis: `${basis}%`, flexGrow: 0, flexShrink: 0, ...style }}
       {...props}
     />
@@ -157,9 +157,10 @@ function ResizableHandle({ className, ...props }: ResizableHandleProps) {
       type="button"
       data-slot="resizable-handle"
       aria-label="Resize panels"
+      aria-orientation={context?.direction ?? "horizontal"}
       className={cn(
-        "relative flex shrink-0 items-center justify-center rounded-full border border-border/70 bg-background/85 text-muted-foreground shadow-sm transition-colors hover:border-ring/45 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        context?.direction === "horizontal" ? "w-3 cursor-col-resize" : "h-3 cursor-row-resize",
+        "group relative flex shrink-0 items-center justify-center text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
+        context?.direction === "horizontal" ? "w-4 cursor-col-resize px-1" : "h-4 cursor-row-resize py-1",
         className
       )}
       onPointerDown={(event) => {
@@ -206,7 +207,16 @@ function ResizableHandle({ className, ...props }: ResizableHandleProps) {
       }}
       {...props}
     >
-      <GripVerticalIcon className={cn("size-3", context?.direction === "vertical" && "rotate-90")} />
+      <span
+        aria-hidden="true"
+        className={cn(
+          "absolute rounded-full bg-border transition-colors group-hover:bg-ring/55",
+          context?.direction === "horizontal" ? "inset-y-2 left-1/2 w-px -translate-x-1/2" : "inset-x-2 top-1/2 h-px -translate-y-1/2"
+        )}
+      />
+      <span className="relative grid size-5 place-items-center rounded-full border border-border/75 bg-background shadow-sm transition-colors group-hover:border-ring/45">
+        <GripVerticalIcon className={cn("size-3", context?.direction === "vertical" && "rotate-90")} />
+      </span>
     </button>
   )
 }

@@ -167,11 +167,9 @@ function AlertDialog({
           </div>
         ) : null}
         <DialogFooter>
-          <DialogClose render={() => (
-            <Button type="button" variant={cancelVariant} disabled={resolvedLoading} {...cancelButtonProps}>
-              {cancelLabel}
-            </Button>
-          )} />
+          <DialogClose render={<Button type="button" variant={cancelVariant} disabled={resolvedLoading} {...cancelButtonProps} />}>
+            {cancelLabel}
+          </DialogClose>
           <Button
             type="button"
             variant={actionTone === "destructive" ? "destructive" : "default"}

@@ -28,20 +28,23 @@ import {
   Switch,
   RadioGroup,
   Tag,
-  StatisticCard,
-  StatisticGrid,
 } from "@/index"
 
 describe("base primitives", () => {
-  it("supports compact statistic cards and configurable grid gaps", () => {
+  it("supports compact composed metric cards with base primitives", () => {
     const { container } = render(
-      <StatisticGrid gap="sm">
-        <StatisticCard density="compact" label="Revenue" value="$42k" change="+8%" trend="up" />
-      </StatisticGrid>
+      <div data-slot="metric-grid" className="grid gap-3">
+        <Card data-slot="metric-card" density="compact">
+          <CardContent>
+            <p>Revenue</p>
+            <strong>$42k</strong>
+          </CardContent>
+        </Card>
+      </div>
     )
 
-    expect(container.querySelector("[data-slot='statistic-grid']")).toHaveClass("gap-3")
-    expect(container.querySelector("[data-slot='statistic-card']")).toHaveAttribute("data-density", "compact")
+    expect(container.querySelector("[data-slot='metric-grid']")).toHaveClass("gap-3")
+    expect(container.querySelector("[data-slot='metric-card']")).toHaveAttribute("data-density", "compact")
   })
 
   it("renders button content, icons and loading state", () => {
@@ -452,12 +455,12 @@ describe("base primitives", () => {
 
   it("keeps the base card surface marker when a composed component owns data-slot", () => {
     render(
-      <Card data-slot="statistic-card">
+      <Card data-slot="metric-card">
         <CardContent>Composed card</CardContent>
       </Card>
     )
 
-    const card = screen.getByText("Composed card").closest("[data-slot='statistic-card']")
+    const card = screen.getByText("Composed card").closest("[data-slot='metric-card']")
     expect(card).toBeTruthy()
     expect(card?.hasAttribute("data-card")).toBe(true)
   })

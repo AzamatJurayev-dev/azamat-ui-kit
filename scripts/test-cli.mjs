@@ -198,9 +198,13 @@ async function assertInitAndArtifacts(template) {
     await runCli(fixtureRoot, ["preset", "dashboard", "--overwrite", "--skip-install"])
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "data-table", "data-table.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "data-table", "data-table-pagination.tsx"))
-    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "display", "info-card.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "display", "progress.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "display", "activity-feed.tsx"))
     if (fsExtra.existsSync(path.join(fixtureRoot, paths.componentsPath, "display", "smart-card.tsx"))) {
       throw new Error(`dashboard preset should not copy the removed smart-card alias for ${template}`)
+    }
+    if (fsExtra.existsSync(path.join(fixtureRoot, paths.componentsPath, "display", "info-card.tsx"))) {
+      throw new Error(`dashboard preset should not copy the removed info-card component for ${template}`)
     }
 
     await runCli(fixtureRoot, ["add", "input", "form-select", "--overwrite", "--skip-install"])
@@ -243,10 +247,15 @@ async function assertInitAndArtifacts(template) {
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "inputs", "color-picker.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "inputs", "signature-pad.tsx"))
 
-    await runCli(fixtureRoot, ["add", "qr-code", "rich-text-editor", "image-cropper", "--overwrite", "--skip-install"])
+    await runCli(fixtureRoot, ["add", "qr-code", "rich-text-editor", "map", "media-player", "spreadsheet", "--overwrite", "--skip-install"])
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "display", "qr-code.tsx"))
     assertFileExists(fixtureRoot, path.join(paths.componentsPath, "modern", "rich-text-editor.tsx"))
-    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "modern", "image-cropper.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "modern", "map.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "modern", "media-player.tsx"))
+    assertFileExists(fixtureRoot, path.join(paths.componentsPath, "modern", "spreadsheet.tsx"))
+    if (fsExtra.existsSync(path.join(fixtureRoot, paths.componentsPath, "modern", "image-cropper.tsx"))) {
+      throw new Error(`modern additions should not copy the removed image-cropper component for ${template}`)
+    }
 
     if (template === "vite") {
       await runCli(fixtureRoot, ["add", "showcase", "--overwrite", "--skip-install"])

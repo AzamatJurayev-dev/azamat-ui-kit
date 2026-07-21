@@ -176,22 +176,15 @@ function DateRangePicker({
             />
           }
         >
-          <CalendarIcon data-icon="inline-start" className={cn(hasValue && "text-primary")} />
+          <CalendarIcon data-icon="inline-start" className={cn("size-4", hasValue && "text-primary")} />
           {hasValue ? (
-            <span className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
-              <span className="grid min-w-0 gap-0.5">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{labels?.start ?? "Start"}</span>
-                <span className="truncate text-sm font-semibold text-foreground">{from ? formatValue(from) : "..."}</span>
-              </span>
+            <span className="flex min-w-0 flex-1 items-center gap-2">
+              <span className="min-w-0 truncate text-sm font-semibold text-foreground">{from ? formatValue(from) : "..."}</span>
               <span className="text-muted-foreground">-</span>
-              <span className="grid min-w-0 gap-0.5">
-                <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">{labels?.end ?? "End"}</span>
-                <span className="truncate text-sm font-semibold text-foreground">{to ? formatValue(to) : "..."}</span>
-              </span>
+              <span className="min-w-0 truncate text-sm font-semibold text-foreground">{to ? formatValue(to) : "..."}</span>
             </span>
           ) : (
-            <span className="grid min-w-0 flex-1 gap-0.5">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">Range</span>
+            <span className="grid min-w-0 flex-1">
               <span className="truncate text-sm">{label}</span>
             </span>
           )}

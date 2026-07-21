@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { createPortal } from "react-dom"
 import { AlertCircleIcon, CheckCircle2Icon, InfoIcon, Loader2Icon, TriangleAlertIcon, XIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -109,6 +110,11 @@ function ToastProvider({
   position = "top-right",
 }: ToastProviderProps) {
   const [toasts, setToasts] = React.useState<ToastItem[]>([])
+  const [portalTarget, setPortalTarget] = React.useState<HTMLElement | null>(null)
+
+  React.useEffect(() => {
+    setPortalTarget(document.body)
+  }, [])
 
   const dismissToast = React.useCallback((id: string) => {
     setToasts((current) => current.filter((toast) => toast.id !== id))
@@ -187,17 +193,21 @@ function ToastProvider({
     [addToast, clearToasts, dismissToast, error, info, loading, promise, success, toasts, updateToast, warning]
   )
 
-  return (
-    <ToastContext.Provider value={value}>
-      {children}
+  const viewport = (
       <div
         data-slot="toast-viewport"
-        className={cn("fixed z-[100] flex w-[min(100%-2rem,24rem)] flex-col gap-2", positionClassName[position])}
+        className={cn("fixed z-[100] flex w-[min(calc(100vw-2rem),24rem)] flex-col gap-2 pointer-events-none", positionClassName[position])}
       >
         {toasts.map((toast) => (
           <ToastCard key={toast.id} toast={toast} pauseOnHover={pauseOnHover} onDismiss={dismissToast} />
         ))}
       </div>
+  )
+
+  return (
+    <ToastContext.Provider value={value}>
+      {children}
+      {portalTarget ? createPortal(viewport, portalTarget) : null}
     </ToastContext.Provider>
   )
 }
@@ -227,7 +237,7 @@ function ToastCard({
     <div
       data-slot="toast"
       data-tone={tone}
-      className={cn("flex gap-3 rounded-lg border p-3 shadow-lg backdrop-blur", toneClassName[tone])}
+      className={cn("pointer-events-auto flex gap-3 rounded-lg border p-3 shadow-lg backdrop-blur", toneClassName[tone])}
       role="status"
       aria-live="polite"
       onMouseEnter={() => setHovered(true)}

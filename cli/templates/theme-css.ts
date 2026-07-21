@@ -994,110 +994,6 @@ export function getTembroThemeCss(componentSourcePath: string) {
     box-shadow: var(--aui-popover-shadow);
   }
 
-[data-slot="info-card"] {
-  overflow: hidden;
-  transition:
-    background-color var(--aui-motion-normal) var(--aui-ease-standard),
-    border-color var(--aui-motion-normal) var(--aui-ease-standard),
-    box-shadow var(--aui-motion-normal) var(--aui-ease-standard);
-}
-
-[data-slot="info-card"][data-selected="true"] {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 1px var(--primary);
-}
-
-[data-slot="info-card"][data-disabled="true"] {
-  pointer-events: none;
-  opacity: var(--aui-disabled-opacity);
-}
-
-[data-slot="info-card"][data-interactive="true"] {
-  cursor: pointer;
-}
-
-[data-slot="info-card"][data-interactive="true"]:hover {
-  background: color-mix(in srgb, var(--aui-surface-muted) 55%, var(--card));
-  border-color: color-mix(in srgb, var(--primary) 28%, var(--aui-card-border));
-}
-
-[data-slot="info-card-body"],
-[data-slot="info-card-loading"] {
-  padding: 1rem;
-}
-
-[data-slot="info-card"][data-info-density="compact"] :is([data-slot="info-card-body"], [data-slot="info-card-loading"]) {
-  padding: 0.75rem;
-}
-
-[data-slot="info-card"][data-info-density="comfortable"] :is([data-slot="info-card-body"], [data-slot="info-card-loading"]) {
-  padding: 1.25rem;
-}
-
-[data-slot="info-card-media"] {
-  overflow: hidden;
-  background: var(--aui-surface-muted);
-  border-bottom: 1px solid var(--aui-card-border);
-}
-
-[data-slot="info-card"][data-orientation="horizontal"] [data-slot="info-card-media"] {
-  border-right: 1px solid var(--aui-card-border);
-  border-bottom: 0;
-}
-
-[data-slot="info-card-icon"] {
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 1px solid var(--aui-card-border);
-  border-radius: var(--aui-radius-control);
-  background: var(--aui-surface-muted);
-  color: var(--foreground);
-  box-shadow: var(--aui-shadow-xs);
-}
-
-[data-slot="info-card-eyebrow"] {
-  color: var(--muted-foreground);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  line-height: 1rem;
-  text-transform: uppercase;
-}
-
-[data-slot="info-card-title"] {
-  color: var(--card-foreground);
-  font-size: 1rem;
-  font-weight: 650;
-  line-height: 1.35;
-}
-
-[data-slot="info-card"][data-info-size="sm"] [data-slot="info-card-title"] {
-  font-size: 0.875rem;
-}
-
-[data-slot="info-card"][data-info-size="lg"] [data-slot="info-card-title"] {
-  font-size: 1.125rem;
-}
-
-[data-slot="info-card-description"] {
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-[data-slot="info-card-meta"] {
-  color: var(--muted-foreground);
-  font-size: 0.75rem;
-  line-height: 1.25rem;
-}
-
-[data-slot="info-card-footer"] {
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--aui-card-border);
-  color: var(--muted-foreground);
-  font-size: 0.8125rem;
-}
-
 [data-slot="dialog-overlay"] {
   background: color-mix(in srgb, var(--foreground) 42%, transparent);
   backdrop-filter: blur(2px);
@@ -1739,22 +1635,6 @@ export function getTembroThemeCss(componentSourcePath: string) {
     border-color: var(--primary);
     background: color-mix(in oklch, var(--primary), transparent 93%);
   }
-
-  [data-slot="statistic-card"] {
-    border-color: var(--aui-surface-border);
-    background: var(--aui-surface);
-    box-shadow: var(--aui-shadow-card);
-  }
-
-  [data-slot="statistic-label"],
-  [data-slot="statistic-prefix"],
-  [data-slot="statistic-suffix"],
-  [data-slot="statistic-meta"] {
-    color: var(--muted-foreground);
-  }
-
-  [data-slot="statistic-change"][data-trend="up"] { color: var(--aui-success-fg); background: var(--aui-success-bg); }
-  [data-slot="statistic-change"][data-trend="down"] { color: var(--destructive); background: color-mix(in oklch, var(--destructive), transparent 90%); }
 
   [data-slot="state-view"] {
     border-color: var(--aui-surface-border);
