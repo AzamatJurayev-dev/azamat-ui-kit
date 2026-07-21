@@ -10,7 +10,7 @@ They are distributed through the source-copy CLI. Installing one component copie
 | --- | --- | --- |
 | `map` | `MapView`, `LocationPicker` | MapLibre GL + react-map-gl |
 | `media-player` | `VideoPlayer`, `AudioPlayer` | Vidstack |
-| `pdf-viewer` | `PdfViewer` | PDF.js |
+| `pdf-viewer` | `PdfViewer`, `PdfViewerHandle` | PDF.js |
 | `barcode-scanner` | `BarcodeScanner`, `QrScanner` | ZXing Browser |
 | `code-editor` | `CodeEditor`, `JsonEditor`, `CodeDiffEditor` | Monaco Editor |
 | `spreadsheet` | `Spreadsheet` | Univer Sheets |
@@ -49,7 +49,7 @@ npx tembro add map media-player pdf-viewer barcode-scanner
 ```tsx
 import { LocationPicker } from "@/components/integrations/map"
 import { VideoPlayer } from "@/components/integrations/media-player"
-import { PdfViewer } from "@/components/integrations/pdf-viewer"
+import { PdfViewer, type PdfViewerHandle } from "@/components/integrations/pdf-viewer"
 import { QrScanner } from "@/components/integrations/barcode-scanner"
 ```
 
@@ -103,9 +103,118 @@ The default Vidstack layout can be configured through `layoutProps`, replaced th
 
 Empty, loading, and playback-error UI is enabled by default and can be replaced through `stateContent`.
 
+## PDF Viewer
+
+`PdfViewer` is a document workspace rather than a single canvas wrapper. It accepts URLs, in-memory bytes, `ArrayBuffer`, or complete PDF.js `DocumentInitParameters` for headers, credentials, password, range loading, and other transport options.
+
 ```tsx
-<PdfViewer src="/documents/example.pdf" />
+function QuarterlyReview() {
+  const viewerRef = React.useRef<PdfViewerHandle>(null)
+
+  return (
+    <PdfViewer
+      ref={viewerRef}
+      src={{
+        url: "/documents/quarterly-review.pdf",
+        httpHeaders: {
+          Authorization: "Bearer token",
+        },
+      }}
+      defaultViewMode="continuous"
+      defaultSidebarOpen
+      defaultFitMode="width"
+      searchOnChange
+      onProgress={(progress) => {
+        console.log(progress.loaded, progress.total, progress.percent)
+      }}
+      onPasswordRequest={({ reason, submit }) => {
+        requestDocumentPassword(reason).then(submit)
+      }}
+      onSearchResultsChange={(results) => {
+        console.log(results)
+      }}
+      stateContent={{
+        empty: <EmptyDocumentState />,
+        loading: (progress) => <DocumentLoading progress={progress} />,
+        error: (error, retry) => (
+          <DocumentError error={error} onRetry={retry} />
+        ),
+      }}
+    />
+  )
+}
 ```
+
+### Rendering modes
+
+- `viewMode="single"` renders one controlled or uncontrolled page.
+- `viewMode="continuous"` creates a scrollable document workspace and lazily renders pages near the viewport.
+- The thumbnail sidebar also renders lazily, so opening a large document does not immediately paint every page twice.
+- `fitMode="width"`, `fitMode="page"`, and custom scale values share one controlled state contract.
+
+### Search
+
+Full-document search uses PDF.js `getTextContent()` and returns page number, match index, matched text, and nearby context.
+
+```tsx
+<PdfViewer
+  src="/documents/manual.pdf"
+  defaultSearchOpen
+  defaultSearchQuery="installation"
+  searchOnChange
+  maxSearchResults={250}
+  onSearchResultsChange={(results) => {
+    analytics.track("pdf_search", {
+      matches: results.length,
+    })
+  }}
+/>
+```
+
+### Password handling
+
+The built-in password surface handles missing and incorrect passwords. Product applications can replace it through `stateContent.password` or collect credentials externally through `onPasswordRequest`.
+
+```tsx
+<PdfViewer
+  src="/documents/protected.pdf"
+  onPasswordRequest={({ submit }) => {
+    openPasswordDialog().then(submit)
+  }}
+  showPasswordPrompt={false}
+/>
+```
+
+When `showPasswordPrompt={false}`, the application must eventually call the supplied `submit` callback or replace the source; otherwise PDF.js remains paused waiting for a password.
+
+### Imperative actions
+
+```tsx
+viewerRef.current?.goToPage(12)
+viewerRef.current?.fitWidth()
+viewerRef.current?.rotateClockwise()
+viewerRef.current?.search("invoice")
+viewerRef.current?.nextMatch()
+viewerRef.current?.download()
+viewerRef.current?.print()
+viewerRef.current?.toggleFullscreen()
+```
+
+The ref also exposes previous/next page, zoom, fit page, counter-clockwise rotation, current PDF document access, and match navigation.
+
+### Composition
+
+- `renderToolbar` replaces the toolbar while retaining typed state and actions.
+- `sidebarContent` replaces the thumbnail rail.
+- `beforeToolbar`, `afterToolbar`, and `overlay` add product UI without creating another public component.
+- `labels` localizes built-in actions and state messages.
+- `stateContent` replaces empty, loading, password, and retryable error surfaces.
+
+### Document actions and callbacks
+
+Download and print work for URL and in-memory sources by reading raw bytes from the loaded `PDFDocumentProxy`. Metadata, outline, loading progress, page-render, search result, print, download, and error callbacks can be connected to product state or analytics.
+
+Cross-origin URL sources still require valid CORS headers. PDF.js API and worker versions must match. Large documents should use range requests where the server supports them, and continuous rendering should remain lazy.
 
 ```tsx
 <QrScanner onResult={(value) => console.log(value)} />
@@ -114,6 +223,8 @@ Empty, loading, and playback-error UI is enabled by default and can be replaced 
 ## Browser requirements
 
 Camera-based components require a secure context (`https://` or localhost) and user permission. WebGL integrations depend on browser and GPU support. PDF, editor, spreadsheet, whiteboard, map, media, and 3D integrations should be lazy-loaded in applications where initial bundle size matters.
+
+PDF printing uses an isolated browser frame and remains subject to browser print policies. Fullscreen requires the Fullscreen API. Password, progress, metadata, outline, and raw-data operations are provided by the PDF.js display API.
 
 ## Distribution policy
 
