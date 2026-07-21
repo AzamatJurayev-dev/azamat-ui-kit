@@ -20,7 +20,7 @@ const defaultEditorOptions: MonacoEditorProps["options"] = {
   tabSize: 2,
 }
 
-export type CodeEditorProps = Omit<MonacoEditorProps, "onChange" | "loading"> & {
+export type CodeEditorProps = Omit<MonacoEditorProps, "loading"> & {
   onValueChange?: (value: string) => void
   loading?: React.ReactNode
   containerClassName?: string
@@ -60,6 +60,7 @@ function CodeEditor({
       )}
     >
       <Editor
+        {...props}
         height={height}
         defaultLanguage={defaultLanguage}
         theme={theme}
@@ -70,7 +71,6 @@ function CodeEditor({
           onChange?.(value, event)
           onValueChange?.(value ?? "")
         }}
-        {...props}
       />
     </div>
   )
@@ -142,6 +142,7 @@ function CodeDiffEditor({
       )}
     >
       <DiffEditor
+        {...props}
         height={height}
         language={language}
         theme={theme}
@@ -152,7 +153,6 @@ function CodeDiffEditor({
           renderSideBySide: true,
           ...options,
         }}
-        {...props}
       />
     </div>
   )
