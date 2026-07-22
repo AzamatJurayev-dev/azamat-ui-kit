@@ -48,15 +48,6 @@ export type SpreadsheetSelection = {
   values: unknown[][]
 }
 
-export type SpreadsheetChange = {
-  commandId: string
-  type?: number
-  params?: unknown
-  workbookId?: string
-  sheetId?: string
-  snapshot: SpreadsheetWorkbook | null
-}
-
 export type SpreadsheetSheetInfo = {
   id: string
   name: string
@@ -64,6 +55,15 @@ export type SpreadsheetSheetInfo = {
   rowCount: number
   columnCount: number
   active: boolean
+}
+
+export type SpreadsheetChange = {
+  commandId: string
+  type?: number
+  params?: unknown
+  workbookId?: string
+  sheetId?: string
+  snapshot: SpreadsheetWorkbook | null
 }
 
 export type SpreadsheetState = {
@@ -77,9 +77,20 @@ export type SpreadsheetState = {
   dirty: boolean
 }
 
-export type SpreadsheetToolbarContext = SpreadsheetState & {
-  api: SpreadsheetApi | null
-  actions: SpreadsheetActions
+export type SpreadsheetCsvOptions = {
+  sheetName?: string
+  range?: string
+  delimiter?: string
+  includeEmptyRows?: boolean
+  fileName?: string
+}
+
+export type SpreadsheetCsvImportOptions = {
+  sheetName?: string
+  startCell?: string
+  delimiter?: string
+  parseNumbers?: boolean
+  clearTarget?: boolean
 }
 
 export type SpreadsheetActions = {
@@ -122,25 +133,13 @@ export type SpreadsheetHandle = SpreadsheetActions & {
   refresh: () => void
 }
 
-export type SpreadsheetCsvOptions = {
-  sheetName?: string
-  range?: string
-  delimiter?: string
-  includeEmptyRows?: boolean
-  fileName?: string
-}
-
-export type SpreadsheetCsvImportOptions = {
-  sheetName?: string
-  startCell?: string
-  delimiter?: string
-  parseNumbers?: boolean
-  clearTarget?: boolean
+export type SpreadsheetToolbarContext = SpreadsheetState & {
+  api: SpreadsheetApi | null
+  actions: SpreadsheetActions
 }
 
 export type SpreadsheetStateContent = {
   loading?: React.ReactNode
-  empty?: React.ReactNode
   error?: React.ReactNode | ((error: Error, retry: () => void) => React.ReactNode)
 }
 
@@ -177,30 +176,13 @@ export type SpreadsheetProps = Omit<React.ComponentProps<"div">, "children" | "o
   onDirtyChange?: (dirty: boolean) => void
   onSave?: (snapshot: SpreadsheetWorkbook | null, state: SpreadsheetState) => void | Promise<void>
   onImportRequest?: (file: File, api: SpreadsheetApi) => void | Promise<void>
-  labels?: {
-    loading?: string
-    retry?: string
-    spreadsheet?: string
-    address?: string
-    formula?: string
-    undo?: string
-    redo?: string
-    addRow?: string
-    deleteRow?: string
-    addColumn?: string
-    deleteColumn?: string
-    addSheet?: string
-    deleteSheet?: string
-    importCsv?: string
-    exportCsv?: string
-    exportJson?: string
-    save?: string
-    readonly?: string
-    selected?: string
-    rows?: string
-    columns?: string
-    cells?: string
-  }
+  labels?: Partial<Record<
+    | "loading" | "retry" | "spreadsheet" | "address" | "formula" | "undo" | "redo"
+    | "addRow" | "deleteRow" | "addColumn" | "deleteColumn" | "addSheet" | "deleteSheet"
+    | "importCsv" | "exportCsv" | "exportJson" | "save" | "readonly" | "selected"
+    | "rows" | "columns" | "cells",
+    string
+  >>
 }
 
 const EMPTY_WORKBOOK = {
@@ -229,10 +211,9 @@ function downloadBlob(blob: Blob, fileName: string) {
 
 function csvEscape(value: unknown, delimiter: string) {
   const text = value == null ? "" : String(value)
-  if (text.includes(delimiter) || text.includes("\n") || text.includes('"')) {
-    return `"${text.replaceAll('"', '""')}"`
-  }
-  return text
+  return text.includes(delimiter) || text.includes("\n") || text.includes('"')
+    ? `"${text.replaceAll('"', '""')}"`
+    : text
 }
 
 function parseCsv(input: string, delimiter = ",") {
@@ -247,9 +228,7 @@ function parseCsv(input: string, delimiter = ",") {
       if (quoted && input[index + 1] === '"') {
         field += '"'
         index += 1
-      } else {
-        quoted = !quoted
-      }
+      } else quoted = !quoted
     } else if (character === delimiter && !quoted) {
       row.push(field)
       field = ""
@@ -259,13 +238,11 @@ function parseCsv(input: string, delimiter = ",") {
       rows.push(row)
       row = []
       field = ""
-    } else {
-      field += character
-    }
+    } else field += character
   }
 
   row.push(field)
-  if (row.some((value) => value.length > 0) || rows.length === 0) rows.push(row)
+  if (row.some(Boolean) || rows.length === 0) rows.push(row)
   return rows
 }
 
@@ -281,57 +258,50 @@ function normalizeCellValue(value: string, parseNumbers: boolean) {
 
 function getWorkbookSnapshot(api: SpreadsheetApi | null): SpreadsheetWorkbook | null {
   const workbook = (api as any)?.getActiveWorkbook?.()
-  if (!workbook) return null
-  return (workbook.save?.() ?? workbook.getWorkbook?.()?.getSnapshot?.() ?? null) as SpreadsheetWorkbook | null
+  return (workbook?.save?.() ?? workbook?.getWorkbook?.()?.getSnapshot?.() ?? null) as SpreadsheetWorkbook | null
 }
 
 function getSheetInfo(sheet: any, index: number, activeSheetId?: string): SpreadsheetSheetInfo {
-  const id = sheet.getSheetId?.() ?? sheet.getId?.() ?? sheet.getSheet?.()?.getSheetId?.() ?? `sheet-${index}`
+  const id = sheet.getSheetId?.() ?? sheet.getId?.() ?? `sheet-${index}`
   return {
     id,
     name: sheet.getName?.() ?? sheet.getSheetName?.() ?? `Sheet${index + 1}`,
     index,
-    rowCount: sheet.getMaxRows?.() ?? sheet.getRowCount?.() ?? sheet.getSheet?.()?.getRowCount?.() ?? 0,
-    columnCount: sheet.getMaxColumns?.() ?? sheet.getColumnCount?.() ?? sheet.getSheet?.()?.getColumnCount?.() ?? 0,
+    rowCount: sheet.getMaxRows?.() ?? sheet.getRowCount?.() ?? 0,
+    columnCount: sheet.getMaxColumns?.() ?? sheet.getColumnCount?.() ?? 0,
     active: id === activeSheetId,
   }
 }
 
 function getSelectionSnapshot(api: SpreadsheetApi | null): SpreadsheetSelection | null {
-  const workbook = (api as any)?.getActiveWorkbook?.()
-  const sheet = workbook?.getActiveSheet?.()
-  const activeRange = sheet?.getSelection?.()?.getActiveRange?.()
-  if (!sheet || !activeRange) return null
+  const sheet = (api as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
+  const range = sheet?.getSelection?.()?.getActiveRange?.()
+  if (!sheet || !range) return null
 
-  const startRow = activeRange.getRow?.() ?? 0
-  const startColumn = activeRange.getColumn?.() ?? 0
-  const rowCount = activeRange.getNumRows?.() ?? 1
-  const columnCount = activeRange.getNumColumns?.() ?? 1
-  const sheetRowCount = sheet.getMaxRows?.() ?? sheet.getRowCount?.() ?? rowCount
-  const sheetColumnCount = sheet.getMaxColumns?.() ?? sheet.getColumnCount?.() ?? columnCount
+  const startRow = range.getRow?.() ?? 0
+  const startColumn = range.getColumn?.() ?? 0
+  const rowCount = range.getNumRows?.() ?? 1
+  const columnCount = range.getNumColumns?.() ?? 1
+  const maxRows = sheet.getMaxRows?.() ?? sheet.getRowCount?.() ?? rowCount
+  const maxColumns = sheet.getMaxColumns?.() ?? sheet.getColumnCount?.() ?? columnCount
   const type: SpreadsheetSelectionType =
-    rowCount >= sheetRowCount && columnCount >= sheetColumnCount
-      ? "sheet"
-      : columnCount >= sheetColumnCount
-        ? "row"
-        : rowCount >= sheetRowCount
-          ? "column"
-          : rowCount === 1 && columnCount === 1
-            ? "cell"
-            : "range"
+    rowCount >= maxRows && columnCount >= maxColumns ? "sheet"
+      : columnCount >= maxColumns ? "row"
+        : rowCount >= maxRows ? "column"
+          : rowCount === 1 && columnCount === 1 ? "cell" : "range"
 
   return {
     type,
     sheetId: sheet.getSheetId?.() ?? sheet.getId?.() ?? "",
     sheetName: sheet.getName?.() ?? sheet.getSheetName?.() ?? "Sheet",
-    a1Notation: activeRange.getA1Notation?.() ?? "A1",
+    a1Notation: range.getA1Notation?.() ?? "A1",
     startRow,
     endRow: startRow + rowCount - 1,
     startColumn,
     endColumn: startColumn + columnCount - 1,
     rowCount,
     columnCount,
-    values: activeRange.getValues?.() ?? [],
+    values: range.getValues?.() ?? [],
   }
 }
 
@@ -379,7 +349,10 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
   const containerRef = React.useRef<HTMLDivElement>(null)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const apiRef = React.useRef<SpreadsheetApi | null>(null)
-  const disposablesRef = React.useRef<Array<{ dispose?: () => void }>>([])
+  const actionsRef = React.useRef<SpreadsheetActions>(null as unknown as SpreadsheetActions)
+  const stateRef = React.useRef<SpreadsheetState>(null as unknown as SpreadsheetState)
+  const selectionRef = React.useRef<SpreadsheetSelection | null>(null)
+  const activeSheetRef = React.useRef<SpreadsheetSheetInfo | null>(null)
   const callbacksRef = React.useRef({ onReady, onError, onSelectionChange, onActiveSheetChange, onSheetsChange, onChange, onDirtyChange })
   const [initializing, setInitializing] = React.useState(true)
   const [error, setError] = React.useState<Error | null>(null)
@@ -396,36 +369,69 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
     callbacksRef.current = { onReady, onError, onSelectionChange, onActiveSheetChange, onSheetsChange, onChange, onDirtyChange }
   }, [onActiveSheetChange, onChange, onDirtyChange, onError, onReady, onSelectionChange, onSheetsChange])
 
+  const markDirty = React.useCallback((value: boolean) => {
+    setDirty(value)
+    callbacksRef.current.onDirtyChange?.(value)
+  }, [])
+
   const readSheets = React.useCallback(() => {
     const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
     const active = workbookFacade?.getActiveSheet?.()
     const activeId = active?.getSheetId?.() ?? active?.getId?.()
     const nextSheets = (workbookFacade?.getSheets?.() ?? []).map((sheet: any, index: number) => getSheetInfo(sheet, index, activeId))
     const nextActive = nextSheets.find((sheet) => sheet.active) ?? null
+    activeSheetRef.current = nextActive
     setSheets(nextSheets)
     setActiveSheet(nextActive)
     callbacksRef.current.onSheetsChange?.(nextSheets)
     callbacksRef.current.onActiveSheetChange?.(nextActive)
-    return { sheets: nextSheets, activeSheet: nextActive }
+    return nextSheets
   }, [])
 
   const readSelection = React.useCallback(() => {
     const next = getSelectionSnapshot(apiRef.current)
+    selectionRef.current = next
     setSelection(next)
     if (next) {
       setAddress(next.a1Notation)
-      const activeRange = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()
-      const formula = activeRange?.getFormula?.() ?? activeRange?.getValue?.() ?? ""
-      setFormulaValue(formula == null ? "" : String(formula))
+      const range = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()
+      const value = range?.getFormula?.() ?? range?.getValue?.() ?? ""
+      setFormulaValue(value == null ? "" : String(value))
     }
     callbacksRef.current.onSelectionChange?.(next)
     return next
   }, [])
 
-  const markDirty = React.useCallback((value: boolean) => {
-    setDirty(value)
-    callbacksRef.current.onDirtyChange?.(value)
+  const exportCsvInternal = React.useCallback((options: SpreadsheetCsvOptions = {}) => {
+    const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
+    const sheet = options.sheetName
+      ? workbookFacade?.getSheets?.().find((item: any) => (item.getName?.() ?? item.getSheetName?.()) === options.sheetName)
+      : workbookFacade?.getActiveSheet?.()
+    const delimiter = options.delimiter ?? ","
+    const range = options.range ? sheet?.getRange?.(options.range) : sheet?.getDataRange?.()
+    const values: unknown[][] = range?.getValues?.() ?? []
+    const rows = options.includeEmptyRows ? values : values.filter((row) => row.some((value) => value != null && value !== ""))
+    return rows.map((row) => row.map((value) => csvEscape(value, delimiter)).join(delimiter)).join("\n")
   }, [])
+
+  const importCsvInternal = React.useCallback((csv: string, options: SpreadsheetCsvImportOptions = {}) => {
+    const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
+    const sheet = options.sheetName
+      ? workbookFacade?.getSheets?.().find((item: any) => (item.getName?.() ?? item.getSheetName?.()) === options.sheetName)
+      : workbookFacade?.getActiveSheet?.()
+    const rows = parseCsv(csv, options.delimiter ?? ",").map((row) => row.map((value) => normalizeCellValue(value, options.parseNumbers ?? true)))
+    if (!sheet || rows.length === 0) return
+    const startRange = sheet.getRange?.(options.startCell ?? "A1")
+    const startRow = startRange?.getRow?.() ?? 0
+    const startColumn = startRange?.getColumn?.() ?? 0
+    const width = Math.max(...rows.map((row) => row.length))
+    const matrix = rows.map((row) => [...row, ...Array(Math.max(0, width - row.length)).fill("")])
+    const target = sheet.getRange?.(startRow, startColumn, matrix.length, width)
+    if (options.clearTarget) target?.clearContent?.()
+    target?.setValues?.(matrix)
+    target?.activate?.()
+    readSelection()
+  }, [readSelection])
 
   const actions = React.useMemo<SpreadsheetActions>(() => ({
     focus: () => rootRef.current?.focus(),
@@ -439,12 +445,12 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
       if (api?.redo) await api.redo()
       else await api?.executeCommand?.("core.command.redo")
     },
-    selectRange: (a1Notation, sheetName) => {
+    selectRange: (notation, sheetName) => {
       const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
       const sheet = sheetName
         ? workbookFacade?.getSheets?.().find((item: any) => (item.getName?.() ?? item.getSheetName?.()) === sheetName)
         : workbookFacade?.getActiveSheet?.()
-      sheet?.getRange?.(a1Notation)?.activate?.()
+      sheet?.getRange?.(notation)?.activate?.()
       readSelection()
     },
     selectRows: (startRow, count = 1) => {
@@ -459,140 +465,90 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
       sheet?.getRange?.(0, Math.max(0, startColumn), rows, Math.max(1, count))?.activate?.()
       readSelection()
     },
-    setActiveCellValue: (value) => {
-      const range = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()
-      range?.setValue?.(value)
-    },
+    setActiveCellValue: (value) => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()?.setValue?.(value),
     setActiveCellFormula: (formula) => {
       const range = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()
-      if (formula.startsWith("=")) range?.setFormula?.(formula)
-      else range?.setValue?.(formula)
+      formula.startsWith("=") ? range?.setFormula?.(formula) : range?.setValue?.(formula)
     },
     insertRows: (startRow, count = 1) => {
       const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
-      const row = startRow ?? selection?.startRow ?? 0
-      sheet?.insertRows?.(row, Math.max(1, count))
+      sheet?.insertRows?.(startRow ?? selectionRef.current?.startRow ?? 0, Math.max(1, count))
       readSheets()
     },
     deleteRows: (startRow, count = 1) => {
       const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
-      const row = startRow ?? selection?.startRow ?? 0
-      sheet?.deleteRows?.(row, Math.max(1, count))
+      sheet?.deleteRows?.(startRow ?? selectionRef.current?.startRow ?? 0, Math.max(1, count))
       readSheets()
     },
     insertColumns: (startColumn, count = 1) => {
       const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
-      const column = startColumn ?? selection?.startColumn ?? 0
-      sheet?.insertColumns?.(column, Math.max(1, count))
+      sheet?.insertColumns?.(startColumn ?? selectionRef.current?.startColumn ?? 0, Math.max(1, count))
       readSheets()
     },
     deleteColumns: (startColumn, count = 1) => {
       const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
-      const column = startColumn ?? selection?.startColumn ?? 0
-      sheet?.deleteColumns?.(column, Math.max(1, count))
+      sheet?.deleteColumns?.(startColumn ?? selectionRef.current?.startColumn ?? 0, Math.max(1, count))
       readSheets()
     },
     addSheet: (name, rows = 100, columns = 26) => {
       const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
       const nextName = name || `Sheet${(workbookFacade?.getSheets?.().length ?? 0) + 1}`
       const sheet = workbookFacade?.create?.(nextName, rows, columns)
-      const info = sheet ? getSheetInfo(sheet, (workbookFacade?.getSheets?.().length ?? 1) - 1, sheet.getSheetId?.()) : null
       readSheets()
-      return info
+      return sheet ? getSheetInfo(sheet, (workbookFacade?.getSheets?.().length ?? 1) - 1, sheet.getSheetId?.()) : null
     },
     deleteActiveSheet: () => {
       const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
-      const sheet = workbookFacade?.getActiveSheet?.()
       if ((workbookFacade?.getSheets?.().length ?? 0) <= 1) return
-      workbookFacade?.deleteSheet?.(sheet)
+      workbookFacade?.deleteSheet?.(workbookFacade.getActiveSheet?.())
       readSheets()
     },
-    activateSheet: (sheetIdOrName) => {
+    activateSheet: (idOrName) => {
       const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
-      const sheet = workbookFacade?.getSheets?.().find((item: any) => {
-        const id = item.getSheetId?.() ?? item.getId?.()
-        const name = item.getName?.() ?? item.getSheetName?.()
-        return id === sheetIdOrName || name === sheetIdOrName
-      })
+      const sheet = workbookFacade?.getSheets?.().find((item: any) => [item.getSheetId?.(), item.getId?.(), item.getName?.(), item.getSheetName?.()].includes(idOrName))
       sheet?.activate?.()
       readSheets()
       readSelection()
     },
     renameActiveSheet: (name) => {
-      const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
-      sheet?.setName?.(name)
+      ;(apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.setName?.(name)
       readSheets()
     },
     setZoom: (nextZoom) => {
       const normalized = Math.min(4, Math.max(0.25, nextZoom))
-      const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
-      sheet?.zoom?.(normalized)
+      ;(apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.zoom?.(normalized)
       setZoomState(normalized)
     },
     freezeRows: (count) => {
       const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
       const freeze = sheet?.getFreeze?.()
-      if (freeze?.setFreezeRows) freeze.setFreezeRows(Math.max(0, count))
-      else sheet?.setFrozenRows?.(Math.max(0, count))
+      freeze?.setFreezeRows ? freeze.setFreezeRows(Math.max(0, count)) : sheet?.setFrozenRows?.(Math.max(0, count))
     },
     freezeColumns: (count) => {
       const sheet = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
       const freeze = sheet?.getFreeze?.()
-      if (freeze?.setFreezeColumns) freeze.setFreezeColumns(Math.max(0, count))
-      else sheet?.setFrozenColumns?.(Math.max(0, count))
+      freeze?.setFreezeColumns ? freeze.setFreezeColumns(Math.max(0, count)) : sheet?.setFrozenColumns?.(Math.max(0, count))
     },
-    clearSelection: () => {
-      const range = (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()
-      range?.clearContent?.()
-    },
+    clearSelection: () => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()?.clearContent?.(),
     copySelection: async () => {
       const values = getSelectionSnapshot(apiRef.current)?.values ?? []
       const text = values.map((row) => row.map((value) => value == null ? "" : String(value)).join("\t")).join("\n")
       await navigator.clipboard?.writeText(text)
       return text
     },
-    exportCsv: (options = {}) => {
-      const sheet = options.sheetName
-        ? (apiRef.current as any)?.getActiveWorkbook?.()?.getSheets?.().find((item: any) => (item.getName?.() ?? item.getSheetName?.()) === options.sheetName)
-        : (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()
-      const delimiter = options.delimiter ?? ","
-      const range = options.range ? sheet?.getRange?.(options.range) : sheet?.getDataRange?.()
-      const values: unknown[][] = range?.getValues?.() ?? []
-      const rows = options.includeEmptyRows ? values : values.filter((row) => row.some((value) => value != null && value !== ""))
-      return rows.map((row) => row.map((value) => csvEscape(value, delimiter)).join(delimiter)).join("\n")
-    },
+    exportCsv: exportCsvInternal,
     downloadCsv: (options = {}) => {
-      const csv = actions.exportCsv(options)
-      downloadBlob(new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" }), options.fileName ?? `${activeSheet?.name ?? "sheet"}.csv`)
+      const csv = exportCsvInternal(options)
+      downloadBlob(new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" }), options.fileName ?? `${activeSheetRef.current?.name ?? "sheet"}.csv`)
     },
     exportSnapshot: () => getWorkbookSnapshot(apiRef.current),
-    downloadSnapshot: (fileName = "workbook.json") => {
-      const snapshot = getWorkbookSnapshot(apiRef.current)
-      downloadBlob(new Blob([JSON.stringify(snapshot, null, 2)], { type: "application/json" }), fileName)
-    },
-    importCsv: (csv, options = {}) => {
-      const workbookFacade = (apiRef.current as any)?.getActiveWorkbook?.()
-      const sheet = options.sheetName
-        ? workbookFacade?.getSheets?.().find((item: any) => (item.getName?.() ?? item.getSheetName?.()) === options.sheetName)
-        : workbookFacade?.getActiveSheet?.()
-      const rows = parseCsv(csv, options.delimiter ?? ",").map((row) => row.map((value) => normalizeCellValue(value, options.parseNumbers ?? true)))
-      if (!sheet || rows.length === 0) return
-      const startRange = sheet.getRange?.(options.startCell ?? "A1")
-      const startRow = startRange?.getRow?.() ?? 0
-      const startColumn = startRange?.getColumn?.() ?? 0
-      const width = Math.max(...rows.map((row) => row.length))
-      const matrix = rows.map((row) => [...row, ...Array(Math.max(0, width - row.length)).fill("")])
-      const target = sheet.getRange?.(startRow, startColumn, matrix.length, width)
-      if (options.clearTarget) target?.clearContent?.()
-      target?.setValues?.(matrix)
-      target?.activate?.()
-      readSelection()
-    },
-    importCsvFile: async (file, options = {}) => {
-      actions.importCsv(await file.text(), options)
-    },
+    downloadSnapshot: (fileName = "workbook.json") => downloadBlob(new Blob([JSON.stringify(getWorkbookSnapshot(apiRef.current), null, 2)], { type: "application/json" }), fileName),
+    importCsv: importCsvInternal,
+    importCsvFile: async (file, options = {}) => importCsvInternal(await file.text(), options),
     markSaved: () => markDirty(false),
-  }), [activeSheet?.name, markDirty, readSelection, readSheets, selection?.startColumn, selection?.startRow])
+  }), [exportCsvInternal, importCsvInternal, markDirty, readSelection, readSheets])
+
+  actionsRef.current = actions
 
   const state = React.useMemo<SpreadsheetState>(() => ({
     ready: !initializing && !error,
@@ -605,68 +561,51 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
     dirty,
   }), [activeSheet, dirty, error, initializing, readonly, selection, sheets, zoom])
 
+  stateRef.current = state
+
   React.useImperativeHandle(forwardedRef, () => ({
     ...actions,
     getApi: () => apiRef.current,
-    getState: () => state,
+    getState: () => stateRef.current,
     getSelection: () => getSelectionSnapshot(apiRef.current),
     getWorkbook: () => (apiRef.current as any)?.getActiveWorkbook?.() ?? null,
     getActiveSheet: () => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.() ?? null,
     refresh: () => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.refreshCanvas?.(),
-  }), [actions, state])
+  }), [actions])
 
   React.useEffect(() => {
     if (!containerRef.current) return
-    let disposed = false
     setInitializing(true)
     setError(null)
-    disposablesRef.current.forEach((disposable) => disposable.dispose?.())
-    disposablesRef.current = []
+    const disposables: Array<{ dispose?: () => void } | undefined> = []
 
     try {
       const { univerAPI } = createUniver({
         locale,
-        locales: {
-          [LocaleType.EN_US]: mergeLocales(UniverPresetSheetsCoreEnUS),
-          ...(locales ?? {}),
-        },
-        presets: [
-          UniverSheetsCorePreset({ container: containerRef.current }),
-          ...((presets ?? []) as any[]),
-        ],
+        locales: { [LocaleType.EN_US]: mergeLocales(UniverPresetSheetsCoreEnUS), ...(locales ?? {}) },
+        presets: [UniverSheetsCorePreset({ container: containerRef.current }), ...((presets ?? []) as any[])],
       })
-
       apiRef.current = univerAPI
       const workbookFacade = univerAPI.createWorkbook(workbook)
       if (readonly) workbookFacade?.disableSelection?.()
       if (initialSelection) workbookFacade?.getActiveSheet?.()?.getRange?.(initialSelection)?.activate?.()
 
       const selectionEvent = (univerAPI as any).Event?.SelectionChanged
-      const sheetChangeEvent = (univerAPI as any).Event?.SheetValueChanged
-      const activeSheetEvent = (univerAPI as any).Event?.ActiveSheetChanged
-
-      if (selectionEvent) {
-        disposablesRef.current.push((univerAPI as any).addEvent(selectionEvent, () => readSelection()))
-      }
-      if (sheetChangeEvent) {
-        disposablesRef.current.push((univerAPI as any).addEvent(sheetChangeEvent, (params: unknown) => {
-          markDirty(true)
-          callbacksRef.current.onChange?.({
-            commandId: "sheet.value.changed",
-            params,
-            workbookId: (univerAPI as any).getActiveWorkbook?.()?.getId?.(),
-            sheetId: (univerAPI as any).getActiveWorkbook?.()?.getActiveSheet?.()?.getSheetId?.(),
-            snapshot: getWorkbookSnapshot(univerAPI),
-          })
-        }))
-      }
-      if (activeSheetEvent) {
-        disposablesRef.current.push((univerAPI as any).addEvent(activeSheetEvent, () => {
-          readSheets()
-          readSelection()
-        }))
-      }
-      disposablesRef.current.push((univerAPI as any).onCommandExecuted?.((command: any) => {
+      const valueEvent = (univerAPI as any).Event?.SheetValueChanged
+      const sheetEvent = (univerAPI as any).Event?.ActiveSheetChanged
+      if (selectionEvent) disposables.push((univerAPI as any).addEvent(selectionEvent, readSelection))
+      if (valueEvent) disposables.push((univerAPI as any).addEvent(valueEvent, (params: unknown) => {
+        markDirty(true)
+        callbacksRef.current.onChange?.({
+          commandId: "sheet.value.changed",
+          params,
+          workbookId: (univerAPI as any).getActiveWorkbook?.()?.getId?.(),
+          sheetId: (univerAPI as any).getActiveWorkbook?.()?.getActiveSheet?.()?.getSheetId?.(),
+          snapshot: getWorkbookSnapshot(univerAPI),
+        })
+      }))
+      if (sheetEvent) disposables.push((univerAPI as any).addEvent(sheetEvent, () => { readSheets(); readSelection() }))
+      disposables.push((univerAPI as any).onCommandExecuted?.((command: any) => {
         if (!command?.id || command.id.includes("selection")) return
         markDirty(true)
         callbacksRef.current.onChange?.({
@@ -683,110 +622,77 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
       readSelection()
       setZoomState(workbookFacade?.getActiveSheet?.()?.getZoom?.() ?? 1)
       setInitializing(false)
-
-      const handle: SpreadsheetHandle = {
-        ...actions,
+      callbacksRef.current.onReady?.(univerAPI, {
+        ...actionsRef.current,
         getApi: () => apiRef.current,
-        getState: () => state,
+        getState: () => stateRef.current,
         getSelection: () => getSelectionSnapshot(apiRef.current),
         getWorkbook: () => (apiRef.current as any)?.getActiveWorkbook?.() ?? null,
         getActiveSheet: () => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.() ?? null,
         refresh: () => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.refreshCanvas?.(),
-      }
-      callbacksRef.current.onReady?.(univerAPI, handle)
+      })
       if (autoFocus) window.setTimeout(() => rootRef.current?.focus(), 0)
 
       return () => {
-        disposed = true
-        disposablesRef.current.forEach((disposable) => disposable?.dispose?.())
-        disposablesRef.current = []
+        disposables.forEach((item) => item?.dispose?.())
         apiRef.current = null
         univerAPI.dispose()
       }
     } catch (cause: unknown) {
-      if (disposed) return
       const nextError = cause instanceof Error ? cause : new Error("Spreadsheet could not be initialized")
       setError(nextError)
       setInitializing(false)
       callbacksRef.current.onError?.(nextError)
     }
-  }, [actions, autoFocus, initialSelection, locale, locales, markDirty, presets, readSelection, readSheets, readonly, resetKey, retryKey, state, workbook])
+  }, [autoFocus, initialSelection, locale, locales, markDirty, presets, readSelection, readSheets, readonly, resetKey, retryKey, workbook])
 
-  const toolbarContext = React.useMemo<SpreadsheetToolbarContext>(() => ({ ...state, api: apiRef.current, actions }), [actions, state])
-  const toolbarContent = typeof toolbar === "function" ? toolbar(toolbarContext) : toolbar
-
-  const submitAddress = () => {
-    if (!address.trim()) return
-    try {
-      actions.selectRange(address.trim())
-    } catch (cause: unknown) {
-      callbacksRef.current.onError?.(cause instanceof Error ? cause : new Error("Invalid range"))
-    }
-  }
-
-  const submitFormula = () => actions.setActiveCellFormula(formulaValue)
+  const context = React.useMemo<SpreadsheetToolbarContext>(() => ({ ...state, api: apiRef.current, actions }), [actions, state])
+  const toolbarContent = typeof toolbar === "function" ? toolbar(context) : toolbar
 
   return (
-    <div
-      ref={rootRef}
-      tabIndex={-1}
-      data-slot="spreadsheet"
-      data-ready={state.ready || undefined}
-      data-dirty={dirty || undefined}
-      data-readonly={readonly || undefined}
-      className={cn("relative flex min-h-[560px] flex-col overflow-hidden rounded-xl border bg-background", className)}
-      {...props}
-    >
-      {showToolbar ? (
-        <>
-          {beforeToolbar}
-          {toolbarContent ?? (
-            <div data-slot="spreadsheet-toolbar" className={cn("flex flex-wrap items-center gap-1 border-b bg-muted/30 p-2", toolbarClassName)}>
-              <Button type="button" variant="ghost" size="icon-sm" title={labels?.undo ?? "Undo"} onClick={() => void actions.undo()} disabled={readonly}><Undo2Icon className="size-4" /></Button>
-              <Button type="button" variant="ghost" size="icon-sm" title={labels?.redo ?? "Redo"} onClick={() => void actions.redo()} disabled={readonly}><Redo2Icon className="size-4" /></Button>
-              <span className="mx-1 h-6 w-px bg-border" />
-              <Button type="button" variant="ghost" size="icon-sm" title="Bold" disabled={readonly} onClick={() => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()?.setFontWeight?.("bold")}><BoldIcon className="size-4" /></Button>
-              <Button type="button" variant="ghost" size="icon-sm" title="Italic" disabled={readonly} onClick={() => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()?.setFontStyle?.("italic")}><ItalicIcon className="size-4" /></Button>
-              <span className="mx-1 h-6 w-px bg-border" />
-              <Button type="button" variant="ghost" size="sm" title={labels?.addRow ?? "Insert row"} disabled={readonly} onClick={() => actions.insertRows()}><Rows3Icon className="size-4" />+</Button>
-              <Button type="button" variant="ghost" size="sm" title={labels?.deleteRow ?? "Delete row"} disabled={readonly} onClick={() => actions.deleteRows()}><Rows3Icon className="size-4" />−</Button>
-              <Button type="button" variant="ghost" size="sm" title={labels?.addColumn ?? "Insert column"} disabled={readonly} onClick={() => actions.insertColumns()}><Columns3Icon className="size-4" />+</Button>
-              <Button type="button" variant="ghost" size="sm" title={labels?.deleteColumn ?? "Delete column"} disabled={readonly} onClick={() => actions.deleteColumns()}><Columns3Icon className="size-4" />−</Button>
-              <Button type="button" variant="ghost" size="icon-sm" title="Freeze first row" onClick={() => actions.freezeRows(1)}><FreezeIcon className="size-4" /></Button>
-              <span className="flex-1" />
-              {showImportExport ? (
-                <>
-                  <input ref={fileInputRef} type="file" accept=".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden onChange={(event) => {
-                    const file = event.target.files?.[0]
-                    if (!file) return
-                    if (file.name.toLowerCase().endsWith(".csv")) void actions.importCsvFile(file)
-                    else if (onImportRequest && apiRef.current) void onImportRequest(file, apiRef.current)
-                    event.currentTarget.value = ""
-                  }} />
-                  <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} disabled={readonly}><UploadIcon className="size-4" />{labels?.importCsv ?? "Import"}</Button>
-                  <div className="relative group">
-                    <Button type="button" variant="outline" size="sm"><DownloadIcon className="size-4" />Export<ChevronDownIcon className="size-3" /></Button>
-                    <div className="invisible absolute right-0 top-full z-30 mt-1 min-w-40 rounded-md border bg-popover p-1 opacity-0 shadow-md transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                      <button type="button" className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-accent" onClick={() => actions.downloadCsv()}><FileSpreadsheetIcon className="size-4" />{labels?.exportCsv ?? "Download CSV"}</button>
-                      <button type="button" className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-accent" onClick={() => actions.downloadSnapshot()}><FileJsonIcon className="size-4" />{labels?.exportJson ?? "Download JSON"}</button>
-                    </div>
-                  </div>
-                </>
-              ) : null}
-              {onSave ? <Button type="button" size="sm" disabled={!dirty} onClick={async () => { await onSave(actions.exportSnapshot(), state); actions.markSaved() }}><SaveIcon className="size-4" />{labels?.save ?? "Save"}</Button> : null}
+    <div ref={rootRef} tabIndex={-1} data-slot="spreadsheet" data-ready={state.ready || undefined} data-dirty={dirty || undefined} data-readonly={readonly || undefined} className={cn("relative flex min-h-[560px] flex-col overflow-hidden rounded-xl border bg-background", className)} {...props}>
+      {showToolbar ? <>{beforeToolbar}{toolbarContent ?? (
+        <div data-slot="spreadsheet-toolbar" className={cn("flex flex-wrap items-center gap-1 border-b bg-muted/30 p-2", toolbarClassName)}>
+          <Button type="button" variant="ghost" size="icon-sm" title={labels?.undo ?? "Undo"} onClick={() => void actions.undo()} disabled={readonly}><Undo2Icon className="size-4" /></Button>
+          <Button type="button" variant="ghost" size="icon-sm" title={labels?.redo ?? "Redo"} onClick={() => void actions.redo()} disabled={readonly}><Redo2Icon className="size-4" /></Button>
+          <span className="mx-1 h-6 w-px bg-border" />
+          <Button type="button" variant="ghost" size="icon-sm" title="Bold" disabled={readonly} onClick={() => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()?.setFontWeight?.("bold")}><BoldIcon className="size-4" /></Button>
+          <Button type="button" variant="ghost" size="icon-sm" title="Italic" disabled={readonly} onClick={() => (apiRef.current as any)?.getActiveWorkbook?.()?.getActiveSheet?.()?.getSelection?.()?.getActiveRange?.()?.setFontStyle?.("italic")}><ItalicIcon className="size-4" /></Button>
+          <span className="mx-1 h-6 w-px bg-border" />
+          <Button type="button" variant="ghost" size="sm" title={labels?.addRow ?? "Insert row"} disabled={readonly} onClick={() => actions.insertRows()}><Rows3Icon className="size-4" />+</Button>
+          <Button type="button" variant="ghost" size="sm" title={labels?.deleteRow ?? "Delete row"} disabled={readonly} onClick={() => actions.deleteRows()}><Rows3Icon className="size-4" />−</Button>
+          <Button type="button" variant="ghost" size="sm" title={labels?.addColumn ?? "Insert column"} disabled={readonly} onClick={() => actions.insertColumns()}><Columns3Icon className="size-4" />+</Button>
+          <Button type="button" variant="ghost" size="sm" title={labels?.deleteColumn ?? "Delete column"} disabled={readonly} onClick={() => actions.deleteColumns()}><Columns3Icon className="size-4" />−</Button>
+          <Button type="button" variant="ghost" size="icon-sm" title="Freeze first row" onClick={() => actions.freezeRows(1)}><FreezeIcon className="size-4" /></Button>
+          <span className="flex-1" />
+          {showImportExport ? <>
+            <input ref={fileInputRef} type="file" accept=".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden onChange={(event) => {
+              const file = event.target.files?.[0]
+              if (!file) return
+              if (file.name.toLowerCase().endsWith(".csv")) void actions.importCsvFile(file)
+              else if (onImportRequest && apiRef.current) void onImportRequest(file, apiRef.current)
+              event.currentTarget.value = ""
+            }} />
+            <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} disabled={readonly}><UploadIcon className="size-4" />{labels?.importCsv ?? "Import"}</Button>
+            <div className="relative group">
+              <Button type="button" variant="outline" size="sm"><DownloadIcon className="size-4" />Export<ChevronDownIcon className="size-3" /></Button>
+              <div className="invisible absolute right-0 top-full z-30 mt-1 min-w-40 rounded-md border bg-popover p-1 opacity-0 shadow-md transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                <button type="button" className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-accent" onClick={() => actions.downloadCsv()}><FileSpreadsheetIcon className="size-4" />{labels?.exportCsv ?? "Download CSV"}</button>
+                <button type="button" className="flex w-full items-center gap-2 rounded px-3 py-2 text-left text-sm hover:bg-accent" onClick={() => actions.downloadSnapshot()}><FileJsonIcon className="size-4" />{labels?.exportJson ?? "Download JSON"}</button>
+              </div>
             </div>
-          )}
-          {afterToolbar}
-        </>
-      ) : null}
+          </> : null}
+          {onSave ? <Button type="button" size="sm" disabled={!dirty} onClick={async () => { await onSave(actions.exportSnapshot(), stateRef.current); actions.markSaved() }}><SaveIcon className="size-4" />{labels?.save ?? "Save"}</Button> : null}
+        </div>
+      )}{afterToolbar}</> : null}
 
       {showFormulaBar ? (
         <div data-slot="spreadsheet-formula-bar" className="grid grid-cols-[minmax(76px,120px)_1fr] items-center border-b bg-background">
-          <form className="border-r p-1.5" onSubmit={(event) => { event.preventDefault(); submitAddress() }}>
+          <form className="border-r p-1.5" onSubmit={(event) => { event.preventDefault(); if (address.trim()) actions.selectRange(address.trim()) }}>
             <label className="sr-only" htmlFor="spreadsheet-address">{labels?.address ?? "Cell or range"}</label>
             <div className="flex items-center gap-1 rounded border bg-muted/20 px-2"><SearchIcon className="size-3.5 text-muted-foreground" /><input id="spreadsheet-address" value={address} onChange={(event) => setAddress(event.target.value)} className="h-7 min-w-0 flex-1 bg-transparent font-mono text-xs outline-none" /></div>
           </form>
-          <form className="flex min-w-0 items-center gap-2 p-1.5" onSubmit={(event) => { event.preventDefault(); submitFormula() }}>
+          <form className="flex min-w-0 items-center gap-2 p-1.5" onSubmit={(event) => { event.preventDefault(); actions.setActiveCellFormula(formulaValue) }}>
             <span className="select-none text-xs font-semibold italic text-muted-foreground">fx</span>
             <label className="sr-only" htmlFor="spreadsheet-formula">{labels?.formula ?? "Value or formula"}</label>
             <input id="spreadsheet-formula" value={formulaValue} readOnly={readonly} onChange={(event) => setFormulaValue(event.target.value)} className="h-7 min-w-0 flex-1 bg-transparent text-sm outline-none" placeholder="Enter a value or =SUM(A1:A10)" />
@@ -797,38 +703,22 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
       <div className="relative min-h-0 flex-1">
         <div ref={containerRef} data-slot="spreadsheet-viewport" className={cn("h-full min-h-[460px] w-full", viewportClassName)} />
         {overlay}
-        {initializing ? (
-          <div className="absolute inset-0 grid place-items-center bg-background/80 backdrop-blur-sm" role="status">
-            {stateContent?.loading ?? loading ?? <span className="inline-flex items-center gap-2 text-sm text-muted-foreground"><LoaderCircleIcon className="size-4 animate-spin" />{labels?.loading ?? "Loading spreadsheet"}</span>}
-          </div>
-        ) : null}
-        {error ? (
-          <div className="absolute inset-0 grid place-items-center bg-background/90 p-6" role="alert">
-            {typeof stateContent?.error === "function" ? stateContent.error(error, () => setRetryKey((value) => value + 1)) : stateContent?.error ?? (
-              <div className="max-w-md text-center"><p className="text-sm text-destructive">{error.message}</p><Button type="button" className="mt-4" variant="outline" size="sm" onClick={() => setRetryKey((value) => value + 1)}>{labels?.retry ?? "Retry"}</Button></div>
-            )}
-          </div>
-        ) : null}
+        {initializing ? <div className="absolute inset-0 grid place-items-center bg-background/80 backdrop-blur-sm" role="status">{stateContent?.loading ?? loading ?? <span className="inline-flex items-center gap-2 text-sm text-muted-foreground"><LoaderCircleIcon className="size-4 animate-spin" />{labels?.loading ?? "Loading spreadsheet"}</span>}</div> : null}
+        {error ? <div className="absolute inset-0 grid place-items-center bg-background/90 p-6" role="alert">{typeof stateContent?.error === "function" ? stateContent.error(error, () => setRetryKey((value) => value + 1)) : stateContent?.error ?? <div className="max-w-md text-center"><p className="text-sm text-destructive">{error.message}</p><Button type="button" className="mt-4" variant="outline" size="sm" onClick={() => setRetryKey((value) => value + 1)}>{labels?.retry ?? "Retry"}</Button></div>}</div> : null}
       </div>
 
-      {showSheetTabs ? (
-        <div data-slot="spreadsheet-sheet-tabs" className="flex min-h-10 items-center gap-1 overflow-x-auto border-t bg-muted/20 px-2">
-          {sheets.map((sheet) => (
-            <button key={sheet.id} type="button" onClick={() => actions.activateSheet(sheet.id)} className={cn("h-8 shrink-0 rounded-md px-3 text-xs font-medium transition", sheet.active ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:bg-background/70 hover:text-foreground")}>{sheet.name}</button>
-          ))}
-          {!readonly ? <Button type="button" variant="ghost" size="icon-sm" title={labels?.addSheet ?? "Add sheet"} onClick={() => actions.addSheet()}><PlusIcon className="size-4" /></Button> : null}
-          {!readonly && sheets.length > 1 ? <Button type="button" variant="ghost" size="icon-sm" title={labels?.deleteSheet ?? "Delete sheet"} onClick={() => actions.deleteActiveSheet()}><Trash2Icon className="size-4" /></Button> : null}
-        </div>
-      ) : null}
+      {showSheetTabs ? <div data-slot="spreadsheet-sheet-tabs" className="flex min-h-10 items-center gap-1 overflow-x-auto border-t bg-muted/20 px-2">
+        {sheets.map((sheet) => <button key={sheet.id} type="button" onClick={() => actions.activateSheet(sheet.id)} className={cn("h-8 shrink-0 rounded-md px-3 text-xs font-medium transition", sheet.active ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:bg-background/70 hover:text-foreground")}>{sheet.name}</button>)}
+        {!readonly ? <Button type="button" variant="ghost" size="icon-sm" title={labels?.addSheet ?? "Add sheet"} onClick={() => actions.addSheet()}><PlusIcon className="size-4" /></Button> : null}
+        {!readonly && sheets.length > 1 ? <Button type="button" variant="ghost" size="icon-sm" title={labels?.deleteSheet ?? "Delete sheet"} onClick={() => actions.deleteActiveSheet()}><Trash2Icon className="size-4" /></Button> : null}
+      </div> : null}
 
-      {showStatusBar ? (
-        <div data-slot="spreadsheet-status-bar" className={cn("flex min-h-8 flex-wrap items-center gap-x-4 gap-y-1 border-t bg-muted/30 px-3 py-1 text-[11px] text-muted-foreground", statusBarClassName)}>
-          <span>{activeSheet?.name ?? labels?.spreadsheet ?? "Spreadsheet"}</span>
-          {showSelectionSummary && selection ? <span>{labels?.selected ?? "Selected"}: <strong className="font-medium text-foreground">{selection.a1Notation}</strong> · {selection.rowCount} {labels?.rows ?? "rows"} × {selection.columnCount} {labels?.columns ?? "columns"} · {selection.rowCount * selection.columnCount} {labels?.cells ?? "cells"}</span> : null}
-          <span className="ml-auto">{Math.round(zoom * 100)}%</span>
-          {readonly ? <span>{labels?.readonly ?? "Read only"}</span> : dirty ? <span className="text-amber-600">Unsaved changes</span> : <span>Saved</span>}
-        </div>
-      ) : null}
+      {showStatusBar ? <div data-slot="spreadsheet-status-bar" className={cn("flex min-h-8 flex-wrap items-center gap-x-4 gap-y-1 border-t bg-muted/30 px-3 py-1 text-[11px] text-muted-foreground", statusBarClassName)}>
+        <span>{activeSheet?.name ?? labels?.spreadsheet ?? "Spreadsheet"}</span>
+        {showSelectionSummary && selection ? <span>{labels?.selected ?? "Selected"}: <strong className="font-medium text-foreground">{selection.a1Notation}</strong> · {selection.rowCount} {labels?.rows ?? "rows"} × {selection.columnCount} {labels?.columns ?? "columns"} · {selection.rowCount * selection.columnCount} {labels?.cells ?? "cells"}</span> : null}
+        <span className="ml-auto">{Math.round(zoom * 100)}%</span>
+        {readonly ? <span>{labels?.readonly ?? "Read only"}</span> : dirty ? <span className="text-amber-600">Unsaved changes</span> : <span>Saved</span>}
+      </div> : null}
     </div>
   )
 })
