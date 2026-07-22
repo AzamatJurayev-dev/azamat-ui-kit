@@ -25,7 +25,7 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "pdf-viewer",
     category,
-    description: "Canvas-based PDF viewer with paging, zoom, rotation, and download controls.",
+    description: "Production PDF.js workspace with lazy thumbnails, continuous rendering, search, password recovery, fit modes, print, download, fullscreen, and an imperative ref API.",
     dependencies: ["pdfjs-dist", "lucide-react"],
     registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/pdf-viewer.tsx", "{components}/integrations/pdf-viewer.tsx")],
@@ -33,8 +33,8 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "barcode-scanner",
     category,
-    description: "Camera-based barcode and QR scanner powered by ZXing.",
-    dependencies: ["@zxing/browser", "lucide-react"],
+    description: "Production ZXing camera and image scanner with format filtering, pause/resume, duplicate suppression, device switching, torch, history, feedback, and recovery states.",
+    dependencies: ["@zxing/browser", "@zxing/library", "lucide-react"],
     registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/barcode-scanner.tsx", "{components}/integrations/barcode-scanner.tsx")],
   },
@@ -97,7 +97,7 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "document-scanner",
     category,
-    description: "Camera document capture with OpenCV contour detection and perspective correction.",
+    description: "Production OpenCV camera and image scanning workflow with device switching, torch, live contour stability, auto-capture, processing presets, multi-page review, and recovery states.",
     dependencies: ["@techstark/opencv-js", "lucide-react"],
     registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/document-scanner.tsx", "{components}/integrations/document-scanner.tsx")],
