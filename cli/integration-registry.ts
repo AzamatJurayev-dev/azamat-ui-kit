@@ -33,8 +33,8 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "barcode-scanner",
     category,
-    description: "Camera-based barcode and QR scanner powered by ZXing.",
-    dependencies: ["@zxing/browser", "lucide-react"],
+    description: "Production ZXing camera and image scanner with format filtering, pause/resume, duplicate suppression, device switching, torch, history, feedback, and recovery states.",
+    dependencies: ["@zxing/browser", "@zxing/library", "lucide-react"],
     registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/barcode-scanner.tsx", "{components}/integrations/barcode-scanner.tsx")],
   },
