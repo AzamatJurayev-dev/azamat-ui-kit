@@ -33,7 +33,7 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "barcode-scanner",
     category,
-    description: "Production ZXing camera and image scanner with format filtering, pause/resume, duplicate suppression, device switching, torch, history, feedback, and recovery states.",
+    description: "Production ZXing barcode and QR workflow with format filters, device switching, torch, pause/resume, image decoding, duplicate suppression, history, feedback, and recovery states.",
     dependencies: ["@zxing/browser", "@zxing/library", "lucide-react"],
     registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/barcode-scanner.tsx", "{components}/integrations/barcode-scanner.tsx")],
@@ -49,9 +49,9 @@ const integrationRegistry: ComponentRegistryItem[] = [
   {
     name: "spreadsheet",
     category,
-    description: "Excel-like spreadsheet editor powered by Univer.",
+    description: "Production Univer workbook workspace with real cell/range/row/column selection, formulas, row and column operations, sheet management, CSV and snapshot I/O, save lifecycle, and an imperative API.",
     dependencies: ["@univerjs/presets", "@univerjs/preset-sheets-core", "lucide-react"],
-    registryDependencies: ["utils"],
+    registryDependencies: ["button", "utils"],
     files: [file("src/components/integrations/spreadsheet.tsx", "{components}/integrations/spreadsheet.tsx")],
   },
   {
