@@ -41,13 +41,14 @@ npx tembro add document-scanner
 Multiple integrations can be installed in one command:
 
 ```bash
-npx tembro add map pdf-viewer barcode-scanner
+npx tembro add map media-player pdf-viewer barcode-scanner
 ```
 
 ## Import examples
 
 ```tsx
 import { LocationPicker } from "@/components/integrations/map"
+import { VideoPlayer } from "@/components/integrations/media-player"
 import { PdfViewer } from "@/components/integrations/pdf-viewer"
 import { QrScanner } from "@/components/integrations/barcode-scanner"
 ```
@@ -61,6 +62,48 @@ import { QrScanner } from "@/components/integrations/barcode-scanner"
 ```
 
 ```tsx
+<VideoPlayer
+  src={[
+    { src: "/media/video-1080.mp4", type: "video/mp4", height: 1080 },
+    { src: "/media/video-720.mp4", type: "video/mp4", height: 720 },
+  ]}
+  title="Building production-ready UI"
+  poster="/media/poster.webp"
+  thumbnails="/media/thumbnails.vtt"
+  tracks={[
+    {
+      src: "/media/captions-en.vtt",
+      kind: "captions",
+      language: "en",
+      label: "English",
+      default: true,
+    },
+    {
+      src: "/media/chapters.vtt",
+      kind: "chapters",
+      language: "en",
+      label: "Chapters",
+    },
+  ]}
+  layoutProps={{
+    download: true,
+    colorScheme: "dark",
+  }}
+  overlay={
+    <div className="p-4 text-sm font-medium">
+      Internal training · 4 chapters
+    </div>
+  }
+/>
+```
+
+`VideoPlayer` and `AudioPlayer` forward the Vidstack `MediaPlayerInstance` ref. Use it for player methods, subscriptions, fullscreen, casting, remote playback, or other provider APIs.
+
+The default Vidstack layout can be configured through `layoutProps`, replaced through `layout`, or disabled with `layout={false}` when building custom controls. `providerChildren`, `beforeLayout`, `afterLayout`, and `overlay` provide composition points without adding another public component.
+
+Empty, loading, and playback-error UI is enabled by default and can be replaced through `stateContent`.
+
+```tsx
 <PdfViewer src="/documents/example.pdf" />
 ```
 
@@ -70,7 +113,7 @@ import { QrScanner } from "@/components/integrations/barcode-scanner"
 
 ## Browser requirements
 
-Camera-based components require a secure context (`https://` or localhost) and user permission. WebGL integrations depend on browser and GPU support. PDF, editor, spreadsheet, whiteboard, map, and 3D integrations should be lazy-loaded in applications where initial bundle size matters.
+Camera-based components require a secure context (`https://` or localhost) and user permission. WebGL integrations depend on browser and GPU support. PDF, editor, spreadsheet, whiteboard, map, media, and 3D integrations should be lazy-loaded in applications where initial bundle size matters.
 
 ## Distribution policy
 
