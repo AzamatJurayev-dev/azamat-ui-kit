@@ -12,9 +12,9 @@ import {
   DownloadIcon,
   FileJsonIcon,
   FileSpreadsheetIcon,
-  FreezeIcon,
   ItalicIcon,
   LoaderCircleIcon,
+  PinIcon,
   PlusIcon,
   Redo2Icon,
   Rows3Icon,
@@ -663,7 +663,7 @@ const Spreadsheet = React.forwardRef<SpreadsheetHandle, SpreadsheetProps>(functi
           <Button type="button" variant="ghost" size="sm" title={labels?.deleteRow ?? "Delete row"} disabled={readonly} onClick={() => actions.deleteRows()}><Rows3Icon className="size-4" />−</Button>
           <Button type="button" variant="ghost" size="sm" title={labels?.addColumn ?? "Insert column"} disabled={readonly} onClick={() => actions.insertColumns()}><Columns3Icon className="size-4" />+</Button>
           <Button type="button" variant="ghost" size="sm" title={labels?.deleteColumn ?? "Delete column"} disabled={readonly} onClick={() => actions.deleteColumns()}><Columns3Icon className="size-4" />−</Button>
-          <Button type="button" variant="ghost" size="icon-sm" title="Freeze first row" onClick={() => actions.freezeRows(1)}><FreezeIcon className="size-4" /></Button>
+          <Button type="button" variant="ghost" size="icon-sm" title="Freeze first row" onClick={() => actions.freezeRows(1)}><PinIcon className="size-4" /></Button>
           <span className="flex-1" />
           {showImportExport ? <>
             <input ref={fileInputRef} type="file" accept=".csv,text/csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden onChange={(event) => {
