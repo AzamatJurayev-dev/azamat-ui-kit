@@ -136,6 +136,39 @@ The upgraded contract includes:
 - video aspect ratio is configurable;
 - source-copy distribution remains unchanged.
 
+## PDF Viewer reference upgrade
+
+The PDF Viewer is the second reference implementation and establishes the standard for document workspaces.
+
+The upgraded contract includes:
+
+- `PdfViewer` remains the only public component;
+- `PdfViewerHandle` exposes navigation, zoom, fit, rotate, search, download, print, fullscreen, and document access;
+- URL, byte-array, `ArrayBuffer`, and full PDF.js `DocumentInitParameters` sources are accepted;
+- page, scale, rotation, view mode, fit mode, sidebar, search panel, and search query support controlled and uncontrolled usage;
+- single-page and continuous document modes share one state contract;
+- continuous pages and thumbnails render lazily through `IntersectionObserver`;
+- full-document search extracts text content and returns page, index, matched text, and surrounding context;
+- password callbacks support built-in and externally controlled credential flows;
+- byte loading progress, metadata, outline, page rendering, print, download, search, and error callbacks are available;
+- download and print work for URL and in-memory documents through `PDFDocumentProxy.getData()`;
+- fit-width, fit-page, custom zoom, rotation, fullscreen, and keyboard shortcuts are included;
+- toolbar, sidebar, overlay, labels, and empty/loading/password/error surfaces are replaceable;
+- PDF.js loading tasks, render tasks, object URLs, print frames, observers, and document changes are cleaned up;
+- source-copy distribution remains unchanged.
+
+The matching Azamat UI preview must demonstrate:
+
+- thumbnail navigation;
+- single and continuous modes;
+- page and zoom controls;
+- fit modes and rotation;
+- document search with match context;
+- password success and incorrect-password recovery;
+- loading progress;
+- retryable document error;
+- print, download, fullscreen, responsive toolbar, and keyboard help.
+
 ## Definition of done
 
 A component upgrade is complete only when:
