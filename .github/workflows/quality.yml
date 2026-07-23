@@ -1,0 +1,57 @@
+name: Quality
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run test:types
+
+      - name: Registry and package contracts
+        run: |
+          npm run test:registry
+          npm run test:root-exports
+          npm run check:api-schema
+          npm run check:fallback-coverage
+          npm run check:theme-contract
+          npm run check:package-contract
+
+      - name: Build library and CLI
+        run: npm run build:all
+
+      - name: Validate packaged CLI assets
+        run: npm run check:cli-vendor
+
+      - name: CLI integration smoke
+        run: |
+          npm run test:cli
+          npm run test:cli-contract
+
+      - name: Consumer fixtures
+        run: npm run test:fixtures
+
+      - name: Package dry run
+        run: npm run pack:dry-run
