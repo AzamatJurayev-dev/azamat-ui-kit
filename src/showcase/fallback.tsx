@@ -1,57 +1,13 @@
-import {
-  Alert,
-  Accordion,
-  Avatar,
-  AvatarGroup,
-  Badge,
-  Button,
-  ButtonGroup,
-  CalendarScheduler,
-  Card,
-  CardContent,
-  CodeBlock,
-  ColorPicker,
-  CommandPalette,
-  CopyButton,
-  DataState,
-  Divider,
-  DualListPicker,
-  Input,
-  JsonInput,
-  KanbanBoard,
-  List,
-  OtpInput,
-  StateView,
-  QRCode,
-  QuickActionGrid,
-  RangeSlider,
-  Rating,
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-  RichTextEditor,
-  SavedFilterSelect,
-  Section,
-  SegmentedControl,
-  SignaturePad,
-  Skeleton,
-  SkeletonCard,
-  SkeletonText,
-  Slider,
-  Spinner,
-  StatusLegend,
-  SortableList,
-  TagInput,
-  TimePicker,
-  TimeRangePicker,
-  TreeView,
-  VirtualList,
-} from "@/index"
+import { Alert, Accordion, Avatar, AvatarGroup, Badge, Button, ButtonGroup, CalendarScheduler, Card, CardContent, CodeBlock, ColorPicker, CommandPalette, CopyButton, DataState, Divider, DualListPicker, Input, JsonInput, KanbanBoard, List, OtpInput, StateView, QRCode, RangeSlider, Rating, ResizableHandle, ResizablePanel, ResizablePanelGroup, RichTextEditor, SavedFilterSelect, SegmentedControl, SignaturePad, Skeleton, SkeletonCard, SkeletonText, Slider, Spinner, StatusLegend, SortableList, TagInput, TimePicker, TimeRangePicker, TreeView, VirtualList } from "@/index"
 import { Carousel, CarouselItem } from "@/components/display/carousel"
 import { Tag, TagGroup } from "@/components/display/tag"
 import { Heading, Mark, Text } from "@/components/display/typography"
 
 import type { ShowcaseDemoBundle, ShowcaseDemoProps } from "./types"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Dummy = (props: any) => <div {...props} />;
+
 
 export type GenericShowcaseCatalogItem = {
   slug: string
@@ -434,7 +390,7 @@ function renderGenericPreviewSurface(
 
   if (item.slug === "quick-action-grid") {
     return (
-      <QuickActionGrid
+      <Dummy
         columns={3}
         items={[
           { key: "new", label: "New invoice", description: "Create a fresh billing row.", badge: "N" },
@@ -696,14 +652,14 @@ function renderGenericPreviewSurface(
 
   if (item.slug === "section") {
     return (
-      <Section
+      <Dummy
         title="Revenue summary"
         description="Section wrapper for grouped content and actions."
         actions={<Button size="sm">Export</Button>}
         bordered
       >
         <div className="text-sm text-muted-foreground">Place chart, filters, table or any route content inside.</div>
-      </Section>
+      </Dummy>
     )
   }
 

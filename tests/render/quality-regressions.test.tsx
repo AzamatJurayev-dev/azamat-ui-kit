@@ -3,31 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
-import {
-  CalendarScheduler,
-  DualListPicker,
-  EmptyState,
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-  JsonInput,
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuPositioner,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/index"
+import { CalendarScheduler, DualListPicker, EmptyState, HoverCard, HoverCardContent, HoverCardTrigger, JsonInput, Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger, NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuPositioner, NavigationMenuTrigger, NavigationMenuViewport, ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/index"
 
 describe("component quality regressions", () => {
   it("renders a useful scheduler empty state when no days are available", () => {

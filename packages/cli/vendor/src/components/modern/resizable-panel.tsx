@@ -92,20 +92,18 @@ function ResizablePanelGroup({ direction = "horizontal", className, children, ..
     [direction, minSizes, panelCount]
   )
 
+  let panelIndexCounter = 0
+  let handleIndexCounter = 0
+
   const processedChildren = React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return child
 
     if (child.type === ResizablePanel) {
-      const panelIndex = panelNodes.findIndex((node) => node === child)
-      return React.cloneElement(child as React.ReactElement<ResizablePanelInternalProps>, { "data-panel-index": panelIndex })
+      return React.cloneElement(child as React.ReactElement<ResizablePanelInternalProps>, { "data-panel-index": panelIndexCounter++ })
     }
 
     if (child.type === ResizableHandle) {
-      const handleIndex = React.Children.toArray(children)
-        .slice(0, React.Children.toArray(children).indexOf(child))
-        .filter((node) => React.isValidElement(node) && node.type === ResizablePanel).length - 1
-
-      return React.cloneElement(child as React.ReactElement<ResizableHandleProps>, { "data-handle-index": handleIndex })
+      return React.cloneElement(child as React.ReactElement<ResizableHandleProps>, { "data-handle-index": handleIndexCounter++ })
     }
 
     return child

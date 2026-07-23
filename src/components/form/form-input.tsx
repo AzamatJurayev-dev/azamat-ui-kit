@@ -10,7 +10,6 @@ import { DateInput, type DateInputProps } from "@/components/ui/input/date"
 import { Input, type InputClearableProps, type InputSearchProps, type InputTextProps } from "@/components/ui/input"
 import { MaskedInput, type MaskedInputProps } from "@/components/ui/input/masked"
 import { MoneyInput, type MoneyInputProps } from "@/components/ui/input/money"
-import { NumberInput, type NumberInputProps } from "@/components/ui/input/number"
 import {
   PhoneInput,
   formatPhoneDigits,
@@ -27,7 +26,6 @@ export type FormInputKind =
   | "text"
   | "search"
   | "password"
-  | "number"
   | "phone"
   | "date"
   | "date-range"
@@ -85,16 +83,6 @@ export type FormInputPasswordVariantProps<
   min?: never
   max?: never
 } & FormControlledFieldProps<TFieldValues, TName>
-
-export type FormInputNumberVariantProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = Omit<NumberInputProps, "name" | "value" | "defaultValue" | "onNumberChange"> &
-  FormControlledFieldProps<TFieldValues, TName> & {
-    kind: "number"
-    emptyValue?: unknown
-    onNumberChange?: (value: number | null) => void
-  }
 
 export type FormInputPhoneVariantProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -172,7 +160,6 @@ export type FormInputProps<
   | FormTextInputProps<TFieldValues, TName>
   | FormInputSearchVariantProps<TFieldValues, TName>
   | FormInputPasswordVariantProps<TFieldValues, TName>
-  | FormInputNumberVariantProps<TFieldValues, TName>
   | FormInputPhoneVariantProps<TFieldValues, TName>
   | FormInputDateVariantProps<TFieldValues, TName>
   | FormInputDateRangeVariantProps<TFieldValues, TName>
@@ -357,70 +344,6 @@ function FormInput<
                   onValueChange?.(nextValue)
                 }}
                 aria-invalid={fieldState.invalid || undefined}
-              />
-            </FormFieldShell>
-          )
-        }
-
-        if (kind === "number") {
-          const {
-            control: _control,
-            name: _name,
-            label: _label,
-            description: _description,
-            required: _required,
-            className: _className,
-            layout: _layout,
-            descriptionPosition: _descriptionPosition,
-            labelAction: _labelAction,
-            requiredIndicator: _requiredIndicator,
-            errorIcon: _errorIcon,
-            showErrorIcon: _showErrorIcon,
-            disabled,
-            readOnly: _readOnly,
-            labelClassName: _labelClassName,
-            labelRowClassName: _labelRowClassName,
-            descriptionClassName: _descriptionClassName,
-            errorClassName: _errorClassName,
-            contentClassName: _contentClassName,
-            fieldClassName,
-            id,
-            kind: _kind,
-            emptyValue = null,
-            onNumberChange,
-            onBlur,
-            ...numberProps
-          } = props as FormInputNumberVariantProps<TFieldValues, TName>
-
-          return (
-            <FormFieldShell
-              {...shellProps}
-              labelId={resolvedIds.labelId}
-              descriptionId={resolvedIds.descriptionId}
-              errorId={resolvedIds.errorId}
-              error={error}
-              htmlFor={id ?? inputId}
-            >
-              <NumberInput
-                {...numberProps}
-                id={id ?? inputId}
-                name={field.name}
-                ref={field.ref}
-                value={field.value ?? ""}
-                disabled={disabled}
-                readOnly={props.readOnly}
-                className={fieldClassName ?? resolvedFieldClassName}
-                aria-invalid={fieldState.invalid || undefined}
-                aria-describedby={resolvedIds.describedBy}
-                aria-errormessage={error ? resolvedIds.errorId : undefined}
-                onBlur={(event: React.FocusEvent<HTMLInputElement>) => {
-                  field.onBlur()
-                  onBlur?.(event)
-                }}
-                onNumberChange={(value: number | null) => {
-                  field.onChange(value ?? emptyValue)
-                  onNumberChange?.(value)
-                }}
               />
             </FormFieldShell>
           )

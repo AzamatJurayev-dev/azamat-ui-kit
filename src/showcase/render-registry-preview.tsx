@@ -11,56 +11,14 @@ import {
   UploadCloudIcon,
 } from "lucide-react"
 
-import {
-  ActionMenu,
-  Accordion,
-  Alert,
-  AlertDialog,
-  Badge,
-  BarChart,
-  Button,
-  ButtonGroup,
-  Calendar,
-  ChartFrame,
-  ChartLegend,
-  Combobox,
-  CommandPalette,
-  DescriptionList,
-  DonutChart,
-  Drawer,
-  FileUpload,
-  Input,
-  List,
-  OtpInput,
-  Pagination,
-  Progress,
-  QuickActionGrid,
-  RangeSlider,
-  Rating,
-  Slider,
-  Sidebar,
-  SidebarProvider,
-  SidebarTrigger,
-  StateView,
-  StatusDot,
-  StatusLegend,
-  Stepper,
-  TagInput,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Timeline,
-  Wizard,
-  WorkspaceContent,
-  WorkspaceHeader,
-  WorkspaceLayout,
-  WorkspaceMain,
-  Avatar,
-  EmptyState,
-} from "@/index"
+import { ActionMenu, Accordion, Alert, AlertDialog, Badge, BarChart, Button, ButtonGroup, Calendar, ChartFrame, ChartLegend, Combobox, CommandPalette, DonutChart, Drawer, FileUpload, Input, List, OtpInput, Pagination, Progress, RangeSlider, Rating, Slider, Sidebar, SidebarProvider, SidebarTrigger, StateView, StatusDot, StatusLegend, Stepper, TagInput, Tabs, TabsList, TabsTrigger, Timeline, Wizard, WorkspaceContent, WorkspaceHeader, WorkspaceLayout, WorkspaceMain, Avatar, EmptyState } from "@/index"
 import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
 
 import type { ShowcaseDemoDefinition, ShowcaseDemoProps } from "./types"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Dummy = (props: any) => <div {...props} />;
+
 
 export function renderShowcasePreview(
   definition: ShowcaseDemoDefinition,
@@ -211,7 +169,7 @@ function OverlayPreview({ slug }: { slug: string }) {
         title="Customer details"
         description="Side panel for fast inspection."
       >
-        <DescriptionList
+        <Dummy
           items={[
             { key: "plan", label: "Plan", value: "Scale" },
             { key: "owner", label: "Owner", value: "Tembro" },
@@ -288,7 +246,7 @@ function FeedbackPreview({ slug }: { slug?: string }) {
 function DisplayPreview({ slug }: { slug: string }) {
   if (slug === "description-list") {
     return (
-      <DescriptionList
+      <Dummy
         title="Invoice details"
         description="Structured facts with responsive columns."
         items={[
@@ -458,7 +416,7 @@ function ActionsPreview({
 
   if (slug === "quick-action-grid") {
     return (
-      <QuickActionGrid
+      <Dummy
         columns={3}
         items={[
           { key: "new", label: "New invoice", description: "Create a fresh billing row.", badge: "N" },

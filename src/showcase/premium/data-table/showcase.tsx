@@ -1,12 +1,7 @@
 import * as React from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 
-import {
-  Badge,
-  Button,
-  DataTable,
-  Select,
-} from "@/index"
+import { Badge, Button, DataTable, Select } from "@/index"
 import { createDataTableActionsColumn } from "@/components/data-table/data-table-actions-column"
 import { DataTableColumnVisibilityMenu } from "@/components/data-table/data-table-column-visibility-menu"
 import { DataTableSortableHeader } from "@/components/data-table/data-table-sortable-header"

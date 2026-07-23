@@ -2,16 +2,7 @@ import * as React from "react"
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import {
-  Breadcrumbs,
-  Sidebar,
-  SidebarProvider,
-  SidebarTrigger,
-  WorkspaceContent,
-  WorkspaceHeader,
-  WorkspaceLayout,
-  WorkspaceMain,
-} from "@/index"
+import { Breadcrumbs, Sidebar, SidebarProvider, SidebarTrigger, WorkspaceContent, WorkspaceHeader, WorkspaceLayout, WorkspaceMain } from "@/index"
 
 function mockMatchMedia(matches: boolean) {
   Object.defineProperty(window, "matchMedia", {

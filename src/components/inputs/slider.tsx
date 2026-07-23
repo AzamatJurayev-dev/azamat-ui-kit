@@ -16,9 +16,8 @@ function getProgressPercent(value: number, min: number, max: number) {
 
 function getSliderTrackStyle(value: number, min: number, max: number): CSSProperties {
   const progress = getProgressPercent(clampValue(value, min, max), min, max)
-
   return {
-    background: `linear-gradient(90deg, var(--aui-brand-strong) 0%, var(--aui-brand-strong) ${progress}%, var(--aui-control-bg) ${progress}%, var(--aui-control-bg) 100%)`,
+    background: `linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--primary)) ${progress}%, hsl(var(--muted)) ${progress}%, hsl(var(--muted)) 100%)`,
   }
 }
 
@@ -68,7 +67,7 @@ function Slider({
             {description && <div className="text-xs leading-5 text-muted-foreground">{description}</div>}
           </div>
           {showValue && (
-            <div className="inline-flex min-h-8 items-center rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] px-3 text-sm font-semibold text-foreground shadow-sm">
+            <div className="inline-flex min-h-8 items-center rounded-md border border-border bg-muted/50 px-3 text-sm font-medium text-foreground shadow-sm">
               {resolvedValue}
             </div>
           )}
@@ -83,7 +82,7 @@ function Slider({
         step={step}
         disabled={disabled}
         style={getSliderTrackStyle(currentValue, min, max)}
-        className="h-3 w-full cursor-pointer appearance-none rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)] outline-none transition hover:brightness-[1.02] focus-visible:ring-4 focus-visible:ring-[color:color-mix(in_oklch,var(--aui-brand-strong),transparent_78%)] disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[3px] [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-moz-range-thumb]:transition [&::-moz-range-track]:h-3 [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:h-3 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-105"
+        className="h-2 w-full cursor-pointer appearance-none rounded-full border-0 outline-none transition hover:brightness-[1.05] focus-visible:ring-4 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:transition [&::-moz-range-track]:h-2 [&::-moz-range-track]:rounded-full [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-thumb]:-mt-1.5 [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-110"
         onChange={(event) => updateValue(event.currentTarget.valueAsNumber)}
         {...props}
       />
@@ -148,21 +147,21 @@ function RangeSlider({
             {description && <div className="text-xs leading-5 text-muted-foreground">{description}</div>}
           </div>
           {showValue && (
-            <div className="inline-flex min-h-8 items-center rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] px-3 text-sm font-semibold text-foreground shadow-sm">
+            <div className="inline-flex min-h-8 items-center rounded-md border border-border bg-muted/50 px-3 text-sm font-medium text-foreground shadow-sm">
               {resolvedValue}
             </div>
           )}
         </div>
       )}
-      <div className="grid gap-3 rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:color-mix(in_srgb,var(--aui-control-bg)_82%,white_18%)] px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] dark:bg-[color:color-mix(in_srgb,var(--aui-control-bg)_90%,black_10%)]">
-        <div className="relative h-6">
-          <div className="absolute top-1/2 h-3 w-full -translate-y-1/2 rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-control-bg)] shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)]" />
+      <div className="grid gap-3 rounded-xl border border-border bg-background px-4 py-4 shadow-sm">
+        <div className="relative h-5">
+          <div className="absolute top-1/2 h-2 w-full -translate-y-1/2 rounded-full bg-muted" />
           <div
-            className="absolute top-1/2 h-3 -translate-y-1/2 rounded-full bg-[color:var(--aui-brand-strong)] shadow-[0_8px_24px_rgba(16,185,129,0.18)]"
+            className="absolute top-1/2 h-2 -translate-y-1/2 rounded-full bg-primary shadow-sm"
             style={getRangeFillStyle(currentValue, min, max)}
           />
         </div>
-        <div className="relative -mt-8 h-6">
+        <div className="relative -mt-7 h-5">
           <input
             type="range"
             value={currentValue[0]}
@@ -170,7 +169,7 @@ function RangeSlider({
             max={max}
             step={step}
             disabled={disabled}
-            className="pointer-events-none absolute inset-0 h-6 w-full cursor-pointer appearance-none bg-transparent outline-none focus-visible:ring-4 focus-visible:ring-[color:color-mix(in_oklch,var(--aui-brand-strong),transparent_78%)] disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[3px] [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-moz-range-track]:h-3 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-3 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-105"
+            className="pointer-events-none absolute inset-0 h-5 w-full cursor-pointer appearance-none bg-transparent outline-none focus-visible:ring-4 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:shadow-md [&::-moz-range-track]:h-2 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:-mt-1.5 [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-110"
             onChange={(event) => updateValue(0, event.currentTarget.valueAsNumber)}
             {...props}
           />
@@ -181,7 +180,7 @@ function RangeSlider({
             max={max}
             step={step}
             disabled={disabled}
-            className="pointer-events-none absolute inset-0 h-6 w-full cursor-pointer appearance-none bg-transparent outline-none focus-visible:ring-4 focus-visible:ring-[color:color-mix(in_oklch,var(--aui-brand-strong),transparent_78%)] disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-[3px] [&::-moz-range-thumb]:border-[color:var(--aui-page-bg)] [&::-moz-range-thumb]:bg-[color:var(--aui-brand-strong)] [&::-moz-range-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-moz-range-track]:h-3 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-3 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-[-5px] [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-[3px] [&::-webkit-slider-thumb]:border-[color:var(--aui-page-bg)] [&::-webkit-slider-thumb]:bg-[color:var(--aui-brand-strong)] [&::-webkit-slider-thumb]:shadow-[0_8px_24px_rgba(16,185,129,0.24)] [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-105"
+            className="pointer-events-none absolute inset-0 h-5 w-full cursor-pointer appearance-none bg-transparent outline-none focus-visible:ring-4 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:size-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-background [&::-moz-range-thumb]:bg-primary [&::-moz-range-thumb]:shadow-md [&::-moz-range-track]:h-2 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-transparent [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:-mt-1.5 [&::-webkit-slider-thumb]:size-5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-background [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:transition-transform hover:[&::-webkit-slider-thumb]:scale-110"
             onChange={(event) => updateValue(1, event.currentTarget.valueAsNumber)}
             {...props}
           />

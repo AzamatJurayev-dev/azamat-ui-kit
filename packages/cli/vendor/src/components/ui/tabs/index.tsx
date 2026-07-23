@@ -46,10 +46,10 @@ const TabsTrigger = React.forwardRef<
       data-slot="tabs-trigger"
       data-variant={variant}
       className={cn(
-        "inline-flex h-9 shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-md)] px-3 text-sm font-medium text-muted-foreground outline-none transition-[background-color,border-color,color,box-shadow] hover:bg-background/72 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-background data-[selected]:text-foreground data-[selected]:shadow-sm",
-        variant === "pills" && "rounded-full px-4 data-[selected]:bg-primary data-[selected]:text-primary-foreground",
-        variant === "underline" && "h-10 rounded-none border-b-2 border-transparent bg-transparent px-0 shadow-none hover:bg-transparent data-[selected]:border-primary data-[selected]:bg-transparent data-[selected]:shadow-none",
-        variant === "compact" && "h-8 rounded-[calc(var(--radius-md)-2px)] px-2.5 text-xs",
+        "inline-flex h-9 shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-md)] px-4 text-sm font-medium text-muted-foreground outline-none transition-all hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-background data-[selected]:text-foreground data-[selected]:shadow-md data-[selected]:ring-1 data-[selected]:ring-border/30",
+        variant === "pills" && "rounded-full px-5 data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[selected]:shadow-md data-[selected]:ring-0",
+        variant === "underline" && "h-10 rounded-none border-b-2 border-transparent bg-transparent px-2 shadow-none hover:bg-transparent data-[selected]:border-primary data-[selected]:bg-transparent data-[selected]:shadow-none data-[selected]:ring-0",
+        variant === "compact" && "h-8 rounded-[calc(var(--radius-md)-2px)] px-3 text-xs",
         className
       )}
     {...props}

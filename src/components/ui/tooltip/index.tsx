@@ -31,7 +31,7 @@ function Tooltip({
   sideOffset = 8,
   alignOffset = 0,
   collisionPadding = 8,
-  delay = 500,
+  delay = 200,
   closeDelay = 0,
   disabled = false,
   className,

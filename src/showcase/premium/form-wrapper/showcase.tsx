@@ -103,7 +103,7 @@ export function FormWrapperShowcase({ mode }: ComponentDemoProps) {
         />
 
         <FormInput control={form.control} name="ownerPhone" kind="phone" label="Owner phone" />
-        <FormInput control={form.control} name="budget" kind="number" label="Budget" min={0} max={999999} />
+        <FormInput control={form.control} name="budget" type="number" label="Budget" min={0} max={999999} />
         <FormTextarea control={form.control} name="notes" label="Notes" rows={3} />
       </div>
 

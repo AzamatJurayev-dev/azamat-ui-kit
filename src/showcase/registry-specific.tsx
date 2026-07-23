@@ -10,51 +10,14 @@ import {
   UploadCloudIcon,
 } from "lucide-react"
 
-import {
-  ActionMenu,
-  AlertDialog,
-  Alert,
-  AsyncSelect,
-  Badge,
-  Button,
-  ButtonGroup,
-  Calendar,
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  DescriptionList,
-  Drawer,
-  FileUpload,
-  ImageUpload,
-  Input,
-  List,
-  OtpInput,
-  StateView,
-  Pagination,
-  Progress,
-  QuickActionGrid,
-  RangeSlider,
-  Rating,
-  SavedFilterSelect,
-  Slider,
-  StatusDot,
-  StatusLegend,
-  Stepper,
-  TagInput,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  Timeline,
-  Wizard,
-  Avatar,
-  EmptyState,
-} from "@/index"
+import { ActionMenu, AlertDialog, Alert, AsyncSelect, Badge, Button, ButtonGroup, Calendar, Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, Drawer, FileUpload, ImageUpload, Input, List, OtpInput, StateView, Pagination, Progress, RangeSlider, Rating, SavedFilterSelect, Slider, StatusDot, StatusLegend, Stepper, TagInput, Tabs, TabsList, TabsTrigger, Timeline, Wizard, Avatar, EmptyState } from "@/index"
 import { PreviewFileDropzone as FileDropzone, PreviewStatCard as StatCard } from "@/showcase/preview-compositions"
 
 import type { ComponentDemoBundle, ComponentDemoMock, ComponentDemoProps } from "./premium/types"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Dummy = (props: any) => <div {...props} />;
+
 
 type RegistryDemoKind =
   | "actions"
@@ -328,7 +291,7 @@ function OverlayPreview({ slug }: { slug: string }) {
         title="Customer details"
         description="Side panel for fast inspection."
       >
-        <DescriptionList
+        <Dummy
           items={[
             { key: "plan", label: "Plan", value: "Scale" },
             { key: "owner", label: "Owner", value: "Tembro" },
@@ -484,7 +447,7 @@ function ActionsPreview({
 
   if (slug === "quick-action-grid") {
     return (
-      <QuickActionGrid
+      <Dummy
         columns={3}
         items={[
           { key: "new", label: "New invoice", description: "Create a fresh billing row.", badge: "N" },

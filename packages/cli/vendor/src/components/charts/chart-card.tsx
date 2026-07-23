@@ -71,7 +71,7 @@ function ChartCard({
         ) : type === "donut" ? (
           <DonutChart data={data} state={state} />
         ) : (
-          <BarChart data={data} series={series} state={state} />
+          <BarChart data={data} series={series} labels={labels} state={state} />
         )}
       </CardContent>
     </Card>

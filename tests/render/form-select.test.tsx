@@ -4,11 +4,7 @@ import userEvent from "@testing-library/user-event"
 import { useForm, useWatch } from "react-hook-form"
 import { describe, expect, it } from "vitest"
 
-import {
-  FormSelect,
-  type AsyncSelectOption,
-  type SelectOption,
-} from "@/index"
+import { FormSelect, type AsyncSelectOption, type SelectOption } from "@/index"
 
 const roleOptions: SelectOption[] = [
   { value: "admin", label: "Admin" },

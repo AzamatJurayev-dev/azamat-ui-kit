@@ -158,7 +158,7 @@ export function InputShowcase({ state, setState }: ComponentDemoProps) {
 
           <label className="grid gap-2 text-sm font-medium aui-text-strong">
             Numeric threshold
-            <Input kind="number" defaultValue={24} min={0} max={100} step={1} />
+            <Input type="number" defaultValue={24} min={0} max={100} step={1} />
             <span className="text-xs font-normal aui-text-muted">Native limits with normalized numeric callbacks.</span>
           </label>
 

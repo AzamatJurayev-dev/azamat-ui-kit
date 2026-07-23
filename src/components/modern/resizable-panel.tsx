@@ -41,7 +41,7 @@ function normalizeSizeValue(value: number | string | undefined) {
 
 function ResizablePanelGroup({ direction = "horizontal", className, children, ...props }: ResizablePanelGroupProps) {
   const groupRef = React.useRef<HTMLDivElement>(null)
-  const panelNodes = React.Children.toArray(children).filter((child) => React.isValidElement(child) && child.type === ResizablePanel)
+  const panelNodes = React.Children.toArray(children).filter((child) => React.isValidElement(child) && (child.type === ResizablePanel || (child as React.ReactElement<any>).props["data-slot"] === "resizable-panel" || (child.type && (child.type as any).name === "ResizablePanel")))
   const panelCount = panelNodes.length
   const initialSizes = React.useMemo(() => {
     const declaredSizes = panelNodes.map((child) => normalizeSizeValue((child as React.ReactElement<ResizablePanelProps>).props.defaultSize))
@@ -92,20 +92,18 @@ function ResizablePanelGroup({ direction = "horizontal", className, children, ..
     [direction, minSizes, panelCount]
   )
 
+  let panelIndexCounter = 0
+  let handleIndexCounter = 0
+
   const processedChildren = React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return child
 
-    if (child.type === ResizablePanel) {
-      const panelIndex = panelNodes.findIndex((node) => node === child)
-      return React.cloneElement(child as React.ReactElement<ResizablePanelInternalProps>, { "data-panel-index": panelIndex })
+    if (child.type === ResizablePanel || (child as React.ReactElement<any>).props["data-slot"] === "resizable-panel" || (child.type && (child.type as any).name === "ResizablePanel")) {
+      return React.cloneElement(child as React.ReactElement<ResizablePanelInternalProps>, { "data-panel-index": panelIndexCounter++ })
     }
 
-    if (child.type === ResizableHandle) {
-      const handleIndex = React.Children.toArray(children)
-        .slice(0, React.Children.toArray(children).indexOf(child))
-        .filter((node) => React.isValidElement(node) && node.type === ResizablePanel).length - 1
-
-      return React.cloneElement(child as React.ReactElement<ResizableHandleProps>, { "data-handle-index": handleIndex })
+    if (child.type === ResizableHandle || (child as React.ReactElement<any>).props["data-slot"] === "resizable-handle" || (child.type && (child.type as any).name === "ResizableHandle")) {
+      return React.cloneElement(child as React.ReactElement<ResizableHandleProps>, { "data-handle-index": handleIndexCounter++ })
     }
 
     return child

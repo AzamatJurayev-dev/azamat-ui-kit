@@ -1076,22 +1076,7 @@ const baseComponentCatalog: ComponentCatalogItem[] = [
     ],
     features: ["Empty/search-empty states", "Error retry", "Plain table fallback", "Inline state rows"],
   },
-  {
-    slug: "scroll-box",
-    title: "Scroll Box",
-    description: "Scoped scrolling surface for dense lists, side panels, and bounded data regions.",
-    icon: PanelTopIcon,
-    category: "Data Display",
-    status: "Stable",
-    installCommand: PACKAGE_INSTALL_COMMAND,
-    propsRows: [
-      ["maxHeight", "string | number", "-", "Maximum rendered height before scroll starts."],
-      ["axis", "'y' | 'x' | 'both'", "'y'", "Allowed scroll direction."],
-      ["children", "ReactNode", "-", "Scrollable content."],
-      ["className", "string", "-", "Container classes."],
-    ],
-    features: ["Bounded scroll", "Axis control", "Dense lists", "Panel content"],
-  },
+  
   {
     slug: "toast",
     title: "Toast",

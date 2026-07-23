@@ -51,7 +51,7 @@ function ChartCard({
         <div className="grid gap-1">
           {title ? <CardTitle>{title}</CardTitle> : null}
           {description ? <CardDescription>{description}</CardDescription> : null}
-          {metric ? <div className="text-2xl font-semibold tracking-tight">{metric}</div> : null}
+          {metric ? <div className="text-3xl font-bold tracking-tight mt-2">{metric}</div> : null}
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {badge ?? <Badge label={type} variant="secondary" />}
@@ -71,7 +71,7 @@ function ChartCard({
         ) : type === "donut" ? (
           <DonutChart data={data} state={state} />
         ) : (
-          <BarChart data={data} series={series} state={state} />
+          <BarChart data={data} series={series} labels={labels} state={state} />
         )}
       </CardContent>
     </Card>

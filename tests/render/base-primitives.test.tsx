@@ -3,32 +3,7 @@ import { render, screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it, vi } from "vitest"
 
-import {
-  Badge,
-  ButtonGroup,
-  Button,
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Checkbox,
-  CollapseContent,
-  CollapseGroup,
-  CollapseTrigger,
-  Collapse,
-  Input,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  Textarea,
-  Switch,
-  RadioGroup,
-  Tag,
-} from "@/index"
+import { Badge, ButtonGroup, Button, Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Checkbox, CollapseContent, CollapseGroup, CollapseTrigger, Collapse, Input, Tabs, TabsContent, TabsList, TabsTrigger, Textarea, Switch, RadioGroup, Tag } from "@/index"
 
 describe("base primitives", () => {
   it("supports compact composed metric cards with base primitives", () => {

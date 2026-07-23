@@ -6,7 +6,6 @@ import { FileIcon, FolderIcon, MoreHorizontalIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ScrollBox } from "@/components/ui/scroll-box"
 import { cn } from "@/lib/utils"
 
 export type FileManagerItem = {
@@ -48,7 +47,7 @@ function FileManager({ items, selectedId, onSelect, onOpen, searchValue, onSearc
         />
         {actions}
       </div>
-      <ScrollBox className="max-h-[420px]">
+      <div className="overflow-y-auto max-h-[420px]">
         <div className="grid gap-1">
           {filteredItems.map((item) => (
             <button
@@ -71,7 +70,7 @@ function FileManager({ items, selectedId, onSelect, onOpen, searchValue, onSearc
             </button>
           ))}
         </div>
-      </ScrollBox>
+      </div>
     </div>
   )
 }

@@ -71,22 +71,22 @@ function TagInput({
     <div data-slot="tag-input" className={cn("grid gap-2", className)} {...props}>
       <div
         className={cn(
-          "flex min-h-12 flex-wrap items-center gap-2 rounded-2xl border border-[color:var(--aui-surface-border)] bg-[color:color-mix(in_srgb,var(--aui-control-bg)_78%,white_22%)] px-3 py-2.5 shadow-sm transition focus-within:border-[color:var(--aui-brand-strong)] focus-within:ring-4 focus-within:ring-[color:color-mix(in_srgb,var(--aui-brand-strong)_14%,transparent)] dark:bg-[color:color-mix(in_srgb,var(--aui-control-bg)_90%,black_10%)]",
-          disabled && "opacity-60",
-          readOnly && "bg-muted/30"
+          "flex min-h-10 w-full flex-wrap items-center gap-1.5 rounded-xl border border-border bg-background px-3 py-2 text-sm shadow-sm transition-colors focus-within:border-primary/50 focus-within:ring-[3px] focus-within:ring-primary/20",
+          disabled && "opacity-50 cursor-not-allowed",
+          readOnly && "bg-muted/50"
         )}
       >
         {tags.map((tag) => (
           <Badge
             key={tag}
             variant="secondary"
-            className="h-8 gap-1.5 rounded-full border border-[color:var(--aui-surface-border)] bg-[color:var(--aui-page-bg)] px-3 pr-1.5 text-[13px] font-medium leading-none shadow-sm"
+            className="flex h-7 items-center gap-1.5 rounded-md border border-border bg-muted/60 px-2.5 pr-1.5 text-xs font-medium hover:bg-muted/80 transition-colors"
           >
             <span className="leading-none">{tag}</span>
             {!readOnly && !disabled && (
               <button
                 type="button"
-                className="inline-flex size-5 shrink-0 items-center justify-center rounded-full p-0 leading-none text-muted-foreground transition hover:bg-[color:var(--aui-control-bg)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+                className="inline-flex size-4 shrink-0 items-center justify-center rounded-sm text-muted-foreground/70 transition-colors hover:bg-muted-foreground/20 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 aria-label={`Remove ${tag}`}
                 onClick={(event) => {
                   stopInteractivePropagation(event)
@@ -105,7 +105,7 @@ function TagInput({
             value={inputValue}
             disabled={disabled || atLimit}
             placeholder={placeholder}
-            className="h-8 min-w-32 flex-1 border-0 bg-transparent px-1 text-sm shadow-none placeholder:text-[color:var(--aui-text-muted)] focus-visible:ring-0"
+            className="h-7 min-w-[100px] flex-1 border-0 bg-transparent px-1 p-0 text-sm shadow-none placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:outline-none"
             onChange={(event) => setInputValue(event.target.value)}
             onBlur={() => addTag(inputValue)}
             onKeyDown={(event) => {

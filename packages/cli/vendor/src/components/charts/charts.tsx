@@ -145,6 +145,7 @@ function ChartFrame({ title, description, action, state = "ready", emptyLabel = 
 export type BarChartProps = React.ComponentProps<"div"> & {
   data?: ChartDatum[]
   series?: ChartSeries[]
+  labels?: ChartAxisLabel[]
   size?: ChartSize
   max?: number
   showLabels?: boolean
@@ -162,13 +163,13 @@ export type BarChartProps = React.ComponentProps<"div"> & {
   barRadius?: number
 }
 
-function BarChart({ data = [], series, size = "md", max, showLabels = true, showValues = false, showGrid = true, showTooltip = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", barClassName, domain, ariaLabel = "Bar chart", stacked = false, showLegend = Boolean(series?.length), barRadius = 6, className, ...props }: BarChartProps) {
+function BarChart({ data = [], series, labels: customLabels, size = "md", max, showLabels = true, showValues = false, showGrid = true, showTooltip = true, valueFormatter, state = "ready", emptyLabel = "No chart data.", barClassName, domain, ariaLabel = "Bar chart", stacked = false, showLegend = Boolean(series?.length), barRadius = 6, className, ...props }: BarChartProps) {
   const height = chartHeightBySize[size]
   const activeSeries = series?.length ? series : [{ key: "value", label: "Value", data: data.map((item) => item.value) }]
   const itemCount = Math.max(data.length, ...activeSeries.map((item) => item.data.length))
   const status = state === "ready" && itemCount === 0 ? "empty" : state
   if (status !== "ready") return <ChartStatus state={status} emptyLabel={emptyLabel} height={height} />
-  const labels = Array.from({ length: itemCount }, (_, index) => data[index]?.label ?? `Item ${index + 1}`)
+  const labels = Array.from({ length: itemCount }, (_, index) => customLabels?.[index] ?? data[index]?.label ?? `Item ${index + 1}`)
   const chartData = labels.map((label, index) => Object.fromEntries([
     ["name", toText(label, `Item ${index + 1}`)],
     ["originalLabel", label],

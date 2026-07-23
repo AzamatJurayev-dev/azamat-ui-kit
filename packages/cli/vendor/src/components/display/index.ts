@@ -1,4 +1,3 @@
-export * from "./description-list"
 export * from "./activity-feed"
 export * from "./avatar"
 export * from "./kanban"

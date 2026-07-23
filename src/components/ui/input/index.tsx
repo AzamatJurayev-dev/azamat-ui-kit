@@ -17,7 +17,6 @@ import { DateRangeInput, type DateRangeInputProps } from "./date-range"
 import { InputDecorator } from "./decorator"
 import { MaskedInput, type MaskedInputProps } from "./masked"
 import { MoneyInput, type MoneyInputProps } from "./money"
-import { NumberInput, type NumberInputProps } from "./number"
 import { PasswordInput, type PasswordInputProps } from "./password"
 import { PhoneInput, type PhoneInputProps } from "./phone"
 import { QuantityInput, type QuantityInputProps } from "./quantity"
@@ -29,7 +28,6 @@ export type InputKind =
   | "clearable"
   | "search"
   | "password"
-  | "number"
   | "phone"
   | "money"
   | "quantity"
@@ -81,10 +79,6 @@ export type InputPasswordProps = Omit<PasswordInputProps, "kind"> & {
   kind: "password"
 }
 
-export type InputNumberProps = Omit<NumberInputProps, "kind"> & {
-  kind: "number"
-}
-
 export type InputPhoneProps = Omit<PhoneInputProps, "kind"> & {
   kind: "phone"
 }
@@ -116,7 +110,6 @@ export type InputProps =
   | InputClearableProps
   | InputSearchProps
   | InputPasswordProps
-  | InputNumberProps
   | InputPhoneProps
   | InputMoneyProps
   | InputQuantityProps
@@ -164,15 +157,6 @@ const Input = React.forwardRef<HTMLInputElement | HTMLDivElement, InputProps>((p
       <PasswordInput
         ref={ref as React.ForwardedRef<HTMLInputElement>}
         {...(props as Omit<PasswordInputProps, "kind">)}
-      />
-    )
-  }
-
-  if (kind === "number") {
-    return (
-      <NumberInput
-        ref={ref as React.ForwardedRef<HTMLInputElement>}
-        {...(props as Omit<NumberInputProps, "kind">)}
       />
     )
   }

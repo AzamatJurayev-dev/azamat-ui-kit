@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 6.3.0 - 2026-07-23
+
+### Changed
+- Improved UI/UX for `Menubar`: refined borders, subtle backdrop blur, and smoother transitions.
+- Improved UI/UX for `Tabs`: made active state more prominent with bold text and contrast background.
+- Improved UI/UX for `Slider`: enhanced the track visibility and added hover scaling to the thumb.
+- Improved UI/UX for `Tag`: rounded corners and enhanced hover effects for a cleaner look.
+- Fixed `ResizablePanel` resize interactions failing due to React proxy component wrappers during hot-reload.
+- Fixed `ChartCard` to properly display metric data and fallback charts.
+- Fixed `Tooltip` text display rendering issue that prevented content from rendering.
+
+### Removed
+- Fully removed `Section`, `Scroll Box`, `Quick Action Grid`, `Number Input`, `Description List`, `Data Grid`, and `Advanced Command Menu` from the registry and component catalog to reduce bloat.
+
 ## 6.1.0 - 2026-07-18
 
 ### Added

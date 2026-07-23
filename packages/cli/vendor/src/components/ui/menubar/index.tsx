@@ -23,13 +23,13 @@ export type MenubarLabelProps = React.ComponentProps<"div"> & { inset?: boolean 
 export type MenubarShortcutProps = React.ComponentProps<"span">
 
 const itemClassName =
-  "relative flex min-h-8 cursor-default select-none items-center gap-2 rounded-[var(--radius-md)] px-2.5 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset=true]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus-visible:bg-destructive/10 data-[variant=destructive]:hover:bg-destructive/10"
+  "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset=true]:pl-8 data-[variant=destructive]:text-destructive data-[variant=destructive]:data-[highlighted]:bg-destructive/10"
 
 function Menubar({ className, ...props }: MenubarProps) {
   return (
     <MenubarPrimitive
       data-slot="menubar"
-      className={cn("flex h-10 items-center gap-1 rounded-[var(--radius-lg)] border border-border bg-card p-1 text-card-foreground shadow-sm", className)}
+      className={cn("flex h-10 items-center space-x-1 rounded-md border bg-background p-1 shadow-sm", className)}
       {...props}
     />
   )
@@ -43,7 +43,7 @@ function MenubarTrigger({ className, ...props }: MenubarTriggerProps) {
   return (
     <MenuPrimitive.Trigger
       data-slot="menubar-trigger"
-      className={cn("inline-flex h-8 items-center justify-center rounded-[var(--radius-md)] px-3 text-sm font-medium outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground data-[popup-open]:bg-accent data-[popup-open]:text-accent-foreground disabled:pointer-events-none disabled:opacity-50", className)}
+      className={cn("flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground data-[popup-open]:bg-accent data-[popup-open]:text-accent-foreground data-[open]:bg-accent data-[open]:text-accent-foreground", className)}
       {...props}
     />
   )
@@ -55,7 +55,7 @@ function MenubarContent({ className, align = "start", alignOffset = 0, side = "b
       <MenuPrimitive.Positioner align={align} alignOffset={alignOffset} side={side} sideOffset={sideOffset} className="isolate z-50 outline-none">
         <MenuPrimitive.Popup
           data-slot="menubar-content"
-          className={cn("z-50 min-w-48 origin-(--transform-origin) overflow-hidden rounded-[var(--radius-lg)] border border-border bg-popover p-1 text-popover-foreground shadow-lg outline-none duration-100 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95", className)}
+          className={cn("z-50 min-w-[12rem] origin-(--transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95", className)}
           {...props}
         />
       </MenuPrimitive.Positioner>

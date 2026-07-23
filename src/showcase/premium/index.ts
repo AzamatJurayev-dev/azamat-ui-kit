@@ -30,7 +30,6 @@ import { dataStateMock, DataStateShowcase } from "./data-state"
 import { dataTableMock, DataTableShowcase } from "./data-table"
 import { DatePickerShowcase, datePickerMock } from "./date-picker"
 import { DateRangePickerShowcase, dateRangePickerMock } from "./date-range-picker"
-import { DescriptionListShowcase, descriptionListMock } from "./description-list"
 import { dialogMock, DialogShowcase } from "./dialog"
 import { dropdownMenuMock, DropdownMenuShowcase } from "./dropdown-menu"
 import { DrawerShowcase, drawerMock } from "./drawer"
@@ -45,7 +44,6 @@ import { timePickerMock, TimePickerShowcase } from "./time-picker"
 import { resizablePanelMock, ResizablePanelShowcase } from "./resizable-panel"
 import { NotificationCenterShowcase, notificationCenterMock } from "./notification-center"
 import { OtpInputShowcase, otpInputMock } from "./otp-input"
-import { sectionMock, SectionShowcase } from "./section"
 import { paginationMock, PaginationShowcase } from "./pagination"
 import { popoverMock, PopoverShowcase } from "./popover"
 import { ProgressShowcase, progressMock } from "./progress"
@@ -53,7 +51,6 @@ import { qrCodeMock, QRCodeShowcase } from "./qr-code"
 import { radioGroupMock, RadioGroupShowcase } from "./radio-group"
 import { rightClickMenuMock, RightClickMenuShowcase } from "./right-click-menu"
 import { richTextEditorMock, RichTextEditorShowcase } from "./rich-text-editor"
-import { scrollBoxMock, ScrollBoxShowcase } from "./scroll-box"
 import { savedFilterSelectMock, SavedFilterSelectShowcase } from "./saved-filter-select"
 import { sortableListMock, SortableListShowcase } from "./sortable-list"
 import { signaturePadMock, SignaturePadShowcase } from "./signature-pad"
@@ -107,7 +104,6 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   avatar: { mock: avatarMock, Showcase: AvatarShowcase },
   "date-picker": { mock: datePickerMock, Showcase: DatePickerShowcase },
   "date-range-picker": { mock: dateRangePickerMock, Showcase: DateRangePickerShowcase },
-  "description-list": { mock: descriptionListMock, Showcase: DescriptionListShowcase },
   drawer: { mock: drawerMock, Showcase: DrawerShowcase },
   "json-input": { mock: jsonInputMock, Showcase: JsonInputShowcase },
   kanban: { mock: kanbanBoardMock, Showcase: KanbanBoardShowcase },
@@ -162,13 +158,11 @@ export const premiumShowcaseDemoRegistry: Record<string, ComponentDemoBundle> = 
   progress: { mock: progressMock, Showcase: ProgressShowcase },
   "progress-circle": { mock: progressMock, Showcase: ProgressShowcase },
   "resizable-panel": { mock: resizablePanelMock, Showcase: ResizablePanelShowcase },
-  section: { mock: sectionMock, Showcase: SectionShowcase },
   tag: { mock: tagMock, Showcase: TagShowcase },
   typography: { mock: typographyMock, Showcase: TypographyShowcase },
   "tree-view": { mock: treeViewMock, Showcase: TreeViewShowcase },
   "file-upload": { mock: fileUploadMock, Showcase: FileUploadShowcase },
   "image-upload": { mock: imageUploadMock, Showcase: ImageUploadShowcase },
-  "scroll-box": { mock: scrollBoxMock, Showcase: ScrollBoxShowcase },
   timeline: { mock: timelineMock, Showcase: TimelineShowcase },
   toast: { mock: toastMock, Showcase: ToastShowcase },
   "virtual-list": { mock: virtualListMock, Showcase: VirtualListShowcase },

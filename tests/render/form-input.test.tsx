@@ -36,7 +36,7 @@ function NumberHarness() {
 
   return (
     <>
-      <FormInput control={control} name="count" kind="number" label="Count" />
+      <FormInput control={control} name="count" type="number" label="Count" />
       <output data-testid="count-value">{String(count)}</output>
     </>
   )
