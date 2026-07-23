@@ -13,7 +13,7 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -50,8 +50,11 @@ jobs:
           npm run test:cli
           npm run test:cli-contract
 
-      - name: Consumer fixtures
+      - name: Generated consumer fixture smoke
         run: npm run test:fixtures
+
+      - name: Persistent Vite and Next.js consumer builds
+        run: node scripts/test-persistent-fixtures.mjs
 
       - name: Package dry run
         run: npm run pack:dry-run
