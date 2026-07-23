@@ -3,10 +3,12 @@ import "./integration-registry"
 import { Command } from "commander"
 import { initCommand } from "./commands/init"
 import { addCommand } from "./commands/add"
+import { agentsCommand } from "./commands/agents"
 import { listCommand } from "./commands/list"
 import { doctorCommand } from "./commands/doctor"
 import { themeCommand } from "./commands/theme"
 import { presetCommand } from "./commands/preset"
+import { getCliCommandManifest } from "./command-manifest"
 
 const program = new Command()
 
@@ -15,60 +17,29 @@ program
   .description("Tembro source-copy CLI")
   .version("6.3.0")
 
-program
-  .command("init")
-  .description("Initialize local Tembro source files in your project")
-  .option("--template <template>", "Project defaults: vite or next")
-  .option("--skip-install", "Do not install base dependencies")
-  .option("--showcase", "Add every component and write a local Tembro workbench")
-  .option("-y, --defaults", "Use template defaults without interactive prompts")
-  .action(initCommand)
+function commandFromManifest(name: string) {
+  const manifest = getCliCommandManifest(name)
+  if (!manifest) throw new Error(`CLI command manifest missing: ${name}`)
 
-program
-  .command("preset")
-  .description("Add a source-copy preset to your project")
-  .argument("<name>", "preset name: minimal or dashboard")
-  .option("-o, --overwrite", "overwrite existing files")
-  .option("--dry-run", "show files without writing")
-  .option("--skip-install", "do not install package dependencies")
-  .action(presetCommand)
+  const command = program.command(name).description(manifest.description)
+  if (manifest.argument) command.argument(manifest.argument.syntax, manifest.argument.description)
+  for (const option of manifest.options) command.option(option.flags, option.description)
+  return command
+}
 
-program
-  .command("list")
-  .description("List available registry components")
-  .option("--category <category>", "Filter by registry category")
-  .option("--status <status>", "Filter by status: stable, preview, experimental, internal")
-  .option("--json", "Print machine-readable JSON")
-  .action(listCommand)
+commandFromManifest("init").action(async (options) => {
+  await initCommand(options)
+  if (!options.skipAgents) {
+    await agentsCommand({ overwrite: options.overwriteAgents })
+  }
+})
 
-program
-  .command("doctor")
-  .description("Check local project setup for Tembro source-copy usage")
-  .option("--json", "Print machine-readable JSON")
-  .action(doctorCommand)
-
-program
-  .command("add")
-  .description("Copy component source files into your project")
-  .argument("[components...]", "components to add")
-  .option("-o, --overwrite", "overwrite existing files")
-  .option("--dry-run", "show files without writing")
-  .option("--plan", "print machine-readable copy plan without writing")
-  .option("--skip-install", "do not install package dependencies")
-  .action(addCommand)
-
-program
-  .command("showcase")
-  .description("Add every component and write a local Tembro workbench")
-  .option("-o, --overwrite", "overwrite existing files")
-  .option("--dry-run", "show files without writing")
-  .option("--skip-install", "do not install package dependencies")
-  .action((options) => addCommand(["showcase"], options))
-
-program
-  .command("theme")
-  .description("Write or update Tembro theme CSS in your global CSS file")
-  .argument("[cssPath]", "global CSS path, default from tembro.json or src/index.css")
-  .action(themeCommand)
+commandFromManifest("preset").action(presetCommand)
+commandFromManifest("list").action(listCommand)
+commandFromManifest("doctor").action(doctorCommand)
+commandFromManifest("add").action(addCommand)
+commandFromManifest("agents").action(agentsCommand)
+commandFromManifest("showcase").action((options) => addCommand(["showcase"], options))
+commandFromManifest("theme").action(themeCommand)
 
 program.parse()
