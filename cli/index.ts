@@ -2,6 +2,7 @@ import "./integration-registry"
 
 import { Command } from "commander"
 import { initCommand } from "./commands/init"
+import { agentsCommand } from "./commands/agents"
 import { addCommand } from "./commands/add"
 import { listCommand } from "./commands/list"
 import { doctorCommand } from "./commands/doctor"
@@ -21,8 +22,22 @@ program
   .option("--template <template>", "Project defaults: vite or next")
   .option("--skip-install", "Do not install base dependencies")
   .option("--showcase", "Add every component and write a local Tembro workbench")
+  .option("--skip-agents", "Do not generate AGENTS.md and AI skill playbooks")
+  .option("--overwrite-agents", "Overwrite existing generated agent files")
   .option("-y, --defaults", "Use template defaults without interactive prompts")
-  .action(initCommand)
+  .action(async (options) => {
+    await initCommand(options)
+    if (!options.skipAgents) {
+      await agentsCommand({ overwrite: options.overwriteAgents })
+    }
+  })
+
+program
+  .command("agents")
+  .description("Write or refresh AGENTS.md and .agents/skills playbooks")
+  .option("-o, --overwrite", "overwrite existing agent files")
+  .option("--dry-run", "show the agent files that would be written")
+  .action(agentsCommand)
 
 program
   .command("preset")
