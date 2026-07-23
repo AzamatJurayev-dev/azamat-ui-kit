@@ -9,6 +9,7 @@ import { doctorCommand } from "./commands/doctor"
 import { themeCommand } from "./commands/theme"
 import { presetCommand } from "./commands/preset"
 import { getCliCommandManifest } from "./command-manifest"
+import { doctorAgentSetup } from "./utils/doctor-agent-setup"
 
 const program = new Command()
 
@@ -36,7 +37,10 @@ commandFromManifest("init").action(async (options) => {
 
 commandFromManifest("preset").action(presetCommand)
 commandFromManifest("list").action(listCommand)
-commandFromManifest("doctor").action(doctorCommand)
+commandFromManifest("doctor").action((options) => {
+  doctorCommand(options)
+  if (!options.json) doctorAgentSetup()
+})
 commandFromManifest("add").action(addCommand)
 commandFromManifest("agents").action(agentsCommand)
 commandFromManifest("showcase").action((options) => addCommand(["showcase"], options))
