@@ -41,7 +41,7 @@ function normalizeSizeValue(value: number | string | undefined) {
 
 function ResizablePanelGroup({ direction = "horizontal", className, children, ...props }: ResizablePanelGroupProps) {
   const groupRef = React.useRef<HTMLDivElement>(null)
-  const panelNodes = React.Children.toArray(children).filter((child) => React.isValidElement(child) && (child.type === ResizablePanel || (child as React.ReactElement<any>).props["data-slot"] === "resizable-panel" || (child.type && (child.type as any).name === "ResizablePanel")))
+  const panelNodes = React.Children.toArray(children).filter((child) => React.isValidElement(child) && (child.type === ResizablePanel || (child as React.ReactElement<{ "data-slot"?: string }>).props["data-slot"] === "resizable-panel" || (child.type && (child.type as { name?: string }).name === "ResizablePanel")))
   const panelCount = panelNodes.length
   const initialSizes = React.useMemo(() => {
     const declaredSizes = panelNodes.map((child) => normalizeSizeValue((child as React.ReactElement<ResizablePanelProps>).props.defaultSize))
@@ -98,11 +98,11 @@ function ResizablePanelGroup({ direction = "horizontal", className, children, ..
   const processedChildren = React.Children.map(children, (child) => {
     if (!React.isValidElement(child)) return child
 
-    if (child.type === ResizablePanel || (child as React.ReactElement<any>).props["data-slot"] === "resizable-panel" || (child.type && (child.type as any).name === "ResizablePanel")) {
+    if (child.type === ResizablePanel || (child as React.ReactElement<{ "data-slot"?: string }>).props["data-slot"] === "resizable-panel" || (child.type && (child.type as { name?: string }).name === "ResizablePanel")) {
       return React.cloneElement(child as React.ReactElement<ResizablePanelInternalProps>, { "data-panel-index": panelIndexCounter++ })
     }
 
-    if (child.type === ResizableHandle || (child as React.ReactElement<any>).props["data-slot"] === "resizable-handle" || (child.type && (child.type as any).name === "ResizableHandle")) {
+    if (child.type === ResizableHandle || (child as React.ReactElement<{ "data-slot"?: string }>).props["data-slot"] === "resizable-handle" || (child.type && (child.type as { name?: string }).name === "ResizableHandle")) {
       return React.cloneElement(child as React.ReactElement<ResizableHandleProps>, { "data-handle-index": handleIndexCounter++ })
     }
 
