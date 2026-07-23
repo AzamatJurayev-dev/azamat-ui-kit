@@ -2,13 +2,18 @@
   "name": "tembro-next-consumer-fixture",
   "private": true,
   "scripts": {
-    "setup": "node ../../packages/cli/dist/index.cjs init --template next --defaults --skip-install --overwrite-agents && node ../../packages/cli/dist/index.cjs add button input dialog --overwrite --skip-install",
+    "setup": "node ../../packages/cli/dist/index.cjs init --template next --defaults --skip-install --overwrite-agents && node ../../packages/cli/dist/index.cjs add button input --overwrite --skip-install",
     "build": "next build"
   },
   "dependencies": {
+    "@base-ui/react": "^1.5.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.17.0",
     "next": "16.1.0",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.0",
