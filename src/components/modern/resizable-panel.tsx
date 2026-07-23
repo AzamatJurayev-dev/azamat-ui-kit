@@ -58,8 +58,14 @@ function ResizablePanelGroup({ direction = "horizontal", className, children, ..
   )
   const [sizes, setSizes] = React.useState(initialSizes)
 
+  const prevInitialSizes = React.useRef(initialSizes)
   React.useEffect(() => {
-    setSizes(initialSizes)
+    const isSame = prevInitialSizes.current.length === initialSizes.length && 
+                   prevInitialSizes.current.every((v, i) => v === initialSizes[i])
+    if (!isSame) {
+      setSizes(initialSizes)
+      prevInitialSizes.current = initialSizes
+    }
   }, [initialSizes])
 
   const resizePanels = React.useCallback(
